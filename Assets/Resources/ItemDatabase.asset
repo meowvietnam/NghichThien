@@ -1,0 +1,1473 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2227346a8eb92415913a909ed858c774, type: 3}
+  m_Name: ItemDatabase
+  m_EditorClassIdentifier:
+  itemList:
+  - itemName: 木头
+    itemID: 0
+    itemUUID: 0
+    itemDesc: "If you drink this nice bottle you will get some health back.\n\n+ 20 Health"
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 0}
+    itemValue: 1
+    itemType: 19
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 木板
+    itemID: 1
+    itemUUID: 0
+    itemDesc: 这个头盔是真皮做的，如假包换~
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 19
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 23
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: 防御
+      attributeValue: 10
+  - itemName: 树枝
+    itemID: 2
+    itemUUID: 0
+    itemDesc: 这个头盔是钢铁制成的
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 19
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 62
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: 防御
+      attributeValue: 20
+  - itemName: 煤
+    itemID: 3
+    itemUUID: 0
+    itemDesc: 皮做的铠甲
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 19
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 10
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: 防御
+      attributeValue: 50
+  - itemName: 石头
+    itemID: 4
+    itemUUID: 0
+    itemDesc: 钢做的铠甲
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 19
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 80
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: 防御
+      attributeValue: 80
+  - itemName: 金属矿石
+    itemID: 5
+    itemUUID: 0
+    itemDesc: 非常锋利的鱼
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 19
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 91
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: 最大攻击
+      attributeValue: 10
+    - attributeName: 最小攻击
+      attributeValue: 5
+  - itemName: 金属碎片
+    itemID: 6
+    itemUUID: 0
+    itemDesc: 小心伤着自己
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 19
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 96
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: 最大攻击
+      attributeValue: 30
+    - attributeName: 最小攻击
+      attributeValue: 15
+  - itemName: 硫矿石
+    itemID: 7
+    itemUUID: 0
+    itemDesc: 皮做的鞋
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 19
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 1
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: 防御
+      attributeValue: 20
+  - itemName: 硫磺
+    itemID: 8
+    itemUUID: 0
+    itemDesc: 钢的鞋
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 19
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 21
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: 防御
+      attributeValue: 40
+  - itemName: 火药
+    itemID: 9
+    itemUUID: 0
+    itemDesc: 很大的剑
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 19
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 25
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: 最大攻击
+      attributeValue: 40
+    - attributeName: 最小攻击
+      attributeValue: 30
+  - itemName: 布
+    itemID: 10
+    itemUUID: 0
+    itemDesc: 很重的
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 19
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 26
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: 最大攻击
+      attributeValue: 60
+    - attributeName: 最小攻击
+      attributeValue: 40
+  - itemName: 皮革
+    itemID: 11
+    itemUUID: 0
+    itemDesc: 能救命的
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 5
+    itemType: 19
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 12
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: 生命
+      attributeValue: 60
+  - itemName: 骨头
+    itemID: 12
+    itemUUID: 0
+    itemDesc: "This apple could be good for applejuice.\n+ 10 Health"
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 19
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 100
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: Health
+      attributeValue: 10
+  - itemName: 生肉
+    itemID: 13
+    itemUUID: 0
+    itemDesc: You can fill some juice into the bottle.
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 2
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 13
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 熟肉
+    itemID: 14
+    itemUUID: 0
+    itemDesc: "You can create some nice cooked meat out of it.\n+ 5 Health"
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 2
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 35
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: Health
+      attributeValue: 5
+  - itemName: 腐肉
+    itemID: 15
+    itemUUID: 0
+    itemDesc: "Very nice cooked meat.\n+ 20 Health"
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 2
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 72
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: Health
+      attributeValue: 20
+  - itemName: 水瓶
+    itemID: 16
+    itemUUID: 0
+    itemDesc: "Take some meat to it and you will get a nice hamburger.\n+ 10 Health"
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 2
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 30
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: Health
+      attributeValue: 10
+  - itemName: 营火
+    itemID: 17
+    itemUUID: 0
+    itemDesc: "This hamburger gives you health and mana back.\n+ 20 Health\n+ 20 Mana"
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 20
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 30
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: Health
+      attributeValue: 20
+    - attributeName: Mana
+      attributeValue: 20
+  - itemName: 贮藏箱
+    itemID: 18
+    itemUUID: 0
+    itemDesc: "This applejuice gives you alot of health back.\n+ 50 Health"
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 20
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 31
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: Health
+      attributeValue: 50
+  - itemName: 火炉
+    itemID: 19
+    itemUUID: 0
+    itemDesc: "This is a green apple.\n+ 10 Health"
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 4
+    itemType: 20
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 60
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: Health
+      attributeValue: 10
+  - itemName: 铁砧
+    itemID: 20
+    itemUUID: 0
+    itemDesc: "This backpack is pretty big.\n30 Slots"
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 20
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 35
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: Slots
+      attributeValue: 30
+  - itemName: 睡袋
+    itemID: 21
+    itemUUID: 0
+    itemDesc: "This is a nice backpack.\n36 Slots"
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 20
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 61
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: Slots
+      attributeValue: 36
+  - itemName: 斧
+    itemID: 22
+    itemUUID: 0
+    itemDesc:
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 15
+    itemType: 21
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 1
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 石头斧
+    itemID: 23
+    itemUUID: 0
+    itemDesc:
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 21
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 1
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 鹤嘴锄
+    itemID: 24
+    itemUUID: 0
+    itemDesc:
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 21
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 1
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 火把
+    itemID: 25
+    itemUUID: 0
+    itemDesc:
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 50
+    itemType: 21
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 1
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 木箱
+    itemID: 26
+    itemUUID: 0
+    itemDesc:
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 0}
+    itemValue: 1
+    itemType: 22
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 1
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 木矛
+    itemID: 27
+    itemUUID: 0
+    itemDesc:
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 23
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 铁矛
+    itemID: 28
+    itemUUID: 0
+    itemDesc:
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 23
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 骨棒
+    itemID: 29
+    itemUUID: 0
+    itemDesc:
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 24
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 突击步枪
+    itemID: 30
+    itemUUID: 0
+    itemDesc:
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 25
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 左轮手枪
+    itemID: 31
+    itemUUID: 0
+    itemDesc: 6 Slots
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 25
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: Slots
+      attributeValue: 6
+  - itemName: 霰弹猎枪
+    itemID: 32
+    itemUUID: 0
+    itemDesc: 12 Slots
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 25
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: Slots
+      attributeValue: 12
+  - itemName: 猎枪
+    itemID: 33
+    itemUUID: 0
+    itemDesc: 16 Slots
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 25
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: Slots
+      attributeValue: 16
+  - itemName: 箭
+    itemID: 34
+    itemUUID: 0
+    itemDesc: 20 Slots
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 26
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes:
+    - attributeName: Slots
+      attributeValue: 24
+  - itemName: 5.56子弹
+    itemID: 35
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 26
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 0.44子弹
+    itemID: 36
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 26
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 炮弹
+    itemID: 37
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 26
+    itemWeight: 0
+    maxStack: 99
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 骨的头盔
+    itemID: 38
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 27
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 皮头盔
+    itemID: 39
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 27
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 木制的头盔
+    itemID: 40
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 27
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 骨制护胸
+    itemID: 41
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 28
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 皮革护胸
+    itemID: 42
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 28
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 木头护胸
+    itemID: 43
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 28
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 骨紧身裤
+    itemID: 44
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 29
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 皮革裤子
+    itemID: 45
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 29
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 木头裤子
+    itemID: 46
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 29
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 皮靴
+    itemID: 47
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 30
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 木靴
+    itemID: 48
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 30
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 建造图纸
+    itemID: 49
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 瘟疫之源
+    itemID: 50
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 51
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 短刀
+    itemID: 52
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 长剑
+    itemID: 53
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 摄魂刀
+    itemID: 54
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 苍狼血刃
+    itemID: 55
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 鬼眼摄魂刀
+    itemID: 56
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 清风剑
+    itemID: 57
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 饮血剑
+    itemID: 58
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 桃木杖
+    itemID: 59
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 青玉杖
+    itemID: 60
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 帝皇杖
+    itemID: 61
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 虚空法杖
+    itemID: 62
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 腊肉
+    itemID: 63
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 西瓜
+    itemID: 64
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 青玉
+    itemID: 65
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 灵魂粉末
+    itemID: 66
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 灵魂石
+    itemID: 67
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 玩家的魂魄
+    itemID: 68
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 69
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 70
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 71
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 72
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 73
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 74
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 75
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 76
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 77
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 78
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 79
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 80
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 81
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 82
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 83
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 84
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 85
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 86
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 87
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 88
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 89
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 90
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 91
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 92
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 93
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 94
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 95
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 96
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 97
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 98
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []
+  - itemName: 救赎之心
+    itemID: 99
+    itemUUID: 0
+    itemDesc: THIS IS A UFPS PISTOL
+    itemIcon: {fileID: 0}
+    itemModel: {fileID: 1608805614025147, guid: b7fe197f1365d7642bac9bfda170b0a0, type: 2}
+    itemValue: 1
+    itemType: 31
+    itemWeight: 0
+    maxStack: 1
+    indexItemInList: 999
+    rarity: 0
+    itemIndex: 0
+    itemAttributes: []

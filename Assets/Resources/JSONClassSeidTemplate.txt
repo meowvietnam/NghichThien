@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+
+namespace JSONClass
+{
+    /// <summary>
+    /// 此类为自动生成数据类，如果配表结构有变动，请重新生成
+    /// </summary>
+    public partial class _CLASSNAME_ : IJSONClass
+    {
+        public static int SEIDID = _SEIDID_;
+        public static Dictionary<_IDTYPE_, _CLASSNAME_> DataDict = new Dictionary<_IDTYPE_, _CLASSNAME_>();
+        public static List<_CLASSNAME_> DataList = new List<_CLASSNAME_>();
+        public static Action OnInitFinishAction = OnInitFinish;
+
+        public static void InitDataDict()
+        {
+            foreach (var d in jsonData.instance._ARRAYNAME_[_SEIDID_].list)
+            {
+                try
+                {
+                    _CLASSNAME_ obj = new _CLASSNAME_();
+_INITINT_
+_INITSTRING_
+_INITLISTINT_
+                    if (DataDict.ContainsKey(obj._IDNAME_))
+                    {
+                        PreloadManager.LogException($"!!!错误!!!向字典_CLASSNAME_.DataDict添加数据时出现重复的键，Key:{obj._IDNAME_}，已跳过，请检查配表");
+                    }
+                    else
+                    {
+                        DataDict.Add(obj._IDNAME_, obj);
+                        DataList.Add(obj);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    PreloadManager.LogException($"!!!错误!!!向字典_CLASSNAME_.DataDict添加数据时出现异常，已跳过，请检查配表");
+                    PreloadManager.LogException($"异常信息:\n{ex}");
+                    PreloadManager.LogException($"数据序列化:\n{d}");
+                }
+            }
+            if (OnInitFinishAction != null) OnInitFinishAction();
+        }
+
+_INT_
+_STRING_
+_LISTINT_
+        private static void OnInitFinish() { }
+    }
+}

@@ -1,0 +1,4848 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a7c695abb8c62054a565c4134c3eae, type: 3}
+  m_Name: Item Database
+  m_EditorClassIdentifier:
+  m_Categories:
+  - m_Name: Resource
+    m_Items:
+    - m_Name: 木头
+      m_DisplayName:
+      m_Id: 0
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 从怪物身上掉落的木头
+      m_StackSize: 99
+      m_PropertyValues:
+      - m_Name: Fuel Time
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 12
+          m_Default: 12
+        m_FloatRange:
+          m_Current: 12
+          m_Min: 0
+          m_Max: 12
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: Coal
+        m_Sound: {fileID: 0}
+      - m_Name: Burn Time
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 8
+          m_Default: 8
+        m_FloatRange:
+          m_Current: 8
+          m_Min: 0
+          m_Max: 8
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: Coal
+        m_Sound: {fileID: 0}
+      - m_Name: Burn Result
+        m_Type: 8
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: Coal
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 1
+        m_RequiredItems:
+        - m_Name: Log
+          m_Amount: 1
+    - m_Name: 木板
+      m_DisplayName:
+      m_Id: 1
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 由木头制作的木板，是建造各种物品的重要材料
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 1
+        m_RequiredItems:
+        - m_Name: 木头
+          m_Amount: 1
+    - m_Name: 树枝
+      m_DisplayName:
+      m_Id: 2
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 制作工具的原始材料。
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 5
+        m_RequiredItems:
+        - m_Name: 木头
+          m_Amount: 1
+    - m_Name: 煤炭
+      m_DisplayName:
+      m_Id: 3
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 这是一种非常有效的燃料。
+      - '- Fuel Duration: <color=olive>{0} seconds</color>'
+      m_StackSize: 99
+      m_PropertyValues:
+      - m_Name: Fuel Time
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 25
+          m_Default: 25
+        m_FloatRange:
+          m_Current: 25
+          m_Min: 0
+          m_Max: 25
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: Coal
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 1
+        m_RequiredItems:
+        - m_Name: Log
+          m_Amount: 1
+    - m_Name: 石头
+      m_DisplayName:
+      m_Id: 4
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 用来制作建筑物的基础材料
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 5
+        m_RequiredItems:
+        - m_Name: Log
+          m_Amount: 1
+    - m_Name: 金属矿石
+      m_DisplayName:
+      m_Id: 5
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "一种非常稀有的资源\r，\n用来制作先进的装备。"
+      - '- Smelt Duration: <color=olive>{0} seconds</color>'
+      m_StackSize: 99
+      m_PropertyValues:
+      - m_Name: Burn Time
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 15
+          m_Default: 15
+        m_FloatRange:
+          m_Current: 20
+          m_Min: 0
+          m_Max: 20
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Burn Result
+        m_Type: 8
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: Metal Fragment
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 1
+        m_RequiredItems:
+        - m_Name: Log
+          m_Amount: 1
+    - m_Name: 金属碎片
+      m_DisplayName:
+      m_Id: 6
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "从青蛙身上搜集的物品\n用于制作武器装备。"
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 0
+        m_RequiredItems: []
+    - m_Name: 硫矿石
+      m_DisplayName:
+      m_Id: 7
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 一种非常稀有的资源。
+      - '- Smelt Duration: <color=olive>{0} seconds</color>'
+      m_StackSize: 99
+      m_PropertyValues:
+      - m_Name: Burn Time
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 12
+          m_Default: 12
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Burn Result
+        m_Type: 8
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: Sulfur
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 8
+        m_RequiredItems:
+        - m_Name: Log
+          m_Amount: 1
+    - m_Name: 硫磺
+      m_DisplayName:
+      m_Id: 8
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 制造火药的要求。
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 8
+        m_RequiredItems:
+        - m_Name: Log
+          m_Amount: 1
+    - m_Name: 火药
+      m_DisplayName:
+      m_Id: 9
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 用于弹药。
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 8
+        m_RequiredItems:
+        - m_Name: 硫磺
+          m_Amount: 1
+        - m_Name: 金属碎片
+          m_Amount: 1
+    - m_Name: 布
+      m_DisplayName:
+      m_Id: 10
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 通过在熔炉中燃烧皮革获得。
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 8
+        m_RequiredItems:
+        - m_Name: Leather
+          m_Amount: 1
+    - m_Name: 皮革
+      m_DisplayName:
+      m_Id: 11
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "对工艺设备有用，得到\r\n动物被剥皮。"
+      - '- Burn Duration: <color=olive>{0} seconds</color>'
+      m_StackSize: 99
+      m_PropertyValues:
+      - m_Name: Burn Time
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 10
+          m_Default: 10
+        m_FloatRange:
+          m_Current: 8
+          m_Min: 0
+          m_Max: 8
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Burn Result
+        m_Type: 8
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 1
+          m_Min: 0
+          m_Max: 1
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: Cloth
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 8
+        m_RequiredItems:
+        - m_Name: Log
+          m_Amount: 1
+    - m_Name: 骨头
+      m_DisplayName:
+      m_Id: 12
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 一根很重的骨头，取自一头野猪。
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 8
+        m_RequiredItems:
+        - m_Name: Log
+          m_Amount: 1
+    - m_Name: 青玉
+      m_DisplayName:
+      m_Id: 65
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 从青蛙身上掉落的材料
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 8
+        m_RequiredItems:
+        - m_Name: Log
+          m_Amount: 1
+    - m_Name: 灵魂粉末
+      m_DisplayName:
+      m_Id: 66
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 从僵尸身上掉落的物品
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 8
+        m_RequiredItems:
+        - m_Name: Log
+          m_Amount: 1
+    - m_Name: 灵魂石
+      m_DisplayName:
+      m_Id: 67
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 击杀僵尸获得灵魂粉末
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 8
+        m_RequiredItems:
+        - m_Name: 灵魂粉末
+          m_Amount: 5
+    - m_Name: 玩家的魂魄
+      m_DisplayName:
+      m_Id: 68
+      m_Category: Resource
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 击杀其他玩家获得的珍贵材料
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 8
+        m_RequiredItems:
+        - m_Name: Log
+          m_Amount: 1
+  - m_Name: Consumable
+    m_Items:
+    - m_Name: 生肉
+      m_DisplayName:
+      m_Id: 13
+      m_Category: Consumable
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 使用后回复40点生命值
+      - "- 恢复 <color=olive>{0}</color> 饥饿值.\n- 恢复 <color=olive>{5}</color> 生命值."
+      m_StackSize: 99
+      m_PropertyValues:
+      - m_Name: Hunger Change
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 10
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Burn Time
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 10
+          m_Default: 10
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Burn Result
+        m_Type: 8
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 10
+          m_Default: 10
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: Cooked Meat
+        m_Sound: {fileID: 0}
+      - m_Name: Can Consume
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 10
+          m_Default: 10
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: Cooked Meat
+        m_Sound: {fileID: 0}
+      - m_Name: Consume Sound
+        m_Type: 9
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 10
+          m_Default: 10
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: Cooked Meat
+        m_Sound: {fileID: 0}
+      - m_Name: addhp
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 40
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 10
+          m_Default: 10
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: Cooked Meat
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 1
+        m_RequiredItems:
+        - m_Name: Raw Meat
+          m_Amount: 1
+    - m_Name: 熟肉
+      m_DisplayName:
+      m_Id: 14
+      m_Category: Consumable
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 回复500点生命值
+      - "- 恢复 <color=olive>{0}</color> 饥饿.\n- 恢复 <color=olive>{3}</color> 生命值."
+      m_StackSize: 99
+      m_PropertyValues:
+      - m_Name: Hunger Change
+        m_Type: 4
+        m_Bool: 0
+        m_Int:
+          m_Current: 50
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 20
+          m_Max: 25
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Consume
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 20
+          m_Max: 25
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Consume Sound
+        m_Type: 9
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 20
+          m_Max: 25
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: addhp
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 500
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 20
+          m_Max: 25
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 1
+        m_RequiredItems:
+        - m_Name: Log
+          m_Amount: 1
+    - m_Name: 腐肉
+      m_DisplayName:
+      m_Id: 15
+      m_Category: Consumable
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "小心这块肉，\r\n它可能太烂了，不能吃。"
+      - '- Changes health with <color=olive>{0}</color>.'
+      m_StackSize: 99
+      m_PropertyValues:
+      - m_Name: Health Change
+        m_Type: 4
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: -15
+          m_Max: 15
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Consume
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 10
+          m_Max: 14
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Consume Sound
+        m_Type: 9
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 10
+          m_Max: 14
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 1
+        m_RequiredItems:
+        - m_Name: Raw Meat
+          m_Amount: 1
+    - m_Name: 水瓶
+      m_DisplayName:
+      m_Id: 16
+      m_Category: Consumable
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 一瓶0.5L的水
+      - '- 恢复 <color=olive>{0}</color> 饥渴.'
+      m_StackSize: 99
+      m_PropertyValues:
+      - m_Name: Thirst Change
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 30
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Consume
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 10
+          m_Max: 14
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Consume Sound
+        m_Type: 9
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 10
+          m_Max: 14
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 1
+        m_RequiredItems:
+        - m_Name: Raw Meat
+          m_Amount: 1
+    - m_Name: 瘟疫之源
+      m_DisplayName:
+      m_Id: 50
+      m_Category: Consumable
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "喝下它你就会成为尸王，杀死其他玩家\n可以收集他们的魂魄\n使用后你会获得还魂丹，可以重新变回人类"
+      - 只能在夜晚使用
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Thirst Change
+        m_Type: 4
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Consume
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 10
+          m_Max: 14
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Consume Sound
+        m_Type: 9
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 10
+          m_Max: 14
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 1
+        m_RequiredItems:
+        - m_Name: 灵魂粉末
+          m_Amount: 4
+    - m_Name: 还魂丹
+      m_DisplayName:
+      m_Id: 51
+      m_Category: Consumable
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "重新变回人类。\n该物品会在白天自动使用"
+      - 变回你原来的英雄
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Thirst Change
+        m_Type: 4
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Consume
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 10
+          m_Max: 14
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Consume Sound
+        m_Type: 9
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 10
+          m_Max: 14
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 1
+        m_RequiredItems:
+        - m_Name: Raw Meat
+          m_Amount: 1
+    - m_Name: 腊肉
+      m_DisplayName:
+      m_Id: 63
+      m_Category: Consumable
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 风干凉制而成
+      - "- 恢复 <color=olive>{0}</color> 生命.\n- 恢复 <color=olive>{1}</color> 饥饿."
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: hp Change
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 500
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Consume
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 50
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 10
+          m_Max: 14
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Consume Sound
+        m_Type: 9
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 10
+          m_Max: 14
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 5
+        m_RequiredItems:
+        - m_Name: 生肉
+          m_Amount: 5
+    - m_Name: 西瓜
+      m_DisplayName:
+      m_Id: 64
+      m_Category: Consumable
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 夏天的最爱
+      - "- 恢复 <color=olive>{0}</color> 生命.\n- 恢复 <color=olive>{1}</color> 饥饿.\n- 恢复 <color=olive>{2}</color> 口渴."
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Thirst Change
+        m_Type: 4
+        m_Bool: 0
+        m_Int:
+          m_Current: 100
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Consume
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 10
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 10
+          m_Max: 14
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Consume Sound
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 30
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 10
+          m_Max: 14
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 1
+        m_RequiredItems:
+        - m_Name: Raw Meat
+          m_Amount: 1
+  - m_Name: Interactable
+    m_Items:
+    - m_Name: 营火
+      m_DisplayName:
+      m_Id: 17
+      m_Category: Interactable
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1460631049904985, guid: f8b0729982f62b441a88899cde02f65b, type: 2}
+      m_Descriptions:
+      - "适合做饭，会让你感到温暖\r\n在你来这儿的第一个晚上。"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Is Placeable
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 1
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 60
+        m_RequiredItems:
+        - m_Name: 石头
+          m_Amount: 24
+    - m_Name: 贮藏箱
+      m_DisplayName:
+      m_Id: 18
+      m_Category: Interactable
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1122346185384321, guid: 61596588aac7d4f41b31883e71148645, type: 2}
+      m_Descriptions:
+      - "不管你现在需要什么，\r\n你可以在这里储存。"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Is Placeable
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 1
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 60
+        m_RequiredItems:
+        - m_Name: 木板
+          m_Amount: 12
+        - m_Name: 金属碎片
+          m_Amount: 6
+    - m_Name: 火炉
+      m_DisplayName:
+      m_Id: 19
+      m_Category: Interactable
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1862848585897244, guid: e4a5cc69dee4454409e5decfe81e5cd5, type: 2}
+      m_Descriptions:
+      - 可用于烹调或熔炼。
+      m_StackSize: 66
+      m_PropertyValues:
+      - m_Name: Is Placeable
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 1
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 120
+        m_RequiredItems:
+        - m_Name: 石头
+          m_Amount: 64
+    - m_Name: 铁砧
+      m_DisplayName:
+      m_Id: 20
+      m_Category: Interactable
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1996147893799602, guid: 4fb9992cf18de5d4c8d15f7b55e22ba8, type: 2}
+      m_Descriptions:
+      - 修理物品。
+      m_StackSize: 9
+      m_PropertyValues:
+      - m_Name: Is Placeable
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 1
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 120
+        m_RequiredItems:
+        - m_Name: 石头
+          m_Amount: 64
+    - m_Name: 睡袋
+      m_DisplayName:
+      m_Id: 21
+      m_Category: Interactable
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1412699336723332, guid: 53e83a2e5fca5144184494d31d73be59, type: 2}
+      m_Descriptions:
+      - "如果你死了，你会在这个袋子里重生。\r\n当你睡觉的时候，\r\n时间快进到早晨了。"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Is Placeable
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 1
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 80
+        m_RequiredItems:
+        - m_Name: 布
+          m_Amount: 70
+  - m_Name: Tool
+    m_Items:
+    - m_Name: 斧
+      m_DisplayName:
+      m_Id: 22
+      m_Category: Tool
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1964944003049424, guid: 211eaad00bfa222479b93341ad3c4455, type: 2}
+      m_Descriptions:
+      - "砍树容易。\r\n工艺需要金属。\n增加20攻击力"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 256
+          m_Default: 256
+        m_FloatRange:
+          m_Current: 256
+          m_Min: 0
+          m_Max: 256
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 256
+          m_Default: 256
+        m_FloatRange:
+          m_Current: 256
+          m_Min: 0
+          m_Max: 256
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 25
+        m_RequiredItems:
+        - m_Name: 树枝
+          m_Amount: 4
+        - m_Name: 金属碎片
+          m_Amount: 6
+    - m_Name: 石头斧
+      m_DisplayName:
+      m_Id: 23
+      m_Category: Tool
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1883463060467265, guid: be263254c0f6c3e42b3683ecc48e54eb, type: 2}
+      m_Descriptions:
+      - "锋利到足以砍倒一棵树，强壮\r\n足以砸碎岩石。\n增加20攻击力"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 128
+          m_Min: 0
+          m_Max: 128
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 128
+          m_Min: 0
+          m_Max: 128
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 35
+        m_RequiredItems:
+        - m_Name: 树枝
+          m_Amount: 4
+        - m_Name: 石头
+          m_Amount: 8
+        - m_Name: 布
+          m_Amount: 5
+    - m_Name: 鹤嘴锄
+      m_DisplayName:
+      m_Id: 24
+      m_Category: Tool
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1077483014476159, guid: 3c9020691fc768e42845641da4a63309, type: 2}
+      m_Descriptions:
+      - "一把锋利的铁制鹤嘴锄。\n增加30攻击力"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 256
+          m_Default: 256
+        m_FloatRange:
+          m_Current: 128
+          m_Min: 0
+          m_Max: 128
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 256
+          m_Default: 256
+        m_FloatRange:
+          m_Current: 128
+          m_Min: 0
+          m_Max: 128
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 48
+        m_RequiredItems:
+        - m_Name: 树枝
+          m_Amount: 4
+        - m_Name: 金属碎片
+          m_Amount: 8
+        - m_Name: 布
+          m_Amount: 5
+    - m_Name: 火把
+      m_DisplayName:
+      m_Id: 25
+      m_Category: Tool
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1824553491894181, guid: 48514267d8dba324f9eed74612bacf18, type: 2}
+      m_Descriptions:
+      - "让那里光芒闪耀！！\n增加10攻击力"
+      m_StackSize: 1
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 48
+        m_RequiredItems:
+        - m_Name: 树枝
+          m_Amount: 4
+        - m_Name: 布
+          m_Amount: 4
+  - m_Name: Bow
+    m_Items:
+    - m_Name: 木弓
+      m_DisplayName:
+      m_Id: 26
+      m_Category: Bow
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1543385911353560, guid: cdb1fc2c367333b4cbdcd66f71496a7f, type: 2}
+      m_Descriptions:
+      - "狩猎小动物的完美武器。\n增加40攻击力"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Ammo Type
+        m_Type: 8
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 24
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: Arrow
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 24
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 55
+        m_RequiredItems:
+        - m_Name: 树枝
+          m_Amount: 8
+        - m_Name: 布
+          m_Amount: 12
+  - m_Name: Throwable
+    m_Items:
+    - m_Name: 木矛
+      m_DisplayName:
+      m_Id: 27
+      m_Category: Throwable
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1399046269006825, guid: 43a14da048a29934aae399c770e7593d, type: 2}
+      m_Descriptions:
+      - "一个简单的木矛。\n增加40攻击力"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 4
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 16
+          m_Default: 16
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 24
+        m_RequiredItems:
+        - m_Name: 树枝
+          m_Amount: 12
+    - m_Name: 铁矛
+      m_DisplayName:
+      m_Id: 28
+      m_Category: Throwable
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1361185974700781, guid: b7eaea4357e5cde4aa43f7b927a30823, type: 2}
+      m_Descriptions:
+      - "比木制版本稍微强大一点。\n增加70攻击力"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 4
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 24
+          m_Default: 24
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 32
+        m_RequiredItems:
+        - m_Name: 树枝
+          m_Amount: 12
+        - m_Name: 金属碎片
+          m_Amount: 2
+  - m_Name: Melee Weapon
+    m_Items:
+    - m_Name: 骨棒
+      m_DisplayName:
+      m_Id: 29
+      m_Category: Melee Weapon
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1894573135786165, guid: a68ea5986416abb44ac082ee8f499710, type: 2}
+      m_Descriptions:
+      - "重的野猪股骨。\r\n耐久性低，但非常强大。\n增加40攻击力"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 25
+        m_RequiredItems:
+        - m_Name: 骨头
+          m_Amount: 1
+        - m_Name: 布
+          m_Amount: 4
+    - m_Name: 短刀
+      m_DisplayName:
+      m_Id: 52
+      m_Category: Melee Weapon
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1894573135786165, guid: a68ea5986416abb44ac082ee8f499710, type: 2}
+      m_Descriptions:
+      - "没啥攻击力，但总比没有好\n可从青蛙兵，和青蛙队长身上\n获得原材料"
+      - '攻击: <color=olive>+{1}</color>'
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: attack
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 15
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 25
+        m_RequiredItems:
+        - m_Name: 金属碎片
+          m_Amount: 3
+        - m_Name: 木板
+          m_Amount: 6
+    - m_Name: 长剑
+      m_DisplayName:
+      m_Id: 53
+      m_Category: Melee Weapon
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1894573135786165, guid: a68ea5986416abb44ac082ee8f499710, type: 2}
+      m_Descriptions:
+      - "基础的长剑\n可从青蛙兵，和青蛙队长身上\n获得原材料。"
+      - "攻击: <color=olive>+{1}</color>\n被动:<color=olive>你的伤害附带吸血效果，伤害值的（%5）</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: attack
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 10
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 25
+        m_RequiredItems:
+        - m_Name: 金属碎片
+          m_Amount: 3
+        - m_Name: 木板
+          m_Amount: 6
+    - m_Name: 摄魂刀
+      m_DisplayName:
+      m_Id: 54
+      m_Category: Melee Weapon
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1894573135786165, guid: a68ea5986416abb44ac082ee8f499710, type: 2}
+      m_Descriptions:
+      - "这一刀砍下去，砍死了那就没魂了，所以就叫摄魂刀嘛。\n可以从青蛙副将和青蛙队长身上收集材料。"
+      - '攻击: <color=olive>+{1}</color>'
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 40
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: attack
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 15
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 25
+        m_RequiredItems:
+        - m_Name: 青玉
+          m_Amount: 5
+        - m_Name: 短刀
+          m_Amount: 1
+        - m_Name: 金属碎片
+          m_Amount: 10
+    - m_Name: 苍狼血刃
+      m_DisplayName:
+      m_Id: 55
+      m_Category: Melee Weapon
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1894573135786165, guid: a68ea5986416abb44ac082ee8f499710, type: 2}
+      m_Descriptions:
+      - "自从有了苍狼血刃，谁都砍不动我了\n通过击杀僵尸和狩猎其他玩家获得原材料\n"
+      - "攻击: <color=olive>+{1}</color>\n生命值: <color=olive>+{2}</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: attack
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 60
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: hp
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 800
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 25
+        m_RequiredItems:
+        - m_Name: 摄魂刀
+          m_Amount: 1
+        - m_Name: 灵魂石
+          m_Amount: 4
+        - m_Name: 玩家的魂魄
+          m_Amount: 1
+    - m_Name: 鬼眼摄魂刀
+      m_DisplayName:
+      m_Id: 56
+      m_Category: Melee Weapon
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1894573135786165, guid: a68ea5986416abb44ac082ee8f499710, type: 2}
+      m_Descriptions:
+      - "没有什么事情是一刀解决不了的，\n如果有的话那就再来一刀。\n通过击杀僵尸和狩猎其他玩家获得原材料\n"
+      - '攻击: <color=olive>+{1}</color>'
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: attack
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 100
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 25
+        m_RequiredItems:
+        - m_Name: 骨头
+          m_Amount: 1
+        - m_Name: 灵魂石
+          m_Amount: 4
+        - m_Name: 玩家的魂魄
+          m_Amount: 1
+    - m_Name: 清风剑
+      m_DisplayName:
+      m_Id: 57
+      m_Category: Melee Weapon
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1894573135786165, guid: a68ea5986416abb44ac082ee8f499710, type: 2}
+      m_Descriptions:
+      - "乘风御物\n可以从青蛙副将和青蛙队长身上收集材料"
+      - "攻击: <color=olive>+{1}</color>\n被动:<color=olive>你的伤害附带吸血效果，伤害值的（%10）</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: attack
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 20
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 25
+        m_RequiredItems:
+        - m_Name: 青玉
+          m_Amount: 5
+        - m_Name: 长剑
+          m_Amount: 1
+        - m_Name: 金属碎片
+          m_Amount: 4
+    - m_Name: 饮血剑
+      m_DisplayName:
+      m_Id: 58
+      m_Category: Melee Weapon
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1894573135786165, guid: a68ea5986416abb44ac082ee8f499710, type: 2}
+      m_Descriptions:
+      - "杀人饮血，若肉强食\n通过击杀僵尸和狩猎其他玩家获得原材料"
+      - "攻击: <color=olive>+{1}</color>\n被动:<color=olive>你的伤害附带吸血效果，伤害值的（%20）</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: attack
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 40
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 25
+        m_RequiredItems:
+        - m_Name: 清风剑
+          m_Amount: 1
+        - m_Name: 灵魂石
+          m_Amount: 5
+        - m_Name: 玩家的魂魄
+          m_Amount: 1
+    - m_Name: 桃木杖
+      m_DisplayName:
+      m_Id: 59
+      m_Category: Melee Weapon
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1894573135786165, guid: a68ea5986416abb44ac082ee8f499710, type: 2}
+      m_Descriptions:
+      - 木头做成的法杖
+      - "攻击: <color=olive>+{1}</color>\n智力: <color=olive>+10</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: attack
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 5
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 25
+        m_RequiredItems:
+        - m_Name: 木头
+          m_Amount: 5
+        - m_Name: 布
+          m_Amount: 4
+    - m_Name: 青玉杖
+      m_DisplayName:
+      m_Id: 60
+      m_Category: Melee Weapon
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1894573135786165, guid: a68ea5986416abb44ac082ee8f499710, type: 2}
+      m_Descriptions:
+      - 感觉自己变聪明了
+      - "攻击: <color=olive>+{1}</color>\n智力: <color=olive>+20</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: attack
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 15
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 25
+        m_RequiredItems:
+        - m_Name: 桃木杖
+          m_Amount: 1
+        - m_Name: 青玉
+          m_Amount: 8
+        - m_Name: 金属碎片
+          m_Amount: 6
+    - m_Name: 帝皇杖
+      m_DisplayName:
+      m_Id: 61
+      m_Category: Melee Weapon
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1894573135786165, guid: a68ea5986416abb44ac082ee8f499710, type: 2}
+      m_Descriptions:
+      - 如果你是法师你需要有她的陪伴
+      - "攻击: <color=olive>+{1}</color>\n智力: <color=olive>+40</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: attack
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 30
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 25
+        m_RequiredItems:
+        - m_Name: 青玉杖
+          m_Amount: 1
+        - m_Name: 玩家的魂魄
+          m_Amount: 1
+        - m_Name: 灵魂石
+          m_Amount: 4
+    - m_Name: 虚空法杖
+      m_DisplayName:
+      m_Id: 62
+      m_Category: Melee Weapon
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1894573135786165, guid: a68ea5986416abb44ac082ee8f499710, type: 2}
+      m_Descriptions:
+      - 吞噬虚空吞噬一切
+      - "攻击: <color=olive>+{1}</color>\n智力: <color=olive>+40</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: attack
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 40
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 25
+        m_RequiredItems:
+        - m_Name: 青玉杖
+          m_Amount: 1
+        - m_Name: 玩家的魂魄
+          m_Amount: 1
+        - m_Name: 灵魂石
+          m_Amount: 4
+  - m_Name: Gun
+    m_Items:
+    - m_Name: 冲锋枪
+      m_DisplayName:
+      m_Id: 30
+      m_Category: Gun
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1669625383487481, guid: 7acc44e804b930c42b75d88c49d437e6, type: 2}
+      m_Descriptions:
+      - "周围唯一的自动手枪，\r\n好好利用它。\n增加100攻击力"
+      - "- Type: <color=olive>Full Auto</color>\n- Shoots: <color=olive>5.56 Rifle Cartridge</color>\n- Range: <color=olive>250 meters</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 256
+          m_Default: 256
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Ammo Type
+        m_Type: 8
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 30
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: 5.56 Bullet
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 30
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 55
+        m_RequiredItems:
+        - m_Name: 木头
+          m_Amount: 2
+        - m_Name: 金属碎片
+          m_Amount: 24
+        - m_Name: 布
+          m_Amount: 8
+    - m_Name: 左轮手枪
+      m_DisplayName:
+      m_Id: 31
+      m_Category: Gun
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1104723714303550, guid: 2989cd2766de1fc4b88ec03fe9bc378e, type: 2}
+      m_Descriptions:
+      - "小心别打到自己的脸，\r\n当发生反冲。\n增加110攻击力"
+      - "- Type: <color=olive>Semi-Auto</color>\n- Shoots: <color=olive>.44 Mag Cartridge</color>\n- Range: <color=olive>150 meters</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Ammo Type
+        m_Type: 8
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 7
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: .44 Bullet
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 7
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 45
+        m_RequiredItems:
+        - m_Name: 金属碎片
+          m_Amount: 16
+    - m_Name: 霰弹猎枪
+      m_DisplayName:
+      m_Id: 32
+      m_Category: Gun
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1979621933524027, guid: b6cc9a16f8ee0da4c923000f6ea77ad0, type: 2}
+      m_Descriptions:
+      - "近距离毁灭性的，\r\n一枪就把所有东西打下来。\n增加120攻击力"
+      - "- Type: <color=olive>Pump Action</color>\n- Shoots: <color=olive>Classic Shell</color>\n- Range: <color=olive>30 meters</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 48
+          m_Default: 48
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Ammo Type
+        m_Type: 8
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 2
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 48
+          m_Default: 48
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: Shell
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 8
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 55
+        m_RequiredItems:
+        - m_Name: 木头
+          m_Amount: 4
+        - m_Name: 金属碎片
+          m_Amount: 18
+    - m_Name: 猎枪
+      m_DisplayName:
+      m_Id: 33
+      m_Category: Gun
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1384162398567603, guid: 583ae99f6a60b654e9f1871656285698, type: 2}
+      m_Descriptions:
+      - "非常准确，可以击落目标，\r\n超过300米。\n增加100攻击力"
+      - "- Type: <color=olive>Bolt-Action</color>\n- Shoots: <color=olive>5.56</color>\n- Range: <color=olive>300+ meters</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Ammo Type
+        m_Type: 8
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 2
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 48
+          m_Default: 48
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String: Shell
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 8
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 55
+        m_RequiredItems:
+        - m_Name: 木头
+          m_Amount: 4
+        - m_Name: 金属碎片
+          m_Amount: 18
+  - m_Name: Ammunition
+    m_Items:
+    - m_Name: 箭
+      m_DisplayName:
+      m_Id: 34
+      m_Category: Ammunition
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 能轻而易举地打倒小动物。
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 5
+        m_RequiredItems:
+        - m_Name: 树枝
+          m_Amount: 1
+    - m_Name: 5.56 子弹
+      m_DisplayName:
+      m_Id: 35
+      m_Category: Ammunition
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 猎枪弹药。
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 5
+        m_RequiredItems:
+        - m_Name: 火药
+          m_Amount: 1
+        - m_Name: 金属碎片
+          m_Amount: 1
+    - m_Name: .44 子弹
+      m_DisplayName:
+      m_Id: 36
+      m_Category: Ammunition
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 无误万能弹药。
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 12
+        m_RequiredItems:
+        - m_Name: 火药
+          m_Amount: 2
+        - m_Name: 金属碎片
+          m_Amount: 2
+    - m_Name: 弹壳
+      m_DisplayName:
+      m_Id: 37
+      m_Category: Ammunition
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - 一个6-pellet外壳。
+      m_StackSize: 99
+      m_PropertyValues: []
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 15
+        m_RequiredItems:
+        - m_Name: 火药
+          m_Amount: 2
+        - m_Name: 金属碎片
+          m_Amount: 3
+  - m_Name: Head Equipment
+    m_Items:
+    - m_Name: 骨制头盔
+      m_DisplayName:
+      m_Id: 38
+      m_Category: Head Equipment
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "一个保护性的食人头骨。\n"
+      - "防御力: <color=olive>+{0}</color>\n生命值: <color=olive>+{3}</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Defense
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 30
+          m_Default: 30
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 7
+          m_Max: 10
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle1
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: hpMax
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 300
+          m_Default: 300
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 30
+        m_RequiredItems:
+        - m_Name: 骨头
+          m_Amount: 10
+        - m_Name: 木制的头盔
+          m_Amount: 1
+    - m_Name: 皮头盔
+      m_DisplayName:
+      m_Id: 39
+      m_Category: Head Equipment
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "基本的头部保护。\n"
+      - "防御力: <color=olive>+{0}</color>\n生命值: <color=olive>+{3}</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Defense
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 10
+          m_Default: 10
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 9
+          m_Max: 12
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle1
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: hpMax
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 100
+          m_Default: 100
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 30
+        m_RequiredItems:
+        - m_Name: 皮革
+          m_Amount: 6
+    - m_Name: 木制的头盔
+      m_DisplayName:
+      m_Id: 40
+      m_Category: Head Equipment
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "坚硬的木制头部保护。\n增加30防御力"
+      - "防御力: <color=olive>+{0}</color>\n生命值: <color=olive>+{3}</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Defense
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 20
+          m_Default: 20
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 11
+          m_Max: 15
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle1
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: hpMax
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 200
+          m_Default: 200
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 30
+        m_RequiredItems:
+        - m_Name: 木板
+          m_Amount: 10
+        - m_Name: 皮头盔
+          m_Amount: 1
+  - m_Name: Torso Equipment
+    m_Items:
+    - m_Name: 骨制护胸
+      m_DisplayName:
+      m_Id: 41
+      m_Category: Torso Equipment
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "由骨头制成的躯干覆盖物。\n"
+      - "防御力: <color=olive>+{0}</color>\n生命值: <color=olive>+{4}</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Defense
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 50
+          m_Default: 50
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0.3
+          m_Min: 0
+          m_Max: 0.3
+        m_RandomFloat:
+          m_Min: 12
+          m_Max: 15
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 12
+          m_Max: 15
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle1
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 12
+          m_Max: 15
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Disable Underwear
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 12
+          m_Max: 15
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: hpMax
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 500
+          m_Default: 500
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 12
+          m_Max: 15
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 60
+        m_RequiredItems:
+        - m_Name: 骨头
+          m_Amount: 24
+        - m_Name: 木头护胸
+          m_Amount: 1
+    - m_Name: 皮革护胸
+      m_DisplayName:
+      m_Id: 42
+      m_Category: Torso Equipment
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "基本的躯干的保护。\n"
+      - "防御力: <color=olive>+{0}</color>\n生命值: <color=olive>+{4}</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Defense
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 20
+          m_Default: 20
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 15
+          m_Max: 18
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0.3
+          m_Min: 0
+          m_Max: 0.3
+        m_RandomFloat:
+          m_Min: 12
+          m_Max: 15
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 12
+          m_Max: 15
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle1
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 12
+          m_Max: 15
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Disable Underwear
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 12
+          m_Max: 15
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: hpMax
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 200
+          m_Default: 200
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 12
+          m_Max: 15
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 60
+        m_RequiredItems:
+        - m_Name: 皮革
+          m_Amount: 24
+    - m_Name: 木头护胸
+      m_DisplayName:
+      m_Id: 43
+      m_Category: Torso Equipment
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "坚硬的木制躯干保护。\n"
+      - "防御力: <color=olive>+{0}</color>\n生命值: <color=olive>+{3}</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Defense
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 35
+          m_Default: 35
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 18
+          m_Max: 20
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0.3
+          m_Min: 0
+          m_Max: 0.3
+        m_RandomFloat:
+          m_Min: 12
+          m_Max: 15
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 12
+          m_Max: 15
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle1
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 12
+          m_Max: 15
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: hpMax
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 350
+          m_Default: 350
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 64
+          m_Min: 0
+          m_Max: 64
+        m_RandomFloat:
+          m_Min: 12
+          m_Max: 15
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 60
+        m_RequiredItems:
+        - m_Name: 木板
+          m_Amount: 18
+        - m_Name: 皮革护胸
+          m_Amount: 12
+  - m_Name: Legs Equipment
+    m_Items:
+    - m_Name: 骨紧身裤
+      m_DisplayName:
+      m_Id: 44
+      m_Category: Legs Equipment
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "几根骨头绑在一起。\n"
+      - "防御力: <color=olive>+{0}</color>\n生命值: <color=olive>+{3}</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Defense
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 50
+          m_Default: 50
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 9
+          m_Max: 12
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle1
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: hpMax
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 500
+          m_Default: 500
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 64
+          m_Default: 64
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 45
+        m_RequiredItems:
+        - m_Name: 骨头
+          m_Amount: 12
+        - m_Name: 木制的紧身裤
+          m_Amount: 1
+    - m_Name: 皮革紧身裤
+      m_DisplayName:
+      m_Id: 45
+      m_Category: Legs Equipment
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "基本的腿保护。\n"
+      - "防御力: <color=olive>+{0}</color>\n生命值: <color=olive>+{4}</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Defense
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 20
+          m_Default: 20
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle1
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Disable Underwear
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: hpMax
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 200
+          m_Default: 200
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 45
+        m_RequiredItems:
+        - m_Name: 皮革
+          m_Amount: 18
+    - m_Name: 木制的紧身裤
+      m_DisplayName:
+      m_Id: 46
+      m_Category: Legs Equipment
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "坚硬的木制护腿。\n增加40防御力"
+      - "防御力: <color=olive>+{0}</color>\n生命值: <color=olive>+{4}</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Defense
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 35
+          m_Default: 35
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 14
+          m_Max: 16
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle1
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Disable Underwear
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: hpMax
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 350
+          m_Default: 350
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 50
+        m_RequiredItems:
+        - m_Name: 木板
+          m_Amount: 18
+        - m_Name: 皮革紧身裤
+          m_Amount: 1
+  - m_Name: Feet Equipment
+    m_Items:
+    - m_Name: 皮靴
+      m_DisplayName:
+      m_Id: 47
+      m_Category: Feet Equipment
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "基本的脚保护。\n增加10防御力"
+      - "防御力: <color=olive>+{0}</color>\n生命值: <color=olive>+{3}</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Defense
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 10
+          m_Default: 10
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 8
+          m_Max: 10
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle1
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: hpMax
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 100
+          m_Default: 100
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 72
+          m_Default: 72
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 26
+        m_RequiredItems:
+        - m_Name: 皮革
+          m_Amount: 8
+    - m_Name: 木制凉鞋
+      m_DisplayName:
+      m_Id: 48
+      m_Category: Feet Equipment
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "坚硬的木脚保护。\n"
+      - "防御力: <color=olive>+{0}</color>\n生命值: <color=olive>+{3}</color>"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Defense
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 20
+          m_Default: 20
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 10
+          m_Max: 12
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Durability
+        m_Type: 5
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: Can Dismantle1
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      - m_Name: hpMax
+        m_Type: 2
+        m_Bool: 0
+        m_Int:
+          m_Current: 200
+          m_Default: 200
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 12
+          m_Max: 15
+        m_Float:
+          m_Current: 128
+          m_Default: 128
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 1
+      m_Recipe:
+        m_Duration: 30
+        m_RequiredItems:
+        - m_Name: 木板
+          m_Amount: 6
+        - m_Name: 皮靴
+          m_Amount: 1
+  - m_Name: Other
+    m_Items:
+    - m_Name: 设计图纸
+      m_DisplayName:
+      m_Id: 49
+      m_Category: Other
+      m_Icon: {fileID: 0}
+      m_WorldObject: {fileID: 1561277905561491, guid: c8207f302bfa7864c928d098ba041f5d, type: 2}
+      m_Descriptions:
+      - "把这个拿在手里，\r\n你可以开始建造。"
+      m_StackSize: 1
+      m_PropertyValues:
+      - m_Name: Allows Building
+        m_Type: 0
+        m_Bool: 0
+        m_Int:
+          m_Current: 0
+          m_Default: 0
+        m_IntRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomInt:
+          m_Min: 0
+          m_Max: 0
+        m_Float:
+          m_Current: 0
+          m_Default: 0
+        m_FloatRange:
+          m_Current: 0
+          m_Min: 0
+          m_Max: 0
+        m_RandomFloat:
+          m_Min: 0
+          m_Max: 0
+        m_String:
+        m_Sound: {fileID: 0}
+      m_IsBuildable: 0
+      m_IsCraftable: 0
+      m_Recipe:
+        m_Duration: 35
+        m_RequiredItems:
+        - m_Name: 皮革
+          m_Amount: 6
+  m_ItemProperties:
+  - m_Name: Health Change
+    m_Type: 4
+  - m_Name: Thirst Change
+    m_Type: 4
+  - m_Name: Hunger Change
+    m_Type: 4
+  - m_Name: Hunger Change
+    m_Type: 4
+  - m_Name: Defense
+    m_Type: 2
+  - m_Name: Durability
+    m_Type: 5
+  - m_Name: Ammo Type
+    m_Type: 8
+  - m_Name: Consume Sound
+    m_Type: 9
+  - m_Name: Fuel Time
+    m_Type: 5
+  - m_Name: Burn Time
+    m_Type: 5
+  - m_Name: Burn Result
+    m_Type: 8
+  - m_Name: Can Dismantle
+    m_Type: 0
+  - m_Name: Can Consume
+    m_Type: 0
+  - m_Name: Disable Underwear
+    m_Type: 0
+  - m_Name: Allows Building
+    m_Type: 0
+  - m_Name: Is Placeable
+    m_Type: 0

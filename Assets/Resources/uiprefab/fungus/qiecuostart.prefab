@@ -1,0 +1,193 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1184247012265775
+GameObject:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Component:
+  - component: {fileID: 4271471995409882}
+  - component: {fileID: 114087544440804291}
+  - component: {fileID: 114399862557680019}
+  - component: {fileID: 114764110386178425}
+  - component: {fileID: 114791905804637087}
+  - component: {fileID: 114536173852398867}
+  - component: {fileID: 114289141089305279}
+  m_Layer: 0
+  m_Name: qiecuostart
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4271471995409882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184247012265775}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.031533793, y: 4000.047, z: 0.00033847845}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
+--- !u!114 &114087544440804291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184247012265775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a872014f207f5242afb5054e5eeb7d2c, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  version: 1
+  scrollPos: {x: -635.9976, y: -18.967844}
+  variablesScrollPos: {x: 0, y: 0}
+  variablesExpanded: 1
+  blockViewHeight: 400
+  zoom: 0.87999964
+  scrollViewRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  selectedBlocks:
+  - {fileID: 114399862557680019}
+  selectedCommands:
+  - {fileID: 114289141089305279}
+  variables: []
+  description:
+  stepPause: 0
+  colorCommands: 1
+  hideComponents: 1
+  saveSelection: 1
+  localizationId:
+  showLineNumbers: 0
+  hideCommands: []
+  luaEnvironment: {fileID: 0}
+  luaBindingName: flowchart
+--- !u!114 &114399862557680019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184247012265775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9529fbd6cebde227793a62fd94680be7, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  nodeRect:
+    serializedVersion: 2
+    x: 1514.8201
+    y: 120.46374
+    width: 120
+    height: 40
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  useCustomTint: 0
+  itemId: 0
+  blockName: statr
+  description:
+  eventHandler: {fileID: 114764110386178425}
+  commandList:
+  - {fileID: 114791905804637087}
+  - {fileID: 114289141089305279}
+  - {fileID: 114536173852398867}
+--- !u!114 &114764110386178425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184247012265775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba583754ecf49114c85dd2561cef978, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  parentBlock: {fileID: 114399862557680019}
+  waitForFrames: 1
+--- !u!114 &114791905804637087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184247012265775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbdfddbb1a7e9dedeeccda6985376314, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  itemId: 1
+  indentLevel: 0
+  storyText:
+  description:
+  AvatarIDSetType: 0
+  AvatarID: {fileID: 0}
+  AvatarIntID: 0
+  character: {fileID: 0}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+--- !u!114 &114536173852398867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184247012265775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8004c9491d5f8e149f84757fd2eb4abf, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  itemId: 2
+  indentLevel: 0
+  MonstarSetType: 0
+  MonstarFungusID: {fileID: 0}
+  MonstarID: 0
+  MonstarAddBuffList: []
+  HeroAddBuffList: []
+  FightType: 8
+  BackgroundSetType: 0
+  BackgroundFungusID: {fileID: 0}
+  BackgroundID: 0
+  FightTalk: 0
+  FightCard: 0
+  CanFpRun: 1
+  FightMusic: 战斗1
+  SeaRemoveNPCFlag: 0
+  SeaRemoveNPCUUID: {fileID: 0}
+--- !u!114 &114289141089305279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184247012265775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 293ae93b012e4007a48c760462b301f2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  itemId: 3
+  indentLevel: 0
+  TalkID: 505

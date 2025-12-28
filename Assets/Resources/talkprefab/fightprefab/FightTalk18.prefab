@@ -1,0 +1,710 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1161852214272725
+GameObject:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Component:
+  - component: {fileID: 4943906898155507}
+  m_Layer: 0
+  m_Name: FightTalk18
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1598965834213198
+GameObject:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Component:
+  - component: {fileID: 4407382296442364}
+  - component: {fileID: 114807333909191840}
+  - component: {fileID: 114148915251409171}
+  - component: {fileID: 114029779166080324}
+  - component: {fileID: 114312370103807778}
+  - component: {fileID: 114918480201833539}
+  - component: {fileID: 114858820531322037}
+  - component: {fileID: 114242936600570372}
+  - component: {fileID: 114921581747249929}
+  - component: {fileID: 114596116629220316}
+  - component: {fileID: 114550300226552112}
+  - component: {fileID: 114801218581721872}
+  - component: {fileID: 114818725601267899}
+  - component: {fileID: 114014789528318220}
+  - component: {fileID: 114997731684150553}
+  - component: {fileID: 114605111436633235}
+  - component: {fileID: 114441752171249692}
+  - component: {fileID: 114723791101358815}
+  - component: {fileID: 114117955880841217}
+  - component: {fileID: 114772802185155874}
+  - component: {fileID: 114237064807199294}
+  - component: {fileID: 114233610603302415}
+  - component: {fileID: 114557587505334185}
+  - component: {fileID: 114910426273733125}
+  - component: {fileID: 114725125979886434}
+  m_Layer: 0
+  m_Name: Flowchart
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4943906898155507
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1161852214272725}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.146245, y: -0.9726225, z: 8.006836}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4407382296442364}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
+--- !u!4 &4407382296442364
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.146245, y: 0.9726225, z: -8.006836}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4943906898155507}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114807333909191840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a872014f207f5242afb5054e5eeb7d2c, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  version: 1
+  scrollPos: {x: 3152.7976, y: 1516.5046}
+  variablesScrollPos: {x: 0, y: 0}
+  variablesExpanded: 1
+  blockViewHeight: 277
+  zoom: 0.70000005
+  scrollViewRect:
+    serializedVersion: 2
+    x: -4071.385
+    y: -1729.3505
+    width: 5969.446
+    height: 2818.8503
+  selectedBlocks:
+  - {fileID: 114029779166080324}
+  selectedCommands:
+  - {fileID: 114725125979886434}
+  variables:
+  - {fileID: 114918480201833539}
+  - {fileID: 114858820531322037}
+  - {fileID: 114014789528318220}
+  - {fileID: 114997731684150553}
+  - {fileID: 114441752171249692}
+  - {fileID: 114723791101358815}
+  - {fileID: 114772802185155874}
+  - {fileID: 114233610603302415}
+  description: 'Example scene from Sherlock: The Game Is On'
+  stepPause: 0
+  colorCommands: 1
+  hideComponents: 1
+  saveSelection: 1
+  localizationId:
+  showLineNumbers: 0
+  hideCommands: []
+  luaEnvironment: {fileID: 0}
+  luaBindingName: flowchart
+--- !u!114 &114148915251409171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9529fbd6cebde227793a62fd94680be7, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  nodeRect:
+    serializedVersion: 2
+    x: -2889.9106
+    y: -1326.2759
+    width: 120
+    height: 40
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  useCustomTint: 0
+  itemId: 101
+  blockName: UseSkill
+  description: 使用技能时触发此模块
+  eventHandler: {fileID: 0}
+  commandList:
+  - {fileID: 114596116629220316}
+  - {fileID: 114550300226552112}
+  - {fileID: 114801218581721872}
+  - {fileID: 114818725601267899}
+--- !u!114 &114029779166080324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9529fbd6cebde227793a62fd94680be7, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  nodeRect:
+    serializedVersion: 2
+    x: -2501.282
+    y: -1313.5039
+    width: 120
+    height: 40
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  useCustomTint: 0
+  itemId: 103
+  blockName: start
+  description: 游戏开始时触发此模块
+  eventHandler: {fileID: 114312370103807778}
+  commandList:
+  - {fileID: 114557587505334185}
+  - {fileID: 114910426273733125}
+  - {fileID: 114725125979886434}
+--- !u!114 &114312370103807778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba583754ecf49114c85dd2561cef978, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  parentBlock: {fileID: 114029779166080324}
+  waitForFrames: 1
+--- !u!114 &114918480201833539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d47fa2593917b77897efb6b071ad2ec, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  scope: 0
+  key: attaker
+  value: 0
+--- !u!114 &114858820531322037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d47fa2593917b77897efb6b071ad2ec, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  scope: 0
+  key: receiver
+  value: 0
+--- !u!114 &114242936600570372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9529fbd6cebde227793a62fd94680be7, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  nodeRect:
+    serializedVersion: 2
+    x: -2971.9282
+    y: -1158.1151
+    width: 120
+    height: 40
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  useCustomTint: 0
+  itemId: 105
+  blockName: 玩家释放技能
+  description:
+  eventHandler: {fileID: 0}
+  commandList: []
+--- !u!114 &114921581747249929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9529fbd6cebde227793a62fd94680be7, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  nodeRect:
+    serializedVersion: 2
+    x: -3115.3203
+    y: -1329.0356
+    width: 120
+    height: 40
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  useCustomTint: 0
+  itemId: 106
+  blockName: 敌人释放技能
+  description:
+  eventHandler: {fileID: 0}
+  commandList: []
+--- !u!114 &114596116629220316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7fbff0c9567b42e24c0545f7d2bc464, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  itemId: 107
+  indentLevel: 0
+  compareOperator: 0
+  variable: {fileID: 114918480201833539}
+  booleanData:
+    booleanRef: {fileID: 0}
+    booleanVal: 1
+  integerData:
+    integerRef: {fileID: 0}
+    integerVal: 0
+  floatData:
+    floatRef: {fileID: 0}
+    floatVal: 0
+  stringData:
+    stringRef: {fileID: 0}
+    stringVal:
+  animatorData:
+    animatorRef: {fileID: 0}
+    animatorVal: {fileID: 0}
+  audioSourceData:
+    audioSourceRef: {fileID: 0}
+    audioSourceVal: {fileID: 0}
+  colorData:
+    colorRef: {fileID: 0}
+    colorVal: {r: 0, g: 0, b: 0, a: 0}
+  gameObjectData:
+    gameObjectRef: {fileID: 0}
+    gameObjectVal: {fileID: 0}
+  materialData:
+    materialRef: {fileID: 0}
+    materialVal: {fileID: 0}
+  objectData:
+    objectRef: {fileID: 0}
+    objectVal: {fileID: 0}
+  rigidbody2DData:
+    rigidbody2DRef: {fileID: 0}
+    rigidbody2DVal: {fileID: 0}
+  spriteData:
+    spriteRef: {fileID: 0}
+    spriteVal: {fileID: 0}
+  textureData:
+    textureRef: {fileID: 0}
+    textureVal: {fileID: 0}
+  transformData:
+    transformRef: {fileID: 0}
+    transformVal: {fileID: 0}
+  vector2Data:
+    vector2Ref: {fileID: 0}
+    vector2Val: {x: 0, y: 0}
+  vector3Data:
+    vector3Ref: {fileID: 0}
+    vector3Val: {x: 0, y: 0, z: 0}
+--- !u!114 &114550300226552112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695d611251bbcac2e603a7172291c087, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  itemId: 108
+  indentLevel: 1
+  targetFlowchart: {fileID: 0}
+  targetBlock: {fileID: 114242936600570372}
+  startLabel:
+    stringRef: {fileID: 0}
+    stringVal:
+  startIndex: 0
+  callMode: 0
+--- !u!114 &114801218581721872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93a37833192f18f04eec42c60d433b0d, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  itemId: 109
+  indentLevel: 0
+  compareOperator: 0
+  variable: {fileID: 114918480201833539}
+  booleanData:
+    booleanRef: {fileID: 0}
+    booleanVal: 0
+  integerData:
+    integerRef: {fileID: 0}
+    integerVal: 0
+  floatData:
+    floatRef: {fileID: 0}
+    floatVal: 0
+  stringData:
+    stringRef: {fileID: 0}
+    stringVal:
+  animatorData:
+    animatorRef: {fileID: 0}
+    animatorVal: {fileID: 0}
+  audioSourceData:
+    audioSourceRef: {fileID: 0}
+    audioSourceVal: {fileID: 0}
+  colorData:
+    colorRef: {fileID: 0}
+    colorVal: {r: 0, g: 0, b: 0, a: 0}
+  gameObjectData:
+    gameObjectRef: {fileID: 0}
+    gameObjectVal: {fileID: 0}
+  materialData:
+    materialRef: {fileID: 0}
+    materialVal: {fileID: 0}
+  objectData:
+    objectRef: {fileID: 0}
+    objectVal: {fileID: 0}
+  rigidbody2DData:
+    rigidbody2DRef: {fileID: 0}
+    rigidbody2DVal: {fileID: 0}
+  spriteData:
+    spriteRef: {fileID: 0}
+    spriteVal: {fileID: 0}
+  textureData:
+    textureRef: {fileID: 0}
+    textureVal: {fileID: 0}
+  transformData:
+    transformRef: {fileID: 0}
+    transformVal: {fileID: 0}
+  vector2Data:
+    vector2Ref: {fileID: 0}
+    vector2Val: {x: 0, y: 0}
+  vector3Data:
+    vector3Ref: {fileID: 0}
+    vector3Val: {x: 0, y: 0, z: 0}
+--- !u!114 &114818725601267899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695d611251bbcac2e603a7172291c087, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  itemId: 110
+  indentLevel: 1
+  targetFlowchart: {fileID: 0}
+  targetBlock: {fileID: 114921581747249929}
+  startLabel:
+    stringRef: {fileID: 0}
+    stringVal:
+  startIndex: 0
+  callMode: 0
+--- !u!114 &114014789528318220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cc78fdc9239b43de23e12d5b733bfcf, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  scope: 0
+  key: SkillID
+  value: 0
+--- !u!114 &114997731684150553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cc78fdc9239b43de23e12d5b733bfcf, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  scope: 0
+  key: TempValue
+  value: 0
+--- !u!114 &114605111436633235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9529fbd6cebde227793a62fd94680be7, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  nodeRect:
+    serializedVersion: 2
+    x: -2281.9712
+    y: -1316.5548
+    width: 161.42856
+    height: 40
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  useCustomTint: 0
+  itemId: 156
+  blockName: RealClickEndRound
+  description: 点击结束回合后触发此模块
+  eventHandler: {fileID: 0}
+  commandList: []
+--- !u!114 &114441752171249692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d47fa2593917b77897efb6b071ad2ec, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  scope: 0
+  key: WhetherCanEndRound
+  value: 1
+--- !u!114 &114723791101358815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cc78fdc9239b43de23e12d5b733bfcf, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  scope: 0
+  key: HuiHe
+  value: 0
+--- !u!114 &114117955880841217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9529fbd6cebde227793a62fd94680be7, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  nodeRect:
+    serializedVersion: 2
+    x: -2071.1538
+    y: -1315.1584
+    width: 121.428566
+    height: 40
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  useCustomTint: 0
+  itemId: 297
+  blockName: RemoveBuff
+  description: buff被移除时触发
+  eventHandler: {fileID: 0}
+  commandList: []
+--- !u!114 &114772802185155874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cc78fdc9239b43de23e12d5b733bfcf, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  scope: 0
+  key: Var
+  value: 0
+--- !u!114 &114237064807199294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9529fbd6cebde227793a62fd94680be7, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  nodeRect:
+    serializedVersion: 2
+    x: -1903.5156
+    y: -1312.2854
+    width: 150
+    height: 40
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  useCustomTint: 0
+  itemId: 336
+  blockName: PlayerStartRound
+  description: 玩家回合开始时触发
+  eventHandler: {fileID: 0}
+  commandList: []
+--- !u!114 &114233610603302415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cc78fdc9239b43de23e12d5b733bfcf, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  scope: 0
+  key: JinJie
+  value: 0
+--- !u!114 &114557587505334185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbdfddbb1a7e9dedeeccda6985376314, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  itemId: 383
+  indentLevel: 0
+  storyText: 哼...
+  description:
+  AvatarIDSetType: 0
+  AvatarID: {fileID: 0}
+  AvatarIntID: 3068
+  character: {fileID: 0}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+--- !u!114 &114910426273733125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbdfddbb1a7e9dedeeccda6985376314, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  itemId: 384
+  indentLevel: 0
+  storyText: 风雨楼的人？
+  description:
+  AvatarIDSetType: 0
+  AvatarID: {fileID: 0}
+  AvatarIntID: 3068
+  character: {fileID: 0}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+--- !u!114 &114725125979886434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598965834213198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbdfddbb1a7e9dedeeccda6985376314, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  itemId: 385
+  indentLevel: 0
+  storyText: （先交手几个回合，假装不敌，看看那琚运琦到底想干什么...）
+  description:
+  AvatarIDSetType: 0
+  AvatarID: {fileID: 0}
+  AvatarIntID: 1
+  character: {fileID: 0}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
