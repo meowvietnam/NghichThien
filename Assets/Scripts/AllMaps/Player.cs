@@ -13,7 +13,7 @@ namespace AllMaps
         [SerializeField] private SkeletonAnimation anim;
         private string[] idleAnims = {"Idle_0","Idle_1","Idle_10","Idle_11"};
         private string[] moveAnims = { "Mov0", "Mov1", "Mov_10","Mov_11" };
-        [SerializeField] private float moveSpeed = 2;
+        [SerializeField] private float speed = 2;
         public bool IsMoving { get; private set; }
         public void Init(Gender gender)
         {
@@ -27,6 +27,7 @@ namespace AllMaps
                     skeletion.SetSkin("10");
                     break;
             }
+            anim.timeScale = speed;
         }
         public void SetPosition(Vector2 position)
         {
@@ -36,15 +37,8 @@ namespace AllMaps
         private void SetMoving(bool isMoving)
         {
             IsMoving = isMoving;
-            var state = anim.AnimationState;
-            if (isMoving)
-            {
-                state.SetAnimation(0, moveAnims[0], true);
-            }
-            else
-            {
-                state.SetAnimation(0, idleAnims[0], true);
-            }
+            var animationName = isMoving ? moveAnims[0] : idleAnims[0];
+            anim.AnimationState.SetAnimation(0, animationName, true);
         }
         public void DoMove(List<Node> nodes,Action completed)
         {
@@ -56,18 +50,22 @@ namespace AllMaps
         {
             foreach (var node in nodes)
             {
-                var nodePositions = node.MoveNode.NodesPosition;
-                var nextMapId = node.NextMap.Id;
-                var finishMapId = node.MoveNode.FinishNode;
-                if (nextMapId != finishMapId)
+                var moveNode = node.MoveNode;
+                if (moveNode != null)
                 {
-                    nodePositions = nodePositions.Reverse().ToArray();
+                    var nodePositions = moveNode.NodesPosition;
+                    var nextMapId = node.NextMap.Id;
+                    var finishMapId = moveNode.FinishNode;
+                    if (nextMapId != finishMapId)
+                    {
+                        nodePositions = nodePositions.Reverse().ToArray();
+                    }
+                    foreach (var nodePosition in nodePositions)
+                    {
+                        yield return MoveTo(nodePosition);
+                    }
                 }
-                foreach (var nodePosition in nodePositions)
-                {
-                    yield return MoveTo(nodePosition);
-                }
-                var mapPos = node.NextMap.transform.position;
+                var mapPos = node.NextMap.PlayerPosition;
                 yield return MoveTo(mapPos);
             }
             SetMoving(false);
@@ -80,7 +78,7 @@ namespace AllMaps
                 tf.eulerAngles = new Vector3(0, y, 0);
                 while (Vector2.Distance(position, target) > 0.05f)
                 {
-                    position= Vector2.MoveTowards(position, target, moveSpeed * Time.deltaTime);
+                    position= Vector2.MoveTowards(position, target, speed * Time.deltaTime);
                     tf.position = position;
                     yield return  null;
                 }

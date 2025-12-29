@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace AllMaps
@@ -11,6 +12,7 @@ namespace AllMaps
         [SerializeField] private Node[] nodes;
         [field: SerializeField] public Vector2 PlayerPosition { get; private set; }
         public Node[] Nodes => nodes;
+
         public Node FindNodeByMap(Map map)
         {
             return nodes.FirstOrDefault(node => node.NextMap == map);

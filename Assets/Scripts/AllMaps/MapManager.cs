@@ -36,14 +36,6 @@ namespace AllMaps
             player.SetPosition(map.PlayerPosition);
             player.Init(Gender.Male);
         }
-        private void OnValidate()
-        {
-            var errorMaps = maps.Where(m => m.Nodes.Any(n => n.MoveNode == null)).ToList();
-            foreach (var errorMap in errorMaps)
-            {
-                Debug.Log(errorMap.Id,errorMap);
-            }
-        }
         public void PlayerMoveTo(Map map)
         {
             if(map == current) return;
