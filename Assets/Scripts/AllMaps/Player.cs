@@ -1,0 +1,88 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Spine.Unity;
+using UnityEngine;
+
+namespace AllMaps
+{
+    public class Player : MonoBehaviour
+    {
+        [SerializeField] private Transform tf;
+        [SerializeField] private SkeletonAnimation anim;
+        private string idleAnim = "Idle";
+        private string moveAnim = "Move";
+        [SerializeField] private float speed = 2;
+        public bool IsMoving { get; private set; }
+        public void Init(Gender gender)
+        {
+            var skeletion = anim.Skeleton;
+            switch (gender)
+            {
+                case Gender.Male:
+                    skeletion.SetSkin("Male");
+                    break;
+                case Gender.Female:
+                    skeletion.SetSkin("Female");
+                    break;
+            }
+            anim.timeScale = speed;
+        }
+        public void SetPosition(Vector2 position)
+        {
+            tf.position = position;
+        }
+
+        private void SetMoving(bool isMoving)
+        {
+            IsMoving = isMoving;
+            var animationName = isMoving ? moveAnim : idleAnim;
+            anim.AnimationState.SetAnimation(0, animationName, true);
+        }
+        public void DoMove(List<Node> nodes,Action completed)
+        {
+            SetMoving(true);
+            StartCoroutine(IEDoMove(nodes,completed));
+        }
+        
+        private IEnumerator IEDoMove(List<Node> nodes,Action completed)
+        {
+            foreach (var node in nodes)
+            {
+                var moveNode = node.MoveNode;
+                if (moveNode != null)
+                {
+                    var nodePositions = moveNode.NodesPosition;
+                    var nextMapId = node.NextMap.Id;
+                    var finishMapId = moveNode.FinishNode;
+                    if (nextMapId != finishMapId)
+                    {
+                        nodePositions = nodePositions.Reverse().ToArray();
+                    }
+                    foreach (var nodePosition in nodePositions)
+                    {
+                        yield return MoveTo(nodePosition);
+                    }
+                }
+                var mapPos = node.NextMap.PlayerPosition;
+                yield return MoveTo(mapPos);
+            }
+            SetMoving(false);
+            completed?.Invoke();
+            IEnumerator MoveTo(Vector2 target)
+            {
+                var position = tf.position;
+                var isLeft = (target.x - position.x) < 0;
+                var y = isLeft ? 180 : 0;
+                tf.eulerAngles = new Vector3(0, y, 0);
+                while (Vector2.Distance(position, target) > 0.05f)
+                {
+                    position= Vector2.MoveTowards(position, target, speed * Time.deltaTime);
+                    tf.position = position;
+                    yield return  null;
+                }
+            }
+        }
+    }
+}
