@@ -27,7 +27,7 @@ public class SlotLinhKhi : MonoBehaviour , IPointerDownHandler
     {
         this.isLock = isLock;
     }
-    public void AddCount(int count)
+    public void AddCount(int count , Action eventEndCount = null )
     {
         this.count += count;
 
@@ -35,6 +35,7 @@ public class SlotLinhKhi : MonoBehaviour , IPointerDownHandler
         if (this.count <= 0)
         {
             icon?.gameObject.SetActive(false);
+            eventEndCount?.Invoke();
         }    
         else
         {

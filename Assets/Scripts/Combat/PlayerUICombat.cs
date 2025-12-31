@@ -1,5 +1,6 @@
 ﻿using LongDH.LongDHModules;
 using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -26,6 +27,13 @@ public class PlayerUICombat : MonoBehaviour
 
     public EStateControl eStateControl = EStateControl.None;
 
+    public List<FightSkillItem> fightSkills;
+    public FightSkillItem fightSkillSelect;
+    public Image tuongSinhImg;
+    public Image tuongKhacImg;
+    private CharacterCombat player = null;
+
+    public ThanThong[] thanthongtest;// test
     public void SetStateControl(EStateControl eState)
     {
         eStateControl = eState;
@@ -34,6 +42,17 @@ public class PlayerUICombat : MonoBehaviour
             btnEndRound.transform.parent.gameObject.SetActive(true);
             btnConfirm.transform.parent.gameObject.SetActive(false);
             ShowNodes(0);
+            if(fightSkillSelect != null)
+            {
+                fightSkillSelect.SetSelectHighlight(false);
+                fightSkillSelect.ShowRecommentHighlight(false);
+
+            }
+            fightSkillSelect = null;
+            tuongSinhImg.gameObject.SetActive(false);
+            tuongKhacImg.gameObject.SetActive(false);
+            CheckFightSkillCanUse();
+
 
         }
         else
@@ -43,6 +62,41 @@ public class PlayerUICombat : MonoBehaviour
         }
        
     }
+    private List<LinhKhiTieuTan> GetLinhKhiTieuTans(List<SlotLinhKhi> slotLinhKhis)
+    {
+        List<LinhKhiTieuTan> linhKhiTieuTan = new List<LinhKhiTieuTan>();
+        foreach (var item in slotLinhKhis)
+        {
+            linhKhiTieuTan.Add(new LinhKhiTieuTan
+            {
+                count = item.count,
+                eLinhKhi = item.eLinhKhi,
+            });
+        }
+        return linhKhiTieuTan;
+    }
+    private void CheckTuongQuan()
+    {
+        if (eStateControl != EStateControl.UseSkill) return;
+        switch (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(currentNodes)))
+        {
+            case ETuongQuan.TuongSinh:
+                tuongSinhImg.gameObject.SetActive(true);
+                tuongKhacImg.gameObject.SetActive(false);
+
+                break;
+            case ETuongQuan.TuongKhac:
+                tuongSinhImg.gameObject.SetActive(false);
+                tuongKhacImg.gameObject.SetActive(true);
+                break;
+            case ETuongQuan.None:
+                tuongSinhImg.gameObject.SetActive(false);
+                tuongKhacImg.gameObject.SetActive(false);
+                break;
+            default:
+                break;
+        }
+    }    
     private void Awake()
     {
         btnConfirm.onClick.AddListener(() =>
@@ -53,13 +107,14 @@ public class PlayerUICombat : MonoBehaviour
 
                     break;
                 case EStateControl.UseSkill:
-
+                    Observer.Notify(EventList.GamePlay.PLAY_SKILL, fightSkillSelect.ThanThongData, GetLinhKhiTieuTans(currentNodes));
                     SetStateControl(EStateControl.None);
                     break;
                 case EStateControl.DeleteLinhKhi:
                     if (CurrentLinhKhi <= maxLinhKhi)
                     {
-                        Observer.Notify(EventList.GamePlay.END_TURN_COMBAT, currentNodes);
+
+                        Observer.Notify(EventList.GamePlay.END_TURN_COMBAT, GetLinhKhiTieuTans(currentNodes));
                         SetStateControl(EStateControl.None);
 
                     }
@@ -75,7 +130,8 @@ public class PlayerUICombat : MonoBehaviour
             foreach (var item in currentNodes)
             {
                 item.SetLock(false);
-                for (int i = 0; i < item.count; i++)
+                int count = item.count;
+                for (int i = 0; i < count; i++)
                 {
                     item.actionPointerDown?.Invoke();
                 }
@@ -102,6 +158,7 @@ public class PlayerUICombat : MonoBehaviour
             item1.Init(() =>
             {
                 Debug.Log(currentNodes.Count);
+                if (CurrentLinhKhi <= maxLinhKhi && eStateControl == EStateControl.DeleteLinhKhi) return;
                 foreach (var item2 in currentNodes)
                 {
                     if(!item2.isLock && (item2.count <= 0 || item2.eLinhKhi == item1.eLinhKhi))
@@ -118,6 +175,8 @@ public class PlayerUICombat : MonoBehaviour
                         break;
                     }
                 }
+                CheckTuongQuan();
+
             });
         }
         foreach (var item1 in nodes)
@@ -127,16 +186,143 @@ public class PlayerUICombat : MonoBehaviour
                 
                 foreach (var item2 in linhKhiRemains)
                 {
-                    if (!item2.isLock && (item2.eLinhKhi == item1.eLinhKhi))
+                    if ((item2.eLinhKhi == item1.eLinhKhi))
                     {
                         item2.AddCount(1);
                         item1.AddCount(-1);
-                        break;
                     }
                 }
+                CheckTuongQuan();
+
             });
         }
+        foreach (var skill in fightSkills)
+        {
+            Action actionHolder = new Action(() =>
+            {
+
+            });
+            Action actionPointerUp = new Action(() =>
+            {
+                btnCancel.onClick?.Invoke();
+                SetStateControl(EStateControl.UseSkill);
+                ShowNodes(skill.ThanThongData.requireActives.Count);
+                fightSkillSelect = skill;
+                foreach (var require in skill.ThanThongData.requireActives)
+                {
+                    bool hasSpecificType = require.linhKhiRequire != ELinhKhi.None;
+
+                    // --- Tìm đối tượng phù hợp ---
+                    var match = hasSpecificType
+                        ? linhKhiRemains.FirstOrDefault(l => l.eLinhKhi == require.linhKhiRequire && l.count >= require.count)
+                        : linhKhiRemains.FirstOrDefault(l => l.count >= require.count);
+
+                    // --- Nếu tìm thấy trong linhKhiRemains ---
+                    
+                    if (match != null)
+                    {
+                        for (int i = 0; i < require.count; i++)
+                            match.actionPointerDown?.Invoke();
+                        if (hasSpecificType)
+                        {
+                            var node = currentNodes.FirstOrDefault(n => n.eLinhKhi == require.linhKhiRequire);
+                            node?.SetLock(true);
+                        }
+                        continue;
+                    }
+
+                   
+                }
+            });
+            skill.Init(null, actionHolder, actionPointerUp); // test data 
+
+            
+        }
+
+        // test
+        for (int i = 0; i < thanthongtest.Length; i++)
+        {
+            fightSkills[i].InitItemData(thanthongtest[i]);
+        }
     }
+    public void CheckFightSkillCanUse()
+    {
+        foreach (var item in fightSkills)
+        {
+            if (item.ThanThongData == null) continue;
+            item.SetLock(false);
+
+            foreach (var require in item.ThanThongData.requireActives)
+            {
+                bool hasSpecificType = require.linhKhiRequire != ELinhKhi.None;
+
+                // --- Tìm đối tượng phù hợp ---
+                var match = hasSpecificType
+                    ? linhKhiRemains.FirstOrDefault(l => l.eLinhKhi == require.linhKhiRequire && l.count >= require.count)
+                    : linhKhiRemains.FirstOrDefault(l => l.count >= require.count);
+
+                // --- Nếu tìm thấy trong linhKhiRemains ---
+
+                if (match == null)
+                {
+                    Debug.Log("CheckFightSkillCanUse  lock"  );
+                    item.SetLock(true);
+                    break;
+
+                }
+               
+
+
+            }
+        }
+        foreach (var item in fightSkills)
+        {
+            if (item.ThanThongData == null) continue;
+
+            if (player.thanThongCoolDown.Any(x => x.type == item.ThanThongData))
+            {
+                // Skill này đang cooldown
+                item.SetLock(true);
+            }
+           
+        }
+        foreach (var item in fightSkills)
+        {
+            if (item.ThanThongData == null) continue;
+
+            if (item.isLock == false)
+            {
+                if(item.ThanThongData is BaseSkill.LienKich)
+                {
+                    if(CombatManager.IsLienKich(item.ThanThongData,player.thanThongOldUse))
+                    {
+                        item.ShowRecommentHighlight(true);
+                        break;
+
+                    }
+                }    
+                else if(item.ThanThongData is BaseSkill.TuongSinh)
+                {
+                    if (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(linhKhiRemains)) == ETuongQuan.TuongSinh)
+                    {
+                        item.ShowRecommentHighlight(true);
+                        break;
+
+                    }
+                }
+                else if (item.ThanThongData is BaseSkill.TuongKhac)
+                {
+                    if (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(linhKhiRemains)) == ETuongQuan.TuongKhac)
+                    {
+                        item.ShowRecommentHighlight(true);
+                        break;
+
+                    }
+                }
+            }
+
+        }
+    }    
     public Sprite GetSpriteLinhKhi(ELinhKhi eLinhKhi)
     {
         if(eLinhKhi == ELinhKhi.None) return null;
@@ -146,7 +332,9 @@ public class PlayerUICombat : MonoBehaviour
     {
         if (!(bool)data[0]) return;
         CharacterCombat player = (CharacterCombat)data[1];
+        
         if (player == null) return;
+        this.player = player;
         SetStateControl(EStateControl.None);
         maxLinhKhi = player.totalKhi;
         foreach (var item in linhKhiRemains)
@@ -182,11 +370,17 @@ public class PlayerUICombat : MonoBehaviour
                     break;
             }
         }
+        CheckFightSkillCanUse();
 
     }
     [Button]
     public void ShowNodes(int count)
     {
+        foreach (var item in currentNodes)
+        {
+            item.count = 0;
+            item.eLinhKhi = ELinhKhi.None;
+        }
         currentNodes.Clear();
         if (count > nodes.Count) count = nodes.Count;
 

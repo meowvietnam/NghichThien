@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using NUnit.Framework;
+using System.Collections.Generic;
+using UnityEngine;
 
 
 public class CharacterStats
-{
+{    // chỉ số
     public float percentKim;
     public float percentMoc;
     public float percentThuy;
@@ -11,6 +13,37 @@ public class CharacterStats
     public float percentMa;
 
     public int level;
+    public float hp;
+    public float nameUser;
+    public int tuoiTac;
+    public int thoNguyen;
+    public int tuChat;
+    public int thanThuc;
+    public int ngoTinh;
+    public int tocDoBay;
+    public int tamCanh;
+    public int danDoc;
+    // tông môn
+    public int chucVi;
+    public int monPhai;
+    // skill
+    public int[] thanThongOwner;
+    public int[] thanThongEquip;
+    public class CongPhapSave
+    {
+        public int id;
+        public int level;
+    }
+    public CongPhapSave congPhapOwner;
+    // công pháp used
+    public int donThuatUsed;
+    public int phuTu1Used;
+    public int phuTu2Used;
+    public int phuTu3Used;
+    public int phuTu4Used;
+    public int chuTu1Used;
+    public int chuTu2Used;
+
 
 }
 public class CharacterCombat : MonoBehaviour
@@ -24,10 +57,21 @@ public class CharacterCombat : MonoBehaviour
 
     public CharacterStats characterStats;
     public CharacterStats characterStatsCurrent;
+    public ThanThong thanThongOldUse;
+
+    public class CountStack<T>
+    {
+        public T type;
+        public int count;
+    }
+    public List<CountStack<ThanThong>> thanThongCoolDown = new List<CountStack<ThanThong>>();
+
+
     public void Init(CharacterStats characterStat)
     {
         characterStats = characterStat;
         characterStatsCurrent = characterStat;
+        thanThongOldUse = null;
     }
     public int totalKhi
     {
@@ -144,6 +188,11 @@ public class CharacterCombat : MonoBehaviour
             else
                 khiMa++;
         }
+    }
+    public void TakeDame(CharacterCombat sender , int dame)
+    {
+        Debug.Log(this.gameObject.name+ "nhận dame là : " + dame);
+        characterStatsCurrent.hp -= dame;
     }
 
 
