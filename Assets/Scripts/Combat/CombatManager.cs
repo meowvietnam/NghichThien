@@ -3,6 +3,7 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 public class LinhKhiTieuTan
 {
     public ELinhKhi eLinhKhi;
@@ -12,7 +13,7 @@ public enum ETuongQuan
 {
     TuongSinh,
     TuongKhac,
-    None
+    None,
 }
 public class CombatManager : MonoBehaviour
 {
@@ -39,6 +40,25 @@ public class CombatManager : MonoBehaviour
     };
     
     private ThanThong thanThongOldUse => currentTurn.thanThongOldUse;
+    [SerializeField]
+    private Image progressHpChar1;
+    [SerializeField] private Text textHpChar1;
+    [SerializeField] private ScrollRect statusChar1;
+    [SerializeField] private Image progressHpChar2;
+    [SerializeField] private Text textHpChar2;
+    [SerializeField] private ScrollRect statusChar2;
+    private void SetUIHpBar(float hp,float maxHp , Image progress , Text txt)
+    {
+        progress.fillAmount = (float)(hp / maxHp);
+        txt.text = $"{hp}/{maxHp}";
+    }
+    private void SetUIHpBar()
+    {
+        SetUIHpBar(char1.characterStatsCurrent.hp, char1.characterStats.hp, progressHpChar1, textHpChar1);
+        SetUIHpBar(char2.characterStatsCurrent.hp, char2.characterStats.hp, progressHpChar2, textHpChar2);
+
+    }
+  
     private void Awake()
     {
         char1.Init(new CharacterStats()
@@ -48,14 +68,44 @@ public class CombatManager : MonoBehaviour
             percentThuy = 10,
             percentHoa = 10,
             percentTho = 10,
+            hp = 200,
 
         });
-        char2.Init(new CharacterStats());
+        char2.Init(new CharacterStats()
+        {
+            percentKim = 60,
+            percentMoc = 10,
+            percentThuy = 10,
+            percentHoa = 10,
+            percentTho = 10,
+            hp = 200,
+        });
+        SetUIHpBar();
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, EndTurn);
         Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, PlaySkill);
 
     }
-    
+    public static bool IsTuongDong(List<LinhKhiTieuTan> linhKhiTieuTan)
+    {
+        // Lấy danh sách các hệ có count > 0
+        List<ELinhKhi> list = linhKhiTieuTan
+                              .Where(x => x.count > 0)
+                              .Select(x => x.eLinhKhi)
+                              .ToList();
+
+        // Chỉ xét khi có 2 hoặc 3
+        if (list.Count == 1)
+            return false;
+
+        if (list.Count >= 4)
+            return false;
+
+        // Kiểm tra tất cả đều giống nhau
+        bool allSame = list.Distinct().Count() == 1;
+
+        return allSame;
+    }
+
     public static ETuongQuan GetETuongQuan(List<LinhKhiTieuTan> linhKhiTieuTan)
     {
         // Lấy danh sách các hệ có mặt
@@ -142,6 +192,15 @@ public class CombatManager : MonoBehaviour
                 thanThongTuongKhac.ExecuteTuongKhac(currentTurn, target);
 
             }
+            if (thanThong is BaseSkill.TuongDong thanThongTuongDong && IsTuongDong(linhKhiTieuTan))
+            {
+                thanThongTuongDong.ExecuteTuongDong(currentTurn, target);
+
+            }
+            if (thanThong is BaseSkill.HauKeVoLuc)
+            {
+                currentTurn.AddThanThongCoolDown(thanThong,1);
+            }    
             currentTurn.thanThongOldUse = thanThong;
         }
         if (linhKhiTieuTan != null)
@@ -150,6 +209,7 @@ public class CombatManager : MonoBehaviour
 
             
         }
+        SetUIHpBar();
     }
     private void TieuTanLinhKhi(List<LinhKhiTieuTan> linhKhiTieuTan)
     {
@@ -166,6 +226,7 @@ public class CombatManager : MonoBehaviour
         {
             TieuTanLinhKhi(linhKhiTieuTan);
         }
+        currentTurn.EndTurn();
         if (currentTurn == char1)
         {
             currentTurn = char2;

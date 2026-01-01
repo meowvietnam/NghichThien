@@ -6,10 +6,11 @@ public class FightSkillItem : BaseItemUI
     [SerializeField] private Image recommentHighLight;
     [SerializeField] private Image selectHighLight;
     [SerializeField] private Image maskCoolDown;
+    [SerializeField] private Text cdText;
 
     public ThanThong ThanThongData => (ThanThong)itemData;
 
-    public bool isLock => maskCoolDown.gameObject.activeSelf;
+    public bool isLock => maskCoolDown.gameObject.activeSelf || cdText.transform.parent.gameObject.activeSelf;
     public void SetLock( bool isLock)
     {
         maskCoolDown.gameObject.SetActive(isLock);
@@ -22,8 +23,14 @@ public class FightSkillItem : BaseItemUI
 
 
     }
+    public void SetCoolDown(bool isActive , int cd)
+    {
+        cdText.gameObject.transform.parent.gameObject.SetActive(isActive);
+        cdText.text = cd.ToString();
+    }    
     public override void OnPointerUp()
     {
+        if (isLock) return;
         base.OnPointerUp();
         SetSelectHighlight(true);
     }

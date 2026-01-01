@@ -1,4 +1,5 @@
-﻿using LongDH.LongDHModules;
+﻿using DG.Tweening;
+using LongDH.LongDHModules;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ public class PlayerUICombat : MonoBehaviour
     public Image tuongSinhImg;
     public Image tuongKhacImg;
     private CharacterCombat player = null;
-
+    public Text textTip;
     public ThanThong[] thanthongtest;// test
     public void SetStateControl(EStateControl eState)
     {
@@ -52,6 +53,7 @@ public class PlayerUICombat : MonoBehaviour
             tuongSinhImg.gameObject.SetActive(false);
             tuongKhacImg.gameObject.SetActive(false);
             CheckFightSkillCanUse();
+            textTip.transform.parent.parent.transform.DOLocalMove(new Vector3(0, -50, 0), 0.5f);
 
 
         }
@@ -141,18 +143,25 @@ public class PlayerUICombat : MonoBehaviour
         btnEndRound.onClick.AddListener(() =>
         {
             SetStateControl(EStateControl.DeleteLinhKhi);
-            if (CurrentLinhKhi >= maxLinhKhi)
+            if (CurrentLinhKhi > maxLinhKhi)
             {
                 ShowNodes(6);
+                textTip.transform.parent.parent.localPosition = new Vector3(370, 0, 0);
+                textTip.transform.parent.parent.DOLocalMove(new Vector3(0, 0, 0), 0.5f);
+                textTip.text = $"{CurrentLinhKhi - maxLinhKhi}";
+
             }
             else
             {
                 btnConfirm.onClick.Invoke();
             }
+          
 
 
         });
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, NewTurn);
+        Observer.AddObserver(EventList.GamePlay.HAPTHU_LINHKHI, HapThuLinhKhi);
+
         foreach (var item1 in linhKhiRemains)
         {
             item1.Init(() =>
@@ -175,6 +184,7 @@ public class PlayerUICombat : MonoBehaviour
                         break;
                     }
                 }
+                textTip.text = $"{CurrentLinhKhi - maxLinhKhi}";
                 CheckTuongQuan();
 
             });
@@ -193,11 +203,13 @@ public class PlayerUICombat : MonoBehaviour
                     }
                 }
                 CheckTuongQuan();
+                textTip.text = $"{CurrentLinhKhi - maxLinhKhi}";
 
             });
         }
-        foreach (var skill in fightSkills)
+        for (var s = 0; s < fightSkills.Count; s++)
         {
+            var skill = fightSkills[s];
             Action actionHolder = new Action(() =>
             {
 
@@ -218,7 +230,7 @@ public class PlayerUICombat : MonoBehaviour
                         : linhKhiRemains.FirstOrDefault(l => l.count >= require.count);
 
                     // --- Nếu tìm thấy trong linhKhiRemains ---
-                    
+
                     if (match != null)
                     {
                         for (int i = 0; i < require.count; i++)
@@ -231,19 +243,15 @@ public class PlayerUICombat : MonoBehaviour
                         continue;
                     }
 
-                   
+
                 }
             });
-            skill.Init(null, actionHolder, actionPointerUp); // test data 
-
+            skill.Init(s < thanthongtest.Length ? thanthongtest[s] : null, actionHolder, actionPointerUp); // test data 
+        } 
             
-        }
+       
 
-        // test
-        for (int i = 0; i < thanthongtest.Length; i++)
-        {
-            fightSkills[i].InitItemData(thanthongtest[i]);
-        }
+      
     }
     public void CheckFightSkillCanUse()
     {
@@ -279,12 +287,21 @@ public class PlayerUICombat : MonoBehaviour
         {
             if (item.ThanThongData == null) continue;
 
-            if (player.thanThongCoolDown.Any(x => x.type == item.ThanThongData))
+            if (player.thanThongCoolDown.Any(x => x.Key == item.ThanThongData))
             {
-                // Skill này đang cooldown
+                var x = player.thanThongCoolDown
+                    .First(t => t.Key == item.ThanThongData);
+
                 item.SetLock(true);
+                item.SetCoolDown(true, x.Value);
             }
-           
+            else
+            {
+                item.SetCoolDown(false,0);
+
+            }
+
+
         }
         foreach (var item in fightSkills)
         {
@@ -319,6 +336,15 @@ public class PlayerUICombat : MonoBehaviour
 
                     }
                 }
+                else if (item.ThanThongData is BaseSkill.TuongDong)
+                {
+                    if (CombatManager.IsTuongDong(GetLinhKhiTieuTans(linhKhiRemains)))
+                    {
+                        item.ShowRecommentHighlight(true);
+                        break;
+
+                    }
+                }
             }
 
         }
@@ -327,6 +353,22 @@ public class PlayerUICombat : MonoBehaviour
     {
         if(eLinhKhi == ELinhKhi.None) return null;
         return spriteUILinhKhis[(int)eLinhKhi -1];
+    }
+    public void HapThuLinhKhi(params object[] data)
+    {
+        CharacterCombat player = (CharacterCombat)data[0];
+        if(player != this.player ) return;
+        ELinhKhi linhKhi = (ELinhKhi)data[1];
+        int count = (int)data[2];
+        foreach (var item in linhKhiRemains)
+        {
+           if(item.eLinhKhi == linhKhi)
+           {
+                item.AddCount(count);
+                break;
+           }
+        }
+
     }
     public void NewTurn(params object[] data)
     {

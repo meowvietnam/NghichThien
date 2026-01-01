@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
 {
-    [SerializeField] protected float timeHolder = 3f;
+    [SerializeField] private float timeHolder = 1f;
     [SerializeField] protected Coroutine enumerator = null;
     [SerializeField] protected bool isHolder = false;
     [SerializeField] protected Image icon;
