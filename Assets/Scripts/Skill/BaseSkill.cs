@@ -1,9 +1,42 @@
 ﻿using UnityEngine;
 
+public enum EBuffAndDeBuff
+{
+    None,
+    HoTrao,
+    DeTonThuong,
+    KiemKhi,
+    KietSuc,
+    TreKhi,
+    SucThe,
+    GiamTonThuong,
+    NoiThuong,
+    TrienNhieu,
+    TriLieu,
+    ChanKim,
+    TrungDoc,
+    HuyenVu,
+
+
+}
 
 public abstract class BaseSkill : BaseItemData
 {
-    
+    public enum ETypeSkill
+    {
+        None,
+        Kim,
+        Moc,
+        Thuy,
+        Hoa,
+        Tho,
+        Ma,
+        Kiem,
+        Khi,
+        The,
+        Than,
+
+    }
     public enum EKeyWord
     {
         None,
@@ -11,8 +44,12 @@ public abstract class BaseSkill : BaseItemData
         HauKeVoLuc,
         TuongSinh,
         TuongKhac,
+        TuongDong,
+        KiemY,
+        HutMau
     }
     public ETierSkill eTierSkill;
+    public ETypeSkill[] eTypeSkill;
     public abstract void Execute(CharacterCombat caster, CharacterCombat target);
    
     public interface LienKich
@@ -39,6 +76,120 @@ public abstract class BaseSkill : BaseItemData
 
 
     }
+    public interface TuongDong
+    {
+        public abstract void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target);
+
+    }
+    public string GetKeyWordBuffOrDeBuff(EBuffAndDeBuff eKeyWord)
+    {
+        string text = string.Empty;
+        switch (eKeyWord)
+        {
+            case EBuffAndDeBuff.None:
+                break;
+            case EBuffAndDeBuff.HoTrao:
+                text = "Hộ Trảo";
+                break;
+            case EBuffAndDeBuff.DeTonThuong:
+                text = "Dễ Tổn Thương";
+
+                break;
+            case EBuffAndDeBuff.KiemKhi:
+                text = "Kiếm Khí";
+                break;
+            case EBuffAndDeBuff.KietSuc:
+                text = "Kiệt Sức";
+                break;
+            case EBuffAndDeBuff.TreKhi:
+                text = "Trệ Khí";
+                break;
+            case EBuffAndDeBuff.SucThe:
+                text = "Sục Thể";
+                break;
+            case EBuffAndDeBuff.GiamTonThuong:
+                text = "Giảm Tổn Thương";
+                break;
+            case EBuffAndDeBuff.NoiThuong:
+                text = "Nội Thương";
+
+                break;
+            case EBuffAndDeBuff.TrienNhieu:
+                text = "Triền Nhiễu";
+
+                break;
+            case EBuffAndDeBuff.TriLieu:
+                text = "Trị Liệu";
+                break;
+
+            case EBuffAndDeBuff.ChanKim:
+                text = "Chấn Kim";
+                break;
+            case EBuffAndDeBuff.TrungDoc:
+                text = "Trúng Độc";
+                break;
+            case EBuffAndDeBuff.HuyenVu:
+                text = "Huyễn Vụ";
+                break;
+            default:
+                break;
+        }
+        return GetColoredText($"[{text}]", "green");
+
+    }
+    public string GetDescBuffOrDeBuff(EBuffAndDeBuff eKeyWord)
+    {
+        string text = string.Empty;
+        switch (eKeyWord)
+        {
+            case EBuffAndDeBuff.None:
+                break;
+            case EBuffAndDeBuff.HoTrao:
+                text = "Mỗi tầng ngăn cản 1 điểm sát thương";
+                break;
+            case EBuffAndDeBuff.DeTonThuong:
+                text = "Trong hiệp này, mỗi tầng sát thương phải nhận thêm +1. Kết thúc hiệp giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.KiemKhi:
+                text = $"Kết thúc hiệp, mỗi tầng gây 1 điểm sát thương kiếm hệ cho đối phương";
+                break;
+            case EBuffAndDeBuff.KietSuc:
+                text = "Bản thân hiệp sau không được thi pháp";
+                break;
+            case EBuffAndDeBuff.TreKhi:
+                text = "Giai đoạn hấp thụ linh khí, mỗi tầng -1 linh khí có thể hấp thụ sau đó giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.SucThe:
+                text = "Mỗi nhận 1 điểm sát thương thì giải trừ 1 tầng. Bắt đầu hiệp, mỗi tầng gây 1 điểm sát thương kiếm hệ cho đối phương sau đó giải trừ toàn bộ";
+
+                break;
+            case EBuffAndDeBuff.GiamTonThuong:
+                text = "Trong hiệp này, mỗi tầng ngăn cản 1 điểm sát thương. Kết thúc hiệp giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.NoiThuong:
+                text = $"Giai đoạn hấp thụ linh khí, nhận sát thương {GetColoredText($"mỗi tầng * số linh khí hấp thụ","red")} sau đó giải trừ 1 tầng";
+                break;
+            case EBuffAndDeBuff.TrienNhieu:
+                text = "Trong hiệp này, khi bản thân thi pháp nhận mỗi tầng 1 điểm sát thương. Kết thúc hiệp giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.TriLieu:
+                text = $"Kết thúc hiệp, mỗi tầng khôi phục 1 điểm sinh mệnh";
+                break;
+            case EBuffAndDeBuff.ChanKim:
+                text = $"Kim hệ thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ";
+                break;
+            case EBuffAndDeBuff.TrungDoc:
+                text = $"Kết thúc hiệp, mỗi tầng nhận 1 điểm sát thương sau đó giải trừ 1 tầng";
+                break;
+            case EBuffAndDeBuff.HuyenVu:
+                text = $"Có 5% tỉ lệ né tránh sát thương. Tỉ lệ này không cộng dồn";
+                break;
+            default:
+                break;
+        }
+        return $"{GetKeyWordBuffOrDeBuff(eKeyWord)}: " + text;
+
+    }
     public string GetKeyWord(EKeyWord eKeyWord)
     {
         string text = string.Empty;
@@ -59,6 +210,18 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EKeyWord.TuongKhac:
                 text = "Tương Khắc";
+
+                break;
+            case EKeyWord.TuongDong:
+                text = "Đồng";
+
+                break;
+            case EKeyWord.KiemY:
+                text = "Kiếm Ý";
+
+                break;
+            case EKeyWord.HutMau:
+                text = "Hút Máu";
 
                 break;
             default:
@@ -88,6 +251,16 @@ public abstract class BaseSkill : BaseItemData
             case EKeyWord.TuongKhac:
                 text = "Nếu dùng thần thông với linh khi tương khắc thì sẽ kích hoạt";
 
+                break;
+            case EKeyWord.TuongDong:
+                text = "Nếu dùng thần thông với toàn bộ linh khí là cùng hệ thì sẽ kích hoạt";
+
+                break;
+            case EKeyWord.KiemY:
+                text = $"Sử dụng thần thông này thu hoạch {GetColoredText($"[Kiếm Khí] +1", "green")}";
+                break;
+            case EKeyWord.HutMau:
+                text = "Hồi máu bằng lượng sát thương mà thần thông gây ra";
                 break;
             default:
                 break;

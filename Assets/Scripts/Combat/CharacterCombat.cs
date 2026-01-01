@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using AllMaps;
+using LongDH.LongDHModules;
+using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,6 +46,12 @@ public class CharacterStats
     public int chuTu1Used;
     public int chuTu2Used;
 
+    public CharacterStats Clone()
+    {
+        return (CharacterStats)this.MemberwiseClone();
+    }
+
+
 
 }
 public class CharacterCombat : MonoBehaviour
@@ -64,14 +72,63 @@ public class CharacterCombat : MonoBehaviour
         public T type;
         public int count;
     }
-    public List<CountStack<ThanThong>> thanThongCoolDown = new List<CountStack<ThanThong>>();
+    public Dictionary<ThanThong , int> thanThongCoolDown = new Dictionary<ThanThong,int>();
+    public Dictionary<EBuffAndDeBuff, int> buffAndDebuffCount = new  Dictionary <EBuffAndDeBuff, int>();
 
+    public void AddThanThongCoolDown(ThanThong thanThong , int count)
+    {
+        thanThongCoolDown[thanThong] = thanThongCoolDown.GetValueOrDefault(thanThong, 0) + count;
 
+    }
+    public void AddBuffAndDebuffCount(EBuffAndDeBuff type, int count)
+    {
+        buffAndDebuffCount[type] = buffAndDebuffCount.GetValueOrDefault(type, 0) + count;
+
+    }
     public void Init(CharacterStats characterStat)
     {
-        characterStats = characterStat;
-        characterStatsCurrent = characterStat;
+        characterStats = characterStat.Clone();
+        characterStatsCurrent = characterStat.Clone();
         thanThongOldUse = null;
+        thanThongCoolDown.Clear();
+    }
+    
+    public void HapThuLinhKhi(ELinhKhi elinhKhi , int count)
+    {
+        switch (elinhKhi)
+        {
+            case ELinhKhi.None:
+                break;
+            case ELinhKhi.Kim:
+                khiKim += count;
+                break;
+            case ELinhKhi.Moc:
+                khiMoc += count;
+
+
+                break;
+            case ELinhKhi.Thuy:
+                khiThuy += count;
+
+
+                break;
+            case ELinhKhi.Hoa:
+                khiHoa += count;
+
+                break;
+            case ELinhKhi.Tho:
+                khiTho += count;
+
+                break;
+            case ELinhKhi.Ma:
+                khiMa += count;
+
+                break;
+            default:
+                break;
+        }
+        Observer.Notify(EventList.GamePlay.HAPTHU_LINHKHI, this,elinhKhi,count );
+
     }
     public int totalKhi
     {
@@ -189,11 +246,23 @@ public class CharacterCombat : MonoBehaviour
                 khiMa++;
         }
     }
+    public void EndTurn()
+    {
+        buffAndDebuffCount[EBuffAndDeBuff.DeTonThuong] = 0;
+    }    
     public void TakeDame(CharacterCombat sender , int dame)
     {
+        dame += buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.DeTonThuong, 0);
         Debug.Log(this.gameObject.name+ "nhận dame là : " + dame);
         characterStatsCurrent.hp -= dame;
-    }
+        characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);
 
+    }
+    public void Healing(CharacterCombat sender, int hp)
+    {
+        characterStatsCurrent.hp += hp;
+        characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);
+
+    }
 
 }
