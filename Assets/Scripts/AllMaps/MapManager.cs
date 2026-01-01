@@ -17,7 +17,6 @@ namespace AllMaps
         {
             return maps.FirstOrDefault(map => map.Id == id);
         }
-
         private void SetUpGraph()
         {
             graph = new Dictionary<Map, List<Map>>();
@@ -34,7 +33,7 @@ namespace AllMaps
             var map = FindMap(entryMapId);
             current = map;
             player.SetPosition(map.PlayerPosition);
-            player.Init(Gender.Male);
+            player.Init(Gender.Male,true);
         }
         public void PlayerMoveTo(Map map)
         {
@@ -45,6 +44,7 @@ namespace AllMaps
             var s = string.Join(",", listMapPath.Select(x => x.Id));
             Debug.Log(s);
             var start = current;
+            current.OnPlayerExit();
             current = map;
             var listNodes = new List<Node>();
             for (var i = 1; i < listMapPath.Count; i++)
@@ -63,7 +63,7 @@ namespace AllMaps
         }
         private void OnMoveToMapCompleted()
         {
-            
+            current.OnPlayerEnter();
         }
     }
 }

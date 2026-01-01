@@ -11,23 +11,26 @@ namespace AllMaps
     {
         [SerializeField] private Transform tf;
         [SerializeField] private SkeletonAnimation anim;
-        private string idleAnim = "Idle";
-        private string moveAnim = "Move";
+        private string genderStr = "";
         [SerializeField] private float speed = 2;
+        private bool isSwordRiding;
         public bool IsMoving { get; private set; }
-        public void Init(Gender gender)
+        public void Init(Gender gender, bool isSwordRiding)
         {
+            this.isSwordRiding = isSwordRiding;
             var skeletion = anim.Skeleton;
             switch (gender)
             {
                 case Gender.Male:
-                    skeletion.SetSkin("Male");
+                    genderStr = "0";
                     break;
                 case Gender.Female:
-                    skeletion.SetSkin("Female");
+                    genderStr = "10";
                     break;
             }
+            anim.Skeleton.SetSkin(genderStr);
             anim.timeScale = speed;
+            SetMoving(false);
         }
         public void SetPosition(Vector2 position)
         {
@@ -37,7 +40,9 @@ namespace AllMaps
         private void SetMoving(bool isMoving)
         {
             IsMoving = isMoving;
-            var animationName = isMoving ? moveAnim : idleAnim;
+            var swordRiding = isSwordRiding ? "1" : "0";
+            var moving = isMoving ? "Mov_1" : "Idle_";
+            var animationName = $"{moving}{swordRiding}";
             anim.AnimationState.SetAnimation(0, animationName, true);
         }
         public void DoMove(List<Node> nodes,Action completed)
