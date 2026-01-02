@@ -15,9 +15,9 @@ public class FightSkillItem : BaseItemUI
     {
         maskCoolDown.gameObject.SetActive(isLock);
     }
-    public override void InitItemData(BaseItemData itemData)
+    public override void InitItemData(BaseItemData itemData, Sprite frameSprite)
     {
-        base.InitItemData(itemData);
+        base.InitItemData(itemData, frameSprite);
         icon.gameObject.SetActive(itemData != null);
         SetLock(itemData == null);
 

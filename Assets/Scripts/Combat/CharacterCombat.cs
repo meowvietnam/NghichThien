@@ -82,8 +82,34 @@ public class CharacterCombat : MonoBehaviour
     }
     public void AddBuffAndDebuffCount(EBuffAndDeBuff type, int count)
     {
-        buffAndDebuffCount[type] = buffAndDebuffCount.GetValueOrDefault(type, 0) + count;
 
+        buffAndDebuffCount[type] =
+        buffAndDebuffCount.TryGetValue(type, out var current)
+        ? current + count
+        : count;
+
+        Observer.Notify(EventList.GamePlay.ADD_BUFF, this, type, buffAndDebuffCount[type]);
+
+
+    }
+    public void RemoveBuffAndDebuffCount(EBuffAndDeBuff type, int count)
+    {
+        if (!buffAndDebuffCount.TryGetValue(type, out int current))
+            return; // không có buff thì khỏi remove
+
+        int newValue = current - count;
+
+        if (newValue <= 0)
+        {
+            buffAndDebuffCount.Remove(type);
+            newValue = 0;
+        }
+        else
+        {
+            buffAndDebuffCount[type] = newValue;
+        }
+
+        Observer.Notify(EventList.GamePlay.ADD_BUFF, this, type, newValue);
     }
     public void Init(CharacterStats characterStat)
     {
@@ -246,10 +272,17 @@ public class CharacterCombat : MonoBehaviour
                 khiMa++;
         }
     }
+    public void NewTurn()
+    {
+
+    }    
     public void EndTurn()
     {
-        buffAndDebuffCount[EBuffAndDeBuff.DeTonThuong] = 0;
-    }    
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DeTonThuong, out int value))
+        {
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, value);
+        }
+    }
     public void TakeDame(CharacterCombat sender , int dame)
     {
         dame += buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.DeTonThuong, 0);

@@ -1,4 +1,5 @@
 ﻿using LongDH.LongDHModules;
+using LongDH.Script.ObjectPool;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,22 @@ public enum ETuongQuan
     TuongKhac,
     None,
 }
+
 public class CombatManager : MonoBehaviour
 {
+    [System.Serializable]   
+    public class BuffOrDebuffIcon {
+
+        public EBuffAndDeBuff eType;
+        public Sprite sprite;
+    
+    }
+    [SerializeField]
+    private List<BuffOrDebuffIcon> buffOrDebuffIcons;
     [SerializeField] private CharacterCombat char1;
     [SerializeField] private CharacterCombat char2;
-
+    [SerializeField]
+    private ItemUI prefabBuffIcon;
     public CharacterCombat currentTurn;
     public CharacterCombat target => currentTurn == char1 ? char2 : char1;
     static readonly Dictionary<ELinhKhi, ELinhKhi> linhKhiLienKich = new Dictionary<ELinhKhi, ELinhKhi>()
@@ -58,6 +70,17 @@ public class CombatManager : MonoBehaviour
         SetUIHpBar(char2.characterStatsCurrent.hp, char2.characterStats.hp, progressHpChar2, textHpChar2);
 
     }
+    private Sprite GetSpriteBuffIcon(EBuffAndDeBuff eBuffAndDeBuff)
+    {
+        foreach (var item in buffOrDebuffIcons)
+        {
+            if(item.eType == eBuffAndDeBuff)
+            {
+                return item.sprite;
+            }    
+        }
+        return null;
+    }    
   
     private void Awake()
     {
@@ -83,6 +106,7 @@ public class CombatManager : MonoBehaviour
         SetUIHpBar();
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, EndTurn);
         Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, PlaySkill);
+        Observer.AddObserver(EventList.GamePlay.ADD_BUFF, SetUIBuff);
 
     }
     public static bool IsTuongDong(List<LinhKhiTieuTan> linhKhiTieuTan)
@@ -226,7 +250,8 @@ public class CombatManager : MonoBehaviour
         {
             TieuTanLinhKhi(linhKhiTieuTan);
         }
-        currentTurn.EndTurn();
+        char1.EndTurn();
+        char2.EndTurn();
         if (currentTurn == char1)
         {
             currentTurn = char2;
@@ -236,10 +261,66 @@ public class CombatManager : MonoBehaviour
             currentTurn = char1;
         }
         NewTurn();
-    }    
+    }
+    public void SetUIBuff(params object[] data)
+    {
+        if (data[0] is CharacterCombat characterCombat)
+        {
+            EBuffAndDeBuff buffType = (EBuffAndDeBuff)data[1];
+            int currentValue = (int)data[2];
+            ItemUI buffIcon = null;
+            ScrollRect scrollRect = null;
+            if (characterCombat == char1)
+            {
+                scrollRect = statusChar1;
+
+            }
+            else
+            {
+                scrollRect = statusChar2;
+
+
+            }
+            bool isHave = false;
+            for (int i = 0; i < scrollRect.content.transform.childCount; i++)
+            {
+                ItemUI itemUI = scrollRect.content.transform.GetChild(i).GetComponent<ItemUI>();
+                if (itemUI.icon.sprite == GetSpriteBuffIcon(buffType)) // cos toon tai
+                {
+                    isHave = true;
+                    buffIcon = itemUI;
+                    break;
+                }
+
+            }
+            if (currentValue <= 0)
+            {
+                if(isHave)
+                {
+                    buffIcon.Recycle();
+                }    
+            }
+            else
+            {
+                
+                if (!isHave)
+                {
+                    buffIcon = prefabBuffIcon.Spawn(scrollRect.content.transform);
+                    buffIcon.transform.localScale = Vector3.one;
+                    buffIcon.InitIcon(GetSpriteBuffIcon(buffType), null);
+                }
+                
+                buffIcon.AddCount(currentValue - buffIcon.count);
+            }
+          
+        }
+      
+    }
     [Button]
     public void NewTurn()
     {
+        char1.NewTurn();
+        char2.NewTurn();
         currentTurn.HapThuLinhKhi();
         // param 0 là bool isPlayer == char1 
         Observer.Notify(EventList.GamePlay.NEW_TURN_COMBAT, currentTurn == char1? true: false,currentTurn);

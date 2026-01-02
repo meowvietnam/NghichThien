@@ -10,7 +10,7 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
     [SerializeField] private float timeHolder = 1f;
     [SerializeField] protected Coroutine enumerator = null;
     [SerializeField] protected bool isHolder = false;
-    [SerializeField] protected Image icon;
+    [SerializeField] public Image icon;
     [SerializeField] protected Image frame;
     [SerializeField] protected Image progressHold;
 
@@ -18,23 +18,35 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
     [SerializeField] protected Action actionHolder;
     [SerializeField] protected Action actionPointerUp;
 
-    public virtual void Init(BaseItemData itemData , Action actionHolder = null , Action actionPointerUp = null)
+    public virtual void Init(BaseItemData itemData , Sprite frameSprite, Action actionHolder = null , Action actionPointerUp = null)
     {
-        InitItemData(itemData);
+        InitItemData(itemData, frameSprite);
        
         this.actionHolder = actionHolder;
         this.actionPointerUp = actionPointerUp;
     }
     [Button]
-    public virtual void InitItemData(BaseItemData itemData)
+    public virtual void InitItemData(BaseItemData itemData , Sprite frameSprite)
     {
         if (itemData == null)
         {
             return;
         }    
         this.itemData = itemData;
-        icon.sprite = this.itemData.spriteItem;
-        frame.sprite = this.itemData.frameItem;
+        InitIcon(this.itemData.spriteItem, frameSprite);
+
+    }
+    public  void InitIcon(Sprite spriteIcon, Sprite frameSprite)
+    {
+        if(spriteIcon != null)
+        {
+            icon.sprite = spriteIcon;
+        }    
+        if(frameSprite != null)
+        {
+            frame.sprite = frameSprite;
+
+        }
 
     }
     public virtual void EventHolder()

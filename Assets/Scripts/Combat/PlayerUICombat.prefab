@@ -7383,6 +7383,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a414dbecdbc6add43a02a7b4bed1ffe4, type: 2}
   - {fileID: 21300000, guid: 1a03a033f7f6f4c27895484f84f9779b, type: 3}
   - {fileID: 21300000, guid: 3eea27ed000a5d54e8bedc164a2302a6, type: 2}
+  spriteFrame:
+  - {fileID: 21300000, guid: 692ac849f27dc6b4d8ef36cbd265fce6, type: 3}
+  - {fileID: 21300000, guid: 8f2d7224df652eb45bae62c10dc1a83d, type: 3}
+  - {fileID: 21300000, guid: 4585d80263d9bcc47859ba82c5b21b4c, type: 3}
   radius: 80
   btnConfirm: {fileID: 2899355200371605172}
   btnCancel: {fileID: 6071166389391902590}
@@ -7390,7 +7394,7 @@ MonoBehaviour:
   maxLinhKhi: 0
   eStateControl: 0
   fightSkills:
-  - {fileID: 5880793469559807247}
+  - {fileID: 6577035073369060041}
   - {fileID: 5964534661433412442}
   - {fileID: 166648915106642304}
   - {fileID: 8510365529108729492}
@@ -8552,7 +8556,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1217611294293845590}
+  - {fileID: 1891308470873704848}
   - {fileID: 1422958441056546819}
   - {fileID: 4839429836555240153}
   - {fileID: 3991299631491233229}
@@ -10075,6 +10079,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FightSkillItem (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 212104009753318994, guid: 35335350a5037684fa3f876be8c6af52,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 224241372475875681, guid: 35335350a5037684fa3f876be8c6af52,
         type: 3}
       propertyPath: m_Pivot.x
@@ -10198,7 +10207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e5365dc55dbc5498e4a7f86f600d0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FightSkillItem
---- !u!1001 &1439314950236243767
+--- !u!1001 &1811552469713660145
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10208,7 +10217,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1633500374689890, guid: 35335350a5037684fa3f876be8c6af52, type: 3}
       propertyPath: m_Name
-      value: FightSkillItem
+      value: FightSkillItem (10)
       objectReference: {fileID: 0}
     - target: {fileID: 224241372475875681, guid: 35335350a5037684fa3f876be8c6af52,
         type: 3}
@@ -10315,17 +10324,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35335350a5037684fa3f876be8c6af52, type: 3}
---- !u!224 &1217611294293845590 stripped
+--- !u!224 &1891308470873704848 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224241372475875681, guid: 35335350a5037684fa3f876be8c6af52,
     type: 3}
-  m_PrefabInstance: {fileID: 1439314950236243767}
+  m_PrefabInstance: {fileID: 1811552469713660145}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5880793469559807247 stripped
+--- !u!114 &6577035073369060041 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4784441092079688248, guid: 35335350a5037684fa3f876be8c6af52,
     type: 3}
-  m_PrefabInstance: {fileID: 1439314950236243767}
+  m_PrefabInstance: {fileID: 1811552469713660145}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -10344,6 +10353,11 @@ PrefabInstance:
     - target: {fileID: 1633500374689890, guid: 35335350a5037684fa3f876be8c6af52, type: 3}
       propertyPath: m_Name
       value: FightSkillItem (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 212104009753318994, guid: 35335350a5037684fa3f876be8c6af52,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224241372475875681, guid: 35335350a5037684fa3f876be8c6af52,
         type: 3}
@@ -10762,6 +10776,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FightSkillItem (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 212104009753318994, guid: 35335350a5037684fa3f876be8c6af52,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 224241372475875681, guid: 35335350a5037684fa3f876be8c6af52,
         type: 3}
       propertyPath: m_Pivot.x
@@ -10896,6 +10915,11 @@ PrefabInstance:
     - target: {fileID: 1633500374689890, guid: 35335350a5037684fa3f876be8c6af52, type: 3}
       propertyPath: m_Name
       value: FightSkillItem (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 212104009753318994, guid: 35335350a5037684fa3f876be8c6af52,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224241372475875681, guid: 35335350a5037684fa3f876be8c6af52,
         type: 3}
@@ -11173,6 +11197,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FightSkillItem (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 212104009753318994, guid: 35335350a5037684fa3f876be8c6af52,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 224241372475875681, guid: 35335350a5037684fa3f876be8c6af52,
         type: 3}
       propertyPath: m_Pivot.x
@@ -11307,6 +11336,11 @@ PrefabInstance:
     - target: {fileID: 1633500374689890, guid: 35335350a5037684fa3f876be8c6af52, type: 3}
       propertyPath: m_Name
       value: FightSkillItem (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 212104009753318994, guid: 35335350a5037684fa3f876be8c6af52,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224241372475875681, guid: 35335350a5037684fa3f876be8c6af52,
         type: 3}
@@ -11725,6 +11759,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FightSkillItem (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 212104009753318994, guid: 35335350a5037684fa3f876be8c6af52,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 224241372475875681, guid: 35335350a5037684fa3f876be8c6af52,
         type: 3}
       propertyPath: m_Pivot.x
@@ -11859,6 +11898,11 @@ PrefabInstance:
     - target: {fileID: 1633500374689890, guid: 35335350a5037684fa3f876be8c6af52, type: 3}
       propertyPath: m_Name
       value: FightSkillItem (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 212104009753318994, guid: 35335350a5037684fa3f876be8c6af52,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224241372475875681, guid: 35335350a5037684fa3f876be8c6af52,
         type: 3}
@@ -12135,6 +12179,11 @@ PrefabInstance:
     - target: {fileID: 1633500374689890, guid: 35335350a5037684fa3f876be8c6af52, type: 3}
       propertyPath: m_Name
       value: FightSkillItem (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 212104009753318994, guid: 35335350a5037684fa3f876be8c6af52,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224241372475875681, guid: 35335350a5037684fa3f876be8c6af52,
         type: 3}

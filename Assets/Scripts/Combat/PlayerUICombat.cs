@@ -19,6 +19,8 @@ public class PlayerUICombat : MonoBehaviour
     public List<SlotLinhKhi> linhKhiRemains;  // các nút cần sắp xếp
     public List<SlotLinhKhi> currentNodes;  // các nút cần sắp xếp
     public Sprite[] spriteUILinhKhis;
+    public Sprite[] spriteFrame;
+
     public float radius = 120f;         // bán kính vòng tròn
     public Button btnConfirm;
     public Button btnCancel;
@@ -167,10 +169,14 @@ public class PlayerUICombat : MonoBehaviour
             item1.Init(() =>
             {
                 Debug.Log(currentNodes.Count);
+                if (item1.count <= 0 || item1.isLock) return;
+
                 if (CurrentLinhKhi <= maxLinhKhi && eStateControl == EStateControl.DeleteLinhKhi) return;
                 foreach (var item2 in currentNodes)
                 {
-                    if(!item2.isLock && (item2.count <= 0 || item2.eLinhKhi == item1.eLinhKhi))
+                    if (item2.isLock) continue;
+
+                    if (!item2.isLock && (item2.count <= 0 || item2.eLinhKhi == item1.eLinhKhi))
                     {
                         if (item2.count <= 0)
                         {
@@ -193,7 +199,8 @@ public class PlayerUICombat : MonoBehaviour
         {
             item1.Init(() =>
             {
-                
+                if (item1.count <= 0 || item1.isLock) return;
+
                 foreach (var item2 in linhKhiRemains)
                 {
                     if ((item2.eLinhKhi == item1.eLinhKhi))
@@ -220,7 +227,13 @@ public class PlayerUICombat : MonoBehaviour
                 SetStateControl(EStateControl.UseSkill);
                 ShowNodes(skill.ThanThongData.requireActives.Count);
                 fightSkillSelect = skill;
-                foreach (var require in skill.ThanThongData.requireActives)
+
+                var listRequire = skill.ThanThongData.requireActives;
+                listRequire = listRequire
+                .OrderBy(x => x.linhKhiRequire == ELinhKhi.None)
+                .ToList();
+
+                foreach (var require in listRequire)
                 {
                     bool hasSpecificType = require.linhKhiRequire != ELinhKhi.None;
 
@@ -233,20 +246,29 @@ public class PlayerUICombat : MonoBehaviour
 
                     if (match != null)
                     {
+                       
                         for (int i = 0; i < require.count; i++)
                             match.actionPointerDown?.Invoke();
-                        if (hasSpecificType)
+                        
+                        if(hasSpecificType)
                         {
-                            var node = currentNodes.FirstOrDefault(n => n.eLinhKhi == require.linhKhiRequire);
+                            var node = currentNodes.FirstOrDefault(n => n.eLinhKhi == require.linhKhiRequire && !n.isLock);
                             node?.SetLock(true);
-                        }
+                        }    
+                        
+                        
                         continue;
                     }
+                  
 
 
                 }
+              
+
+
             });
-            skill.Init(s < thanthongtest.Length ? thanthongtest[s] : null, actionHolder, actionPointerUp); // test data 
+            ThanThong thanThong = s < thanthongtest.Length ? thanthongtest[s] : null;
+            skill.Init(thanThong, thanThong != null ? spriteFrame[(int)(((int)thanThong.eTierSkill - 1) / 3)] : null, actionHolder, actionPointerUp); // test data 
         } 
             
        
@@ -260,14 +282,19 @@ public class PlayerUICombat : MonoBehaviour
             if (item.ThanThongData == null) continue;
             item.SetLock(false);
 
-            foreach (var require in item.ThanThongData.requireActives)
+            var listRequire = item.ThanThongData.requireActives;
+            listRequire = listRequire
+            .OrderBy(x => x.linhKhiRequire == ELinhKhi.None)
+            .ToList();
+
+            foreach (var require in listRequire)
             {
                 bool hasSpecificType = require.linhKhiRequire != ELinhKhi.None;
 
                 // --- Tìm đối tượng phù hợp ---
                 var match = hasSpecificType
                     ? linhKhiRemains.FirstOrDefault(l => l.eLinhKhi == require.linhKhiRequire && l.count >= require.count)
-                    : linhKhiRemains.FirstOrDefault(l => l.count >= require.count);
+                    : linhKhiRemains.FirstOrDefault(l => l.count >= require.count );
 
                 // --- Nếu tìm thấy trong linhKhiRemains ---
 
