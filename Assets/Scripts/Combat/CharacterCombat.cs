@@ -25,6 +25,8 @@ public class CharacterStats
     public int tocDoBay;
     public int tamCanh;
     public int danDoc;
+    public int money;
+    public int idLinhCan;
     // tông môn
     public int chucVi;
     public int monPhai;
@@ -45,7 +47,7 @@ public class CharacterStats
     public int phuTu4Used;
     public int chuTu1Used;
     public int chuTu2Used;
-
+   
     public CharacterStats Clone()
     {
         return (CharacterStats)this.MemberwiseClone();
