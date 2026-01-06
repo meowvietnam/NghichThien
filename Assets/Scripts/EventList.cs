@@ -9,6 +9,7 @@ public static partial class EventList
         public const string PLAY_SKILL = "GamePlay.PLAY_SKILL";
         public const string HAPTHU_LINHKHI = "GamePlay.HAPTHU_LINHKHI";
         public const string ADD_BUFF = "GamePlay.ADD_BUFF";
+        public const string CHARACTER_TAKE_DAME = "GamePlay.CHARACTER_TAKE_DAME";
 
     }
 }

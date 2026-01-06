@@ -1,0 +1,31 @@
+﻿using UnityEngine;
+[CreateAssetMenu]
+public class KimHongQuanNhat : ThanThong
+{
+    [SerializeField] private int dame = 190;
+    [SerializeField] private int perDameKiemKhi = 6;
+    [SerializeField] private int perDameSucThe = 1;
+    public override void Execute(CharacterCombat caster, CharacterCombat target)
+    {
+        caster.AddThanThongCoolDown(this, 1);
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KietSuc, 1);
+
+
+        int sucThe = 0;
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out sucThe);
+        int kiemKhi = 0;
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out kiemKhi);
+
+        caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe,sucThe);
+        caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi,kiemKhi);
+
+        int dame = perDameKiemKhi * kiemKhi + perDameSucThe * sucThe;
+        target.TakeDame(caster,dame);
+    }
+
+    public override string GetDesc()
+    {
+        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tạo thành {GetColoredText($"{dame}", "red")} điểm sát thương, cũng tiêu hao toàn bộ {GetDescBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} mỗi tầng tăng thêm {GetColoredText($"{perDameKiemKhi}", "red")} điểm thương tổn và {GetDescBuffOrDeBuff(EBuffAndDeBuff.SucThe)} mỗi tầng tăng thêm {GetColoredText($"{perDameSucThe}", "red")} điểm thương tổn. Bạn bị {GetDescBuffOrDeBuff(EBuffAndDeBuff.KietSuc)}";
+    }
+
+}

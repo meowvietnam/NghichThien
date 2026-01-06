@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using LongDH.LongDHModules;
+using NUnit.Framework.Interfaces;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
@@ -169,12 +170,12 @@ public class PlayerUICombat : MonoBehaviour
             item1.Init(() =>
             {
                 Debug.Log(currentNodes.Count);
-                if (item1.count <= 0 || item1.isLock) return;
+                if (item1.count <= 0 || item1.isLock || (currentNodes.Any(x => x.eLinhKhi == item1.eLinhKhi && x.isLock == false) && eStateControl == EStateControl.UseSkill)) return;
 
                 if (CurrentLinhKhi <= maxLinhKhi && eStateControl == EStateControl.DeleteLinhKhi) return;
                 foreach (var item2 in currentNodes)
                 {
-                    if (item2.isLock) continue;
+                    if (item2.isLock || item2.countRequire <=0) continue;
 
                     if (!item2.isLock && (item2.count <= 0 || item2.eLinhKhi == item1.eLinhKhi))
                     {
@@ -185,7 +186,7 @@ public class PlayerUICombat : MonoBehaviour
                             item1.icon.SetNativeSize();
                         }
                         item2.AddCount(1);
-                        
+                        item2.AddCountRequire(-1);
                         item1.AddCount(-1);
                         break;
                     }
@@ -199,14 +200,18 @@ public class PlayerUICombat : MonoBehaviour
         {
             item1.Init(() =>
             {
-                if (item1.count <= 0 || item1.isLock) return;
+                if (item1.count <= 0 || item1.isLock ) return;
 
                 foreach (var item2 in linhKhiRemains)
                 {
                     if ((item2.eLinhKhi == item1.eLinhKhi))
                     {
                         item2.AddCount(1);
-                        item1.AddCount(-1);
+                        item1.AddCount(-1, () =>
+                        {
+                            item1.eLinhKhi = ELinhKhi.None;
+                        });
+                        item1.SetCountRequire(1);
                     }
                 }
                 CheckTuongQuan();
@@ -240,13 +245,21 @@ public class PlayerUICombat : MonoBehaviour
                     // --- Tìm đối tượng phù hợp ---
                     var match = hasSpecificType
                         ? linhKhiRemains.FirstOrDefault(l => l.eLinhKhi == require.linhKhiRequire && l.count >= require.count)
-                        : linhKhiRemains.FirstOrDefault(l => l.count >= require.count);
+                        : linhKhiRemains.FirstOrDefault(l => l.count >= require.count && !currentNodes.Any(x => x.eLinhKhi == l.eLinhKhi && x.isLock == false));
 
                     // --- Nếu tìm thấy trong linhKhiRemains ---
 
                     if (match != null)
                     {
-                       
+
+                        foreach (var item in currentNodes)
+                        {
+                            if(item.count<=0)
+                            {
+                                item.SetCountRequire(require.count);
+                                break;
+                            }
+                        }
                         for (int i = 0; i < require.count; i++)
                             match.actionPointerDown?.Invoke();
                         
@@ -313,8 +326,14 @@ public class PlayerUICombat : MonoBehaviour
         foreach (var item in fightSkills)
         {
             if (item.ThanThongData == null) continue;
+            if (!item.ThanThongData.IsCanUse(player,null))
+            {
+              
 
-            if (player.thanThongCoolDown.Any(x => x.Key == item.ThanThongData))
+                item.SetLock(true);
+                continue;
+            }
+            if (player.thanThongCoolDown.Any(x => x.Key == item.ThanThongData && x.Value > 0))
             {
                 var x = player.thanThongCoolDown
                     .First(t => t.Key == item.ThanThongData);
@@ -399,13 +418,20 @@ public class PlayerUICombat : MonoBehaviour
     }
     public void NewTurn(params object[] data)
     {
-        if (!(bool)data[0]) return;
+        if (!(bool)data[0])
+        {
+            this.gameObject.SetActive(false);
+            return;
+        }
+        this.gameObject.SetActive(true);
+
         CharacterCombat player = (CharacterCombat)data[1];
         
         if (player == null) return;
         this.player = player;
         SetStateControl(EStateControl.None);
         maxLinhKhi = player.totalKhi;
+        
         foreach (var item in linhKhiRemains)
         {
             switch (item.eLinhKhi)
@@ -413,26 +439,26 @@ public class PlayerUICombat : MonoBehaviour
                 case ELinhKhi.None:
                     break;
                 case ELinhKhi.Kim:
-                    item.AddCount(player.khiKim);
+                    item.SetCount(player.khiKim);
                     break;
                 case ELinhKhi.Moc:
-                    item.AddCount(player.khiMoc);
+                    item.SetCount(player.khiMoc);
 
                     break;
                 case ELinhKhi.Thuy:
-                    item.AddCount(player.khiThuy);
+                    item.SetCount(player.khiThuy);
 
                     break;
                 case ELinhKhi.Hoa:
-                    item.AddCount(player.khiHoa);
+                    item.SetCount(player.khiHoa);
 
                     break;
                 case ELinhKhi.Tho:
-                    item.AddCount(player.khiTho);
+                    item.SetCount(player.khiTho);
 
                     break;
                 case ELinhKhi.Ma:
-                    item.AddCount(player.khiMa);
+                    item.SetCount(player.khiMa);
 
                     break;
                 default:
@@ -443,7 +469,7 @@ public class PlayerUICombat : MonoBehaviour
 
     }
     [Button]
-    public void ShowNodes(int count)
+    public void ShowNodes(int count, int countRequire = 99999)
     {
         foreach (var item in currentNodes)
         {
@@ -462,6 +488,7 @@ public class PlayerUICombat : MonoBehaviour
                 currentNodes.Add(nodes[i]);
                 nodes[i].SetLock(false);
                 nodes[i].AddCount(0);
+                nodes[i].SetCountRequire(countRequire);
             }
         }
             
