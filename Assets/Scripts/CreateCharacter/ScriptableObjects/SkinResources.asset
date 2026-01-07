@@ -12,11 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55ee2b3071b615e4faaea7d08cab3bfe, type: 3}
   m_Name: SkinResources
   m_EditorClassIdentifier: Assembly-CSharp::CreateCharacter.SkinResources
+  <Colors>k__BackingField:
+  - {r: 0.43921572, g: 0.43921572, b: 0.43921572, a: 1}
+  - {r: 0.35686275, g: 0.4039216, b: 0.5294118, a: 1}
+  - {r: 0.5529412, g: 0.5529412, b: 0.5529412, a: 1}
+  - {r: 0.5921569, g: 0.5882353, b: 0.5921569, a: 1}
+  - {r: 0.4901961, g: 0.56078434, b: 0.4666667, a: 1}
+  - {r: 0.48627454, g: 0.82745105, b: 0.53333336, a: 1}
+  - {r: 0.5137255, g: 0.7254902, b: 0.8196079, a: 1}
+  - {r: 0.47058827, g: 0.7254902, b: 0.7137255, a: 1}
+  - {r: 0.7254902, g: 0.5058824, b: 0.7176471, a: 1}
+  - {r: 0.54509807, g: 0.44705886, b: 0.45098042, a: 1}
+  - {r: 0.3921569, g: 0.36078432, b: 0.36078432, a: 1}
+  - {r: 0.9490197, g: 0.9568628, b: 0.9803922, a: 1}
+  - {r: 0.854902, g: 0.7960785, b: 0.6431373, a: 1}
+  - {r: 0.854902, g: 0.62352943, b: 0.5058824, a: 1}
+  - {r: 0.7490196, g: 0.3647059, b: 0.2901961, a: 1}
+  - {r: 0.5137255, g: 0.16078432, b: 0.1137255, a: 1}
   <GenderSkinGroups>k__BackingField:
   - <Gender>k__BackingField: 0
     <SkinGroups>k__BackingField:
     - <Id>k__BackingField: face
       <Name>k__BackingField: "B\u1ED9 m\u1EB7t"
+      <HasColor>k__BackingField: 0
       <Categories>k__BackingField:
       - <Id>k__BackingField: face_shape
         <Name>k__BackingField: "Khu\xF4n m\u1EB7t"
@@ -339,8 +357,16 @@ MonoBehaviour:
         - <Name>k__BackingField: eyebrow_37
           <Icon>k__BackingField: {fileID: 21300000, guid: 0ae500b2d1fbd614bb0579a7f4005f03,
             type: 2}
+      <ColorGroups>k__BackingField:
+      - <Id>k__BackingField: eyes
+        <CategoryIds>k__BackingField:
+        - eyes
+      - <Id>k__BackingField: eyebrows
+        <CategoryIds>k__BackingField:
+        - eyebrows
     - <Id>k__BackingField: facial_decor
       <Name>k__BackingField: "\u0110\u1EB7c th\xF9"
+      <HasColor>k__BackingField: 0
       <Categories>k__BackingField:
       - <Id>k__BackingField: hair
         <Name>k__BackingField: "T\xF3c"
@@ -501,8 +527,18 @@ MonoBehaviour:
         - <Name>k__BackingField: characteristic_16
           <Icon>k__BackingField: {fileID: 21300000, guid: ec99cefbf499d344eb58a845a2a8d3ef,
             type: 3}
+      <ColorGroups>k__BackingField:
+      - <Id>k__BackingField: hair;beard_lower;beard_upper
+        <CategoryIds>k__BackingField:
+        - hair
+        - beard_lower
+        - beard_upper
+      - <Id>k__BackingField: face_tattoo
+        <CategoryIds>k__BackingField:
+        - face_tattoo
     - <Id>k__BackingField: body
       <Name>k__BackingField: "Th\xE2n th\u1EC3"
+      <HasColor>k__BackingField: 0
       <Categories>k__BackingField:
       - <Id>k__BackingField: suit
         <Name>k__BackingField: "Ph\u1EE5c s\u1EE9c"
@@ -654,10 +690,12 @@ MonoBehaviour:
         - <Name>k__BackingField: a_suit_48
           <Icon>k__BackingField: {fileID: 21300000, guid: d821a13b2a2a30d469cc31613f521432,
             type: 3}
+      <ColorGroups>k__BackingField: []
   - <Gender>k__BackingField: 1
     <SkinGroups>k__BackingField:
     - <Id>k__BackingField: face
       <Name>k__BackingField: "B\u1ED9 m\u1EB7t"
+      <HasColor>k__BackingField: 0
       <Categories>k__BackingField:
       - <Id>k__BackingField: face_shape
         <Name>k__BackingField: "Khu\xF4n m\u1EB7t"
@@ -986,8 +1024,16 @@ MonoBehaviour:
         - <Name>k__BackingField: eyebrow_14
           <Icon>k__BackingField: {fileID: 21300000, guid: 543b9999c81304444a6cecb8a8d9750f,
             type: 2}
+      <ColorGroups>k__BackingField:
+      - <Id>k__BackingField: eyes
+        <CategoryIds>k__BackingField:
+        - eyes
+      - <Id>k__BackingField: eyebrows
+        <CategoryIds>k__BackingField:
+        - eyebrows
     - <Id>k__BackingField: facial_decor
       <Name>k__BackingField: "\u0110\u1EB7c th\xF9"
+      <HasColor>k__BackingField: 0
       <Categories>k__BackingField:
       - <Id>k__BackingField: hair
         <Name>k__BackingField: "T\xF3c"
@@ -1160,8 +1206,16 @@ MonoBehaviour:
         - <Name>k__BackingField: yanying_14
           <Icon>k__BackingField: {fileID: 21300000, guid: 9921a0d805485814999f30e603faa2aa,
             type: 3}
+      <ColorGroups>k__BackingField:
+      - <Id>k__BackingField: hair
+        <CategoryIds>k__BackingField:
+        - hair
+      - <Id>k__BackingField: face_tattoo
+        <CategoryIds>k__BackingField:
+        - face_tattoo
     - <Id>k__BackingField: body
       <Name>k__BackingField: "Th\xE2n th\u1EC3"
+      <HasColor>k__BackingField: 0
       <Categories>k__BackingField:
       - <Id>k__BackingField: suit
         <Name>k__BackingField: "Ph\u1EE5c s\u1EE9c"
@@ -1430,3 +1484,4 @@ MonoBehaviour:
         - <Name>k__BackingField: a_suit_101
           <Icon>k__BackingField: {fileID: 21300000, guid: 5ca829196c0bec44bae9a775cfadf8c9,
             type: 2}
+      <ColorGroups>k__BackingField: []

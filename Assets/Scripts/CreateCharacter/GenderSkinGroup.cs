@@ -11,10 +11,5 @@ namespace CreateCharacter
     {
         [field: SerializeField] public SkinGender Gender { get; private set; }
         [field: SerializeField] public List<SkinGroup> SkinGroups { get; private set; }
-        public GenderSkinGroup(SkinGender gender, List<SkinGroup> skinGroups)
-        {
-            Gender = gender;
-            SkinGroups = skinGroups;
-        }
     }
 }
