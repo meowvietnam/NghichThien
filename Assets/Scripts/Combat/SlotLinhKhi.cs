@@ -23,6 +23,17 @@ public class SlotLinhKhi : MonoBehaviour , IPointerDownHandler
     public Image icon;
     public Action actionPointerDown;
     public bool isLock;
+    public int countRequire = 0;
+    public void AddCountRequire(int countRequire)
+    {
+        this.countRequire += countRequire;
+
+    }
+    public void SetCountRequire(int countRequire)
+    {
+        this.countRequire = countRequire;
+
+    }
     public void SetLock(bool isLock)
     {
         this.isLock = isLock;
@@ -41,6 +52,21 @@ public class SlotLinhKhi : MonoBehaviour , IPointerDownHandler
         {
             icon?.gameObject.SetActive(true);
         }    
+    }
+    public void SetCount(int count, Action eventEndCount = null)
+    {
+        this.count = count;
+
+        textCount.text = this.count.ToString();
+        if (this.count <= 0)
+        {
+            icon?.gameObject.SetActive(false);
+            eventEndCount?.Invoke();
+        }
+        else
+        {
+            icon?.gameObject.SetActive(true);
+        }
     }
     public void Init(Action action)
     {

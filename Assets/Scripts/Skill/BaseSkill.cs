@@ -58,12 +58,6 @@ public abstract class BaseSkill : BaseItemData
 
 
     }
-    public interface HauKeVoLuc
-    {
-        public abstract void ExecuteHauKeVoLuc(CharacterCombat caster, CharacterCombat target);
-
-
-    }
     public interface TuongSinh
     {
         public abstract void ExecuteTuongSinh(CharacterCombat caster, CharacterCombat target);

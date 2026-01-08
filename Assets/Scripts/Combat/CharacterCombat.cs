@@ -1,8 +1,10 @@
 ﻿using AllMaps;
 using LongDH.LongDHModules;
 using NUnit.Framework;
+using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Networking.UnityWebRequest;
 
 
 public class CharacterStats
@@ -227,8 +229,15 @@ public class CharacterCombat : MonoBehaviour
     }    
     public void HapThuLinhKhi()
     {
+        foreach (var item in HapThuLinhKhi(totalKhiRandom))
+        {
+            HapThuLinhKhi(item.Key,item.Value);
+        }
+    }    
+    public Dictionary<ELinhKhi,int> HapThuLinhKhi(int total)
+    {
 
-        int total = totalKhiRandom;
+        Dictionary<ELinhKhi, int> result = new Dictionary<ELinhKhi, int>();
 
         // Lấy % từ stats hiện tại
         float pKim = characterStatsCurrent.percentKim;
@@ -255,6 +264,13 @@ public class CharacterCombat : MonoBehaviour
         pTho /= totalPercent;
         pMa /= totalPercent;
 
+        int khiKim = 0;
+        int khiMoc = 0;
+        int khiThuy = 0;
+        int khiHoa = 0;
+        int khiTho = 0;
+        int khiMa = 0;
+
         // Random từng điểm khí
         for (int i = 0; i < total; i++)
         {
@@ -273,30 +289,73 @@ public class CharacterCombat : MonoBehaviour
             else
                 khiMa++;
         }
+        // Add vào Dictionary theo enum
+        if (khiKim > 0) result.Add(ELinhKhi.Kim, khiKim);
+        if (khiMoc > 0) result.Add(ELinhKhi.Moc, khiMoc);
+        if (khiThuy > 0) result.Add(ELinhKhi.Thuy, khiThuy);
+        if (khiHoa > 0) result.Add(ELinhKhi.Hoa, khiHoa);
+        if (khiTho > 0) result.Add(ELinhKhi.Tho, khiTho);
+        if (khiMa > 0) result.Add(ELinhKhi.Ma, khiMa);
+
+        return result;
     }
     public void NewTurn()
     {
+        var keys = new List<ThanThong>(thanThongCoolDown.Keys);
+        foreach (var key in keys)
+        {
+            AddThanThongCoolDown(key, -1);
+        }
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out int value))
+        {
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, value);
+        }
+    }
+    public bool IsKietSuc()
+    {
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KietSuc, out int value))
+        {
+            if(value > 0)
+            {
+                return true;
+            }    
+        }
+        return false;
 
-    }    
+    }
+    [Button]   
     public void EndTurn()
     {
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DeTonThuong, out int value))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, value);
         }
+       
     }
+    [Button]
     public void TakeDame(CharacterCombat sender , int dame)
     {
         dame += buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.DeTonThuong, 0);
+        int hotrao = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.HoTrao,0);
+        hotrao = Mathf.Clamp(hotrao, 0, dame);
+        dame -= hotrao;
+        RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao,hotrao);
+        RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, dame);
+
         Debug.Log(this.gameObject.name+ "nhận dame là : " + dame);
         characterStatsCurrent.hp -= dame;
         characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);
+
+        Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME);
 
     }
     public void Healing(CharacterCombat sender, int hp)
     {
         characterStatsCurrent.hp += hp;
         characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);
+
+
+        Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME);
 
     }
 

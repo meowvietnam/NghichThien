@@ -24,6 +24,9 @@ public abstract class ThanThong : BaseSkill
 
     public abstract override string GetDesc();
     
-
+    public virtual bool IsCanUse(CharacterCombat caster , CharacterCombat target)
+    {
+        return true;
+    }    
    
 }
