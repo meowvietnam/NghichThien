@@ -14,18 +14,19 @@ namespace CreateCharacter
         [SerializeField] private GameObject hasCharGO;
         [SerializeField] private SkeletonGraphic graphic;
         private bool hasChar;
+        private Dictionary<string, string> currentSkins = new Dictionary<string, string>();
+        private Dictionary<string, Color> currentColors = new Dictionary<string, Color>();
         public void Init(bool hasChar)
         {
             this.hasChar = hasChar;
             addGO.SetActive(!hasChar);
             hasCharGO.SetActive(hasChar);
         }
-        public object SetSkins(List<(string,string)> combines,Color hairColor)
+        public void SetSkin(Dictionary<string,string> combines,Dictionary<string,Color> colors = null)
         {
             var combineSkin = new Skin("character");
             var skeleton = graphic.Skeleton;
             var data = skeleton.Data;
-            List<Slot> hairSlots = null;
             foreach (var (skinId,skinName) in combines)
             {
                 var skin = data.FindSkin(skinName);
@@ -34,23 +35,44 @@ namespace CreateCharacter
                     Debug.LogError($"Skin not found: {skinName}");
                     continue;
                 }
-                if(skinId == "hair")
-                {
-                    hairSlots = skin.Attachments.Select(a => skeleton.Slots.Items[a.SlotIndex]).ToList();
-                   
-                }
+                currentSkins[skinId] = skinName;
                 combineSkin.AddSkin(skin);
             }
             skeleton.SetSkin(combineSkin);
             skeleton.SetSlotsToSetupPose();
-
             graphic.Update(0);
-            foreach (var item in hairSlots)
+            if (colors == null) return;
+            foreach (var (skinId, color) in colors)
             {
-                item.SetColor(hairColor);
-                Debug.Log($"Set hair slot color to black: {item.Data.Name}");
+                var skinName = currentSkins[skinId];
+                var skin = data.FindSkin(skinName);
+                foreach (var attachment in skin.Attachments)
+                {
+                    var slot = skeleton.Slots.Items[attachment.SlotIndex];
+                    slot.SetColor(color);
+                }
+                currentColors[skinId] = color;
             }
-            return null;
+        }
+        public void SetSkin(string skinId,string skinName)
+        {
+            currentSkins[skinId] = skinName;
+            SetSkin(currentSkins);
+        }
+        public void SetColor(List<string> skinIds, Color color)
+        {
+            var skeleton = graphic.Skeleton;
+            var data = skeleton.Data;
+            foreach (var skinId in skinIds)
+            {
+                var skinName = currentSkins[skinId];
+                var skin = data.FindSkin(skinName);
+                foreach (var attachment in skin.Attachments)
+                {
+                    var slot = skeleton.Slots.Items[attachment.SlotIndex];
+                    slot.SetColor(color);
+                }
+            }
         }
     }
 }

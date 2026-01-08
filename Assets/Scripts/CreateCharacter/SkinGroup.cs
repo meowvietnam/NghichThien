@@ -11,7 +11,6 @@ namespace CreateCharacter
     {
         [field: SerializeField] public string Id { get; private set; }
         [field: SerializeField] public string Name { get; private set; }
-        [field: SerializeField] public bool HasColor { get; private set; }
         [field: SerializeField] public List<SkinCategory> Categories { get; private set; }
         [field: SerializeField] public List<ColorGroup> ColorGroups { get; private set; }
     }

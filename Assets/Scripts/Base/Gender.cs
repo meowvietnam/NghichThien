@@ -1,4 +1,4 @@
-namespace AllMaps
+namespace Base
 {
     public enum Gender
     {
