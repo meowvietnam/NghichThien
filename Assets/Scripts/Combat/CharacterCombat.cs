@@ -1,9 +1,14 @@
 ﻿using AllMaps;
+using Base;
+using DG.Tweening;
 using LongDH.LongDHModules;
+using LongDH.Script.ObjectPool;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
+using Spine.Unity;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.Networking.UnityWebRequest;
 
 
@@ -60,6 +65,79 @@ public class CharacterStats
 }
 public class CharacterCombat : MonoBehaviour
 {
+    public const string ANIM_IDLE = "Idle_0";
+    public const string ANIM_PUNCH = "Punch_0";
+    public const string ANIM_HIT = "Hit_0";
+    public const string ANIM_DIE = "Die_0";
+    public CombatManager CombatManager=>transform.GetComponentInParent<CombatManager>();
+    [SerializeField] protected Text textSkillNameCall;
+    public Gender gender;
+    [SerializeField] SkeletonGraphic[] characterGender;
+    [SerializeField] private SkeletonGraphic currentCharGender => characterGender[(int)gender];
+
+    public void PlaySkill(ThanThong thanThong)
+    {
+        DOTween.Kill("HideSkillName");
+
+        textSkillNameCall.transform.parent.gameObject.SetActive(true);
+        textSkillNameCall.text = thanThong.name;
+
+        DOVirtual.DelayedCall(1f, () =>
+        {
+            textSkillNameCall.transform.parent.gameObject.SetActive(false);
+        }).SetId("HideSkillName");
+
+        StartAnimPunch();
+        thanThongOldUse = thanThong;
+    }
+    public void StartAnimPunch()
+    {
+        // Chạy anim tấn công ngay lập tức
+        currentCharGender.AnimationState.SetAnimation(0, ANIM_PUNCH, false);
+        // Xếp hàng anim Idle để chạy ngay sau khi anim trên kết thúc
+        currentCharGender.AnimationState.AddAnimation(0, ANIM_IDLE, true, 0);
+    }
+
+    public void StartAnimHit()
+    {
+        // Chạy anim tấn công ngay lập tức
+        currentCharGender.AnimationState.SetAnimation(0, ANIM_HIT, false);
+        // Xếp hàng anim Idle để chạy ngay sau khi anim trên kết thúc
+        currentCharGender.AnimationState.AddAnimation(0, ANIM_IDLE, true, 0);
+    }
+    public void StartAnimDie()
+    {
+        // Chạy anim tấn công ngay lập tức
+        currentCharGender.AnimationState.SetAnimation(0, ANIM_DIE, false);
+        
+    }
+    public void SetTextDameAnim(int dame)
+    {
+        var textDame = CombatManager.GetTextDame();
+        textDame.transform.SetParent(this.transform);
+        textDame.transform.localScale = Vector3.one *2f;
+        // 1. Đặt vị trí bắt đầu (Tại nhân vật + cao lên 2 đơn vị)
+        Vector3 startPos = Vector3.up * 1000;
+        textDame.transform.localPosition = startPos;
+        // 2. Xử lý Màu sắc và Alpha (Sửa lỗi gán .a)
+        Color targetColor = (dame > 0) ? Color.green : Color.red;
+        textDame.text = dame.ToString();
+
+        targetColor.a = 1; // Đảm bảo hiện rõ lúc đầu
+        textDame.color = targetColor;
+
+        // 3. Hiệu ứng bay lên (Dùng DOMoveY để chỉ tác động trục Y)
+        float time = 1f;
+        float flyHeight = 200; // Khoảng cách bay lên thêm
+        textDame.transform.DOLocalMoveY(startPos.y + flyHeight, time);
+
+        // 4. Hiệu ứng mờ dần
+        textDame.DOFade(0, time).OnComplete(() => {
+            textDame.gameObject.Recycle();
+            // Có thể ẩn text hoặc cho vào Pool sau khi xong
+            // textDame.gameObject.SetActive(false);
+        });
+    }
     public int khiKim;
     public int khiMoc;
     public int khiThuy;
@@ -84,6 +162,7 @@ public class CharacterCombat : MonoBehaviour
         thanThongCoolDown[thanThong] = thanThongCoolDown.GetValueOrDefault(thanThong, 0) + count;
 
     }
+    [Button]
     public void AddBuffAndDebuffCount(EBuffAndDeBuff type, int count)
     {
 
@@ -96,6 +175,7 @@ public class CharacterCombat : MonoBehaviour
 
 
     }
+    
     public void RemoveBuffAndDebuffCount(EBuffAndDeBuff type, int count)
     {
         if (!buffAndDebuffCount.TryGetValue(type, out int current))
@@ -121,8 +201,11 @@ public class CharacterCombat : MonoBehaviour
         characterStatsCurrent = characterStat.Clone();
         thanThongOldUse = null;
         thanThongCoolDown.Clear();
+        currentCharGender.gameObject.SetActive(true);
+        currentCharGender.AnimationState.SetAnimation(0, ANIM_IDLE, true);
+
     }
-    
+
     public void HapThuLinhKhi(ELinhKhi elinhKhi , int count)
     {
         switch (elinhKhi)
@@ -343,16 +426,34 @@ public class CharacterCombat : MonoBehaviour
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, dame);
 
         Debug.Log(this.gameObject.name+ "nhận dame là : " + dame);
+        if(dame>0)
+        {
+            StartAnimHit();
+            SetTextDameAnim(-dame);
+        }
         characterStatsCurrent.hp -= dame;
         characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);
 
         Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME);
 
+        CheckDie();
     }
+    public virtual void CheckDie()
+    {
+        if (characterStatsCurrent.hp > 0)
+        {
+            Die();
+        }
+    }    
+    public virtual void Die()
+    {
+        StartAnimDie();
+    }    
     public void Healing(CharacterCombat sender, int hp)
     {
         characterStatsCurrent.hp += hp;
         characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);
+        SetTextDameAnim(+hp);
 
 
         Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME);

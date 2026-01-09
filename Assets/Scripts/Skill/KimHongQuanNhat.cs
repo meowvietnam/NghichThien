@@ -19,8 +19,10 @@ public class KimHongQuanNhat : ThanThong
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe,sucThe);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi,kiemKhi);
 
-        int dame = perDameKiemKhi * kiemKhi + perDameSucThe * sucThe;
+        int dame =  this.dame+ perDameKiemKhi * kiemKhi + perDameSucThe * sucThe;
         target.TakeDame(caster,dame);
+
+        ShowSkillEffectParticle(target, 1f);
     }
 
     public override string GetDesc()

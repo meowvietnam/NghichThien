@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using LongDH.Script.ObjectPool;
+using UnityEngine;
 [CreateAssetMenu]
 public class BasicTTBuffPercentLinhKhi : ThanThong
 {
     [SerializeField] private float buffPercent = 2.5f;
     [SerializeField] private ELinhKhi elinhKhi;
-
+    [SerializeField]
+    private float delayTimeEffect = 1f;
     protected override ETypeItem tierItem => throw new System.NotImplementedException();
 
     public override void Execute(CharacterCombat caster, CharacterCombat target)
@@ -46,6 +48,8 @@ public class BasicTTBuffPercentLinhKhi : ThanThong
             default:
                 break;
         }
+        ShowSkillEffect(caster, delayTimeEffect);
+        
     }
 
     public override string GetDesc()

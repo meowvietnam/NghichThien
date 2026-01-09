@@ -29,9 +29,10 @@ public class SlotLinhKhi : MonoBehaviour , IPointerDownHandler
         this.countRequire += countRequire;
 
     }
-    public void SetCountRequire(int countRequire)
+    public void SetCountRequire(int countRequire , ELinhKhi eLinhKhi = ELinhKhi.None)
     {
         this.countRequire = countRequire;
+        this.eLinhKhi = eLinhKhi;
 
     }
     public void SetLock(bool isLock)

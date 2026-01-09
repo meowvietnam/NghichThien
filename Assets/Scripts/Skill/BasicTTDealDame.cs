@@ -6,10 +6,13 @@ public class BasicTTDealDame : ThanThong, BaseSkill.LienKich
     [SerializeField] private int dame;
     [SerializeField] private int dameLienKich;
     [SerializeField] private ELinhKhi elinhKhi;
+    [SerializeField]
+    private float delayTimeEffect  = 0.5f;
 
-    public override void Execute(CharacterCombat caster, CharacterCombat target)
+  public override void Execute(CharacterCombat caster, CharacterCombat target)
     {
         target.TakeDame(caster,dame);
+        ShowSkillEffect(target, delayTimeEffect);
 
     }
 

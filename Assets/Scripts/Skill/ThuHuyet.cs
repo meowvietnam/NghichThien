@@ -11,6 +11,8 @@ public class ThuHuyet : ThanThong
         {
             caster.HapThuLinhKhi(item.Key, item.Value);
         }
+        ShowSkillEffect(caster, 1.5f);
+
     }
 
     public override string GetDesc()

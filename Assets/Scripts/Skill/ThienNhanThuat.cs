@@ -16,8 +16,8 @@ public class ThienNhanThuat : ThanThong
                 target.TakeDame(caster,damePerCountAttack);
             }
 
-        }    
-            
+        }
+
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)

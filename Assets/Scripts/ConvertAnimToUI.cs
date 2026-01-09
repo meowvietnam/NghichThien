@@ -22,5 +22,7 @@ public class ConvertAnimToUI : MonoBehaviour
     void Update()
     {
         img.sprite = renderer.sprite;
+        img.color = renderer.color;
+        img.SetNativeSize();
     }
 }

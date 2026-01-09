@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using CreateCharacter;
+using DG.Tweening;
 using LongDH.LongDHModules;
 using NUnit.Framework.Interfaces;
 using Sirenix.OdinInspector;
@@ -134,12 +135,15 @@ public class PlayerUICombat : MonoBehaviour
         {
             foreach (var item in currentNodes)
             {
+                if (item == null || item.eLinhKhi == ELinhKhi.None) continue;
                 item.SetLock(false);
                 int count = item.count;
-                for (int i = 0; i < count; i++)
-                {
-                    item.actionPointerDown?.Invoke();
-                }
+                AddLinhKhiFromNodeToRemain(
+                      item,
+                      linhKhiRemains.FirstOrDefault(x => x.eLinhKhi == item.eLinhKhi),
+                      count
+                );
+                
             }
             SetStateControl(EStateControl.None);
         });
@@ -179,20 +183,11 @@ public class PlayerUICombat : MonoBehaviour
 
                     if (!item2.isLock && (item2.count <= 0 || item2.eLinhKhi == item1.eLinhKhi))
                     {
-                        if (item2.count <= 0)
-                        {
-                            item2.eLinhKhi = item1.eLinhKhi;
-                            item2.icon.sprite = GetSpriteLinhKhi(item2.eLinhKhi);
-                            item1.icon.SetNativeSize();
-                        }
-                        item2.AddCount(1);
-                        item2.AddCountRequire(-1);
-                        item1.AddCount(-1);
+                        AddLinhKhiFromRemainToNode(item1,item2);
                         break;
                     }
                 }
-                textTip.text = $"{CurrentLinhKhi - maxLinhKhi}";
-                CheckTuongQuan();
+             
 
             });
         }
@@ -206,16 +201,10 @@ public class PlayerUICombat : MonoBehaviour
                 {
                     if ((item2.eLinhKhi == item1.eLinhKhi))
                     {
-                        item2.AddCount(1);
-                        item1.AddCount(-1, () =>
-                        {
-                            item1.eLinhKhi = ELinhKhi.None;
-                        });
-                        item1.SetCountRequire(1);
+                        AddLinhKhiFromNodeToRemain(item1,item2);
                     }
                 }
-                CheckTuongQuan();
-                textTip.text = $"{CurrentLinhKhi - maxLinhKhi}";
+              
 
             });
         }
@@ -251,21 +240,21 @@ public class PlayerUICombat : MonoBehaviour
 
                     if (match != null)
                     {
-
+                        SlotLinhKhi node = null;
                         foreach (var item in currentNodes)
                         {
                             if(item.count<=0)
                             {
-                                item.SetCountRequire(require.count);
+                                node = item;
+                                item.SetCountRequire(require.count,require.linhKhiRequire);
                                 break;
                             }
                         }
-                        for (int i = 0; i < require.count; i++)
-                            match.actionPointerDown?.Invoke();
-                        
-                        if(hasSpecificType)
+                        AddLinhKhiFromRemainToNode(match, node, require.count);
+
+
+                        if (hasSpecificType)
                         {
-                            var node = currentNodes.FirstOrDefault(n => n.eLinhKhi == require.linhKhiRequire && !n.isLock);
                             node?.SetLock(true);
                         }    
                         
@@ -287,6 +276,31 @@ public class PlayerUICombat : MonoBehaviour
        
 
       
+    }
+    public void AddLinhKhiFromRemainToNode(SlotLinhKhi from , SlotLinhKhi to, int count = 1)
+    {
+        if (to.count <= 0)
+        {
+            to.eLinhKhi = from.eLinhKhi;
+            to.icon.sprite = GetSpriteLinhKhi(to.eLinhKhi);
+            to.icon.SetNativeSize();
+        }
+        to.AddCount(count);
+        to.AddCountRequire(-count);
+        from.AddCount(-count);
+        textTip.text = $"{CurrentLinhKhi - maxLinhKhi}";
+        CheckTuongQuan();
+    }
+    public void AddLinhKhiFromNodeToRemain(SlotLinhKhi from, SlotLinhKhi to , int count = 1)
+    {
+        to.AddCount(count);
+        from.AddCount(-count, () =>
+        {
+            from.eLinhKhi = ELinhKhi.None;
+        });
+        from.SetCountRequire(count);
+        textTip.text = $"{CurrentLinhKhi - maxLinhKhi}";
+        CheckTuongQuan();
     }
     public void CheckFightSkillCanUse()
     {
