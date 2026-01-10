@@ -65,11 +65,12 @@ namespace CreateCharacter
                 colorGroup.OnChanged -= OnColorChange;
             }
         }
-        public void SelectFirst()
+        public void DefaultSelector()
         {
             if(colorList.HasColorPallet())
             {
-                var color = colorList.SelectFirst();
+                var color = colorGroup.DefaultColor;
+                colorList.SelectColor(color);
                 colorImage.color = color;
                 foreach (var item in colorGroup.CategoryIds)
                 {

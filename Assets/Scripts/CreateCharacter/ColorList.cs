@@ -45,5 +45,16 @@ namespace CreateCharacter
         {
             return colorItems[0].SetIsOnWithoutNotify();
         }
+        public void SelectColor(Color color)
+        {
+            foreach (var item in colorItems)
+            {
+                if(Vector4.Distance(item.GetColor(),color) < 0.001f)
+                {
+                    item.SetIsOnWithoutNotify();
+                    break;
+                }   
+            }
+        }
     }
 }

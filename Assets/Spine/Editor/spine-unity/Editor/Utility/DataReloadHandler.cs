@@ -111,7 +111,7 @@ namespace Spine.Unity.Editor {
 					if (renderer.isActiveAndEnabled && renderer.skeletonDataAsset == skeletonDataAsset) renderer.Initialize(true);
 				}
 
-				SkeletonGraphic[] activeSkeletonGraphics = GameObject.FindObjectsOfType<SkeletonGraphic>();
+                SkeletonGraphic[] activeSkeletonGraphics = GameObject.FindObjectsOfType<SkeletonGraphic>();
 				foreach (SkeletonGraphic graphic in activeSkeletonGraphics) {
 					if (graphic.isActiveAndEnabled && graphic.skeletonDataAsset == skeletonDataAsset)
 						graphic.Initialize(true);

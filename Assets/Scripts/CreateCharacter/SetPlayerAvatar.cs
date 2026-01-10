@@ -1,6 +1,4 @@
 using Base;
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,7 +41,7 @@ namespace CreateCharacter
             avatar.SetGender(gender);
             if(!currentSelect.IsUsedToSelect)
             {
-                currentSelect.SelectFirst();
+                currentSelect.DefaultSelector();
             }
             UpdateAvatar();
         }
@@ -71,7 +69,7 @@ namespace CreateCharacter
         }
         public void UpdateAvatar()
         {
-            avatar.UpdateSkin(currentSelect.Skin, currentSelect.Colors);
+            avatar.SetSkin(currentSelect.Skin, currentSelect.Colors);
         }
     }
 }

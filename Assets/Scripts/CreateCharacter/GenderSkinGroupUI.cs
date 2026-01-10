@@ -38,10 +38,10 @@ namespace CreateCharacter
         {
             itemListGroupContainer.RandomSelector();
         }
-        public void SelectFirst()
+        public void DefaultSelector()
         {
             IsUsedToSelect = true;
-            itemListGroupContainer.SelectFirst();
+            itemListGroupContainer.DefaultSelector();
         }
     }
 }

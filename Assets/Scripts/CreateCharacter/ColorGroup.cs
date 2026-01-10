@@ -10,6 +10,7 @@ namespace CreateCharacter
     {
         [field: SerializeField] public string Id { get; private set; }
         [field: SerializeField] public List<string> CategoryIds { get; private set; }
+        [field: SerializeField] public Color DefaultColor { get; private set; }
         public Action<Color> OnChanged;
     }
 }

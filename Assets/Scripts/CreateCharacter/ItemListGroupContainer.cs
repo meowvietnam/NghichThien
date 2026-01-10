@@ -43,11 +43,11 @@ namespace CreateCharacter
                 itemList.RandomSelector();
             }
         }
-        public void SelectFirst()
+        public void DefaultSelector()
         {
             foreach (var item in itemListContainers)
             {
-                item.SelectFirst();
+                item.DefaultSelector();
             }
         }
     }

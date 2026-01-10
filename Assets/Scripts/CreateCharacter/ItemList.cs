@@ -50,12 +50,12 @@ namespace CreateCharacter
             item.ToggleOnWithoutNotify();
             SetPlayerAvatar.Instance.SetSkin(Id,item.SkinName);
         }
-        public void SelectFirst()
+        public void DefaultSelector()
         {
             var item = items[0];
             item.ToggleOnWithoutNotify();
             SetPlayerAvatar.Instance.SetSkin(Id,item.SkinName);
-            selectColor.SelectFirst();
+            selectColor.DefaultSelector();
         }
     }
 }

@@ -65,11 +65,11 @@ namespace CreateCharacter
                 item.RandomSelector();
             }
         }
-        public void SelectFirst()
+        public void DefaultSelector()
         {
             foreach (var item in itemLists)
             {
-                item.SelectFirst();
+                item.DefaultSelector();
             }
         }
     }
