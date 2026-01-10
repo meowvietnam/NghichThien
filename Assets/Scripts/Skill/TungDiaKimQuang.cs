@@ -8,6 +8,8 @@ public class TungDiaKimQuang : ThanThong
         caster.AddThanThongCoolDown(this, 1);
         var linhKhiHapThu = caster.HapThuLinhKhi(8);
         caster.HapThuLinhKhi(ELinhKhi.Kim,linhKhiHapThu[ELinhKhi.Kim]);
+        ShowSkillEffect(caster, 1f);
+
     }
 
     public override string GetDesc()

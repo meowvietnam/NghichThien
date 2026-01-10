@@ -59,6 +59,12 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private Image progressHpChar2;
     [SerializeField] private Text textHpChar2;
     [SerializeField] private ScrollRect statusChar2;
+
+    [SerializeField] private Text prefabTextDame;
+    public Text GetTextDame()
+    {
+        return prefabTextDame.Spawn(this.transform);
+    }
     private void SetUIHpBar(float hp,float maxHp , Image progress , Text txt)
     {
         progress.fillAmount = (float)(hp / maxHp);
@@ -86,22 +92,26 @@ public class CombatManager : MonoBehaviour
     {
         char1.Init(new CharacterStats()
         {
+            level = 9,
             percentKim = 60,
             percentMoc = 10,
             percentThuy = 10,
             percentHoa = 10,
             percentTho = 10,
             hp = 200,
+            tocDoBay = 20,
 
         });
         char2.Init(new CharacterStats()
         {
+            level = 9,
             percentKim = 60,
             percentMoc = 10,
             percentThuy = 10,
             percentHoa = 10,
             percentTho = 10,
             hp = 200,
+            tocDoBay = 10,
         });
         SetUIHpBar();
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, EndTurn);
@@ -110,6 +120,7 @@ public class CombatManager : MonoBehaviour
         Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME, SetUIHpBar);
 
     }
+    
     public static bool IsTuongDong(List<LinhKhiTieuTan> linhKhiTieuTan)
     {
         // Lấy danh sách các hệ có count > 0
@@ -223,7 +234,8 @@ public class CombatManager : MonoBehaviour
 
             }
              
-            currentTurn.thanThongOldUse = thanThong;
+            currentTurn.PlaySkill(thanThong);
+
         }
         if (linhKhiTieuTan != null)
         {
@@ -346,10 +358,15 @@ public class CombatManager : MonoBehaviour
 
     }
 
+    private void StartTurn()
+    {
+        currentTurn = char1.characterStatsCurrent.tocDoBay >= char2.characterStatsCurrent.tocDoBay ? char1 : char2;
 
+    }    
     void Start()
     {
-        
+        StartTurn();
+        NewTurn();
     }
 
     // Update is called once per frame

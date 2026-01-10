@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using DG.Tweening;
+using LongDH.Script.ObjectPool;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 public abstract class ThanThong : BaseSkill
@@ -19,6 +21,7 @@ public abstract class ThanThong : BaseSkill
     {
         get => ETypeItem.ThanThong;
     }
+    [SerializeField] protected GameObject prefabEffectSkill;
     public abstract override void Execute(CharacterCombat caster, CharacterCombat target);
 
 
@@ -28,5 +31,29 @@ public abstract class ThanThong : BaseSkill
     {
         return true;
     }    
-   
+    protected virtual void ShowSkillEffect(CharacterCombat target , float delay , Vector3 addPos = default)
+    {
+        var posCenter = Vector3.up * 500;
+        posCenter += addPos;
+        var effect = prefabEffectSkill.Spawn(target.transform);
+        effect.transform.localPosition = posCenter;
+        effect.transform.localScale = prefabEffectSkill.transform.localScale;
+        DOVirtual.DelayedCall(delay, () =>
+        {
+            effect.gameObject.Recycle();
+        });
+
+    }
+    protected virtual void ShowSkillEffectParticle(CharacterCombat target, float delay, Vector3 addPos = default)
+    {
+        var posCenter = Vector3.up * 500;
+        posCenter += addPos;
+        var effect = prefabEffectSkill.Spawn(target.transform);
+        effect.transform.localPosition = posCenter;
+        DOVirtual.DelayedCall(delay, () =>
+        {
+            effect.gameObject.Recycle();
+        });
+
+    }
 }
