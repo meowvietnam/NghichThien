@@ -311,33 +311,13 @@ public class PlayerUICombat : MonoBehaviour
             if (item.ThanThongData == null) continue;
             item.SetLock(false);
 
-            var listRequire = item.ThanThongData.requireActives;
-            listRequire = listRequire
-            .OrderBy(x => x.linhKhiRequire == ELinhKhi.None)
-            .ToList();
-
-            foreach (var require in listRequire)
+            if(!item.ThanThongData.IsCanUseLinhKhiRequire(player))
             {
-                bool hasSpecificType = require.linhKhiRequire != ELinhKhi.None;
+                Debug.Log("CheckFightSkillCanUse  lock");
+                item.SetLock(true);
+            }    
 
-                // --- Tìm đối tượng phù hợp ---
-                var match = hasSpecificType
-                    ? linhKhiRemains.FirstOrDefault(l => l.eLinhKhi == require.linhKhiRequire && l.count >= require.count)
-                    : linhKhiRemains.FirstOrDefault(l => l.count >= require.count );
-
-                // --- Nếu tìm thấy trong linhKhiRemains ---
-
-                if (match == null)
-                {
-                    Debug.Log("CheckFightSkillCanUse  lock"  );
-                    item.SetLock(true);
-                    break;
-
-                }
-               
-
-
-            }
+           
         }
         foreach (var item in fightSkills)
         {

@@ -26,7 +26,46 @@ public abstract class ThanThong : BaseSkill
 
 
     public abstract override string GetDesc();
-    
+
+    public bool IsCanUseLinhKhiRequire(CharacterCombat caster)
+    {
+        foreach (var require in requireActives)
+        {
+            if (require.linhKhiRequire == ELinhKhi.None)
+            {
+                // Kiểm tra xem có CÓ ÍT NHẤT MỘT loại nào đủ count hay không
+                bool hasAnyTypeEnough = caster.khiKim >= require.count ||
+                                        caster.khiMoc >= require.count ||
+                                        caster.khiThuy >= require.count ||
+                                        caster.khiHoa >= require.count ||
+                                        caster.khiTho >= require.count ||
+                                        caster.khiMa >= require.count;
+
+                if (!hasAnyTypeEnough) return false;
+            }
+            else
+            {
+                // Nếu yêu cầu loại cụ thể thì phải đúng loại đó
+                int availableCount = GetLinhKhiAmount(caster, require.linhKhiRequire);
+                if (availableCount < require.count) return false;
+            }
+        }
+        return true;
+    }
+
+    private int GetLinhKhiAmount(CharacterCombat caster, ELinhKhi type)
+    {
+        return type switch
+        {
+            ELinhKhi.Kim => caster.khiKim,
+            ELinhKhi.Moc => caster.khiMoc,
+            ELinhKhi.Thuy => caster.khiThuy,
+            ELinhKhi.Hoa => caster.khiHoa,
+            ELinhKhi.Tho => caster.khiTho,
+            ELinhKhi.Ma => caster.khiMa,
+            _ => 0
+        };
+    }
     public virtual bool IsCanUse(CharacterCombat caster , CharacterCombat target)
     {
         return true;
