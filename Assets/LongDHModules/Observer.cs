@@ -1,5 +1,6 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace LongDH.LongDHModules
@@ -48,12 +49,19 @@ namespace LongDH.LongDHModules
 
         public static void Notify(string eventName, params object[] data)
         {
-           
+            // Tạo bản sao bằng .ToList() để tránh lỗi "Collection was modified"
+            var listParam = CreateListObserverForEventParam(eventName).ToList();
+            foreach (var observer in listParam)
+            {
+                observer?.Invoke(data);
+            }
 
-            foreach (var observer in CreateListObserverForEventParam(eventName))
-                observer(data);
-            foreach (var observer in CreateListObserverForEventVoid(eventName))
-                observer();
+            // Tương tự cho danh sách Void
+            var listVoid = CreateListObserverForEventVoid(eventName).ToList();
+            foreach (var observer in listVoid)
+            {
+                observer?.Invoke();
+            }
         }
 
         public static void Notify(string eventName)
