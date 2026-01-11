@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 [CreateAssetMenu]
 public class KimCuongTram : ThanThong , BaseSkill.LienKich
 {
@@ -6,7 +7,7 @@ public class KimCuongTram : ThanThong , BaseSkill.LienKich
     [SerializeField] private int hapThu = 1;
     public override void Execute(CharacterCombat caster, CharacterCombat target)
     {
-        target.TakeDame(caster, dame);
+        target.TakeDameCaculate(caster, new List<int> { dame });
 
     }
 

@@ -113,6 +113,7 @@ public class CombatManager : MonoBehaviour
             hp = 200,
             tocDoBay = 10,
         });
+        char2.currentCharGender.transform.localEulerAngles = new Vector3(0, 180, 0);
         SetUIHpBar();
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, EndTurn);
         Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, PlaySkill);
@@ -205,10 +206,11 @@ public class CombatManager : MonoBehaviour
     }    
     public void PlaySkill(params object[] data)
     {
-        ThanThong thanThong = data[0] as ThanThong;
-        List<LinhKhiTieuTan> linhKhiTieuTan = data[1] as List<LinhKhiTieuTan>;
+        ThanThong thanThong = data[1] as ThanThong;
+        List<LinhKhiTieuTan> linhKhiTieuTan = data[2] as List<LinhKhiTieuTan>;
         if (thanThong!= null)
         {
+            currentTurn.PlaySkill(thanThong);
             thanThong.Execute(currentTurn,targetTurn);
             if (thanThong is BaseSkill.LienKich thanThongLienKich && thanThongOldUse != null)
             {
@@ -233,9 +235,8 @@ public class CombatManager : MonoBehaviour
                 thanThongTuongDong.ExecuteTuongDong(currentTurn, targetTurn);
 
             }
-             
-            currentTurn.PlaySkill(thanThong);
-
+            currentTurn.SetThanThongOldUse(thanThong);
+            targetTurn.TakeDame();
         }
         if (linhKhiTieuTan != null)
         {
@@ -261,7 +262,7 @@ public class CombatManager : MonoBehaviour
         }
         if (currentTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out int kiemKhi))
         {
-            targetTurn.TakeDame(currentTurn, kiemKhi);
+            targetTurn.TakeDameCaculate(currentTurn, new List<int> { kiemKhi });
 
         }
         char1.EndTurn();
@@ -335,7 +336,7 @@ public class CombatManager : MonoBehaviour
     {
         if (currentTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out int sucThe))
         {
-            targetTurn.TakeDame(currentTurn, sucThe);
+            targetTurn.TakeDameCaculate(currentTurn, new List<int> { sucThe });
 
         }
         char1.NewTurn();

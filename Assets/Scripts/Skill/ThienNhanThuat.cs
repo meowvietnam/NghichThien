@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 [CreateAssetMenu]
 public class ThienNhanThuat : ThanThong
 {
@@ -10,11 +11,12 @@ public class ThienNhanThuat : ThanThong
         if(IsCanUse(caster,target))
         {
             caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi,requireKiemKhi);
-
+            List<int> dames = new List<int>();
             for (int i = 0; i < countAttack; i++)
             {
-                target.TakeDame(caster,damePerCountAttack);
+                dames.Add(damePerCountAttack);
             }
+            target.TakeDameCaculate(caster, dames, false);
 
         }
 

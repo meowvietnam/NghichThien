@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 [CreateAssetMenu]
 public class KimHongQuanNhat : ThanThong
 {
@@ -20,7 +21,7 @@ public class KimHongQuanNhat : ThanThong
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi,kiemKhi);
 
         int dame =  this.dame+ perDameKiemKhi * kiemKhi + perDameSucThe * sucThe;
-        target.TakeDame(caster,dame);
+        target.TakeDameCaculate(caster, new List<int> { dame });
 
         ShowSkillEffectParticle(target, 1f);
     }

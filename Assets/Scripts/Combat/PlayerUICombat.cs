@@ -113,7 +113,8 @@ public class PlayerUICombat : MonoBehaviour
 
                     break;
                 case EStateControl.UseSkill:
-                    Observer.Notify(EventList.GamePlay.PLAY_SKILL, fightSkillSelect.ThanThongData, GetLinhKhiTieuTans(currentNodes));
+                    if (currentNodes.Any(x => x.countRequire > 0)) return;
+                    Observer.Notify(EventList.GamePlay.PLAY_SKILL,player, fightSkillSelect.ThanThongData, GetLinhKhiTieuTans(currentNodes));
                     SetStateControl(EStateControl.None);
                     break;
                 case EStateControl.DeleteLinhKhi:
@@ -174,7 +175,7 @@ public class PlayerUICombat : MonoBehaviour
             item1.Init(() =>
             {
                 Debug.Log(currentNodes.Count);
-                if (item1.count <= 0 || item1.isLock || (currentNodes.Any(x => x.eLinhKhi == item1.eLinhKhi && x.isLock == false) && eStateControl == EStateControl.UseSkill)) return;
+                if (item1.count <= 0 || item1.isLock || (currentNodes.Any(x => x.eLinhKhi == item1.eLinhKhi && x.isLock == false && x.countRequire<=0) && eStateControl == EStateControl.UseSkill )) return;
 
                 if (CurrentLinhKhi <= maxLinhKhi && eStateControl == EStateControl.DeleteLinhKhi) return;
                 foreach (var item2 in currentNodes)
@@ -294,11 +295,12 @@ public class PlayerUICombat : MonoBehaviour
     public void AddLinhKhiFromNodeToRemain(SlotLinhKhi from, SlotLinhKhi to , int count = 1)
     {
         to.AddCount(count);
+        from.AddCountRequire(count);
         from.AddCount(-count, () =>
         {
+            Debug.Log("tao chuyen none o day");
             from.eLinhKhi = ELinhKhi.None;
         });
-        from.SetCountRequire(count);
         textTip.text = $"{CurrentLinhKhi - maxLinhKhi}";
         CheckTuongQuan();
     }

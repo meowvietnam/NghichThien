@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CreateCharacter;
+using UnityEngine;
 
 public enum EBuffAndDeBuff
 {
@@ -290,6 +291,69 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case ELinhKhi.Ma:
                 text = "Ma";
+
+                break;
+            default:
+                break;
+        }
+        return text;
+    }
+    public string GetTextTypeSkill()
+    {
+        string text = string.Empty;
+        for (int i = 0; i < eTypeSkill.Length; i++)
+        {
+            var item  = eTypeSkill[i];
+            text += GetTextTypeSkill(item);
+            if(i < eTypeSkill.Length )
+            {
+                text += " - ";
+            }    
+
+        }
+       
+        return GetColoredText($"{text}","red");
+    }    
+    public string GetTextTypeSkill(ETypeSkill typeSkill)
+    {
+        string text = string.Empty;
+        switch (typeSkill)
+        {
+            case ETypeSkill.None:
+                break;
+            case ETypeSkill.Kim:
+                text = "Kim";
+                break;
+            case ETypeSkill.Moc:
+                text = "Mộc";
+                break;
+            case ETypeSkill.Thuy:
+                text = "Thủy";
+                break;
+            case ETypeSkill.Hoa:
+                text = "Hỏa";
+
+                break;
+            case ETypeSkill.Tho:
+                text = "Thổ";
+                break;
+            case ETypeSkill.Ma:
+                text = "Ma";
+                break;
+            case ETypeSkill.Kiem:
+                text = "Kiếm";
+
+                break;
+            case ETypeSkill.Khi:
+                text = "Khí";
+
+                break;
+            case ETypeSkill.The:
+                text = "Thể";
+
+                break;
+            case ETypeSkill.Than:
+                text = "Thần";
 
                 break;
             default:

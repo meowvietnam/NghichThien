@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using static CharacterCombat;
 [CreateAssetMenu]
 public class ThienQuanTram : ThanThong
@@ -11,11 +12,11 @@ public class ThienQuanTram : ThanThong
 
         if (hoTrao > 0)
         {
-            target.TakeDame(caster, dame * 2);
+            target.TakeDameCaculate(caster, new List<int> { dame *2 });
         }
         else
         {
-            target.TakeDame(caster, dame);
+            target.TakeDameCaculate(caster, new List<int> { dame });
         }
     }
 

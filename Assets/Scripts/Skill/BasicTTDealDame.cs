@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 [CreateAssetMenu]
 public class BasicTTDealDame : ThanThong, BaseSkill.LienKich
 {
@@ -11,14 +13,16 @@ public class BasicTTDealDame : ThanThong, BaseSkill.LienKich
 
   public override void Execute(CharacterCombat caster, CharacterCombat target)
     {
-        target.TakeDame(caster,dame);
+
+        target.TakeDameCaculate(caster, new List<int> { dame });
         ShowSkillEffect(target, delayTimeEffect);
 
     }
 
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
     {
-        target.TakeDame(caster, dameLienKich);
+        target.TakeDameCaculate(caster, new List<int> { dameLienKich });
+        Debug.Log("call lien kich basse tt dame");
 
     }
 

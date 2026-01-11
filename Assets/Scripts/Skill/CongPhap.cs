@@ -1,16 +1,55 @@
+﻿using LongDH.LongDHModules;
+using System.Linq;
 using UnityEngine;
 
-public class CongPhap : MonoBehaviour
+[System.Serializable]
+public class CongPhapMono
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public CongPhap congPhap;
+    public int level = 1;
+}
+public abstract class CongPhap : BaseSkill
+{
+    [SerializeField] private int tocDoTuLuyenBase;
+
+    public virtual int GetTocDoTuLuyen(CharacterCombat caster)
     {
-        
+        return CurrentLevelCongPhapInCombat(caster) * tocDoTuLuyenBase;
+
+    }
+    protected override ETypeItem typeItem => ETypeItem.CongPhap;
+    public virtual void ExecuteParams(params object[] data)
+    {
+        CharacterCombat caster = (CharacterCombat)data[0];
+        CharacterCombat target = (CharacterCombat)data[1];
+        Execute(caster, target);
+
+    }
+    public virtual int CurrentLevelCongPhapInCombat(CharacterCombat caster)
+    {
+        // Tìm trong danh sách trang bị của caster
+        var equip = caster.congPhapEquip.FirstOrDefault(x =>
+            x.congPhap != null &&
+            x.congPhap.GetType() == this.GetType() && // So sánh kiểu chính xác của class thực tế
+            x.congPhap.eTypeSkill == this.eTypeSkill  // Khớp loại kỹ năng
+        );
+
+        // Trả về level nếu tìm thấy, ngược lại trả về 0 (hoặc 1 tùy logic của bạn)
+        return equip != null ? equip.level : 0;
     }
 
-    // Update is called once per frame
-    void Update()
+    public abstract void InitPosCallExecute();
+
+    public abstract void Init();
+
+    public abstract override void Execute(CharacterCombat caster, CharacterCombat target);
+
+
+    public override string GetDesc()
     {
-        
+        return "";
     }
+    public abstract string GetDesc(int level);
+
+
 }

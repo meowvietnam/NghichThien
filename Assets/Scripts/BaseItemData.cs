@@ -34,8 +34,6 @@ public enum ETypeItem
     None,
     ThanThong,
     CongPhap,
-    ThanThongSach,
-    CongPhapSach,
     DanDuoc,
     DuocLieu,
     VatLieu
@@ -43,7 +41,7 @@ public enum ETypeItem
 public abstract class BaseItemData : ScriptableObject
 {
     [SerializeField] protected string nameItem;
-    protected abstract ETypeItem tierItem { get; }
+    protected abstract ETypeItem typeItem { get; }
     [SerializeField]
     public Sprite spriteItem;
     [SerializeField]

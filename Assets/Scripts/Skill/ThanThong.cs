@@ -17,7 +17,7 @@ public abstract class ThanThong : BaseSkill
         .Where(r => r.linhKhiRequire != ELinhKhi.None)
         .Select(r => r.linhKhiRequire)
         .ToArray();
-    protected override ETypeItem tierItem
+    protected override ETypeItem typeItem
     {
         get => ETypeItem.ThanThong;
     }
@@ -33,6 +33,7 @@ public abstract class ThanThong : BaseSkill
     }    
     protected virtual void ShowSkillEffect(CharacterCombat target , float delay , Vector3 addPos = default)
     {
+        if (prefabEffectSkill == null) return;
         var posCenter = Vector3.up * 500;
         posCenter += addPos;
         var effect = prefabEffectSkill.Spawn(target.transform);
@@ -46,6 +47,7 @@ public abstract class ThanThong : BaseSkill
     }
     protected virtual void ShowSkillEffectParticle(CharacterCombat target, float delay, Vector3 addPos = default)
     {
+        if (prefabEffectSkill == null) return;
         var posCenter = Vector3.up * 500;
         posCenter += addPos;
         var effect = prefabEffectSkill.Spawn(target.transform);
