@@ -348,7 +348,7 @@ public class PlayerUICombat : MonoBehaviour
         foreach (var item in fightSkills)
         {
             if (item.ThanThongData == null) continue;
-
+            item.ShowRecommentHighlight(false);
             if (item.isLock == false)
             {
                 if(item.ThanThongData is BaseSkill.LienKich)
@@ -356,7 +356,6 @@ public class PlayerUICombat : MonoBehaviour
                     if(CombatManager.IsLienKich(item.ThanThongData,player.thanThongOldUse))
                     {
                         item.ShowRecommentHighlight(true);
-                        break;
 
                     }
                 }    
@@ -365,7 +364,6 @@ public class PlayerUICombat : MonoBehaviour
                     if (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(linhKhiRemains)) == ETuongQuan.TuongSinh)
                     {
                         item.ShowRecommentHighlight(true);
-                        break;
 
                     }
                 }
@@ -374,7 +372,6 @@ public class PlayerUICombat : MonoBehaviour
                     if (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(linhKhiRemains)) == ETuongQuan.TuongKhac)
                     {
                         item.ShowRecommentHighlight(true);
-                        break;
 
                     }
                 }
@@ -383,7 +380,6 @@ public class PlayerUICombat : MonoBehaviour
                     if (CombatManager.IsTuongDong(GetLinhKhiTieuTans(linhKhiRemains)))
                     {
                         item.ShowRecommentHighlight(true);
-                        break;
 
                     }
                 }
