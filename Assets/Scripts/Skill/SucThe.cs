@@ -4,7 +4,7 @@ using UnityEngine;
 public class SucThe : ThanThong
 {
     [SerializeField] private int sucThe = 33;
-    public override void Execute(CharacterCombat caster, CharacterCombat target)
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SucThe,sucThe);
         ShowSkillEffect(caster, 1f);

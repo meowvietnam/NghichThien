@@ -3,7 +3,7 @@
 public class ThuHuyet : ThanThong
 {
     [SerializeField] private int hapThu = 6;
-    public override void Execute(CharacterCombat caster, CharacterCombat target)
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddThanThongCoolDown(this,1);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KietSuc,1);

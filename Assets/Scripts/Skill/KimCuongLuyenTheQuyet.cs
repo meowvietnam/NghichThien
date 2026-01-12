@@ -1,0 +1,39 @@
+﻿using LongDH.LongDHModules;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using UnityEngine;
+[CreateAssetMenu]
+public class KimCuongLuyenTheQuyet : CongPhap
+{
+    [SerializeField] private int[] hoTraoBuff;
+   
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data )
+    {
+        List<LinhKhiTieuTan> linhKhiTieuTan = data[2] as List<LinhKhiTieuTan>;
+        int count = 0;
+        foreach (var item in linhKhiTieuTan)
+        {
+            count += item.count;
+        }
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao,count * hoTraoBuff[CurrentLevelCongPhapInCombat(caster) - 1]);
+
+    }
+
+    public override string GetDesc(int level)
+    {
+        return $"Giai đoạn tiêu tán linh khí, mỗi tiêu tán 1 điểm linh khí thu hoạch được {GetColoredText($"+{hoTraoBuff[level - 1]}", "red")} tầng {GetDescBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}";
+    }
+
+
+    public override void Init()
+    {
+        InitPosCallExecute();
+    }
+
+    public override void InitPosCallExecute()
+    {
+        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT,ExecuteParams);
+    }
+
+  
+}

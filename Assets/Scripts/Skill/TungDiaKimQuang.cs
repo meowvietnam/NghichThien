@@ -3,7 +3,7 @@
 public class TungDiaKimQuang : ThanThong
 {
     [SerializeField]private int buff = 8;
-    public override void Execute(CharacterCombat caster, CharacterCombat target)
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddThanThongCoolDown(this, 1);
         var linhKhiHapThu = caster.HapThuLinhKhi(8);

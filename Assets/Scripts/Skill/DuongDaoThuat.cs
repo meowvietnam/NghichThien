@@ -9,7 +9,7 @@ public class DuongDaoThuat : CongPhap
 
    
 
-    public override void Execute(CharacterCombat caster, CharacterCombat target)
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         
             // CHỈ REMOVE KHI ĐÃ THỰC THI BUFF THÀNH CÔNG

@@ -51,7 +51,7 @@ public abstract class BaseSkill : BaseItemData
     }
     public ETierSkill eTierSkill;
     public ETypeSkill[] eTypeSkill;
-    public abstract void Execute(CharacterCombat caster, CharacterCombat target);
+    public abstract void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
    
     public interface LienKich
     {

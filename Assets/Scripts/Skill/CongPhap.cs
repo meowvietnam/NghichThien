@@ -25,7 +25,7 @@ public abstract class CongPhap : BaseSkill
         // Tìm trong danh sách trang bị của caster
         if (GetCongPhapMono(caster) != null)
         {
-            Execute(caster, target);
+            Execute(caster, target , data);
 
         }
     }
@@ -53,7 +53,7 @@ public abstract class CongPhap : BaseSkill
 
     public abstract void Init();
 
-    public abstract override void Execute(CharacterCombat caster, CharacterCombat target);
+    public abstract override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
 
 
     public override string GetDesc()

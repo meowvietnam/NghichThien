@@ -18,7 +18,7 @@ public class BasicCPBuffDame : CongPhap
         base.ExecuteParams(data);
     }
 
-    public override void Execute(CharacterCombat caster, CharacterCombat target)
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         // Kiểm tra hệ của Skill đang dùng có khớp với Công Pháp (SO) này không
         bool isExecute = this.eTypeSkill.Any(skill => caster.thanThongCurrentUse.eTypeSkill.Contains(skill));

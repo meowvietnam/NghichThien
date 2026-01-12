@@ -6,7 +6,7 @@ public class ThienNhanThuat : ThanThong
     [SerializeField] private int requireKiemKhi = 2;
     [SerializeField] private int countAttack = 8;
     [SerializeField] private int damePerCountAttack = 9;
-    public override void Execute(CharacterCombat caster, CharacterCombat target)
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if(IsCanUse(caster,target))
         {

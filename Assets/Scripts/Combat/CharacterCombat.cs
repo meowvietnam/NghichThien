@@ -78,7 +78,8 @@ public class CharacterCombat : MonoBehaviour
     [SerializeField] public SkeletonGraphic currentCharGender => characterGender[(int)gender];
     [SerializeField]
     public List<CongPhapMono> congPhapEquip;
-    public void PlaySkill(ThanThong thanThong)
+
+    public void PlaySkill(ThanThong thanThong , List<LinhKhiTieuTan> linhKhiTieuTans)
     {
         DOTween.Kill("HideSkillName");
 
@@ -92,6 +93,40 @@ public class CharacterCombat : MonoBehaviour
 
         StartAnimPunch();
         thanThongCurrentUse = thanThong;
+        foreach (var item in linhKhiTieuTans)
+        {
+            switch (item.eLinhKhi)
+            {
+                case ELinhKhi.None:
+                    break;
+                case ELinhKhi.Kim:
+                    khiKimUsed += item.count;
+                    break;
+                case ELinhKhi.Moc:
+                    khiMocUsed += item.count;
+
+                    break;
+                case ELinhKhi.Thuy:
+                    khiThuyUsed += item.count;
+
+                    break;
+                case ELinhKhi.Hoa:
+                    khiHoaUsed += item.count;
+
+                    break;
+                case ELinhKhi.Tho:
+                    khiThoUsed += item.count;
+
+                    break;
+                case ELinhKhi.Ma:
+                    khiMaUsed += item.count;
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
     }
     public void SetThanThongOldUse(ThanThong thanThong)
     {
@@ -177,6 +212,13 @@ public class CharacterCombat : MonoBehaviour
     public int khiTho;
     public int khiMa;
 
+    public int khiKimUsed;
+    public int khiMocUsed;
+    public int khiThuyUsed;
+    public int khiHoaUsed;
+    public int khiThoUsed;
+    public int khiMaUsed;
+
     public CharacterStats characterStats;
     public CharacterStats characterStatsCurrent;
     public ThanThong thanThongOldUse;
@@ -203,6 +245,7 @@ public class CharacterCombat : MonoBehaviour
         buffAndDebuffCount.TryGetValue(type, out var current)
         ? current + count
         : count;
+        Debug.Log("Vao day3 is Count + type " + count + type);
 
         Observer.Notify(EventList.GamePlay.ADD_BUFF, this, type, buffAndDebuffCount[type]);
 

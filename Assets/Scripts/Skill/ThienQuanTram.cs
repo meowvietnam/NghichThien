@@ -5,7 +5,7 @@ using static CharacterCombat;
 public class ThienQuanTram : ThanThong
 {
     [SerializeField] private int dame = 25;
-    public override void Execute(CharacterCombat caster, CharacterCombat target)
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int hoTrao = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out hoTrao);

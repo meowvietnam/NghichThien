@@ -11,7 +11,7 @@ public class BasicTTDealDame : ThanThong, BaseSkill.LienKich
     [SerializeField]
     private float delayTimeEffect  = 0.5f;
 
-  public override void Execute(CharacterCombat caster, CharacterCombat target)
+  public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
         target.TakeDameCaculate(caster, new List<int> { dame });

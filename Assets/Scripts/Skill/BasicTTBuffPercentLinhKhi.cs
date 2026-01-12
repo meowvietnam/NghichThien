@@ -9,7 +9,7 @@ public class BasicTTBuffPercentLinhKhi : ThanThong
     private float delayTimeEffect = 1f;
     protected override ETypeItem typeItem => throw new System.NotImplementedException();
 
-    public override void Execute(CharacterCombat caster, CharacterCombat target)
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         switch (elinhKhi)
         {

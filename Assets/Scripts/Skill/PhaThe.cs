@@ -5,7 +5,7 @@ public class PhaThe : ThanThong , BaseSkill.TuongDong
     private int debuff = 5;
     private int debuffTuongDong = 2;
 
-    public override void Execute(CharacterCombat caster, CharacterCombat target)
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, debuff);
     }

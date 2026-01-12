@@ -1812,7 +1812,7 @@ RectTransform:
   m_GameObject: {fileID: 2549056178097445352}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3254481183422808960}
@@ -1820,7 +1820,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 287, y: -133.2}
+  m_AnchoredPosition: {x: 310, y: -133.2}
   m_SizeDelta: {x: 620, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2534240428183891882
@@ -5906,6 +5906,66 @@ PrefabInstance:
       propertyPath: gender
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.data[0].level
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.data[1].level
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.data[2].level
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.data[3].level
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.data[4].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.data[0].congPhap
+      value: 
+      objectReference: {fileID: 11400000, guid: 7e978fa04c57fc34cbf842a53d184783,
+        type: 2}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.data[1].congPhap
+      value: 
+      objectReference: {fileID: 11400000, guid: 21dccdaef7953fc409ae0aa72397b63f,
+        type: 2}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.data[2].congPhap
+      value: 
+      objectReference: {fileID: 11400000, guid: 3d30ee7449de1554c96dc9dddd262fc7,
+        type: 2}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.data[3].congPhap
+      value: 
+      objectReference: {fileID: 11400000, guid: 47ab822a6d635734fac246ef9776c280,
+        type: 2}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.data[4].congPhap
+      value: 
+      objectReference: {fileID: 11400000, guid: c756bf382317bc745abe80422ac7999c,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6066,7 +6126,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'thanthongtest.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: c5a27726502bc92498ca57b25d6c6534,
+      objectReference: {fileID: 11400000, guid: f5e230139cac4d44d979862954a78928,
         type: 2}
     - target: {fileID: 4737881782164790726, guid: a7e2c419fd4fb9148b5663a8973cab45,
         type: 3}
@@ -6078,7 +6138,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'thanthongtest.Array.data[2]'
       value: 
-      objectReference: {fileID: 11400000, guid: a82de044169adaf4ba1ba4760a31a1bb,
+      objectReference: {fileID: 11400000, guid: 01f87c10365a74a40a9822cdd425b05b,
         type: 2}
     - target: {fileID: 4737881782164790726, guid: a7e2c419fd4fb9148b5663a8973cab45,
         type: 3}
@@ -6102,13 +6162,13 @@ PrefabInstance:
         type: 3}
       propertyPath: 'thanthongtest.Array.data[6]'
       value: 
-      objectReference: {fileID: 11400000, guid: ed87f5628ff03b549af049f5ddcb29db,
+      objectReference: {fileID: 11400000, guid: 8d87cc5efb78a1d428b5935fcd1659e6,
         type: 2}
     - target: {fileID: 4737881782164790726, guid: a7e2c419fd4fb9148b5663a8973cab45,
         type: 3}
       propertyPath: 'thanthongtest.Array.data[7]'
       value: 
-      objectReference: {fileID: 11400000, guid: 076b847044deee94ea7004a7f028aa31,
+      objectReference: {fileID: 11400000, guid: 7e5e7d60d68545f4d995c3e212a92670,
         type: 2}
     - target: {fileID: 4737881782164790726, guid: a7e2c419fd4fb9148b5663a8973cab45,
         type: 3}
@@ -6688,6 +6748,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.data[0].level
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.data[0].congPhap
+      value: 
+      objectReference: {fileID: 11400000, guid: b8b006b58fe6ff84da9cad47bbad932d,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

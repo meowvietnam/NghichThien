@@ -5,7 +5,7 @@ public class KimCuongTram : ThanThong , BaseSkill.LienKich
 {
     [SerializeField] private int dame = 17;
     [SerializeField] private int hapThu = 1;
-    public override void Execute(CharacterCombat caster, CharacterCombat target)
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.TakeDameCaculate(caster, new List<int> { dame });
 

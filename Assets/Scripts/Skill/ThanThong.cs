@@ -22,7 +22,7 @@ public abstract class ThanThong : BaseSkill
         get => ETypeItem.ThanThong;
     }
     [SerializeField] protected GameObject prefabEffectSkill;
-    public abstract override void Execute(CharacterCombat caster, CharacterCombat target);
+    public abstract override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
 
 
     public abstract override string GetDesc();

@@ -6,7 +6,7 @@ public class BasicTTHoTrao : ThanThong, BaseSkill.LienKich
     [SerializeField] private int buff;
     [SerializeField] private ELinhKhi elinhKhi;
 
-    public override void Execute(CharacterCombat caster, CharacterCombat target)
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, buff);
 

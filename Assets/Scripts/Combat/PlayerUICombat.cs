@@ -114,14 +114,14 @@ public class PlayerUICombat : MonoBehaviour
                     break;
                 case EStateControl.UseSkill:
                     if (currentNodes.Any(x => x.countRequire > 0)) return;
-                    Observer.Notify(EventList.GamePlay.PLAY_SKILL,player, fightSkillSelect.ThanThongData, GetLinhKhiTieuTans(currentNodes));
+                    Observer.Notify(EventList.GamePlay.PLAY_SKILL,player,null, fightSkillSelect.ThanThongData, GetLinhKhiTieuTans(currentNodes));
                     SetStateControl(EStateControl.None);
                     break;
                 case EStateControl.DeleteLinhKhi:
                     if (CurrentLinhKhi <= maxLinhKhi)
                     {
 
-                        Observer.Notify(EventList.GamePlay.END_TURN_COMBAT, GetLinhKhiTieuTans(currentNodes));
+                        Observer.Notify(EventList.GamePlay.END_TURN_COMBAT,player,null, GetLinhKhiTieuTans(currentNodes));
                         SetStateControl(EStateControl.None);
 
                     }
@@ -410,14 +410,14 @@ public class PlayerUICombat : MonoBehaviour
     }
     public void NewTurn(params object[] data)
     {
-        if (!(bool)data[0])
+        if (!(bool)data[2])
         {
             this.gameObject.SetActive(false);
             return;
         }
         this.gameObject.SetActive(true);
 
-        CharacterCombat player = (CharacterCombat)data[1];
+        CharacterCombat player = (CharacterCombat)data[0];
         
         if (player == null) return;
         this.player = player;

@@ -90,6 +90,11 @@ public class CombatManager : MonoBehaviour
   
     private void Awake()
     {
+       
+        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, EndTurn);
+        Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, PlaySkill);
+        Observer.AddObserver(EventList.GamePlay.ADD_BUFF, SetUIBuff);
+        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME, SetUIHpBar);
         char1.Init(new CharacterStats()
         {
             level = 9,
@@ -115,11 +120,6 @@ public class CombatManager : MonoBehaviour
         });
         char2.currentCharGender.transform.localEulerAngles = new Vector3(0, 180, 0);
         SetUIHpBar();
-        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, EndTurn);
-        Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, PlaySkill);
-        Observer.AddObserver(EventList.GamePlay.ADD_BUFF, SetUIBuff);
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME, SetUIHpBar);
-
     }
     
     public static bool IsTuongDong(List<LinhKhiTieuTan> linhKhiTieuTan)
@@ -206,11 +206,11 @@ public class CombatManager : MonoBehaviour
     }    
     public void PlaySkill(params object[] data)
     {
-        ThanThong thanThong = data[1] as ThanThong;
-        List<LinhKhiTieuTan> linhKhiTieuTan = data[2] as List<LinhKhiTieuTan>;
+        ThanThong thanThong = data[2] as ThanThong;
+        List<LinhKhiTieuTan> linhKhiTieuTan = data[3] as List<LinhKhiTieuTan>;
         if (thanThong!= null)
         {
-            currentTurn.PlaySkill(thanThong);
+            currentTurn.PlaySkill(thanThong,linhKhiTieuTan);
             thanThong.Execute(currentTurn,targetTurn);
             if (thanThong is BaseSkill.LienKich thanThongLienKich && thanThongOldUse != null)
             {
@@ -256,13 +256,14 @@ public class CombatManager : MonoBehaviour
     [Button]
     public void EndTurn(params object[] data)
     {
-        if (data[0] is List<LinhKhiTieuTan> linhKhiTieuTan)
+        if (data[2] is List<LinhKhiTieuTan> linhKhiTieuTan)
         {
             TieuTanLinhKhi(linhKhiTieuTan);
         }
         if (currentTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out int kiemKhi))
         {
             targetTurn.TakeDameCaculate(currentTurn, new List<int> { kiemKhi });
+            targetTurn.TakeDame();
 
         }
         char1.EndTurn();
@@ -337,6 +338,7 @@ public class CombatManager : MonoBehaviour
         if (currentTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out int sucThe))
         {
             targetTurn.TakeDameCaculate(currentTurn, new List<int> { sucThe });
+            targetTurn.TakeDame();
 
         }
         char1.NewTurn();
@@ -351,10 +353,10 @@ public class CombatManager : MonoBehaviour
         else
         {
             currentTurn.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KietSuc, currentTurn.buffAndDebuffCount[EBuffAndDeBuff.KietSuc]);
-            Observer.Notify(EventList.GamePlay.END_TURN_COMBAT, new List<LinhKhiTieuTan>());
+            Observer.Notify(EventList.GamePlay.END_TURN_COMBAT,currentTurn,null, new List<LinhKhiTieuTan>());
         }
         // param 0 là bool isPlayer == char1 
-        Observer.Notify(EventList.GamePlay.NEW_TURN_COMBAT, currentTurn == char1? true: false,currentTurn);
+        Observer.Notify(EventList.GamePlay.NEW_TURN_COMBAT, currentTurn,targetTurn,currentTurn == char1? true: false);
 
 
     }
