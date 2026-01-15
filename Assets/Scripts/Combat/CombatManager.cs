@@ -28,8 +28,8 @@ public class CombatManager : MonoBehaviour
     }
     [SerializeField]
     private List<BuffOrDebuffIcon> buffOrDebuffIcons;
-    [SerializeField] private CharacterCombat char1;
-    [SerializeField] private CharacterCombat char2;
+    [SerializeField] public CharacterCombat char1;
+    [SerializeField] public CharacterCombat char2;
     [SerializeField]
     private ItemUI prefabBuffIcon;
     public CharacterCombat currentTurn;
@@ -51,7 +51,6 @@ public class CombatManager : MonoBehaviour
         { ELinhKhi.Thuy, ELinhKhi.Moc }    // Thủy sinh Mộc
     };
     
-    private ThanThong thanThongOldUse => currentTurn.thanThongOldUse;
     [SerializeField]
     private Image progressHpChar1;
     [SerializeField] private Text textHpChar1;
@@ -206,37 +205,41 @@ public class CombatManager : MonoBehaviour
     }    
     public void PlaySkill(params object[] data)
     {
+        CharacterCombat caster = data[0] as CharacterCombat;
+        CharacterCombat target = data[1] as CharacterCombat;
+
         ThanThong thanThong = data[2] as ThanThong;
         List<LinhKhiTieuTan> linhKhiTieuTan = data[3] as List<LinhKhiTieuTan>;
+        ThanThong thanThongOldUse = caster.thanThongOldUse;
         if (thanThong!= null)
         {
-            currentTurn.PlaySkill(thanThong,linhKhiTieuTan);
-            thanThong.Execute(currentTurn,targetTurn);
+            caster.PlaySkill(thanThong,linhKhiTieuTan);
+            thanThong.Execute(caster, target);
             if (thanThong is BaseSkill.LienKich thanThongLienKich && thanThongOldUse != null)
             {
                 if (IsLienKich(thanThong , thanThongOldUse))
                 {
                     Debug.Log("Liên kích!");
-                    thanThongLienKich.ExecuteLienKich(currentTurn, targetTurn);
+                    thanThongLienKich.ExecuteLienKich(caster, target);
                 }
             }
             if(thanThong is BaseSkill.TuongSinh thanThongTuongSinh && GetETuongQuan(linhKhiTieuTan) == ETuongQuan.TuongSinh)
             {
-                thanThongTuongSinh.ExecuteTuongSinh(currentTurn, targetTurn);
+                thanThongTuongSinh.ExecuteTuongSinh(caster, target);
 
             }
             if (thanThong is BaseSkill.TuongKhac thanThongTuongKhac && GetETuongQuan(linhKhiTieuTan) == ETuongQuan.TuongKhac)
             {
-                thanThongTuongKhac.ExecuteTuongKhac(currentTurn, targetTurn);
+                thanThongTuongKhac.ExecuteTuongKhac(caster, target);
 
             }
             if (thanThong is BaseSkill.TuongDong thanThongTuongDong && IsTuongDong(linhKhiTieuTan))
             {
-                thanThongTuongDong.ExecuteTuongDong(currentTurn, targetTurn);
+                thanThongTuongDong.ExecuteTuongDong(caster, target);
 
             }
-            currentTurn.SetThanThongOldUse(thanThong);
-            targetTurn.TakeDame();
+            caster.SetThanThongOldUse(thanThong);
+            target.TakeDame();
         }
         if (linhKhiTieuTan != null)
         {
@@ -353,7 +356,7 @@ public class CombatManager : MonoBehaviour
         else
         {
             currentTurn.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KietSuc, currentTurn.buffAndDebuffCount[EBuffAndDeBuff.KietSuc]);
-            Observer.Notify(EventList.GamePlay.END_TURN_COMBAT,currentTurn,null, new List<LinhKhiTieuTan>());
+            Observer.Notify(EventList.GamePlay.END_TURN_COMBAT,currentTurn,targetTurn, new List<LinhKhiTieuTan>());
         }
         // param 0 là bool isPlayer == char1 
         Observer.Notify(EventList.GamePlay.NEW_TURN_COMBAT, currentTurn,targetTurn,currentTurn == char1? true: false);

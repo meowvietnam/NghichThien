@@ -3,17 +3,17 @@ using UnityEngine;
 [CreateAssetMenu]
 public class SucThe : ThanThong
 {
-    [SerializeField] private int sucThe = 33;
+    [SerializeField] private int[] sucThe;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SucThe,sucThe);
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SucThe, sucThe[GetIndexLevelThanThong(caster)-1]);
         ShowSkillEffect(caster, 1f);
 
     }
 
-    public override string GetDesc()
+    public override string GetDesc(int level)
     {
-        return $"Bản thân thu hoạch được {GetColoredText($"+{sucThe}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}";
+        return $"Bản thân thu hoạch được {GetColoredText($"+{sucThe[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}";
     }
 
   

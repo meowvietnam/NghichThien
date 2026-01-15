@@ -36,9 +36,10 @@ public class PlayerUICombat : MonoBehaviour
     public FightSkillItem fightSkillSelect;
     public Image tuongSinhImg;
     public Image tuongKhacImg;
-    private CharacterCombat player = null;
+    private CharacterCombat player => CombatManager.char1;
     public Text textTip;
     public ThanThong[] thanthongtest;// test
+    public CombatManager CombatManager => transform.GetComponentInParent<CombatManager>();
     public void SetStateControl(EStateControl eState)
     {
         eStateControl = eState;
@@ -114,14 +115,14 @@ public class PlayerUICombat : MonoBehaviour
                     break;
                 case EStateControl.UseSkill:
                     if (currentNodes.Any(x => x.countRequire > 0)) return;
-                    Observer.Notify(EventList.GamePlay.PLAY_SKILL,player,null, fightSkillSelect.ThanThongData, GetLinhKhiTieuTans(currentNodes));
+                    Observer.Notify(EventList.GamePlay.PLAY_SKILL,player,CombatManager.char2, fightSkillSelect.ThanThongData, GetLinhKhiTieuTans(currentNodes));
                     SetStateControl(EStateControl.None);
                     break;
                 case EStateControl.DeleteLinhKhi:
                     if (CurrentLinhKhi <= maxLinhKhi)
                     {
 
-                        Observer.Notify(EventList.GamePlay.END_TURN_COMBAT,player,null, GetLinhKhiTieuTans(currentNodes));
+                        Observer.Notify(EventList.GamePlay.END_TURN_COMBAT,player,CombatManager.char2, GetLinhKhiTieuTans(currentNodes));
                         SetStateControl(EStateControl.None);
 
                     }
@@ -420,7 +421,6 @@ public class PlayerUICombat : MonoBehaviour
         CharacterCombat player = (CharacterCombat)data[0];
         
         if (player == null) return;
-        this.player = player;
         SetStateControl(EStateControl.None);
         maxLinhKhi = player.totalKhi;
         

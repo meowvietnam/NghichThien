@@ -12,7 +12,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Networking.UnityWebRequest;
 
-
+[System.Serializable]
 public class CharacterStats
 {    // chỉ số
     public float percentKim;
@@ -279,6 +279,7 @@ public class CharacterCombat : MonoBehaviour
         thanThongCoolDown.Clear();
         currentCharGender.gameObject.SetActive(true);
         currentCharGender.AnimationState.SetAnimation(0, ANIM_IDLE, true);
+        InitTotalKhi();
         foreach (var cp in congPhapEquip)
         {
             cp.congPhap.Init();
@@ -324,40 +325,31 @@ public class CharacterCombat : MonoBehaviour
         Observer.Notify(EventList.GamePlay.HAPTHU_LINHKHI, this,elinhKhi,count );
 
     }
-    public int totalKhi
+    public int totalKhi;
+
+    public int totalKhiRandom;
+   
+    private void InitTotalKhi()
     {
-        get
-        {
-            int level = characterStatsCurrent.level;
+        int level = characterStatsCurrent.level;
 
-            // 1) Tính đại cảnh giới (3 level = 1 đại cảnh giới)
-            int daiCanhGioi = ((level - 1) / 3) + 1;
+        // 1) Tính đại cảnh giới (3 level = 1 đại cảnh giới)
+        int daiCanhGioi = ((level - 1) / 3) + 1;
 
-            // 2) Tính khí mỗi level (base 4 + 1 mỗi đại cảnh giới)
-            int baseKhi = 4;
-            int khiPerLevel = baseKhi + (daiCanhGioi - 1);
+        // 2) Tính khí mỗi level (base 4 + 1 mỗi đại cảnh giới)
+        int baseKhi = 4;
+        int khiPerLevel = baseKhi + (daiCanhGioi - 1);
 
-            // 3) Tổng khí
-            return khiPerLevel;
-        }
-    }
-    public int totalKhiRandom
-    {
-        get
-        {
-            int level = characterStatsCurrent.level;
+        // 3) Tổng khí
+        totalKhi = khiPerLevel;
 
-            // 1) Tính đại cảnh giới (3 level = 1 đại cảnh giới)
-            int daiCanhGioi = ((level - 1) / 3) + 1;
+     
+        int baseKhiTotalKhiRandom = 9;
+        int khiPerLevelRandom = baseKhiTotalKhiRandom + (daiCanhGioi - 1) * 2;
 
-            // 2) Tính khí mỗi level (base 9 + 2 mỗi đại cảnh giới)
-            int baseKhi = 9;
-            int khiPerLevel = baseKhi + (daiCanhGioi - 1) * 2;
-
-            // 3) Tổng khí theo yêu cầu: bạn đang return chỉ số khí/lv
-            return khiPerLevel;
-        }
-    }
+        // 3) Tổng khí theo yêu cầu: bạn đang return chỉ số khí/lv
+        totalKhiRandom = khiPerLevelRandom;
+    }    
     public void TieuTanLinhKhi(ELinhKhi eLinhKhi,int count)
     {
         switch (eLinhKhi)
@@ -393,12 +385,16 @@ public class CharacterCombat : MonoBehaviour
     }    
     public void HapThuLinhKhi()
     {
-        foreach (var item in HapThuLinhKhi(totalKhiRandom))
+        HapThuLinhKhi(totalKhiRandom);
+    }
+    public void HapThuLinhKhi(int total)
+    {
+        foreach (var item in DictHapThuLinhKhi(total))
         {
-            HapThuLinhKhi(item.Key,item.Value);
+            HapThuLinhKhi(item.Key, item.Value);
         }
-    }    
-    public Dictionary<ELinhKhi,int> HapThuLinhKhi(int total)
+    }
+    public Dictionary<ELinhKhi,int> DictHapThuLinhKhi(int total)
     {
 
         Dictionary<ELinhKhi, int> result = new Dictionary<ELinhKhi, int>();
@@ -536,6 +532,7 @@ public class CharacterCombat : MonoBehaviour
         Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME_CACULATE,sender,this,dame); // sender , targer nhận, dame
 
     }
+    [Button]
     public void TakeDame()
     {
         foreach (var item in allDamages)

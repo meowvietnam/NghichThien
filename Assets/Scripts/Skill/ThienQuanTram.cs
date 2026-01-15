@@ -4,11 +4,12 @@ using static CharacterCombat;
 [CreateAssetMenu]
 public class ThienQuanTram : ThanThong
 {
-    [SerializeField] private int dame = 25;
+    [SerializeField] private int[] dames;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int hoTrao = 0;
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out hoTrao);
+        int dame = dames[GetIndexLevelThanThong(caster)-1];
+        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out hoTrao);
 
         if (hoTrao > 0)
         {
@@ -20,9 +21,9 @@ public class ThienQuanTram : ThanThong
         }
     }
 
-    public override string GetDesc()
+    public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{dame}", "red")} điểm sát thương, nếu đối phương có {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} thì nhận gấp đôi sát thương";
+        return $"Tạo thành {GetColoredText($"{dames[level-1]}", "red")} điểm sát thương, nếu đối phương có {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} thì nhận gấp đôi sát thương";
 
     }
 }

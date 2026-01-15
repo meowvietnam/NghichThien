@@ -76,6 +76,17 @@ public abstract class BaseSkill : BaseItemData
         public abstract void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target);
 
     }
+    public abstract string GetDesc(int level);
+
+    public bool IsActiveWithPercent(int percent)
+    {
+        if(Random.Range(0,101) < percent)
+        {
+            return true;
+        }    
+        return false;
+    }    
+
     public string GetKeyWordBuffOrDeBuff(EBuffAndDeBuff eKeyWord)
     {
         string text = string.Empty;

@@ -21,11 +21,23 @@ public abstract class ThanThong : BaseSkill
     {
         get => ETypeItem.ThanThong;
     }
+    public override abstract string GetDesc(int level);
+    public override string GetDesc()
+    {
+        return "";
+    }
+
+
     [SerializeField] protected GameObject prefabEffectSkill;
     public abstract override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
 
-
-    public abstract override string GetDesc();
+    public int GetIndexLevelThanThong(CharacterCombat caster)
+    {
+        int level = caster.characterStatsCurrent.level;
+        int daiCanhGioi = ((level - 1) / 3) + 1;
+        int indexLevel = daiCanhGioi - 1;
+        return indexLevel;
+    }
 
     public bool IsCanUseLinhKhiRequire(CharacterCombat caster)
     {

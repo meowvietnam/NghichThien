@@ -55,12 +55,13 @@ public abstract class CongPhap : BaseSkill
 
     public abstract override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
 
+    public override abstract string GetDesc(int level);
 
     public override string GetDesc()
     {
         return "";
     }
-    public abstract string GetDesc(int level);
+
 
 
 }

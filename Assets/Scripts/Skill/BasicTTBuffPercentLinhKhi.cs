@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class BasicTTBuffPercentLinhKhi : ThanThong
 {
-    [SerializeField] private float buffPercent = 2.5f;
+    [SerializeField] private float[] buffPercent;
     [SerializeField] private ELinhKhi elinhKhi;
     [SerializeField]
     private float delayTimeEffect = 1f;
@@ -16,33 +16,33 @@ public class BasicTTBuffPercentLinhKhi : ThanThong
             case ELinhKhi.None:
                 break;
             case ELinhKhi.Kim:
-                caster.characterStats.percentKim += buffPercent;
-                caster.characterStatsCurrent.percentKim += buffPercent;
+                caster.characterStats.percentKim += buffPercent[GetIndexLevelThanThong(caster) - 1];
+                caster.characterStatsCurrent.percentKim += buffPercent[GetIndexLevelThanThong(caster) - 1];
 
                 break;
             case ELinhKhi.Moc:
-                caster.characterStats.percentMoc += buffPercent;
-                caster.characterStatsCurrent.percentMoc += buffPercent;
+                caster.characterStats.percentMoc += buffPercent[GetIndexLevelThanThong(caster) - 1];
+                caster.characterStatsCurrent.percentMoc += buffPercent[GetIndexLevelThanThong(caster) - 1];
 
                 break;
             case ELinhKhi.Thuy:
-                caster.characterStats.percentThuy += buffPercent;
-                caster.characterStatsCurrent.percentThuy += buffPercent;
+                caster.characterStats.percentThuy += buffPercent[GetIndexLevelThanThong(caster) - 1];
+                caster.characterStatsCurrent.percentThuy += buffPercent[GetIndexLevelThanThong(caster) - 1];
 
                 break;
             case ELinhKhi.Hoa:
-                caster.characterStats.percentHoa += buffPercent;
-                caster.characterStatsCurrent.percentHoa += buffPercent;
+                caster.characterStats.percentHoa += buffPercent[GetIndexLevelThanThong(caster) - 1];
+                caster.characterStatsCurrent.percentHoa += buffPercent[GetIndexLevelThanThong(caster) - 1];
 
                 break;
             case ELinhKhi.Tho:
-                caster.characterStats.percentTho += buffPercent;
-                caster.characterStatsCurrent.percentTho += buffPercent;
+                caster.characterStats.percentTho += buffPercent[GetIndexLevelThanThong(caster) - 1];
+                caster.characterStatsCurrent.percentTho += buffPercent[GetIndexLevelThanThong(caster) - 1];
 
                 break;
             case ELinhKhi.Ma:
-                caster.characterStats.percentMa += buffPercent;
-                caster.characterStatsCurrent.percentMa += buffPercent;
+                caster.characterStats.percentMa += buffPercent[GetIndexLevelThanThong(caster) - 1];
+                caster.characterStatsCurrent.percentMa += buffPercent[GetIndexLevelThanThong(caster) - 1];
 
                 break;
             default:
@@ -52,8 +52,8 @@ public class BasicTTBuffPercentLinhKhi : ThanThong
         
     }
 
-    public override string GetDesc()
+    public override string GetDesc(int level)
     {
-        return $"Cơ sở {GetTextLinhKhi(elinhKhi)} hệ thần thông, tăng {GetColoredText($"{buffPercent}", "red")} điểm {GetTextLinhKhi(elinhKhi)} hệ linh khí";
+        return $"Cơ sở {GetTextLinhKhi(elinhKhi)} hệ thần thông, tăng {GetColoredText($"{buffPercent[level-1]}", "red")} điểm {GetTextLinhKhi(elinhKhi)} hệ linh khí";
     }
 }

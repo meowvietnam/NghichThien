@@ -2,22 +2,22 @@
 [CreateAssetMenu]
 public class PhaThe : ThanThong , BaseSkill.TuongDong
 {
-    private int debuff = 5;
-    private int debuffTuongDong = 2;
+    [SerializeField]private int[] debuff;
+    [SerializeField]private int[] debuffTuongDong;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, debuff);
+        target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, debuff[GetIndexLevelThanThong(caster)-1]);
     }
 
     public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)
     {
-        target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, debuffTuongDong);
+        target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, debuffTuongDong[GetIndexLevelThanThong(caster)-1]);
     }
 
-    public override string GetDesc()
+    public override string GetDesc(int level)
     {
-        return $"Đối thủ {GetColoredText($"+{debuff}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}. Nếu {GetKeyWord(EKeyWord.TuongDong)} đối phương nhận thêm {GetColoredText($"+{debuffTuongDong}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}";
+        return $"Đối thủ {GetColoredText($"+{debuff[level-1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}. Nếu {GetKeyWord(EKeyWord.TuongDong)} đối phương nhận thêm {GetColoredText($"+{debuffTuongDong[level-1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}";
 
     }
 
