@@ -31,6 +31,7 @@ public abstract class CongPhap : BaseSkill
     }
     public CongPhapMono GetCongPhapMono(CharacterCombat caster)
     {
+        if(caster == null) return null;
         var equip = caster.congPhapEquip.FirstOrDefault(x =>
            x.congPhap != null &&
            x.congPhap.GetType() == this.GetType() && // So sánh kiểu chính xác của class thực tế

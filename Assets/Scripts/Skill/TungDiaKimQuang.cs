@@ -5,7 +5,7 @@ public class TungDiaKimQuang : ThanThong
     [SerializeField]private int[] buff;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.AddThanThongCoolDown(this, 1);
+        HauKeVoLuc(caster);
         var linhKhiHapThu = caster.DictHapThuLinhKhi(buff[GetIndexLevelThanThong(caster)-1]);
         caster.HapThuLinhKhi(ELinhKhi.Kim,linhKhiHapThu[ELinhKhi.Kim]);
         ShowSkillEffect(caster, 1f);

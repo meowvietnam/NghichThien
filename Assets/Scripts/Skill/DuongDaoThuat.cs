@@ -16,7 +16,7 @@ public class DuongDaoThuat : CongPhap
             Observer.RemoveObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_CACULATE, ExecuteParams);
 
             int dame = dameBuff[CurrentLevelCongPhapInCombat(caster) - 1];
-            target.AddDamageData(caster, new List<int> { dame });
+            target.AddDamageData(new List<int> { dame });
       
     }
     public override string GetDesc(int level)

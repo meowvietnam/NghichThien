@@ -5,7 +5,7 @@ public class ThuHuyet : ThanThong
     [SerializeField] private int[] hapThu;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.AddThanThongCoolDown(this,1);
+        HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KietSuc,1);
         foreach (var item in caster.DictHapThuLinhKhi(hapThu[GetIndexLevelThanThong(caster)-1]))
         {

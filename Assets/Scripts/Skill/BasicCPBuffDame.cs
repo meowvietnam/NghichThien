@@ -21,9 +21,8 @@ public class BasicCPBuffDame : CongPhap
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         // Kiểm tra hệ của Skill đang dùng có khớp với Công Pháp (SO) này không
-        bool isExecute = this.eTypeSkill.Any(skill => caster.thanThongCurrentUse.eTypeSkill.Contains(skill));
 
-        if (isExecute)
+        if (CheckIsEqualETypeSkill(caster))
         {
             Debug.Log($"<color=cyan>{this.name}</color>: Đúng hệ! Buff dame và tự gỡ bỏ.");
 
@@ -31,7 +30,7 @@ public class BasicCPBuffDame : CongPhap
             Observer.RemoveObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_CACULATE, ExecuteParams);
 
             int dame = dameBuff[CurrentLevelCongPhapInCombat(caster) - 1];
-            target.AddDamageData(caster, new List<int> { dame });
+            target.AddDamageData(new List<int> { dame });
         }
         else
         {

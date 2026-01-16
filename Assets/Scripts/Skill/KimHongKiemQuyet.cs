@@ -22,13 +22,11 @@ public class KimHongKiemQuyet : CongPhap
     }
     public void Execute2(CharacterCombat caster, CharacterCombat target,List<int> dame)
     {
-        bool isExecute = this.eTypeSkill.Any(skill => caster.thanThongCurrentUse.eTypeSkill.Contains(skill));
-        Debug.Log("cmm " + isExecute);
        
-        if (isExecute && IsActiveWithPercent(percentX2Dame[CurrentLevelCongPhapInCombat(caster) - 1]))
+        if (CheckIsEqualETypeSkill(caster) && IsActiveWithPercent(percentX2Dame[CurrentLevelCongPhapInCombat(caster) - 1]))
         {
             
-            target.AddDamageData(caster, new List<int> { dame[0] *2 });
+            target.AddDamageData(new List<int> { dame[0] *2 });
         }
     }
     public virtual void ExecuteParams2(params object[] data)

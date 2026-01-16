@@ -16,7 +16,7 @@ public class ToKimChanPhap : CongPhap
         }
         Debug.Log("lmm"+count);
         target.TakeDameCaculate(caster,new List<int> { count * dame[CurrentLevelCongPhapInCombat(caster)-1]});
-        target.TakeDame();
+        target.TakeDame(caster);
     }
 
     public override string GetDesc(int level)

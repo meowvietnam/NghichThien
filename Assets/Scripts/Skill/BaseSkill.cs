@@ -1,4 +1,5 @@
 ﻿using CreateCharacter;
+using System.Linq;
 using UnityEngine;
 
 public enum EBuffAndDeBuff
@@ -17,6 +18,7 @@ public enum EBuffAndDeBuff
     ChanKim,
     TrungDoc,
     HuyenVu,
+    ChayMau
 
 
 }
@@ -137,6 +139,9 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.HuyenVu:
                 text = "Huyễn Vụ";
                 break;
+            case EBuffAndDeBuff.ChayMau:
+                text = "Chảy Máu";
+                break;
             default:
                 break;
         }
@@ -189,6 +194,9 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.HuyenVu:
                 text = $"Có 5% tỉ lệ né tránh sát thương. Tỉ lệ này không cộng dồn";
+                break;
+            case EBuffAndDeBuff.ChayMau:
+                text = $"Kết thúc hiệp, bản thân nhận 1% tổn thương của lượng HP đã tổn thất sau đó giải trừ 1 tầng";
                 break;
             default:
                 break;
@@ -372,4 +380,12 @@ public abstract class BaseSkill : BaseItemData
         }
         return text;
     }
+    public bool CheckIsEqualETypeSkill(CharacterCombat caster)
+    {
+        if (caster.thanThongCurrentUse == null) return false;
+        // Kiểm tra hệ của Skill đang dùng có khớp với Công Pháp (SO) này không
+        bool isExecute = this.eTypeSkill.Any(skill => caster.thanThongCurrentUse.eTypeSkill.Contains(skill));
+        return isExecute;   
+    }    
+  
 }

@@ -27,7 +27,11 @@ public abstract class ThanThong : BaseSkill
         return "";
     }
 
+    public void HauKeVoLuc(CharacterCombat caster)
+    {
+        caster.AddThanThongCoolDown(this, 1);
 
+    }
     [SerializeField] protected GameObject prefabEffectSkill;
     public abstract override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
 

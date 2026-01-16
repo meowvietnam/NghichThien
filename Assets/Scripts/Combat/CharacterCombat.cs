@@ -79,6 +79,7 @@ public class CharacterCombat : MonoBehaviour
     [SerializeField]
     public List<CongPhapMono> congPhapEquip;
 
+
     public void PlaySkill(ThanThong thanThong , List<LinhKhiTieuTan> linhKhiTieuTans)
     {
         DOTween.Kill("HideSkillName");
@@ -486,16 +487,25 @@ public class CharacterCombat : MonoBehaviour
     [Button]   
     public void EndTurn()
     {
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChayMau, out int chayMau))
+        {
+            AddDamageData(new List<int> { (int)(chayMau * 0.01f * (characterStats.hp - characterStatsCurrent.hp)) });
+            TakeDame(null);
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChayMau, 1);
+
+
+        }
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DeTonThuong, out int value))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, value);
         }
        
+
     }
-   
+
     public List<int> allDamages = new List<int>();
 
-    public void AddDamageData(CharacterCombat sender, List<int> dame, bool isCongDon = true)
+    public void AddDamageData(List<int> dame, bool isCongDon = true)
     {
         if (isCongDon)
         {
@@ -527,18 +537,21 @@ public class CharacterCombat : MonoBehaviour
     [Button]
     public void TakeDameCaculate(CharacterCombat sender , List<int> dame , bool isCongDon = true)
     {
-        AddDamageData(sender,dame,isCongDon);
+        AddDamageData(dame,isCongDon);
         
         Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME_CACULATE,sender,this,dame); // sender , targer nhận, dame
 
     }
     [Button]
-    public void TakeDame()
+    public void TakeDame(CharacterCombat caster)
     {
         foreach (var item in allDamages)
         {
             TakeDame(item);
+            Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, caster,this,item);
+
         }
+        thanThongCurrentUse = null;
         allDamages.Clear();
 
     }
@@ -560,7 +573,7 @@ public class CharacterCombat : MonoBehaviour
         characterStatsCurrent.hp -= dame;
         characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);
 
-        Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME);
+        Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);
 
         CheckDie();
     }
@@ -583,7 +596,7 @@ public class CharacterCombat : MonoBehaviour
         SetTextDameAnim(+hp);
 
 
-        Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME);
+        Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);
 
     }
 

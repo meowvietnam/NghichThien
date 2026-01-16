@@ -8,7 +8,7 @@ public class KimHongQuanNhat : ThanThong
     [SerializeField] private int[] perDameSucThe;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.AddThanThongCoolDown(this, 1);
+        HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KietSuc, 1);
 
 

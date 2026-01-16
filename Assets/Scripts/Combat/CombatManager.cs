@@ -93,7 +93,8 @@ public class CombatManager : MonoBehaviour
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, EndTurn);
         Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, PlaySkill);
         Observer.AddObserver(EventList.GamePlay.ADD_BUFF, SetUIBuff);
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME, SetUIHpBar);
+        Observer.AddObserver(EventList.GamePlay.CHARACTER_ADJUST_HP, SetUIHpBar);
+
         char1.Init(new CharacterStats()
         {
             level = 9,
@@ -117,6 +118,8 @@ public class CombatManager : MonoBehaviour
             hp = 200,
             tocDoBay = 10,
         });
+        // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
+        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, NewTurn);
         char2.currentCharGender.transform.localEulerAngles = new Vector3(0, 180, 0);
         SetUIHpBar();
     }
@@ -239,7 +242,7 @@ public class CombatManager : MonoBehaviour
 
             }
             caster.SetThanThongOldUse(thanThong);
-            target.TakeDame();
+            target.TakeDame(caster);
         }
         if (linhKhiTieuTan != null)
         {
@@ -259,6 +262,7 @@ public class CombatManager : MonoBehaviour
     [Button]
     public void EndTurn(params object[] data)
     {
+        currentTurn.thanThongCurrentUse = null;
         if (data[2] is List<LinhKhiTieuTan> linhKhiTieuTan)
         {
             TieuTanLinhKhi(linhKhiTieuTan);
@@ -266,11 +270,12 @@ public class CombatManager : MonoBehaviour
         if (currentTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out int kiemKhi))
         {
             targetTurn.TakeDameCaculate(currentTurn, new List<int> { kiemKhi });
-            targetTurn.TakeDame();
+            targetTurn.TakeDame(currentTurn);
 
         }
-        char1.EndTurn();
-        char2.EndTurn();
+        
+        currentTurn.EndTurn();
+        targetTurn.EndTurn();
         if (currentTurn == char1)
         {
             currentTurn = char2;
@@ -279,7 +284,6 @@ public class CombatManager : MonoBehaviour
         {
             currentTurn = char1;
         }
-        NewTurn();
     }
     public void SetUIBuff(params object[] data)
     {
@@ -301,6 +305,8 @@ public class CombatManager : MonoBehaviour
 
             }
             bool isHave = false;
+            int scaleX = (int)scrollRect.transform.parent.localScale.x;
+            int signX = scaleX/Mathf.Abs(scaleX);
             for (int i = 0; i < scrollRect.content.transform.childCount; i++)
             {
                 ItemUI itemUI = scrollRect.content.transform.GetChild(i).GetComponent<ItemUI>();
@@ -325,7 +331,7 @@ public class CombatManager : MonoBehaviour
                 if (!isHave)
                 {
                     buffIcon = prefabBuffIcon.Spawn(scrollRect.content.transform);
-                    buffIcon.transform.localScale = Vector3.one;
+                    buffIcon.transform.localScale = new Vector3(1*signX,1,1);
                     buffIcon.InitIcon(GetSpriteBuffIcon(buffType), null);
                 }
                 
@@ -341,11 +347,11 @@ public class CombatManager : MonoBehaviour
         if (currentTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out int sucThe))
         {
             targetTurn.TakeDameCaculate(currentTurn, new List<int> { sucThe });
-            targetTurn.TakeDame();
+            targetTurn.TakeDame(currentTurn);
 
         }
-        char1.NewTurn();
-        char2.NewTurn();
+        currentTurn.NewTurn();
+        targetTurn.NewTurn();
        
         
         if(!currentTurn.IsKietSuc())
