@@ -35,7 +35,7 @@ public class ThaiAmLucHuCong : CongPhap
     }
     public override string GetDesc(int level)
     {
-        return $"Bắt đầu hiệp, địch nhân nhận phải {GetColoredText($"+{buff[level - 1]}", "red")} tầng {GetDescBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}. Mỗi lần sử dụng thần thông gây tổn thương, khiến đối phương nhận phải {GetColoredText($"+{buff2}", "red")} tầng {GetDescBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}";
+        return $"Bắt đầu hiệp, địch nhân nhận phải {GetColoredText($"+{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}. Mỗi lần sử dụng thần thông gây tổn thương, khiến đối phương nhận phải {GetColoredText($"+{buff2}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}";
     }
 
 

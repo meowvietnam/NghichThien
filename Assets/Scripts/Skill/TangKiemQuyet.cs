@@ -11,7 +11,7 @@ public class TangKiemQuyet : CongPhap
 
     public override string GetDesc(int level)
     {
-        return $"Lúc bắt đầu hiệp, thu hoạch được {GetColoredText($"+{kiemKhiBuff[level - 1]}", "red")} tầng {GetDescBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}";
+        return $"Lúc bắt đầu hiệp, thu hoạch được {GetColoredText($"+{kiemKhiBuff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}";
     }
 
     public override void Init()

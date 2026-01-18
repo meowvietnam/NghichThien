@@ -21,7 +21,7 @@ public class KimCuongLuyenTheQuyet : CongPhap
 
     public override string GetDesc(int level)
     {
-        return $"Giai đoạn tiêu tán linh khí, mỗi tiêu tán 1 điểm linh khí thu hoạch được {GetColoredText($"+{hoTraoBuff[level - 1]}", "red")} tầng {GetDescBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}";
+        return $"Giai đoạn tiêu tán linh khí, mỗi tiêu tán 1 điểm linh khí thu hoạch được {GetColoredText($"+{hoTraoBuff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}";
     }
 
 

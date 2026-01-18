@@ -28,7 +28,7 @@ public class KimHongQuanNhat : ThanThong
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tạo thành {GetColoredText($"{dame[level-1]}", "red")} điểm sát thương, cũng tiêu hao toàn bộ {GetDescBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} mỗi tầng tăng thêm {GetColoredText($"{perDameKiemKhi[level - 1]}", "red")} điểm thương tổn và {GetDescBuffOrDeBuff(EBuffAndDeBuff.SucThe)} mỗi tầng tăng thêm {GetColoredText($"{perDameSucThe[level-1]}", "red")} điểm thương tổn. Bạn bị {GetDescBuffOrDeBuff(EBuffAndDeBuff.KietSuc)}";
+        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tạo thành {GetColoredText($"{dame[level-1]}", "red")} điểm sát thương, cũng tiêu hao toàn bộ {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} mỗi tầng tăng thêm {GetColoredText($"{perDameKiemKhi[level - 1]}", "red")} điểm thương tổn và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)} mỗi tầng tăng thêm {GetColoredText($"{perDameSucThe[level-1]}", "red")} điểm thương tổn. Bạn bị {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KietSuc)}";
     }
 
 }

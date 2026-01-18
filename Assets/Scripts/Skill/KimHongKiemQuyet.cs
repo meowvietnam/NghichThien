@@ -44,7 +44,7 @@ public class KimHongKiemQuyet : CongPhap
     }
     public override string GetDesc(int level)
     {
-        return $"Mỗi tích lũy sử dụng {GetColoredText($"{requireLinhKhi}", "red")} điểm kim hệ linh khí, thu hoạch được {GetColoredText($"+{sucTheBuff[level - 1]}", "red")} tầng {GetDescBuffOrDeBuff(EBuffAndDeBuff.SucThe)}. Tạo thành {GetTextTypeSkill()} hệ thần thông sát thương có tỉ lệ {GetColoredText($"{percentX2Dame[level - 1]}%", "red")} khiến cho sát thương lần này gấp đôi";
+        return $"Mỗi tích lũy sử dụng {GetColoredText($"{requireLinhKhi}", "red")} điểm kim hệ linh khí, thu hoạch được {GetColoredText($"+{sucTheBuff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}. Tạo thành {GetTextTypeSkill()} hệ thần thông sát thương có tỉ lệ {GetColoredText($"{percentX2Dame[level - 1]}%", "red")} khiến cho sát thương lần này gấp đôi";
     }
 
     public override void Init()

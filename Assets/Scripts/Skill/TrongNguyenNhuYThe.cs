@@ -20,7 +20,7 @@ public class TrongNguyenNhuYThe : CongPhap
 
     public override string GetDesc(int level)
     {
-        return $"Kết thúc hiệp, nếu người có số tầng {GetDescBuffOrDeBuff(EBuffAndDeBuff.SucThe)} lớn hơn {GetColoredText($"{require[level - 1]}", "red")} thì thu hoạch được {GetColoredText($"+{buff[level - 1]}", "red")} tầng {GetDescBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}.";
+        return $"Kết thúc hiệp, nếu người có số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)} lớn hơn {GetColoredText($"{require[level - 1]}", "red")} thì thu hoạch được {GetColoredText($"+{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}.";
     }
 
 

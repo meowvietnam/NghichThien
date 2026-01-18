@@ -36,7 +36,7 @@ public class TrongKiemQuyet : CongPhap
     
     public override string GetDesc(int level)
     {
-        return $"Kết thúc hiệp, ngẫu nhiên tiêu tán 1 điểm linh khí thu hoạch được {GetColoredText($"+{buff[level - 1]}", "red")} tầng {GetDescBuffOrDeBuff(EBuffAndDeBuff.SucThe)}.";
+        return $"Kết thúc hiệp, ngẫu nhiên tiêu tán 1 điểm linh khí thu hoạch được {GetColoredText($"+{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}.";
     }
 
 

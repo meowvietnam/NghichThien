@@ -17,6 +17,6 @@ public class ThuHuyet : ThanThong
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Hấp thụ {GetColoredText($"ngẫu nhiên {hapThu[level-1]} điểm", "red")} linh khí. Bạn bị {GetDescBuffOrDeBuff(EBuffAndDeBuff.KietSuc)}";
+        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Hấp thụ {GetColoredText($"ngẫu nhiên {hapThu[level-1]} điểm", "red")} linh khí. Bạn bị {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KietSuc)}";
     }
 }

@@ -156,6 +156,8 @@ public class CombatManager : MonoBehaviour
 
         if (list.Count == 1)
             return ETuongQuan.None;
+        if (list.All(x => x == list[0]))
+            return ETuongQuan.None;
 
         if (list.Count >= 4)
             return ETuongQuan.TuongKhac;
@@ -213,7 +215,7 @@ public class CombatManager : MonoBehaviour
 
         ThanThong thanThong = data[2] as ThanThong;
         List<LinhKhiTieuTan> linhKhiTieuTan = data[3] as List<LinhKhiTieuTan>;
-        ThanThong thanThongOldUse = caster.thanThongOldUse;
+        ThanThong thanThongOldUse =  caster.thanThongOldUse != null?caster.thanThongOldUse.thanThong:null;
         if (thanThong!= null)
         {
             caster.PlaySkill(thanThong,linhKhiTieuTan);
@@ -224,6 +226,7 @@ public class CombatManager : MonoBehaviour
                 {
                     Debug.Log("Liên kích!");
                     thanThongLienKich.ExecuteLienKich(caster, target);
+                    Observer.Notify(EventList.GamePlay.LIEN_KICH, caster, target, thanThong, linhKhiTieuTan);
                 }
             }
             if(thanThong is BaseSkill.TuongSinh thanThongTuongSinh && GetETuongQuan(linhKhiTieuTan) == ETuongQuan.TuongSinh)
@@ -241,7 +244,7 @@ public class CombatManager : MonoBehaviour
                 thanThongTuongDong.ExecuteTuongDong(caster, target);
 
             }
-            caster.SetThanThongOldUse(thanThong);
+            caster.SetThanThongOldUse(thanThong,linhKhiTieuTan);
             target.TakeDame(caster);
         }
         if (linhKhiTieuTan != null)
@@ -275,7 +278,6 @@ public class CombatManager : MonoBehaviour
         }
         
         currentTurn.EndTurn();
-        targetTurn.EndTurn();
         if (currentTurn == char1)
         {
             currentTurn = char2;
@@ -351,12 +353,11 @@ public class CombatManager : MonoBehaviour
 
         }
         currentTurn.NewTurn();
-        targetTurn.NewTurn();
-       
-        
+
+        Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();
         if(!currentTurn.IsKietSuc())
         {
-            currentTurn.HapThuLinhKhi();
+            currentTurn.HapThuLinhKhiNewTurn(out dictHapThuKhi);
 
         }
         else
@@ -365,7 +366,7 @@ public class CombatManager : MonoBehaviour
             Observer.Notify(EventList.GamePlay.END_TURN_COMBAT,currentTurn,targetTurn, new List<LinhKhiTieuTan>());
         }
         // param 0 là bool isPlayer == char1 
-        Observer.Notify(EventList.GamePlay.NEW_TURN_COMBAT, currentTurn,targetTurn,currentTurn == char1? true: false);
+        Observer.Notify(EventList.GamePlay.NEW_TURN_COMBAT, currentTurn,targetTurn,currentTurn == char1? true: false, dictHapThuKhi);
 
 
     }

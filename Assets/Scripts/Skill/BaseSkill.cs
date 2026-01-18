@@ -384,7 +384,7 @@ public abstract class BaseSkill : BaseItemData
     {
         if (caster.thanThongCurrentUse == null) return false;
         // Kiểm tra hệ của Skill đang dùng có khớp với Công Pháp (SO) này không
-        bool isExecute = this.eTypeSkill.Any(skill => caster.thanThongCurrentUse.eTypeSkill.Contains(skill));
+        bool isExecute = this.eTypeSkill.Any(skill => caster.thanThongCurrentUse.thanThong.eTypeSkill.Contains(skill));
         return isExecute;   
     }    
   

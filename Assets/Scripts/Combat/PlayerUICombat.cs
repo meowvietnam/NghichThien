@@ -169,7 +169,7 @@ public class PlayerUICombat : MonoBehaviour
 
         });
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, NewTurn);
-        Observer.AddObserver(EventList.GamePlay.HAPTHU_LINHKHI, HapThuLinhKhi);
+        Observer.AddObserver(EventList.GamePlay.ADJUST_LINHKHI, AdjustLinhKhi);
 
         foreach (var item1 in linhKhiRemains)
         {
@@ -348,13 +348,13 @@ public class PlayerUICombat : MonoBehaviour
         }
         foreach (var item in fightSkills)
         {
-            if (item.ThanThongData == null) continue;
+            if (item.ThanThongData == null || player.thanThongOldUse == null) continue;
             item.ShowRecommentHighlight(false);
             if (item.isLock == false)
             {
                 if(item.ThanThongData is BaseSkill.LienKich)
                 {
-                    if(CombatManager.IsLienKich(item.ThanThongData,player.thanThongOldUse))
+                    if(CombatManager.IsLienKich(item.ThanThongData,player.thanThongOldUse.thanThong))
                     {
                         item.ShowRecommentHighlight(true);
 
@@ -393,19 +393,43 @@ public class PlayerUICombat : MonoBehaviour
         if(eLinhKhi == ELinhKhi.None) return null;
         return spriteUILinhKhis[(int)eLinhKhi -1];
     }
-    public void HapThuLinhKhi(params object[] data)
+    public void AdjustLinhKhi(params object[] data)
     {
         CharacterCombat player = (CharacterCombat)data[0];
         if(player != this.player ) return;
-        ELinhKhi linhKhi = (ELinhKhi)data[1];
-        int count = (int)data[2];
+      
         foreach (var item in linhKhiRemains)
         {
-           if(item.eLinhKhi == linhKhi)
-           {
-                item.AddCount(count);
-                break;
-           }
+            switch (item.eLinhKhi)
+            {
+                case ELinhKhi.None:
+                    break;
+                case ELinhKhi.Kim:
+                    item.SetCount(player.khiKim);
+                    break;
+                case ELinhKhi.Moc:
+                    item.SetCount(player.khiMoc);
+
+                    break;
+                case ELinhKhi.Thuy:
+                    item.SetCount(player.khiThuy);
+
+                    break;
+                case ELinhKhi.Hoa:
+                    item.SetCount(player.khiHoa);
+
+                    break;
+                case ELinhKhi.Tho:
+                    item.SetCount(player.khiTho);
+
+                    break;
+                case ELinhKhi.Ma:
+                    item.SetCount(player.khiMa);
+
+                    break;
+                default:
+                    break;
+            }
         }
 
     }

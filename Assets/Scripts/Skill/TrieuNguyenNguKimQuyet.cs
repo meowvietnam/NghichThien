@@ -15,7 +15,7 @@ public class TrieuNguyenNguKimQuyet : CongPhap
 
     public override string GetDesc(int level)
     {
-        return $"Kết thúc hiệp, mỗi khi còn 1 điểm Kim linh khí thu hoạch được {GetColoredText($"+{hoTraoBuff[level - 1]}", "red")} tầng {GetDescBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}";
+        return $"Kết thúc hiệp, mỗi khi còn 1 điểm Kim linh khí thu hoạch được {GetColoredText($"+{hoTraoBuff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}";
     }
 
 

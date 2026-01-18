@@ -79,6 +79,8 @@ public class CharacterCombat : MonoBehaviour
     [SerializeField]
     public List<CongPhapMono> congPhapEquip;
 
+    public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill;
+
 
     public void PlaySkill(ThanThong thanThong , List<LinhKhiTieuTan> linhKhiTieuTans)
     {
@@ -93,7 +95,8 @@ public class CharacterCombat : MonoBehaviour
         }).SetId("HideSkillName");
 
         StartAnimPunch();
-        thanThongCurrentUse = thanThong;
+        thanThongCurrentUse = new PlaySkillData { thanThong = thanThong, linhKhiTieuTan=linhKhiTieuTans};
+        thanThongUseThisTurn.Add(thanThongCurrentUse);
         foreach (var item in linhKhiTieuTans)
         {
             switch (item.eLinhKhi)
@@ -129,9 +132,9 @@ public class CharacterCombat : MonoBehaviour
         }
 
     }
-    public void SetThanThongOldUse(ThanThong thanThong)
+    public void SetThanThongOldUse(ThanThong thanThong,List<LinhKhiTieuTan> linhKhiTieuTans)
     {
-        thanThongOldUse = thanThong;
+        thanThongOldUse = new PlaySkillData { thanThong = thanThong, linhKhiTieuTan = linhKhiTieuTans };
     }
     public void StartAnimPunch()
     {
@@ -222,9 +225,15 @@ public class CharacterCombat : MonoBehaviour
 
     public CharacterStats characterStats;
     public CharacterStats characterStatsCurrent;
-    public ThanThong thanThongOldUse;
-    public ThanThong thanThongCurrentUse;
+    public PlaySkillData thanThongOldUse;
+    public PlaySkillData thanThongCurrentUse;
+    public List<PlaySkillData> thanThongUseThisTurn = new List<PlaySkillData>();
 
+    public class PlaySkillData
+    {
+        public ThanThong thanThong;
+        public List<LinhKhiTieuTan> linhKhiTieuTan;
+    }
     public class CountStack<T>
     {
         public T type;
@@ -252,7 +261,16 @@ public class CharacterCombat : MonoBehaviour
 
 
     }
-    
+    [Button]
+    public void TryGetCountBuff(EBuffAndDeBuff type)
+    {
+
+        int count = 0;
+        buffAndDebuffCount.TryGetValue(type, out count);
+        Debug.Log(type + " " + count);
+
+
+    }
     public void RemoveBuffAndDebuffCount(EBuffAndDeBuff type, int count)
     {
         if (!buffAndDebuffCount.TryGetValue(type, out int current))
@@ -323,13 +341,14 @@ public class CharacterCombat : MonoBehaviour
             default:
                 break;
         }
-        Observer.Notify(EventList.GamePlay.HAPTHU_LINHKHI, this,elinhKhi,count );
+        Observer.Notify(EventList.GamePlay.ADJUST_LINHKHI, this,elinhKhi,count );
 
     }
     public int totalKhi;
 
     public int totalKhiRandom;
-   
+    public int CurrentLinhKhi => khiKim + khiMoc+khiThuy+khiHoa+khiTho+khiMa;
+
     private void InitTotalKhi()
     {
         int level = characterStatsCurrent.level;
@@ -383,10 +402,27 @@ public class CharacterCombat : MonoBehaviour
             default:
                 break;
         }
-    }    
-    public void HapThuLinhKhi()
+        Observer.Notify(EventList.GamePlay.ADJUST_LINHKHI, this, eLinhKhi, count);
+
+    }
+    public void HapThuLinhKhiNewTurn(out Dictionary<ELinhKhi, int> dictHapThuLinhKhi)
     {
-        HapThuLinhKhi(totalKhiRandom);
+        dictHapThuLinhKhi = DictHapThuLinhKhi(totalKhiRandom-CurrentLinhKhi);
+        foreach (var item in dictHapThuLinhKhi)
+        {
+            HapThuLinhKhi(item.Key, item.Value);
+        }
+        if(buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NoiThuong,out int noiThuong))
+        {
+            int countLinhKhi = 0;
+            foreach (var item in dictHapThuLinhKhi)
+            {
+                countLinhKhi += item.Value;
+            }
+            AddDamageData(new List<int> { noiThuong * countLinhKhi });
+            TakeDame(null);
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.NoiThuong, 1);
+        }
     }
     public void HapThuLinhKhi(int total)
     {
@@ -462,6 +498,7 @@ public class CharacterCombat : MonoBehaviour
     }
     public void NewTurn()
     {
+        thanThongUseThisTurn.Clear();
         var keys = new List<ThanThong>(thanThongCoolDown.Keys);
         foreach (var key in keys)
         {
@@ -538,7 +575,6 @@ public class CharacterCombat : MonoBehaviour
     public void TakeDameCaculate(CharacterCombat sender , List<int> dame , bool isCongDon = true)
     {
         AddDamageData(dame,isCongDon);
-        
         Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME_CACULATE,sender,this,dame); // sender , targer nhận, dame
 
     }
