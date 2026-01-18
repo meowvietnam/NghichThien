@@ -11,9 +11,10 @@ namespace CreateCharacter
         [SerializeField] private GenderSkinGroupUI genderSkinGroupUIPrefab;
         [SerializeField] private Transform content;
         private List<GenderSkinGroupUI> genderSkinGroupUIs = new List<GenderSkinGroupUI>();
-        public GenderSkinGroupUI currentSelect { get; private set; }
+        public GenderSkinGroupUI CurrentSelect { get; private set; }
         public static SetPlayerAvatar Instance { get; private set; }
         [SerializeField] private Button randomBtn;
+        [SerializeField] private GameObject thisObject;
         public void Init(SkinResources skinResources)
         {
             Instance = this;
@@ -35,33 +36,33 @@ namespace CreateCharacter
                 item.SetActive(active);
                 if(active)
                 {
-                    currentSelect = item;
+                    CurrentSelect = item;
                 }
             }
             avatar.SetGender(gender);
-            if(!currentSelect.IsUsedToSelect)
+            if(!CurrentSelect.IsUsedToSelect)
             {
-                currentSelect.DefaultSelector();
+                CurrentSelect.DefaultSelector();
             }
             UpdateAvatar();
         }
         private void Random()
         {
-            currentSelect.RandomSelector();
+            CurrentSelect.RandomSelector();
             UpdateAvatar();
         }
         public void SetSkin(string key,string value)
         {
-            currentSelect.SetSkin(key, value);
+            CurrentSelect.SetSkin(key, value);
         }
         public void SetSkinImmediate(string key,string value)
         {
-            currentSelect.SetSkin(key, value);
+            CurrentSelect.SetSkin(key, value);
             UpdateAvatar();
         }
         public void SetColor(string key, Color value)
         {
-            currentSelect.SetColor(key, value);
+            CurrentSelect.SetColor(key, value);
         }
         private void OnDestroy()
         {
@@ -69,7 +70,12 @@ namespace CreateCharacter
         }
         public void UpdateAvatar()
         {
-            avatar.SetSkin(currentSelect.Skin, currentSelect.Colors);
+            avatar.SetSkin(CurrentSelect.Skin, CurrentSelect.Colors);
+        }
+
+        public void SetActive(bool value)
+        {
+            thisObject.SetActive(value);
         }
     }
 }

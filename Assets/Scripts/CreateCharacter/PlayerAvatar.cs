@@ -11,10 +11,9 @@ namespace CreateCharacter
 {
     public class PlayerAvatar : CharacterGraphic
     {
-        private SkinResources skinResource;
         public void Init(SkinResources skinResources)
         {
-            this.skinResource = skinResources;
+            this.skinResources = skinResources;
         }
     }
 }

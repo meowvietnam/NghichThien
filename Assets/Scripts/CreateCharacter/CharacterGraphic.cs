@@ -10,13 +10,15 @@ namespace CreateCharacter
     public class CharacterGraphic : MonoBehaviour
     {
         [SerializeField] protected SkeletonGraphic graphic;
-        [SerializeField] protected SkinResources skinResources;
+        protected SkinResources skinResources;
         private Dictionary<string, string> currentSkins = new Dictionary<string, string>();
         private Dictionary<string, Color> currentColors = new Dictionary<string, Color>();
         public void SetGender(Gender gender)
         {
-            var skeletonDataAsset = skinResources.GenderSkinGroups.FirstOrDefault(skinResource => skinResource.Gender == gender).SkeletonDataAsset;
+            var skeletonDataAsset = skinResources.GenderSkinGroups.FirstOrDefault(skinResource => skinResource.Gender == gender)?.SkeletonDataAsset;
             graphic.skeletonDataAsset = skeletonDataAsset;
+            currentSkins.Clear();
+            currentColors.Clear();
             graphic.Initialize(true);
             graphic.AnimationState.SetAnimation(0, "Idle_0", true);
         }

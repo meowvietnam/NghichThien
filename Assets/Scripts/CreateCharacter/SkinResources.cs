@@ -5,10 +5,12 @@ using UnityEngine;
 
 namespace CreateCharacter
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(menuName =  "Create Character/Skin Resources",fileName = "SkinResources")]
     public class SkinResources : ScriptableObject
     {
+        [field: SerializeField] public List<Sprite> LevelIcons { get; private set; }
         [field: SerializeField] public List<Color> Colors { get; private set; }
         [field: SerializeField] public List<GenderSkinGroup> GenderSkinGroups { get; private set; }
+        
     }
 }
