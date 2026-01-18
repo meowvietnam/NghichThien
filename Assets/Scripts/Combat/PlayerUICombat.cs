@@ -36,9 +36,10 @@ public class PlayerUICombat : MonoBehaviour
     public FightSkillItem fightSkillSelect;
     public Image tuongSinhImg;
     public Image tuongKhacImg;
-    private CharacterCombat player = null;
+    private CharacterCombat player => CombatManager.char1;
     public Text textTip;
     public ThanThong[] thanthongtest;// test
+    public CombatManager CombatManager => transform.GetComponentInParent<CombatManager>();
     public void SetStateControl(EStateControl eState)
     {
         eStateControl = eState;
@@ -113,14 +114,15 @@ public class PlayerUICombat : MonoBehaviour
 
                     break;
                 case EStateControl.UseSkill:
-                    Observer.Notify(EventList.GamePlay.PLAY_SKILL, fightSkillSelect.ThanThongData, GetLinhKhiTieuTans(currentNodes));
+                    if (currentNodes.Any(x => x.countRequire > 0)) return;
+                    Observer.Notify(EventList.GamePlay.PLAY_SKILL,player,CombatManager.char2, fightSkillSelect.ThanThongData, GetLinhKhiTieuTans(currentNodes));
                     SetStateControl(EStateControl.None);
                     break;
                 case EStateControl.DeleteLinhKhi:
                     if (CurrentLinhKhi <= maxLinhKhi)
                     {
 
-                        Observer.Notify(EventList.GamePlay.END_TURN_COMBAT, GetLinhKhiTieuTans(currentNodes));
+                        Observer.Notify(EventList.GamePlay.END_TURN_COMBAT,player,CombatManager.char2, GetLinhKhiTieuTans(currentNodes));
                         SetStateControl(EStateControl.None);
 
                     }
@@ -174,7 +176,7 @@ public class PlayerUICombat : MonoBehaviour
             item1.Init(() =>
             {
                 Debug.Log(currentNodes.Count);
-                if (item1.count <= 0 || item1.isLock || (currentNodes.Any(x => x.eLinhKhi == item1.eLinhKhi && x.isLock == false) && eStateControl == EStateControl.UseSkill)) return;
+                if (item1.count <= 0 || item1.isLock || (currentNodes.Any(x => x.eLinhKhi == item1.eLinhKhi && x.isLock == false && x.countRequire<=0) && eStateControl == EStateControl.UseSkill )) return;
 
                 if (CurrentLinhKhi <= maxLinhKhi && eStateControl == EStateControl.DeleteLinhKhi) return;
                 foreach (var item2 in currentNodes)
@@ -294,11 +296,12 @@ public class PlayerUICombat : MonoBehaviour
     public void AddLinhKhiFromNodeToRemain(SlotLinhKhi from, SlotLinhKhi to , int count = 1)
     {
         to.AddCount(count);
+        from.AddCountRequire(count);
         from.AddCount(-count, () =>
         {
+            Debug.Log("tao chuyen none o day");
             from.eLinhKhi = ELinhKhi.None;
         });
-        from.SetCountRequire(count);
         textTip.text = $"{CurrentLinhKhi - maxLinhKhi}";
         CheckTuongQuan();
     }
@@ -309,33 +312,13 @@ public class PlayerUICombat : MonoBehaviour
             if (item.ThanThongData == null) continue;
             item.SetLock(false);
 
-            var listRequire = item.ThanThongData.requireActives;
-            listRequire = listRequire
-            .OrderBy(x => x.linhKhiRequire == ELinhKhi.None)
-            .ToList();
-
-            foreach (var require in listRequire)
+            if(!item.ThanThongData.IsCanUseLinhKhiRequire(player))
             {
-                bool hasSpecificType = require.linhKhiRequire != ELinhKhi.None;
+                Debug.Log("CheckFightSkillCanUse  lock");
+                item.SetLock(true);
+            }    
 
-                // --- Tìm đối tượng phù hợp ---
-                var match = hasSpecificType
-                    ? linhKhiRemains.FirstOrDefault(l => l.eLinhKhi == require.linhKhiRequire && l.count >= require.count)
-                    : linhKhiRemains.FirstOrDefault(l => l.count >= require.count );
-
-                // --- Nếu tìm thấy trong linhKhiRemains ---
-
-                if (match == null)
-                {
-                    Debug.Log("CheckFightSkillCanUse  lock"  );
-                    item.SetLock(true);
-                    break;
-
-                }
-               
-
-
-            }
+           
         }
         foreach (var item in fightSkills)
         {
@@ -366,7 +349,7 @@ public class PlayerUICombat : MonoBehaviour
         foreach (var item in fightSkills)
         {
             if (item.ThanThongData == null) continue;
-
+            item.ShowRecommentHighlight(false);
             if (item.isLock == false)
             {
                 if(item.ThanThongData is BaseSkill.LienKich)
@@ -374,7 +357,6 @@ public class PlayerUICombat : MonoBehaviour
                     if(CombatManager.IsLienKich(item.ThanThongData,player.thanThongOldUse))
                     {
                         item.ShowRecommentHighlight(true);
-                        break;
 
                     }
                 }    
@@ -383,7 +365,6 @@ public class PlayerUICombat : MonoBehaviour
                     if (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(linhKhiRemains)) == ETuongQuan.TuongSinh)
                     {
                         item.ShowRecommentHighlight(true);
-                        break;
 
                     }
                 }
@@ -392,7 +373,6 @@ public class PlayerUICombat : MonoBehaviour
                     if (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(linhKhiRemains)) == ETuongQuan.TuongKhac)
                     {
                         item.ShowRecommentHighlight(true);
-                        break;
 
                     }
                 }
@@ -401,7 +381,6 @@ public class PlayerUICombat : MonoBehaviour
                     if (CombatManager.IsTuongDong(GetLinhKhiTieuTans(linhKhiRemains)))
                     {
                         item.ShowRecommentHighlight(true);
-                        break;
 
                     }
                 }
@@ -432,17 +411,16 @@ public class PlayerUICombat : MonoBehaviour
     }
     public void NewTurn(params object[] data)
     {
-        if (!(bool)data[0])
+        if (!(bool)data[2])
         {
             this.gameObject.SetActive(false);
             return;
         }
         this.gameObject.SetActive(true);
 
-        CharacterCombat player = (CharacterCombat)data[1];
+        CharacterCombat player = (CharacterCombat)data[0];
         
         if (player == null) return;
-        this.player = player;
         SetStateControl(EStateControl.None);
         maxLinhKhi = player.totalKhi;
         

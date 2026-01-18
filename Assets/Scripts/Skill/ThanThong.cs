@@ -17,22 +17,78 @@ public abstract class ThanThong : BaseSkill
         .Where(r => r.linhKhiRequire != ELinhKhi.None)
         .Select(r => r.linhKhiRequire)
         .ToArray();
-    protected override ETypeItem tierItem
+    protected override ETypeItem typeItem
     {
         get => ETypeItem.ThanThong;
     }
+    public override abstract string GetDesc(int level);
+    public override string GetDesc()
+    {
+        return "";
+    }
+
+    public void HauKeVoLuc(CharacterCombat caster)
+    {
+        caster.AddThanThongCoolDown(this, 1);
+
+    }
     [SerializeField] protected GameObject prefabEffectSkill;
-    public abstract override void Execute(CharacterCombat caster, CharacterCombat target);
+    public abstract override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
 
+    public int GetIndexLevelThanThong(CharacterCombat caster)
+    {
+        int level = caster.characterStatsCurrent.level;
+        int daiCanhGioi = ((level - 1) / 3) + 1;
+        int indexLevel = daiCanhGioi - 1;
+        return indexLevel;
+    }
 
-    public abstract override string GetDesc();
-    
+    public bool IsCanUseLinhKhiRequire(CharacterCombat caster)
+    {
+        foreach (var require in requireActives)
+        {
+            if (require.linhKhiRequire == ELinhKhi.None)
+            {
+                // Kiểm tra xem có CÓ ÍT NHẤT MỘT loại nào đủ count hay không
+                bool hasAnyTypeEnough = caster.khiKim >= require.count ||
+                                        caster.khiMoc >= require.count ||
+                                        caster.khiThuy >= require.count ||
+                                        caster.khiHoa >= require.count ||
+                                        caster.khiTho >= require.count ||
+                                        caster.khiMa >= require.count;
+
+                if (!hasAnyTypeEnough) return false;
+            }
+            else
+            {
+                // Nếu yêu cầu loại cụ thể thì phải đúng loại đó
+                int availableCount = GetLinhKhiAmount(caster, require.linhKhiRequire);
+                if (availableCount < require.count) return false;
+            }
+        }
+        return true;
+    }
+
+    private int GetLinhKhiAmount(CharacterCombat caster, ELinhKhi type)
+    {
+        return type switch
+        {
+            ELinhKhi.Kim => caster.khiKim,
+            ELinhKhi.Moc => caster.khiMoc,
+            ELinhKhi.Thuy => caster.khiThuy,
+            ELinhKhi.Hoa => caster.khiHoa,
+            ELinhKhi.Tho => caster.khiTho,
+            ELinhKhi.Ma => caster.khiMa,
+            _ => 0
+        };
+    }
     public virtual bool IsCanUse(CharacterCombat caster , CharacterCombat target)
     {
         return true;
     }    
     protected virtual void ShowSkillEffect(CharacterCombat target , float delay , Vector3 addPos = default)
     {
+        if (prefabEffectSkill == null) return;
         var posCenter = Vector3.up * 500;
         posCenter += addPos;
         var effect = prefabEffectSkill.Spawn(target.transform);
@@ -46,6 +102,7 @@ public abstract class ThanThong : BaseSkill
     }
     protected virtual void ShowSkillEffectParticle(CharacterCombat target, float delay, Vector3 addPos = default)
     {
+        if (prefabEffectSkill == null) return;
         var posCenter = Vector3.up * 500;
         posCenter += addPos;
         var effect = prefabEffectSkill.Spawn(target.transform);

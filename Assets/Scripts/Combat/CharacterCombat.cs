@@ -6,12 +6,13 @@ using LongDH.Script.ObjectPool;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
 using Spine.Unity;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Networking.UnityWebRequest;
 
-
+[System.Serializable]
 public class CharacterStats
 {    // chỉ số
     public float percentKim;
@@ -43,17 +44,18 @@ public class CharacterStats
     public class CongPhapSave
     {
         public int id;
-        public int level;
+        public int level = 1;
     }
-    public CongPhapSave congPhapOwner;
+    public CongPhapSave[] congPhapOwner;
     // công pháp used
-    public int donThuatUsed;
-    public int phuTu1Used;
-    public int phuTu2Used;
-    public int phuTu3Used;
-    public int phuTu4Used;
-    public int chuTu1Used;
-    public int chuTu2Used;
+    // -1 là chưa trang bị
+    public int donThuatUsed = -1;
+    public int phuTu1Used = -1;
+    public int phuTu2Used= -1;
+    public int phuTu3Used = -1;
+    public int phuTu4Used = -1;
+    public int chuTu1Used = -1;
+    public int chuTu2Used = -1;
    
     public CharacterStats Clone()
     {
@@ -73,9 +75,12 @@ public class CharacterCombat : MonoBehaviour
     [SerializeField] protected Text textSkillNameCall;
     public Gender gender;
     [SerializeField] SkeletonGraphic[] characterGender;
-    [SerializeField] private SkeletonGraphic currentCharGender => characterGender[(int)gender];
+    [SerializeField] public SkeletonGraphic currentCharGender => characterGender[(int)gender];
+    [SerializeField]
+    public List<CongPhapMono> congPhapEquip;
 
-    public void PlaySkill(ThanThong thanThong)
+
+    public void PlaySkill(ThanThong thanThong , List<LinhKhiTieuTan> linhKhiTieuTans)
     {
         DOTween.Kill("HideSkillName");
 
@@ -88,6 +93,44 @@ public class CharacterCombat : MonoBehaviour
         }).SetId("HideSkillName");
 
         StartAnimPunch();
+        thanThongCurrentUse = thanThong;
+        foreach (var item in linhKhiTieuTans)
+        {
+            switch (item.eLinhKhi)
+            {
+                case ELinhKhi.None:
+                    break;
+                case ELinhKhi.Kim:
+                    khiKimUsed += item.count;
+                    break;
+                case ELinhKhi.Moc:
+                    khiMocUsed += item.count;
+
+                    break;
+                case ELinhKhi.Thuy:
+                    khiThuyUsed += item.count;
+
+                    break;
+                case ELinhKhi.Hoa:
+                    khiHoaUsed += item.count;
+
+                    break;
+                case ELinhKhi.Tho:
+                    khiThoUsed += item.count;
+
+                    break;
+                case ELinhKhi.Ma:
+                    khiMaUsed += item.count;
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
+    public void SetThanThongOldUse(ThanThong thanThong)
+    {
         thanThongOldUse = thanThong;
     }
     public void StartAnimPunch()
@@ -100,10 +143,30 @@ public class CharacterCombat : MonoBehaviour
 
     public void StartAnimHit()
     {
-        // Chạy anim tấn công ngay lập tức
+        // Reset toàn bộ xương về tư thế gốc trước khi diễn
+        currentCharGender.Skeleton.SetToSetupPose();
+        currentCharGender.AnimationState.ClearTracks();
+
+        // Chạy Hit
         currentCharGender.AnimationState.SetAnimation(0, ANIM_HIT, false);
-        // Xếp hàng anim Idle để chạy ngay sau khi anim trên kết thúc
-        currentCharGender.AnimationState.AddAnimation(0, ANIM_IDLE, true, 0);
+
+        // Dùng Coroutine để ép về Idle sau đúng thời gian của anim Hit
+        StartCoroutine(ForceReturnToIdle());
+    }
+
+    IEnumerator ForceReturnToIdle()
+    {
+        var anim = currentCharGender.Skeleton.Data.FindAnimation(ANIM_HIT);
+        // Lấy thời gian thực tế trừ đi khoảng 0.1s hoặc 0.2s để chuyển cảnh sớm hơn
+        float duration = (anim != null) ? anim.Duration : 0.1f;
+        float spacing = gender == Gender.Female ? 1.75f : 0;
+        // Giảm thời gian chờ đi một chút để bớt cảm giác "đơ"
+        float actualWait = Mathf.Max(0, duration - spacing);
+
+        yield return new WaitForSeconds(actualWait);
+
+        // Ép về Idle
+        currentCharGender.AnimationState.SetAnimation(0, ANIM_IDLE, true);
     }
     public void StartAnimDie()
     {
@@ -111,31 +174,36 @@ public class CharacterCombat : MonoBehaviour
         currentCharGender.AnimationState.SetAnimation(0, ANIM_DIE, false);
         
     }
+    private int activeTextCount = 0; // Đếm số text đang bay
     public void SetTextDameAnim(int dame)
     {
         var textDame = CombatManager.GetTextDame();
         textDame.transform.SetParent(this.transform);
-        textDame.transform.localScale = Vector3.one *2f;
-        // 1. Đặt vị trí bắt đầu (Tại nhân vật + cao lên 2 đơn vị)
-        Vector3 startPos = Vector3.up * 1000;
+        textDame.transform.localScale = Vector3.one * 2f;
+
+        // 1. Tính toán vị trí dựa trên số lượng text đang hiện có
+        // Mỗi text mới sẽ cao hơn text trước đó khoảng 50 đơn vị (tùy chỉnh số này)
+        float offset = activeTextCount * 150f;
+        Vector3 startPos = new Vector3(0, 1000 + offset, 0);
         textDame.transform.localPosition = startPos;
-        // 2. Xử lý Màu sắc và Alpha (Sửa lỗi gán .a)
+
+        activeTextCount++; // Tăng biến đếm khi hiện text mới
+
+        // 2. Thiết lập nội dung và màu sắc
         Color targetColor = (dame > 0) ? Color.green : Color.red;
         textDame.text = dame.ToString();
-
-        targetColor.a = 1; // Đảm bảo hiện rõ lúc đầu
+        targetColor.a = 1;
         textDame.color = targetColor;
 
-        // 3. Hiệu ứng bay lên (Dùng DOMoveY để chỉ tác động trục Y)
         float time = 1f;
-        float flyHeight = 200; // Khoảng cách bay lên thêm
-        textDame.transform.DOLocalMoveY(startPos.y + flyHeight, time);
+        float flyHeight = 200;
 
-        // 4. Hiệu ứng mờ dần
+        // 3. Hiệu ứng
+        textDame.transform.DOLocalMoveY(textDame.transform.localPosition.y + flyHeight, time);
         textDame.DOFade(0, time).OnComplete(() => {
+            activeTextCount--; // Giảm biến đếm khi text biến mất
+            if (activeTextCount < 0) activeTextCount = 0; // Safety check
             textDame.gameObject.Recycle();
-            // Có thể ẩn text hoặc cho vào Pool sau khi xong
-            // textDame.gameObject.SetActive(false);
         });
     }
     public int khiKim;
@@ -145,9 +213,17 @@ public class CharacterCombat : MonoBehaviour
     public int khiTho;
     public int khiMa;
 
+    public int khiKimUsed;
+    public int khiMocUsed;
+    public int khiThuyUsed;
+    public int khiHoaUsed;
+    public int khiThoUsed;
+    public int khiMaUsed;
+
     public CharacterStats characterStats;
     public CharacterStats characterStatsCurrent;
     public ThanThong thanThongOldUse;
+    public ThanThong thanThongCurrentUse;
 
     public class CountStack<T>
     {
@@ -170,6 +246,7 @@ public class CharacterCombat : MonoBehaviour
         buffAndDebuffCount.TryGetValue(type, out var current)
         ? current + count
         : count;
+        Debug.Log("Vao day3 is Count + type " + count + type);
 
         Observer.Notify(EventList.GamePlay.ADD_BUFF, this, type, buffAndDebuffCount[type]);
 
@@ -203,6 +280,12 @@ public class CharacterCombat : MonoBehaviour
         thanThongCoolDown.Clear();
         currentCharGender.gameObject.SetActive(true);
         currentCharGender.AnimationState.SetAnimation(0, ANIM_IDLE, true);
+        InitTotalKhi();
+        foreach (var cp in congPhapEquip)
+        {
+            cp.congPhap.Init();
+        } 
+            
 
     }
 
@@ -243,40 +326,31 @@ public class CharacterCombat : MonoBehaviour
         Observer.Notify(EventList.GamePlay.HAPTHU_LINHKHI, this,elinhKhi,count );
 
     }
-    public int totalKhi
+    public int totalKhi;
+
+    public int totalKhiRandom;
+   
+    private void InitTotalKhi()
     {
-        get
-        {
-            int level = characterStatsCurrent.level;
+        int level = characterStatsCurrent.level;
 
-            // 1) Tính đại cảnh giới (3 level = 1 đại cảnh giới)
-            int daiCanhGioi = ((level - 1) / 3) + 1;
+        // 1) Tính đại cảnh giới (3 level = 1 đại cảnh giới)
+        int daiCanhGioi = ((level - 1) / 3) + 1;
 
-            // 2) Tính khí mỗi level (base 4 + 1 mỗi đại cảnh giới)
-            int baseKhi = 4;
-            int khiPerLevel = baseKhi + (daiCanhGioi - 1);
+        // 2) Tính khí mỗi level (base 4 + 1 mỗi đại cảnh giới)
+        int baseKhi = 4;
+        int khiPerLevel = baseKhi + (daiCanhGioi - 1);
 
-            // 3) Tổng khí
-            return khiPerLevel;
-        }
-    }
-    public int totalKhiRandom
-    {
-        get
-        {
-            int level = characterStatsCurrent.level;
+        // 3) Tổng khí
+        totalKhi = khiPerLevel;
 
-            // 1) Tính đại cảnh giới (3 level = 1 đại cảnh giới)
-            int daiCanhGioi = ((level - 1) / 3) + 1;
+     
+        int baseKhiTotalKhiRandom = 9;
+        int khiPerLevelRandom = baseKhiTotalKhiRandom + (daiCanhGioi - 1) * 2;
 
-            // 2) Tính khí mỗi level (base 9 + 2 mỗi đại cảnh giới)
-            int baseKhi = 9;
-            int khiPerLevel = baseKhi + (daiCanhGioi - 1) * 2;
-
-            // 3) Tổng khí theo yêu cầu: bạn đang return chỉ số khí/lv
-            return khiPerLevel;
-        }
-    }
+        // 3) Tổng khí theo yêu cầu: bạn đang return chỉ số khí/lv
+        totalKhiRandom = khiPerLevelRandom;
+    }    
     public void TieuTanLinhKhi(ELinhKhi eLinhKhi,int count)
     {
         switch (eLinhKhi)
@@ -312,12 +386,16 @@ public class CharacterCombat : MonoBehaviour
     }    
     public void HapThuLinhKhi()
     {
-        foreach (var item in HapThuLinhKhi(totalKhiRandom))
+        HapThuLinhKhi(totalKhiRandom);
+    }
+    public void HapThuLinhKhi(int total)
+    {
+        foreach (var item in DictHapThuLinhKhi(total))
         {
-            HapThuLinhKhi(item.Key,item.Value);
+            HapThuLinhKhi(item.Key, item.Value);
         }
-    }    
-    public Dictionary<ELinhKhi,int> HapThuLinhKhi(int total)
+    }
+    public Dictionary<ELinhKhi,int> DictHapThuLinhKhi(int total)
     {
 
         Dictionary<ELinhKhi, int> result = new Dictionary<ELinhKhi, int>();
@@ -409,24 +487,85 @@ public class CharacterCombat : MonoBehaviour
     [Button]   
     public void EndTurn()
     {
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChayMau, out int chayMau))
+        {
+            AddDamageData(new List<int> { (int)(chayMau * 0.01f * (characterStats.hp - characterStatsCurrent.hp)) });
+            TakeDame(null);
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChayMau, 1);
+
+
+        }
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DeTonThuong, out int value))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, value);
         }
        
+
+    }
+
+    public List<int> allDamages = new List<int>();
+
+    public void AddDamageData(List<int> dame, bool isCongDon = true)
+    {
+        if (isCongDon)
+        {
+            int sum = 0;
+            foreach (var d in dame)
+            {
+                sum += d;
+            }
+            if(allDamages.Count>0)
+            {
+                for (int i = 0; i < allDamages.Count; i++)
+                {
+                    allDamages[i] += sum;
+                }
+            }   
+            else
+            {
+                allDamages.Add(sum);
+            }    
+
+        }
+        else
+        {
+            // Nếu không cộng dồn, luôn luôn thêm một phần tử mới vào List
+            // Việc này giúp lưu lại từng đòn đánh riêng biệt (không ghi đè)
+            allDamages.AddRange(dame);
+        }
+    }    
+    [Button]
+    public void TakeDameCaculate(CharacterCombat sender , List<int> dame , bool isCongDon = true)
+    {
+        AddDamageData(dame,isCongDon);
+        
+        Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME_CACULATE,sender,this,dame); // sender , targer nhận, dame
+
     }
     [Button]
-    public void TakeDame(CharacterCombat sender , int dame)
+    public void TakeDame(CharacterCombat caster)
+    {
+        foreach (var item in allDamages)
+        {
+            TakeDame(item);
+            Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, caster,this,item);
+
+        }
+        thanThongCurrentUse = null;
+        allDamages.Clear();
+
+    }
+    private void TakeDame(int dame)
     {
         dame += buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.DeTonThuong, 0);
-        int hotrao = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.HoTrao,0);
+        int hotrao = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.HoTrao, 0);
         hotrao = Mathf.Clamp(hotrao, 0, dame);
         dame -= hotrao;
-        RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao,hotrao);
+        RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hotrao);
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, dame);
 
-        Debug.Log(this.gameObject.name+ "nhận dame là : " + dame);
-        if(dame>0)
+        Debug.Log(this.gameObject.name + "nhận dame là : " + dame);
+        if (dame > 0)
         {
             StartAnimHit();
             SetTextDameAnim(-dame);
@@ -434,10 +573,11 @@ public class CharacterCombat : MonoBehaviour
         characterStatsCurrent.hp -= dame;
         characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);
 
-        Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME);
+        Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);
 
         CheckDie();
     }
+
     public virtual void CheckDie()
     {
         if (characterStatsCurrent.hp > 0)
@@ -456,7 +596,7 @@ public class CharacterCombat : MonoBehaviour
         SetTextDameAnim(+hp);
 
 
-        Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME);
+        Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);
 
     }
 

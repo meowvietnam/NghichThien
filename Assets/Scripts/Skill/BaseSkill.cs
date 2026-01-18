@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using CreateCharacter;
+using System.Linq;
+using UnityEngine;
 
 public enum EBuffAndDeBuff
 {
@@ -16,6 +18,7 @@ public enum EBuffAndDeBuff
     ChanKim,
     TrungDoc,
     HuyenVu,
+    ChayMau
 
 
 }
@@ -50,7 +53,7 @@ public abstract class BaseSkill : BaseItemData
     }
     public ETierSkill eTierSkill;
     public ETypeSkill[] eTypeSkill;
-    public abstract void Execute(CharacterCombat caster, CharacterCombat target);
+    public abstract void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
    
     public interface LienKich
     {
@@ -75,6 +78,17 @@ public abstract class BaseSkill : BaseItemData
         public abstract void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target);
 
     }
+    public abstract string GetDesc(int level);
+
+    public bool IsActiveWithPercent(int percent)
+    {
+        if(Random.Range(0,101) < percent)
+        {
+            return true;
+        }    
+        return false;
+    }    
+
     public string GetKeyWordBuffOrDeBuff(EBuffAndDeBuff eKeyWord)
     {
         string text = string.Empty;
@@ -124,6 +138,9 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.HuyenVu:
                 text = "Huyễn Vụ";
+                break;
+            case EBuffAndDeBuff.ChayMau:
+                text = "Chảy Máu";
                 break;
             default:
                 break;
@@ -177,6 +194,9 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.HuyenVu:
                 text = $"Có 5% tỉ lệ né tránh sát thương. Tỉ lệ này không cộng dồn";
+                break;
+            case EBuffAndDeBuff.ChayMau:
+                text = $"Kết thúc hiệp, bản thân nhận 1% tổn thương của lượng HP đã tổn thất sau đó giải trừ 1 tầng";
                 break;
             default:
                 break;
@@ -297,4 +317,75 @@ public abstract class BaseSkill : BaseItemData
         }
         return text;
     }
+    public string GetTextTypeSkill()
+    {
+        string text = string.Empty;
+        for (int i = 0; i < eTypeSkill.Length; i++)
+        {
+            var item  = eTypeSkill[i];
+            text += GetTextTypeSkill(item);
+            if(i < eTypeSkill.Length )
+            {
+                text += " - ";
+            }    
+
+        }
+       
+        return GetColoredText($"{text}","red");
+    }    
+    public string GetTextTypeSkill(ETypeSkill typeSkill)
+    {
+        string text = string.Empty;
+        switch (typeSkill)
+        {
+            case ETypeSkill.None:
+                break;
+            case ETypeSkill.Kim:
+                text = "Kim";
+                break;
+            case ETypeSkill.Moc:
+                text = "Mộc";
+                break;
+            case ETypeSkill.Thuy:
+                text = "Thủy";
+                break;
+            case ETypeSkill.Hoa:
+                text = "Hỏa";
+
+                break;
+            case ETypeSkill.Tho:
+                text = "Thổ";
+                break;
+            case ETypeSkill.Ma:
+                text = "Ma";
+                break;
+            case ETypeSkill.Kiem:
+                text = "Kiếm";
+
+                break;
+            case ETypeSkill.Khi:
+                text = "Khí";
+
+                break;
+            case ETypeSkill.The:
+                text = "Thể";
+
+                break;
+            case ETypeSkill.Than:
+                text = "Thần";
+
+                break;
+            default:
+                break;
+        }
+        return text;
+    }
+    public bool CheckIsEqualETypeSkill(CharacterCombat caster)
+    {
+        if (caster.thanThongCurrentUse == null) return false;
+        // Kiểm tra hệ của Skill đang dùng có khớp với Công Pháp (SO) này không
+        bool isExecute = this.eTypeSkill.Any(skill => caster.thanThongCurrentUse.eTypeSkill.Contains(skill));
+        return isExecute;   
+    }    
+  
 }

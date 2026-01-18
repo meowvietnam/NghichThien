@@ -1,13 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 [CreateAssetMenu]
 public class KimHongQuanNhat : ThanThong
 {
-    [SerializeField] private int dame = 190;
-    [SerializeField] private int perDameKiemKhi = 6;
-    [SerializeField] private int perDameSucThe = 1;
-    public override void Execute(CharacterCombat caster, CharacterCombat target)
+    [SerializeField] private int[] dame;
+    [SerializeField] private int[] perDameKiemKhi;
+    [SerializeField] private int[] perDameSucThe;
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.AddThanThongCoolDown(this, 1);
+        HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KietSuc, 1);
 
 
@@ -19,15 +20,15 @@ public class KimHongQuanNhat : ThanThong
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe,sucThe);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi,kiemKhi);
 
-        int dame =  this.dame+ perDameKiemKhi * kiemKhi + perDameSucThe * sucThe;
-        target.TakeDame(caster,dame);
+        int dame = this.dame[GetIndexLevelThanThong(caster) - 1] + perDameKiemKhi[GetIndexLevelThanThong(caster)-1] * kiemKhi + perDameSucThe[GetIndexLevelThanThong(caster) - 1] * sucThe;
+        target.TakeDameCaculate(caster, new List<int> { dame });
 
         ShowSkillEffectParticle(target, 1f);
     }
 
-    public override string GetDesc()
+    public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tạo thành {GetColoredText($"{dame}", "red")} điểm sát thương, cũng tiêu hao toàn bộ {GetDescBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} mỗi tầng tăng thêm {GetColoredText($"{perDameKiemKhi}", "red")} điểm thương tổn và {GetDescBuffOrDeBuff(EBuffAndDeBuff.SucThe)} mỗi tầng tăng thêm {GetColoredText($"{perDameSucThe}", "red")} điểm thương tổn. Bạn bị {GetDescBuffOrDeBuff(EBuffAndDeBuff.KietSuc)}";
+        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tạo thành {GetColoredText($"{dame[level-1]}", "red")} điểm sát thương, cũng tiêu hao toàn bộ {GetDescBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} mỗi tầng tăng thêm {GetColoredText($"{perDameKiemKhi[level - 1]}", "red")} điểm thương tổn và {GetDescBuffOrDeBuff(EBuffAndDeBuff.SucThe)} mỗi tầng tăng thêm {GetColoredText($"{perDameSucThe[level-1]}", "red")} điểm thương tổn. Bạn bị {GetDescBuffOrDeBuff(EBuffAndDeBuff.KietSuc)}";
     }
 
 }

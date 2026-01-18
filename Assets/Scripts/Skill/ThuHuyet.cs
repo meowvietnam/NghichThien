@@ -2,12 +2,12 @@
 [CreateAssetMenu]
 public class ThuHuyet : ThanThong
 {
-    [SerializeField] private int hapThu = 6;
-    public override void Execute(CharacterCombat caster, CharacterCombat target)
+    [SerializeField] private int[] hapThu;
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.AddThanThongCoolDown(this,1);
+        HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KietSuc,1);
-        foreach (var item in caster.HapThuLinhKhi(hapThu))
+        foreach (var item in caster.DictHapThuLinhKhi(hapThu[GetIndexLevelThanThong(caster)-1]))
         {
             caster.HapThuLinhKhi(item.Key, item.Value);
         }
@@ -15,8 +15,8 @@ public class ThuHuyet : ThanThong
 
     }
 
-    public override string GetDesc()
+    public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Hấp thụ {GetColoredText($"ngẫu nhiên {hapThu} điểm", "red")} linh khí. Bạn bị {GetDescBuffOrDeBuff(EBuffAndDeBuff.KietSuc)}";
+        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Hấp thụ {GetColoredText($"ngẫu nhiên {hapThu[level-1]} điểm", "red")} linh khí. Bạn bị {GetDescBuffOrDeBuff(EBuffAndDeBuff.KietSuc)}";
     }
 }
