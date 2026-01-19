@@ -8,15 +8,15 @@ namespace CreateCharacter.CharStats
     public class Tooltip : MonoBehaviour
     {
         [SerializeField] private GameObject thisObject;
-        [SerializeField] private Text text;
+        [SerializeField] protected Text text;
         [SerializeField] private Button closeButton;
-        [SerializeField] private RectTransform thisTransform;
+        [SerializeField] public RectTransform thisTransform;
         private Tween tween;
         public static Tooltip Instance { get; private set; }
         private void Start()
         {
             Instance = this;
-            closeButton.onClick.AddListener(DoHide);
+            closeButton?.onClick.AddListener(DoHide);
             SetActive(false);
         }
         private void OnDestroy()
@@ -29,6 +29,12 @@ namespace CreateCharacter.CharStats
         {
             var text = $"<color=#6495ED>Hiệu quả: </color>{effective}\n\n<color=#FF7F50>Mô tả: </color>{description}";
             this.text.text = text;
+            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(thisTransform);
+        }
+        public void SetText(string des)
+        {
+            this.text.text = des;
             Canvas.ForceUpdateCanvases();
             LayoutRebuilder.ForceRebuildLayoutImmediate(thisTransform);
         }

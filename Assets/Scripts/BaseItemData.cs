@@ -48,7 +48,7 @@ public abstract class BaseItemData : ScriptableObject
     public Sprite frameItem => null;
 
     public abstract string GetDesc();
-    public string GetColoredText(string text, string colorName)
+    public static string GetColoredText(string text, string colorName)
     {
         return $"<color={colorName}>{text}</color>";
     }

@@ -100,7 +100,7 @@ namespace CreateCharacter
         }
 
         [Button]
-        private void ClearData()
+        public void ClearData()
         {
             var path = Path.Combine(Application.persistentDataPath, userDataPath);
             File.Delete(path);

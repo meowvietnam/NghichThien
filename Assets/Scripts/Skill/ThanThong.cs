@@ -35,14 +35,17 @@ public abstract class ThanThong : BaseSkill
     [SerializeField] protected GameObject prefabEffectSkill;
     public abstract override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
 
-    public int GetIndexLevelThanThong(CharacterCombat caster)
+    public static int GetIndexLevelThanThong(CharacterCombat caster)
     {
-        int level = caster.characterStatsCurrent.level;
+        return GetIndexLevelThanThong(caster.characterStatsCurrent);
+    }
+    public static int GetIndexLevelThanThong(CharacterStats characterStatsCurrent)
+    {
+        int level = characterStatsCurrent.level;
         int daiCanhGioi = ((level - 1) / 3) + 1;
         int indexLevel = daiCanhGioi - 1;
         return indexLevel;
     }
-
     public bool IsCanUseLinhKhiRequire(CharacterCombat caster)
     {
         foreach (var require in requireActives)

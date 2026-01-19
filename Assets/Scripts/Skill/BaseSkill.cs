@@ -53,6 +53,12 @@ public abstract class BaseSkill : BaseItemData
     }
     public ETierSkill eTierSkill;
     public ETypeSkill[] eTypeSkill;
+
+    public EKeyWord[] eKeywordSkillHave;
+    public EBuffAndDeBuff[] eKeywordBuffSkillHave;
+
+
+  
     public abstract void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
    
     public interface LienKich
@@ -89,7 +95,7 @@ public abstract class BaseSkill : BaseItemData
         return false;
     }    
 
-    public string GetKeyWordBuffOrDeBuff(EBuffAndDeBuff eKeyWord)
+    public static string GetKeyWordBuffOrDeBuff(EBuffAndDeBuff eKeyWord)
     {
         string text = string.Empty;
         switch (eKeyWord)
@@ -148,7 +154,7 @@ public abstract class BaseSkill : BaseItemData
         return GetColoredText($"[{text}]", "green");
 
     }
-    public string GetDescBuffOrDeBuff(EBuffAndDeBuff eKeyWord)
+    public static string GetDescBuffOrDeBuff(EBuffAndDeBuff eKeyWord)
     {
         string text = string.Empty;
         switch (eKeyWord)
@@ -204,7 +210,7 @@ public abstract class BaseSkill : BaseItemData
         return $"{GetKeyWordBuffOrDeBuff(eKeyWord)}: " + text;
 
     }
-    public string GetKeyWord(EKeyWord eKeyWord)
+    public static string GetKeyWord(EKeyWord eKeyWord)
     {
         string text = string.Empty;
         switch (eKeyWord)
@@ -244,7 +250,7 @@ public abstract class BaseSkill : BaseItemData
         return GetColoredText($"[{text}]","green");
 
     }
-    public string GetDescKeyWord(EKeyWord eKeyWord)
+    public static string GetDescKeyWord(EKeyWord eKeyWord)
     {
         string text = string.Empty;
         switch (eKeyWord)
@@ -282,7 +288,7 @@ public abstract class BaseSkill : BaseItemData
         return $"{GetKeyWord(eKeyWord)}: " + text;
 
     }
-    public string GetTextLinhKhi(ELinhKhi eLinhKhi)
+    public static string GetTextLinhKhi(ELinhKhi eLinhKhi)
     {
         string text = string.Empty;
         switch (eLinhKhi)
@@ -324,7 +330,7 @@ public abstract class BaseSkill : BaseItemData
         {
             var item  = eTypeSkill[i];
             text += GetTextTypeSkill(item);
-            if(i < eTypeSkill.Length )
+            if(i < eTypeSkill.Length-1)
             {
                 text += " - ";
             }    
@@ -333,7 +339,7 @@ public abstract class BaseSkill : BaseItemData
        
         return GetColoredText($"{text}","red");
     }    
-    public string GetTextTypeSkill(ETypeSkill typeSkill)
+    public static string GetTextTypeSkill(ETypeSkill typeSkill)
     {
         string text = string.Empty;
         switch (typeSkill)

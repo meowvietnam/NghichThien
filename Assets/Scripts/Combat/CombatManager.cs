@@ -1,4 +1,5 @@
-﻿using LongDH.LongDHModules;
+﻿using CreateCharacter.CharStats;
+using LongDH.LongDHModules;
 using LongDH.Script.ObjectPool;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
@@ -60,6 +61,8 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private ScrollRect statusChar2;
 
     [SerializeField] private Text prefabTextDame;
+    [SerializeField] private Tooltip buffInfor;
+
     public Text GetTextDame()
     {
         return prefabTextDame.Spawn(this.transform);
@@ -335,6 +338,18 @@ public class CombatManager : MonoBehaviour
                     buffIcon = prefabBuffIcon.Spawn(scrollRect.content.transform);
                     buffIcon.transform.localScale = new Vector3(1*signX,1,1);
                     buffIcon.InitIcon(GetSpriteBuffIcon(buffType), null);
+                    buffIcon.InitAction(null, () =>
+                    {
+                        Debug.Log("cos goi pointer up buff icon show tip");
+
+                        buffInfor.SetText(BaseSkill.GetDescBuffOrDeBuff(buffType));
+                        buffInfor.transform.SetParent(buffIcon.transform);
+
+                        buffInfor.transform.localPosition = new Vector3(signX * buffInfor.thisTransform.sizeDelta.x / 2, -80, 0);
+
+                        buffInfor.DoShow();
+
+                    });
                 }
                 
                 buffIcon.AddCount(currentValue - buffIcon.count);

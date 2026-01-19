@@ -6,6 +6,7 @@ public class FightSkillItem : BaseItemUI
     [SerializeField] private Image recommentHighLight;
     [SerializeField] private Image selectHighLight;
     [SerializeField] private Image maskCoolDown;
+    [SerializeField] private Button btnShowInfor;
     [SerializeField] private Text cdText;
 
     public ThanThong ThanThongData => (ThanThong)itemData;
@@ -19,8 +20,13 @@ public class FightSkillItem : BaseItemUI
     {
         base.InitItemData(itemData, frameSprite);
         icon.gameObject.SetActive(itemData != null);
-        SetLock(itemData == null);
+        btnShowInfor.gameObject.SetActive(itemData != null);
 
+        SetLock(itemData == null);
+        btnShowInfor.onClick.AddListener(() =>
+        {
+            EventHolder();
+        });
 
     }
     public void SetCoolDown(bool isActive , int cd)

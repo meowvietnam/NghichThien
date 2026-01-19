@@ -40,6 +40,8 @@ public class PlayerUICombat : MonoBehaviour
     public Text textTip;
     public ThanThong[] thanthongtest;// test
     public CombatManager CombatManager => transform.GetComponentInParent<CombatManager>();
+
+    public SkillTip skillTip;
     public void SetStateControl(EStateControl eState)
     {
         eStateControl = eState;
@@ -104,6 +106,7 @@ public class PlayerUICombat : MonoBehaviour
                 break;
         }
     }    
+   
     private void Awake()
     {
         btnConfirm.onClick.AddListener(() =>
@@ -215,7 +218,8 @@ public class PlayerUICombat : MonoBehaviour
             var skill = fightSkills[s];
             Action actionHolder = new Action(() =>
             {
-
+                skillTip.SetPosition(new Vector3(skill.transform.position.x,skillTip.transform.position.y,skillTip.transform.position.z));
+                skillTip.ShowSkillTip(skill.ThanThongData.name,skill.ThanThongData.GetDesc(ThanThong.GetIndexLevelThanThong(player.characterStatsCurrent)),skill.ThanThongData.GetTextTypeSkill(),skill.ThanThongData.requireActives,skill.ThanThongData);
             });
             Action actionPointerUp = new Action(() =>
             {

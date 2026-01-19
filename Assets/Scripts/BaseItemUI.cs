@@ -21,9 +21,8 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
     public virtual void Init(BaseItemData itemData , Sprite frameSprite, Action actionHolder = null , Action actionPointerUp = null)
     {
         InitItemData(itemData, frameSprite);
-       
-        this.actionHolder = actionHolder;
-        this.actionPointerUp = actionPointerUp;
+
+        InitAction(actionHolder, actionPointerUp);
     }
     [Button]
     public virtual void InitItemData(BaseItemData itemData , Sprite frameSprite)
@@ -49,9 +48,15 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
         }
 
     }
+    public void InitAction(Action actionHolder = null, Action actionPointerUp = null)
+    {
+        this.actionHolder = actionHolder;
+        this.actionPointerUp = actionPointerUp;
+    }
     public virtual void EventHolder()
     {
         actionHolder?.Invoke();
+        progressHold.gameObject.SetActive(false);   
     }    
     protected IEnumerator IECheckHolder()
     {
@@ -79,6 +84,7 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
 
     public virtual void OnPointerUp()
     {
+        Debug.Log("cos goi pointer up item ui");
         actionPointerUp?.Invoke();
     }    
     public void OnPointerUp(PointerEventData eventData)
