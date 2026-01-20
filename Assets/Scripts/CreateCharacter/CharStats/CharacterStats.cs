@@ -81,7 +81,7 @@ namespace  CreateCharacter.CharStats
             else if (action == Action.Or)
             {
                 var t = GetValue(type);
-                var i = Convert.ToInt32(value);
+                var i = Convert.ToInt32(t);
                 var newValue = i | (int)(value);
                 SetValue(type, newValue);
             }
