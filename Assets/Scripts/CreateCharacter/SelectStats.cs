@@ -134,6 +134,7 @@ namespace CreateCharacter
         {
             CharacterStats.CopyFrom(orginalStats);
             money = originalMoney;
+            var statModifiers = this.statModifiers.OrderBy(s => s.Action);
             foreach (var statModifier in statModifiers)
             {
                 money -= statModifier.Cost;
