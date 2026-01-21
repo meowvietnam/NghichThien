@@ -13,11 +13,11 @@ public class ThienQuanTram : ThanThong
 
         if (hoTrao > 0)
         {
-            target.TakeDameCaculate(caster, new List<int> { dame *2 });
+            target.TakeDameByThanThong(caster, new List<int> { dame *2 });
         }
         else
         {
-            target.TakeDameCaculate(caster, new List<int> { dame });
+            target.TakeDameByThanThong(caster, new List<int> { dame });
         }
     }
 

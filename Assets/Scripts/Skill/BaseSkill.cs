@@ -393,5 +393,9 @@ public abstract class BaseSkill : BaseItemData
         bool isExecute = this.eTypeSkill.Any(skill => caster.thanThongCurrentUse.thanThong.eTypeSkill.Contains(skill));
         return isExecute;   
     }    
+    public void KiemY(CharacterCombat caster)
+    {
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, 1);
+    }    
   
 }

@@ -80,8 +80,23 @@ public class CharacterCombat : MonoBehaviour
     public List<CongPhapMono> congPhapEquip;
 
     public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill;
+    public List<ThanThong> specialThanThongImpactAfterPlaySkill;
+    public void AddThanThongImpactAfterPlaySkill(ThanThong thanThong)
+    {
+        specialThanThongImpactAfterPlaySkill.Add(thanThong);
+        // call observer event add UI 
 
+    }
+    public void RemoveThanThongImpactAfterPlaySkill(ThanThong thanThong)
+    {
+        // Lấy type của đối tượng truyền vào
+        var typeToRemove = thanThong.GetType();
 
+        // Xóa tất cả các item có cùng Type
+        specialThanThongImpactAfterPlaySkill.RemoveAll(item => item.GetType() == typeToRemove);
+
+        // call observer event update UI
+    }
     public void PlaySkill(ThanThong thanThong , List<LinhKhiTieuTan> linhKhiTieuTans)
     {
         DOTween.Kill("HideSkillName");
@@ -407,7 +422,11 @@ public class CharacterCombat : MonoBehaviour
     }
     public void HapThuLinhKhiNewTurn(out Dictionary<ELinhKhi, int> dictHapThuLinhKhi)
     {
-        dictHapThuLinhKhi = DictHapThuLinhKhi(totalKhiRandom-CurrentLinhKhi);
+        int treKhi = 0;
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TreKhi, out treKhi);
+        int totalKhiHapThu = totalKhiRandom - CurrentLinhKhi - treKhi;
+        RemoveBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, treKhi);
+        dictHapThuLinhKhi = DictHapThuLinhKhi(totalKhiHapThu);
         foreach (var item in dictHapThuLinhKhi)
         {
             HapThuLinhKhi(item.Key, item.Value);
@@ -570,12 +589,13 @@ public class CharacterCombat : MonoBehaviour
             // Việc này giúp lưu lại từng đòn đánh riêng biệt (không ghi đè)
             allDamages.AddRange(dame);
         }
-    }    
+    }
+  
     [Button]
-    public void TakeDameCaculate(CharacterCombat sender , List<int> dame , bool isCongDon = true)
+    public void TakeDameByThanThong(CharacterCombat sender , List<int> dame , bool isCongDon = true)
     {
         AddDamageData(dame,isCongDon);
-        Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME_CACULATE,sender,this,dame); // sender , targer nhận, dame
+        Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG,sender,this,dame); // sender , targer nhận, dame
 
     }
     [Button]

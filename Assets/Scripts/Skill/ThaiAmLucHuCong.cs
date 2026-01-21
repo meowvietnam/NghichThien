@@ -47,7 +47,7 @@ public class ThaiAmLucHuCong : CongPhap
     public override void InitPosCallExecute()
     {
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams);
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_CACULATE, ExecuteParams2);
+        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ExecuteParams2);
 
     }
 }

@@ -27,7 +27,7 @@ public class BasicCPBuffDame : CongPhap
             Debug.Log($"<color=cyan>{this.name}</color>: Đúng hệ! Buff dame và tự gỡ bỏ.");
 
             // CHỈ REMOVE KHI ĐÃ THỰC THI BUFF THÀNH CÔNG
-            Observer.RemoveObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_CACULATE, ExecuteParams);
+            Observer.RemoveObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ExecuteParams);
 
             int dame = dameBuff[CurrentLevelCongPhapInCombat(caster) - 1];
             target.AddDamageData(new List<int> { dame });
@@ -53,7 +53,7 @@ public class BasicCPBuffDame : CongPhap
 
     public override void InitPosCallExecute()
     {
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_CACULATE, ExecuteParams);
+        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ExecuteParams);
     }
 
    

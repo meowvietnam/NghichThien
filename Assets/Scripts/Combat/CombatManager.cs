@@ -89,7 +89,7 @@ public class CombatManager : MonoBehaviour
         }
         return null;
     }    
-  
+    
     private void Awake()
     {
        
@@ -257,6 +257,7 @@ public class CombatManager : MonoBehaviour
             
         }
     }
+   
     private void TieuTanLinhKhi(List<LinhKhiTieuTan> linhKhiTieuTan)
     {
         foreach (var item in linhKhiTieuTan)
@@ -266,6 +267,11 @@ public class CombatManager : MonoBehaviour
         }
     }
     [Button]
+    public void EndTurnButton()
+    {
+        Observer.Notify(EventList.GamePlay.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
+
+    }
     public void EndTurn(params object[] data)
     {
         currentTurn.thanThongCurrentUse = null;
@@ -275,7 +281,7 @@ public class CombatManager : MonoBehaviour
         }
         if (currentTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out int kiemKhi))
         {
-            targetTurn.TakeDameCaculate(currentTurn, new List<int> { kiemKhi });
+            targetTurn.TakeDameByThanThong(currentTurn, new List<int> { kiemKhi });
             targetTurn.TakeDame(currentTurn);
 
         }
@@ -363,7 +369,7 @@ public class CombatManager : MonoBehaviour
     {
         if (currentTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out int sucThe))
         {
-            targetTurn.TakeDameCaculate(currentTurn, new List<int> { sucThe });
+            targetTurn.TakeDameByThanThong(currentTurn, new List<int> { sucThe });
             targetTurn.TakeDame(currentTurn);
 
         }

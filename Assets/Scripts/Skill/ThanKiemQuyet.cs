@@ -58,7 +58,7 @@ public class ThanKiemQuyet : CongPhap
 
     public override void InitPosCallExecute()
     {
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_CACULATE, ExecuteParams);
+        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ExecuteParams);
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams2);
 
     }

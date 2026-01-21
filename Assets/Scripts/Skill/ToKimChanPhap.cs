@@ -15,7 +15,7 @@ public class ToKimChanPhap : CongPhap
             count += item.count;
         }
         Debug.Log("lmm"+count);
-        target.TakeDameCaculate(caster,new List<int> { count * dame[CurrentLevelCongPhapInCombat(caster)-1]});
+        target.TakeDameByThanThong(caster,new List<int> { count * dame[CurrentLevelCongPhapInCombat(caster)-1]});
         target.TakeDame(caster);
     }
 

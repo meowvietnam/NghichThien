@@ -21,7 +21,7 @@ public class KimHongQuanNhat : ThanThong
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi,kiemKhi);
 
         int dame = this.dame[GetIndexLevelThanThong(caster) - 1] + perDameKiemKhi[GetIndexLevelThanThong(caster)-1] * kiemKhi + perDameSucThe[GetIndexLevelThanThong(caster) - 1] * sucThe;
-        target.TakeDameCaculate(caster, new List<int> { dame });
+        target.TakeDameByThanThong(caster, new List<int> { dame });
 
         ShowSkillEffectParticle(target, 1f);
     }

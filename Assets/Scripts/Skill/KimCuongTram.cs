@@ -7,7 +7,7 @@ public class KimCuongTram : ThanThong , BaseSkill.LienKich
     [SerializeField] private int[] hapThu;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.TakeDameCaculate(caster, new List<int> { dame[GetIndexLevelThanThong(caster)-1] });
+        target.TakeDameByThanThong(caster, new List<int> { dame[GetIndexLevelThanThong(caster)-1] });
 
     }
 

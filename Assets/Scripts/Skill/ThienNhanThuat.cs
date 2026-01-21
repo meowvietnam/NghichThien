@@ -3,9 +3,9 @@ using UnityEngine;
 [CreateAssetMenu]
 public class ThienNhanThuat : ThanThong
 {
-    [SerializeField] private int requireKiemKhi = 2;
-    [SerializeField] private int[] countAttack;
-    [SerializeField] private int[] damePerCountAttack;
+    [SerializeField] protected int requireKiemKhi = 2;
+    [SerializeField] protected int[] countAttack;
+    [SerializeField] protected int[] damePerCountAttack;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if(IsCanUse(caster,target))
@@ -16,7 +16,7 @@ public class ThienNhanThuat : ThanThong
             {
                 dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster) - 1]);
             }
-            target.TakeDameCaculate(caster, dames, false);
+            target.TakeDameByThanThong(caster, dames, false);
 
         }
 
