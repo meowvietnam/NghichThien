@@ -103,7 +103,7 @@ public abstract class ThanThong : BaseSkill
         });
 
     }
-    protected virtual void ShowSkillEffectParticle(CharacterCombat target, float delay,int cameraSize, Vector3 addPos = default)
+    protected virtual void ShowSkillEffectParticle(CharacterCombat target, float delay,float cameraSize, Vector3 addPos = default)
     {
         if (prefabEffectSkill == null) return;
         
