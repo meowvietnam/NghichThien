@@ -97,7 +97,8 @@ public class CombatManager : MonoBehaviour
         Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, PlaySkill);
         Observer.AddObserver(EventList.GamePlay.ADD_BUFF, SetUIBuff);
         Observer.AddObserver(EventList.GamePlay.CHARACTER_ADJUST_HP, SetUIHpBar);
-
+        if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
+        if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
         char1.Init(new CharacterStats()
         {
             level = 9,

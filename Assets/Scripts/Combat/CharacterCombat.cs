@@ -77,10 +77,10 @@ public class CharacterCombat : MonoBehaviour
     [SerializeField] SkeletonGraphic[] characterGender;
     [SerializeField] public SkeletonGraphic currentCharGender => characterGender[(int)gender];
     [SerializeField]
-    public List<CongPhapMono> congPhapEquip;
+    public List<CongPhapMono> congPhapEquip = new List<CongPhapMono>();
 
-    public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill;
-    public List<ThanThong> specialThanThongImpactAfterPlaySkill;
+    public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill = new List<LinhKhiTieuTan>();
+    public List<ThanThong> specialThanThongImpactAfterPlaySkill = new List<ThanThong>();
     public void AddThanThongImpactAfterPlaySkill(ThanThong thanThong)
     {
         specialThanThongImpactAfterPlaySkill.Add(thanThong);

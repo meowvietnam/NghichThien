@@ -103,14 +103,15 @@ public abstract class ThanThong : BaseSkill
         });
 
     }
-    protected virtual void ShowSkillEffectParticle(CharacterCombat target, float delay,float cameraSize, Vector3 addPos = default)
+    protected virtual void ShowSkillEffectParticle(CharacterCombat target, float delay,float cameraSize,bool isNullParent, Vector3 addPos = default)
     {
         if (prefabEffectSkill == null) return;
         
-        GameObject effect = null;
-        if(target != null)
+        GameObject effect = !isNullParent ? prefabEffectSkill.Spawn(target.transform) : prefabEffectSkill.Spawn();
+        effect.transform.localEulerAngles = prefabEffectSkill.transform.localEulerAngles;
+
+        if (!isNullParent)
         {
-            effect = prefabEffectSkill.Spawn(target.transform);
             var posCenter = Vector3.up * 500;
             posCenter += addPos;
             effect.transform.localPosition = posCenter;
@@ -118,11 +119,17 @@ public abstract class ThanThong : BaseSkill
         }
         else
         {
-            effect = prefabEffectSkill.Spawn();
             effect.transform.localPosition = Vector3.zero + addPos;
+            int scaleX = (int)target.currentCharGender.transform.localScale.x;
+            int signX = scaleX / Mathf.Abs(scaleX);
+            if(signX<0)
+            {
+                effect.transform.localEulerAngles = new Vector3(effect.transform.localEulerAngles.x,effect.transform.localEulerAngles.y,effect.transform.localEulerAngles.z-180);
 
-
+            }   
+           
         }
+
         Camera.main.orthographicSize = cameraSize;
 
         DOVirtual.DelayedCall(delay, () =>
