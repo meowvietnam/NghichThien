@@ -1,4 +1,5 @@
 ﻿using CreateCharacter.CharStats;
+using DG.Tweening;
 using LongDH.LongDHModules;
 using LongDH.Script.ObjectPool;
 using Sirenix.OdinInspector;
@@ -62,6 +63,8 @@ public class CombatManager : MonoBehaviour
 
     [SerializeField] private Text prefabTextDame;
     [SerializeField] private Tooltip buffInfor;
+
+    public bool IsDelayEffectSkill => targetTurn.allDamages.Count> 0;
 
     public Text GetTextDame()
     {
@@ -214,6 +217,7 @@ public class CombatManager : MonoBehaviour
     }    
     public void PlaySkill(params object[] data)
     {
+        if (IsDelayEffectSkill) return;
         CharacterCombat caster = data[0] as CharacterCombat;
         CharacterCombat target = data[1] as CharacterCombat;
 
@@ -249,7 +253,11 @@ public class CombatManager : MonoBehaviour
 
             }
             caster.SetThanThongOldUse(thanThong,linhKhiTieuTan);
-            target.TakeDame(caster);
+            DOVirtual.DelayedCall(thanThong.timeDelayTakeDame, () =>
+            {
+                target.TakeDame(caster);
+
+            });
         }
         if (linhKhiTieuTan != null)
         {
@@ -275,6 +283,8 @@ public class CombatManager : MonoBehaviour
     }
     public void EndTurn(params object[] data)
     {
+        if (IsDelayEffectSkill) return;
+
         currentTurn.thanThongCurrentUse = null;
         if (data[2] is List<LinhKhiTieuTan> linhKhiTieuTan)
         {
@@ -377,6 +387,8 @@ public class CombatManager : MonoBehaviour
     [Button]
     public void NewTurn()
     {
+        if (IsDelayEffectSkill) return;
+
         if (currentTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out int sucThe))
         {
             targetTurn.TakeDameByThanThong(currentTurn, new List<int> { sucThe });

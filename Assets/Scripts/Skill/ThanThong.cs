@@ -21,6 +21,7 @@ public abstract class ThanThong : BaseSkill
     {
         get => ETypeItem.ThanThong;
     }
+    public float timeDelayTakeDame = 0;
     public override abstract string GetDesc(int level);
     public override string GetDesc()
     {

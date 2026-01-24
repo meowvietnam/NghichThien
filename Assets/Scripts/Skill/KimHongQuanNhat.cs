@@ -23,7 +23,7 @@ public class KimHongQuanNhat : ThanThong
         int dame = this.dame[GetIndexLevelThanThong(caster) - 1] + perDameKiemKhi[GetIndexLevelThanThong(caster)-1] * kiemKhi + perDameSucThe[GetIndexLevelThanThong(caster) - 1] * sucThe;
         target.TakeDameByThanThong(caster, new List<int> { dame });
 
-        ShowSkillEffectParticle(target, 1f ,35);
+        ShowSkillEffectParticle(target, 1f ,35 , false);
     }
 
     public override string GetDesc(int level)

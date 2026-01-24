@@ -111,6 +111,7 @@ public class PlayerUICombat : MonoBehaviour
     {
         btnConfirm.onClick.AddListener(() =>
         {
+            if (CombatManager.IsDelayEffectSkill) return;
             switch (eStateControl)
             {
                 case EStateControl.None:
@@ -138,6 +139,7 @@ public class PlayerUICombat : MonoBehaviour
         });
         btnCancel.onClick.AddListener(() =>
         {
+            if (CombatManager.IsDelayEffectSkill) return;
             foreach (var item in currentNodes)
             {
                 if (item == null || item.eLinhKhi == ELinhKhi.None) continue;
@@ -154,6 +156,7 @@ public class PlayerUICombat : MonoBehaviour
         });
         btnEndRound.onClick.AddListener(() =>
         {
+            if (CombatManager.IsDelayEffectSkill) return;
             SetStateControl(EStateControl.DeleteLinhKhi);
             if (CurrentLinhKhi > maxLinhKhi)
             {
