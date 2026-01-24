@@ -1,7 +1,7 @@
 ﻿using LongDH.LongDHModules;
 using System.Linq;
 using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = nameof(LinhQuangAn), menuName = "Skill/Thần Thông/" + nameof(LinhQuangAn))]
 public class LinhQuangAn : ThanThong
 {
     [SerializeField] private int[] countHapThu;
@@ -9,11 +9,11 @@ public class LinhQuangAn : ThanThong
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, CheckRemoveEffect);
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, CheckRemoveEffect2);
+        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect);
+        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ObserverEffect2);
 
     }
-    private void CheckRemoveEffect(params object[] data)
+    private void ObserverEffect(params object[] data)
     {
         Debug.Log("có gọi vào LinhQuangANRemoveCheck1");
         CharacterCombat currentTurn = (CharacterCombat)data[0];
@@ -27,7 +27,7 @@ public class LinhQuangAn : ThanThong
 
 
     }
-    private void CheckRemoveEffect2(params object[] data)
+    private void ObserverEffect2(params object[] data)
     {
         Debug.Log("có gọi vào LinhQuangANRemoveCheck2");
 

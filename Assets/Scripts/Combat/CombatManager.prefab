@@ -3983,7 +3983,6 @@ RectTransform:
   - {fileID: 8431495532005981817}
   - {fileID: 2843794541679105759}
   - {fileID: 6235085740570479838}
-  - {fileID: 496762352139385354}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5580,6 +5579,7 @@ RectTransform:
   - {fileID: 6453570269199138479}
   - {fileID: 8223031953717384471}
   - {fileID: 3707278257895953296}
+  - {fileID: 496762352139385354}
   m_Father: {fileID: 6235085740570479838}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5691,19 +5691,19 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8521548642526747353}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8253467806404539423}
   - {fileID: 1899513241639688808}
-  m_Father: {fileID: 5288408347019548625}
+  m_Father: {fileID: 7410806123655386869}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &6040632612177734122
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6176,6 +6176,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterCombat (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3507749838044196573, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4119417879065479849, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
       propertyPath: m_Pivot.x
@@ -6276,6 +6281,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6792484415837521517, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
       propertyPath: gender
@@ -6284,27 +6294,27 @@ PrefabInstance:
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
       propertyPath: congPhapEquip.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
-        type: 3}
-      propertyPath: congPhapEquip.Array.data[0].level
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
-        type: 3}
-      propertyPath: congPhapEquip.Array.data[1].level
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
-      propertyPath: congPhapEquip.Array.data[2].level
+      propertyPath: congPhapEquip.Array.data[0].level
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.data[1].level
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
-      propertyPath: congPhapEquip.Array.data[3].level
+      propertyPath: congPhapEquip.Array.data[2].level
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.data[3].level
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
@@ -6315,26 +6325,25 @@ PrefabInstance:
         type: 3}
       propertyPath: congPhapEquip.Array.data[0].congPhap
       value: 
-      objectReference: {fileID: 11400000, guid: 98605c25c11390246b1a1b728b5722e1,
+      objectReference: {fileID: 11400000, guid: 3d30ee7449de1554c96dc9dddd262fc7,
         type: 2}
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
       propertyPath: congPhapEquip.Array.data[1].congPhap
       value: 
-      objectReference: {fileID: 11400000, guid: 3d30ee7449de1554c96dc9dddd262fc7,
+      objectReference: {fileID: 11400000, guid: 47ab822a6d635734fac246ef9776c280,
         type: 2}
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
       propertyPath: congPhapEquip.Array.data[2].congPhap
       value: 
-      objectReference: {fileID: 11400000, guid: 47ab822a6d635734fac246ef9776c280,
+      objectReference: {fileID: 11400000, guid: c756bf382317bc745abe80422ac7999c,
         type: 2}
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
       propertyPath: congPhapEquip.Array.data[3].congPhap
       value: 
-      objectReference: {fileID: 11400000, guid: c756bf382317bc745abe80422ac7999c,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
       propertyPath: congPhapEquip.Array.data[4].congPhap
@@ -6376,6 +6385,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CharacterCombat
+      objectReference: {fileID: 0}
+    - target: {fileID: 3507749838044196573, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4119417879065479849, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
@@ -6477,10 +6491,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6792484415837521517, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
       propertyPath: congPhapEquip.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
@@ -6758,13 +6777,13 @@ PrefabInstance:
         type: 3}
       propertyPath: 'thanthongtest.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: c5a27726502bc92498ca57b25d6c6534,
+      objectReference: {fileID: 11400000, guid: 5bb51c6fa198e1c43815b610cc12dd70,
         type: 2}
     - target: {fileID: 4737881782164790726, guid: a7e2c419fd4fb9148b5663a8973cab45,
         type: 3}
       propertyPath: 'thanthongtest.Array.data[1]'
       value: 
-      objectReference: {fileID: 11400000, guid: d5e374e6174a90642991d5cdb1af7794,
+      objectReference: {fileID: 11400000, guid: a1e48a305ec103348a598606a75ad576,
         type: 2}
     - target: {fileID: 4737881782164790726, guid: a7e2c419fd4fb9148b5663a8973cab45,
         type: 3}

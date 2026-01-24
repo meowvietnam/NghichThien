@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = nameof(ThienNhanThuat), menuName = "Skill/Thần Thông/" + nameof(ThienNhanThuat))]
 public class ThienNhanThuat : ThanThong
 {
     [SerializeField] protected int requireKiemKhi = 2;

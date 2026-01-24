@@ -1,6 +1,6 @@
 ﻿using LongDH.Script.ObjectPool;
 using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = nameof(BasicTTBuffPercentLinhKhi), menuName = "Skill/Thần Thông/" + nameof(BasicTTBuffPercentLinhKhi))]
 public class BasicTTBuffPercentLinhKhi : ThanThong
 {
     [SerializeField] private float[] buffPercent;

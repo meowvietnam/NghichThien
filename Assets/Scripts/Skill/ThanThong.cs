@@ -103,13 +103,28 @@ public abstract class ThanThong : BaseSkill
         });
 
     }
-    protected virtual void ShowSkillEffectParticle(CharacterCombat target, float delay, Vector3 addPos = default)
+    protected virtual void ShowSkillEffectParticle(CharacterCombat target, float delay,int cameraSize, Vector3 addPos = default)
     {
         if (prefabEffectSkill == null) return;
-        var posCenter = Vector3.up * 500;
-        posCenter += addPos;
-        var effect = prefabEffectSkill.Spawn(target.transform);
-        effect.transform.localPosition = posCenter;
+        
+        GameObject effect = null;
+        if(target != null)
+        {
+            effect = prefabEffectSkill.Spawn(target.transform);
+            var posCenter = Vector3.up * 500;
+            posCenter += addPos;
+            effect.transform.localPosition = posCenter;
+
+        }
+        else
+        {
+            effect = prefabEffectSkill.Spawn();
+            effect.transform.localPosition = Vector3.zero + addPos;
+
+
+        }
+        Camera.main.orthographicSize = cameraSize;
+
         DOVirtual.DelayedCall(delay, () =>
         {
             effect.gameObject.Recycle();

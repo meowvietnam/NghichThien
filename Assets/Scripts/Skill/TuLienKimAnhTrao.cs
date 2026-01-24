@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = nameof(TuLienKimAnhTrao), menuName = "Skill/Thần Thông/" + nameof(TuLienKimAnhTrao))]
 public class TuLienKimAnhTrao : ThanThong
 {
     [SerializeField] private int[] hoTrao;
@@ -13,10 +13,10 @@ public class TuLienKimAnhTrao : ThanThong
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hoTrao[GetIndexLevelThanThong(caster)]);
         caster.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, CheckRemoveEffect);
+        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ObserverEffect);
 
     }
-    private void CheckRemoveEffect(params object[] data)
+    private void ObserverEffect(params object[] data)
     {
         Debug.Log("có gọi vào LinhQuangANRemoveCheck1");
         CharacterCombat currentTurn = (CharacterCombat)data[0];

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = nameof(ThuHuyet), menuName = "Skill/Thần Thông/" + nameof(ThuHuyet))]
 public class ThuHuyet : ThanThong
 {
     [SerializeField] private int[] hapThu;

@@ -1,5 +1,5 @@
-using UnityEngine;
-[CreateAssetMenu]
+﻿using UnityEngine;
+[CreateAssetMenu(fileName = nameof(QuyNguyenKiemKhi), menuName = "Skill/Thần Thông/" + nameof(QuyNguyenKiemKhi))]
 public class QuyNguyenKiemKhi : TietMach
 {
     protected override EBuffAndDeBuff eBuffOrDebuff => EBuffAndDeBuff.ChayMau;

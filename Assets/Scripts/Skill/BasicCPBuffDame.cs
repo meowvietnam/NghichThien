@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(BasicCPBuffDame))]
 public class BasicCPBuffDame : CongPhap
 {
     [SerializeField] private int[] dameBuff;

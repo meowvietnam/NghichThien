@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(BonLoiQuyet))]
 public class BonLoiQuyet : CongPhap
 {
     [SerializeField] private int[] sucTheBuff;

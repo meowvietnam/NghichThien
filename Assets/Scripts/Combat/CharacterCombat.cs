@@ -112,6 +112,7 @@ public class CharacterCombat : MonoBehaviour
         StartAnimPunch();
         thanThongCurrentUse = new PlaySkillData { thanThong = thanThong, linhKhiTieuTan=linhKhiTieuTans};
         thanThongUseThisTurn.Add(thanThongCurrentUse);
+        thanThongUseThisComBat.Add(thanThongCurrentUse);
         foreach (var item in linhKhiTieuTans)
         {
             switch (item.eLinhKhi)
@@ -243,6 +244,7 @@ public class CharacterCombat : MonoBehaviour
     public PlaySkillData thanThongOldUse;
     public PlaySkillData thanThongCurrentUse;
     public List<PlaySkillData> thanThongUseThisTurn = new List<PlaySkillData>();
+    public List<PlaySkillData> thanThongUseThisComBat = new List<PlaySkillData>();
 
     public class PlaySkillData
     {
@@ -313,6 +315,7 @@ public class CharacterCombat : MonoBehaviour
         thanThongCoolDown.Clear();
         currentCharGender.gameObject.SetActive(true);
         currentCharGender.AnimationState.SetAnimation(0, ANIM_IDLE, true);
+        thanThongUseThisComBat.Clear();
         InitTotalKhi();
         foreach (var cp in congPhapEquip)
         {
@@ -555,7 +558,11 @@ public class CharacterCombat : MonoBehaviour
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, value);
         }
-       
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.GiamTonThuong, out int giamTonThuong))
+        {
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, giamTonThuong);
+        }
+
 
     }
 
@@ -614,9 +621,14 @@ public class CharacterCombat : MonoBehaviour
     private void TakeDame(int dame)
     {
         dame += buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.DeTonThuong, 0);
+        int giamTonThuong = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.GiamTonThuong, 0);
+        dame -= giamTonThuong;
         int hotrao = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.HoTrao, 0);
         hotrao = Mathf.Clamp(hotrao, 0, dame);
         dame -= hotrao;
+
+        dame = Mathf.Clamp(dame, 0, dame);
+
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hotrao);
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, dame);
 
@@ -645,7 +657,7 @@ public class CharacterCombat : MonoBehaviour
     {
         StartAnimDie();
     }    
-    public void Healing(CharacterCombat sender, int hp)
+    public void Healing(int hp)
     {
         characterStatsCurrent.hp += hp;
         characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);

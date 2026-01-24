@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = nameof(BasicTTHoTrao), menuName = "Skill/Thần Thông/" + nameof(BasicTTHoTrao))]
 public class BasicTTHoTrao : ThanThong, BaseSkill.LienKich
 {
 

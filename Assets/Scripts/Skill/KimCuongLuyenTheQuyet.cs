@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(KimCuongLuyenTheQuyet))]
 public class KimCuongLuyenTheQuyet : CongPhap
 {
     [SerializeField] private int[] hoTraoBuff;

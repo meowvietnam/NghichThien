@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = nameof(BasicTTDealDame), menuName = "Skill/Thần Thông/" + nameof(BasicTTDealDame))]
 public class BasicTTDealDame : ThanThong, BaseSkill.LienKich
 {
 

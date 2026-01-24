@@ -1,7 +1,7 @@
 ﻿using LongDH.LongDHModules;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThatSatKiemQuyet))]
 public class ThatSatKiemQuyet : CongPhap
 {
     [SerializeField] private int[] percent;

@@ -1,7 +1,7 @@
 ﻿using LongDH.LongDHModules;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ToKimChanPhap))]
 public class ToKimChanPhap : CongPhap
 {
     [SerializeField] private int[] dame;

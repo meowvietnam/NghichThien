@@ -1,7 +1,7 @@
 ﻿using LongDH.LongDHModules;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(TrongNguyenNhuYThe))]
 public class TrongNguyenNhuYThe : CongPhap
 {
     [SerializeField] private int[] buff;

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = nameof(TungDiaKimQuang), menuName = "Skill/Thần Thông/" + nameof(TungDiaKimQuang))]
 public class TungDiaKimQuang : ThanThong
 {
     [SerializeField]private int[] buff;

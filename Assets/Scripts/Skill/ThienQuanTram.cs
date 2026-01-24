@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using static CharacterCombat;
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = nameof(ThienQuanTram), menuName = "Skill/Thần Thông/" + nameof(ThienQuanTram))]
 public class ThienQuanTram : ThanThong
 {
     [SerializeField] private int[] dames;

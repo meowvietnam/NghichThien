@@ -1,6 +1,6 @@
 ﻿using LongDH.LongDHModules;
 using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(TangKiemQuyet))]
 public class TangKiemQuyet : CongPhap
 {
     [SerializeField] private int[] kiemKhiBuff;

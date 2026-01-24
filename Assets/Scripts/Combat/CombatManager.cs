@@ -350,8 +350,17 @@ public class CombatManager : MonoBehaviour
 
                         buffInfor.SetText(BaseSkill.GetDescBuffOrDeBuff(buffType));
                         buffInfor.transform.SetParent(buffIcon.transform);
+                        if(signX>0)
+                        {
+                            buffInfor.thisTransform.pivot = new Vector2(0,0.5f);
+                        }    
+                        else
+                        {
+                            buffInfor.thisTransform.pivot = new Vector2(1, 0.5f);
 
-                        buffInfor.transform.localPosition = new Vector3(signX * buffInfor.thisTransform.sizeDelta.x / 2, -80, 0);
+                        }
+                        buffInfor.transform.localPosition = new Vector3(0, -80, 0);
+
 
                         buffInfor.DoShow();
 

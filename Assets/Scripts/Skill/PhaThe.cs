@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = nameof(PhaThe), menuName = "Skill/Thần Thông/" + nameof(PhaThe))]
 public class PhaThe : ThanThong , BaseSkill.TuongDong
 {
     [SerializeField]private int[] debuff;

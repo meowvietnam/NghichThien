@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = nameof(KimHongQuanNhat), menuName = "Skill/Thần Thông/" + nameof(KimHongQuanNhat))]
 public class KimHongQuanNhat : ThanThong
 {
     [SerializeField] private int[] dame;
@@ -23,7 +23,7 @@ public class KimHongQuanNhat : ThanThong
         int dame = this.dame[GetIndexLevelThanThong(caster) - 1] + perDameKiemKhi[GetIndexLevelThanThong(caster)-1] * kiemKhi + perDameSucThe[GetIndexLevelThanThong(caster) - 1] * sucThe;
         target.TakeDameByThanThong(caster, new List<int> { dame });
 
-        ShowSkillEffectParticle(target, 1f);
+        ShowSkillEffectParticle(target, 1f ,35);
     }
 
     public override string GetDesc(int level)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(KimHongKiemQuyet))]
 public class KimHongKiemQuyet : CongPhap
 {
     [SerializeField] private int[] sucTheBuff;

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = nameof(SucThe), menuName = "Skill/Thần Thông/" + nameof(SucThe))]
 public class SucThe : ThanThong
 {
     [SerializeField] private int[] sucThe;
