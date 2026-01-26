@@ -1,4 +1,5 @@
 ﻿using CreateCharacter;
+using NUnit.Framework;
 using System.Linq;
 using UnityEngine;
 
@@ -18,7 +19,11 @@ public enum EBuffAndDeBuff
     ChanKim,
     TrungDoc,
     HuyenVu,
-    ChayMau
+    ChayMau,
+    ChanMoc,
+    ChanThuy,
+    ChanHoa,
+    ChanTho
 
 
 }
@@ -148,6 +153,18 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.ChayMau:
                 text = "Chảy Máu";
                 break;
+            case EBuffAndDeBuff.ChanMoc:
+                text = "Chấn Mộc";
+                break;
+            case EBuffAndDeBuff.ChanThuy:
+                text = "Chấn Thủy";
+                break;
+            case EBuffAndDeBuff.ChanHoa:
+                text = "Chấn Hỏa";
+                break;
+            case EBuffAndDeBuff.ChanTho:
+                text = "Chấn Thổ";
+                break;
             default:
                 break;
         }
@@ -190,10 +207,10 @@ public abstract class BaseSkill : BaseItemData
                 text = "Trong hiệp này, khi bản thân thi pháp nhận mỗi tầng 1 điểm sát thương. Kết thúc hiệp giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.TriLieu:
-                text = $"Kết thúc hiệp, mỗi tầng khôi phục 1 điểm sinh mệnh";
+                text = $"Kết thúc hiệp, mỗi tầng khôi phục 1 điểm sinh mệnh sau đó giải trừ 1 tầng";
                 break;
             case EBuffAndDeBuff.ChanKim:
-                text = $"Kim hệ thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ";
+                text = $"Kim hệ thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.TrungDoc:
                 text = $"Kết thúc hiệp, mỗi tầng nhận 1 điểm sát thương sau đó giải trừ 1 tầng";
@@ -203,6 +220,18 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.ChayMau:
                 text = $"Kết thúc hiệp, bản thân nhận 1% tổn thương của lượng HP đã tổn thất sau đó giải trừ 1 tầng";
+                break;
+            case EBuffAndDeBuff.ChanMoc:
+                text = $"Mộc hệ thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.ChanThuy:
+                text = $"Thủy hệ thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.ChanHoa:
+                text = $"Hỏa hệ thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.ChanTho:
+                text = $"Thổ hệ thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ toàn bộ";
                 break;
             default:
                 break;
@@ -388,11 +417,17 @@ public abstract class BaseSkill : BaseItemData
     }
     public bool CheckIsEqualETypeSkill(CharacterCombat caster)
     {
+        
+        return CheckIsEqualETypeSkill(caster,this.eTypeSkill);   
+    }
+    public static bool CheckIsEqualETypeSkill(CharacterCombat caster , ETypeSkill[] skill)
+    {
         if (caster.thanThongCurrentUse == null) return false;
         // Kiểm tra hệ của Skill đang dùng có khớp với Công Pháp (SO) này không
-        bool isExecute = this.eTypeSkill.Any(skill => caster.thanThongCurrentUse.thanThong.eTypeSkill.Contains(skill));
-        return isExecute;   
-    }    
+        bool isExecute = skill.Any(skill => caster.thanThongCurrentUse.thanThong.eTypeSkill.Contains(skill));
+        return isExecute;
+    }
+   
     public void KiemY(CharacterCombat caster)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, 1);

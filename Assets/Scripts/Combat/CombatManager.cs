@@ -224,10 +224,16 @@ public class CombatManager : MonoBehaviour
         ThanThong thanThong = data[2] as ThanThong;
         List<LinhKhiTieuTan> linhKhiTieuTan = data[3] as List<LinhKhiTieuTan>;
         ThanThong thanThongOldUse =  caster.thanThongOldUse != null?caster.thanThongOldUse.thanThong:null;
+        if (linhKhiTieuTan != null)
+        {
+            TieuTanLinhKhi(linhKhiTieuTan);
+
+
+        }
         if (thanThong!= null)
         {
             caster.PlaySkill(thanThong,linhKhiTieuTan);
-            thanThong.Execute(caster, target);
+            thanThong.Execute(caster, target , data);
             if (thanThong is BaseSkill.LienKich thanThongLienKich && thanThongOldUse != null)
             {
                 if (IsLienKich(thanThong , thanThongOldUse))
@@ -259,12 +265,7 @@ public class CombatManager : MonoBehaviour
 
             });
         }
-        if (linhKhiTieuTan != null)
-        {
-            TieuTanLinhKhi(linhKhiTieuTan);
-
-            
-        }
+       
     }
    
     private void TieuTanLinhKhi(List<LinhKhiTieuTan> linhKhiTieuTan)

@@ -367,6 +367,7 @@ public class CharacterCombat : MonoBehaviour
     public int totalKhiRandom;
     public int CurrentLinhKhi => khiKim + khiMoc+khiThuy+khiHoa+khiTho+khiMa;
 
+    public int BaseCountHapThuLinhKhi => totalKhiRandom - totalKhi;
     private void InitTotalKhi()
     {
         int level = characterStatsCurrent.level;
@@ -427,21 +428,21 @@ public class CharacterCombat : MonoBehaviour
     {
         int treKhi = 0;
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TreKhi, out treKhi);
-        int totalKhiHapThu = totalKhiRandom - CurrentLinhKhi - treKhi;
+        int totalKhiHapThu = BaseCountHapThuLinhKhi - treKhi;
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, treKhi);
         dictHapThuLinhKhi = DictHapThuLinhKhi(totalKhiHapThu);
         foreach (var item in dictHapThuLinhKhi)
         {
             HapThuLinhKhi(item.Key, item.Value);
         }
-        if(buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NoiThuong,out int noiThuong))
+        NoiThuongAction();
+    }
+    public void NoiThuongAction()
+    {
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NoiThuong, out int noiThuong))
         {
-            int countLinhKhi = 0;
-            foreach (var item in dictHapThuLinhKhi)
-            {
-                countLinhKhi += item.Value;
-            }
-            AddDamageData(new List<int> { noiThuong * countLinhKhi });
+           
+            AddDamageData(new List<int> { noiThuong * BaseCountHapThuLinhKhi });
             TakeDame(null);
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.NoiThuong, 1);
         }
@@ -562,7 +563,11 @@ public class CharacterCombat : MonoBehaviour
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, giamTonThuong);
         }
-
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TriLieu, out int triLieu))
+        {
+            Healing(triLieu);
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.TriLieu, 1);
+        }
 
     }
 
@@ -597,10 +602,39 @@ public class CharacterCombat : MonoBehaviour
             allDamages.AddRange(dame);
         }
     }
-  
+
     [Button]
-    public void TakeDameByThanThong(CharacterCombat sender , List<int> dame , bool isCongDon = true)
+    public void TakeDameByThanThong(CharacterCombat sender, List<int> dame, bool isCongDon = true)
     {
+        if (sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanKim, out int chanKim) && BaseSkill.CheckIsEqualETypeSkill(this,new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Kim }));
+        {
+            dame[0] += chanKim;
+            sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanKim, chanKim);
+        }
+        if (sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanMoc, out int chanMoc) && BaseSkill.CheckIsEqualETypeSkill(this, new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Moc }))
+        {
+            dame[0] += chanMoc;
+            sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanMoc, chanMoc);
+
+        }
+        if (sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanThuy, out int chanThuy) && BaseSkill.CheckIsEqualETypeSkill(this, new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Thuy }))
+        {
+            dame[0] += chanThuy;
+            sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanThuy, chanThuy);
+
+        }
+        if (sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanHoa, out int chanHoa) && BaseSkill.CheckIsEqualETypeSkill(this, new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Hoa }))
+        {
+            dame[0] += chanHoa;
+            sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanHoa, chanHoa);
+
+        }
+        if (sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanTho, out int chanTho) && BaseSkill.CheckIsEqualETypeSkill(this, new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Tho }))
+        {
+            dame[0] += chanTho;
+            sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanTho, chanTho);
+
+        }
         AddDamageData(dame,isCongDon);
         Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG,sender,this,dame); // sender , targer nhận, dame
 
