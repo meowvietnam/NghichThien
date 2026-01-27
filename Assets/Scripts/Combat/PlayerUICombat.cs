@@ -189,9 +189,9 @@ public class PlayerUICombat : MonoBehaviour
                 {
                     if (item2.isLock || item2.countRequire <=0) continue;
 
-                    if (!item2.isLock && (item2.count <= 0 || item2.eLinhKhi == item1.eLinhKhi))
+                    if (!item2.isLock && (item2.count <= 0 || item2.eLinhKhi == item1.eLinhKhi) && item1.count >= item2.countRequire)
                     {
-                        AddLinhKhiFromRemainToNode(item1,item2);
+                        AddLinhKhiFromRemainToNode(item1,item2,item2.countRequire);
                         break;
                     }
                 }
@@ -209,7 +209,7 @@ public class PlayerUICombat : MonoBehaviour
                 {
                     if ((item2.eLinhKhi == item1.eLinhKhi))
                     {
-                        AddLinhKhiFromNodeToRemain(item1,item2);
+                        AddLinhKhiFromNodeToRemain(item1,item2 , item1.count);
                     }
                 }
               

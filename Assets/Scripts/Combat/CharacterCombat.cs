@@ -146,6 +146,13 @@ public class CharacterCombat : MonoBehaviour
                     break;
             }
         }
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out int trienNhieu))
+        {
+
+            AddDamageData(new List<int> {trienNhieu });
+            TakeDame(null);
+        }
+
 
     }
     public void SetThanThongOldUse(ThanThong thanThong,List<LinhKhiTieuTan> linhKhiTieuTans)
@@ -568,7 +575,18 @@ public class CharacterCombat : MonoBehaviour
             Healing(triLieu);
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TriLieu, 1);
         }
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out int trienNhieu))
+        {
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieu);
 
+        }
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out int trungDoc))
+        {
+            AddDamageData(new List<int> { (int)trungDoc });
+            TakeDame(null);
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, 1);
+
+        }
     }
 
     public List<int> allDamages = new List<int>();
