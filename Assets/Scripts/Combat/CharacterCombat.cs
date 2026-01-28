@@ -580,11 +580,17 @@ public class CharacterCombat : MonoBehaviour
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieu);
 
         }
+        TrungDoc();
+        RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, 1);
+
+    }
+
+    public void TrungDoc()
+    {
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out int trungDoc))
         {
             AddDamageData(new List<int> { (int)trungDoc });
             TakeDame(null);
-            RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, 1);
 
         }
     }

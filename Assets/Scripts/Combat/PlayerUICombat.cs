@@ -222,16 +222,16 @@ public class PlayerUICombat : MonoBehaviour
             Action actionHolder = new Action(() =>
             {
                 skillTip.SetPosition(new Vector3(skill.transform.position.x,skillTip.transform.position.y,skillTip.transform.position.z));
-                skillTip.ShowSkillTip(skill.ThanThongData.name,skill.ThanThongData.GetDesc(ThanThong.GetIndexLevelThanThong(player.characterStatsCurrent)),skill.ThanThongData.GetTextTypeSkill(),skill.ThanThongData.requireActives,skill.ThanThongData);
+                skillTip.ShowSkillTip(skill.ThanThongData.name,skill.ThanThongData.GetDesc(ThanThong.GetIndexLevelThanThong(player.characterStatsCurrent)),skill.ThanThongData.GetTextTypeSkill(),skill.ThanThongData.GetRequireActive(player),skill.ThanThongData);
             });
             Action actionPointerUp = new Action(() =>
             {
                 btnCancel.onClick?.Invoke();
                 SetStateControl(EStateControl.UseSkill);
-                ShowNodes(skill.ThanThongData.requireActives.Count);
+                ShowNodes(skill.ThanThongData.GetRequireActive(player).Count);
                 fightSkillSelect = skill;
 
-                var listRequire = skill.ThanThongData.requireActives;
+                var listRequire = skill.ThanThongData.GetRequireActive(player);
                 listRequire = listRequire
                 .OrderBy(x => x.linhKhiRequire == ELinhKhi.None)
                 .ToList();

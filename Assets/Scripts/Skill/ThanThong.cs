@@ -11,7 +11,11 @@ public abstract class ThanThong : BaseSkill
         public ELinhKhi linhKhiRequire;
         public int count;
     }
-    public List<RequireActive> requireActives;
+    [SerializeField]protected List<RequireActive> requireActives;
+    public virtual List<RequireActive> GetRequireActive(CharacterCombat caster)
+    {
+        return requireActives;
+    }
     public ELinhKhi[] LinhKhiTypes =>
     requireActives
         .Where(r => r.linhKhiRequire != ELinhKhi.None)
