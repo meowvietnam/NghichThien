@@ -330,7 +330,7 @@ public class PlayerUICombat : MonoBehaviour
         foreach (var item in fightSkills)
         {
             if (item.ThanThongData == null) continue;
-            if (!item.ThanThongData.IsCanUse(player,null))
+            if (!item.ThanThongData.IsCanUse(player,CombatManager.targetTurn))
             {
               
 

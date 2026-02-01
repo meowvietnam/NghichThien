@@ -36,10 +36,11 @@ public class LinhQuangAn : ThanThong
         if (charTakeDame.specialThanThongImpactAfterPlaySkill.Any(x => x is LinhQuangAn))
         {
             charTakeDame.HapThuLinhKhi(ELinhKhi.Kim, countHapThu[GetIndexLevelThanThong(charTakeDame)]);
+            charTakeDame.RemoveThanThongImpactAfterPlaySkill(this);
 
         }
 
-       
+
 
     }
 
@@ -47,6 +48,6 @@ public class LinhQuangAn : ThanThong
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Ở hiệp tiếp theo của đối thủ bị bản thân bị tổn thương thì thu hoạch được {GetColoredText($"+{countHapThu[level - 1]} điểm", "red")} {GetTextLinhKhi(ELinhKhi.Kim)} linh khí";
+        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Ở hiệp tiếp theo của đối thủ bản thân bị tổn thương thì thu hoạch được {GetColoredText($"+{countHapThu[level - 1]} điểm", "red")} {GetTextLinhKhi(ELinhKhi.Kim)} linh khí";
     }
 }

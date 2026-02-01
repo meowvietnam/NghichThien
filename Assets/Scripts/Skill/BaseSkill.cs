@@ -1,5 +1,6 @@
 ﻿using CreateCharacter;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -23,13 +24,29 @@ public enum EBuffAndDeBuff
     ChanMoc,
     ChanThuy,
     ChanHoa,
-    ChanTho
+    ChanTho,
+    TuKhi,
+    Cham,
 
 
 }
 
 public abstract class BaseSkill : BaseItemData
 {
+    public static List<EBuffAndDeBuff> debuff = new List<EBuffAndDeBuff>
+    {
+        EBuffAndDeBuff.DeTonThuong,
+        EBuffAndDeBuff.KietSuc,
+        EBuffAndDeBuff.TreKhi,
+        EBuffAndDeBuff.NoiThuong,
+        EBuffAndDeBuff.TrienNhieu,
+        EBuffAndDeBuff.TrungDoc,
+        EBuffAndDeBuff.ChayMau,
+
+
+
+    };
+    
     public enum ETypeSkill
     {
         None,
@@ -62,6 +79,7 @@ public abstract class BaseSkill : BaseItemData
     public EKeyWord[] eKeywordSkillHave;
     public EBuffAndDeBuff[] eKeywordBuffSkillHave;
 
+   
 
   
     public abstract void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
@@ -165,6 +183,12 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.ChanTho:
                 text = "Chấn Thổ";
                 break;
+            case EBuffAndDeBuff.TuKhi:
+                text = "Tụ Khí";
+                break;
+            case EBuffAndDeBuff.Cham:
+                text = "Châm";
+                break;
             default:
                 break;
         }
@@ -232,6 +256,12 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.ChanTho:
                 text = $"Thổ hệ thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.TuKhi:
+                text = $"Giai đoạn hấp thụ linh khí, mỗi tầng hấp thụ nhiều thêm 1 điểm linh khí sau đó giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.Cham:
+                text = $"Chỉ thị vật";
                 break;
             default:
                 break;

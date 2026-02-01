@@ -217,7 +217,7 @@ public class CombatManager : MonoBehaviour
     }    
     public void PlaySkill(params object[] data)
     {
-        if (IsDelayEffectSkill) return;
+        //if (IsDelayEffectSkill) return;
         CharacterCombat caster = data[0] as CharacterCombat;
         CharacterCombat target = data[1] as CharacterCombat;
 

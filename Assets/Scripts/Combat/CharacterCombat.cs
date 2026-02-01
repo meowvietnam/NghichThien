@@ -8,6 +8,7 @@ using Sirenix.OdinInspector;
 using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Networking.UnityWebRequest;
@@ -434,8 +435,12 @@ public class CharacterCombat : MonoBehaviour
     public void HapThuLinhKhiNewTurn(out Dictionary<ELinhKhi, int> dictHapThuLinhKhi)
     {
         int treKhi = 0;
+        int tuKhi = 0;
+
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TreKhi, out treKhi);
-        int totalKhiHapThu = BaseCountHapThuLinhKhi - treKhi;
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TuKhi, out tuKhi);
+
+        int totalKhiHapThu = BaseCountHapThuLinhKhi + tuKhi - treKhi;
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, treKhi);
         dictHapThuLinhKhi = DictHapThuLinhKhi(totalKhiHapThu);
         foreach (var item in dictHapThuLinhKhi)
@@ -443,6 +448,8 @@ public class CharacterCombat : MonoBehaviour
             HapThuLinhKhi(item.Key, item.Value);
         }
         NoiThuongAction();
+
+        RemoveBuffAndDebuffCount(EBuffAndDeBuff.TuKhi, tuKhi);
     }
     public void NoiThuongAction()
     {
@@ -577,6 +584,13 @@ public class CharacterCombat : MonoBehaviour
         }
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out int trienNhieu))
         {
+
+            if (specialThanThongImpactAfterPlaySkill.Any(x => x is TrienTiChu))
+            {
+                trienNhieu /= 2;
+                // end turn giữ lại 1 nữa được xử lí ở character combat
+            }
+
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieu);
 
         }
