@@ -13,7 +13,7 @@ public class DuongDaoThuat : CongPhap
     {
         
             // CHỈ REMOVE KHI ĐÃ THỰC THI BUFF THÀNH CÔNG
-            Observer.RemoveObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ExecuteParams);
+            RemoveCongPhap(caster);
 
             int dame = dameBuff[CurrentLevelCongPhapInCombat(caster) - 1];
             target.AddDamageData(new List<int> { dame });
@@ -26,11 +26,7 @@ public class DuongDaoThuat : CongPhap
     }
 
 
-    public override void Init()
-    {
-        InitPosCallExecute();
-    }
-
+  
     public override void InitPosCallExecute()
     {
         Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ExecuteParams);

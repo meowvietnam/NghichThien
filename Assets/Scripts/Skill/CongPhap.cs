@@ -1,4 +1,5 @@
 ﻿using LongDH.LongDHModules;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -12,6 +13,14 @@ public abstract class CongPhap : BaseSkill
 {
     [SerializeField] private int tocDoTuLuyenBase;
 
+    public virtual void EquipCongPhap(CharacterStats stats)
+    {
+
+    }
+    public virtual void UnEquipCongPhap(CharacterStats stats)
+    {
+
+    }
     public virtual int GetTocDoTuLuyen(CharacterCombat caster)
     {
         return CurrentLevelCongPhapInCombat(caster) * tocDoTuLuyenBase;
@@ -23,16 +32,15 @@ public abstract class CongPhap : BaseSkill
         CharacterCombat caster = (CharacterCombat)data[0];
         CharacterCombat target = (CharacterCombat)data[1];
         // Tìm trong danh sách trang bị của caster
-        if (GetCongPhapMono(caster) != null)
+        if (IsCanUse(caster))
         {
             Execute(caster, target , data);
 
         }
     }
-    public CongPhapMono GetCongPhapMono(CharacterCombat caster)
+    public CongPhapMono GetCongPhapMono(List<CongPhapMono> congPhapMonos)
     {
-        if(caster == null) return null;
-        var equip = caster.congPhapEquip.FirstOrDefault(x =>
+        var equip = congPhapMonos.FirstOrDefault(x =>
            x.congPhap != null &&
            x.congPhap.GetType() == this.GetType() && // So sánh kiểu chính xác của class thực tế
            x.congPhap.eTypeSkill == this.eTypeSkill  // Khớp loại kỹ năng
@@ -41,18 +49,26 @@ public abstract class CongPhap : BaseSkill
         return equip;
 
     }
+    protected bool IsCanUse(CharacterCombat caster)
+    {
+        return GetCongPhapMono(caster.congPhapEquip) != null &&  GetCongPhapMono(caster.congPhapDynamic) != null;
+    }    
+    protected virtual void RemoveCongPhap(CharacterCombat caster)
+    {
+        caster.congPhapDynamic.RemoveAll(x =>
+            x.congPhap.GetType() == this.GetType()
+        );
+    }    
     public virtual int CurrentLevelCongPhapInCombat(CharacterCombat caster)
     {
         // Tìm trong danh sách trang bị của caster
-        var equip = GetCongPhapMono(caster);
+        var equip = GetCongPhapMono(caster.congPhapEquip);
 
         // Trả về level nếu tìm thấy, ngược lại trả về 0 (hoặc 1 tùy logic của bạn)
         return equip != null ? equip.level : 0;
     }
 
     public abstract void InitPosCallExecute();
-
-    public abstract void Init();
 
     public abstract override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
 

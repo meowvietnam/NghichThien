@@ -21,10 +21,7 @@ public class NhatKhiPhanThanCong : CongPhap
     }
 
 
-    public override void Init()
-    {
-        InitPosCallExecute();
-    }
+ 
 
     public override void InitPosCallExecute()
     {

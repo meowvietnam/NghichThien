@@ -25,11 +25,7 @@ public class ToKimChanPhap : CongPhap
     }
 
 
-    public override void Init()
-    {
-        InitPosCallExecute();
-    }
-
+  
     public override void InitPosCallExecute()
     {
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ExecuteParams);

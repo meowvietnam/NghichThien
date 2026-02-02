@@ -23,10 +23,7 @@ public class SinhSinhTaoHoaQuyet : CongPhap
         return $"Mỗi lần sử dụng thần thông phát động ngũ hành {GetKeyWord(EKeyWord.LienKich)} thì thu hoạch được {GetColoredText($"+{buff[level - 1]}*X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} (X là số linh khí kĩ năng này tiêu hao)";
     }
 
-    public override void Init()
-    {
-        InitPosCallExecute();
-    }
+  
 
     public override void InitPosCallExecute()
     {

@@ -27,11 +27,7 @@ public class BasicCPBuffDame2 : CongPhap
     }
 
 
-    public override void Init()
-    {
-        InitPosCallExecute();
-
-    }
+ 
 
     public override void InitPosCallExecute()
     {

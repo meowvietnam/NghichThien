@@ -31,8 +31,8 @@ public class TangLyQuyet : CongPhap
     {
         CharacterCombat caster = (CharacterCombat)data[0];
         CharacterCombat target = (CharacterCombat)data[1];
-        // Tìm trong danh sách trang bị của caster
-        if (GetCongPhapMono(target) != null)
+        // lúc này là xem bản thân nhận dame là target có skill k nếu có thì sát thương phải nhận tăng lên
+        if (IsCanUse(target))
         {
             Execute2(caster, target, data);
 
@@ -69,11 +69,7 @@ public class TangLyQuyet : CongPhap
     }
 
 
-    public override void Init()
-    {
-        InitPosCallExecute();
-
-    }
+  
 
     public override void InitPosCallExecute()
     {

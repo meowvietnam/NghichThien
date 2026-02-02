@@ -26,8 +26,8 @@ public class BasicCPBuffDame : CongPhap
         {
             Debug.Log($"<color=cyan>{this.name}</color>: Đúng hệ! Buff dame và tự gỡ bỏ.");
 
-            // CHỈ REMOVE KHI ĐÃ THỰC THI BUFF THÀNH CÔNG
-            Observer.RemoveObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ExecuteParams);
+            // CHỈ REMOVE KHI ĐÃ THỰC THI BUFF THÀNH CÔNG (Lần thứ 1 của mỗi hiệp) 
+            RemoveCongPhap(caster);
 
             int dame = dameBuff[CurrentLevelCongPhapInCombat(caster) - 1];
             target.AddDamageData(new List<int> { dame });
@@ -38,6 +38,24 @@ public class BasicCPBuffDame : CongPhap
             Debug.Log($"<color=orange>{this.name}</color>: Không đúng hệ, tiếp tục chờ...");
         }
     }
+    public virtual void ExecuteParams2(params object[] data)
+    {
+        CharacterCombat caster = (CharacterCombat)data[0];
+        CharacterCombat target = (CharacterCombat)data[1];
+        // Tìm trong danh sách trang bị của caster
+        if (IsCanUse(caster))
+        {
+            Execute2(caster, target, data);
+
+        }
+    }
+    public void Execute2(CharacterCombat caster, CharacterCombat target, params object[] data)
+    {
+        var congPhapMono = GetCongPhapMono(caster.congPhapEquip);
+        if (GetCongPhapMono(caster.congPhapDynamic) != null) return;
+        caster.AddCPDynamic(congPhapMono);
+
+    }
     public override string GetDesc(int level)
     {
         return $"Mỗi hiệp lần thứ nhất tạo thành {GetTextTypeSkill()} hệ thần thông sát thương {GetColoredText($"+{dameBuff[level - 1]}", "red")}";
@@ -45,16 +63,13 @@ public class BasicCPBuffDame : CongPhap
     }
     
 
-    public override void Init()
-    {
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, InitPosCallExecute);
-
-    }
 
     public override void InitPosCallExecute()
     {
+        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams2);
         Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ExecuteParams);
+
     }
 
-   
+
 }

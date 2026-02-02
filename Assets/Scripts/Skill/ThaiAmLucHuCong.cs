@@ -21,7 +21,7 @@ public class ThaiAmLucHuCong : CongPhap
         CharacterCombat caster = (CharacterCombat)data[0];
         CharacterCombat target = (CharacterCombat)data[1];
         // Tìm trong danh sách trang b? c?a caster
-        if (GetCongPhapMono(caster) != null)
+        if (IsCanUse(caster))
         {
             Execute2(caster, target, data);
 
@@ -39,11 +39,7 @@ public class ThaiAmLucHuCong : CongPhap
     }
 
 
-    public override void Init()
-    {
-        InitPosCallExecute();
-    }
-
+   
     public override void InitPosCallExecute()
     {
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams);

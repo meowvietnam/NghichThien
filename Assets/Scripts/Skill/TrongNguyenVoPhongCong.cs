@@ -25,10 +25,6 @@ public class TrongNguyenVoPhongCong : CongPhap
         return $"Sử dụng thần thông {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)} thì sẽ tiêu hao thêm {GetColoredText($"{require} điểm kim", "red")} linh khí thì thu hoạch được {GetColoredText($"+{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}";
     }
 
-    public override void Init()
-    {
-        InitPosCallExecute();
-    }
 
     public override void InitPosCallExecute()
     {

@@ -36,7 +36,7 @@ public class KimHongKiemQuyet : CongPhap
         List<int> dame = (List<int>)data[2];
 
         // Tìm trong danh sách trang bị của caster
-        if (GetCongPhapMono(caster) != null)
+        if (IsCanUse(caster))
         {
             Execute2(caster, target,dame);
 
@@ -45,11 +45,6 @@ public class KimHongKiemQuyet : CongPhap
     public override string GetDesc(int level)
     {
         return $"Mỗi tích lũy sử dụng {GetColoredText($"{requireLinhKhi}", "red")} điểm kim hệ linh khí, thu hoạch được {GetColoredText($"+{sucTheBuff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}. Tạo thành {GetTextTypeSkill()} hệ thần thông sát thương có tỉ lệ {GetColoredText($"{percentX2Dame[level - 1]}%", "red")} khiến cho sát thương lần này gấp đôi";
-    }
-
-    public override void Init()
-    {
-        InitPosCallExecute();
     }
 
     public override void InitPosCallExecute()

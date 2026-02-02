@@ -14,10 +14,7 @@ public class TangKiemQuyet : CongPhap
         return $"Lúc bắt đầu hiệp, thu hoạch được {GetColoredText($"+{kiemKhiBuff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}";
     }
 
-    public override void Init()
-    {
-        InitPosCallExecute();
-    }
+   
 
     public override void InitPosCallExecute()
     {

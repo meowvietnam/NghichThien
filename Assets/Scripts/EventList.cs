@@ -13,6 +13,7 @@ public static partial class EventList
         public const string CHARACTER_TAKE_DAME_BY_THANTHONG = "GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG";
         public const string CHARACTER_TAKE_DAME = "GamePlay.CHARACTER_TAKE_DAME";
         public const string LIEN_KICH = "GamePlay.LIEN_KICH";
+        public const string END_COMBAT = "GamePlay.END_COMBAT";
 
 
     }

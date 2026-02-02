@@ -16,7 +16,7 @@ public class LuongNghiLinhNhanQuyet : CongPhap
         CharacterCombat caster = (CharacterCombat)data[0];
         CharacterCombat target = (CharacterCombat)data[1];
         // Tìm trong danh sách trang bị của caster
-        if (GetCongPhapMono(target) != null)
+        if (IsCanUse(target))
         {
             Execute(caster, target, data);
 
@@ -42,10 +42,7 @@ public class LuongNghiLinhNhanQuyet : CongPhap
     }
 
 
-    public override void Init()
-    {
-        InitPosCallExecute();
-    }
+
 
     public override void InitPosCallExecute()
     {

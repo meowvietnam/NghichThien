@@ -32,7 +32,7 @@ public class ThanKiemQuyet : CongPhap
         CharacterCombat caster = (CharacterCombat)data[0];
         CharacterCombat target = (CharacterCombat)data[1];
         // Tìm trong danh sách trang b? c?a caster
-        if (GetCongPhapMono(caster) != null)
+        if (IsCanUse(caster))
         {
             Execute2(caster, target, data);
 
@@ -51,10 +51,7 @@ public class ThanKiemQuyet : CongPhap
     }
 
 
-    public override void Init()
-    {
-        InitPosCallExecute();
-    }
+    
 
     public override void InitPosCallExecute()
     {

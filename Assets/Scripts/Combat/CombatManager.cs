@@ -81,6 +81,7 @@ public class CombatManager : MonoBehaviour
         SetUIHpBar(char2.characterStatsCurrent.hp, char2.characterStats.hp, progressHpChar2, textHpChar2);
 
     }
+ 
     private Sprite GetSpriteBuffIcon(EBuffAndDeBuff eBuffAndDeBuff)
     {
         foreach (var item in buffOrDebuffIcons)
@@ -92,7 +93,28 @@ public class CombatManager : MonoBehaviour
         }
         return null;
     }    
-    
+    public void CheckDie()
+    {
+        CharacterCombat characterDie = null;
+        CharacterCombat characterWin = null;
+
+        if (targetTurn.CheckDie())
+        {
+            characterDie = targetTurn;
+            characterWin = currentTurn;
+        }
+        else if(currentTurn.CheckDie())
+        {
+            characterDie = currentTurn;
+            characterWin = targetTurn;
+        }    
+        if(characterDie != null)
+        {
+            Observer.Notify(EventList.GamePlay.END_COMBAT, characterWin, characterDie);// thằng đầu là thằng win thằng sau là thằng die
+        } 
+            
+
+    }    
     private void Awake()
     {
        

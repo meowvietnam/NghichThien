@@ -79,6 +79,8 @@ public class CharacterCombat : MonoBehaviour
     [SerializeField] public SkeletonGraphic currentCharGender => characterGender[(int)gender];
     [SerializeField]
     public List<CongPhapMono> congPhapEquip = new List<CongPhapMono>();
+    [SerializeField]
+    public List<CongPhapMono> congPhapDynamic = new List<CongPhapMono>();
 
     public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill = new List<LinhKhiTieuTan>();
     public List<ThanThong> specialThanThongImpactAfterPlaySkill = new List<ThanThong>();
@@ -97,6 +99,14 @@ public class CharacterCombat : MonoBehaviour
         specialThanThongImpactAfterPlaySkill.RemoveAll(item => item.GetType() == typeToRemove);
 
         // call observer event update UI
+    }
+    public void AddCPDynamic(CongPhapMono cp)
+    {
+        congPhapDynamic.Add(new CongPhapMono
+        {
+            congPhap = cp.congPhap,
+            level = cp.level,
+        });
     }
     public void PlaySkill(ThanThong thanThong , List<LinhKhiTieuTan> linhKhiTieuTans)
     {
@@ -325,11 +335,15 @@ public class CharacterCombat : MonoBehaviour
         currentCharGender.AnimationState.SetAnimation(0, ANIM_IDLE, true);
         thanThongUseThisComBat.Clear();
         InitTotalKhi();
+        congPhapDynamic.Clear();
         foreach (var cp in congPhapEquip)
         {
-            cp.congPhap.Init();
-        } 
-            
+            cp.congPhap.InitPosCallExecute();
+            AddCPDynamic(cp);
+        }
+        Debug.Log("dcmmm " + congPhapDynamic.Count);
+
+
 
     }
 
@@ -715,15 +729,16 @@ public class CharacterCombat : MonoBehaviour
 
         Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);
 
-        CheckDie();
     }
 
-    public virtual void CheckDie()
+    public virtual bool CheckDie()
     {
         if (characterStatsCurrent.hp > 0)
         {
             Die();
+            return true;
         }
+        return false;
     }    
     public virtual void Die()
     {

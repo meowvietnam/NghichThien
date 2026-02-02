@@ -1,7 +1,7 @@
-using LongDH.LongDHModules;
+﻿using LongDH.LongDHModules;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Skill/C�ng Ph�p /" + nameof(CPBuffLinhCanCombat))]
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(CPBuffLinhCanCombat))]
 
 public class CPBuffLinhCanCombat : CongPhap
 {
@@ -11,8 +11,8 @@ public class CPBuffLinhCanCombat : CongPhap
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
-        // CH? REMOVE KHI ?� TH?C THI BUFF TH�NH C�NG
-        Observer.RemoveObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams);
+        // CH? REMOVE KHI ?Ã TH?C THI BUFF THÀNH CÔNG
+        RemoveCongPhap(caster);
 
         int buff = buffs[CurrentLevelCongPhapInCombat(caster) - 1];
         switch (eLinhKhi)
@@ -49,15 +49,12 @@ public class CPBuffLinhCanCombat : CongPhap
     }
     public override string GetDesc(int level)
     {
-        return $"B?t ??u cu?c chi?n, {GetTextLinhKhi(eLinhKhi)} linh c?n thu?c t�nh {GetColoredText($"+{buffs[level - 1]}", "red")}";
+        return $"Bắt đầu cuộc chiến, {GetTextLinhKhi(eLinhKhi)} linh căn thuộc tính {GetColoredText($"+{buffs[level - 1]}", "red")}";
 
     }
 
 
-    public override void Init()
-    {
-        InitPosCallExecute();
-    }
+  
 
     public override void InitPosCallExecute()
     {

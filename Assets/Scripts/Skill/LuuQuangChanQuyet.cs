@@ -1,5 +1,6 @@
 ﻿using LongDH.LongDHModules;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(LuuQuangChanQuyet))]
@@ -16,10 +17,11 @@ public class LuuQuangChanQuyet : CongPhap
     {
         // Ki?m tra h? c?a Skill ?ang dùng có kh?p v?i Công Pháp (SO) này không
 
-        if (CheckIsEqualETypeSkill(caster) && CombatManager.IsLienKich(caster.thanThongCurrentUse.thanThong, caster.thanThongOldUse.thanThong))
+        if (CheckIsEqualETypeSkill(caster))
         {
-            Observer.RemoveObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ExecuteParams);
-            int dame = dameBuff[CurrentLevelCongPhapInCombat(caster) - 1];
+            int countCongDon = caster.congPhapDynamic.Count(x => x.congPhap is LuuQuangChanQuyet);
+            RemoveCongPhap(caster);
+            int dame = countCongDon * dameBuff[CurrentLevelCongPhapInCombat(caster) - 1];
             target.AddDamageData(new List<int> { dame });
         }
     }
@@ -28,7 +30,7 @@ public class LuuQuangChanQuyet : CongPhap
         CharacterCombat caster = (CharacterCombat)data[0];
         CharacterCombat target = (CharacterCombat)data[1];
         // Tìm trong danh sách trang bị của caster
-        if (GetCongPhapMono(caster) != null)
+        if (IsCanUse(caster))
         {
             Execute2(caster, target, data);
 
@@ -37,24 +39,22 @@ public class LuuQuangChanQuyet : CongPhap
     public void Execute2(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NoiThuong,noiThuong);
-        
+        var congPhapMono = GetCongPhapMono(caster.congPhapEquip);
+        caster.AddCPDynamic(congPhapMono);
+
     }
     public override string GetDesc(int level)
     {
-        return $"Bắt Đầu hiệp, nhận phải {GetColoredText($"{noiThuong}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NoiThuong)}, sử dụng thần thông {GetTextTypeSkill()} hệ gây tổn thương đồng thời phát động {GetKeyWord(EKeyWord.LienKich)} thì tăng lên {GetColoredText($"+{dameBuff[level - 1]}", "red")} sát thương";
+        return $"Bắt Đầu hiệp, nhận phải {GetColoredText($"{noiThuong}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NoiThuong)}, sử dụng thần thông {GetTextTypeSkill()} hệ gây tổn thương đồng thời phát động {GetKeyWord(EKeyWord.LienKich)} thì tăng lên {GetColoredText($"+{dameBuff[level - 1]}", "red")} sát thương (Nếu không kích hoạt hiệu ứng thì lượng sát thương có thể cộng dồn)";
 
     }
 
 
-    public override void Init()
-    {
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams2);
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, InitPosCallExecute);
-
-    }
-
+  
     public override void InitPosCallExecute()
     {
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ExecuteParams);
+        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams2);
+        Observer.AddObserver(EventList.GamePlay.LIEN_KICH, ExecuteParams);
+
     }
 }
