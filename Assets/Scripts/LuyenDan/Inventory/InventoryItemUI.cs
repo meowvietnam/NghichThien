@@ -1,11 +1,12 @@
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace LuyenDan.Inventory
 {
-    public class InventoryItemUI : MonoBehaviour
+    public class InventoryItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private GameObject thisObject;
         [TabGroup("Null Item")]
@@ -25,6 +26,10 @@ namespace LuyenDan.Inventory
         [SerializeField] private Text nameText;
         [TabGroup("Has Item")]
         [SerializeField] private Button infoButton;
+        [TabGroup("Has Item")]
+        [SerializeField] private Button selectButton;
+        [TabGroup("Has Item")] 
+        [SerializeField] private GameObject hover;
         private IInventoryItemData data;
         public Tier Tier => data.Tier;
         public void Init(IInventoryItemData data)
@@ -44,8 +49,13 @@ namespace LuyenDan.Inventory
             var tier = data.Tier;
             SetTier(tier);
             data.OnCountChanged += OnCountChanged;
+            selectButton.onClick.AddListener(OnSelected);
         }
-        
+
+        private void OnSelected()
+        {
+            Debug.Log("OnSelected");
+        }
         private void OnCountChanged(int count)
         {
             countText.text = count.ToString();
@@ -67,7 +77,18 @@ namespace LuyenDan.Inventory
             if (data != null)
             {
                 data.OnCountChanged -= OnCountChanged;
+                selectButton.onClick.RemoveListener(OnSelected);
             }
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            hover.SetActive(true);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            hover.SetActive(false);
         }
     }
 }

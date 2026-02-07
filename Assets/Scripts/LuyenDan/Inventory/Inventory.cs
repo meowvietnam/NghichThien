@@ -13,10 +13,10 @@ namespace LuyenDan.Inventory
         public void Init()
         {
             closeButton.onClick.AddListener(Close);
-            ItemListUI.Init(new List<IInventoryItemData>());
+            var data = LuyenDanPanel.Instance.Resources.TempFurnaceDatas;
+            ItemListUI.Init(data);
             filterGroup.Init();
         }
-        
         private void Close()
         {
             thisObject.SetActive(false);

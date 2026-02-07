@@ -9,5 +9,6 @@ namespace LuyenDan
     {
         [TabGroup("Inventory")]
         [field: SerializeField] public List<Quality> Qualities { get; private set; }
+        [field: SerializeField] public List<TempFurnaceData> TempFurnaceDatas { get; private set; }
     }
 }
