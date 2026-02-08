@@ -13,7 +13,7 @@ public class ThaiAmHuyenDocCong : CongPhap
     {
         int trungDoc = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out trungDoc);
-        if (trungDoc > 0)
+        if (trungDoc > 0 && CheckIsEqualETypeSkill(caster))
         {
             int dame = dameBuffs[CurrentLevelCongPhapInCombat(caster) - 1];
             target.AddDamageData(new System.Collections.Generic.List<int> { dame });
@@ -24,7 +24,7 @@ public class ThaiAmHuyenDocCong : CongPhap
     }
     public override string GetDesc(int level)
     {
-        return $"Sử dụng thần thông gây sát thương nếu đối phương có trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)} thì tổn thương {GetColoredText($"+{dameBuffs[level - 1]}", "red")}";
+        return $"Sử dụng {GetTextTypeSkill()} hệ thần thông gây sát thương nếu đối phương có trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)} thì tổn thương {GetColoredText($"+{dameBuffs[level - 1]}", "red")}";
 
     }
 

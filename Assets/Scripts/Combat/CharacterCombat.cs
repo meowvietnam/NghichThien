@@ -6,6 +6,7 @@ using LongDH.Script.ObjectPool;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
 using Spine.Unity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -114,49 +115,16 @@ public class CharacterCombat : MonoBehaviour
 
         textSkillNameCall.transform.parent.gameObject.SetActive(true);
         textSkillNameCall.text = thanThong.name;
+        var thanThongCurrentUse = new PlaySkillData { thanThong = thanThong, linhKhiTieuTan = linhKhiTieuTans };
 
         DOVirtual.DelayedCall(1f, () =>
         {
             textSkillNameCall.transform.parent.gameObject.SetActive(false);
         }).SetId("HideSkillName");
-
         StartAnimPunch();
-        thanThongCurrentUse = new PlaySkillData { thanThong = thanThong, linhKhiTieuTan=linhKhiTieuTans};
         thanThongUseThisTurn.Add(thanThongCurrentUse);
         thanThongUseThisComBat.Add(thanThongCurrentUse);
-        foreach (var item in linhKhiTieuTans)
-        {
-            switch (item.eLinhKhi)
-            {
-                case ELinhKhi.None:
-                    break;
-                case ELinhKhi.Kim:
-                    khiKimUsed += item.count;
-                    break;
-                case ELinhKhi.Moc:
-                    khiMocUsed += item.count;
-
-                    break;
-                case ELinhKhi.Thuy:
-                    khiThuyUsed += item.count;
-
-                    break;
-                case ELinhKhi.Hoa:
-                    khiHoaUsed += item.count;
-
-                    break;
-                case ELinhKhi.Tho:
-                    khiThoUsed += item.count;
-
-                    break;
-                case ELinhKhi.Ma:
-                    khiMaUsed += item.count;
-
-                    break;
-                default:
-                    break;
-            }
-        }
+        
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out int trienNhieu))
         {
 
@@ -166,10 +134,7 @@ public class CharacterCombat : MonoBehaviour
 
 
     }
-    public void SetThanThongOldUse(ThanThong thanThong,List<LinhKhiTieuTan> linhKhiTieuTans)
-    {
-        thanThongOldUse = new PlaySkillData { thanThong = thanThong, linhKhiTieuTan = linhKhiTieuTans };
-    }
+   
     public void StartAnimPunch()
     {
         // Chạy anim tấn công ngay lập tức
@@ -250,20 +215,48 @@ public class CharacterCombat : MonoBehaviour
     public int khiTho;
     public int khiMa;
 
-    public int khiKimUsed;
-    public int khiMocUsed;
-    public int khiThuyUsed;
-    public int khiHoaUsed;
-    public int khiThoUsed;
-    public int khiMaUsed;
+   
+    public Dictionary<BaseSkill, int> skillTichLuy = new Dictionary<BaseSkill, int>();
 
     public CharacterStats characterStats;
     public CharacterStats characterStatsCurrent;
-    public PlaySkillData thanThongOldUse;
-    public PlaySkillData thanThongCurrentUse;
     public List<PlaySkillData> thanThongUseThisTurn = new List<PlaySkillData>();
     public List<PlaySkillData> thanThongUseThisComBat = new List<PlaySkillData>();
+    public PlaySkillData thanThongCurrentUse => thanThongUseThisComBat.Count>0? thanThongUseThisComBat[thanThongUseThisComBat.Count - 1] : null;
+    public PlaySkillData thanThongOldUse => thanThongUseThisComBat.Count > 1? thanThongUseThisComBat[thanThongUseThisComBat.Count - 2] : null;
 
+
+
+    public bool IsSkillTichLuyCanUse(BaseSkill thanThong, int linhKhiNeedSave , int require )
+    {
+        // 1. Tìm chính xác cái Key đang nằm trong Dictionary dựa trên điều kiện của bạn
+        var key = skillTichLuy.Keys.FirstOrDefault(x =>
+                    x != null &&
+                    x.GetType() == thanThong.GetType() &&
+                    x.eTypeSkill == thanThong.eTypeSkill
+                  );
+
+        // 2. Nếu không tìm thấy Key phù hợp, trả về false ngay lập tức
+        if (key == null)
+        {
+            Debug.Log("key null");
+            skillTichLuy.Add(thanThong, linhKhiNeedSave);
+            return false;
+        }
+        skillTichLuy[key] += linhKhiNeedSave;
+
+        // 3. Kiểm tra số lượng tích lũy
+        if (skillTichLuy[key] >= require)
+        {
+            // Trừ trực tiếp vào giá trị của Dictionary thông qua Key đã tìm thấy
+            skillTichLuy[key] -= require;
+            return true;
+        }
+
+        // 4. Nếu không đủ: Không cộng thêm (bỏ logic item.Value += require cũ)
+        return false;
+    }
+    [Serializable]
     public class PlaySkillData
     {
         public ThanThong thanThong;
@@ -329,13 +322,13 @@ public class CharacterCombat : MonoBehaviour
     {
         characterStats = characterStat.Clone();
         characterStatsCurrent = characterStat.Clone();
-        thanThongOldUse = null;
         thanThongCoolDown.Clear();
         currentCharGender.gameObject.SetActive(true);
         currentCharGender.AnimationState.SetAnimation(0, ANIM_IDLE, true);
         thanThongUseThisComBat.Clear();
         InitTotalKhi();
         congPhapDynamic.Clear();
+        skillTichLuy.Clear();
         foreach (var cp in congPhapEquip)
         {
             cp.congPhap.InitPosCallExecute();
@@ -389,7 +382,7 @@ public class CharacterCombat : MonoBehaviour
     public int totalKhiRandom;
     public int CurrentLinhKhi => khiKim + khiMoc+khiThuy+khiHoa+khiTho+khiMa;
 
-    public int BaseCountHapThuLinhKhi => totalKhiRandom - totalKhi;
+    public int BaseCountHapThuLinhKhi => totalKhiRandom - CurrentLinhKhi;
     private void InitTotalKhi()
     {
         int level = characterStatsCurrent.level;
@@ -448,6 +441,7 @@ public class CharacterCombat : MonoBehaviour
     }
     public void HapThuLinhKhiNewTurn(out Dictionary<ELinhKhi, int> dictHapThuLinhKhi)
     {
+           
         int treKhi = 0;
         int tuKhi = 0;
 
@@ -522,7 +516,7 @@ public class CharacterCombat : MonoBehaviour
         // Random từng điểm khí
         for (int i = 0; i < total; i++)
         {
-            float r = Random.value;
+            float r = UnityEngine.Random.value;
 
             if (r < pKim)
                 khiKim++;
@@ -608,20 +602,11 @@ public class CharacterCombat : MonoBehaviour
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieu);
 
         }
-        TrungDoc();
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, 1);
 
     }
 
-    public void TrungDoc()
-    {
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out int trungDoc))
-        {
-            AddDamageData(new List<int> { (int)trungDoc });
-            TakeDame(null);
-
-        }
-    }
+  
 
     public List<int> allDamages = new List<int>();
 
@@ -700,7 +685,6 @@ public class CharacterCombat : MonoBehaviour
             Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, caster,this,item);
 
         }
-        thanThongCurrentUse = null;
         allDamages.Clear();
 
     }

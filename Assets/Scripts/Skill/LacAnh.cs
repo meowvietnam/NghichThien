@@ -20,7 +20,7 @@ public class LacAnh : ThanThong, BaseSkill.LienKich
         int countDebuff = 0;
         foreach (var item in target.buffAndDebuffCount)
         {
-            if(BaseSkill.debuff.Contains(item.Key))
+            if(BaseSkill.debuffs.Contains(item.Key))
             {
                 countDebuff++;
             }

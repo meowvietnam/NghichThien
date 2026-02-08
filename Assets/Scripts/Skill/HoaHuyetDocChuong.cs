@@ -10,7 +10,8 @@ public class HoaHuyetDocChuong : ThanThong
         int trungDoc = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out trungDoc);
         HauKeVoLuc(caster);
-        target.TrungDoc();
+
+        CombatStatic.TrungDoc(caster, target);
 
         caster.Healing(trungDoc);
        

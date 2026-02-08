@@ -181,17 +181,31 @@ public class PlayerUICombat : MonoBehaviour
         {
             item1.Init(() =>
             {
-                Debug.Log(currentNodes.Count);
                 if (item1.count <= 0 || item1.isLock || (currentNodes.Any(x => x.eLinhKhi == item1.eLinhKhi && x.isLock == false && x.countRequire<=0) && eStateControl == EStateControl.UseSkill )) return;
+                Debug.Log("lmm"+currentNodes.Count);
 
                 if (CurrentLinhKhi <= maxLinhKhi && eStateControl == EStateControl.DeleteLinhKhi) return;
+                Debug.Log("cmm" +currentNodes.Count);
+
                 foreach (var item2 in currentNodes)
                 {
-                    if (item2.isLock || item2.countRequire <=0) continue;
+                    if (item2.isLock || item2.countRequire <= 0) continue;
 
-                    if (!item2.isLock && (item2.count <= 0 || item2.eLinhKhi == item1.eLinhKhi) && item1.count >= item2.countRequire)
+                    if (!item2.isLock && (item2.count <= 0 || item2.eLinhKhi == item1.eLinhKhi))
                     {
-                        AddLinhKhiFromRemainToNode(item1,item2,item2.countRequire);
+                        if (eStateControl == EStateControl.UseSkill && item1.count >= item2.countRequire)
+                        {
+                            AddLinhKhiFromRemainToNode(item1, item2, item2.countRequire);
+
+                        }
+                        else if (eStateControl == EStateControl.DeleteLinhKhi)
+                        {
+                            AddLinhKhiFromRemainToNode(item1, item2, 1);
+
+                        }
+
+
+
                         break;
                     }
                 }

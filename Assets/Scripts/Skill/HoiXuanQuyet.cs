@@ -13,9 +13,17 @@ public class HoiXuanQuyet : CongPhap
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
-        if(caster.khiMocUsed >= require)
+        List<LinhKhiTieuTan> linhKhiTieuTans = (List<LinhKhiTieuTan>)data[3];
+        int mocLinhKhi = 0;
+        foreach (var item in linhKhiTieuTans)
         {
-            caster.khiMocUsed -= require;
+            if(item.eLinhKhi == ELinhKhi.Moc)
+            {
+                mocLinhKhi += item.count;
+            }    
+        }
+        if(caster.IsSkillTichLuyCanUse(this,mocLinhKhi,require))
+        {
             int buff = buffValues[CurrentLevelCongPhapInCombat(caster) - 1];
             caster.Healing(buff);
 

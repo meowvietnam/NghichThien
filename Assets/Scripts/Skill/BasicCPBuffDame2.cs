@@ -14,7 +14,7 @@ public class BasicCPBuffDame2 : CongPhap
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         // Kiểm tra hệ của Skill đang dùng có khớp với Công Pháp (SO) này không
-
+        if (caster.thanThongCurrentUse == null || caster.thanThongOldUse == null) return;
         if (CheckIsEqualETypeSkill(caster) && CombatManager.IsLienKich(caster.thanThongCurrentUse.thanThong,caster.thanThongOldUse.thanThong))
         {
             target.AddDamageData(new List<int>{ dameBuff[CurrentLevelCongPhapInCombat(caster) - 1] });

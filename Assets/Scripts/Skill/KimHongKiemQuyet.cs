@@ -1,4 +1,5 @@
 ﻿using LongDH.LongDHModules;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,12 +12,18 @@ public class KimHongKiemQuyet : CongPhap
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-
-        if (caster.khiKimUsed >= requireLinhKhi)
+        List<LinhKhiTieuTan> linhKhiTieuTans = (List<LinhKhiTieuTan>)data[3];
+        int kimLinhKhi = 0;
+        foreach (var item in linhKhiTieuTans)
+        {
+            if (item.eLinhKhi == ELinhKhi.Kim)
+            {
+                kimLinhKhi += item.count;
+            }
+        }
+        if (caster.IsSkillTichLuyCanUse(this, kimLinhKhi, requireLinhKhi))
         {
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SucThe, sucTheBuff[CurrentLevelCongPhapInCombat(caster) - 1]);
-            caster.khiKimUsed -= requireLinhKhi;
-
         }   
         
     }

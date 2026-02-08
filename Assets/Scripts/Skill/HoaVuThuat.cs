@@ -18,7 +18,7 @@ public class HoaVuThuat : ThanThong , BaseSkill.LienKich
     {
         for (int i = 0; i < debuffCount; i++)
         {
-            target.AddBuffAndDebuffCount(BaseSkill.debuff[Random.Range(0,BaseSkill.debuff.Count)], 1);
+            target.AddBuffAndDebuffCount(BaseSkill.debuffs[Random.Range(0,BaseSkill.debuffs.Count)], 1);
 
         }
 

@@ -280,7 +280,6 @@ public class CombatManager : MonoBehaviour
                 thanThongTuongDong.ExecuteTuongDong(caster, target);
 
             }
-            caster.SetThanThongOldUse(thanThong,linhKhiTieuTan);
             DOVirtual.DelayedCall(thanThong.timeDelayTakeDame, () =>
             {
                 target.TakeDame(caster);
@@ -308,7 +307,6 @@ public class CombatManager : MonoBehaviour
     {
         if (IsDelayEffectSkill) return;
 
-        currentTurn.thanThongCurrentUse = null;
         if (data[2] is List<LinhKhiTieuTan> linhKhiTieuTan)
         {
             TieuTanLinhKhi(linhKhiTieuTan);
@@ -319,7 +317,8 @@ public class CombatManager : MonoBehaviour
             targetTurn.TakeDame(currentTurn);
 
         }
-        
+        CombatStatic.KiemKhi(currentTurn,targetTurn);
+        CombatStatic.TrungDoc(targetTurn, currentTurn);
         currentTurn.EndTurn();
         if (currentTurn == char1)
         {
@@ -330,6 +329,8 @@ public class CombatManager : MonoBehaviour
             currentTurn = char1;
         }
     }
+   
+  
     public void SetUIBuff(params object[] data)
     {
         if (data[0] is CharacterCombat characterCombat)
@@ -411,19 +412,19 @@ public class CombatManager : MonoBehaviour
     public void NewTurn()
     {
         if (IsDelayEffectSkill) return;
+        CombatStatic.SucThe(currentTurn, targetTurn);
 
-        if (currentTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out int sucThe))
-        {
-            targetTurn.TakeDameByThanThong(currentTurn, new List<int> { sucThe });
-            targetTurn.TakeDame(currentTurn);
-
-        }
+        
         currentTurn.NewTurn();
 
         Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();
         if(!currentTurn.IsKietSuc())
         {
-            currentTurn.HapThuLinhKhiNewTurn(out dictHapThuKhi);
+            if (currentTurn.CurrentLinhKhi < currentTurn.totalKhiRandom)
+            {
+                currentTurn.HapThuLinhKhiNewTurn(out dictHapThuKhi);
+
+            }
 
         }
         else

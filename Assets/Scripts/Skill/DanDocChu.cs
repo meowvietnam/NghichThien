@@ -10,7 +10,7 @@ public class DanDocChu : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
-        target.TrungDoc();
+        CombatStatic.TrungDoc(caster,target);
 
 
     }
@@ -32,7 +32,7 @@ public class DanDocChu : ThanThong
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         int countTrungDoc = 0;
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out countTrungDoc);
+        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out countTrungDoc);
         return countTrungDoc > 0;
     }
 

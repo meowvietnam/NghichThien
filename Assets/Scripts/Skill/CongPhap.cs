@@ -13,11 +13,11 @@ public abstract class CongPhap : BaseSkill
 {
     [SerializeField] private int tocDoTuLuyenBase;
 
-    public virtual void EquipCongPhap(CharacterStats stats)
+    public virtual void EquipCongPhap(CharacterStats stats, int level)
     {
 
     }
-    public virtual void UnEquipCongPhap(CharacterStats stats)
+    public virtual void UnEquipCongPhap(CharacterStats stats, int level)
     {
 
     }

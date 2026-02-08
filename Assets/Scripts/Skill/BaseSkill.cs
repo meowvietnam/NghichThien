@@ -1,5 +1,6 @@
 ﻿using CreateCharacter;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -33,7 +34,7 @@ public enum EBuffAndDeBuff
 
 public abstract class BaseSkill : BaseItemData
 {
-    public static List<EBuffAndDeBuff> debuff = new List<EBuffAndDeBuff>
+    public static List<EBuffAndDeBuff> debuffs = new List<EBuffAndDeBuff>
     {
         EBuffAndDeBuff.DeTonThuong,
         EBuffAndDeBuff.KietSuc,
@@ -46,7 +47,11 @@ public abstract class BaseSkill : BaseItemData
 
 
     };
-    
+    public static List<EBuffAndDeBuff> buffs = Enum.GetValues(typeof(EBuffAndDeBuff))
+    .Cast<EBuffAndDeBuff>()
+    .Where(e => e != EBuffAndDeBuff.None)
+    .Where(e => !BaseSkill.debuffs.Contains(e))
+    .ToList();
     public enum ETypeSkill
     {
         None,
@@ -111,12 +116,16 @@ public abstract class BaseSkill : BaseItemData
 
     public bool IsActiveWithPercent(int percent)
     {
-        if(Random.Range(0,101) < percent)
+        if(UnityEngine.Random.Range(0,101) < percent)
         {
             return true;
         }    
         return false;
-    }    
+    }
+    public int IndexRandom(int min , int max)
+    {
+        return UnityEngine.Random.Range(min, max);
+    }
 
     public static string GetKeyWordBuffOrDeBuff(EBuffAndDeBuff eKeyWord)
     {
@@ -455,6 +464,7 @@ public abstract class BaseSkill : BaseItemData
         if (caster.thanThongCurrentUse == null) return false;
         // Kiểm tra hệ của Skill đang dùng có khớp với Công Pháp (SO) này không
         bool isExecute = skill.Any(skill => caster.thanThongCurrentUse.thanThong.eTypeSkill.Contains(skill));
+        Debug.Log("Check Equal " + isExecute);
         return isExecute;
     }
    

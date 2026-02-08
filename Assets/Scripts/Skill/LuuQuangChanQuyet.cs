@@ -45,7 +45,7 @@ public class LuuQuangChanQuyet : CongPhap
     }
     public override string GetDesc(int level)
     {
-        return $"Bắt Đầu hiệp, nhận phải {GetColoredText($"{noiThuong}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NoiThuong)}, sử dụng thần thông {GetTextTypeSkill()} hệ gây tổn thương đồng thời phát động {GetKeyWord(EKeyWord.LienKich)} thì tăng lên {GetColoredText($"+{dameBuff[level - 1]}", "red")} sát thương (Nếu không kích hoạt hiệu ứng thì lượng sát thương có thể cộng dồn)";
+        return $"Bắt Đầu hiệp, nhận phải {GetColoredText($"{noiThuong}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NoiThuong)}, sử dụng thần thông {GetTextTypeSkill()} hệ gây tổn thương đồng thời phát động Ngũ Hành {GetKeyWord(EKeyWord.LienKich)} thì tăng lên {GetColoredText($"+{dameBuff[level - 1]}", "red")} sát thương (Nếu không kích hoạt hiệu ứng thì lượng sát thương có thể cộng dồn)";
 
     }
 

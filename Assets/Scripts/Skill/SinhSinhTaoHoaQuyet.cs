@@ -20,7 +20,7 @@ public class SinhSinhTaoHoaQuyet : CongPhap
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi lần sử dụng thần thông phát động ngũ hành {GetKeyWord(EKeyWord.LienKich)} thì thu hoạch được {GetColoredText($"+{buff[level - 1]}*X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} (X là số linh khí kĩ năng này tiêu hao)";
+        return $"Mỗi lần sử dụng thần thông phát động Ngũ Hành {GetKeyWord(EKeyWord.LienKich)} thì thu hoạch được {GetColoredText($"+{buff[level - 1]}*X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} (X là số linh khí kĩ năng này tiêu hao)";
     }
 
   

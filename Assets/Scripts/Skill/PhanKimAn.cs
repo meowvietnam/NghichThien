@@ -18,7 +18,7 @@ public class PhanKimAn : ThanThong
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Mỗi lần phát động hiệu quả ngũ hành {GetKeyWord(EKeyWord.LienKich)} thì khiến đối phương nhận phải {GetColoredText($"+{deTonThuong[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}";
+        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Mỗi lần phát động hiệu quả Ngũ Hành {GetKeyWord(EKeyWord.LienKich)} thì khiến đối phương nhận phải {GetColoredText($"+{deTonThuong[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}";
     }
     private void ObserverEffect(params object[] data)
     {

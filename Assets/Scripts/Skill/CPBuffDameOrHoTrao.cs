@@ -1,8 +1,8 @@
 ﻿using LongDH.LongDHModules;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(KimLinhThacThienCong))]
-public class KimLinhThacThienCong : CongPhap
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(CPBuffDameOrHoTrao))]
+public class CPBuffDameOrHoTrao : CongPhap
 {
     [SerializeField] private int[] dameBuffPercent;
     [SerializeField] private int[] xHoTraos;
