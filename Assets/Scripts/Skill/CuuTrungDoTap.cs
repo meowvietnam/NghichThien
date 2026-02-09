@@ -12,7 +12,7 @@ public class CuuTrungDoTap : CongPhap
             int count = countDebuff[CurrentLevelCongPhapInCombat(caster) - 1];
             for (int i = 0; i < count; i++)
             {
-                var debuff = debuffs[IndexRandom(0,debuffs.Count)];
+                var debuff = debuffs[CombatStatic.IndexRandom(0,debuffs.Count)];
                 target.AddBuffAndDebuffCount(debuff,1);
             }
             Debug.Log("co voi vao CuuTrungDoTap");

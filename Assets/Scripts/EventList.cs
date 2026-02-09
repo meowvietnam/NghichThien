@@ -15,6 +15,7 @@ public static partial class EventList
         public const string LIEN_KICH = "GamePlay.LIEN_KICH";
         public const string END_COMBAT = "GamePlay.END_COMBAT";
         public const string TRUNG_DOC = "GamePlay.TRUNG_DOC";
+        public const string NE_TRANH_SUCCESS = "GamePlay.NE_TRANH_SUCCESS";
 
 
     }

@@ -109,29 +109,27 @@ public class CharacterCombat : MonoBehaviour
             level = cp.level,
         });
     }
-    public void PlaySkill(ThanThong thanThong , List<LinhKhiTieuTan> linhKhiTieuTans)
+    public void VisualPlaySkill(ThanThong thanThong)
     {
         DOTween.Kill("HideSkillName");
 
         textSkillNameCall.transform.parent.gameObject.SetActive(true);
         textSkillNameCall.text = thanThong.name;
-        var thanThongCurrentUse = new PlaySkillData { thanThong = thanThong, linhKhiTieuTan = linhKhiTieuTans };
-
-        DOVirtual.DelayedCall(1f, () =>
+        DOVirtual.DelayedCall(thanThong.timeDelayTakeDame/2, () =>
         {
             textSkillNameCall.transform.parent.gameObject.SetActive(false);
         }).SetId("HideSkillName");
         StartAnimPunch();
+    }
+    public void PlaySkill(ThanThong thanThong , List<LinhKhiTieuTan> linhKhiTieuTans)
+    {
+        VisualPlaySkill(thanThong);
+        var thanThongCurrentUse = new PlaySkillData { thanThong = thanThong, linhKhiTieuTan = linhKhiTieuTans };
         thanThongUseThisTurn.Add(thanThongCurrentUse);
         thanThongUseThisComBat.Add(thanThongCurrentUse);
-        
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out int trienNhieu))
-        {
 
-            AddDamageData(new List<int> {trienNhieu });
-            TakeDame(null);
-        }
-
+        CombatStatic.TrienNhieu(null,this);
+      
 
     }
    
@@ -177,7 +175,7 @@ public class CharacterCombat : MonoBehaviour
         
     }
     private int activeTextCount = 0; // Đếm số text đang bay
-    public void SetTextDameAnim(int dame)
+    public void SetTextDameAnim(string content,Color color)
     {
         var textDame = CombatManager.GetTextDame();
         textDame.transform.SetParent(this.transform);
@@ -192,8 +190,8 @@ public class CharacterCombat : MonoBehaviour
         activeTextCount++; // Tăng biến đếm khi hiện text mới
 
         // 2. Thiết lập nội dung và màu sắc
-        Color targetColor = (dame > 0) ? Color.green : Color.red;
-        textDame.text = dame.ToString();
+        Color targetColor = color;
+        textDame.text = content;
         targetColor.a = 1;
         textDame.color = targetColor;
 
@@ -436,8 +434,39 @@ public class CharacterCombat : MonoBehaviour
             default:
                 break;
         }
-        Observer.Notify(EventList.GamePlay.ADJUST_LINHKHI, this, eLinhKhi, count);
+        Observer.Notify(EventList.GamePlay.ADJUST_LINHKHI, this, eLinhKhi, -count);
 
+    }
+    public int GetLinhKhi(ELinhKhi e)
+    {
+        switch (e)
+        {
+            case ELinhKhi.Kim: return khiKim;
+            case ELinhKhi.Moc: return khiMoc;
+            case ELinhKhi.Thuy: return khiThuy;
+            case ELinhKhi.Hoa: return khiHoa;
+            case ELinhKhi.Tho: return khiTho;
+            case ELinhKhi.Ma: return khiMa;
+            default: return 0;
+        }
+    }
+    public ELinhKhi GetRandomLinhKhiConLai()
+    {
+        List<ELinhKhi> list = new List<ELinhKhi>();
+
+        foreach (ELinhKhi e in Enum.GetValues(typeof(ELinhKhi)))
+        {
+            if (e == ELinhKhi.None) continue;
+
+            if (GetLinhKhi(e) > 0)
+                list.Add(e);
+        }
+
+        if (list.Count == 0)
+            return ELinhKhi.None;
+
+        int index = CombatStatic.IndexRandom(0,list.Count);
+        return list[index];
     }
     public void HapThuLinhKhiNewTurn(out Dictionary<ELinhKhi, int> dictHapThuLinhKhi)
     {
@@ -456,19 +485,16 @@ public class CharacterCombat : MonoBehaviour
             HapThuLinhKhi(item.Key, item.Value);
         }
         NoiThuongAction();
-
+        RemoveBuffAndDebuffCount(EBuffAndDeBuff.NoiThuong, 1);
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.TuKhi, tuKhi);
     }
     public void NoiThuongAction()
     {
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NoiThuong, out int noiThuong))
-        {
-           
-            AddDamageData(new List<int> { noiThuong * BaseCountHapThuLinhKhi });
-            TakeDame(null);
-            RemoveBuffAndDebuffCount(EBuffAndDeBuff.NoiThuong, 1);
-        }
+        CombatStatic.NoiThuong(null, this);
+
     }
+
+
     public void HapThuLinhKhi(int total)
     {
         foreach (var item in DictHapThuLinhKhi(total))
@@ -641,7 +667,7 @@ public class CharacterCombat : MonoBehaviour
     }
 
     [Button]
-    public void TakeDameByThanThong(CharacterCombat sender, List<int> dame, bool isCongDon = true)
+    public void TakeDameByThanThong(CharacterCombat sender, List<int> dame, bool isCongDon = false)
     {
         if (sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanKim, out int chanKim) && BaseSkill.CheckIsEqualETypeSkill(this,new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Kim }));
         {
@@ -681,10 +707,21 @@ public class CharacterCombat : MonoBehaviour
     {
         foreach (var item in allDamages)
         {
-            TakeDame(item);
-            Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, caster,this,item);
+            if (!CombatStatic.IsActiveHuyenVu(null, this))
+            {
+                TakeDame(item);
+                Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, caster, this, item);
 
+            }
+            else
+            {
+                SetTextDameAnim($"Né Tránh!", Color.whiteSmoke);
+                Observer.Notify(EventList.GamePlay.NE_TRANH_SUCCESS,caster, this);
+
+            }
+           
         }
+        
         allDamages.Clear();
 
     }
@@ -706,7 +743,7 @@ public class CharacterCombat : MonoBehaviour
         if (dame > 0)
         {
             StartAnimHit();
-            SetTextDameAnim(-dame);
+            SetTextDameAnim($"-{dame}",Color.red);
         }
         characterStatsCurrent.hp -= dame;
         characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);
@@ -732,7 +769,7 @@ public class CharacterCombat : MonoBehaviour
     {
         characterStatsCurrent.hp += hp;
         characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);
-        SetTextDameAnim(+hp);
+        SetTextDameAnim($"+{hp}", Color.green);
 
 
         Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);

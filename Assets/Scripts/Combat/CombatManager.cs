@@ -64,7 +64,7 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private Text prefabTextDame;
     [SerializeField] private Tooltip buffInfor;
 
-    public bool IsDelayEffectSkill => targetTurn.allDamages.Count> 0;
+    public bool IsDelayEffectSkill => listActionTakeDameDelay.Count> 0;
 
     public Text GetTextDame()
     {
@@ -235,8 +235,10 @@ public class CombatManager : MonoBehaviour
             }
         }
         return isLienKich;
-      
-    }    
+
+    }
+    [SerializeField] private Dictionary<Tween,ThanThong> listActionTakeDameDelay = new Dictionary<Tween, ThanThong>();    
+    
     public void PlaySkill(params object[] data)
     {
         //if (IsDelayEffectSkill) return;
@@ -254,37 +256,54 @@ public class CombatManager : MonoBehaviour
         }
         if (thanThong!= null)
         {
-            caster.PlaySkill(thanThong,linhKhiTieuTan);
-            thanThong.Execute(caster, target , data);
-            if (thanThong is BaseSkill.LienKich thanThongLienKich && thanThongOldUse != null)
+
+            caster.VisualPlaySkill(thanThong);
+            float totalRemainingDelay = 0f;
+            foreach (var tween in listActionTakeDameDelay.Keys)
             {
-                if (IsLienKich(thanThong , thanThongOldUse))
+                if (tween.IsActive() && tween.IsPlaying())
                 {
-                    Debug.Log("Liên kích!");
-                    thanThongLienKich.ExecuteLienKich(caster, target);
-                    Observer.Notify(EventList.GamePlay.LIEN_KICH, caster, target, thanThong, linhKhiTieuTan);
+                    totalRemainingDelay += tween.Duration() - tween.Elapsed();
                 }
             }
-            if(thanThong is BaseSkill.TuongSinh thanThongTuongSinh && GetETuongQuan(linhKhiTieuTan) == ETuongQuan.TuongSinh)
-            {
-                thanThongTuongSinh.ExecuteTuongSinh(caster, target);
 
-            }
-            if (thanThong is BaseSkill.TuongKhac thanThongTuongKhac && GetETuongQuan(linhKhiTieuTan) == ETuongQuan.TuongKhac)
-            {
-                thanThongTuongKhac.ExecuteTuongKhac(caster, target);
+            float finalDelay = totalRemainingDelay + thanThong.timeDelayTakeDame;
 
-            }
-            if (thanThong is BaseSkill.TuongDong thanThongTuongDong && IsTuongDong(linhKhiTieuTan))
-            {
-                thanThongTuongDong.ExecuteTuongDong(caster, target);
+            Tween newTween = null;
 
-            }
-            DOVirtual.DelayedCall(thanThong.timeDelayTakeDame, () =>
+            newTween = DOVirtual.DelayedCall(finalDelay, () =>
             {
+                caster.PlaySkill(thanThong, linhKhiTieuTan);
+                thanThong.Execute(caster, target, data);
+                if (thanThong is BaseSkill.LienKich thanThongLienKich && thanThongOldUse != null)
+                {
+                    if (IsLienKich(thanThong, thanThongOldUse))
+                    {
+                        Debug.Log("Liên kích!");
+                        thanThongLienKich.ExecuteLienKich(caster, target);
+                        Observer.Notify(EventList.GamePlay.LIEN_KICH, caster, target, thanThong, linhKhiTieuTan);
+                    }
+                }
+                if (thanThong is BaseSkill.TuongSinh thanThongTuongSinh && GetETuongQuan(linhKhiTieuTan) == ETuongQuan.TuongSinh)
+                {
+                    thanThongTuongSinh.ExecuteTuongSinh(caster, target);
+
+                }
+                if (thanThong is BaseSkill.TuongKhac thanThongTuongKhac && GetETuongQuan(linhKhiTieuTan) == ETuongQuan.TuongKhac)
+                {
+                    thanThongTuongKhac.ExecuteTuongKhac(caster, target);
+
+                }
+                if (thanThong is BaseSkill.TuongDong thanThongTuongDong && IsTuongDong(linhKhiTieuTan))
+                {
+                    thanThongTuongDong.ExecuteTuongDong(caster, target);
+
+                }
                 target.TakeDame(caster);
-
+                listActionTakeDameDelay.Remove(newTween);
             });
+
+            listActionTakeDameDelay.Add(newTween, thanThong);
         }
        
     }

@@ -30,7 +30,7 @@ public class KimHongKiemQuyet : CongPhap
     public void Execute2(CharacterCombat caster, CharacterCombat target,List<int> dame)
     {
        
-        if (CheckIsEqualETypeSkill(caster) && IsActiveWithPercent(percentX2Dame[CurrentLevelCongPhapInCombat(caster) - 1]))
+        if (CheckIsEqualETypeSkill(caster) && CombatStatic.IsActiveWithPercent(percentX2Dame[CurrentLevelCongPhapInCombat(caster) - 1]))
         {
             
             target.AddDamageData(new List<int> { dame[0] *2 });

@@ -12,7 +12,7 @@ public class ThatSatKiemQuyet : CongPhap
 
         if (CheckIsEqualETypeSkill(caster))
         {
-            if (IsActiveWithPercent(percent[CurrentLevelCongPhapInCombat(caster)-1]))
+            if (CombatStatic.IsActiveWithPercent(percent[CurrentLevelCongPhapInCombat(caster)-1]))
             {
                 target.AddBuffAndDebuffCount(EBuffAndDeBuff.ChayMau, 1);
             }    

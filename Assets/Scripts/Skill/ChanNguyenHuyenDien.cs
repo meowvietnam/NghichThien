@@ -18,7 +18,7 @@ public class ChanNguyenHuyenDien : CongPhap
         }
         for (int i = 0; i < countDebuff; i++)
         {
-            var buff = buffs[IndexRandom(0, debuffs.Count)];
+            var buff = buffs[CombatStatic.IndexRandom(0, debuffs.Count)];
             caster.AddBuffAndDebuffCount(buff, 1);
         }
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanMoc, countDebuff * chanMocs[CurrentLevelCongPhapInCombat(caster) - 1]);

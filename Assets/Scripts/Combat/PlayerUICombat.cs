@@ -452,6 +452,7 @@ public class PlayerUICombat : MonoBehaviour
                     break;
             }
         }
+        CheckFightSkillCanUse();
 
     }
     public void NewTurn(params object[] data)

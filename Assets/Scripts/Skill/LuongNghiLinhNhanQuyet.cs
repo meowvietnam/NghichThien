@@ -26,7 +26,7 @@ public class LuongNghiLinhNhanQuyet : CongPhap
    {
         Debug.Log("Có vào đây");
 
-        if (IsActiveWithPercent(percentActive[CurrentLevelCongPhapInCombat(target) - 1]))
+        if (CombatStatic.IsActiveWithPercent(percentActive[CurrentLevelCongPhapInCombat(target) - 1]))
         {
             Debug.Log("PercenOk");
 

@@ -47,7 +47,7 @@ public class VanTuongKySinhQuyet : CongPhap
         int percent = percentActive[CurrentLevelCongPhapInCombat(caster) - 1];
         if (caster.IsSkillTichLuyCanUse(this, mocLinhKhi, require))
         {
-           if(IsActiveWithPercent(percent))
+           if(CombatStatic.IsActiveWithPercent(percent))
            {
                 Observer.Notify(EventList.GamePlay.PLAY_SKILL, caster, target, thanThongActive, new List<LinhKhiTieuTan>());
            }

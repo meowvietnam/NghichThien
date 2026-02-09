@@ -114,19 +114,7 @@ public abstract class BaseSkill : BaseItemData
     }
     public abstract string GetDesc(int level);
 
-    public bool IsActiveWithPercent(int percent)
-    {
-        if(UnityEngine.Random.Range(0,101) < percent)
-        {
-            return true;
-        }    
-        return false;
-    }
-    public int IndexRandom(int min , int max)
-    {
-        return UnityEngine.Random.Range(min, max);
-    }
-
+    
     public static string GetKeyWordBuffOrDeBuff(EBuffAndDeBuff eKeyWord)
     {
         string text = string.Empty;
