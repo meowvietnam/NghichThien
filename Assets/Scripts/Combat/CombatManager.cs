@@ -64,7 +64,7 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private Text prefabTextDame;
     [SerializeField] private Tooltip buffInfor;
 
-    public bool IsDelayEffectSkill => listActionTakeDameDelay.Count> 0;
+    public bool IsDelayEffectSkill =>  currentTurn.listActionTakeDameDelay.Count> 0 || targetTurn.listActionTakeDameDelay.Count>0;
 
     public Text GetTextDame()
     {
@@ -237,7 +237,6 @@ public class CombatManager : MonoBehaviour
         return isLienKich;
 
     }
-    [SerializeField] private Dictionary<Tween,ThanThong> listActionTakeDameDelay = new Dictionary<Tween, ThanThong>();    
     
     public void PlaySkill(params object[] data)
     {
@@ -259,7 +258,8 @@ public class CombatManager : MonoBehaviour
 
             caster.VisualPlaySkill(thanThong);
             float totalRemainingDelay = 0f;
-            foreach (var tween in listActionTakeDameDelay.Keys)
+            
+            foreach (var tween in caster.listActionTakeDameDelay.Keys)
             {
                 if (tween.IsActive() && tween.IsPlaying())
                 {
@@ -300,10 +300,10 @@ public class CombatManager : MonoBehaviour
 
                 }
                 target.TakeDame(caster);
-                listActionTakeDameDelay.Remove(newTween);
+                caster.listActionTakeDameDelay.Remove(newTween);
             });
 
-            listActionTakeDameDelay.Add(newTween, thanThong);
+            caster.listActionTakeDameDelay.Add(newTween, thanThong);
         }
        
     }

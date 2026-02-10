@@ -28,6 +28,7 @@ public enum EBuffAndDeBuff
     ChanTho,
     TuKhi,
     Cham,
+    SuongGia
 
 
 }
@@ -43,6 +44,7 @@ public abstract class BaseSkill : BaseItemData
         EBuffAndDeBuff.TrienNhieu,
         EBuffAndDeBuff.TrungDoc,
         EBuffAndDeBuff.ChayMau,
+        EBuffAndDeBuff.SuongGia,
 
 
 
@@ -186,6 +188,9 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.Cham:
                 text = "Châm";
                 break;
+            case EBuffAndDeBuff.SuongGia:
+                text = "Sương Giá";
+                break;
             default:
                 break;
         }
@@ -259,6 +264,9 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.Cham:
                 text = $"Chỉ thị vật";
+                break;
+            case EBuffAndDeBuff.SuongGia:
+                text = $"Mỗi khi sử dụng thần thông gây tổn thương, mỗi tầng giảm -1 điểm sát thương có thể gây ra. Sau đó giải trừ 1 tầng";
                 break;
             default:
                 break;

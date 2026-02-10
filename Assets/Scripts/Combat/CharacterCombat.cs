@@ -85,6 +85,8 @@ public class CharacterCombat : MonoBehaviour
 
     public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill = new List<LinhKhiTieuTan>();
     public List<ThanThong> specialThanThongImpactAfterPlaySkill = new List<ThanThong>();
+    [SerializeField] public Dictionary<Tween, ThanThong> listActionTakeDameDelay = new Dictionary<Tween, ThanThong>();
+
     public void AddThanThongImpactAfterPlaySkill(ThanThong thanThong)
     {
         specialThanThongImpactAfterPlaySkill.Add(thanThong);
@@ -698,6 +700,11 @@ public class CharacterCombat : MonoBehaviour
             sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanTho, chanTho);
 
         }
+        // ở đây là thằng nhận dame => lấy sương giá của sender
+        sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SuongGia, out int suongGia);
+        dame[0] -= suongGia;
+        dame[0] = Mathf.Clamp(dame[0], 0, dame[0]);
+        sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, 1);
         AddDamageData(dame,isCongDon);
         Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG,sender,this,dame); // sender , targer nhận, dame
 
