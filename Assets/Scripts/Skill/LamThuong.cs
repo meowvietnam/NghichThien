@@ -8,7 +8,7 @@ public class LamThuong : ThanThong
     {
         HauKeVoLuc(caster);
         int linhKhiHapThu = caster.totalKhi - caster.CurrentLinhKhi;
-        linhKhiHapThu = Mathf.Clamp(linhKhiHapThu, 0, linhKhiHapThu);
+        linhKhiHapThu = Mathf.Clamp(linhKhiHapThu, 0, int.MaxValue);
         var dic = caster.DictHapThuLinhKhi(linhKhiHapThu);
         foreach ( var key in dic)
         {

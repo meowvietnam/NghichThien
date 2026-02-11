@@ -127,6 +127,7 @@ public class PlayerUICombat : MonoBehaviour
                     if (currentNodes.Any(x => x.countRequire > 0)) return;
                     Observer.Notify(EventList.GamePlay.PLAY_SKILL,player,CombatManager.char2, fightSkillSelect.ThanThongData, GetLinhKhiTieuTans(currentNodes));
                     SetStateControl(EStateControl.None);
+                    StartCoroutine(DelayOneFrame());
                     break;
                 case EStateControl.DeleteLinhKhi:
                     if (CurrentLinhKhi <= maxLinhKhi)
@@ -141,7 +142,6 @@ public class PlayerUICombat : MonoBehaviour
                 default:
                     break;
             }
-            StartCoroutine(DelayOneFrame());
 
 
 

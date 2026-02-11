@@ -30,6 +30,9 @@ public enum EBuffAndDeBuff
     Cham,
     SuongGia,
     DongKet,
+    ChanKiem,
+    ChiThuy,
+    KinhDao,
 
 
 }
@@ -195,6 +198,15 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.DongKet:
                 text = "Đông Kết";
                 break;
+            case EBuffAndDeBuff.ChanKiem:
+                text = "Chấn Kiếm";
+                break;
+            case EBuffAndDeBuff.ChiThuy:
+                text = "Chỉ Thủy";
+                break;
+            case EBuffAndDeBuff.KinhDao:
+                text = "Kinh Đào";
+                break;
             default:
                 break;
         }
@@ -274,6 +286,15 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.DongKet:
                 text = "Bản thân hiệp sau không được thi pháp";
+                break;
+            case EBuffAndDeBuff.ChanKiem:
+                text = $"Kiếm hệ thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.ChiThuy:
+                text = $"Chỉ thị vật";
+                break;
+            case EBuffAndDeBuff.KinhDao:
+                text = $"Chỉ thị vật";
                 break;
             default:
                 break;
