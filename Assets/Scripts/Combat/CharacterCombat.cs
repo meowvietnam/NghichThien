@@ -3,6 +3,7 @@ using Base;
 using DG.Tweening;
 using LongDH.LongDHModules;
 using LongDH.Script.ObjectPool;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
 using Spine.Unity;
@@ -584,12 +585,12 @@ public class CharacterCombat : MonoBehaviour
     }
     public bool IsKietSuc()
     {
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KietSuc, out int value))
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KietSuc, out int kietSuc);
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DongKet, out int dongKet);
+
+        if (dongKet > 0 || kietSuc > 0)
         {
-            if(value > 0)
-            {
-                return true;
-            }    
+            return true;
         }
         return false;
 
@@ -712,21 +713,39 @@ public class CharacterCombat : MonoBehaviour
     [Button]
     public void TakeDame(CharacterCombat caster)
     {
+        void NeTranh()
+        {
+            SetTextDameAnim("Né Tránh!", Color.whiteSmoke);
+            Observer.Notify(EventList.GamePlay.NE_TRANH_SUCCESS, caster, this);
+        }
         foreach (var item in allDamages)
         {
-            if (!CombatStatic.IsActiveHuyenVu(null, this))
-            {
-                TakeDame(item);
-                Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, caster, this, item);
+            bool isActiveHuyenVu = CombatStatic.IsActiveHuyenVu(null, this);
+            bool hasVuAnThuat = specialThanThongImpactAfterPlaySkill.Any(x => x is VuAnThuat);
+            bool hasVuTuongHoaThan = specialThanThongImpactAfterPlaySkill.Any(x => x is VuTuongHoaThan);
 
+            if (isActiveHuyenVu || hasVuAnThuat)
+            {
+                NeTranh();
+            }
+            else if (hasVuTuongHoaThan)
+            {
+                NeTranh();
+
+                 var vuTuongHoaThan = specialThanThongImpactAfterPlaySkill
+                    .FirstOrDefault(x => x is VuTuongHoaThan);
+
+                if (vuTuongHoaThan != null)
+                {
+                    specialThanThongImpactAfterPlaySkill.Remove(vuTuongHoaThan);
+                }
             }
             else
             {
-                SetTextDameAnim($"Né Tránh!", Color.whiteSmoke);
-                Observer.Notify(EventList.GamePlay.NE_TRANH_SUCCESS,caster, this);
-
+                TakeDame(item);
+                Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, caster, this, item);
             }
-           
+
         }
         
         allDamages.Clear();

@@ -448,7 +448,12 @@ public class CombatManager : MonoBehaviour
         }
         else
         {
-            currentTurn.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KietSuc, currentTurn.buffAndDebuffCount[EBuffAndDeBuff.KietSuc]);
+            foreach (var type in new[] { EBuffAndDeBuff.KietSuc, EBuffAndDeBuff.DongKet })
+            {
+                if (currentTurn.buffAndDebuffCount.TryGetValue(type, out var count))
+                    currentTurn.RemoveBuffAndDebuffCount(type, count);
+            }
+
             Observer.Notify(EventList.GamePlay.END_TURN_COMBAT,currentTurn,targetTurn, new List<LinhKhiTieuTan>());
         }
         // param 0 là bool isPlayer == char1 

@@ -4,6 +4,7 @@ using LongDH.LongDHModules;
 using NUnit.Framework.Interfaces;
 using Sirenix.OdinInspector;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -105,8 +106,13 @@ public class PlayerUICombat : MonoBehaviour
             default:
                 break;
         }
-    }    
-   
+    }
+
+    IEnumerator DelayOneFrame()
+    {
+        yield return null; // đợi 1 frame
+        CheckFightSkillCanUse();
+    }
     private void Awake()
     {
         btnConfirm.onClick.AddListener(() =>
@@ -135,6 +141,9 @@ public class PlayerUICombat : MonoBehaviour
                 default:
                     break;
             }
+            StartCoroutine(DelayOneFrame());
+
+
 
         });
         btnCancel.onClick.AddListener(() =>
@@ -153,6 +162,8 @@ public class PlayerUICombat : MonoBehaviour
                 
             }
             SetStateControl(EStateControl.None);
+            CheckFightSkillCanUse();
+
         });
         btnEndRound.onClick.AddListener(() =>
         {
@@ -170,7 +181,9 @@ public class PlayerUICombat : MonoBehaviour
             {
                 btnConfirm.onClick.Invoke();
             }
-          
+            CheckFightSkillCanUse();
+
+
 
 
         });

@@ -28,7 +28,8 @@ public enum EBuffAndDeBuff
     ChanTho,
     TuKhi,
     Cham,
-    SuongGia
+    SuongGia,
+    DongKet,
 
 
 }
@@ -45,7 +46,7 @@ public abstract class BaseSkill : BaseItemData
         EBuffAndDeBuff.TrungDoc,
         EBuffAndDeBuff.ChayMau,
         EBuffAndDeBuff.SuongGia,
-
+        EBuffAndDeBuff.DongKet,
 
 
     };
@@ -191,6 +192,9 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.SuongGia:
                 text = "Sương Giá";
                 break;
+            case EBuffAndDeBuff.DongKet:
+                text = "Đông Kết";
+                break;
             default:
                 break;
         }
@@ -267,6 +271,9 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.SuongGia:
                 text = $"Mỗi khi sử dụng thần thông gây tổn thương, mỗi tầng giảm -1 điểm sát thương có thể gây ra. Sau đó giải trừ 1 tầng";
+                break;
+            case EBuffAndDeBuff.DongKet:
+                text = "Bản thân hiệp sau không được thi pháp";
                 break;
             default:
                 break;
