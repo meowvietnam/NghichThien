@@ -19,7 +19,7 @@ public class VuAnThuat : ThanThong
         if (currentTurn == null) return;
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is VuAnThuat))
         {
-            currentTurn.RemoveThanThongImpactAfterPlaySkill(this);
+            currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
 
         }
 
@@ -35,7 +35,7 @@ public class VuAnThuat : ThanThong
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HuyenVu, out int huyenVu);
-        if(huyenVu >= requireHuyenVu && !caster.thanThongUseThisComBat.Any(x => x.thanThong is VuAnThuat))
+        if(huyenVu >= requireHuyenVu && !caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is VuAnThuat)))
         {
             return true;
         }    

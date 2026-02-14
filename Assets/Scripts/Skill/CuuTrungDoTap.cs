@@ -12,7 +12,7 @@ public class CuuTrungDoTap : CongPhap
             int count = countDebuff[CurrentLevelCongPhapInCombat(caster) - 1];
             for (int i = 0; i < count; i++)
             {
-                var debuff = debuffs[CombatStatic.IndexRandom(0,debuffs.Count)];
+                var debuff = eDebuffs[CombatStatic.IndexRandom(0, eDebuffs.Count)];
                 target.AddBuffAndDebuffCount(debuff,1);
             }
             Debug.Log("co voi vao CuuTrungDoTap");
@@ -29,7 +29,7 @@ public class CuuTrungDoTap : CongPhap
 
 
 
-    public override void InitPosCallExecute()
+    public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, ExecuteParams);
     }

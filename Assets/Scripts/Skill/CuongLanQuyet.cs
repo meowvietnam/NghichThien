@@ -23,7 +23,7 @@ public class CuongLanQuyet : CongPhap
         return $"Mỗi lần sử dụng {GetTextTypeSkill()} hệ thần thông gây tổn thương, có {GetColoredText($"{percentActives[level - 1]}%", "red")} tỷ lệ thu hoạch được 1 điểm {GetTextTypeSkill()} hệ linh khí";
     }
 
-    public override void InitPosCallExecute()
+    public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ExecuteParams);
     }

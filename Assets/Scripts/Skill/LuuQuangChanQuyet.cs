@@ -51,7 +51,7 @@ public class LuuQuangChanQuyet : CongPhap
 
 
   
-    public override void InitPosCallExecute()
+    public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams2);
         Observer.AddObserver(EventList.GamePlay.LIEN_KICH, ExecuteParams);

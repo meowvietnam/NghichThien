@@ -20,7 +20,7 @@ public class LongTuongThonHaiQuyet : CongPhap
         return $"Bắt đầu cuộc chiến, linh khí tối đa {GetColoredText($"+{buffValues[level - 1]}", "red")}";
     }
 
-    public override void InitPosCallExecute()
+    public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams);
     }

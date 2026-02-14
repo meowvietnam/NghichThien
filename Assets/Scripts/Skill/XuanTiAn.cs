@@ -22,7 +22,7 @@ public class XuanTiAn : ThanThong
 
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is XuanTiAn))
         {
-            currentTurn.RemoveThanThongImpactAfterPlaySkill(this);
+            currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
 
         }
 
@@ -38,7 +38,7 @@ public class XuanTiAn : ThanThong
         if (charSendDame.specialThanThongImpactAfterPlaySkill.Any(x => x is XuanTiAn) && CheckIsEqualETypeSkill(charSendDame,new ETypeSkill[] {ETypeSkill.Moc}) )
         {
             charTakeDame.AddDamageData(new System.Collections.Generic.List<int> { dames[GetIndexLevelThanThong(charSendDame) ]});
-            charSendDame.RemoveThanThongImpactAfterPlaySkill(this);
+            charSendDame.RemoveAllThanThongImpactAfterPlaySkill(this);
 
         }
 

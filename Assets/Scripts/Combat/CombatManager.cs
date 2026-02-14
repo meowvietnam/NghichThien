@@ -246,7 +246,6 @@ public class CombatManager : MonoBehaviour
 
         ThanThong thanThong = data[2] as ThanThong;
         List<LinhKhiTieuTan> linhKhiTieuTan = data[3] as List<LinhKhiTieuTan>;
-        ThanThong thanThongOldUse =  caster.thanThongOldUse != null?caster.thanThongOldUse.thanThong:null;
         if (linhKhiTieuTan != null)
         {
             TieuTanLinhKhi(linhKhiTieuTan);
@@ -273,7 +272,9 @@ public class CombatManager : MonoBehaviour
 
             newTween = DOVirtual.DelayedCall(finalDelay, () =>
             {
+
                 caster.PlaySkill(thanThong, linhKhiTieuTan);
+                ThanThong thanThongOldUse = caster.thanThongOldUse != null ? caster.thanThongOldUse.thanThong : null;
                 thanThong.Execute(caster, target, data);
                 if (thanThong is BaseSkill.LienKich thanThongLienKich && thanThongOldUse != null)
                 {
@@ -435,6 +436,7 @@ public class CombatManager : MonoBehaviour
 
         
         currentTurn.NewTurn();
+        CombatStatic.AmKinhTTNewTurn(currentTurn, targetTurn);
 
         Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();
         if(!currentTurn.IsKietSuc())

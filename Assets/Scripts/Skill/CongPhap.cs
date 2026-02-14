@@ -68,7 +68,7 @@ public abstract class CongPhap : BaseSkill
         return equip != null ? equip.level : 0;
     }
 
-    public abstract void InitPosCallExecute();
+    public abstract void InitPosCallExecute(CharacterCombat caster);
 
     public abstract override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
 

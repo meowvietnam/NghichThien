@@ -37,7 +37,7 @@ public class BangSuongQuyet : CongPhap
         return $"Mỗi lần nhận sát thương từ thần thông, có {GetColoredText($"{percentActives[level - 1]}%", "red")} tỷ lệ làm cho đối phương nhận phải 1 tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SuongGia)}";
     }
 
-    public override void InitPosCallExecute()
+    public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ExecuteParams);
     }

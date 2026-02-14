@@ -21,7 +21,7 @@ public class KhuDangThuat : ThanThong
 
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is KhuDangThuat))
         {
-            currentTurn.RemoveThanThongImpactAfterPlaySkill(this);
+            currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
 
         }
 
@@ -35,7 +35,7 @@ public class KhuDangThuat : ThanThong
         if (charTakeDame.specialThanThongImpactAfterPlaySkill.Any(x => x is KhuDangThuat))
         {
             charSendDame.AddBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieu[GetIndexLevelThanThong(charTakeDame)]);
-            charTakeDame.RemoveThanThongImpactAfterPlaySkill(this);
+            charTakeDame.RemoveAllThanThongImpactAfterPlaySkill(this);
 
         }
 

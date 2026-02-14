@@ -16,7 +16,7 @@ public class HuyetDocKinh : CongPhap
         return $"Khi đối phương bị kích phát hiệu quả {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}, bản thân khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm HP";
     }
 
-    public override void InitPosCallExecute()
+    public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.GamePlay.TRUNG_DOC, ExecuteParams);
 

@@ -38,7 +38,7 @@ public class BangVuThuat : ThanThong
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        if ( !caster.thanThongUseThisComBat.Any(x => x.thanThong is BangVuThuat))
+        if ( !caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is BangVuThuat)))
         {
             return true;
         }

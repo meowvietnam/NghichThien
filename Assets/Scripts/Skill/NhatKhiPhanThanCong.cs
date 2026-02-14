@@ -23,7 +23,7 @@ public class NhatKhiPhanThanCong : CongPhap
 
  
 
-    public override void InitPosCallExecute()
+    public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams);
     }

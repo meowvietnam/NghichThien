@@ -25,7 +25,7 @@ public class NguDocThucTamQuyet : CongPhap
 
 
 
-    public override void InitPosCallExecute()
+    public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ExecuteParams);
     }

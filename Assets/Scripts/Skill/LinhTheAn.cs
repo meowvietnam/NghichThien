@@ -53,7 +53,7 @@ public class LinhTheAn : ThanThong
         if (currentTurn == null) return;
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is LinhTheAn))
         {
-            currentTurn.RemoveThanThongImpactAfterPlaySkill(this);
+            currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
 
         }
 

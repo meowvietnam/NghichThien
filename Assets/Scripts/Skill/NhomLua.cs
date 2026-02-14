@@ -8,6 +8,7 @@ public class NhomLua : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
+        caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ObserverEffect);
     }
     private void ObserverEffect(params object[] data)
@@ -15,10 +16,11 @@ public class NhomLua : ThanThong
 
         CharacterCombat charTakeDame = (CharacterCombat)data[1];
         CharacterCombat charSendDame = (CharacterCombat)data[0];
-        int countSkill = charSendDame.thanThongUseThisComBat.Count(x=>x.thanThong is NhomLua);
+        int count = charSendDame.specialThanThongImpactAfterPlaySkill
+           .Count(x => x is NhomLua);
         if (CheckIsEqualETypeSkill(charSendDame,new ETypeSkill[] {ETypeSkill.Hoa}))
         {
-            charTakeDame.AddDamageData(new System.Collections.Generic.List<int> { countSkill * dames[GetIndexLevelThanThong(charSendDame)] });
+            charTakeDame.AddDamageData(new System.Collections.Generic.List<int> { count * dames[GetIndexLevelThanThong(charSendDame)] });
         }
 
 

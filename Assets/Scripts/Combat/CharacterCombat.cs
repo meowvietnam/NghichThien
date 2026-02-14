@@ -86,15 +86,35 @@ public class CharacterCombat : MonoBehaviour
 
     public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill = new List<LinhKhiTieuTan>();
     public List<ThanThong> specialThanThongImpactAfterPlaySkill = new List<ThanThong>();
+    public List<AmKinhEntry> listAmKinhTT = new List<AmKinhEntry>();
     [SerializeField] public Dictionary<Tween, ThanThong> listActionTakeDameDelay = new Dictionary<Tween, ThanThong>();
+    [System.Serializable]
+    public class AmKinhEntry
+    {
+        public AmKinhTT ThanThong;
+        public int RemainingTurns;
 
+        public AmKinhEntry(AmKinhTT thanThong, int turns)
+        {
+            this.ThanThong = thanThong;
+            this.RemainingTurns = turns;
+        }
+    }
+    public void AddAmKinhTT(AmKinhTT thanThong ,int countHiep)
+    {
+        if (thanThong != null && thanThong is AmKinhTT) ;
+        listAmKinhTT.Add(new AmKinhEntry(thanThong, countHiep));
+        // call observer event add UI 
+
+    }
+     
     public void AddThanThongImpactAfterPlaySkill(ThanThong thanThong)
     {
         specialThanThongImpactAfterPlaySkill.Add(thanThong);
         // call observer event add UI 
 
     }
-    public void RemoveThanThongImpactAfterPlaySkill(ThanThong thanThong)
+    public void RemoveAllThanThongImpactAfterPlaySkill(ThanThong thanThong)
     {
         // Lấy type của đối tượng truyền vào
         var typeToRemove = thanThong.GetType();
@@ -102,6 +122,16 @@ public class CharacterCombat : MonoBehaviour
         // Xóa tất cả các item có cùng Type
         specialThanThongImpactAfterPlaySkill.RemoveAll(item => item.GetType() == typeToRemove);
 
+        // call observer event update UI
+    }
+    public void RemoveOneThanThongImpactAfterPlaySkill(ThanThong thanThong)
+    {
+        // Lấy type của đối tượng truyền vào
+        var typeToRemove = thanThong.GetType();
+
+        // Xóa tất cả các item có cùng Type
+        var thanThongRemove = specialThanThongImpactAfterPlaySkill.FirstOrDefault(item => item.GetType() == typeToRemove);
+        specialThanThongImpactAfterPlaySkill.Remove(thanThongRemove);
         // call observer event update UI
     }
     public void AddCPDynamic(CongPhapMono cp)
@@ -118,7 +148,7 @@ public class CharacterCombat : MonoBehaviour
 
         textSkillNameCall.transform.parent.gameObject.SetActive(true);
         textSkillNameCall.text = thanThong.name;
-        DOVirtual.DelayedCall(thanThong.timeDelayTakeDame/2, () =>
+        DOVirtual.DelayedCall(thanThong.timeDelayTakeDame <=1 ? 1 : thanThong.timeDelayTakeDame/2, () =>
         {
             textSkillNameCall.transform.parent.gameObject.SetActive(false);
         }).SetId("HideSkillName");
@@ -128,8 +158,9 @@ public class CharacterCombat : MonoBehaviour
     {
         VisualPlaySkill(thanThong);
         var thanThongCurrentUse = new PlaySkillData { thanThong = thanThong, linhKhiTieuTan = linhKhiTieuTans };
-        thanThongUseThisTurn.Add(thanThongCurrentUse);
-        thanThongUseThisComBat.Add(thanThongCurrentUse);
+        thanThongUseThisComBat[^1].Add(thanThongCurrentUse);
+        Debug.Log(this.thanThongCurrentUse.thanThong.name);
+        Debug.Log(this.thanThongOldUse?.thanThong.name);
 
         CombatStatic.TrienNhieu(null,this);
       
@@ -221,10 +252,40 @@ public class CharacterCombat : MonoBehaviour
 
     public CharacterStats characterStats;
     public CharacterStats characterStatsCurrent;
-    public List<PlaySkillData> thanThongUseThisTurn = new List<PlaySkillData>();
-    public List<PlaySkillData> thanThongUseThisComBat = new List<PlaySkillData>();
-    public PlaySkillData thanThongCurrentUse => thanThongUseThisComBat.Count>0? thanThongUseThisComBat[thanThongUseThisComBat.Count - 1] : null;
-    public PlaySkillData thanThongOldUse => thanThongUseThisComBat.Count > 1? thanThongUseThisComBat[thanThongUseThisComBat.Count - 2] : null;
+    public List<PlaySkillData> thanThongUseThisTurn =>
+        thanThongUseThisComBat.Count > 0 ? thanThongUseThisComBat[^1] : null;
+    public List<PlaySkillData> thanThongUseLastTurn =>
+        thanThongUseThisComBat.Count > 1 ? thanThongUseThisComBat[^2] : null;
+    public List<List<PlaySkillData>> thanThongUseThisComBat = new List<List<PlaySkillData>>();
+    public PlaySkillData thanThongCurrentUse
+    {
+        get
+        {
+            List<PlaySkillData> thanThanTurnCheck = thanThongUseThisComBat
+                               .SelectMany(t => t)
+                                .ToList();
+            if (thanThanTurnCheck == null || thanThanTurnCheck.Count <= 0)
+                return null;
+
+            return thanThanTurnCheck[^1];
+        }
+    }
+
+    public PlaySkillData thanThongOldUse
+    {
+        get
+        {
+            List<PlaySkillData> thanThanTurnCheck = thanThongUseThisComBat
+                                .SelectMany(t => t)
+                                 .ToList();
+            if (thanThanTurnCheck == null || thanThanTurnCheck.Count <= 1) 
+                return null;
+
+          
+
+            return thanThanTurnCheck[^2];
+        }
+    }
 
 
 
@@ -332,8 +393,8 @@ public class CharacterCombat : MonoBehaviour
         skillTichLuy.Clear();
         foreach (var cp in congPhapEquip)
         {
-            cp.congPhap.InitPosCallExecute();
             AddCPDynamic(cp);
+            cp.congPhap.InitPosCallExecute(this);
         }
         Debug.Log("dcmmm " + congPhapDynamic.Count);
 
@@ -572,7 +633,6 @@ public class CharacterCombat : MonoBehaviour
     }
     public void NewTurn()
     {
-        thanThongUseThisTurn.Clear();
         var keys = new List<ThanThong>(thanThongCoolDown.Keys);
         foreach (var key in keys)
         {
@@ -582,6 +642,12 @@ public class CharacterCombat : MonoBehaviour
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, value);
         }
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucLuc, out int sucLuc))
+        {
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucLuc, sucLuc);
+        }
+        thanThongUseThisComBat.Add(new List<PlaySkillData>());
+        
     }
     public bool IsKietSuc()
     {
@@ -694,6 +760,7 @@ public class CharacterCombat : MonoBehaviour
         bool isChanKiem = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanKiem, out chanKiem)
                           && BaseSkill.CheckIsEqualETypeSkill(sender, new[] { BaseSkill.ETypeSkill.Kiem });
 
+        sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucLuc, out int sucLuc);
         // ===== XỬ LÝ TỪNG DAME =====
         for (int i = 0; i < dames.Count; i++)
         {
@@ -705,7 +772,7 @@ public class CharacterCombat : MonoBehaviour
             if (isChanHoa) dame += chanHoa;
             if (isChanTho) dame += chanTho;
             if (isChanKiem) dame += chanKiem;
-
+            dame += sucLuc;
             dame -= suongGia;
 
             dame = Mathf.Clamp(dame, 0, int.MaxValue);
@@ -796,6 +863,12 @@ public class CharacterCombat : MonoBehaviour
         characterStatsCurrent.hp -= dame;
         characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);
 
+        Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);
+
+    }
+    public void SetHp(int hp)
+    {
+        characterStatsCurrent.hp = hp;
         Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);
 
     }

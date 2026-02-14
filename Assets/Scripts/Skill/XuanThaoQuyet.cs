@@ -26,7 +26,7 @@ public class XuanThaoQuyet : CongPhap
 
 
 
-    public override void InitPosCallExecute()
+    public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.GamePlay.END_COMBAT, ExecuteParams);
     }

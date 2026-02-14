@@ -1,5 +1,6 @@
-using LongDH.LongDHModules;
+﻿using LongDH.LongDHModules;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CombatStatic : MonoBehaviour
@@ -50,6 +51,28 @@ public class CombatStatic : MonoBehaviour
             charTakeDame.AddDamageData(new List<int> { trienNhieu });
             charTakeDame.TakeDame(charSender);
 
+        }
+
+    }
+    public static void AmKinhTTNewTurn(CharacterCombat currentTurn, CharacterCombat targetTurn)
+    {
+        // Duyệt ngược từ cuối danh sách lên đầu để xóa an toàn khi đang lặp
+        for (int i = currentTurn.listAmKinhTT.Count - 1; i >= 0; i--)
+        {
+            var entry = currentTurn.listAmKinhTT[i];
+
+            if (entry.RemainingTurns <= 1)
+            {
+                // Kích hoạt action
+                entry.ThanThong.ExecuteAmKinh(currentTurn, targetTurn);
+                // Xóa khỏi danh sách
+                currentTurn.listAmKinhTT.RemoveAt(i);
+            }
+            else
+            {
+                // Giảm số hiệp chờ
+                entry.RemainingTurns -= 1;
+            }
         }
 
     }

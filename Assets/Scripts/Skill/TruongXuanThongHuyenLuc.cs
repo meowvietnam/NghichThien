@@ -30,7 +30,7 @@ public class TruongXuanThongHuyenLuc : CongPhap
 
 
 
-    public override void InitPosCallExecute()
+    public override void InitPosCallExecute(CharacterCombat caster)
     {
 
     }

@@ -25,7 +25,7 @@ public class SinhSinhTaoHoaQuyet : CongPhap
 
   
 
-    public override void InitPosCallExecute()
+    public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.GamePlay.LIEN_KICH, ExecuteParams);
 

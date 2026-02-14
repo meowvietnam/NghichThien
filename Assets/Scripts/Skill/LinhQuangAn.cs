@@ -21,7 +21,7 @@ public class LinhQuangAn : ThanThong
           
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is LinhQuangAn))
         {
-            currentTurn.RemoveThanThongImpactAfterPlaySkill(this);
+            currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
 
         }
 
@@ -36,7 +36,7 @@ public class LinhQuangAn : ThanThong
         if (charTakeDame.specialThanThongImpactAfterPlaySkill.Any(x => x is LinhQuangAn))
         {
             charTakeDame.HapThuLinhKhi(ELinhKhi.Kim, countHapThu[GetIndexLevelThanThong(charTakeDame)]);
-            charTakeDame.RemoveThanThongImpactAfterPlaySkill(this);
+            charTakeDame.RemoveAllThanThongImpactAfterPlaySkill(this);
 
         }
 

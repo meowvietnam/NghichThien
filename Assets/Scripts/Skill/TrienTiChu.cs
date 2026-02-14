@@ -25,7 +25,7 @@ public class TrienTiChu : ThanThong
 
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is TrienTiChu))
         {
-            currentTurn.RemoveThanThongImpactAfterPlaySkill(this);
+            currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
             // end turn giữ lại 1 nữa được xử lí ở character combat
 
         }

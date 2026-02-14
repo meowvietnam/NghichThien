@@ -12,7 +12,7 @@ public class DuongXuanBachHoaQuyet : CongPhap
         int countDebuff = 0;
         foreach (var item in target.buffAndDebuffCount)
         {
-            if(debuffs.Contains(item.Key))
+            if(eDebuffs.Contains(item.Key))
             {
                 countDebuff++;
             }    
@@ -36,7 +36,7 @@ public class DuongXuanBachHoaQuyet : CongPhap
         return $"Lúc bắt đầu hiệp, nếu đối thủ có ít nhất {GetColoredText($"{require} loại", "red")} trạng thái tiêu cực thì bản thân hấp thụ thêm {GetColoredText($"+{hapThu[level - 1]}", "red")} linh khí";
     }
 
-    public override void InitPosCallExecute()
+    public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams);
 

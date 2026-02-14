@@ -44,7 +44,7 @@ public class PhanKimAn : ThanThong
     private void ObserverEffect2(params object[] data)
     {
         CharacterCombat currentTurn = (CharacterCombat)data[0];
-        currentTurn.RemoveThanThongImpactAfterPlaySkill(this);
+        currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
 
 
 

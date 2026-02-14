@@ -4,13 +4,14 @@ using LongDH.LongDHModules;
 
 [CreateAssetMenu(fileName = nameof(LinhDangAn), menuName = "Skill/Thần Thông/" + nameof(LinhDangAn))]
 
-public class LinhDangAn : ThanThong
+public class LinhDangAn : ThanThong ,BaseSkill.LienKich
 {
     [SerializeField] private int[] trienNhieu;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
+        caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.GamePlay.LIEN_KICH, ObserverEffect);
 
 
@@ -24,7 +25,8 @@ public class LinhDangAn : ThanThong
 
         if (currentTurn == null) return;
 
-        int count = currentTurn.thanThongUseThisComBat.Count(x => x.thanThong is LinhDangAn);
+        int count = currentTurn.specialThanThongImpactAfterPlaySkill
+           .Count(x => x is LinhDangAn);
         targetTurn.AddBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, count * trienNhieu[GetIndexLevelThanThong(currentTurn)]);
 
 
@@ -34,5 +36,10 @@ public class LinhDangAn : ThanThong
     {
         return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Trong chiến đấu, mỗi lần phát động ngũ hành {GetKeyWord(EKeyWord.LienKich)} thì đối phương nhận phải {GetColoredText($"+{trienNhieu[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)} (Thần thông này có thể cộng dồn)";
 
+    }
+
+    public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
+    {
+        return;
     }
 }

@@ -34,7 +34,7 @@ public class NghichMach : ThanThong
                                  .ToList();
             int heal = listThisSkill.Count * dames.Sum();
             currentTurn.Healing(heal);
-            currentTurn.RemoveThanThongImpactAfterPlaySkill(this);
+            currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
 
 
 
@@ -48,7 +48,7 @@ public class NghichMach : ThanThong
     private void ObserverEffect2(params object[] data)
     {
         CharacterCombat currentTurn = (CharacterCombat)data[0];
-        currentTurn.RemoveThanThongImpactAfterPlaySkill(this);
+        currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
 
 
 

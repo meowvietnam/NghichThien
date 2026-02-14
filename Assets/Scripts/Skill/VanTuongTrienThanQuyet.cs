@@ -33,7 +33,7 @@ public class VanTuongTrienThanQuyet : CongPhap
         return $"Nếu sử dụng {GetTextTypeSkill()} hệ thần thông gây {GetColoredText($"{requireActive[level - 1]} điểm", "red")} tổn thương thì đối phương nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}";
 
     }
-    public override void InitPosCallExecute()
+    public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ExecuteParams);
 

@@ -110,13 +110,17 @@ public class PlayerUICombat : MonoBehaviour
 
     IEnumerator DelayOneFrame()
     {
-        yield return null; // đợi 1 frame
+        while(CombatManager.IsDelayEffectSkill)
+        {
+            yield return null; // đợi 1 frame
+        }
         CheckFightSkillCanUse();
     }
     private void Awake()
     {
         btnConfirm.onClick.AddListener(() =>
         {
+
             if (CombatManager.IsDelayEffectSkill) return;
             switch (eStateControl)
             {
@@ -382,13 +386,13 @@ public class PlayerUICombat : MonoBehaviour
         }
         foreach (var item in fightSkills)
         {
-            if (item.ThanThongData == null || player.thanThongOldUse == null) continue;
             item.ShowRecommentHighlight(false);
+            if (item.ThanThongData == null || CombatManager.IsDelayEffectSkill) continue;
             if (item.isLock == false)
             {
-                if(item.ThanThongData is BaseSkill.LienKich)
+                if(player.thanThongCurrentUse != null && item.ThanThongData is BaseSkill.LienKich)
                 {
-                    if(CombatManager.IsLienKich(item.ThanThongData,player.thanThongOldUse.thanThong))
+                    if(CombatManager.IsLienKich(item.ThanThongData,player.thanThongCurrentUse.thanThong))
                     {
                         item.ShowRecommentHighlight(true);
 

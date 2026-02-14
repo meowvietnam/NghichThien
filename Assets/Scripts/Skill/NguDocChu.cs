@@ -31,7 +31,7 @@ public class NguDocChu : ThanThong
             target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out trungDoc);
             int count = (trungDoc / require);
             target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, count * trungDocPerRequire[GetIndexLevelThanThong(caster)]);
-            caster.RemoveThanThongImpactAfterPlaySkill(this);
+            caster.RemoveAllThanThongImpactAfterPlaySkill(this);
 
         }
 

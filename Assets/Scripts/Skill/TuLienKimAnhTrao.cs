@@ -26,7 +26,7 @@ public class TuLienKimAnhTrao : ThanThong
             List<TuLienKimAnhTrao> listThisSkill = currentTurn.specialThanThongImpactAfterPlaySkill
                                  .OfType<TuLienKimAnhTrao>()
                                  .ToList();
-            currentTurn.RemoveThanThongImpactAfterPlaySkill(this);
+            currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
             if (currentTurn.CurrentLinhKhi <= 0)
             {
                 foreach (var item in listThisSkill)

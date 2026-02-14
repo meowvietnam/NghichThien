@@ -33,13 +33,14 @@ public enum EBuffAndDeBuff
     ChanKiem,
     ChiThuy,
     KinhDao,
+    SucLuc,
 
 
 }
 
 public abstract class BaseSkill : BaseItemData
 {
-    public static List<EBuffAndDeBuff> debuffs = new List<EBuffAndDeBuff>
+    public static List<EBuffAndDeBuff> eDebuffs = new List<EBuffAndDeBuff>
     {
         EBuffAndDeBuff.DeTonThuong,
         EBuffAndDeBuff.KietSuc,
@@ -53,10 +54,10 @@ public abstract class BaseSkill : BaseItemData
 
 
     };
-    public static List<EBuffAndDeBuff> buffs = Enum.GetValues(typeof(EBuffAndDeBuff))
+    public static List<EBuffAndDeBuff> eBuffs = Enum.GetValues(typeof(EBuffAndDeBuff))
     .Cast<EBuffAndDeBuff>()
     .Where(e => e != EBuffAndDeBuff.None)
-    .Where(e => !BaseSkill.debuffs.Contains(e))
+    .Where(e => !BaseSkill.eDebuffs.Contains(e))
     .ToList();
     public enum ETypeSkill
     {
@@ -82,7 +83,7 @@ public abstract class BaseSkill : BaseItemData
         TuongKhac,
         TuongDong,
         KiemY,
-        HutMau
+        AmKinh,
     }
     public ETierSkill eTierSkill;
     public ETypeSkill[] eTypeSkill;
@@ -207,6 +208,9 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.KinhDao:
                 text = "Kinh Đào";
                 break;
+            case EBuffAndDeBuff.SucLuc:
+                text = "Sức Lực";
+                break;
             default:
                 break;
         }
@@ -296,6 +300,9 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.KinhDao:
                 text = $"Chỉ thị vật";
                 break;
+            case EBuffAndDeBuff.SucLuc:
+                text = "Trong hiệp này, thần thông gây tổn thương +1. Kết thúc hiệp giải trừ toàn bộ";
+                break;
             default:
                 break;
         }
@@ -332,8 +339,8 @@ public abstract class BaseSkill : BaseItemData
                 text = "Kiếm Ý";
 
                 break;
-            case EKeyWord.HutMau:
-                text = "Hút Máu";
+            case EKeyWord.AmKinh:
+                text = "Ám Kình";
 
                 break;
             default:
@@ -371,8 +378,8 @@ public abstract class BaseSkill : BaseItemData
             case EKeyWord.KiemY:
                 text = $"Sử dụng thần thông này thu hoạch {GetColoredText($"[Kiếm Khí] +1", "green")}";
                 break;
-            case EKeyWord.HutMau:
-                text = "Hồi máu bằng lượng sát thương mà thần thông gây ra";
+            case EKeyWord.AmKinh:
+                text = "Hiệu quả của thần thông sẽ được kích hoạt sau X hiệp tiếp theo";
                 break;
             default:
                 break;

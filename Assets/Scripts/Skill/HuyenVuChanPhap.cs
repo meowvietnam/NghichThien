@@ -43,7 +43,7 @@ public class HuyenVuChanPhap : CongPhap
         return $"Mỗi lần né tránh thành công, có {GetColoredText($"{percentActives[level-1]}%", "red")} tỉ lệ đánh cắp một điểm linh khí bất kỳ của đối thủ";
     }
 
-    public override void InitPosCallExecute()
+    public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.GamePlay.NE_TRANH_SUCCESS, ExecuteParams);
     }
