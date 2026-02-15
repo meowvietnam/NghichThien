@@ -12,8 +12,22 @@ public class CPBuffLinhCanCombat : CongPhap
     {
 
         // CH? REMOVE KHI ?Ã TH?C THI BUFF THÀNH CÔNG
-        RemoveCongPhap(caster);
 
+        
+
+    }
+    public override string GetDesc(int level)
+    {
+        return $"Bắt đầu chiến đấu, {GetTextLinhKhi(eLinhKhi)} linh căn thuộc tính {GetColoredText($"+{buffs[level - 1]}", "red")}";
+
+    }
+
+
+  
+
+    public override void InitPosCallExecute(CharacterCombat caster)
+    {
+        RemoveCongPhap(caster);
         int buff = buffs[CurrentLevelCongPhapInCombat(caster) - 1];
         switch (eLinhKhi)
         {
@@ -45,19 +59,5 @@ public class CPBuffLinhCanCombat : CongPhap
             default:
                 break;
         }
-
-    }
-    public override string GetDesc(int level)
-    {
-        return $"Bắt đầu cuộc chiến, {GetTextLinhKhi(eLinhKhi)} linh căn thuộc tính {GetColoredText($"+{buffs[level - 1]}", "red")}";
-
-    }
-
-
-  
-
-    public override void InitPosCallExecute(CharacterCombat caster)
-    {
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams);
     }
 }

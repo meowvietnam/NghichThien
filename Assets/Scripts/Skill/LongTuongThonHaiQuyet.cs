@@ -11,18 +11,17 @@ public class LongTuongThonHaiQuyet : CongPhap
     };
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        RemoveCongPhap(caster);
-        caster.totalKhi += buffValues[CurrentLevelCongPhapInCombat(caster) - 1];
     }
 
     public override string GetDesc(int level)
     {
-        return $"Bắt đầu cuộc chiến, linh khí tối đa {GetColoredText($"+{buffValues[level - 1]}", "red")}";
+        return $"Bắt đầu chiến đấu, linh khí tối đa {GetColoredText($"+{buffValues[level - 1]}", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams);
+        RemoveCongPhap(caster);
+        caster.totalKhi += buffValues[CurrentLevelCongPhapInCombat(caster) - 1];
     }
 
 

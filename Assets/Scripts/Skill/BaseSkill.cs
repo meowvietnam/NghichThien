@@ -493,6 +493,7 @@ public abstract class BaseSkill : BaseItemData
     public static bool CheckIsEqualETypeSkill(CharacterCombat caster , ETypeSkill[] skill)
     {
         if (caster.thanThongCurrentUse == null) return false;
+        Debug.Log("Check Equal " + caster.thanThongCurrentUse.thanThong.name);
         // Kiểm tra hệ của Skill đang dùng có khớp với Công Pháp (SO) này không
         bool isExecute = skill.Any(skill => caster.thanThongCurrentUse.thanThong.eTypeSkill.Contains(skill));
         Debug.Log("Check Equal " + isExecute);

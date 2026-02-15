@@ -16,7 +16,7 @@ public class PhaPhuTramChu : ThanThong
         {
             dame *= 2;
         }  
-        else
+        else if (chiThuy > kinhDao)
         {
             caster.Healing(dame);
         }    

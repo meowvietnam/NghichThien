@@ -87,7 +87,6 @@ public class CharacterCombat : MonoBehaviour
     public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill = new List<LinhKhiTieuTan>();
     public List<ThanThong> specialThanThongImpactAfterPlaySkill = new List<ThanThong>();
     public List<AmKinhEntry> listAmKinhTT = new List<AmKinhEntry>();
-    [SerializeField] public Dictionary<Tween, ThanThong> listActionTakeDameDelay = new Dictionary<Tween, ThanThong>();
     [System.Serializable]
     public class AmKinhEntry
     {
@@ -142,7 +141,8 @@ public class CharacterCombat : MonoBehaviour
             level = cp.level,
         });
     }
-    public void VisualPlaySkill(ThanThong thanThong)
+   
+    protected void VisualPlaySkill(ThanThong thanThong)
     {
         DOTween.Kill("HideSkillName");
 
@@ -157,6 +157,7 @@ public class CharacterCombat : MonoBehaviour
     public void PlaySkill(ThanThong thanThong , List<LinhKhiTieuTan> linhKhiTieuTans)
     {
         VisualPlaySkill(thanThong);
+        
         var thanThongCurrentUse = new PlaySkillData { thanThong = thanThong, linhKhiTieuTan = linhKhiTieuTans };
         thanThongUseThisComBat[^1].Add(thanThongCurrentUse);
         Debug.Log(this.thanThongCurrentUse.thanThong.name);
@@ -212,14 +213,14 @@ public class CharacterCombat : MonoBehaviour
     public void SetTextDameAnim(string content,Color color)
     {
         var textDame = CombatManager.GetTextDame();
-        textDame.transform.SetParent(this.transform);
-        textDame.transform.localScale = Vector3.one * 2f;
-
+        textDame.transform.SetParent(CombatManager.parentUIFight);
+        textDame.transform.localScale = Vector3.one * 0.75f ;
+        textDame.transform.position = this.transform.position;
         // 1. Tính toán vị trí dựa trên số lượng text đang hiện có
         // Mỗi text mới sẽ cao hơn text trước đó khoảng 50 đơn vị (tùy chỉnh số này)
-        float offset = activeTextCount * 150f;
-        Vector3 startPos = new Vector3(0, 1000 + offset, 0);
-        textDame.transform.localPosition = startPos;
+        float offset = activeTextCount * 75f;
+        Vector3 startPos = new Vector3(0, 350 + offset, 0);
+        textDame.transform.localPosition += startPos;
 
         activeTextCount++; // Tăng biến đếm khi hiện text mới
 
@@ -795,7 +796,7 @@ public class CharacterCombat : MonoBehaviour
 
     }
     [Button]
-    public void TakeDame(CharacterCombat sender)
+    public void  TakeDame(CharacterCombat sender)
     {
         void NeTranh()
         {
@@ -830,7 +831,7 @@ public class CharacterCombat : MonoBehaviour
             {
               
 
-                TakeDame(dame);
+                TakeDame(sender,dame);
                 Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, sender, this, dame);
             }
 
@@ -840,30 +841,31 @@ public class CharacterCombat : MonoBehaviour
         allDamages.Clear();
 
     }
-    private void TakeDame(int dame)
+    private void TakeDame(CharacterCombat sender ,int dame)
     {
         dame += buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.DeTonThuong, 0);
         int giamTonThuong = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.GiamTonThuong, 0);
         dame -= giamTonThuong;
-        int hotrao = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.HoTrao, 0);
-        hotrao = Mathf.Clamp(hotrao, 0, int.MaxValue);
-        dame -= hotrao;
-
+        int hotraoMax = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.HoTrao, 0);
+        hotraoMax = Mathf.Clamp(hotraoMax, 0, int.MaxValue);
+        RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, dame);
+        dame -= hotraoMax;
         dame = Mathf.Clamp(dame, 0, int.MaxValue);
 
-        RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hotrao);
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, dame);
 
         Debug.Log(this.gameObject.name + "nhận dame là : " + dame);
-        if (dame > 0)
-        {
-            StartAnimHit();
-            SetTextDameAnim($"-{dame}",Color.red);
-        }
+        
         characterStatsCurrent.hp -= dame;
         characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);
 
+        if (dame > 0)
+        {
+            StartAnimHit();
+            SetTextDameAnim($"-{dame}", Color.red);
+        }
         Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);
+        
 
     }
     public void SetHp(int hp)

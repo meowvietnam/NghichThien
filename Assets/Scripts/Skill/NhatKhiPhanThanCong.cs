@@ -11,7 +11,6 @@ public class NhatKhiPhanThanCong : CongPhap
         int khi = hapThuLinhKhi[CurrentLevelCongPhapInCombat(caster) - 1];
         caster.totalKhi = 0;
         caster.totalKhiRandom += khi;
-        caster.HapThuLinhKhi(khi);
 
     }
 
@@ -25,7 +24,7 @@ public class NhatKhiPhanThanCong : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams);
+        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ExecuteParams);
     }
 
 }

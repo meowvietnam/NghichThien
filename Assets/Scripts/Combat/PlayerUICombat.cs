@@ -108,14 +108,7 @@ public class PlayerUICombat : MonoBehaviour
         }
     }
 
-    IEnumerator DelayOneFrame()
-    {
-        while(CombatManager.IsDelayEffectSkill)
-        {
-            yield return null; // đợi 1 frame
-        }
-        CheckFightSkillCanUse();
-    }
+   
     private void Awake()
     {
         btnConfirm.onClick.AddListener(() =>
@@ -131,7 +124,7 @@ public class PlayerUICombat : MonoBehaviour
                     if (currentNodes.Any(x => x.countRequire > 0)) return;
                     Observer.Notify(EventList.GamePlay.PLAY_SKILL,player,CombatManager.char2, fightSkillSelect.ThanThongData, GetLinhKhiTieuTans(currentNodes));
                     SetStateControl(EStateControl.None);
-                    StartCoroutine(DelayOneFrame());
+                    CheckFightSkillCanUse();
                     break;
                 case EStateControl.DeleteLinhKhi:
                     if (CurrentLinhKhi <= maxLinhKhi)
