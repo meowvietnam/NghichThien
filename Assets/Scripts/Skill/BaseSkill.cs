@@ -34,7 +34,9 @@ public enum EBuffAndDeBuff
     ChiThuy,
     KinhDao,
     SucLuc,
-
+    ThieuDot,
+    HoaDiem,
+    Diem
 
 }
 
@@ -51,7 +53,7 @@ public abstract class BaseSkill : BaseItemData
         EBuffAndDeBuff.ChayMau,
         EBuffAndDeBuff.SuongGia,
         EBuffAndDeBuff.DongKet,
-
+        EBuffAndDeBuff.ThieuDot,
 
     };
     public static List<EBuffAndDeBuff> eBuffs = Enum.GetValues(typeof(EBuffAndDeBuff))
@@ -211,6 +213,15 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.SucLuc:
                 text = "Sức Lực";
                 break;
+            case EBuffAndDeBuff.ThieuDot:
+                text = "Thiêu Đốt";
+                break;
+            case EBuffAndDeBuff.HoaDiem:
+                text = "Hỏa Diễm";
+                break;
+            case EBuffAndDeBuff.Diem:
+                text = "Diễm";
+                break;
             default:
                 break;
         }
@@ -302,6 +313,15 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.SucLuc:
                 text = "Trong hiệp này, thần thông gây tổn thương +1. Kết thúc hiệp giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.ThieuDot:
+                text = $"Bắt đầu hiệp, mỗi tầng nhận 1 điểm sát thương sau đó giải trừ 1 tầng";
+                break;
+            case EBuffAndDeBuff.HoaDiem:
+                text = $"Mỗi khi nhận sát thương bởi thần thông, phản lại sát thương cho đối thủ mỗi tầng gây thêm 1 điểm sát thương. Kết thúc hiệp, bản thân nhận 1 tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}. Sử dụng bất kỳ loại thần thông nào không phải {GetTextLinhKhi(ELinhKhi.Hoa)} hệ thần thông thì sẽ giải trừ";
+                break;
+            case EBuffAndDeBuff.Diem:
+                text = $"Trong hiệp này, {GetTextLinhKhi(ELinhKhi.Hoa)} hệ tổn thương +1. Kết thúc hiệp giải trừ toàn bộ";
                 break;
             default:
                 break;

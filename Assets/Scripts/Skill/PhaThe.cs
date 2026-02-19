@@ -7,12 +7,12 @@ public class PhaThe : ThanThong , BaseSkill.TuongDong
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, debuffValues[GetIndexLevelThanThong(caster)-1]);
+        target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, debuffValues[GetIndexLevelThanThong(caster)]);
     }
 
     public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)
     {
-        target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, debuffTuongDong[GetIndexLevelThanThong(caster)-1]);
+        target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, debuffTuongDong[GetIndexLevelThanThong(caster)]);
     }
 
     public override string GetDesc(int level)

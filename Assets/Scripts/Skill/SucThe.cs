@@ -6,7 +6,7 @@ public class SucThe : ThanThong
     [SerializeField] private int[] sucThe;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SucThe, sucThe[GetIndexLevelThanThong(caster)-1]);
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SucThe, sucThe[GetIndexLevelThanThong(caster)]);
         ShowSkillEffect(caster, 1f);
 
     }

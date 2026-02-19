@@ -7,7 +7,7 @@ public class ThuHuyet : ThanThong
     {
         HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KietSuc,1);
-        foreach (var item in caster.DictHapThuLinhKhi(hapThu[GetIndexLevelThanThong(caster)-1]))
+        foreach (var item in caster.DictHapThuLinhKhi(hapThu[GetIndexLevelThanThong(caster)]))
         {
             caster.HapThuLinhKhi(item.Key, item.Value);
         }

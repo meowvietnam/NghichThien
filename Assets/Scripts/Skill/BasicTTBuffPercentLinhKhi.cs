@@ -16,33 +16,33 @@ public class BasicTTBuffPercentLinhKhi : ThanThong
             case ELinhKhi.None:
                 break;
             case ELinhKhi.Kim:
-                caster.characterStats.percentKim += buffPercent[GetIndexLevelThanThong(caster) - 1];
-                caster.characterStatsCurrent.percentKim += buffPercent[GetIndexLevelThanThong(caster) - 1];
+                caster.characterStats.percentKim += buffPercent[GetIndexLevelThanThong(caster)];
+                caster.characterStatsCurrent.percentKim += buffPercent[GetIndexLevelThanThong(caster)];
 
                 break;
             case ELinhKhi.Moc:
-                caster.characterStats.percentMoc += buffPercent[GetIndexLevelThanThong(caster) - 1];
-                caster.characterStatsCurrent.percentMoc += buffPercent[GetIndexLevelThanThong(caster) - 1];
-
+                caster.characterStats.percentMoc += buffPercent[GetIndexLevelThanThong(caster)];
+                caster.characterStatsCurrent.percentMoc += buffPercent[GetIndexLevelThanThong(caster)];
+                    
                 break;
             case ELinhKhi.Thuy:
-                caster.characterStats.percentThuy += buffPercent[GetIndexLevelThanThong(caster) - 1];
-                caster.characterStatsCurrent.percentThuy += buffPercent[GetIndexLevelThanThong(caster) - 1];
+                caster.characterStats.percentThuy += buffPercent[GetIndexLevelThanThong(caster)];
+                caster.characterStatsCurrent.percentThuy += buffPercent[GetIndexLevelThanThong(caster)];
 
                 break;
             case ELinhKhi.Hoa:
-                caster.characterStats.percentHoa += buffPercent[GetIndexLevelThanThong(caster) - 1];
-                caster.characterStatsCurrent.percentHoa += buffPercent[GetIndexLevelThanThong(caster) - 1];
+                caster.characterStats.percentHoa += buffPercent[GetIndexLevelThanThong(caster)];
+                caster.characterStatsCurrent.percentHoa += buffPercent[GetIndexLevelThanThong(caster)];
 
                 break;
             case ELinhKhi.Tho:
-                caster.characterStats.percentTho += buffPercent[GetIndexLevelThanThong(caster) - 1];
-                caster.characterStatsCurrent.percentTho += buffPercent[GetIndexLevelThanThong(caster) - 1];
+                caster.characterStats.percentTho += buffPercent[GetIndexLevelThanThong(caster)];
+                caster.characterStatsCurrent.percentTho += buffPercent[GetIndexLevelThanThong(caster)];
 
                 break;
             case ELinhKhi.Ma:
-                caster.characterStats.percentMa += buffPercent[GetIndexLevelThanThong(caster) - 1];
-                caster.characterStatsCurrent.percentMa += buffPercent[GetIndexLevelThanThong(caster) - 1];
+                caster.characterStats.percentMa += buffPercent[GetIndexLevelThanThong(caster)];
+                caster.characterStatsCurrent.percentMa += buffPercent[GetIndexLevelThanThong(caster)];
 
                 break;
             default:

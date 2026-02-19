@@ -14,6 +14,15 @@ public class CombatStatic : MonoBehaviour
             Observer.Notify(EventList.GamePlay.TRUNG_DOC, charSender, charTrungDoc);
         }
     }
+    public static void ThieuDot(CharacterCombat charSender, CharacterCombat charThieuDot)
+    {
+        if (charThieuDot.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out int thieuDot))
+        {
+            charThieuDot.AddDamageData(new List<int> { (int)thieuDot });
+            charThieuDot.TakeDame(charSender);
+           // Observer.Notify(EventList.GamePlay.TRUNG_DOC, charSender, charThieuDot);
+        }
+    }
     public static void SucThe(CharacterCombat charSender, CharacterCombat charTakeDame)
     {
         if (charSender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out int sucThe))

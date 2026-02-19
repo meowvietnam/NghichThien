@@ -6,7 +6,7 @@ public class TungDiaKimQuang : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
-        var linhKhiHapThu = caster.DictHapThuLinhKhi(buff[GetIndexLevelThanThong(caster)-1]);
+        var linhKhiHapThu = caster.DictHapThuLinhKhi(buff[GetIndexLevelThanThong(caster)]);
         caster.HapThuLinhKhi(ELinhKhi.Kim,linhKhiHapThu[ELinhKhi.Kim]);
         ShowSkillEffect(caster, 1f);
 

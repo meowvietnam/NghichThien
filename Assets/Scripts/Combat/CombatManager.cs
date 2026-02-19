@@ -423,10 +423,10 @@ public class CombatManager : MonoBehaviour
     [Button]
     public void NewTurn()
     {
-        if (IsDelayEffectSkill) return;
         CombatStatic.SucThe(currentTurn, targetTurn);
+        CombatStatic.ThieuDot(targetTurn, currentTurn);
 
-        
+
         currentTurn.NewTurn();
         CombatStatic.AmKinhTTNewTurn(currentTurn, targetTurn);
 

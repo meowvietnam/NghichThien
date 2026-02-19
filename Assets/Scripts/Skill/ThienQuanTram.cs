@@ -8,7 +8,7 @@ public class ThienQuanTram : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int hoTrao = 0;
-        int dame = dames[GetIndexLevelThanThong(caster)-1];
+        int dame = dames[GetIndexLevelThanThong(caster)];
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out hoTrao);
 
         if (hoTrao > 0)

@@ -7,13 +7,13 @@ public class KimCuongTram : ThanThong , BaseSkill.LienKich
     [SerializeField] private int[] hapThu;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.TakeDameByThanThong(caster, new List<int> { dame[GetIndexLevelThanThong(caster)-1] });
+        target.TakeDameByThanThong(caster, new List<int> { dame[GetIndexLevelThanThong(caster)]});
 
     }
 
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
     {
-        caster.HapThuLinhKhi(hapThu[GetIndexLevelThanThong(caster) - 1]);
+        caster.HapThuLinhKhi(hapThu[GetIndexLevelThanThong(caster)]);
     }
 
     public override string GetDesc(int level)

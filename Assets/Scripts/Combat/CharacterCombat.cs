@@ -157,9 +157,16 @@ public class CharacterCombat : MonoBehaviour
     public void PlaySkill(ThanThong thanThong , List<LinhKhiTieuTan> linhKhiTieuTans)
     {
         VisualPlaySkill(thanThong);
-        
+         
         var thanThongCurrentUse = new PlaySkillData { thanThong = thanThong, linhKhiTieuTan = linhKhiTieuTans };
         thanThongUseThisComBat[^1].Add(thanThongCurrentUse);
+        if (!BaseSkill.CheckIsEqualETypeSkill(this,new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Hoa }))
+        {
+            if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out int hoaDiem))
+            {
+                RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoaDiem, hoaDiem);
+            }
+        }
         Debug.Log(this.thanThongCurrentUse.thanThong.name);
         Debug.Log(this.thanThongOldUse?.thanThong.name);
 
@@ -502,6 +509,16 @@ public class CharacterCombat : MonoBehaviour
         Observer.Notify(EventList.GamePlay.ADJUST_LINHKHI, this, eLinhKhi, -count);
 
     }
+    public void TieuTanAllLinhKhi()
+    {
+        TieuTanLinhKhi(ELinhKhi.Kim,khiKim);
+        TieuTanLinhKhi(ELinhKhi.Moc, khiMoc);
+        TieuTanLinhKhi(ELinhKhi.Thuy, khiThuy);
+        TieuTanLinhKhi(ELinhKhi.Hoa, khiHoa);
+        TieuTanLinhKhi(ELinhKhi.Tho, khiTho);
+        TieuTanLinhKhi(ELinhKhi.Ma, khiMa);
+
+    }
     public int GetLinhKhi(ELinhKhi e)
     {
         switch (e)
@@ -647,6 +664,8 @@ public class CharacterCombat : MonoBehaviour
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucLuc, sucLuc);
         }
+        RemoveBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, 1);
+
         thanThongUseThisComBat.Add(new List<PlaySkillData>());
         
     }
@@ -699,7 +718,11 @@ public class CharacterCombat : MonoBehaviour
 
         }
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, 1);
-
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out int hoaDiem);
+        if(hoaDiem>0)
+        {
+            AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, 1);
+        }    
     }
 
   
@@ -762,6 +785,12 @@ public class CharacterCombat : MonoBehaviour
                           && BaseSkill.CheckIsEqualETypeSkill(sender, new[] { BaseSkill.ETypeSkill.Kiem });
 
         sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucLuc, out int sucLuc);
+        sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out int diem);
+
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out int hoaDiem);
+        sender.AddDamageData(new List<int> { hoaDiem}, false);
+        sender.TakeDame(this);
+
         // ===== XỬ LÝ TỪNG DAME =====
         for (int i = 0; i < dames.Count; i++)
         {
@@ -774,6 +803,13 @@ public class CharacterCombat : MonoBehaviour
             if (isChanTho) dame += chanTho;
             if (isChanKiem) dame += chanKiem;
             dame += sucLuc;
+            if (BaseSkill.CheckIsEqualETypeSkill(this, new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Hoa }))
+            {
+                dame += diem;
+
+            }
+               
+
             dame -= suongGia;
 
             dame = Mathf.Clamp(dame, 0, int.MaxValue);
@@ -792,6 +828,7 @@ public class CharacterCombat : MonoBehaviour
         if (isChanKiem) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanKiem, chanKiem);
 
         AddDamageData(dames, isCongDon);
+
         Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, sender, this, dames);
 
     }

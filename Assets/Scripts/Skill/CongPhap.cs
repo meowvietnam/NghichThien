@@ -65,7 +65,7 @@ public abstract class CongPhap : BaseSkill
         var equip = GetCongPhapMono(caster.congPhapEquip);
 
         // Trả về level nếu tìm thấy, ngược lại trả về 0 (hoặc 1 tùy logic của bạn)
-        return equip != null ? equip.level : 0;
+        return equip != null ? equip.level : 1;
     }
 
     public abstract void InitPosCallExecute(CharacterCombat caster);

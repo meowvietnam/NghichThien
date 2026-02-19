@@ -12,9 +12,9 @@ public class ThienNhanThuat : ThanThong
         {
             caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi,requireKiemKhi);
             List<int> dames = new List<int>();
-            for (int i = 0; i < countAttack[GetIndexLevelThanThong(caster)-1]; i++)
+            for (int i = 0; i < countAttack[GetIndexLevelThanThong(caster)]; i++)
             {
-                dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster) - 1]);
+                dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
             }
             target.TakeDameByThanThong(caster, dames, false);
 

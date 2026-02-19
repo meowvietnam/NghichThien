@@ -8,13 +8,13 @@ public class BasicTTHoTrao : ThanThong, BaseSkill.LienKich
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, buff[GetIndexLevelThanThong(caster)-1]);
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, buff[GetIndexLevelThanThong(caster)]);
 
     }
 
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
     {
-        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, buff[GetIndexLevelThanThong(caster)-1] *2);
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, buff[GetIndexLevelThanThong(caster)] *2);
 
     }
 

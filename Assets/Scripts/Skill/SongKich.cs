@@ -14,9 +14,9 @@ public class SongKich : ThanThong , BaseSkill.LienKich
     {
         
         List<int> dames = new List<int>();
-        for (int i = 0; i < countAttack[GetIndexLevelThanThong(caster) - 1]; i++)
+        for (int i = 0; i < countAttack[GetIndexLevelThanThong(caster)]; i++)
         {
-            dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster) - 1]);
+            dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
         }
         target.TakeDameByThanThong(caster, dames, false);
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect);
