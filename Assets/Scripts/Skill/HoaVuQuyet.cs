@@ -15,7 +15,7 @@ public class HoaVuQuyet : CongPhap
 
     public override string GetDesc(int level)
     {
-        return $"Kết thúc hiệp, bản thân khôi phục {GetColoredText($"+{healValues}", "red")} điểm HP";
+        return $"Kết thúc hiệp, bản thân khôi phục {GetColoredText($"+{healValues}", "red")} điểm Hp";
 
     }
 

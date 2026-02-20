@@ -17,7 +17,7 @@ public class LinhThuyQuyet : CongPhap
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi sử dụng {GetTextTypeSkill()} hệ thần thông, bản thân khôi phục {GetColoredText($"+{healValues}", "red")} điểm HP";
+        return $"Mỗi sử dụng {GetTextTypeSkill()} hệ thần thông, bản thân khôi phục {GetColoredText($"+{healValues}", "red")} điểm Hp";
 
     }
 

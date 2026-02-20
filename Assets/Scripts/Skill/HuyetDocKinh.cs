@@ -13,7 +13,7 @@ public class HuyetDocKinh : CongPhap
 
     public override string GetDesc(int level)
     {
-        return $"Khi đối phương bị kích phát hiệu quả {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}, bản thân khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm HP";
+        return $"Khi đối phương bị kích phát hiệu quả {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}, bản thân khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm Hp";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

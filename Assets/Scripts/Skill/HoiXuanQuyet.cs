@@ -33,7 +33,7 @@ public class HoiXuanQuyet : CongPhap
     }
     public override string GetDesc(int level)
     {
-        return $"Mỗi tích lũy sử dụng {GetColoredText($"{require}", "red")} điểm {GetTextTypeSkill()} hệ linh khí, bản thân khôi phục {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm HP";
+        return $"Mỗi tích lũy sử dụng {GetColoredText($"{require}", "red")} điểm {GetTextTypeSkill()} hệ linh khí, bản thân khôi phục {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm Hp";
 
     }
 

@@ -46,10 +46,15 @@ public abstract class ThanThong : BaseSkill
     }
     public static int GetIndexLevelThanThong(CharacterStats characterStatsCurrent)
     {
+       
+        int indexLevel = GetLevelThanThong(characterStatsCurrent) - 1;
+        return indexLevel;
+    }
+    public static int GetLevelThanThong(CharacterStats characterStatsCurrent)
+    {
         int level = characterStatsCurrent.level;
         int daiCanhGioi = ((level - 1) / 3) + 1;
-        int indexLevel = daiCanhGioi - 1;
-        return indexLevel;
+        return daiCanhGioi;
     }
     public bool IsCanUseLinhKhiRequire(CharacterCombat caster)
     {

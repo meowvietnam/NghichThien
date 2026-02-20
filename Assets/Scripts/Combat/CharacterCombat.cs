@@ -803,7 +803,7 @@ public class CharacterCombat : MonoBehaviour
             if (isChanTho) dame += chanTho;
             if (isChanKiem) dame += chanKiem;
             dame += sucLuc;
-            if (BaseSkill.CheckIsEqualETypeSkill(this, new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Hoa }))
+            if (BaseSkill.CheckIsEqualETypeSkill(sender, new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Hoa }))
             {
                 dame += diem;
 
