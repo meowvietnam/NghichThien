@@ -74,6 +74,7 @@ public abstract class BaseSkill : BaseItemData
         Khi,
         The,
         Than,
+        DiHoa
 
     }
     public enum EKeyWord
@@ -498,6 +499,10 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case ETypeSkill.Than:
                 text = "Thần";
+
+                break;
+            case ETypeSkill.DiHoa:
+                text = "Dị Hỏa";
 
                 break;
             default:

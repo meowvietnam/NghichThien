@@ -118,7 +118,7 @@ public class CombatManager : MonoBehaviour
     }    
     private void Awake()
     {
-       
+        Pool.Set(this);
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, EndTurn);
         Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, PlaySkill);
         Observer.AddObserver(EventList.GamePlay.ADD_BUFF, SetUIBuff);

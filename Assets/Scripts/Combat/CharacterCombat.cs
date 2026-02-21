@@ -355,7 +355,7 @@ public class CharacterCombat : MonoBehaviour
         : count;
         Debug.Log("Vao day3 is Count + type " + count + type);
 
-        Observer.Notify(EventList.GamePlay.ADD_BUFF, this, type, buffAndDebuffCount[type]);
+        Observer.Notify(EventList.GamePlay.ADD_BUFF, this, type, buffAndDebuffCount[type], current);
 
 
     }
@@ -386,7 +386,7 @@ public class CharacterCombat : MonoBehaviour
             buffAndDebuffCount[type] = newValue;
         }
 
-        Observer.Notify(EventList.GamePlay.ADD_BUFF, this, type, newValue);
+        Observer.Notify(EventList.GamePlay.ADD_BUFF, this, type, newValue , current);
     }
     public void Init(CharacterStats characterStat)
     {
