@@ -1,0 +1,40 @@
+﻿using UnityEngine;
+[CreateAssetMenu(fileName = nameof(KhaiSonQuyet), menuName = "Skill/Thần Thông/" + nameof(KhaiSonQuyet))]
+public class KhaiSonQuyet : ThanThong , BaseSkill.TuongDong
+{
+    
+    [SerializeField]
+    private int[] dames = new int[]
+    {
+        7,9,11,17,45
+    };
+    [SerializeField]
+    private int[] dameBuffs = new int[]
+    {
+        4,6,8,10,12
+    };
+    [SerializeField]
+    private int[] dameBuffPerLinhKhi = new int[]
+    {
+        1,2,3,4,5
+    };
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
+    {
+        int dame = dames[GetIndexLevelThanThong(caster)] + (dameBuffPerLinhKhi[GetIndexLevelThanThong(caster)] * caster.CurrentLinhKhi);
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        
+
+    }
+
+    public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)
+    {
+        int dame = dameBuffs[GetIndexLevelThanThong(caster)];
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+    }
+
+    public override string GetDesc(int level)
+    {
+        return $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Mỗi linh khí còn thừa thì tăng lên {GetColoredText($"+{dameBuffPerLinhKhi[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.TuongDong)} thì tăng lên {GetColoredText($"+{dameBuffs[level - 1]}", "red")} điểm sát thương";
+
+    }
+}

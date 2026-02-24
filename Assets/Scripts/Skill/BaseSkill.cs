@@ -36,7 +36,10 @@ public enum EBuffAndDeBuff
     SucLuc,
     ThieuDot,
     HoaDiem,
-    Diem
+    Diem,
+    Tran,
+    DanLuc,
+    PhaThe
 
 }
 
@@ -54,7 +57,8 @@ public abstract class BaseSkill : BaseItemData
         EBuffAndDeBuff.SuongGia,
         EBuffAndDeBuff.DongKet,
         EBuffAndDeBuff.ThieuDot,
-
+        EBuffAndDeBuff.DanLuc,
+        EBuffAndDeBuff.PhaThe,
     };
     public static List<EBuffAndDeBuff> eBuffs = Enum.GetValues(typeof(EBuffAndDeBuff))
     .Cast<EBuffAndDeBuff>()
@@ -223,6 +227,15 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.Diem:
                 text = "Diễm";
                 break;
+            case EBuffAndDeBuff.Tran:
+                text = "Trần";
+                break;
+            case EBuffAndDeBuff.DanLuc:
+                text = "Dẫn Lực";
+                break;
+            case EBuffAndDeBuff.PhaThe:
+                text = "Phá Thể";
+                break;
             default:
                 break;
         }
@@ -323,6 +336,15 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.Diem:
                 text = $"Trong hiệp này, {GetTextLinhKhi(ELinhKhi.Hoa)} hệ tổn thương +1. Kết thúc hiệp giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.Tran:
+                text = $"Chỉ thị vật";
+                break;
+            case EBuffAndDeBuff.DanLuc:
+                text = $"Mỗi khi sử dụng thần thông, mỗi tầng làm tiêu tán 1 điểm linh khí";
+                break;
+            case EBuffAndDeBuff.PhaThe:
+                text = $"Giảm một nửa khả năng hồi phục. Kết thúc hiệp giải trừ";
                 break;
             default:
                 break;

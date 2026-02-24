@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 using static UnityEngine.Networking.UnityWebRequest;
 
 [System.Serializable]
@@ -167,6 +168,14 @@ public class CharacterCombat : MonoBehaviour
                 RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoaDiem, hoaDiem);
             }
         }
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out int danLuc))
+        {
+            for (int i = 0; i < danLuc; i++)
+            {
+                TieuTanLinhKhi(GetRandomLinhKhiConLai(), 1);
+            }
+        }
+       
         Debug.Log(this.thanThongCurrentUse.thanThong.name);
         Debug.Log(this.thanThongOldUse?.thanThong.name);
 
@@ -452,7 +461,9 @@ public class CharacterCombat : MonoBehaviour
     public int totalKhiRandom;
     public int CurrentLinhKhi => khiKim + khiMoc+khiThuy+khiHoa+khiTho+khiMa;
 
-    public int BaseCountHapThuLinhKhi => totalKhiRandom - CurrentLinhKhi;
+    public int baseCountHapThuLinhKhi => CurrentLinhKhi>=totalKhi? totalKhiRandom - totalKhi : totalKhiRandom - CurrentLinhKhi;
+    public int countHapThuLinhKhiNewTurn;
+
     private void InitTotalKhi()
     {
         int level = characterStatsCurrent.level;
@@ -469,10 +480,11 @@ public class CharacterCombat : MonoBehaviour
 
      
         int baseKhiTotalKhiRandom = 9;
-        int khiPerLevelRandom = baseKhiTotalKhiRandom + (daiCanhGioi - 1) * 2;
+        int khiPerLevelRandom = baseKhiTotalKhiRandom + 2*(daiCanhGioi - 1);
 
         // 3) Tổng khí theo yêu cầu: bạn đang return chỉ số khí/lv
         totalKhiRandom = khiPerLevelRandom;
+
     }    
     public void TieuTanLinhKhi(ELinhKhi eLinhKhi,int count)
     {
@@ -559,7 +571,7 @@ public class CharacterCombat : MonoBehaviour
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TreKhi, out treKhi);
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TuKhi, out tuKhi);
 
-        int totalKhiHapThu = BaseCountHapThuLinhKhi + tuKhi - treKhi;
+        int totalKhiHapThu = baseCountHapThuLinhKhi + tuKhi - treKhi;
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, treKhi);
         dictHapThuLinhKhi = DictHapThuLinhKhi(totalKhiHapThu);
         foreach (var item in dictHapThuLinhKhi)
@@ -715,6 +727,13 @@ public class CharacterCombat : MonoBehaviour
             }
 
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieu);
+
+        }
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.PhaThe, out int phaThe))
+        {
+
+            
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.PhaThe, phaThe);
 
         }
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, 1);
@@ -927,9 +946,21 @@ public class CharacterCombat : MonoBehaviour
     }    
     public void Healing(int hp)
     {
-        characterStatsCurrent.hp += hp;
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.PhaThe, out int phaThe);
+
+        // Tính toán hệ số giảm hồi phục (mỗi điểm phaThe giảm 50%)
+        float reductionFactor = Mathf.Pow(0.5f, phaThe);
+        int finalHpGain = Mathf.RoundToInt(hp * reductionFactor);
+
+        // Áp dụng vào chỉ số nhân vật
+        characterStatsCurrent.hp += finalHpGain;
         characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);
-        SetTextDameAnim($"+{hp}", Color.green);
+
+        // Hiển thị hiệu ứng số nhảy (Nếu hồi phục > 0 thì mới hiện)
+        if (finalHpGain > 0)
+        {
+            SetTextDameAnim($"+{finalHpGain}", Color.green);
+        }
 
 
         Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);

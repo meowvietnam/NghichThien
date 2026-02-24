@@ -28,7 +28,7 @@ public class PlayerUICombat : MonoBehaviour
     public Button btnConfirm;
     public Button btnCancel;
     public Button btnEndRound;
-    public int maxLinhKhi;
+    public int maxLinhKhi => player.totalKhi;
     public int CurrentLinhKhi => linhKhiRemains.Sum(item => item.count);
 
     public EStateControl eStateControl = EStateControl.None;
@@ -478,7 +478,6 @@ public class PlayerUICombat : MonoBehaviour
         
         if (player == null) return;
         SetStateControl(EStateControl.None);
-        maxLinhKhi = player.totalKhi;
         
         foreach (var item in linhKhiRemains)
         {

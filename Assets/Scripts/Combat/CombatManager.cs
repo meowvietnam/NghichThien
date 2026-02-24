@@ -433,11 +433,9 @@ public class CombatManager : MonoBehaviour
         Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();
         if(!currentTurn.IsKietSuc())
         {
-            if (currentTurn.CurrentLinhKhi < currentTurn.totalKhiRandom)
-            {
-                currentTurn.HapThuLinhKhiNewTurn(out dictHapThuKhi);
+            currentTurn.HapThuLinhKhiNewTurn(out dictHapThuKhi);
 
-            }
+            
 
         }
         else
