@@ -135,4 +135,20 @@ public abstract class ThanThong : BaseSkill
         });
 
     }
+    protected virtual void ShowSkillEffectNoTarget(float delay)// base thì chỉnh scale thôi
+    {
+        if (prefabEffectSkill == null) return;
+
+        GameObject effect = prefabEffectSkill.Spawn();
+        effect.transform.localEulerAngles = prefabEffectSkill.transform.localEulerAngles;
+        effect.transform.localScale = Vector3.one;
+        effect.transform.localPosition = Vector3.zero;
+        Camera.main.orthographicSize = 50;
+
+        DOVirtual.DelayedCall(delay, () =>
+        {
+            effect.gameObject.Recycle();
+        });
+
+    }
 }
