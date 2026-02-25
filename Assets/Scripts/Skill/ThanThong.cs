@@ -87,7 +87,7 @@ public abstract class ThanThong : BaseSkill
     {
         return true;
     }    
-    protected virtual void ShowSkillEffect(CharacterCombat target , float delay , Vector3 addPos = default)
+    protected virtual void ShowSkillEffectBuff(CharacterCombat target , float delay , Vector3 addPos = default)
     {
         if (prefabEffectSkill == null) return;
         var posCenter = Vector3.up * 500;
@@ -101,7 +101,7 @@ public abstract class ThanThong : BaseSkill
         });
 
     }
-    protected virtual void ShowSkillEffectParticle(CharacterCombat target, float delay,float cameraSize,bool isNullParent, Vector3 addPos = default)
+    protected virtual void ShowSkillEffectAttack(CharacterCombat target, float delay,float cameraSize,bool isNullParent, Vector3 addPos = default)
     {
         if (prefabEffectSkill == null) return;
         
