@@ -58,7 +58,7 @@ public abstract class ThanThong : BaseSkill
     }
     public bool IsCanUseLinhKhiRequire(CharacterCombat caster)
     {
-        foreach (var require in requireActives)
+        foreach (var require in GetRequireActive(caster))
         {
             if (require.linhKhiRequire == ELinhKhi.None)
             {

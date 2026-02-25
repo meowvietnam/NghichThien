@@ -349,10 +349,15 @@ public class CharacterCombat : MonoBehaviour
     public Dictionary<ThanThong , int> thanThongCoolDown = new Dictionary<ThanThong,int>();
     public Dictionary<EBuffAndDeBuff, int> buffAndDebuffCount = new  Dictionary <EBuffAndDeBuff, int>();
 
-    public void AddThanThongCoolDown(ThanThong thanThong , int count)
+    public void AddThanThongCoolDown(ThanThong thanThong, int count)
     {
-        thanThongCoolDown[thanThong] = thanThongCoolDown.GetValueOrDefault(thanThong, 0) + count;
+        int current = thanThongCoolDown.GetValueOrDefault(thanThong, 0);
+        int newValue = current + count;
 
+        if (newValue <= 0)
+            thanThongCoolDown.Remove(thanThong);
+        else
+            thanThongCoolDown[thanThong] = newValue;
     }
     [Button]
     public void AddBuffAndDebuffCount(EBuffAndDeBuff type, int count)

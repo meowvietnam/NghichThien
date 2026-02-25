@@ -17,14 +17,26 @@ public class DanDocChu : ThanThong
 
     public override List<RequireActive> GetRequireActive(CharacterCombat caster)
     {
-        List<RequireActive> listRqA = new List<RequireActive>(requireActives);
-        foreach (RequireActive requireActive in requireActives)
+        List<RequireActive> listRqA = new List<RequireActive>();
+
+        foreach (var requireActive in requireActives)
         {
-            if(requireActive.linhKhiRequire==ELinhKhi.Moc)
+            // clone object
+            RequireActive clone = new RequireActive()
             {
-                requireActive.count = 1 + caster.thanThongUseThisTurn.Count(x=>x.thanThong is DanDocChu);
-                break;
+                linhKhiRequire = requireActive.linhKhiRequire,
+                count = requireActive.count
+            };
+
+            if (clone.linhKhiRequire == ELinhKhi.Moc)
+            {
+                int extra = caster.thanThongUseThisTurn
+                    .Count(x => x.thanThong is DanDocChu);
+
+                clone.count += extra;
             }
+
+            listRqA.Add(clone);
         }
 
         return listRqA;

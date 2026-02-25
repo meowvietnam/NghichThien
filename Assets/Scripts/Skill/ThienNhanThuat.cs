@@ -10,17 +10,13 @@ public class ThienNhanThuat : ThanThong
     private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if(IsCanUse(caster,target))
+        caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, requireKiemKhi);
+        List<int> dames = new List<int>();
+        for (int i = 0; i < countAttack[GetIndexLevelThanThong(caster)]; i++)
         {
-            caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi,requireKiemKhi);
-            List<int> dames = new List<int>();
-            for (int i = 0; i < countAttack[GetIndexLevelThanThong(caster)]; i++)
-            {
-                dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
-            }
-            target.TakeDameByThanThong(caster, dames, false);
-
+            dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
         }
+        target.TakeDameByThanThong(caster, dames, false);
         ShowSkillEffectWorld(target, delayTimeEffect);
 
     }

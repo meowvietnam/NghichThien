@@ -39,7 +39,8 @@ public enum EBuffAndDeBuff
     Diem,
     Tran,
     DanLuc,
-    PhaThe
+    PhaThe,
+    Cat
 
 }
 
@@ -236,6 +237,9 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.PhaThe:
                 text = "Phá Thể";
                 break;
+            case EBuffAndDeBuff.Cat:
+                text = "Cát";
+                break;
             default:
                 break;
         }
@@ -345,6 +349,9 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.PhaThe:
                 text = $"Giảm một nửa khả năng hồi phục. Kết thúc hiệp giải trừ";
+                break;
+            case EBuffAndDeBuff.Cat:
+                text = $"Chỉ thị vật";
                 break;
             default:
                 break;
