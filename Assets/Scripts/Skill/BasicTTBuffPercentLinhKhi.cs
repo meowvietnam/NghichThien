@@ -48,7 +48,7 @@ public class BasicTTBuffPercentLinhKhi : ThanThong
             default:
                 break;
         }
-        ShowSkillEffectUI(caster, delayTimeEffect);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
         
     }
 

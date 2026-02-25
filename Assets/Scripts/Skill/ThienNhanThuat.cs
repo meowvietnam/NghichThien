@@ -6,6 +6,8 @@ public class ThienNhanThuat : ThanThong
     [SerializeField] protected int requireKiemKhi = 2;
     [SerializeField] protected int[] countAttack;
     [SerializeField] protected int[] damePerCountAttack;
+    [SerializeField]
+    private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if(IsCanUse(caster,target))
@@ -19,6 +21,7 @@ public class ThienNhanThuat : ThanThong
             target.TakeDameByThanThong(caster, dames, false);
 
         }
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

@@ -14,7 +14,7 @@ public class BasicTTDealDame : ThanThong, BaseSkill.LienKich
     {
 
         target.TakeDameByThanThong(caster, new List<int> {     dame[GetIndexLevelThanThong(caster)] });
-        ShowSkillEffectUI(target, delayTimeEffect);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

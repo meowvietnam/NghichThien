@@ -5,9 +5,12 @@ public class KimCuongTram : ThanThong , BaseSkill.LienKich
 {
     [SerializeField] private int[] dame;
     [SerializeField] private int[] hapThu;
+    [SerializeField]
+    private float delayTimeEffect = 0.5f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.TakeDameByThanThong(caster, new List<int> { dame[GetIndexLevelThanThong(caster)]});
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

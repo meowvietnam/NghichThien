@@ -238,7 +238,12 @@ public class CombatManager : MonoBehaviour
         return isLienKich;
 
     }
-    
+    [Button]
+    public void PlaySkilButton(ThanThong thanThong)
+    {
+        Observer.Notify(EventList.GamePlay.PLAY_SKILL, currentTurn,targetTurn, thanThong, new List<LinhKhiTieuTan>());
+
+    }
     public void PlaySkill(params object[] data)
     {
         //if (IsDelayEffectSkill) return;

@@ -11,7 +11,7 @@ public class ThuHuyet : ThanThong
         {
             caster.HapThuLinhKhi(item.Key, item.Value);
         }
-        ShowSkillEffectUI(caster, 1.5f);
+        ShowSkillEffectWorld(caster, 1.5f);
 
     }
 

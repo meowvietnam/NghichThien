@@ -87,48 +87,47 @@ public abstract class ThanThong : BaseSkill
     {
         return true;
     }    
-    protected virtual void ShowSkillEffectUI(CharacterCombat target , float delay , Vector3 addPos = default)
+   
+    protected virtual void ShowSkillEffectParticle(CharacterCombat target, float delay, float cameraSize = 50f) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
     {
         if (prefabEffectSkill == null) return;
-        var posCenter = Vector3.up * 500;
-        posCenter += addPos;
-        var effect = prefabEffectSkill.Spawn(target.transform);
-        effect.transform.localPosition = posCenter;
-        effect.transform.localScale = prefabEffectSkill.transform.localScale;
+        
+        GameObject effect = prefabEffectSkill.Spawn(target.transform);
+        effect.transform.SetParent(null);
+        effect.transform.localEulerAngles = prefabEffectSkill.transform.localEulerAngles;
+        effect.transform.localScale = new Vector3(1,1,1);
+        int signX = target.currentCharGender.transform.localEulerAngles.y != 0 ? -1 : 1;
+        if (signX < 0)
+        {
+            effect.transform.GetChild(0).transform.localEulerAngles = new Vector3(effect.transform.GetChild(0).transform.localEulerAngles.x, effect.transform.GetChild(0).transform.localEulerAngles.y,-180);
+
+        }
+        else
+        {
+            effect.transform.GetChild(0).transform.localEulerAngles = new Vector3(effect.transform.GetChild(0).transform.localEulerAngles.x, effect.transform.GetChild(0).transform.localEulerAngles.y, 0);
+
+        }
+
+        Camera.main.orthographicSize = cameraSize;
+
         DOVirtual.DelayedCall(delay, () =>
         {
             effect.gameObject.Recycle();
         });
 
     }
-    protected virtual void ShowSkillEffectWorld(CharacterCombat target, float delay,float cameraSize,bool isNullParent, Vector3 addPos = default)
+    protected virtual void ShowSkillEffectWorld(CharacterCombat target, float delay) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
     {
         if (prefabEffectSkill == null) return;
-        
-        GameObject effect = !isNullParent ? prefabEffectSkill.Spawn(target.transform) : prefabEffectSkill.Spawn();
+
+        GameObject effect = prefabEffectSkill.Spawn(target.transform);
+        effect.transform.SetParent(null);
         effect.transform.localEulerAngles = prefabEffectSkill.transform.localEulerAngles;
+        int signX = target.currentCharGender.transform.localEulerAngles.y != 0 ? -1 : 1;
+        effect.transform.localScale = new Vector3(1 * signX, 1, 1);
 
-        if (!isNullParent)
-        {
-            var posCenter = Vector3.up * 500;
-            posCenter += addPos;
-            effect.transform.localPosition = posCenter;
 
-        }
-        else
-        {
-            effect.transform.localPosition = Vector3.zero + addPos;
-            int scaleX = (int)target.currentCharGender.transform.localScale.x;
-            int signX = scaleX / Mathf.Abs(scaleX);
-            if(signX<0)
-            {
-                effect.transform.localEulerAngles = new Vector3(effect.transform.localEulerAngles.x,effect.transform.localEulerAngles.y,effect.transform.localEulerAngles.z-180);
-
-            }   
-           
-        }
-
-        Camera.main.orthographicSize = cameraSize;
+        Camera.main.orthographicSize = 50;
 
         DOVirtual.DelayedCall(delay, () =>
         {
