@@ -7,7 +7,7 @@ public class SucThe : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SucThe, sucThe[GetIndexLevelThanThong(caster)]);
-        ShowSkillEffectBuff(caster, 1f);
+        ShowSkillEffectUI(caster, 1f);
 
     }
 

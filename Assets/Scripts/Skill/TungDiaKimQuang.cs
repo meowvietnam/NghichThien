@@ -8,7 +8,7 @@ public class TungDiaKimQuang : ThanThong
         HauKeVoLuc(caster);
         var linhKhiHapThu = caster.DictHapThuLinhKhi(buff[GetIndexLevelThanThong(caster)]);
         caster.HapThuLinhKhi(ELinhKhi.Kim,linhKhiHapThu[ELinhKhi.Kim]);
-        ShowSkillEffectBuff(caster, 1f);
+        ShowSkillEffectUI(caster, 1f);
 
     }
 
