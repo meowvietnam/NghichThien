@@ -85,6 +85,21 @@ public class CombatStatic : MonoBehaviour
         }
 
     }
+    public static bool IsActiveAnNac(CharacterCombat charSender, CharacterCombat charTakeDame)
+    {
+        charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnNac, out int anNac);
+        if (anNac <= 0)
+        {
+            return false;
+
+        }
+        if (IsActiveWithPercent(50))
+        {
+            return true;
+        }
+        return false;
+
+    }
     public static bool IsActiveHuyenVu(CharacterCombat charSender, CharacterCombat charTakeDame)
     {
         int huyenVu = 0;

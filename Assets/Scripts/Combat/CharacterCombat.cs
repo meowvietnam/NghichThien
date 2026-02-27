@@ -178,7 +178,10 @@ public class CharacterCombat : MonoBehaviour
        
         Debug.Log(this.thanThongCurrentUse.thanThong.name);
         Debug.Log(this.thanThongOldUse?.thanThong.name);
-
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnNac, out int anNac))
+        {
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.AnNac, anNac);
+        }
         CombatStatic.TrienNhieu(null,this);
       
 
@@ -490,7 +493,8 @@ public class CharacterCombat : MonoBehaviour
         // 3) Tổng khí theo yêu cầu: bạn đang return chỉ số khí/lv
         totalKhiRandom = khiPerLevelRandom;
 
-    }    
+    }
+    [Button]    
     public void TieuTanLinhKhi(ELinhKhi eLinhKhi,int count)
     {
         switch (eLinhKhi)
@@ -868,11 +872,13 @@ public class CharacterCombat : MonoBehaviour
         foreach (var item in allDamages)
         {
             bool isActiveHuyenVu = CombatStatic.IsActiveHuyenVu(null, this);
+            bool isActiveAnNac = CombatStatic.IsActiveAnNac(null, this);
+
             bool hasVuAnThuat = specialThanThongImpactAfterPlaySkill.Any(x => x is VuAnThuat);
             bool hasVuTuongHoaThan = specialThanThongImpactAfterPlaySkill.Any(x => x is VuTuongHoaThan);
             int dame = item;
            
-            if (isActiveHuyenVu || hasVuAnThuat)
+            if (isActiveHuyenVu || hasVuAnThuat || isActiveAnNac)
             {
                 NeTranh();
             }

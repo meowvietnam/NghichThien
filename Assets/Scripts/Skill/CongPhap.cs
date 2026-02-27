@@ -29,13 +29,14 @@ public abstract class CongPhap : BaseSkill
     protected override ETypeItem typeItem => ETypeItem.CongPhap;
     public virtual void ExecuteParams(params object[] data)
     {
-        CharacterCombat caster = (CharacterCombat)data[0];
-        CharacterCombat target = (CharacterCombat)data[1];
-        // Tìm trong danh sách trang bị của caster
-        if (IsCanUse(caster))
-        {
-            Execute(caster, target , data);
+        // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
+        CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
+        CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
 
+        // Kiểm tra caster không null và thỏa mãn điều kiện sử dụng
+        if (caster != null && IsCanUse(caster))
+        {
+            Execute(caster, target, data);
         }
     }
     public CongPhapMono GetCongPhapMono(List<CongPhapMono> congPhapMonos)
