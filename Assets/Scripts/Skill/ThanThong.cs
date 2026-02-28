@@ -58,25 +58,45 @@ public abstract class ThanThong : BaseSkill
     }
     public bool IsCanUseLinhKhiRequire(CharacterCombat caster)
     {
-        foreach (var require in GetRequireActive(caster))
+        // 1. Thu thập tất cả các loại khí hiện có của caster vào một danh sách tạm
+        // 1. Khởi tạo Dictionary chứa tài nguyên hiện có của caster
+        var availableKhis = new Dictionary<ELinhKhi, int>
         {
-            if (require.linhKhiRequire == ELinhKhi.None)
-            {
-                // Kiểm tra xem có CÓ ÍT NHẤT MỘT loại nào đủ count hay không
-                bool hasAnyTypeEnough = caster.khiKim >= require.count ||
-                                        caster.khiMoc >= require.count ||
-                                        caster.khiThuy >= require.count ||
-                                        caster.khiHoa >= require.count ||
-                                        caster.khiTho >= require.count ||
-                                        caster.khiMa >= require.count;
+            { ELinhKhi.Kim,  caster.khiKim },
+            { ELinhKhi.Moc,  caster.khiMoc },
+            { ELinhKhi.Thuy, caster.khiThuy },
+            { ELinhKhi.Hoa,  caster.khiHoa },
+            { ELinhKhi.Tho,  caster.khiTho },
+            { ELinhKhi.Ma,   caster.khiMa }
+        };
 
-                if (!hasAnyTypeEnough) return false;
+        // 2. Tách và xử lý các yêu cầu cụ thể (Fixed Type) trước để ưu tiên tài nguyên
+        var requirements = GetRequireActive(caster).ToList();
+        var fixedRequires = requirements.Where(r => r.linhKhiRequire != ELinhKhi.None);
+        var noneRequires = requirements.Where(r => r.linhKhiRequire == ELinhKhi.None);
+
+        foreach ( var requirement in fixedRequires)
+        {
+            if(!availableKhis.ContainsKey(requirement.linhKhiRequire) || availableKhis[requirement.linhKhiRequire] < requirement.count)
+            {
+                return false;
+            }
+            else if(availableKhis[requirement.linhKhiRequire] >= requirement.count)
+            {
+                availableKhis[requirement.linhKhiRequire] -= requirement.count;
+            }    
+        }
+        foreach (var requirement in noneRequires)
+        {
+            if (!availableKhis.Any(x => x.Value >= requirement.count))
+            {
+                return false;
             }
             else
             {
-                // Nếu yêu cầu loại cụ thể thì phải đúng loại đó
-                int availableCount = caster.GetLinhKhi(require.linhKhiRequire);
-                if (availableCount < require.count) return false;
+                ELinhKhi linhKhi = availableKhis.FirstOrDefault(x => x.Value >= requirement.count).Key;
+                availableKhis.Remove(linhKhi);
+
             }
         }
         return true;
