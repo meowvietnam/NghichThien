@@ -150,7 +150,6 @@ public class CombatManager : MonoBehaviour
         });
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, NewTurn);
-        char2.currentCharGender.transform.localEulerAngles = new Vector3(0, 180, 0);
         SetUIHpBar();
     }
     

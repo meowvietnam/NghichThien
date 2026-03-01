@@ -84,6 +84,8 @@ public class CharacterCombat : MonoBehaviour
     public List<CongPhapMono> congPhapEquip = new List<CongPhapMono>();
     [SerializeField]
     public List<CongPhapMono> congPhapDynamic = new List<CongPhapMono>();
+    [SerializeField]
+    public int allDameTaked;
 
     public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill = new List<LinhKhiTieuTan>();
     public List<ThanThong> specialThanThongImpactAfterPlaySkill = new List<ThanThong>();
@@ -868,42 +870,39 @@ public class CharacterCombat : MonoBehaviour
             SetTextDameAnim("Né Tránh!", Color.whiteSmoke);
             Observer.Notify(EventList.GamePlay.NE_TRANH_SUCCESS, sender, this);
         }
-      
-        foreach (var item in allDamages)
+
+        for (int i = 0; i < allDamages.Count; i++)
         {
+            if (allDamages[i] == 0) continue;
             bool isActiveHuyenVu = CombatStatic.IsActiveHuyenVu(null, this);
             bool isActiveAnNac = CombatStatic.IsActiveAnNac(null, this);
-
-            bool hasVuAnThuat = specialThanThongImpactAfterPlaySkill.Any(x => x is VuAnThuat);
-            bool hasVuTuongHoaThan = specialThanThongImpactAfterPlaySkill.Any(x => x is VuTuongHoaThan);
-            int dame = item;
-           
-            if (isActiveHuyenVu || hasVuAnThuat || isActiveAnNac)
+            if (isActiveHuyenVu || isActiveAnNac)
             {
-                NeTranh();
+                allDamages[i] = -1;
             }
-            else if (hasVuTuongHoaThan)
+            
+            Observer.Notify(EventList.GamePlay.CHECK_NE_TRANH, sender, this, i);
+            var dame = allDamages[i];
+            bool isNeTranh = dame == -1;
+
+
+            
+            if (isNeTranh)
             {
                 NeTranh();
 
-                 var vuTuongHoaThan = specialThanThongImpactAfterPlaySkill
-                    .FirstOrDefault(x => x is VuTuongHoaThan);
-
-                if (vuTuongHoaThan != null)
-                {
-                    specialThanThongImpactAfterPlaySkill.Remove(vuTuongHoaThan);
-                }
+               
             }
             else
             {
-              
 
-                TakeDame(sender,dame);
+
+                TakeDame(sender, dame);
                 Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, sender, this, dame);
             }
 
         }
-     
+       
 
         allDamages.Clear();
 
@@ -930,6 +929,7 @@ public class CharacterCombat : MonoBehaviour
         {
             StartAnimHit();
             SetTextDameAnim($"-{dame}", Color.red);
+            allDameTaked += dame;
         }
         Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);
         

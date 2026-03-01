@@ -80,7 +80,8 @@ public abstract class BaseSkill : BaseItemData
         Khi,
         The,
         Than,
-        DiHoa
+        DiHoa,
+        TranPhap
 
     }
     public enum EKeyWord
@@ -93,6 +94,7 @@ public abstract class BaseSkill : BaseItemData
         TuongDong,
         KiemY,
         AmKinh,
+        TranPhap
     }
     public ETierSkill eTierSkill;
     public ETypeSkill[] eTypeSkill;
@@ -400,6 +402,10 @@ public abstract class BaseSkill : BaseItemData
                 text = "Ám Kình";
 
                 break;
+            case EKeyWord.TranPhap:
+                text = "Trận Pháp";
+
+                break;
             default:
                 break;
         }
@@ -437,6 +443,9 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EKeyWord.AmKinh:
                 text = "Hiệu quả của thần thông sẽ được kích hoạt sau X hiệp tiếp theo";
+                break;
+            case EKeyWord.TranPhap:
+                text = "Mỗi cuộc chiến chỉ có thể sử dụng một lần";
                 break;
             default:
                 break;
@@ -539,6 +548,10 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case ETypeSkill.DiHoa:
                 text = "Dị Hỏa";
+
+                break;
+            case ETypeSkill.TranPhap:
+                text = "Trận Pháp";
 
                 break;
             default:

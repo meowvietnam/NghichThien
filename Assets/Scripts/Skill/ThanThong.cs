@@ -116,7 +116,7 @@ public abstract class ThanThong : BaseSkill
         effect.transform.SetParent(null);
         effect.transform.localEulerAngles = prefabEffectSkill.transform.localEulerAngles;
         effect.transform.localScale = new Vector3(1,1,1);
-        int signX = target.currentCharGender.transform.localEulerAngles.y != 0 ? -1 : 1;
+        int signX = target.transform.localEulerAngles.y != 0 ? -1 : 1;
         if (signX < 0)
         {
             effect.transform.GetChild(0).transform.localEulerAngles = new Vector3(effect.transform.GetChild(0).transform.localEulerAngles.x, effect.transform.GetChild(0).transform.localEulerAngles.y,-180);
@@ -143,7 +143,7 @@ public abstract class ThanThong : BaseSkill
         GameObject effect = prefabEffectSkill.Spawn(target.transform);
         effect.transform.SetParent(null);
         effect.transform.localEulerAngles = prefabEffectSkill.transform.localEulerAngles;
-        int signX = target.currentCharGender.transform.localEulerAngles.y != 0 ? -1 : 1;
+        int signX = target.transform.localEulerAngles.y != 0 ? -1 : 1;
         effect.transform.localScale = new Vector3(1 * signX, 1, 1);
 
 

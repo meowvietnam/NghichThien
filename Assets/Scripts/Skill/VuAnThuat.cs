@@ -3,12 +3,12 @@ using System.Linq;
 using UnityEngine;
 [CreateAssetMenu(fileName = nameof(VuAnThuat), menuName = "Skill/Thần Thông/" + nameof(VuAnThuat))]
 
-public class VuAnThuat : ThanThong
+public class VuAnThuat : NeTranhTT
 {
     [SerializeField] private int requireHuyenVu = 4;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.AddThanThongImpactAfterPlaySkill(this);
+        base.Execute(caster, target, data);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HuyenVu, requireHuyenVu);
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect);
 
@@ -42,5 +42,8 @@ public class VuAnThuat : ThanThong
         return false;
     }
 
-   
+    protected override void NeTranhSuccess(CharacterCombat takeDameChar)
+    {
+        return;
+    }
 }

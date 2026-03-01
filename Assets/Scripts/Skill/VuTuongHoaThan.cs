@@ -1,13 +1,16 @@
-﻿using System.Linq;
+﻿using LongDH.LongDHModules;
+using System.Linq;
 using UnityEngine;
 [CreateAssetMenu(fileName = nameof(VuTuongHoaThan), menuName = "Skill/Thần Thông/" + nameof(VuTuongHoaThan))]
 
-public class VuTuongHoaThan : ThanThong
+public class VuTuongHoaThan : NeTranhTT
 {
     [SerializeField] private int requireHuyenVu = 2;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddThanThongImpactAfterPlaySkill(this);
+
+        Observer.AddObserver(EventList.GamePlay.CHECK_NE_TRANH, ObserverEffectNeTranh, 0);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HuyenVu, requireHuyenVu);
 
     }
@@ -27,4 +30,8 @@ public class VuTuongHoaThan : ThanThong
         return false;
     }
 
+    protected override void NeTranhSuccess(CharacterCombat takeDameChar)
+    {
+        takeDameChar.RemoveOneThanThongImpactAfterPlaySkill(this);
+    }
 }
