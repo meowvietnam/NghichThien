@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,37 +8,77 @@ namespace LongDH.LongDHModules
     public static class Observer
     {
         public delegate void CallbackObserverParam(params object[] data);
-
         public delegate void CallbackObserverVoid();
 
-        private static readonly Dictionary<string, HashSet<CallbackObserverParam>> CallbackPara = new Dictionary<string, HashSet<CallbackObserverParam>>();
-
-        private static readonly Dictionary<string, HashSet<CallbackObserverVoid>> CallbackVoid = new Dictionary<string, HashSet<CallbackObserverVoid>>();
-
-        public static void AddObserver(string eventName, CallbackObserverVoid callback)
+        private class ObserverItem<T>
         {
-            Debug.Log(eventName);
-
-            CreateListObserverForEventVoid(eventName).Add(callback);
+            public int Priority;
+            public long OrderId;
+            public T Callback;
         }
 
-        public static void AddObserver(string eventName, CallbackObserverParam callbackObserverParam)
-        {
-            Debug.Log(eventName);
+        private static long _globalOrderId = 0;
 
-            CreateListObserverForEventParam(eventName).Add(callbackObserverParam);
+        private static readonly Dictionary<string, List<ObserverItem<CallbackObserverParam>>> CallbackPara
+            = new Dictionary<string, List<ObserverItem<CallbackObserverParam>>>();
+
+        private static readonly Dictionary<string, List<ObserverItem<CallbackObserverVoid>>> CallbackVoid
+            = new Dictionary<string, List<ObserverItem<CallbackObserverVoid>>>();
+
+        #region ADD OBSERVER
+
+        public static void AddObserver(string eventName, CallbackObserverVoid callback, int priority = 0)
+        {
+            var list = CreateListObserverForEventVoid(eventName);
+
+            if (list.Any(x => x.Callback == callback))
+                return;
+
+            list.Add(new ObserverItem<CallbackObserverVoid>
+            {
+                Callback = callback,
+                Priority = priority,
+                OrderId = _globalOrderId++
+            });
+
+            SortList(list);
         }
-      
+
+        public static void AddObserver(string eventName, CallbackObserverParam callback, int priority = 0)
+        {
+            var list = CreateListObserverForEventParam(eventName);
+
+            if (list.Any(x => x.Callback == callback))
+                return;
+
+            list.Add(new ObserverItem<CallbackObserverParam>
+            {
+                Callback = callback,
+                Priority = priority,
+                OrderId = _globalOrderId++
+            });
+
+            SortList(list);
+        }
+
+        #endregion
+
+        #region REMOVE
+
         public static void RemoveObserver(string eventName, CallbackObserverVoid callback)
         {
-            var listObserver = CreateListObserverForEventVoid(eventName);
-            listObserver.Remove(callback);
+            if (CallbackVoid.TryGetValue(eventName, out var list))
+            {
+                list.RemoveAll(x => x.Callback == callback);
+            }
         }
 
-        public static void RemoveObserver(string eventName, CallbackObserverParam callbackObserverParam)
+        public static void RemoveObserver(string eventName, CallbackObserverParam callback)
         {
-            var listObserver = CreateListObserverForEventParam(eventName);
-            listObserver.Remove(callbackObserverParam);
+            if (CallbackPara.TryGetValue(eventName, out var list))
+            {
+                list.RemoveAll(x => x.Callback == callback);
+            }
         }
 
         public static void RemoveAllObserver()
@@ -47,55 +87,72 @@ namespace LongDH.LongDHModules
             CallbackVoid.Clear();
         }
 
+        #endregion
+
+        #region NOTIFY
+
         public static void Notify(string eventName, params object[] data)
         {
-            // Tạo bản sao bằng .ToList() để tránh lỗi "Collection was modified"
-            var listParam = CreateListObserverForEventParam(eventName).ToList();
-            foreach (var observer in listParam)
+            if (CallbackPara.TryGetValue(eventName, out var paramList))
             {
-                observer?.Invoke(data);
+                foreach (var item in paramList.ToList())
+                    item.Callback?.Invoke(data);
             }
 
-            // Tương tự cho danh sách Void
-            var listVoid = CreateListObserverForEventVoid(eventName).ToList();
-            foreach (var observer in listVoid)
+            if (CallbackVoid.TryGetValue(eventName, out var voidList))
             {
-                observer?.Invoke();
+                foreach (var item in voidList.ToList())
+                    item.Callback?.Invoke();
             }
         }
 
         public static void Notify(string eventName)
         {
-            if (CallbackPara.TryGetValue(eventName, out HashSet<CallbackObserverParam> paramCallbacks))
+            if (CallbackPara.TryGetValue(eventName, out var paramList))
             {
-                Debug.Log("paramcall back count "+ paramCallbacks.Count);
-            }
-            if (CallbackVoid.TryGetValue(eventName, out HashSet<CallbackObserverVoid> voidCallbacks))
-            {
-                Debug.Log("void back count " + voidCallbacks.Count);
-
+                foreach (var item in paramList.ToList())
+                    item.Callback?.Invoke();
             }
 
-            foreach (var observer in CreateListObserverForEventParam(eventName))
-                observer();
-            foreach (var observer in CreateListObserverForEventVoid(eventName))
-                observer();
+            if (CallbackVoid.TryGetValue(eventName, out var voidList))
+            {
+                foreach (var item in voidList.ToList())
+                    item.Callback?.Invoke();
+            }
         }
 
-        private static HashSet<CallbackObserverParam> CreateListObserverForEventParam(string eventName)
+        #endregion
+
+        #region PRIVATE
+
+        private static void SortList<T>(List<ObserverItem<T>> list)
+        {
+            list.Sort((a, b) =>
+            {
+                int priorityCompare = b.Priority.CompareTo(a.Priority);
+                if (priorityCompare != 0)
+                    return priorityCompare;
+
+                return a.OrderId.CompareTo(b.OrderId);
+            });
+        }
+
+        private static List<ObserverItem<CallbackObserverParam>> CreateListObserverForEventParam(string eventName)
         {
             if (!CallbackPara.ContainsKey(eventName))
-                CallbackPara.Add(eventName, new HashSet<CallbackObserverParam>());
+                CallbackPara[eventName] = new List<ObserverItem<CallbackObserverParam>>();
+
             return CallbackPara[eventName];
         }
 
-        private static HashSet<CallbackObserverVoid> CreateListObserverForEventVoid(string eventName)
+        private static List<ObserverItem<CallbackObserverVoid>> CreateListObserverForEventVoid(string eventName)
         {
             if (!CallbackVoid.ContainsKey(eventName))
-                CallbackVoid.Add(eventName, new HashSet<CallbackObserverVoid>());
+                CallbackVoid[eventName] = new List<ObserverItem<CallbackObserverVoid>>();
+
             return CallbackVoid[eventName];
         }
 
+        #endregion
     }
-
 }
