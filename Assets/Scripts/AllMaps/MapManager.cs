@@ -42,8 +42,6 @@ namespace AllMaps
             if(player.IsMoving) return;
             var listMapPath = BFSPath.FindPath(graph,current, map);
             if(listMapPath == null) return;
-            var s = string.Join(",", listMapPath.Select(x => x.Id));
-            Debug.Log(s);
             var start = current;
             current.OnPlayerExit();
             current = map;
@@ -54,7 +52,6 @@ namespace AllMaps
                 var node = start.FindNodeByMap(m);
                 if (node == null)
                 {
-                    Debug.Log(i);
                     continue;
                 }
                 start = m;
