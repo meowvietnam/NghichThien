@@ -14,11 +14,11 @@ namespace AllMaps
         [SerializeField] private SkeletonAnimation anim;
         private string genderStr = "";
         [SerializeField] private float speed = 2;
-        private bool isSwordRiding;
+        public bool IsSwordRiding { get; private set; }
         public bool IsMoving { get; private set; }
         public void Init(Gender gender, bool isSwordRiding)
         {
-            this.isSwordRiding = isSwordRiding;
+            this.IsSwordRiding = isSwordRiding;
             var skeletion = anim.Skeleton;
             switch (gender)
             {
@@ -41,7 +41,7 @@ namespace AllMaps
         private void SetMoving(bool isMoving)
         {
             IsMoving = isMoving;
-            var swordRiding = isSwordRiding ? "1" : "0";
+            var swordRiding = IsSwordRiding ? "1" : "0";
             var moving = isMoving ? "Mov_1" : "Idle_";
             var animationName = $"{moving}{swordRiding}";
             anim.AnimationState.SetAnimation(0, animationName, true);
@@ -54,25 +54,34 @@ namespace AllMaps
         
         private IEnumerator IEDoMove(List<Node> nodes,Action completed)
         {
-            foreach (var node in nodes)
+            if (IsSwordRiding)
             {
-                var moveNode = node.MoveNode;
-                if (moveNode != null)
+                var lastNode = nodes.Last();
+                var target = lastNode.NextMap.PlayerPosition;
+                yield return MoveTo(target);
+            }
+            else
+            {
+                foreach (var node in nodes)
                 {
-                    var nodePositions = moveNode.NodesPosition;
-                    var nextMapId = node.NextMap.Id;
-                    var finishMapId = moveNode.FinishNode;
-                    if (nextMapId != finishMapId)
+                    var moveNode = node.MoveNode;
+                    if (moveNode != null)
                     {
-                        nodePositions = nodePositions.Reverse().ToArray();
+                        var nodePositions = moveNode.NodesPosition;
+                        var nextMapId = node.NextMap.Id;
+                        var finishMapId = moveNode.FinishNode;
+                        if (nextMapId != finishMapId)
+                        {
+                            nodePositions = nodePositions.Reverse().ToArray();
+                        }
+                        foreach (var nodePosition in nodePositions)
+                        {
+                            yield return MoveTo(nodePosition);
+                        }
                     }
-                    foreach (var nodePosition in nodePositions)
-                    {
-                        yield return MoveTo(nodePosition);
-                    }
+                    var mapPos = node.NextMap.PlayerPosition;
+                    yield return MoveTo(mapPos);
                 }
-                var mapPos = node.NextMap.PlayerPosition;
-                yield return MoveTo(mapPos);
             }
             SetMoving(false);
             completed?.Invoke();
