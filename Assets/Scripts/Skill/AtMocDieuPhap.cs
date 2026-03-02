@@ -22,7 +22,7 @@ public class AtMocDieuPhap : ThanThong
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{dames[level]}", "red")} điểm sát thương. Đồng thời hấp thụ {GetColoredText($"{hapThu}", "red")} điểm linh khí. Nếu là {GetTextLinhKhi(ELinhKhi.Moc)} hệ linh khí thì hồi một lượng máu bằng sát thương gây ra";
+        return $"Tạo thành {GetColoredText($"{dames[level - 1]}", "red")} điểm sát thương. Đồng thời hấp thụ {GetColoredText($"{hapThu}", "red")} điểm linh khí. Nếu là {GetTextLinhKhi(ELinhKhi.Moc)} hệ linh khí thì hồi một lượng máu bằng sát thương gây ra";
 
     }
 }

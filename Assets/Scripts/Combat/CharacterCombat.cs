@@ -896,8 +896,8 @@ public class CharacterCombat : MonoBehaviour
             else
             {
 
-
-                TakeDame(sender, dame);
+                Observer.Notify(EventList.GamePlay.CHARACTER_BEFORE_TAKE_DAME, sender, this, dame);
+                TakeDame(sender, allDamages[i]);
                 Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, sender, this, dame);
             }
 

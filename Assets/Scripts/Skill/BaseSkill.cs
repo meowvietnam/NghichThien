@@ -41,7 +41,8 @@ public enum EBuffAndDeBuff
     DanLuc,
     PhaThe,
     Cat,
-    AnNac
+    AnNac,
+    Hon
 
 }
 
@@ -246,6 +247,9 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.AnNac:
                 text = "Ẩn Nặc";
                 break;
+            case EBuffAndDeBuff.Hon:
+                text = "Hồn";
+                break;
             default:
                 break;
         }
@@ -361,6 +365,9 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.AnNac:
                 text = $"Có 50% tỉ lệ né tránh thần thông sát thương. Sử dụng bất kì thần thông nào cùng đều giải trừ trạng thái này";
+                break;
+            case EBuffAndDeBuff.Hon:
+                text = $"Chỉ thị vật";
                 break;
             default:
                 break;

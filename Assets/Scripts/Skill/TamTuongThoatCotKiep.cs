@@ -14,7 +14,7 @@ public class TamTuongThoatCotKiep : ThanThong
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{dames[level]}", "red")} điểm sát thương. Đồng thời gây ra cho đối phương thêm {GetColoredText($"{percentBuffDames[level]}%", "red")} Hp tối đa của bản thân";
+        return $"Tạo thành {GetColoredText($"{dames[level-1]}", "red")} điểm sát thương. Đồng thời gây ra cho đối phương thêm {GetColoredText($"{percentBuffDames[level - 1]}%", "red")} Hp tối đa của bản thân";
 
     }
 }

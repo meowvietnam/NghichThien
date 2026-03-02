@@ -17,7 +17,7 @@ public class PhiChamThuat : ThanThong
     }
     public override string GetDesc(int level)
     {
-        return $"Tiêu hao 1 tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cham)}, tạo thành {GetColoredText($"+{dames[level]}", "red")} điểm sát thương. Đối phương nhận phải {GetColoredText($"+{deTonThuong}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}";
+        return $"Tiêu hao 1 tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cham)}, tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Đối phương nhận phải {GetColoredText($"+{deTonThuong}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}";
 
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)

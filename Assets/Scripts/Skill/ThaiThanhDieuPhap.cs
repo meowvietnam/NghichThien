@@ -13,7 +13,7 @@ public class ThaiThanhDieuPhap : ThanThong
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Tăng tạm thời {GetColoredText($"+{buffs[level]}", "red")} Hp tối đa trong trận chiến này.";
+        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Tăng tạm thời {GetColoredText($"+{buffs[level-1]}", "red")} Hp tối đa trong trận chiến này.";
 
     }
 

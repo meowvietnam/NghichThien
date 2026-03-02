@@ -30,7 +30,7 @@ public class ChuongDocQuyet : ThanThong , BaseSkill.TuongDong
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{dames[level]}", "red")} điểm sát thương. Nếu đối phương có {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)} thì nhận tổn thương gấp đôi. Nếu là {GetKeyWord(EKeyWord.TuongDong)} tăng lên {GetColoredText($"{dameBuffs[level]}", "red")} điểm sát thương";
+        return $"Tạo thành {GetColoredText($"{dames[level - 1]}", "red")} điểm sát thương. Nếu đối phương có {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)} thì nhận tổn thương gấp đôi. Nếu là {GetKeyWord(EKeyWord.TuongDong)} tăng lên {GetColoredText($"{dameBuffs[level - 1]}", "red")} điểm sát thương";
 
     }
 }

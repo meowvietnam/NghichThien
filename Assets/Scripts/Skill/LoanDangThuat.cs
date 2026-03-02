@@ -19,7 +19,7 @@ public class LoanDangThuat : ThanThong
     
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{dames[level]}", "red")} điểm sát thương. Đối phương mỗi có một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)} thì tổn thương tăng lên {GetColoredText($"+{dameBuffs[level - 1]}", "red")}";
+        return $"Tạo thành {GetColoredText($"{dames[level - 1]}", "red")} điểm sát thương. Đối phương mỗi có một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)} thì tổn thương tăng lên {GetColoredText($"+{dameBuffs[level - 1]}", "red")}";
 
     }
 }

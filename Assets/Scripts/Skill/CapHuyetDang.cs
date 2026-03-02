@@ -17,7 +17,7 @@ public class CapHuyetDang : ThanThong , BaseSkill.TuongDong
     }
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{dames[level]}", "red")} điểm sát thương. Đồng thời, hồi lại lượng Hp bằng sát thương gây ra. Nếu là {GetKeyWord(EKeyWord.TuongDong)} tăng lên {GetColoredText($"{dameBuffs[level]}", "red")} điểm sát thương";
+        return $"Tạo thành {GetColoredText($"{dames[level - 1]}", "red")} điểm sát thương. Đồng thời, hồi lại lượng Hp bằng sát thương gây ra. Nếu là {GetKeyWord(EKeyWord.TuongDong)} tăng lên {GetColoredText($"{dameBuffs[level - 1]}", "red")} điểm sát thương";
 
     }
 

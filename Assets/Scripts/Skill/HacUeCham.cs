@@ -14,7 +14,7 @@ public class HacUeCham : ThanThong
     }
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{dames[level]}", "red")} điểm sát thương. Thu hoạch được {GetColoredText($"+{cham}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cham)}";
+        return $"Tạo thành {GetColoredText($"{dames[level - 1]}", "red")} điểm sát thương. Thu hoạch được {GetColoredText($"+{cham}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cham)}";
 
     }
 }

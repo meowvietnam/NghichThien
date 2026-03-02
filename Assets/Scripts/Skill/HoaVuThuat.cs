@@ -26,7 +26,7 @@ public class HoaVuThuat : ThanThong , BaseSkill.LienKich
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{dames[level]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)}. Nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Thuy)} hệ thần thông, đối phương nhận {GetColoredText($"{debuffCount}", "red")} trạng thái tiêu cực ngẫu nhiên";
+        return $"Tạo thành {GetColoredText($"{dames[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)}. Nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Thuy)} hệ thần thông, đối phương nhận {GetColoredText($"{debuffCount}", "red")} trạng thái tiêu cực ngẫu nhiên";
 
     }
 }

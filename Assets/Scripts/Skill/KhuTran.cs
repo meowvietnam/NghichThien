@@ -16,7 +16,14 @@ public class KhuTran : ThanThong
         });
     }
 
-
+    public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
+    {
+        if(caster.specialThanThongImpactAfterPlaySkill.Any(x => x is TranPhapTT))
+        {
+            return true;
+        }    
+        return false;
+    }
 
     public override string GetDesc(int level)
     {

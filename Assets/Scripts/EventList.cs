@@ -12,6 +12,8 @@ public static partial class EventList
         public const string CHARACTER_ADJUST_HP = "GamePlay.CHARACTER_ADJUST_HP";
         public const string CHARACTER_TAKE_DAME_BY_THANTHONG = "GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG";
         public const string CHARACTER_TAKE_DAME = "GamePlay.CHARACTER_TAKE_DAME";
+        public const string CHARACTER_BEFORE_TAKE_DAME = "GamePlay.CHARACTER_BEFORE_TAKE_DAME";
+
         public const string LIEN_KICH = "GamePlay.LIEN_KICH";
         public const string END_COMBAT = "GamePlay.END_COMBAT";
         public const string TRUNG_DOC = "GamePlay.TRUNG_DOC";

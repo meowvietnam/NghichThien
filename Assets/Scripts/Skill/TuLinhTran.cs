@@ -8,7 +8,7 @@ public class TuLinhTran : TranPhapTT
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
-        ExecuteTranPhap(caster,target);
+        caster.totalKhiRandom += hapThus[GetIndexLevelThanThong(caster)];
 
 
     }
@@ -19,7 +19,6 @@ public class TuLinhTran : TranPhapTT
 
     public override void ExecuteTranPhap(CharacterCombat caster, CharacterCombat target)
     {
-        caster.totalKhiRandom += hapThus[GetIndexLevelThanThong(caster)];
 
     }
 

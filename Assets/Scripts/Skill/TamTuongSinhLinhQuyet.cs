@@ -15,7 +15,7 @@ public class TamTuongSinhLinhQuyet : ThanThong
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Hồi phục {GetColoredText($"{buffs[level]}%", "red")} lượng Hp đã mất. Đồng thời thu hoạch được {GetColoredText($"{tuKhi}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TuKhi)}";
+        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Hồi phục {GetColoredText($"{buffs[level-1]}%", "red")} lượng Hp đã mất. Đồng thời thu hoạch được {GetColoredText($"{tuKhi}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TuKhi)}";
 
     }
 }
