@@ -257,11 +257,17 @@ public class CombatManager : MonoBehaviour
 
 
         }
-        if (thanThong!= null)
+        if (thanThong!= null )
         {
 
 
             caster.PlaySkill(thanThong, linhKhiTieuTan);
+            if(target.specialThanThongImpactAfterPlaySkill.Any(x=>x is AmDuongDong))
+            {
+                target.RemoveAllThanThongImpactAfterPlaySkill(target.specialThanThongImpactAfterPlaySkill.FirstOrDefault(x=>x is AmDuongDong));
+                return;
+
+            }    
             ThanThong thanThongOldUse = caster.thanThongOldUse != null ? caster.thanThongOldUse.thanThong : null;
             thanThong.Execute(caster, target, data);
             if (thanThong is BaseSkill.LienKich thanThongLienKich && thanThongOldUse != null)

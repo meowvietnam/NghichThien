@@ -584,6 +584,7 @@ public class CharacterCombat : MonoBehaviour
 
         int totalKhiHapThu = baseCountHapThuLinhKhi + tuKhi - treKhi;
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, treKhi);
+        totalKhiHapThu = Mathf.Clamp(totalKhiHapThu,0,int.MaxValue);
         dictHapThuLinhKhi = DictHapThuLinhKhi(totalKhiHapThu);
         foreach (var item in dictHapThuLinhKhi)
         {

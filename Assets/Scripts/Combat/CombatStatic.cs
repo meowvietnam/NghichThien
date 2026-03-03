@@ -65,6 +65,7 @@ public class CombatStatic : MonoBehaviour
     }
     public static void AmKinhTTNewTurn(CharacterCombat currentTurn, CharacterCombat targetTurn)
     {
+        List<CharacterCombat.AmKinhEntry> entryRemoves = new List<CharacterCombat.AmKinhEntry>();
         // Duyệt ngược từ cuối danh sách lên đầu để xóa an toàn khi đang lặp
         for (int i = currentTurn.listAmKinhTT.Count - 1; i >= 0; i--)
         {
@@ -74,8 +75,7 @@ public class CombatStatic : MonoBehaviour
             {
                 // Kích hoạt action
                 entry.ThanThong.ExecuteAmKinh(currentTurn, targetTurn);
-                // Xóa khỏi danh sách
-                currentTurn.listAmKinhTT.RemoveAt(i);
+                entryRemoves.Add(entry);
             }
             else
             {
@@ -83,6 +83,10 @@ public class CombatStatic : MonoBehaviour
                 entry.RemainingTurns -= 1;
             }
         }
+        foreach(var entry in entryRemoves)
+        {
+            currentTurn.listAmKinhTT.Remove(entry);
+        }    
 
     }
     public static bool IsActiveAnNac(CharacterCombat charSender, CharacterCombat charTakeDame)

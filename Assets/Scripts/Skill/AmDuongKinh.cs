@@ -16,8 +16,8 @@ public class AmDuongKinh : AmKinhTT , BaseSkill.TuongSinh
     public override void ExecuteAmKinh(CharacterCombat caster, CharacterCombat target)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
-
+        target.AddDamageData(new System.Collections.Generic.List<int> { dame }, false);
+        target.TakeDame(caster);
     }
 
     public void ExecuteTuongSinh(CharacterCombat caster, CharacterCombat target)

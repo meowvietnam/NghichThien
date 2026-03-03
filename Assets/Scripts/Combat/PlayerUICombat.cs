@@ -391,30 +391,30 @@ public class PlayerUICombat : MonoBehaviour
 
                     }
                 }    
-                else if(item.ThanThongData is BaseSkill.TuongSinh)
-                {
-                    if (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(linhKhiRemains)) == ETuongQuan.TuongSinh)
-                    {
-                        item.ShowRecommentHighlight(true);
+                //else if(item.ThanThongData is BaseSkill.TuongSinh)
+                //{
+                //    if (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(linhKhiRemains)) == ETuongQuan.TuongSinh)
+                //    {
+                //        item.ShowRecommentHighlight(true);
 
-                    }
-                }
-                else if (item.ThanThongData is BaseSkill.TuongKhac)
-                {
-                    if (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(linhKhiRemains)) == ETuongQuan.TuongKhac)
-                    {
-                        item.ShowRecommentHighlight(true);
+                //    }
+                //}
+                //else if (item.ThanThongData is BaseSkill.TuongKhac)
+                //{
+                //    if (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(linhKhiRemains)) == ETuongQuan.TuongKhac)
+                //    {
+                //        item.ShowRecommentHighlight(true);
 
-                    }
-                }
-                else if (item.ThanThongData is BaseSkill.TuongDong)
-                {
-                    if (CombatManager.IsTuongDong(GetLinhKhiTieuTans(linhKhiRemains)))
-                    {
-                        item.ShowRecommentHighlight(true);
+                //    }
+                //}
+                //else if (item.ThanThongData is BaseSkill.TuongDong)
+                //{
+                //    if (CombatManager.IsTuongDong(GetLinhKhiTieuTans(linhKhiRemains)))
+                //    {
+                //        item.ShowRecommentHighlight(true);
 
-                    }
-                }
+                //    }
+                //}
             }
 
         }
