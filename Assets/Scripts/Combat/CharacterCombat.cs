@@ -684,10 +684,7 @@ public class CharacterCombat : MonoBehaviour
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, value);
         }
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucLuc, out int sucLuc))
-        {
-            RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucLuc, sucLuc);
-        }
+        
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, 1);
 
         thanThongUseThisComBat.Add(new List<PlaySkillData>());
@@ -754,6 +751,10 @@ public class CharacterCombat : MonoBehaviour
         {
             AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, 1);
         }    
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucLuc, out int sucLuc))
+        {
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucLuc, sucLuc);
+        }
     }
 
   
