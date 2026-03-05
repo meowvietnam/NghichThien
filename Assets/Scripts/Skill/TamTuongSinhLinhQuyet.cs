@@ -10,7 +10,7 @@ public class TamTuongSinhLinhQuyet : ThanThong
         HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TuKhi,tuKhi);
         float percent = (float)buffs[GetIndexLevelThanThong(caster)]/100f;
-        caster.Healing((int)(percent*(caster.characterStats.hp - caster.characterStatsCurrent.hp)));
+        caster.Healing((int)(percent*(caster.characterStatsMax.hp - caster.characterStatsCurrent.hp)));
     }
 
     public override string GetDesc(int level)

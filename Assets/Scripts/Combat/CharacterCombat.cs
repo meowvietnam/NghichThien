@@ -272,7 +272,8 @@ public class CharacterCombat : MonoBehaviour
    
     public Dictionary<BaseSkill, int> skillTichLuy = new Dictionary<BaseSkill, int>();
 
-    public CharacterStats characterStats;
+    public CharacterStats characterStatsBase;
+    public CharacterStats characterStatsMax;
     public CharacterStats characterStatsCurrent;
     public List<PlaySkillData> thanThongUseThisTurn =>
         thanThongUseThisComBat.Count > 0 ? thanThongUseThisComBat[^1] : null;
@@ -409,7 +410,8 @@ public class CharacterCombat : MonoBehaviour
     }
     public void Init(CharacterStats characterStat)
     {
-        characterStats = characterStat.Clone();
+        characterStatsBase = characterStat;
+        characterStatsMax = characterStat.Clone();
         characterStatsCurrent = characterStat.Clone();
         thanThongCoolDown.Clear();
         currentCharGender.gameObject.SetActive(true);
@@ -684,7 +686,11 @@ public class CharacterCombat : MonoBehaviour
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, value);
         }
-        
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhNac, out int anhNac))
+        {
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.AnhNac, anhNac);
+        }
+
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, 1);
 
         thanThongUseThisComBat.Add(new List<PlaySkillData>());
@@ -707,7 +713,7 @@ public class CharacterCombat : MonoBehaviour
     {
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChayMau, out int chayMau))
         {
-            AddDamageData(new List<int> { (int)(chayMau * 0.01f * (characterStats.hp - characterStatsCurrent.hp)) });
+            AddDamageData(new List<int> { (int)(chayMau * 0.01f * (characterStatsMax.hp - characterStatsCurrent.hp)) });
             TakeDame(null);
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChayMau, 1);
 
@@ -872,12 +878,15 @@ public class CharacterCombat : MonoBehaviour
             SetTextDameAnim("Né Tránh!", Color.whiteSmoke);
             Observer.Notify(EventList.GamePlay.NE_TRANH_SUCCESS, sender, this);
         }
+        Observer.Notify(EventList.GamePlay.CHARACTER_BEFORE_TAKE_DAME, sender, this);
 
         for (int i = 0; i < allDamages.Count; i++)
         {
             if (allDamages[i] == 0) continue;
             bool isActiveHuyenVu = CombatStatic.IsActiveHuyenVu(null, this);
             bool isActiveAnNac = CombatStatic.IsActiveAnNac(null, this);
+            bool isActiveAnhNac = CombatStatic.IsActiveAnhNac(null, this);
+
             if (isActiveHuyenVu || isActiveAnNac)
             {
                 allDamages[i] = -1;
@@ -898,7 +907,6 @@ public class CharacterCombat : MonoBehaviour
             else
             {
 
-                Observer.Notify(EventList.GamePlay.CHARACTER_BEFORE_TAKE_DAME, sender, this, dame);
                 TakeDame(sender, allDamages[i]);
                 Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, sender, this, dame);
             }
@@ -925,7 +933,7 @@ public class CharacterCombat : MonoBehaviour
         Debug.Log(this.gameObject.name + "nhận dame là : " + dame);
         
         characterStatsCurrent.hp -= dame;
-        characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);
+        characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStatsMax.hp);
 
         if (dame > 0)
         {
@@ -967,7 +975,7 @@ public class CharacterCombat : MonoBehaviour
 
         // Áp dụng vào chỉ số nhân vật
         characterStatsCurrent.hp += finalHpGain;
-        characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStats.hp);
+        characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStatsMax.hp);
 
         // Hiển thị hiệu ứng số nhảy (Nếu hồi phục > 0 thì mới hiện)
         if (finalHpGain > 0)

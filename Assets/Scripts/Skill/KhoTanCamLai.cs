@@ -19,7 +19,7 @@ public class KhoTanCamLai : ThanThong
         if (currentTurn == null) return;
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is KhoTanCamLai))
         {
-            currentTurn.Healing((int)currentTurn.characterStats.hp);
+            currentTurn.Healing((int)currentTurn.characterStatsMax.hp);
             currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
 
 

@@ -78,8 +78,8 @@ public class CombatManager : MonoBehaviour
     }
     private void SetUIHpBar()
     {
-        SetUIHpBar(char1.characterStatsCurrent.hp, char1.characterStats.hp, progressHpChar1, textHpChar1);
-        SetUIHpBar(char2.characterStatsCurrent.hp, char2.characterStats.hp, progressHpChar2, textHpChar2);
+        SetUIHpBar(char1.characterStatsCurrent.hp, char1.characterStatsMax.hp, progressHpChar1, textHpChar1);
+        SetUIHpBar(char2.characterStatsCurrent.hp, char2.characterStatsMax.hp, progressHpChar2, textHpChar2);
 
     }
  
@@ -135,6 +135,7 @@ public class CombatManager : MonoBehaviour
             percentTho = 10,
             hp = 200,
             tocDoBay = 20,
+            thoNguyen = 1000,
 
         });
         char2.Init(new CharacterStats()
@@ -147,6 +148,8 @@ public class CombatManager : MonoBehaviour
             percentTho = 10,
             hp = 200,
             tocDoBay = 10,
+            thoNguyen = 1000,
+
         });
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, NewTurn);
@@ -333,12 +336,7 @@ public class CombatManager : MonoBehaviour
         {
             TieuTanLinhKhi(linhKhiTieuTan);
         }
-        if (currentTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out int kiemKhi))
-        {
-            targetTurn.TakeDameByThanThong(currentTurn, new List<int> { kiemKhi });
-            targetTurn.TakeDame(currentTurn);
-
-        }
+        CombatStatic.AnhDich(currentTurn, targetTurn);
         CombatStatic.KiemKhi(currentTurn,targetTurn);
         CombatStatic.TrungDoc(targetTurn, currentTurn);
         currentTurn.EndTurn();

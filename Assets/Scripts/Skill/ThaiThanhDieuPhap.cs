@@ -7,7 +7,7 @@ public class ThaiThanhDieuPhap : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
-        caster.characterStats.hp += buffs[GetIndexLevelThanThong(caster)];
+        caster.characterStatsMax.hp += buffs[GetIndexLevelThanThong(caster)];
         caster.Healing(0);
     }
 

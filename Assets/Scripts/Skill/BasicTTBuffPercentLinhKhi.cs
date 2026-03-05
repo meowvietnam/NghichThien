@@ -16,32 +16,32 @@ public class BasicTTBuffPercentLinhKhi : ThanThong
             case ELinhKhi.None:
                 break;
             case ELinhKhi.Kim:
-                caster.characterStats.percentKim += buffPercent[GetIndexLevelThanThong(caster)];
+                caster.characterStatsMax.percentKim += buffPercent[GetIndexLevelThanThong(caster)];
                 caster.characterStatsCurrent.percentKim += buffPercent[GetIndexLevelThanThong(caster)];
 
                 break;
             case ELinhKhi.Moc:
-                caster.characterStats.percentMoc += buffPercent[GetIndexLevelThanThong(caster)];
+                caster.characterStatsMax.percentMoc += buffPercent[GetIndexLevelThanThong(caster)];
                 caster.characterStatsCurrent.percentMoc += buffPercent[GetIndexLevelThanThong(caster)];
                     
                 break;
             case ELinhKhi.Thuy:
-                caster.characterStats.percentThuy += buffPercent[GetIndexLevelThanThong(caster)];
+                caster.characterStatsMax.percentThuy += buffPercent[GetIndexLevelThanThong(caster)];
                 caster.characterStatsCurrent.percentThuy += buffPercent[GetIndexLevelThanThong(caster)];
 
                 break;
             case ELinhKhi.Hoa:
-                caster.characterStats.percentHoa += buffPercent[GetIndexLevelThanThong(caster)];
+                caster.characterStatsMax.percentHoa += buffPercent[GetIndexLevelThanThong(caster)];
                 caster.characterStatsCurrent.percentHoa += buffPercent[GetIndexLevelThanThong(caster)];
 
                 break;
             case ELinhKhi.Tho:
-                caster.characterStats.percentTho += buffPercent[GetIndexLevelThanThong(caster)];
+                caster.characterStatsMax.percentTho += buffPercent[GetIndexLevelThanThong(caster)];
                 caster.characterStatsCurrent.percentTho += buffPercent[GetIndexLevelThanThong(caster)];
 
                 break;
             case ELinhKhi.Ma:
-                caster.characterStats.percentMa += buffPercent[GetIndexLevelThanThong(caster)];
+                caster.characterStatsMax.percentMa += buffPercent[GetIndexLevelThanThong(caster)];
                 caster.characterStatsCurrent.percentMa += buffPercent[GetIndexLevelThanThong(caster)];
 
                 break;

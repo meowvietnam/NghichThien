@@ -7,7 +7,6 @@ public class ThongHuyet : ThanThong
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if(!IsCanUse(caster,target)) return;
         caster.NoiThuongAction();
         ExecuteAction(caster,target);
 

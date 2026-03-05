@@ -43,6 +43,17 @@ public class CombatStatic : MonoBehaviour
         }
         
     }
+    public static void AnhDich(CharacterCombat charSender, CharacterCombat charTakeDame)
+    {
+        if (charSender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhDich, out int anhDich))
+        {
+            charTakeDame.AddDamageData(new List<int> { anhDich });
+            charTakeDame.TakeDame(charSender);
+            charSender.Healing(anhDich);
+
+        }
+
+    }
     public static void NoiThuong(CharacterCombat charSender, CharacterCombat charTakeDame)
     {
         if (charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NoiThuong, out int noiThuong))
@@ -98,6 +109,21 @@ public class CombatStatic : MonoBehaviour
 
         }
         if (IsActiveWithPercent(50))
+        {
+            return true;
+        }
+        return false;
+
+    }
+    public static bool IsActiveAnhNac(CharacterCombat charSender, CharacterCombat charTakeDame)
+    {
+        charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhNac, out int anhNac);
+        if (anhNac <= 0)
+        {
+            return false;
+
+        }
+        if (IsActiveWithPercent(9))
         {
             return true;
         }

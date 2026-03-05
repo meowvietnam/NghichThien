@@ -42,7 +42,10 @@ public enum EBuffAndDeBuff
     PhaThe,
     Cat,
     AnNac,
-    Hon
+    Hon,
+    Anh,
+    AnhDich,
+    AnhNac
 
 }
 
@@ -250,6 +253,15 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.Hon:
                 text = "Hồn";
                 break;
+            case EBuffAndDeBuff.Anh:
+                text = "Ảnh";
+                break;
+            case EBuffAndDeBuff.AnhDich:
+                text = "Ảnh Dịch";
+                break;
+            case EBuffAndDeBuff.AnhNac:
+                text = "Ảnh Nặc";
+                break;
             default:
                 break;
         }
@@ -368,6 +380,15 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.Hon:
                 text = $"Chỉ thị vật";
+                break;
+            case EBuffAndDeBuff.Anh:
+                text = $"Chỉ thị vật";
+                break;
+            case EBuffAndDeBuff.AnhDich:
+                text = $"Kết thúc hiệp, mỗi tầng sẽ tấn công đối thủ hấp thụ 1 điểm HP";
+                break;
+            case EBuffAndDeBuff.AnhNac:
+                text = $"Có 9% tỉ lệ né tránh thần thông sát thương. Hiệp mới sau đó sẽ giải trừ trạng thái này";
                 break;
             default:
                 break;
