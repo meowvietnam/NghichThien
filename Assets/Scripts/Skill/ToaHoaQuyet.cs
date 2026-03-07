@@ -30,7 +30,7 @@ public class ToaHoaQuyet : ThanThong , BaseSkill.TuongDong
     public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)
     {
         int dameBuff = dameValueBuffs[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> {  dameBuff });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> {  dameBuff }, true);
     }
 
     public override string GetDesc(int level)

@@ -9,7 +9,7 @@ public class TrongNguyenNhuYThe : CongPhap
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out int sucThe);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out SecureInt  sucThe);
         if (sucThe > require[CurrentLevelCongPhapInCombat(caster)-1])
         {
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, buff[CurrentLevelCongPhapInCombat(caster) - 1]);

@@ -28,7 +28,7 @@ public class LacAnh : ThanThong, BaseSkill.LienKich
         int dame = dames[GetIndexLevelThanThong(caster)];
         float percent = (float)percentBuff[GetIndexLevelThanThong(caster)]/100f;
 
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { (int)(dame * (percent* countDebuff)) });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { (int)(dame * (percent* countDebuff)) }, true);
 
     }
 

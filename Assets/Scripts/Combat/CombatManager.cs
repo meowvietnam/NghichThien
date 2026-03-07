@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class LinhKhiTieuTan
 {
     public ELinhKhi eLinhKhi;
-    public int count;
+    public SecureInt count;
 }
 public enum ETuongQuan
 {
@@ -136,6 +136,7 @@ public class CombatManager : MonoBehaviour
             hp = 200,
             tocDoBay = 20,
             thoNguyen = 1000,
+            thanThuc = 50
 
         });
         char2.Init(new CharacterStats()
@@ -149,6 +150,7 @@ public class CombatManager : MonoBehaviour
             hp = 200,
             tocDoBay = 10,
             thoNguyen = 1000,
+            thanThuc = 30
 
         });
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
@@ -295,6 +297,11 @@ public class CombatManager : MonoBehaviour
             if (thanThong is BaseSkill.TuongDong thanThongTuongDong && IsTuongDong(linhKhiTieuTan))
             {
                 thanThongTuongDong.ExecuteTuongDong(caster, target);
+
+            }
+            if (thanThong is BaseSkill.ThanThuc thanThongThanThuc && (caster.GetThanThuc() > target.GetThanThuc()))
+            {
+                thanThongThanThuc.ExecuteThanThuc(caster, target);
 
             }
             target.TakeDame(caster);

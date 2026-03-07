@@ -29,7 +29,7 @@ public class LietBangQuyet : CongPhap
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int count = caster.congPhapDynamic.Count(x => x.congPhap is LietBangQuyet);
-        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SuongGia, out int suongGia);
+        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SuongGia, out SecureInt  suongGia);
         List<int> dames = (List<int>)data[2];
         int dame = dames[0];
         if(count >= require)

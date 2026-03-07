@@ -13,8 +13,8 @@ public class CanKhonHoaKiemQuyet : CongPhap
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KinhDao, out int kinhDao);
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChiThuy, out int chiThuy);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KinhDao, out SecureInt kinhDao);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChiThuy, out SecureInt chiThuy);
         int buff = buffValues[CurrentLevelCongPhapInCombat(caster) - 1];
         if (kinhDao > chiThuy)
         {

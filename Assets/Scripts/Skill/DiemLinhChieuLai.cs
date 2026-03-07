@@ -22,7 +22,7 @@ public class DiemLinhChieuLai : ThanThong
   
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out int diem);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out SecureInt diem);
         if (diem >= require)
         {
             return true;

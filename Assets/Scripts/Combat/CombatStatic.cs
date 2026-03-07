@@ -7,7 +7,7 @@ public class CombatStatic : MonoBehaviour
 {
     public static void TrungDoc(CharacterCombat charSender, CharacterCombat charTrungDoc)
     {
-        if (charTrungDoc.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out int trungDoc))
+        if (charTrungDoc.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out SecureInt trungDoc))
         {
             charTrungDoc.AddDamageData(new List<int> { (int)trungDoc });
             charTrungDoc.TakeDame(charSender);
@@ -16,7 +16,7 @@ public class CombatStatic : MonoBehaviour
     }
     public static void ThieuDot(CharacterCombat charSender, CharacterCombat charThieuDot)
     {
-        if (charThieuDot.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out int thieuDot))
+        if (charThieuDot.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt thieuDot))
         {
             charThieuDot.AddDamageData(new List<int> { (int)thieuDot });
             charThieuDot.TakeDame(charSender);
@@ -25,7 +25,7 @@ public class CombatStatic : MonoBehaviour
     }
     public static void SucThe(CharacterCombat charSender, CharacterCombat charTakeDame)
     {
-        if (charSender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out int sucThe))
+        if (charSender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out SecureInt sucThe))
         {
             charTakeDame.AddDamageData(new List<int> { sucThe });
             charTakeDame.TakeDame(charSender);
@@ -35,7 +35,7 @@ public class CombatStatic : MonoBehaviour
     }
     public static void KiemKhi(CharacterCombat charSender, CharacterCombat charTakeDame)
     {
-        if (charSender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out int kiemKhi))
+        if (charSender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out SecureInt kiemKhi))
         {
             charTakeDame.AddDamageData(new List<int> { kiemKhi });
             charTakeDame.TakeDame(charSender);
@@ -45,7 +45,7 @@ public class CombatStatic : MonoBehaviour
     }
     public static void AnhDich(CharacterCombat charSender, CharacterCombat charTakeDame)
     {
-        if (charSender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhDich, out int anhDich))
+        if (charSender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhDich, out SecureInt anhDich))
         {
             charTakeDame.AddDamageData(new List<int> { anhDich });
             charTakeDame.TakeDame(charSender);
@@ -56,7 +56,7 @@ public class CombatStatic : MonoBehaviour
     }
     public static void NoiThuong(CharacterCombat charSender, CharacterCombat charTakeDame)
     {
-        if (charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NoiThuong, out int noiThuong))
+        if (charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NoiThuong, out SecureInt noiThuong))
         {
             charTakeDame.AddDamageData(new List<int> { noiThuong });
             charTakeDame.TakeDame(charSender);
@@ -66,7 +66,7 @@ public class CombatStatic : MonoBehaviour
     }
     public static void TrienNhieu(CharacterCombat charSender, CharacterCombat charTakeDame)
     {
-        if (charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out int trienNhieu))
+        if (charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out SecureInt trienNhieu))
         {
             charTakeDame.AddDamageData(new List<int> { trienNhieu });
             charTakeDame.TakeDame(charSender);
@@ -102,7 +102,7 @@ public class CombatStatic : MonoBehaviour
     }
     public static bool IsActiveAnNac(CharacterCombat charSender, CharacterCombat charTakeDame)
     {
-        charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnNac, out int anNac);
+        charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnNac, out SecureInt anNac);
         if (anNac <= 0)
         {
             return false;
@@ -117,7 +117,7 @@ public class CombatStatic : MonoBehaviour
     }
     public static bool IsActiveAnhNac(CharacterCombat charSender, CharacterCombat charTakeDame)
     {
-        charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhNac, out int anhNac);
+        charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhNac, out SecureInt anhNac);
         if (anhNac <= 0)
         {
             return false;
@@ -132,7 +132,7 @@ public class CombatStatic : MonoBehaviour
     }
     public static bool IsActiveHuyenVu(CharacterCombat charSender, CharacterCombat charTakeDame)
     {
-        int huyenVu = 0;
+        SecureInt huyenVu = 0;
         charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HuyenVu, out huyenVu);
         if(huyenVu<=0)
         {

@@ -12,9 +12,9 @@ public class KimHongQuanNhat : ThanThong
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KietSuc, 1);
 
 
-        int sucThe = 0;
+        SecureInt sucThe = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out sucThe);
-        int kiemKhi = 0;
+        SecureInt kiemKhi = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out kiemKhi);
 
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe,sucThe);

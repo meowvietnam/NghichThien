@@ -20,7 +20,7 @@ public class CuuUThu : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.characterStatsBase.thoNguyen -= tieuHao;
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Anh, out int anh);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Anh, out SecureInt anh);
         int dameHP = (int)(percent * caster.characterStatsCurrent.hp / 100f);
         int dame = dames[GetIndexLevelThanThong(caster)] + anh * dames2[GetIndexLevelThanThong(caster)] + dameHP;
         caster.AddDamageData(new System.Collections.Generic.List<int> { dameHP });

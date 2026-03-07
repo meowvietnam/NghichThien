@@ -12,7 +12,7 @@ public class VanVuKiemPhap : ThanThong
     {
         KiemY(caster);
         target.TakeDameByThanThong(caster, new List<int> { dames[GetIndexLevelThanThong(caster)] }, false);
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HuyenVu, out int huyenVu);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HuyenVu, out SecureInt  huyenVu);
         if(huyenVu > 0)
         {
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, huyenVu * addKiemKhi);

@@ -8,14 +8,14 @@ public class HoanTran : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
-        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Cat, out int cat);
+        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Cat, out SecureInt  cat);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, cat);
         target.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Cat, cat);
 
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
-    {   target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Cat, out int cat);
+    {   target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Cat, out SecureInt  cat);
         if(cat>0)
         {
             return true;

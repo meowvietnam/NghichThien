@@ -20,7 +20,7 @@ public class BasicTTDealDame : ThanThong, BaseSkill.LienKich
 
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
     {
-        target.TakeDameByThanThong(caster, new List<int> { dameLienKich[GetIndexLevelThanThong(caster)] });
+        target.TakeDameByThanThong(caster, new List<int> { dameLienKich[GetIndexLevelThanThong(caster)] },true);
         Debug.Log("call lien kich basse tt dame");
 
     }

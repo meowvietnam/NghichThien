@@ -17,7 +17,7 @@ public class BangPhachKinh : CongPhap
     private int require = 50;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SuongGia, out int suongGia);
+        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SuongGia, out SecureInt suongGia);
         if(suongGia < require)
         {
             target.AddBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, suongGiaValues[CurrentLevelCongPhapInCombat(caster)-1]);

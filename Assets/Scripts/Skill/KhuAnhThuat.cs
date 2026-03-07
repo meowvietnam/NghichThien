@@ -21,7 +21,7 @@ public class KhuAnhThuat : ThanThong , BaseSkill.TuongSinh , BaseSkill.TuongKhac
 
     public void ExecuteTuongSinh(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhDich, out int anhDich);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhDich, out SecureInt  anhDich);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Anh,anhDich * buffSinh);
     }
 

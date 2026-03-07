@@ -23,7 +23,7 @@ public class SaLao : ThanThong
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out int tran);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt  tran);
         if (tran > 0)
         {
             return true;

@@ -12,7 +12,7 @@ public class PhanThienCong : CongPhap
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out int myThieuDot);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt  myThieuDot);
         if(CheckIsEqualETypeSkill(caster))
         {
             int dame = buffValues[CurrentLevelCongPhapInCombat(caster)-1] * myThieuDot;

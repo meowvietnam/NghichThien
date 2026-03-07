@@ -7,11 +7,11 @@ using UnityEngine;
 public class CongPhapMono
 {
     public CongPhap congPhap;
-    public int level = 1;
+    public SecureInt level;
 }
 public abstract class CongPhap : BaseSkill
 {
-    [SerializeField] private int tocDoTuLuyenBase;
+    [SerializeField] private SecureInt tocDoTuLuyenBase;
 
     public virtual void EquipCongPhap(CharacterStats stats, int level)
     {
@@ -66,7 +66,7 @@ public abstract class CongPhap : BaseSkill
         var equip = GetCongPhapMono(caster.congPhapEquip);
 
         // Trả về level nếu tìm thấy, ngược lại trả về 0 (hoặc 1 tùy logic của bạn)
-        return equip != null ? equip.level : 1;
+        return equip != null || equip.level.Value != 0 ? equip.level : 1;
     }
 
     public abstract void InitPosCallExecute(CharacterCombat caster);

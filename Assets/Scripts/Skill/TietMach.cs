@@ -19,7 +19,7 @@ public class TietMach : ThanThong , BaseSkill.TuongDong
 
     public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)
     {
-        target.TakeDameByThanThong(caster, new List<int> { buffDame[GetIndexLevelThanThong(caster)] });
+        target.TakeDameByThanThong(caster, new List<int> { buffDame[GetIndexLevelThanThong(caster)]},true);
     }
 
     public override string GetDesc(int level)

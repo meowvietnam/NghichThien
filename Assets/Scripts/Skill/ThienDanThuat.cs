@@ -29,7 +29,7 @@ public class ThienDanThuat : ThanThong
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is ThienDanThuat) && CheckIsEqualETypeSkill(currentTurn))
         {
             int count = currentTurn.specialThanThongImpactAfterPlaySkill.Count(x => x is ThienDanThuat);
-            targetTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out int danLuc);
+            targetTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out SecureInt  danLuc);
             targetTurn.AddDamageData(new System.Collections.Generic.List<int> { buffValues[GetIndexLevelThanThong(currentTurn)] * danLuc * count });
             currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
 

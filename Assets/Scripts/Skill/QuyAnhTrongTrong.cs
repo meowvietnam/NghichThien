@@ -16,7 +16,7 @@ public class QuyAnhTrongTrong : ThanThong
     {
         HauKeVoLuc(caster);
         int require = tieuHaos[GetIndexLevelThanThong(caster)];
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhDich, out int anhDich);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhDich, out SecureInt  anhDich);
         int count = anhDich / require;
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.AnhDich, count * buffValues[GetIndexLevelThanThong(caster)]);
 
@@ -24,7 +24,7 @@ public class QuyAnhTrongTrong : ThanThong
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhDich, out int anhDich);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhDich, out SecureInt  anhDich);
         int require = tieuHaos[GetIndexLevelThanThong(caster)];
         if (anhDich >= require)
         {

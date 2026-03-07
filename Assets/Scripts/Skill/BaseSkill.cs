@@ -45,7 +45,11 @@ public enum EBuffAndDeBuff
     Hon,
     Anh,
     AnhDich,
-    AnhNac
+    AnhNac,
+    ChanLongChiHuyet,
+    NgungThan,
+    ThanThuong,
+
 
 }
 
@@ -65,6 +69,7 @@ public abstract class BaseSkill : BaseItemData
         EBuffAndDeBuff.ThieuDot,
         EBuffAndDeBuff.DanLuc,
         EBuffAndDeBuff.PhaThe,
+        EBuffAndDeBuff.ThanThuong,
     };
     public static List<EBuffAndDeBuff> eBuffs = Enum.GetValues(typeof(EBuffAndDeBuff))
     .Cast<EBuffAndDeBuff>()
@@ -98,7 +103,8 @@ public abstract class BaseSkill : BaseItemData
         TuongDong,
         KiemY,
         AmKinh,
-        TranPhap
+        TranPhap,
+        ThanThuc
     }
     public ETierSkill eTierSkill;
     public ETypeSkill[] eTypeSkill;
@@ -132,6 +138,11 @@ public abstract class BaseSkill : BaseItemData
     public interface TuongDong
     {
         public abstract void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target);
+
+    }
+    public interface ThanThuc
+    {
+        public abstract void ExecuteThanThuc(CharacterCombat caster, CharacterCombat target);
 
     }
     public abstract string GetDesc(int level);
@@ -262,6 +273,15 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.AnhNac:
                 text = "Ảnh Nặc";
                 break;
+            case EBuffAndDeBuff.ChanLongChiHuyet:
+                text = "Chân Long Chi Huyết";
+                break;
+            case EBuffAndDeBuff.NgungThan:
+                text = "Ngưng Thần";
+                break;
+            case EBuffAndDeBuff.ThanThuong:
+                text = "Thần Thương";
+                break;
             default:
                 break;
         }
@@ -390,6 +410,15 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.AnhNac:
                 text = $"Có 9% tỉ lệ né tránh thần thông sát thương. Hiệp mới sau đó sẽ giải trừ trạng thái này";
                 break;
+            case EBuffAndDeBuff.ChanLongChiHuyet:
+                text = $"Bắt đầu hiệp, Gỡ ra 10 tầng trạng thái tiêu cực của bản thân";
+                break;
+            case EBuffAndDeBuff.NgungThan:
+                text = $"Mỗi tầng thần thức +1";
+                break;
+            case EBuffAndDeBuff.ThanThuong:
+                text = $"Mỗi tầng thần thức -1";
+                break;
             default:
                 break;
         }
@@ -434,6 +463,10 @@ public abstract class BaseSkill : BaseItemData
                 text = "Trận Pháp";
 
                 break;
+            case EKeyWord.ThanThuc:
+                text = "Thần Thức";
+
+                break;
             default:
                 break;
         }
@@ -474,6 +507,9 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EKeyWord.TranPhap:
                 text = "Mỗi cuộc chiến chỉ có thể sử dụng một lần";
+                break;
+            case EKeyWord.ThanThuc:
+                text = "Nếu thần thức lớn hơn đối thủ thì sẽ kích hoạt";
                 break;
             default:
                 break;

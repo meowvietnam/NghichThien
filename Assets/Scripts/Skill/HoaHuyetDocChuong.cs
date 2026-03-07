@@ -7,7 +7,7 @@ public class HoaHuyetDocChuong : ThanThong
 {
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        int trungDoc = 0;
+        SecureInt trungDoc = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out trungDoc);
         HauKeVoLuc(caster);
 
@@ -22,7 +22,7 @@ public class HoaHuyetDocChuong : ThanThong
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        int trungDoc = 0;
+        SecureInt trungDoc = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out trungDoc);
         return trungDoc > 0;
     }

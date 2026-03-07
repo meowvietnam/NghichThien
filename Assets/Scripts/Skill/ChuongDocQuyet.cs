@@ -10,7 +10,7 @@ public class ChuongDocQuyet : ThanThong , BaseSkill.TuongDong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        int trungDoc = 0;
+        SecureInt trungDoc = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out trungDoc);
         if(trungDoc > 0)
         {
@@ -24,7 +24,7 @@ public class ChuongDocQuyet : ThanThong , BaseSkill.TuongDong
     public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)
     {
         int dame = dameBuffs[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, true);
 
     }
 

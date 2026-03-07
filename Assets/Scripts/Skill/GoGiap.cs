@@ -13,7 +13,7 @@ public class GoGiap : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, buffValues[GetIndexLevelThanThong(caster)]);
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out int hoTrao);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt hoTrao);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, hoTrao);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao,hoTrao);
 

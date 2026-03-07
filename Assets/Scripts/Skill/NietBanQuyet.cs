@@ -29,9 +29,9 @@ public class NietBanQuyet : CongPhap
         {
             RemoveCongPhap(target);
             target.SetHp(1);
-            target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out int diem);
-            target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out int hoaDiem);
-            target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out int thieuDot);
+            target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out SecureInt  diem);
+            target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt  hoaDiem);
+            target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt  thieuDot);
             int buff = buffValues[CurrentLevelCongPhapInCombat(target) - 1];
             int heal = (diem + hoaDiem + thieuDot) * buff;
             target.Healing(heal);

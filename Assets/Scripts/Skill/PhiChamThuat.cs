@@ -21,7 +21,7 @@ public class PhiChamThuat : ThanThong
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        int cham = 0;
+        SecureInt cham = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Cham, out cham);
       
         return cham > 0;

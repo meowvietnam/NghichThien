@@ -39,7 +39,7 @@ public class LoanAnhSat : ThanThong
             target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
         }
         int tieuHao2 = tieuHaos2[GetIndexLevelThanThong(caster)];
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Anh, out int anh);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Anh, out SecureInt  anh);
         if(anh >= tieuHao2)
         {
             caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Anh, tieuHao2);

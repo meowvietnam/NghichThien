@@ -8,7 +8,7 @@ public class ThonLinhChu : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out int hoTrao);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt  hoTrao);
         caster.Healing(hoTrao);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hoTrao);
 

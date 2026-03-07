@@ -43,7 +43,7 @@ public class DanDocChu : ThanThong
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        int countTrungDoc = 0;
+        SecureInt countTrungDoc = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out countTrungDoc);
         return countTrungDoc > 0;
     }

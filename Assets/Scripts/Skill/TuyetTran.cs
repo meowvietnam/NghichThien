@@ -8,7 +8,7 @@ public class TuyetTran : ThanThong , BaseSkill.LienKich
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
     {
         int dame = damebuffs[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame } ,true);
     }
     [SerializeField]
     private int[] dames = new int[]
@@ -38,7 +38,7 @@ public class TuyetTran : ThanThong , BaseSkill.LienKich
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out int tran);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt  tran);
         if (tran >= requires[GetIndexLevelThanThong(caster)])
         {
             return true;

@@ -13,7 +13,7 @@ public class TuTuongThienDanLuc : CongPhap
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out int danLuc);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out SecureInt  danLuc);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, danLuc * buffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
 
 

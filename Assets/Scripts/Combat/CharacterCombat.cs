@@ -19,47 +19,47 @@ using static UnityEngine.Networking.UnityWebRequest;
 [System.Serializable]
 public class CharacterStats
 {    // chỉ số
-    public float percentKim;
-    public float percentMoc;
-    public float percentThuy;
-    public float percentHoa;
-    public float percentTho;
-    public float percentMa;
+    public SecureFloat percentKim;
+    public SecureFloat percentMoc;
+    public SecureFloat percentThuy;
+    public SecureFloat percentHoa;
+    public SecureFloat percentTho;
+    public SecureFloat percentMa;
 
-    public int level;
-    public float hp;
-    public float nameUser;
-    public int tuoiTac;
-    public int thoNguyen;
-    public int tuChat;
-    public int thanThuc;
-    public int ngoTinh;
-    public int tocDoBay;
-    public int tamCanh;
-    public int danDoc;
-    public int money;
-    public int idLinhCan;
+    public SecureInt level;
+    public SecureFloat hp;
+    public string nameUser;
+    public SecureInt tuoiTac;
+    public SecureInt thoNguyen;
+    public SecureInt tuChat;
+    public SecureInt thanThuc;
+    public SecureInt ngoTinh;
+    public SecureInt tocDoBay;
+    public SecureInt tamCanh;
+    public SecureInt danDoc;
+    public SecureInt money;
+    public SecureInt idLinhCan;
     // tông môn
-    public int chucVi;
-    public int monPhai;
+    public SecureInt chucVi;
+    public SecureInt monPhai;
     // skill
-    public int[] thanThongOwner;
-    public int[] thanThongEquip;
+    public SecureInt[] thanThongOwner;
+    public SecureInt[] thanThongEquip;
     public class CongPhapSave
     {
-        public int id;
-        public int level = 1;
+        public SecureInt id;
+        public SecureInt level;
     }
     public CongPhapSave[] congPhapOwner;
     // công pháp used
-    // -1 là chưa trang bị
-    public int donThuatUsed = -1;
-    public int phuTu1Used = -1;
-    public int phuTu2Used= -1;
-    public int phuTu3Used = -1;
-    public int phuTu4Used = -1;
-    public int chuTu1Used = -1;
-    public int chuTu2Used = -1;
+    // -1 hoặc là 0 là chưa trang bị
+    public SecureInt donThuatUsed;
+    public SecureInt phuTu1Used;
+    public SecureInt phuTu2Used ;
+    public SecureInt phuTu3Used ;
+    public SecureInt phuTu4Used ;
+    public SecureInt chuTu1Used ;
+    public SecureInt chuTu2Used ;
    
     public CharacterStats Clone()
     {
@@ -85,7 +85,7 @@ public class CharacterCombat : MonoBehaviour
     [SerializeField]
     public List<CongPhapMono> congPhapDynamic = new List<CongPhapMono>();
     [SerializeField]
-    public int allDameTaked;
+    public SecureInt allDameTaked;
 
     public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill = new List<LinhKhiTieuTan>();
     public List<ThanThong> specialThanThongImpactAfterPlaySkill = new List<ThanThong>();
@@ -94,15 +94,15 @@ public class CharacterCombat : MonoBehaviour
     public class AmKinhEntry
     {
         public AmKinhTT ThanThong;
-        public int RemainingTurns;
+        public SecureInt RemainingTurns;
 
-        public AmKinhEntry(AmKinhTT thanThong, int turns)
+        public AmKinhEntry(AmKinhTT thanThong, SecureInt turns)
         {
             this.ThanThong = thanThong;
             this.RemainingTurns = turns;
         }
     }
-    public void AddAmKinhTT(AmKinhTT thanThong ,int countHiep)
+    public void AddAmKinhTT(AmKinhTT thanThong , SecureInt countHiep)
     {
         if (thanThong != null && thanThong is AmKinhTT) ;
         listAmKinhTT.Add(new AmKinhEntry(thanThong, countHiep));
@@ -165,29 +165,35 @@ public class CharacterCombat : MonoBehaviour
         thanThongUseThisComBat[^1].Add(thanThongCurrentUse);
         if (!BaseSkill.CheckIsEqualETypeSkill(this,new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Hoa }))
         {
-            if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out int hoaDiem))
+            if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt hoaDiem))
             {
                 RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoaDiem, hoaDiem);
             }
         }
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out int danLuc))
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out SecureInt danLuc))
         {
             for (int i = 0; i < danLuc; i++)
             {
                 TieuTanLinhKhi(GetRandomLinhKhiConLai(), 1);
             }
         }
-       
+        StartCoroutine(DelayFrame());
         Debug.Log(this.thanThongCurrentUse.thanThong.name);
         Debug.Log(this.thanThongOldUse?.thanThong.name);
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnNac, out int anNac))
-        {
-            RemoveBuffAndDebuffCount(EBuffAndDeBuff.AnNac, anNac);
-        }
+       
         CombatStatic.TrienNhieu(null,this);
       
 
     }
+    private IEnumerator DelayFrame()
+    {
+        yield return null;
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnNac, out SecureInt anNac))
+        {
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.AnNac, 1);
+        }
+
+    }    
    
     public void StartAnimPunch()
     {
@@ -262,15 +268,15 @@ public class CharacterCombat : MonoBehaviour
             textDame.gameObject.Recycle();
         });
     }
-    public int khiKim;
-    public int khiMoc;
-    public int khiThuy;
-    public int khiHoa;
-    public int khiTho;
-    public int khiMa;
+    public SecureInt khiKim;
+    public SecureInt khiMoc;
+    public SecureInt khiThuy;
+    public SecureInt khiHoa;
+    public SecureInt khiTho;
+    public SecureInt khiMa;
 
    
-    public Dictionary<BaseSkill, int> skillTichLuy = new Dictionary<BaseSkill, int>();
+    public Dictionary<BaseSkill, SecureInt> skillTichLuy = new Dictionary<BaseSkill, SecureInt>();
 
     public CharacterStats characterStatsBase;
     public CharacterStats characterStatsMax;
@@ -312,7 +318,7 @@ public class CharacterCombat : MonoBehaviour
 
 
 
-    public bool IsSkillTichLuyCanUse(BaseSkill thanThong, int linhKhiNeedSave , int require )
+    public bool IsSkillTichLuyCanUse(BaseSkill thanThong, SecureInt linhKhiNeedSave , SecureInt require )
     {
         // 1. Tìm chính xác cái Key đang nằm trong Dictionary dựa trên điều kiện của bạn
         var key = skillTichLuy.Keys.FirstOrDefault(x =>
@@ -350,10 +356,10 @@ public class CharacterCombat : MonoBehaviour
     public class CountStack<T>
     {
         public T type;
-        public int count;
+        public SecureInt count;
     }
-    public Dictionary<ThanThong , int> thanThongCoolDown = new Dictionary<ThanThong,int>();
-    public Dictionary<EBuffAndDeBuff, int> buffAndDebuffCount = new  Dictionary <EBuffAndDeBuff, int>();
+    public Dictionary<ThanThong , SecureInt> thanThongCoolDown = new Dictionary<ThanThong, SecureInt>();
+    public Dictionary<EBuffAndDeBuff, SecureInt> buffAndDebuffCount = new  Dictionary <EBuffAndDeBuff, SecureInt>();
 
     public void AddThanThongCoolDown(ThanThong thanThong, int count)
     {
@@ -369,21 +375,19 @@ public class CharacterCombat : MonoBehaviour
     public void AddBuffAndDebuffCount(EBuffAndDeBuff type, int count)
     {
 
-        buffAndDebuffCount[type] =
-        buffAndDebuffCount.TryGetValue(type, out var current)
-        ? current + count
-        : count;
-        Debug.Log("Vao day3 is Count + type " + count + type);
+        buffAndDebuffCount.TryGetValue(type, out var current);
 
-        Observer.Notify(EventList.GamePlay.ADD_BUFF, this, type, buffAndDebuffCount[type], current);
+        SecureInt newValue = current + count;
+        buffAndDebuffCount[type] = newValue;
 
+        Observer.Notify(EventList.GamePlay.ADD_BUFF, this, type, (int)newValue, (int)current);
 
     }
     [Button]
     public void TryGetCountBuff(EBuffAndDeBuff type)
     {
 
-        int count = 0;
+        SecureInt count = 0;
         buffAndDebuffCount.TryGetValue(type, out count);
         Debug.Log(type + " " + count);
 
@@ -391,7 +395,7 @@ public class CharacterCombat : MonoBehaviour
     }
     public void RemoveBuffAndDebuffCount(EBuffAndDeBuff type, int count)
     {
-        if (!buffAndDebuffCount.TryGetValue(type, out int current))
+        if (!buffAndDebuffCount.TryGetValue(type, out SecureInt current))
             return; // không có buff thì khỏi remove
 
         int newValue = current - count;
@@ -406,8 +410,19 @@ public class CharacterCombat : MonoBehaviour
             buffAndDebuffCount[type] = newValue;
         }
 
-        Observer.Notify(EventList.GamePlay.ADD_BUFF, this, type, newValue , current);
+        Observer.Notify(EventList.GamePlay.ADD_BUFF, this, type, (int)newValue, (int)current);
     }
+    [Button]
+    public int GetThanThuc()
+    {
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThanThuong, out SecureInt thanThuong);
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NgungThan, out SecureInt ngungThan);
+        int thanThuc = characterStatsCurrent.thanThuc + ngungThan - thanThuong;
+        thanThuc = Mathf.Clamp(thanThuc, 0, int.MaxValue);
+        Debug.Log("thanThuc" + thanThuc);
+        return thanThuc;
+
+    }    
     public void Init(CharacterStats characterStat)
     {
         characterStatsBase = characterStat;
@@ -468,13 +483,13 @@ public class CharacterCombat : MonoBehaviour
         Observer.Notify(EventList.GamePlay.ADJUST_LINHKHI, this,elinhKhi,count );
 
     }
-    public int totalKhi;
+    public SecureInt totalKhi;
 
-    public int totalKhiRandom;
+    public SecureInt totalKhiRandom;
     public int CurrentLinhKhi => khiKim + khiMoc+khiThuy+khiHoa+khiTho+khiMa;
 
     public int baseCountHapThuLinhKhi => CurrentLinhKhi>=totalKhi? totalKhiRandom - totalKhi : totalKhiRandom - CurrentLinhKhi;
-    public int countHapThuLinhKhiNewTurn;
+    public SecureInt countHapThuLinhKhiNewTurn;
 
     private void InitTotalKhi()
     {
@@ -577,9 +592,9 @@ public class CharacterCombat : MonoBehaviour
     }
     public void HapThuLinhKhiNewTurn(out Dictionary<ELinhKhi, int> dictHapThuLinhKhi)
     {
-           
-        int treKhi = 0;
-        int tuKhi = 0;
+
+        SecureInt treKhi = 0;
+        SecureInt tuKhi = 0;
 
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TreKhi, out treKhi);
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TuKhi, out tuKhi);
@@ -682,13 +697,34 @@ public class CharacterCombat : MonoBehaviour
         {
             AddThanThongCoolDown(key, -1);
         }
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out int value))
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out SecureInt value))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, value);
         }
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhNac, out int anhNac))
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhNac, out SecureInt anhNac))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.AnhNac, anhNac);
+        }
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanLongChiHuyet,out SecureInt chanLongChiHuyet);
+        if(chanLongChiHuyet > 0)
+        {
+            var debuffKeys = buffAndDebuffCount.Keys
+                    .Where(key => BaseSkill.eDebuffs.Contains(key))
+                    .ToList();
+            // 2. Kiểm tra xem có debuff nào để xóa không
+            if (debuffKeys.Count > 0)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    // 3. Chọn ngẫu nhiên một key trong danh sách debuff đã lọc
+                    var randomDebuffKey = debuffKeys[CombatStatic.IndexRandom(0, debuffKeys.Count)];
+
+                    // 4. Thực hiện xóa 1 count
+                    RemoveBuffAndDebuffCount(randomDebuffKey, 1);
+                }
+               
+            }
+            
         }
 
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, 1);
@@ -698,8 +734,8 @@ public class CharacterCombat : MonoBehaviour
     }
     public bool IsKietSuc()
     {
-        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KietSuc, out int kietSuc);
-        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DongKet, out int dongKet);
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KietSuc, out SecureInt kietSuc);
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DongKet, out SecureInt dongKet);
 
         if (dongKet > 0 || kietSuc > 0)
         {
@@ -711,7 +747,7 @@ public class CharacterCombat : MonoBehaviour
     [Button]   
     public void EndTurn()
     {
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChayMau, out int chayMau))
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChayMau, out SecureInt chayMau))
         {
             AddDamageData(new List<int> { (int)(chayMau * 0.01f * (characterStatsMax.hp - characterStatsCurrent.hp)) });
             TakeDame(null);
@@ -719,20 +755,20 @@ public class CharacterCombat : MonoBehaviour
 
 
         }
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DeTonThuong, out int value))
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DeTonThuong, out SecureInt value))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, value);
         }
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.GiamTonThuong, out int giamTonThuong))
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.GiamTonThuong, out SecureInt giamTonThuong))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, giamTonThuong);
         }
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TriLieu, out int triLieu))
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TriLieu, out SecureInt triLieu))
         {
             Healing(triLieu);
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TriLieu, 1);
         }
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out int trienNhieu))
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out SecureInt trienNhieu))
         {
 
             if (specialThanThongImpactAfterPlaySkill.Any(x => x is TrienTiChu))
@@ -744,7 +780,7 @@ public class CharacterCombat : MonoBehaviour
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieu);
 
         }
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.PhaThe, out int phaThe))
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.PhaThe, out SecureInt phaThe))
         {
 
             
@@ -752,12 +788,12 @@ public class CharacterCombat : MonoBehaviour
 
         }
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, 1);
-        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out int hoaDiem);
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt hoaDiem);
         if(hoaDiem>0)
         {
             AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, 1);
         }    
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucLuc, out int sucLuc))
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucLuc, out SecureInt sucLuc))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucLuc, sucLuc);
         }
@@ -791,8 +827,8 @@ public class CharacterCombat : MonoBehaviour
         }
         else
         {
-            // Nếu không cộng dồn, luôn luôn thêm một phần tử mới vào List
-            // Việc này giúp lưu lại từng đòn đánh riêng biệt (không ghi đè)
+            foreach (var d in dame) Debug.Log("PHÁT HIỆN ADD RANGE GIÁ TRỊ: " + d);
+
             allDamages.AddRange(dame);
         }
     }
@@ -800,10 +836,10 @@ public class CharacterCombat : MonoBehaviour
     [Button]
     public void TakeDameByThanThong(CharacterCombat sender, List<int> dames, bool isCongDon = false)
     {
-        int chanKim = 0, chanMoc = 0, chanThuy = 0, chanHoa = 0, chanTho = 0, chanKiem = 0;
+        SecureInt chanKim = 0, chanMoc = 0, chanThuy = 0, chanHoa = 0, chanTho = 0, chanKiem = 0;
 
         // ở đây là thằng nhận dame => lấy sương giá của sender
-        sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SuongGia, out int suongGia);
+        sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SuongGia, out SecureInt suongGia);
         bool isChanKim = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanKim, out chanKim)
                          && BaseSkill.CheckIsEqualETypeSkill(sender, new[] { BaseSkill.ETypeSkill.Kim });
 
@@ -822,10 +858,10 @@ public class CharacterCombat : MonoBehaviour
         bool isChanKiem = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanKiem, out chanKiem)
                           && BaseSkill.CheckIsEqualETypeSkill(sender, new[] { BaseSkill.ETypeSkill.Kiem });
 
-        sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucLuc, out int sucLuc);
-        sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out int diem);
+        sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucLuc, out SecureInt sucLuc);
+        sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out SecureInt diem);
 
-        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out int hoaDiem);
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt hoaDiem);
         sender.AddDamageData(new List<int> { hoaDiem}, false);
         sender.TakeDame(this);
 
@@ -866,7 +902,7 @@ public class CharacterCombat : MonoBehaviour
         if (isChanKiem) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanKiem, chanKiem);
 
         AddDamageData(dames, isCongDon);
-
+    
         Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, sender, this, dames);
 
     }
@@ -967,7 +1003,7 @@ public class CharacterCombat : MonoBehaviour
     }    
     public void Healing(int hp)
     {
-        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.PhaThe, out int phaThe);
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.PhaThe, out SecureInt phaThe);
 
         // Tính toán hệ số giảm hồi phục (mỗi điểm phaThe giảm 50%)
         float reductionFactor = Mathf.Pow(0.5f, phaThe);

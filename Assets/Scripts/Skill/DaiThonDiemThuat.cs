@@ -13,7 +13,7 @@ public class DaiThonDiemThuat : ThanThong
     {
 
 
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out int diem);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out SecureInt diem);
         int heal = diem * healValues[GetIndexLevelThanThong(caster)];
         caster.Healing(heal);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Diem, diem);
@@ -23,7 +23,7 @@ public class DaiThonDiemThuat : ThanThong
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out int diem);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out SecureInt diem);
         if (diem > 0)
         {
             return true;

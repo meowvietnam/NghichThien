@@ -19,7 +19,7 @@ public class KimMangThuat : ThanThong , BaseSkill.LienKich
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
     {
         int dame = dameBuffs[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame },true);
     }
 
     public override string GetDesc(int level)

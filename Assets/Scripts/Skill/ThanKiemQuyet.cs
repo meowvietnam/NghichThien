@@ -14,7 +14,7 @@ public class ThanKiemQuyet : CongPhap
 
         if(CheckIsEqualETypeSkill(caster))
         {
-            int dame = 0;
+            SecureInt dame = 0;
             caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out dame);
 
             dame *= buff[CurrentLevelCongPhapInCombat(caster) - 1];
@@ -40,7 +40,7 @@ public class ThanKiemQuyet : CongPhap
     }
     public void Execute2(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        int count = 0;
+        SecureInt count = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi , out count);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, count);
 

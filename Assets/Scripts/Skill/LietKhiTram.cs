@@ -5,7 +5,7 @@ public class LietKhiTram : ThanThong
 {
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out int hoTrao);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt  hoTrao);
 
         target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { hoTrao });
 

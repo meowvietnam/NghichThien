@@ -1,5 +1,5 @@
-using UnityEngine;
-
+﻿using UnityEngine;
+[System.Serializable]
 public class SecureInt
 {
     [SerializeField] int encA;
@@ -19,6 +19,12 @@ public class SecureInt
     {
         get
         {
+            // Nếu các biến enc/key chưa được khởi tạo (bằng 0), hãy lấy từ fakeValue
+            if (encA == 0 && keyA == 0)
+            {
+                Set(fakeValue);
+                return fakeValue;
+            }
             int partA = encA ^ keyA;
             int partB = encB ^ keyB;
 

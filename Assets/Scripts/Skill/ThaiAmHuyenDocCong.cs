@@ -11,7 +11,7 @@ public class ThaiAmHuyenDocCong : CongPhap
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        int trungDoc = 0;
+        SecureInt trungDoc = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out trungDoc);
         if (trungDoc > 0 && CheckIsEqualETypeSkill(caster))
         {

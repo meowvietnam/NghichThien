@@ -19,7 +19,7 @@ public class LienNhac : ThanThong
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out int tran);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt  tran);
 
         return tran>= require;
     }

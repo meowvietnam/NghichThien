@@ -12,7 +12,7 @@ public class PhanKhiThuat : ThanThong
 
 
         target.TakeDameByThanThong(caster, new List<int> { dames[GetIndexLevelThanThong(caster)] }, false);
-        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out int thieuDot);
+        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt  thieuDot);
         if(thieuDot > 0)
         {
             // Lấy linh khí hợp lệ

@@ -34,7 +34,7 @@ public class TrienTiChu : ThanThong
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        int trienNhieu = 0;
+        SecureInt trienNhieu = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out trienNhieu);
         return trienNhieu > 0;
     }

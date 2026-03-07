@@ -21,15 +21,15 @@ public class BatCucBang : ThanThong , BaseSkill.TuongKhac
 
 
     }
-    private void ActionBCB(CharacterCombat caster, CharacterCombat target , int[] dames)
+    private void ActionBCB(CharacterCombat caster, CharacterCombat target , int[] dames , bool isCongDon = false)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, treKhi);
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame } , isCongDon);
     }    
     public void ExecuteTuongKhac(CharacterCombat caster, CharacterCombat target)
     {
-        ActionBCB(caster, target, buffValues);
+        ActionBCB(caster, target, buffValues , true);
     }
 
     public override string GetDesc(int level)

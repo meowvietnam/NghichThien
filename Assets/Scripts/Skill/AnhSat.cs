@@ -31,7 +31,7 @@ public class AnhSat : ThanThong
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Anh, out int anh);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Anh, out SecureInt anh);
         int require = tieuHaos[GetIndexLevelThanThong(caster)];
         if (anh >= require)
         {

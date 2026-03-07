@@ -10,7 +10,7 @@ public class VanTranHoaTho : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out int tran);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt  tran);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanTho, tran * buffValues[GetIndexLevelThanThong(caster)]);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, tran);
     }

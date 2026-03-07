@@ -23,7 +23,7 @@ public class ThienTinhNhuocVu : ThanThong
         int dame = dames[GetIndexLevelThanThong(caster)];
         int damebuff = damebuffs[GetIndexLevelThanThong(caster)];
 
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out int tran);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt  tran);
         int require = tranRequires[GetIndexLevelThanThong(caster)];
 
         int v = tran / require;

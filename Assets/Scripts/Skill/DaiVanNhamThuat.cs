@@ -12,7 +12,7 @@ public class DaiVanNhamThuat : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out int danLuc);
+        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out SecureInt danLuc);
         if(danLuc>0)
         {
             dame *= 2;

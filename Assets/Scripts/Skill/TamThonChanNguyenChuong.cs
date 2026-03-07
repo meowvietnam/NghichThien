@@ -14,7 +14,7 @@ public class TamThonChanNguyenChuong : ThanThong
     };
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TreKhi, out int treKhi);
+        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TreKhi, out SecureInt  treKhi);
         int dame = dames[GetIndexLevelThanThong(caster)] + treKhi * buffValues[GetIndexLevelThanThong(caster)];
         target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
 

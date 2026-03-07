@@ -22,7 +22,7 @@ public class TamMuoiChanHoa : ThanThong , BaseSkill.TuongDong
 
     public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)
     {
-        target.TakeDameByThanThong(caster, new List<int> { dameBuffs[GetIndexLevelThanThong(caster)] }, false);
+        target.TakeDameByThanThong(caster, new List<int> { dameBuffs[GetIndexLevelThanThong(caster)] }, true);
     }
 
     public override string GetDesc(int level)

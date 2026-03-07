@@ -13,8 +13,8 @@ public class DaiThonDietThuat : ThanThong
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out int hoTraoTarget);
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out int hoTraoCaster);
+        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt hoTraoTarget);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt hoTraoCaster);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hoTraoCaster);
         target.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hoTraoTarget);
 

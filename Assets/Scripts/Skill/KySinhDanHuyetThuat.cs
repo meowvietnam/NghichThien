@@ -9,7 +9,7 @@ public class KySinhDanHuyetThuat : ThanThong
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
-        int trienNhieu = 0;
+        SecureInt trienNhieu = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out trienNhieu);
         if(trienNhieu> 0)
         {

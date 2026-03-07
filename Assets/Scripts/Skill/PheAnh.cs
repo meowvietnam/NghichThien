@@ -34,7 +34,7 @@ public class PheAnh : ThanThong , BaseSkill.TuongKhac
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhDich, out int anhDich);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhDich, out SecureInt  anhDich);
         int require = tieuHaos[GetIndexLevelThanThong(caster)];
         if (anhDich >= require)
         {

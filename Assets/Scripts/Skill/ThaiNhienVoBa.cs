@@ -12,7 +12,7 @@ public class ThaiNhienVoBa : ThanThong
     {
         HauKeVoLuc(caster);
 
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out int kiemKhi);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out SecureInt  kiemKhi);
 
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKiem, chanKiemPerKiemKhiValues[GetIndexLevelThanThong(caster)] * kiemKhi);
 

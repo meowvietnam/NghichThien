@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-
+[System.Serializable]
 public class SecureFloat
 {
     [SerializeField] int encA;
@@ -20,6 +20,11 @@ public class SecureFloat
     {
         get
         {
+            if (encA == 0 && keyA == 0)
+            {
+                Set(fakeValue);
+                return fakeValue;
+            }
             float partA = IntToFloat(encA ^ keyA);
             float partB = IntToFloat(encB ^ keyB);
 
