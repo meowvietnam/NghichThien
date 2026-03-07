@@ -29,6 +29,8 @@ public class SecureInt
                 AntiCheatManager.CheatDetected("Int memory cheat detected");
             }
 
+            Set(real); // re-encrypt
+
             return real;
         }
         set
@@ -39,8 +41,7 @@ public class SecureInt
 
     void Set(int value)
     {
-        int split = UnityEngine.Random.Range(0, value + 1);
-
+        int split = UnityEngine.Random.Range(-1000, 1000);
         int partA = split;
         int partB = value - split;
 
@@ -55,7 +56,7 @@ public class SecureInt
 
     public static implicit operator int(SecureInt s)
     {
-        return s.Value;
+        return s == null ? 0 : s.Value;
     }
 
     public static implicit operator SecureInt(int v)

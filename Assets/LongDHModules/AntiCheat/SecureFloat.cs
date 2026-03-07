@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class SecureFloat : MonoBehaviour
+public class SecureFloat
 {
     [SerializeField] int encA;
     [SerializeField] int encB;
@@ -30,6 +30,7 @@ public class SecureFloat : MonoBehaviour
                 AntiCheatManager.CheatDetected("Float memory cheat detected");
             }
 
+            Set(real);
             return real;
         }
         set
@@ -40,8 +41,7 @@ public class SecureFloat : MonoBehaviour
 
     void Set(float value)
     {
-        float split = UnityEngine.Random.Range(0f, value);
-
+        float split = UnityEngine.Random.Range(-1000f, 1000f);
         float partA = split;
         float partB = value - split;
 
@@ -66,7 +66,7 @@ public class SecureFloat : MonoBehaviour
 
     public static implicit operator float(SecureFloat s)
     {
-        return s.Value;
+        return s == null ? 0f : s.Value;
     }
 
     public static implicit operator SecureFloat(float v)
