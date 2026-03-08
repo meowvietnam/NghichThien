@@ -31,8 +31,9 @@ namespace LuyenDan.Inventory
         [TabGroup("Has Item")] 
         [SerializeField] private GameObject hover;
         private IInventoryItemData data;
+        private ItemRef itemRef;
         public Tier Tier => data.Tier;
-        public void Init(IInventoryItemData data)
+        private void Init(IInventoryItemData data)
         {
             this.data = data;
             if (data == null)
@@ -45,13 +46,18 @@ namespace LuyenDan.Inventory
             hasItem.SetActive(true);
             icon.sprite = data.Icon;
             nameText.text = data.Name;
-            countText.text = data.Count.ToString();
             var tier = data.Tier;
             SetTier(tier);
-            data.OnCountChanged += OnCountChanged;
             selectButton.onClick.AddListener(OnSelected);
         }
 
+        public void Init(ItemRef itemRef)
+        {
+            this.itemRef = itemRef;
+            var data = LuyenDanPanel.Instance.Resources.FindItem(itemRef);
+            Init(data);
+            
+        }
         private void OnSelected()
         {
             Debug.Log("OnSelected");
@@ -76,7 +82,7 @@ namespace LuyenDan.Inventory
         {
             if (data != null)
             {
-                data.OnCountChanged -= OnCountChanged;
+                itemRef.OnCountChanged -= OnCountChanged;
                 selectButton.onClick.RemoveListener(OnSelected);
             }
         }

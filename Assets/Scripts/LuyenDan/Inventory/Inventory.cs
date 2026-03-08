@@ -10,10 +10,9 @@ namespace LuyenDan.Inventory
         [SerializeField] private FilterGroup filterGroup;
         [SerializeField] private Button closeButton;
         [SerializeField] private GameObject thisObject;
-        public void Init()
+        public void Init(IEnumerable<ItemRef> data)
         {
             closeButton.onClick.AddListener(Close);
-            var data = LuyenDanPanel.Instance.Resources.TempFurnaceDatas;
             ItemListUI.Init(data);
             filterGroup.Init();
         }
