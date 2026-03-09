@@ -30,7 +30,7 @@ namespace LuyenDan
                     Ref = x
                 }).ToArray();
             this.phuduoc.text = string.Join(", ", phuduocs.Select(x => $"{x.PhuDuoc.Name}x{x.Ref.Count}"));
-            var thuocdanRef = data.ThuocDan;
+            var thuocdanRef = data.DuocDan;
             var thuocdan = r.FindHerb(thuocdanRef.Id);
             this.thuocdan.text = $"{thuocdan.Name}x{thuocdanRef.Count}";
             
