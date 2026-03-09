@@ -98,8 +98,6 @@ namespace LuyenDan
             Profit = profit;
             float.TryParse(
                 p[10].Replace(',', '.').Replace("%", ""),
-                System.Globalization.NumberStyles.Any,
-                System.Globalization.CultureInfo.InvariantCulture,
                 out var income
             );
             Income = income;
@@ -111,8 +109,6 @@ namespace LuyenDan
             ProfitDanThanhPerDay = profitDanThanhPerDay;
             float.TryParse(
                 p[14].Replace(',', '.').Replace("%", ""),
-                System.Globalization.NumberStyles.Any,
-                System.Globalization.CultureInfo.InvariantCulture,
                 out var incomeDanThanh
             );
             IncomeDanThanh = incomeDanThanh;
@@ -147,6 +143,11 @@ namespace LuyenDan
                 recipe.Create(Id + i + 1,i,matrix);
                 Recipes.Add(recipe);
             }
+        }
+
+        public void SetIcon(Sprite icon)
+        {
+            Icon = icon;
         }
     }
 }
