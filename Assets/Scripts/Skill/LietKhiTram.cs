@@ -7,7 +7,7 @@ public class LietKhiTram : ThanThong
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt  hoTrao);
 
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { hoTrao });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { hoTrao }, eTypeSkill);
 
     }
 

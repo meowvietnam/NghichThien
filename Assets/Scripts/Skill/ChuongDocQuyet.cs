@@ -16,7 +16,7 @@ public class ChuongDocQuyet : ThanThong , BaseSkill.TuongDong
         {
             dame *=2;
         }    
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         
 
     }
@@ -24,7 +24,7 @@ public class ChuongDocQuyet : ThanThong , BaseSkill.TuongDong
     public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)
     {
         int dame = dameBuffs[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, true);
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill, true);
 
     }
 

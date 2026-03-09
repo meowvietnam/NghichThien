@@ -19,7 +19,7 @@ public class DaiVanNhamThuat : ThanThong
         }    
        
 
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
     }
 

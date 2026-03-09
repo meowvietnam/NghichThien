@@ -14,7 +14,7 @@ public class DietLinhChuong : ThanThong
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.TieuTanAllLinhKhi();
 
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
     }
 

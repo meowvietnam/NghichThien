@@ -16,7 +16,7 @@ public class PheHonQuyet : ThanThong, BaseSkill.ThanThuc
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
     }
 
@@ -24,7 +24,7 @@ public class PheHonQuyet : ThanThong, BaseSkill.ThanThuc
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon,out SecureInt  hon);
         int dame = hon * buffValues[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, true);
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill, true);
     }
 
     public override string GetDesc(int level)

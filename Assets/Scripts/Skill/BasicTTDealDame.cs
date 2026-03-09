@@ -13,14 +13,14 @@ public class BasicTTDealDame : ThanThong, BaseSkill.LienKich
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
-        target.TakeDameByThanThong(caster, new List<int> {     dame[GetIndexLevelThanThong(caster)] });
+        target.TakeDameByThanThong(caster, new List<int> {     dame[GetIndexLevelThanThong(caster)] },eTypeSkill);
         ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
     {
-        target.TakeDameByThanThong(caster, new List<int> { dameLienKich[GetIndexLevelThanThong(caster)] },true);
+        target.TakeDameByThanThong(caster, new List<int> { dameLienKich[GetIndexLevelThanThong(caster)] },eTypeSkill,true);
         Debug.Log("call lien kich basse tt dame");
 
     }

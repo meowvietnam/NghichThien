@@ -21,7 +21,7 @@ public class PhuongLinhYeuHoa : ThanThong , BaseSkill.LienKich
         {
             dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
         }
-        target.TakeDameByThanThong(caster, dames, false);
+        target.TakeDameByThanThong(caster, dames, eTypeSkill, false);
 
 
 
@@ -46,7 +46,7 @@ public class PhuongLinhYeuHoa : ThanThong , BaseSkill.LienKich
         {
             dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
         }
-        target.TakeDameByThanThong(caster, dames, false);
+        target.TakeDameByThanThong(caster, dames, eTypeSkill, false);
 
     }
 }

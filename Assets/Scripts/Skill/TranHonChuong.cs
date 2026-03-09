@@ -18,7 +18,7 @@ public class TranHonChuong : ThanThong
     {
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChayMau, out SecureInt  chayMau);
         int dame = dames[GetIndexLevelThanThong(caster)] + chayMau * buffValues[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         caster.Healing(dame);
     }
 

@@ -10,7 +10,7 @@ public class LacAnh : ThanThong, BaseSkill.LienKich
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
 
     }
@@ -28,7 +28,7 @@ public class LacAnh : ThanThong, BaseSkill.LienKich
         int dame = dames[GetIndexLevelThanThong(caster)];
         float percent = (float)percentBuff[GetIndexLevelThanThong(caster)]/100f;
 
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { (int)(dame * (percent* countDebuff)) }, true);
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { (int)(dame * (percent* countDebuff)) }, eTypeSkill, true);
 
     }
 

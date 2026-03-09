@@ -18,7 +18,7 @@ public class LacNhamThuat : ThanThong
     {
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out SecureInt  danLuc);
         int dame = dames[GetIndexLevelThanThong(caster)] + (dameBuffPerDanLuc[GetIndexLevelThanThong(caster)] * danLuc);
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
 
     }

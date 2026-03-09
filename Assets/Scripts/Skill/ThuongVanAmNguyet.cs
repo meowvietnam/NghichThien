@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 [CreateAssetMenu(fileName = nameof(ThuongVanAmNguyet), menuName = "Skill/Thần Thông/" + nameof(ThuongVanAmNguyet))]
 
 public class ThuongVanAmNguyet : ThanThong
@@ -38,8 +39,9 @@ public class ThuongVanAmNguyet : ThanThong
                 targetTurn.allDamages[i] -= dame;
                 dames.Add(dame);
             }
-            currentTurn.AddDamageData(dames);
-            currentTurn.TakeDame(targetTurn);
+            currentTurn.TakeDameByStatic(targetTurn, dames, true, eTypeSkill);
+
+           
         }
 
 

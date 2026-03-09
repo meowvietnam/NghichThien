@@ -25,7 +25,7 @@ public class BatCucBang : ThanThong , BaseSkill.TuongKhac
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, treKhi);
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame } , isCongDon);
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame },eTypeSkill , isCongDon);
     }    
     public void ExecuteTuongKhac(CharacterCombat caster, CharacterCombat target)
     {

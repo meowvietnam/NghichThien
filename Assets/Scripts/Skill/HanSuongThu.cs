@@ -10,7 +10,7 @@ public class HanSuongThu : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new List<int> { dame });
+        target.TakeDameByThanThong(caster, new List<int> { dame }, eTypeSkill);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, suongGia);
 
 

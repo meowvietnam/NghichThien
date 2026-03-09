@@ -16,8 +16,7 @@ public class HuyetAnhThuat : ThanThong
     };
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.AddDamageData(new System.Collections.Generic.List<int> { tieuHaos[GetIndexLevelThanThong(caster)] });
-        caster.TakeDame(caster);
+        caster.TakeDameByStatic(caster, new System.Collections.Generic.List<int> { tieuHaos[GetIndexLevelThanThong(caster)] }, false);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Anh, buffValues[GetIndexLevelThanThong(caster)]);
 
     }

@@ -343,10 +343,14 @@ public class CombatManager : MonoBehaviour
         {
             TieuTanLinhKhi(linhKhiTieuTan);
         }
+       
         CombatStatic.AnhDich(currentTurn, targetTurn);
-        CombatStatic.KiemKhi(currentTurn,targetTurn);
+        CombatStatic.KiemKhi(currentTurn, targetTurn);
         CombatStatic.TrungDoc(targetTurn, currentTurn);
+        CombatStatic.ThienKiem(currentTurn, currentTurn);
         currentTurn.EndTurn();
+
+        // swap turn
         if (currentTurn == char1)
         {
             currentTurn = char2;
@@ -438,11 +442,13 @@ public class CombatManager : MonoBehaviour
     [Button]
     public void NewTurn()
     {
+        CombatStatic.QuyTon(currentTurn,targetTurn);
         CombatStatic.SucThe(currentTurn, targetTurn);
         CombatStatic.ThieuDot(targetTurn, currentTurn);
 
 
         currentTurn.NewTurn();
+
         CombatStatic.AmKinhTTNewTurn(currentTurn, targetTurn);
 
         Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();

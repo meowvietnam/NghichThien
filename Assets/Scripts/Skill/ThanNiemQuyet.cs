@@ -18,7 +18,7 @@ public class ThanNiemQuyet : ThanThong, BaseSkill.ThanThuc
         int dame = dames[GetIndexLevelThanThong(caster)];
         Debug.Log("dame base " + dame);
 
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
     }
 
@@ -31,7 +31,7 @@ public class ThanNiemQuyet : ThanThong, BaseSkill.ThanThuc
         int dame = remainThanThuc * buffValues[GetIndexLevelThanThong(caster)];
 
         Debug.Log("dame thần thức "+ dame);
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, true);
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill, true);
     }
 
     public override string GetDesc(int level)

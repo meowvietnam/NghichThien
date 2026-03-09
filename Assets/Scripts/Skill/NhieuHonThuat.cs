@@ -14,7 +14,7 @@ public class NhieuHonThuat : ThanThong, BaseSkill.ThanThuc
     {
         HauKeVoLuc(caster);
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect);
 
@@ -41,7 +41,7 @@ public class NhieuHonThuat : ThanThong, BaseSkill.ThanThuc
     public void ExecuteThanThuc(CharacterCombat caster, CharacterCombat target)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, true);
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill, true);
     }
 
     public override string GetDesc(int level)

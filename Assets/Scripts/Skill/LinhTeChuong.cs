@@ -18,7 +18,7 @@ public class LinhTeChuong : ThanThong
         HauKeVoLuc(caster);
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, buffValues[GetIndexLevelThanThong(caster)]);
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
     }
 

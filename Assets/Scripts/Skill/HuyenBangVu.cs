@@ -16,7 +16,7 @@ public class HuyenBangVu : ThanThong
     {
         target.AddThanThongImpactAfterPlaySkill(this);
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new List<int> { dame });
+        target.TakeDameByThanThong(caster, new List<int> { dame }, eTypeSkill);
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect);
 
 

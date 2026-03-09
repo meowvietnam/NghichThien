@@ -19,8 +19,7 @@ public class DamHonThuat : ThanThong
         HauKeVoLuc(caster);
 
         int dame = dames[GetIndexLevelThanThong(caster)];
-        caster.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
-        caster.TakeDame(caster);
+        caster.TakeDameByStatic(caster, new System.Collections.Generic.List<int> { dame }, false);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, buffValues[GetIndexLevelThanThong(caster)]);
     }
 

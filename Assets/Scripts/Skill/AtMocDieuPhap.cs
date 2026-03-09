@@ -9,7 +9,7 @@ public class AtMocDieuPhap : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         var dicHapThuLinhKhi = caster.DictHapThuLinhKhi(hapThu);
 
         bool isHaveMoc = dicHapThuLinhKhi.Any(x => x.Key == ELinhKhi.Moc);

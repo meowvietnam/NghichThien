@@ -15,8 +15,7 @@ public class ToKimChanPhap : CongPhap
             count += item.count;
         }
         Debug.Log("lmm"+count);
-        target.TakeDameByThanThong(caster,new List<int> { count * dame[CurrentLevelCongPhapInCombat(caster)-1]});
-        target.TakeDame(caster);
+        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int> { count * dame[CurrentLevelCongPhapInCombat(caster) - 1] }, true, eTypeSkill);
     }
 
     public override string GetDesc(int level)

@@ -8,7 +8,7 @@ public class TuyetTran : ThanThong , BaseSkill.LienKich
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
     {
         int dame = damebuffs[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame } ,true);
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill, true);
     }
     [SerializeField]
     private int[] dames = new int[]
@@ -31,7 +31,7 @@ public class TuyetTran : ThanThong , BaseSkill.LienKich
         int require = requires[GetIndexLevelThanThong(caster)];
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran,require);
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
 
 

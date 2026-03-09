@@ -16,7 +16,7 @@ public class ThienNhanThuat : ThanThong
         {
             dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
         }
-        target.TakeDameByThanThong(caster, dames, false);
+        target.TakeDameByThanThong(caster, dames, eTypeSkill, false);
         ShowSkillEffectWorld(target, delayTimeEffect);
 
     }

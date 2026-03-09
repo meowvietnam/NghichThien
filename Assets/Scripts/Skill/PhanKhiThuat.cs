@@ -11,7 +11,7 @@ public class PhanKhiThuat : ThanThong
     {
 
 
-        target.TakeDameByThanThong(caster, new List<int> { dames[GetIndexLevelThanThong(caster)] }, false);
+        target.TakeDameByThanThong(caster, new List<int> { dames[GetIndexLevelThanThong(caster)] }, eTypeSkill);
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt  thieuDot);
         if(thieuDot > 0)
         {

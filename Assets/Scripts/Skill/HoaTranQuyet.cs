@@ -26,8 +26,8 @@ public class HoaTranQuyet : CongPhap
         }    
         else if (thanThong is HoaCat)
         {
-            target.AddDamageData(new List<int> { dames[CurrentLevelCongPhapInCombat(caster)-1] });
-            target.TakeDame(caster);
+            int dame = dames[CurrentLevelCongPhapInCombat(caster) -1];
+            target.TakeDameByStatic(caster, new System.Collections.Generic.List<int> { dame }, false , eTypeSkill);
         }
 
 

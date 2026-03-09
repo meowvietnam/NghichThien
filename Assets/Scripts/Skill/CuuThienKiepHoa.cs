@@ -18,7 +18,7 @@ public class CuuThienKiepHoa : ThanThong
 
         int dame = dames[GetIndexLevelThanThong(caster)];
 
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
 
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, deBuffs[GetIndexLevelThanThong(caster)]);

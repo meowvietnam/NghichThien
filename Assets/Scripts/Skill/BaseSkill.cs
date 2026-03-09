@@ -49,7 +49,17 @@ public enum EBuffAndDeBuff
     ChanLongChiHuyet,
     NgungThan,
     ThanThuong,
-
+    QuyCuu,
+    QuyTon,
+    HonLuc,
+    NguKiem,
+    NhanKiem,
+    DiaKiem,
+    ThienKiem,
+    QuyLinh,
+    QuyBinh,
+    QuyTuong,
+    QuyDe,
 
 }
 
@@ -71,10 +81,26 @@ public abstract class BaseSkill : BaseItemData
         EBuffAndDeBuff.PhaThe,
         EBuffAndDeBuff.ThanThuong,
     };
+    public static List<EBuffAndDeBuff> eNoneBuff = new List<EBuffAndDeBuff>
+    {
+        EBuffAndDeBuff.QuyCuu,
+        EBuffAndDeBuff.QuyLinh,
+        EBuffAndDeBuff.QuyBinh,
+        EBuffAndDeBuff.QuyTuong,
+        EBuffAndDeBuff.QuyTon,
+        EBuffAndDeBuff.QuyDe,
+        EBuffAndDeBuff.Cham,
+        EBuffAndDeBuff.ChiThuy,
+        EBuffAndDeBuff.KinhDao,
+        EBuffAndDeBuff.Tran,
+        EBuffAndDeBuff.Cat,
+        EBuffAndDeBuff.Hon,
+        EBuffAndDeBuff.Anh,
+    };
     public static List<EBuffAndDeBuff> eBuffs = Enum.GetValues(typeof(EBuffAndDeBuff))
     .Cast<EBuffAndDeBuff>()
     .Where(e => e != EBuffAndDeBuff.None)
-    .Where(e => !BaseSkill.eDebuffs.Contains(e))
+    .Where(e => !BaseSkill.eDebuffs.Contains(e) && !BaseSkill.eNoneBuff.Contains(e))
     .ToList();
     public enum ETypeSkill
     {
@@ -109,12 +135,19 @@ public abstract class BaseSkill : BaseItemData
     public ETierSkill eTierSkill;
     public ETypeSkill[] eTypeSkill;
 
-    public EKeyWord[] eKeywordSkillHave;
-    public EBuffAndDeBuff[] eKeywordBuffSkillHave;
+    [SerializeField]private EKeyWord[] eKeywordSkillHave;
+    [SerializeField]private EBuffAndDeBuff[] eKeywordBuffSkillHave;
 
-   
+    public virtual EKeyWord[] GetEKeywordSkillHave()
+    {
+        return eKeywordSkillHave;
+    }
+    public virtual EBuffAndDeBuff[] GetEKeywordBuffSkillHave(int level)
+    {
+        return eKeywordBuffSkillHave;
+    }    
 
-  
+
     public abstract void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
    
     public interface LienKich
@@ -145,10 +178,10 @@ public abstract class BaseSkill : BaseItemData
         public abstract void ExecuteThanThuc(CharacterCombat caster, CharacterCombat target);
 
     }
-    public abstract string GetDesc(int level);
+    public abstract string GetDesc(int daiCanhGioi);
 
     
-    public static string GetKeyWordBuffOrDeBuff(EBuffAndDeBuff eKeyWord)
+    public static string GetKeyWordBuffOrDeBuff(EBuffAndDeBuff eKeyWord , int level = 1)
     {
         string text = string.Empty;
         switch (eKeyWord)
@@ -282,6 +315,40 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.ThanThuong:
                 text = "Thần Thương";
                 break;
+            case EBuffAndDeBuff.QuyCuu:
+                text = "Quỷ Cửu";
+                break;
+            case EBuffAndDeBuff.QuyTon:
+                text = "Quỷ Tôn";
+                break;
+            case EBuffAndDeBuff.HonLuc:
+                text = "Hồn Lực";
+                break;
+            case EBuffAndDeBuff.NguKiem:
+                text = "Ngự Kiếm";
+                break;
+            case EBuffAndDeBuff.NhanKiem:
+                text = "Nhân Kiếm";
+                break;
+            case EBuffAndDeBuff.DiaKiem:
+                text = "Địa Kiếm";
+                break;
+            case EBuffAndDeBuff.ThienKiem:
+                text = "Thiên Kiếm";
+                break;
+            case EBuffAndDeBuff.QuyLinh:
+                text = "Quỷ Linh";
+                break;
+            case EBuffAndDeBuff.QuyBinh:
+                text = "Quỷ Binh";
+                break;
+            case EBuffAndDeBuff.QuyTuong:
+                text = "Quỷ Tướng";
+                break;
+            case EBuffAndDeBuff.QuyDe:
+                text = "Quỷ Đế";
+                break;
+
             default:
                 break;
         }
@@ -419,6 +486,40 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.ThanThuong:
                 text = $"Mỗi tầng thần thức -1";
                 break;
+            case EBuffAndDeBuff.QuyCuu:
+                text = $"Chỉ thị vật";
+                break;
+            case EBuffAndDeBuff.QuyTon:
+                text = $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 4 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 1500";
+                break;
+            case EBuffAndDeBuff.HonLuc:
+                text = $"Mỗi tổn thương 1 điểm sẽ giải trừ 1 tầng, tiêu hao hết Quỷ Hồn tiêu tan";
+                break;
+            case EBuffAndDeBuff.NguKiem:
+                text = $"Trong hiệp này, mỗi tầng tăng lên một điểm sát thương đối với thần thông hệ kiếm";
+                break;
+            case EBuffAndDeBuff.NhanKiem:
+                text = $"Kết thúc hiệp, mỗi một tầng thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}";
+                break;
+            case EBuffAndDeBuff.DiaKiem:
+                text = $"Kết thúc hiệp, mỗi một tầng thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}";
+                break;
+            case EBuffAndDeBuff.ThienKiem:
+                text = $"Kết thúc hiệp, mỗi một tầng phát động {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} một lần";
+                break;
+            case EBuffAndDeBuff.QuyLinh:
+                text = $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 1 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 150";
+                break;
+            case EBuffAndDeBuff.QuyBinh:
+                text = $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 2 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 300";
+                break;
+            case EBuffAndDeBuff.QuyTuong:
+                text = $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 3 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 500";
+                break;
+            case EBuffAndDeBuff.QuyDe:
+                text = $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 5 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 5000";
+                break;
+
             default:
                 break;
         }

@@ -10,7 +10,7 @@ public class TinhViThanDietQuyet : ThanNiemQuyet
         int damebuff = thanThuong * buffValues[GetIndexLevelThanThong(caster)];
         Debug.Log("ddamebuff " + damebuff);
 
-        target.TakeDameByThanThong(caster,new System.Collections.Generic.List<int> { damebuff },true);
+        target.TakeDameByThanThong(caster,new System.Collections.Generic.List<int> { damebuff }, eTypeSkill);
         target.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ThanThuong, thanThuong);
 
     }

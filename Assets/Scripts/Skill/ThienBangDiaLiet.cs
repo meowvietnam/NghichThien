@@ -15,7 +15,7 @@ public class ThienBangDiaLiet : ThanThong
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt  tran);
         dame += tran;
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, tran);
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
     }
 

@@ -30,13 +30,13 @@ public class LoanAnhSat : ThanThong
     private int dame2 = 6;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.AddDamageData(new System.Collections.Generic.List<int> { tieuHaos[GetIndexLevelThanThong(caster)] });
-        caster.TakeDame(caster);
+        caster.TakeDameByStatic(caster, new System.Collections.Generic.List<int> { tieuHaos[GetIndexLevelThanThong(caster)] }, false);
+
         for (int i = 0; i < countDame1; i++)
         {
 
             int dame = dames1[GetIndexLevelThanThong(caster)];
-            target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+            target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         }
         int tieuHao2 = tieuHaos2[GetIndexLevelThanThong(caster)];
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Anh, out SecureInt  anh);
@@ -46,7 +46,7 @@ public class LoanAnhSat : ThanThong
             for (int i = 0; i < countDame2[GetIndexLevelThanThong(caster)]; i++)
             {
 
-                target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame2 });
+                target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame2 }, eTypeSkill);
             }
         }    
 

@@ -17,7 +17,7 @@ public class LaYenBo : ThanThong
         int X = (int)caster.characterStatsCurrent.tocDoBay / require;
         int dame = dames[GetIndexLevelThanThong(caster)] + X * dameBuffs;
 
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
     }
 

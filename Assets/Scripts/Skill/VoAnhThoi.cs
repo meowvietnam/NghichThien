@@ -17,7 +17,7 @@ public class VoAnhThoi : ThanThong
         {
             dame *= 2;
         }    
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
     }
 

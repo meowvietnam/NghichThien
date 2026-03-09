@@ -14,7 +14,7 @@ public class TamMuoiChanHoa : ThanThong , BaseSkill.TuongDong
     {
 
 
-        target.TakeDameByThanThong(caster, new List<int> { dames[GetIndexLevelThanThong(caster)] }, false);
+        target.TakeDameByThanThong(caster, new List<int> { dames[GetIndexLevelThanThong(caster)] }, eTypeSkill);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, thieuDots[GetIndexLevelThanThong(caster)]);
 
 
@@ -22,7 +22,7 @@ public class TamMuoiChanHoa : ThanThong , BaseSkill.TuongDong
 
     public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)
     {
-        target.TakeDameByThanThong(caster, new List<int> { dameBuffs[GetIndexLevelThanThong(caster)] }, true);
+        target.TakeDameByThanThong(caster, new List<int> { dameBuffs[GetIndexLevelThanThong(caster)] }, eTypeSkill, true);
     }
 
     public override string GetDesc(int level)

@@ -25,7 +25,7 @@ public class PhanHoaThoDiemQuyet : ThanThong
     .Where(z => z.eLinhKhi == ELinhKhi.Hoa) // Chỉ lọc ra những cái hệ Hỏa
     .Sum(z => z.count); // Cộng dồn tất cả giá trị của thuộc tính Count lại
         int dameBuff = dameValueBuffs[GetIndexLevelThanThong(caster)] * tongSoLuongHoa;
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame+dameBuff });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame+dameBuff }, eTypeSkill);
 
 
 

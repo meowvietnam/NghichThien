@@ -19,7 +19,7 @@ public class NguTran : ThanThong
         int count = caster.specialThanThongImpactAfterPlaySkill.Count(x=>x is TranPhapTT);
         int dame = dames[GetIndexLevelThanThong(caster)] + count * buffValues[GetIndexLevelThanThong(caster)];
 
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
     }
 

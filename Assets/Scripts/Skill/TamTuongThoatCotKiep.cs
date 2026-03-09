@@ -9,7 +9,7 @@ public class TamTuongThoatCotKiep : ThanThong
         int dame = dames[GetIndexLevelThanThong(caster)];
         float percent = (float)percentBuffDames[GetIndexLevelThanThong(caster)]/100f;
         dame += (int)(percent * caster.characterStatsMax.hp);
-        target.TakeDameByThanThong(caster,new System.Collections.Generic.List<int> { dame});
+        target.TakeDameByThanThong(caster,new System.Collections.Generic.List<int> { dame}, eTypeSkill);
     }
 
     public override string GetDesc(int level)

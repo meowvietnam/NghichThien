@@ -51,7 +51,7 @@ public class LuyenAnhLuc : ThanThong , BaseSkill.TuongSinh , BaseSkill.TuongKhac
     public void ExecuteTuongKhac(CharacterCombat caster, CharacterCombat target)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
         caster.Healing(dame);
 

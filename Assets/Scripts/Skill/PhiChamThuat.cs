@@ -10,7 +10,7 @@ public class PhiChamThuat : ThanThong
     {
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Cham, 1);
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong,deTonThuong);
 
     }

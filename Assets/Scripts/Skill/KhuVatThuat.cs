@@ -19,7 +19,7 @@ public class KhuVatThuat : ThanThong
         {
             dameList.Add(dames[GetIndexLevelThanThong(caster)]);
         }
-        target.TakeDameByThanThong(caster, dameList);
+        target.TakeDameByThanThong(caster, dameList, eTypeSkill);
 
     }
 
@@ -27,12 +27,12 @@ public class KhuVatThuat : ThanThong
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetDescCountAttack()}{GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương";
+        return $"Tạo thành {GetDescCountAttack()} {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương";
 
     }
     private string GetDescCountAttack()
     {
-        return countAttack == 1 ? " " : $"{GetColoredText($"{countAttack} lần", "red")} ";
+        return countAttack == 1 ? " " : $"{GetColoredText($"{countAttack} lần", "red")}";
     }    
 
 }

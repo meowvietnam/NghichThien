@@ -20,7 +20,7 @@ public class PhaPhuTramChu : ThanThong
         {
             caster.Healing(dame);
         }    
-        target.TakeDameByThanThong(caster, new List<int> { dame }, false);
+        target.TakeDameByThanThong(caster, new List<int> { dame }, eTypeSkill, false);
 
       
 

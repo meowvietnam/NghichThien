@@ -16,7 +16,7 @@ public class TamThonChanNguyenChuong : ThanThong
     {
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TreKhi, out SecureInt  treKhi);
         int dame = dames[GetIndexLevelThanThong(caster)] + treKhi * buffValues[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
     }
 

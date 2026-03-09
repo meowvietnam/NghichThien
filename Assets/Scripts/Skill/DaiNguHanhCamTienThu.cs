@@ -6,7 +6,7 @@ public class DaiNguHanhCamTienThu : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { (int)target.allDameTaked/2 });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { (int)target.allDameTaked/2 }, eTypeSkill);
     }
 
     public override string GetDesc(int level)

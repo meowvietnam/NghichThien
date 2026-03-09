@@ -19,7 +19,7 @@ public class ThucThanThu : ThanThong, BaseSkill.ThanThuc
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.AnNac, 1);
         }
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
     }
 
     public void ExecuteThanThuc(CharacterCombat caster, CharacterCombat target)

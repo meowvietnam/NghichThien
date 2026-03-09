@@ -53,6 +53,11 @@ public abstract class ThanThong : BaseSkill
     public static int GetLevelThanThong(CharacterStats characterStatsCurrent)
     {
         int level = characterStatsCurrent.level;
+        int daiCanhGioi = GetDaiCanhGioi(level);
+        return daiCanhGioi;
+    }
+    public static int GetDaiCanhGioi(int level)
+    {
         int daiCanhGioi = ((level - 1) / 3) + 1;
         return daiCanhGioi;
     }
