@@ -15,7 +15,7 @@ namespace LuyenDan
         [field: SerializeField] public List<Quality> Qualities { get; private set; }
         [field: SerializeField] public List<TempFurnaceData> TempFurnaceDatas { get; private set; }
         [field: SerializeField] public List<HerbData> HerbDatas { get; private set; }
-
+        [field: SerializeField] public List<RecipeData> Recipes { get; private set; }
         public IInventoryItemData FindItem(ItemRef itemRef)
         {
             if (itemRef.Type == ItemType.Furnace)
@@ -28,7 +28,7 @@ namespace LuyenDan
         {
             return HerbDatas.FirstOrDefault(x => x.Id == id);
         }
-        #region import
+        #region import1
 
         // [OnValueChanged("OnValueChanged")]
         // [SerializeField] private int startId;
@@ -63,10 +63,75 @@ namespace LuyenDan
         //             Debug.LogException(ex);
         //         }
         //     }
+        //     foreach (var herbData in HerbDatas)
+        //     {
+        //         herbData.Modify();
+        //     }
         //     EditorUtility.SetDirty(this);
         // }
 
         #endregion
+        #region import2
+        // [OnValueChanged("OnValueChanged")]
+        // [SerializeField] private int startId;
+        // [OnValueChanged("OnValueChanged")]
+        // [TextArea]
+        // [SerializeField] private string text;
         
+        // private void OnValueChanged()
+        // {
+        //     if (string.IsNullOrWhiteSpace(text))
+        //     {
+        //         return;
+        //     }
+        //     var parts = text.Split('\n');
+        //     Recipes = new List<RecipeData>(parts.Length);
+        //     for (var i = 0; i < parts.Length; i++)
+        //     {
+        //         var id = startId + i*10;
+        //         var part = parts[i];
+        //         var recipe = new RecipeData();
+        //         recipe.Create(id,part);
+        //         Recipes.Add(recipe);
+        //     }
+        //     foreach (var herbData in HerbDatas)
+        //     {
+        //         herbData.Modify();
+        //     }
+        //     EditorUtility.SetDirty(this);
+        // }
+        #endregion
+        #region import3
+
+        // [TextArea]
+        // [OnValueChanged("OnChanged")]
+        // [SerializeField] private string text;
+        // public void OnChanged()
+        // {
+        //     if (string.IsNullOrEmpty(text)) return;
+        //
+        //     var lines = text.Split("\n");
+        //     var datas = lines
+        //         .Select((line, index) => new { Line = line, Index = index })
+        //         .GroupBy(x => x.Index / 5)
+        //         .Select(x => x
+        //             .ToList()
+        //             .Select(y => y.Line)
+        //             .ToArray())
+        //         .ToList();
+        //     foreach (var data in datas)
+        //     {
+        //         var name = data[0].Split('\t')[0].Trim();
+        //         var recipeData = Recipes.FirstOrDefault(x => x.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+        //         if (recipeData == null)
+        //         {
+        //             Debug.LogError($"Recipe {name} not found");
+        //         }
+        //         recipeData.ImportReipes(data);
+        //     }
+        //     EditorUtility.SetDirty(this);
+        // }
+
+        #endregion
     }
 }
