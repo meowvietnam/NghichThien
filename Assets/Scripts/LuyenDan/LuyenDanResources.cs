@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using LuyenDan.Inventory;
 using Sirenix.OdinInspector;
-using UnityEditor;
 using UnityEngine;
 
 namespace LuyenDan
@@ -12,10 +11,10 @@ namespace LuyenDan
     public class LuyenDanResources : ScriptableObject
     {
         [TabGroup("Inventory")]
-        [field: SerializeField] public List<Quality> Qualities { get; private set; }
-        [field: SerializeField] public List<TempFurnaceData> TempFurnaceDatas { get; private set; }
-        [field: SerializeField] public List<HerbData> HerbDatas { get; private set; }
-        [field: SerializeField] public List<RecipeData> Recipes { get; private set; }
+        [field: SerializeField, ReadOnly] public List<Quality> Qualities { get; private set; }
+        [field: SerializeField, ReadOnly] public List<TempFurnaceData> TempFurnaceDatas { get; private set; }
+        [field: SerializeField, ReadOnly] public List<HerbData> HerbDatas { get; private set; }
+        [field: SerializeField, ReadOnly] public List<RecipeData> Recipes { get; private set; }
         public IInventoryItemData FindItem(ItemRef itemRef)
         {
             if (itemRef.Type == ItemType.Furnace)
@@ -77,7 +76,7 @@ namespace LuyenDan
         // [OnValueChanged("OnValueChanged")]
         // [TextArea]
         // [SerializeField] private string text;
-        
+        //
         // private void OnValueChanged()
         // {
         //     if (string.IsNullOrWhiteSpace(text))
@@ -85,18 +84,12 @@ namespace LuyenDan
         //         return;
         //     }
         //     var parts = text.Split('\n');
-        //     Recipes = new List<RecipeData>(parts.Length);
         //     for (var i = 0; i < parts.Length; i++)
         //     {
         //         var id = startId + i*10;
         //         var part = parts[i];
-        //         var recipe = new RecipeData();
+        //         var recipe = Recipes[i];
         //         recipe.Create(id,part);
-        //         Recipes.Add(recipe);
-        //     }
-        //     foreach (var herbData in HerbDatas)
-        //     {
-        //         herbData.Modify();
         //     }
         //     EditorUtility.SetDirty(this);
         // }
@@ -133,5 +126,48 @@ namespace LuyenDan
         // }
 
         #endregion
+        #region import4
+        // [TextArea]
+        // [OnValueChanged("OnChanged")]
+        // [SerializeField] private string text;
+        // [SerializeField] public List<Sprite> sprites;
+        // private void OnChanged()
+        // {
+        //     try
+        //     {
+        //         var list = JsonConvert.DeserializeObject<List<T>>(text);
+        //         foreach (var recipeData in Recipes)
+        //         {
+        //             var r = list.FirstOrDefault(x => x.Name.Equals(recipeData.Name, StringComparison.InvariantCultureIgnoreCase));
+        //             if (r == null)
+        //             {
+        //                 Debug.LogError($"Recipe {recipeData.Id} {recipeData.Name} not found");
+        //                 recipeData.SetIcon(null);
+        //                 continue;
+        //             }
+        //             var iconName = r.IconName;
+        //             var icon = sprites.FirstOrDefault(x => x.name.Equals(iconName, StringComparison.InvariantCultureIgnoreCase));
+        //             if (icon == null)
+        //             {
+        //                 Debug.LogError($"Sprite {iconName} - {recipeData.Id} not found");
+        //             }
+        //             recipeData.SetIcon(icon);
+        //         }
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         Debug.LogError(e);
+        //     }
+        //     EditorUtility.SetDirty(this);
+        // }
+        // class T
+        // {
+        //     public int Id { get; set; }
+        //     public string IconName { get; set; }
+        //     public string Name { get; set; }
+        // }
+        #endregion
     }
+
+
 }
