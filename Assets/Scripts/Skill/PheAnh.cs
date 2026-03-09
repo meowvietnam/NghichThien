@@ -53,7 +53,7 @@ public class PheAnh : ThanThong , BaseSkill.TuongKhac
 
     public void ExecuteTuongKhac(CharacterCombat caster, CharacterCombat target)
     {
-        caster.TakeDameByStatic(caster, new System.Collections.Generic.List<int> { tieuHao2 }, false);
+        caster.TakeDameByStatic(null, new System.Collections.Generic.List<int> { tieuHao2 }, false, null, false);
 
         caster.HapThuLinhKhi(hapThu2);
     }

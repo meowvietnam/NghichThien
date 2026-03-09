@@ -60,6 +60,7 @@ public enum EBuffAndDeBuff
     QuyBinh,
     QuyTuong,
     QuyDe,
+    KiemTam,
 
 }
 
@@ -130,7 +131,8 @@ public abstract class BaseSkill : BaseItemData
         KiemY,
         AmKinh,
         TranPhap,
-        ThanThuc
+        ThanThuc,
+        ChanThucTonThuong
     }
     public ETierSkill eTierSkill;
     public ETypeSkill[] eTypeSkill;
@@ -348,7 +350,9 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.QuyDe:
                 text = "Quỷ Đế";
                 break;
-
+            case EBuffAndDeBuff.KiemTam:
+                text = "Kiếm Tâm";
+                break;
             default:
                 break;
         }
@@ -519,7 +523,9 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.QuyDe:
                 text = $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 5 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 5000";
                 break;
-
+            case EBuffAndDeBuff.KiemTam:
+                text = $"Mỗi khi sử dụng {GetTextTypeSkill(ETypeSkill.Kiem)} hệ thần thông thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiem)}, sau đó giải trừ một tầng. Kết thúc hiệp giải trừ toàn bộ";
+                break;
             default:
                 break;
         }
@@ -568,6 +574,10 @@ public abstract class BaseSkill : BaseItemData
                 text = "Thần Thức";
 
                 break;
+            case EKeyWord.ChanThucTonThuong:
+                text = "Chân Thực Tổn Thương";
+
+                break;
             default:
                 break;
         }
@@ -611,6 +621,9 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EKeyWord.ThanThuc:
                 text = "Nếu thần thức lớn hơn đối thủ thì sẽ kích hoạt";
+                break;
+            case EKeyWord.ChanThucTonThuong:
+                text = "Gây tổn thương trực tiếp. Tức là bỏ qua né tránh và các loại giảm trừ sát thương";
                 break;
             default:
                 break;

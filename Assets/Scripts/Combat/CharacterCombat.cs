@@ -178,6 +178,12 @@ public class CharacterCombat : MonoBehaviour
                 TieuTanLinhKhi(GetRandomLinhKhiConLai(), 1);
             }
         }
+        if (BaseSkill.CheckIsEqualETypeSkill(this, new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Kiem })  && buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemTam, out SecureInt kiemTam))
+        {
+            AddBuffAndDebuffCount(EBuffAndDeBuff.NguKiem, 1);
+            AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, 1);
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemTam, 1);
+        }
         StartCoroutine(DelayFrame());
         Debug.Log(this.thanThongCurrentUse.thanThong.name);
         Debug.Log(this.thanThongOldUse?.thanThong.name);
@@ -810,7 +816,12 @@ public class CharacterCombat : MonoBehaviour
         {
             AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, diaKiem);
         }
-       
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemTam, out SecureInt kiemTam))
+        {
+           
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemTam, kiemTam);
+        }
+
     }
 
   
@@ -848,22 +859,18 @@ public class CharacterCombat : MonoBehaviour
     }
 
     [Button]
-    public void TakeDameByThanThong(CharacterCombat sender, List<int> dames, BaseSkill.ETypeSkill[] eTypeSkils, bool isCongDon = false )
+    public void TakeDameByThanThong(CharacterCombat sender, List<int> dames, BaseSkill.ETypeSkill[] eTypeSkils, bool isCongDon = false)
     {
 
-        TakeDameByStatic(sender,dames,isCongDon, eTypeSkils);
+        CaculatorDame(sender, dames, isCongDon, eTypeSkils);
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt hoaDiem);
         sender.TakeDameByStatic(this, new List<int> { hoaDiem }, false , new[] { BaseSkill.ETypeSkill.Hoa });
-        
-
-       
-    
         Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, sender, this, dames);
 
     }
-    public void TakeDameByStatic(CharacterCombat sender, List<int> dames,  bool isCongDon = false , BaseSkill.ETypeSkill[] eTypeSkils = null)
+    private void CaculatorDame(CharacterCombat sender, List<int> dames, bool isCongDon = false, BaseSkill.ETypeSkill[] eTypeSkils = null)
     {
-        if(sender != null && eTypeSkils != null)
+        if (sender != null && eTypeSkils != null)
         {
             SecureInt chanKim = 0, chanMoc = 0, chanThuy = 0, chanHoa = 0, chanTho = 0, chanKiem = 0, nguKiem = 0, diem = 0;
 
@@ -892,7 +899,7 @@ public class CharacterCombat : MonoBehaviour
 
 
             sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucLuc, out SecureInt sucLuc);
-
+            buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DeTonThuong, out SecureInt deTonThuong);
 
 
             // ===== XỬ LÝ TỪNG DAME =====
@@ -910,7 +917,7 @@ public class CharacterCombat : MonoBehaviour
                 if (isDiem) dame += diem;
 
                 dame += sucLuc;
-
+                dame += deTonThuong;
 
                 dame -= suongGia;
 
@@ -928,13 +935,18 @@ public class CharacterCombat : MonoBehaviour
             if (isChanHoa) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanHoa, chanHoa);
             if (isChanTho) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanTho, chanTho);
             if (isChanKiem) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanKiem, chanKiem);
-        }    
+        }
 
         AddDamageData(dames, isCongDon);
-        TakeDame(sender);
+    }
+    public void TakeDameByStatic(CharacterCombat sender, List<int> dames,  bool isCongDon = false , BaseSkill.ETypeSkill[] eTypeSkils = null , bool isDef = true)
+    {
+
+        CaculatorDame(sender, dames, isCongDon, eTypeSkils);
+        TakeDame(sender,isDef);
     }
     [Button]
-    public void  TakeDame(CharacterCombat sender)
+    public void  TakeDame(CharacterCombat sender , bool isDef)
     {
         void NeTranh()
         {
@@ -945,6 +957,12 @@ public class CharacterCombat : MonoBehaviour
 
         for (int i = 0; i < allDamages.Count; i++)
         {
+            if(!isDef)
+            {
+                TakeDame(sender, allDamages[i], isDef);
+                Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, sender, this, allDamages[i]);
+                continue;
+            }    
             if (allDamages[i] == 0) continue;
             bool isActiveHuyenVu = CombatStatic.IsActiveHuyenVu(null, this);
             bool isActiveAnNac = CombatStatic.IsActiveAnNac(null, this);
@@ -970,8 +988,8 @@ public class CharacterCombat : MonoBehaviour
             else
             {
 
-                TakeDame(sender, allDamages[i]);
-                Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, sender, this, dame);
+                TakeDame(sender, allDamages[i] , isDef);
+                Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, sender, this, allDamages[i]);
             }
 
         }
@@ -979,16 +997,19 @@ public class CharacterCombat : MonoBehaviour
 
         allDamages.Clear();
 
+
     }
-    private void TakeDame(CharacterCombat sender ,int dame)
+    private void TakeDame(CharacterCombat sender ,int dame , bool isDef)
     {
-        dame += buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.DeTonThuong, 0);
-        int giamTonThuong = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.GiamTonThuong, 0);
-        dame -= giamTonThuong;
-        int hotraoMax = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.HoTrao, 0);
-        hotraoMax = Mathf.Clamp(hotraoMax, 0, int.MaxValue);
-        RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, dame);
-        dame -= hotraoMax;
+        if(isDef)
+        {
+            int giamTonThuong = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.GiamTonThuong, 0);
+            dame -= giamTonThuong;
+            int hotraoMax = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.HoTrao, 0);
+            hotraoMax = Mathf.Clamp(hotraoMax, 0, int.MaxValue);
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, dame);
+            dame -= hotraoMax;
+        }    
         dame = Mathf.Clamp(dame, 0, int.MaxValue);
 
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, dame);
@@ -1001,7 +1022,7 @@ public class CharacterCombat : MonoBehaviour
         if (dame > 0)
         {
             StartAnimHit();
-            SetTextDameAnim($"-{dame}", Color.red);
+            SetTextDameAnim($"-{dame}", isDef ? Color.red : Color.purple);
             allDameTaked += dame;
 
             if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HonLuc, out SecureInt honLuc))

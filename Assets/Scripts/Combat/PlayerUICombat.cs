@@ -43,6 +43,8 @@ public class PlayerUICombat : MonoBehaviour
     public CombatManager CombatManager => transform.GetComponentInParent<CombatManager>();
 
     public SkillTip skillTip;
+
+    public GameObject linhKhiSelectUI;
     public void SetStateControl(EStateControl eState)
     {
         eStateControl = eState;
@@ -584,14 +586,9 @@ public class PlayerUICombat : MonoBehaviour
             nodes[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(x, y);
         }
     }
-    void Start()
+    public void HapThuLinhKhiBtnAction(int linhKhi)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        player.HapThuLinhKhi((ELinhKhi)linhKhi, 1);
+        linhKhiSelectUI.SetActive(false);
+    }    
 }

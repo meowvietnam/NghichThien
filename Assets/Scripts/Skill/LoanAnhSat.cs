@@ -30,7 +30,7 @@ public class LoanAnhSat : ThanThong
     private int dame2 = 6;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.TakeDameByStatic(caster, new System.Collections.Generic.List<int> { tieuHaos[GetIndexLevelThanThong(caster)] }, false);
+        caster.TakeDameByStatic(null, new System.Collections.Generic.List<int> { tieuHaos[GetIndexLevelThanThong(caster)] }, false, null, false);
 
         for (int i = 0; i < countDame1; i++)
         {
