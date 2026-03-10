@@ -20,7 +20,7 @@ public class LeHoa : ThanThong
         int dame = dames[GetIndexLevelThanThong(caster)];
         int count = caster.thanThongUseThisTurn.Count(x => x.thanThong is LeHoa) - 1;
         int dameBuff = dameBuffs[GetIndexLevelThanThong(caster)] * count;
-        target.TakeDameByThanThong(caster, new List<int> { dame + dameBuff }, false);
+        target.TakeDameByThanThong(caster, new List<int> { dame + dameBuff }, eTypeSkill);
 
 
     }

@@ -17,8 +17,8 @@ public class NgungSaQuyet : CongPhap
        
         if (thanThong is HoaCat)
         {
-            target.AddDamageData(new List<int> { buffValues[CurrentLevelCongPhapInCombat(caster) - 1] });
-            target.TakeDame(caster);
+            int dame = buffValues[CurrentLevelCongPhapInCombat(caster) - 1];
+            target.TakeDameByStatic(caster, new System.Collections.Generic.List<int> { dame }, false, eTypeSkill);
         }
 
 

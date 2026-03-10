@@ -32,7 +32,7 @@ public class HuyenThuyChanPhap : CongPhap
         }    
         else if(level == buffValues.Length)
         {
-            float remainHp = target.characterStats.hp - target.characterStatsCurrent.hp;
+            float remainHp = target.characterStatsMax.hp - target.characterStatsCurrent.hp;
             int heal = buffValues[level - 1];
             float healRemain = remainHp - heal;
             if(healRemain < 0) // tức là hồi full máu còn dư ra

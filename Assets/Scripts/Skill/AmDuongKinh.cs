@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 [CreateAssetMenu(fileName = nameof(AmDuongKinh), menuName = "Skill/Thần Thông/" + nameof(AmDuongKinh))]
 
 public class AmDuongKinh : AmKinhTT , BaseSkill.TuongSinh
@@ -16,8 +17,9 @@ public class AmDuongKinh : AmKinhTT , BaseSkill.TuongSinh
     public override void ExecuteAmKinh(CharacterCombat caster, CharacterCombat target)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByStatic(caster, new List<int> { (int)dame }, false, eTypeSkill);
 
+        
     }
 
     public void ExecuteTuongSinh(CharacterCombat caster, CharacterCombat target)

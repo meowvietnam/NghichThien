@@ -34,7 +34,7 @@ public class VuAnThuat : NeTranhTT
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HuyenVu, out int huyenVu);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HuyenVu, out SecureInt  huyenVu);
         if(huyenVu >= requireHuyenVu && !caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is VuAnThuat)))
         {
             return true;

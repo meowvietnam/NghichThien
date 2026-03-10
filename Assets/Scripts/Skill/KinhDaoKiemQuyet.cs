@@ -10,8 +10,8 @@ public class KinhDaoKiemQuyet : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         KiemY(caster);
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KinhDao, out int kinhDao);
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChiThuy, out int chiThuy);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KinhDao, out SecureInt  kinhDao);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChiThuy, out SecureInt  chiThuy);
 
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, kinhDao * kiemKhi);
 

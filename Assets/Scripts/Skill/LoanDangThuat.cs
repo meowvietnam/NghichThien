@@ -8,10 +8,10 @@ public class LoanDangThuat : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        int trienNhieu = 0;
+        SecureInt trienNhieu = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu,out trienNhieu);
         dame += trienNhieu * dameBuffs[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         caster.Healing(dame);
 
     }

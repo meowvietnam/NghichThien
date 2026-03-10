@@ -17,7 +17,7 @@ public class TranY : ThanThong
 
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, giamTonThuong);
 
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out int tran);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt  tran);
 
 
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, tran);

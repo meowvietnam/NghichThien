@@ -19,7 +19,7 @@ public class LietHoaChuong : ThanThong
         int dame = dameValues[GetIndexLevelThanThong(caster)];
         
         int dameBuff = dameValueBuffs[GetIndexLevelThanThong(caster)]  * caster.khiHoa;
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame + dameBuff });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame + dameBuff }, eTypeSkill);
 
 
 

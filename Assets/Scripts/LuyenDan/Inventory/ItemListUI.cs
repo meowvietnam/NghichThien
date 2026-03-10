@@ -9,7 +9,7 @@ namespace LuyenDan.Inventory
         [SerializeField] private InventoryItemUI prefab;
         [SerializeField] private RectTransform content;
 
-        public void Init(IEnumerable<IInventoryItemData> datas)
+        public void Init(IEnumerable<ItemRef> datas)
         {
             foreach (var data in datas)
             {

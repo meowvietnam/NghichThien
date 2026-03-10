@@ -18,7 +18,7 @@ public class HuyenBangNgungCotThuat : ThanThong
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SuongGia, out int suongGia);
+        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SuongGia, out SecureInt  suongGia);
         if (suongGia >= requireSuongGia && !caster.thanThongUseThisComBat.Any(x => x.Any(y=>y.thanThong is HuyenBangNgungCotThuat)))
         {
             return true;

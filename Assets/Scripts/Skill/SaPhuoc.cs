@@ -18,13 +18,13 @@ public class SaPhuoc : ThanThong
         int dame = dames[GetIndexLevelThanThong(caster)];
         caster.AddThanThongCoolDown(hoanTran, -1);
         Observer.Notify(EventList.GamePlay.PLAY_SKILL, caster, target, hoanTran, new List<LinhKhiTieuTan>());
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Cat, out int cat);
+        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Cat, out SecureInt  cat);
         if (cat > 0)
         {
             return true;

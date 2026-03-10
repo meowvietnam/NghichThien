@@ -5,13 +5,10 @@ namespace LuyenDan.Inventory
 {
     public interface IInventoryItemData
     {
+        int Id { get; }
         Sprite Icon { get; }
         string Name { get; }
         Tier Tier { get; }
-        int Count { get; }
-        Action<int> OnCountChanged { get; set; }
-        int Durability { get; }
-        Action<int> OnDurabilityChanged { get; set; }
         string Description { get; }
     }
 }

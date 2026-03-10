@@ -23,14 +23,14 @@ public class ThienTinhNhuocVu : ThanThong
         int dame = dames[GetIndexLevelThanThong(caster)];
         int damebuff = damebuffs[GetIndexLevelThanThong(caster)];
 
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out int tran);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt  tran);
         int require = tranRequires[GetIndexLevelThanThong(caster)];
 
         int v = tran / require;
         dame += damebuff * v;
         
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, tran);
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
     }
 

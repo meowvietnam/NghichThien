@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class NeTranhTT : ThanThong
 {
-    [SerializeField] private int[] percentNeTranh;
+    [SerializeField] protected int[] percentNeTranh;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddThanThongImpactAfterPlaySkill(this);

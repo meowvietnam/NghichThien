@@ -16,14 +16,14 @@ public class ThienNhanThuat : ThanThong
         {
             dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
         }
-        target.TakeDameByThanThong(caster, dames, false);
+        target.TakeDameByThanThong(caster, dames, eTypeSkill, false);
         ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        if (caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out int kiemKhi))
+        if (caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out SecureInt  kiemKhi))
         {
             return kiemKhi >= requireKiemKhi;
         }

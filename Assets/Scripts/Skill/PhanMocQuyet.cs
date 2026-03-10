@@ -21,7 +21,7 @@ public class PhanMocQuyet : ThanThong
         caster.TieuTanLinhKhi(ELinhKhi.Moc, mocLinhKhi);
         int dame = dameValues[GetIndexLevelThanThong(caster)];
         int dameBuff = dameValueBuffs[GetIndexLevelThanThong(caster)] * mocLinhKhi;
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame + dameBuff });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame + dameBuff }, eTypeSkill);
 
 
 

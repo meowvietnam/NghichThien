@@ -10,7 +10,7 @@ public class ThaiAtHuyenCong : CongPhap
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        int trienNhieu = 0;
+        SecureInt trienNhieu = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out trienNhieu);
         if (trienNhieu > 0 && CheckIsEqualETypeSkill(caster))
         {

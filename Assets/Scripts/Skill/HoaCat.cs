@@ -7,7 +7,7 @@ public class HoaCat : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out int tran);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt tran);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.Cat, tran);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, tran);
 
@@ -15,7 +15,7 @@ public class HoaCat : ThanThong
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out int tran);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt tran);
         if (tran > 0)
         {
             return true;

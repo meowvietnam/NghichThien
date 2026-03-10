@@ -14,7 +14,7 @@ public class ThoDiemQuyet : ThanThong , BaseSkill.LienKich
     {
 
         
-        target.TakeDameByThanThong(caster, new List<int> { dames[GetIndexLevelThanThong(caster)] }, false);
+        target.TakeDameByThanThong(caster, new List<int> { dames[GetIndexLevelThanThong(caster)] }, eTypeSkill, false);
 
 
     }

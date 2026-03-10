@@ -20,7 +20,7 @@ public class DiaLongThuat : ThanThong, BaseSkill.LienKich
 
         int dame = dameValues[GetIndexLevelThanThong(caster)];
 
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
        
     }
 

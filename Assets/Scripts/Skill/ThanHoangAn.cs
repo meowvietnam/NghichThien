@@ -14,7 +14,7 @@ public class ThanHoangAn : ThanThong
         bool isTuongDong = CombatManager.IsTuongDong(linhKhiTieuTan);
         if (isTuongDong)
         {
-            if (caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out int sucThe))
+            if (caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out SecureInt  sucThe))
             {
                 caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SucThe, sucThe);
             }
@@ -22,7 +22,7 @@ public class ThanHoangAn : ThanThong
         else
         {
 
-            if (caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out int hoTrao))
+            if (caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt  hoTrao))
             {
                 caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SucThe, hoTrao*2);
                 caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hoTrao);
@@ -33,8 +33,8 @@ public class ThanHoangAn : ThanThong
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        int sucThe = 0;
-        int hoTrao = 0;
+        SecureInt sucThe = 0;
+        SecureInt hoTrao = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out sucThe);
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out hoTrao);
 

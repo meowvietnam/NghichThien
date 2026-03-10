@@ -10,7 +10,7 @@ public class ThuNguyetHoThien : ThanThong
         int dameFinal = dames[GetIndexLevelThanThong(caster)];
         int dameBuff = dameBuffs[GetIndexLevelThanThong(caster)];
         dameFinal += (dameBuff * caster.CurrentLinhKhi);
-        target.TakeDameByThanThong(caster,new System.Collections.Generic.List<int> {dameFinal });
+        target.TakeDameByThanThong(caster,new System.Collections.Generic.List<int> {dameFinal }, eTypeSkill);
        
     }
 

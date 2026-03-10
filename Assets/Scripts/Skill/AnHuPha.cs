@@ -19,7 +19,7 @@ public class AnHuPha : ThanThong
         int dame = dames[GetIndexLevelThanThong(caster)] + caster.CurrentLinhKhi * buffValues[GetIndexLevelThanThong(caster)];
         caster.TieuTanAllLinhKhi();
 
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame } , eTypeSkill);
 
     }
 

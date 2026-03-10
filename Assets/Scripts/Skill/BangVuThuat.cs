@@ -21,7 +21,7 @@ public class BangVuThuat : ThanThong
 
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is BangVuThuat))
         {
-            targetTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out int hotrao);
+            targetTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt hotrao);
             if(hotrao<=0)
             {
                 targetTurn.AddBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, suongGias[GetIndexLevelThanThong(currentTurn)]);

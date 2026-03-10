@@ -13,8 +13,8 @@ public class TeHuyetTrao : ThanThong
         HauKeVoLuc(caster);
         int hp = buffValues[GetIndexLevelThanThong(caster)];
 
-        caster.AddDamageData(new System.Collections.Generic.List<int> { hp});
-        caster.TakeDame(null);
+        caster.TakeDameByStatic(null, new System.Collections.Generic.List<int> { hp }, false, null, false);
+
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hp);
 
     }

@@ -19,7 +19,7 @@ public class ThuyVuQuyet : CongPhap
     }
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        int countHuyenVu = 0;
+        SecureInt countHuyenVu = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HuyenVu, out countHuyenVu);
         if (countHuyenVu > 0 && GetCongPhapMono(caster.congPhapDynamic) == null)
         {

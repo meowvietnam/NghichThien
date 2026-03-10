@@ -13,7 +13,7 @@ public class HonNguyenTranDanLuc : CongPhap
   
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out int danLuc);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out SecureInt  danLuc);
         if(danLuc > 0)
         {
             ThanThong thanThong = (ThanThong)data[2];

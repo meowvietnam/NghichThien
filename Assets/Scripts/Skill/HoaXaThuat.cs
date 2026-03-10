@@ -23,12 +23,12 @@ public class HoaXaThuat : ThanThong , BaseSkill.TuongDong
     {
         int dame = dameValues[GetIndexLevelThanThong(caster)];
 
-        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out int thieuDot);
+        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt  thieuDot);
         if(thieuDot>0)
         {
             target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, debuffs[GetIndexLevelThanThong(caster)]);
         }    
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
 
 
@@ -37,7 +37,7 @@ public class HoaXaThuat : ThanThong , BaseSkill.TuongDong
     public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)
     {
         int dameBuff = dameValueBuffs[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> {  dameBuff });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> {  dameBuff }, eTypeSkill, true);
     }
 
     public override string GetDesc(int level)

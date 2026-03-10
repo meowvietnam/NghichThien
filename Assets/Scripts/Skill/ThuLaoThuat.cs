@@ -11,7 +11,7 @@ public class ThuLaoThuat : ThanThong , BaseSkill.LienKich
     [SerializeField] private int[] trienNhieu;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.TakeDameByThanThong(caster,new List<int> { dameBuffs[GetIndexLevelThanThong(caster)] });
+        target.TakeDameByThanThong(caster,new List<int> { dameBuffs[GetIndexLevelThanThong(caster)] }, eTypeSkill);
 
     }
 

@@ -16,7 +16,7 @@ public class NoDao : ThanThong , BaseSkill.LienKich
         {
             dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
         }
-        target.TakeDameByThanThong(caster, dames, false);
+        target.TakeDameByThanThong(caster, dames, eTypeSkill);
 
 
     }
@@ -32,6 +32,6 @@ public class NoDao : ThanThong , BaseSkill.LienKich
         {
             dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
         }
-        target.TakeDameByThanThong(caster, dames, false);
+        target.TakeDameByThanThong(caster, dames , eTypeSkill);
     }
 }

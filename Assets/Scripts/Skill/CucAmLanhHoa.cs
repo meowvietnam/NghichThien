@@ -20,7 +20,7 @@ public class CucAmLanhHoa : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dameBuffs[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         int debuff = debuffs[GetIndexLevelThanThong(caster)];
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, debuff);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, debuff);

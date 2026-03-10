@@ -7,7 +7,6 @@ public class ThongHuyet : ThanThong
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if(!IsCanUse(caster,target)) return;
         caster.NoiThuongAction();
         ExecuteAction(caster,target);
 
@@ -18,7 +17,7 @@ public class ThongHuyet : ThanThong
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        int noiThuong = 0;
+        SecureInt noiThuong = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NoiThuong, out noiThuong);
         return noiThuong > 0;
     }

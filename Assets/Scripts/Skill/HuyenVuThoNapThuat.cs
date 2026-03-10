@@ -38,7 +38,7 @@ public class HuyenVuThoNapThuat : CongPhap
             if(CombatStatic.IsActiveWithPercent(percentFinal))
             {
                 Debug.Log("HuyenVuThoNapThuat count linh khi la " + count);
-                caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HuyenVu, out int huyenVu);
+                caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HuyenVu, out SecureInt  huyenVu);
                 caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TriLieu, huyenVu);
             }
 

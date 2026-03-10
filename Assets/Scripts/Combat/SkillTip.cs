@@ -16,7 +16,7 @@ public class SkillTip : Tooltip
     [SerializeField] private Sprite[] spriteLinhKhiTip; // trong này gôm ảnh => text => ảnh => text =>...
 
 
-    public void ShowSkillTip(string nameTip,string desTip,string typeTip, List<ThanThong.RequireActive> requireLinhKhi,ThanThong thanThong)
+    public void ShowSkillTip(string nameTip,string desTip,string typeTip, List<ThanThong.RequireActive> requireLinhKhi,ThanThong thanThong, int level)
     {
         for (int i = 0; i < requireLinhKhiParent.transform.childCount; i++)
         {
@@ -36,10 +36,10 @@ public class SkillTip : Tooltip
             currentIndex++; 
 
         }
-        var lines = thanThong.eKeywordSkillHave
+        var lines = thanThong.GetEKeywordSkillHave()
       .Select(item => BaseSkill.GetDescKeyWord(item));
 
-        var lines2 = thanThong.eKeywordBuffSkillHave
+        var lines2 = thanThong.GetEKeywordBuffSkillHave(level)
              .Select(item => BaseSkill.GetDescBuffOrDeBuff(item));
 
         // Gán danh sách 1

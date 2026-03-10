@@ -26,7 +26,7 @@ public class TiDocChanDiem : ThanThong
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out int trungDoc);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out SecureInt  trungDoc);
         if (trungDoc >= requires[GetIndexLevelThanThong(caster)])
         {
             return true;

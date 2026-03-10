@@ -9,8 +9,7 @@ public class HacHoiTuong : ThanThong
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if (!IsCanUse(caster, target)) return;
-        int cham = 0;
+        SecureInt cham = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Cham, out cham);
         for (int i = 0; i < cham; i++)
         {
@@ -25,7 +24,7 @@ public class HacHoiTuong : ThanThong
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        int cham = 0;
+        SecureInt cham = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Cham, out cham);
 
         return cham > 0;

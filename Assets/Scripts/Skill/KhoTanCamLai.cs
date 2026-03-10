@@ -19,7 +19,7 @@ public class KhoTanCamLai : ThanThong
         if (currentTurn == null) return;
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is KhoTanCamLai))
         {
-            currentTurn.Healing((int)currentTurn.characterStats.hp);
+            currentTurn.Healing((int)currentTurn.characterStatsMax.hp);
             currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
 
 
@@ -33,8 +33,8 @@ public class KhoTanCamLai : ThanThong
         HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TriLieu, healValues[GetIndexLevelThanThong(caster)]);
 
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KinhDao, out int kinhDao);
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChiThuy, out int chiThuy);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KinhDao, out SecureInt  kinhDao);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChiThuy, out SecureInt  chiThuy);
 
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TriLieu, healPerChiThuyValues[GetIndexLevelThanThong(caster)] * chiThuy);
 

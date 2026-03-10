@@ -9,7 +9,7 @@ public class PhanLinhQuyet : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int countRemove = tieuTan;
-        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out int thieuDot);
+        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt  thieuDot);
         if(thieuDot > 0)
         {
             countRemove += tieuTanBuff;

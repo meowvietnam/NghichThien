@@ -16,7 +16,7 @@ public class CuLinhTrao : ThanThong
         int countUse = GetListSkillUseCheck(caster)
             .Count(data => data.thanThong is CuLinhTrao);
         
-        target.TakeDameByThanThong(caster, new List<int> { dame + (countUse * dameBuffs[GetIndexLevelThanThong(caster)])});
+        target.TakeDameByThanThong(caster, new List<int> { dame + (countUse * dameBuffs[GetIndexLevelThanThong(caster)])}, eTypeSkill);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 

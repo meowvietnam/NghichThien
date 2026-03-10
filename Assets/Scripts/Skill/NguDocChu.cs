@@ -26,8 +26,8 @@ public class NguDocChu : ThanThong
        
         if (caster.specialThanThongImpactAfterPlaySkill.Any(x => x is NguDocChu))
         {
-          
-            int trungDoc = 0;
+
+            SecureInt trungDoc = 0;
             target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out trungDoc);
             int count = (trungDoc / require);
             target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, count * trungDocPerRequire[GetIndexLevelThanThong(caster)]);

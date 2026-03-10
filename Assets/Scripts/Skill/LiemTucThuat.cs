@@ -13,7 +13,7 @@ public class LiemTucThuat : CongPhap
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnNac, out int anNac);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnNac, out SecureInt  anNac);
         if(anNac > 0)
         {
             target.AddDamageData(new List<int> { buffValues[CurrentLevelCongPhapInCombat(caster) - 1] });
@@ -25,7 +25,7 @@ public class LiemTucThuat : CongPhap
 
     public override string GetDesc(int level)
     {
-        return $"Bản thân có trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnNac)} thì tạo thành {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương (Chỉ có tác dụng với các thần thông không giải trừ {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnNac)})";
+        return $"Bản thân có trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnNac)} thì tạo thành {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

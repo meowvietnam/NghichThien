@@ -22,7 +22,7 @@ public class ChichMachChi : ThanThong
 
         int dame = dameValues[GetIndexLevelThanThong(caster)];
 
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
         target.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.GamePlay.ADJUST_LINHKHI, ObserverEffect);

@@ -9,7 +9,7 @@ public class HuDocChu : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame[GetIndexLevelThanThong(caster)] });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame[GetIndexLevelThanThong(caster)] }, eTypeSkill);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, trungDoc[GetIndexLevelThanThong(caster)]);
 
     }

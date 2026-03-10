@@ -7,17 +7,17 @@ public class ThienQuanTram : ThanThong
     [SerializeField] private int[] dames;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        int hoTrao = 0;
-        int dame = dames[GetIndexLevelThanThong(caster)];
+        SecureInt hoTrao = 0;
+        SecureInt dame = dames[GetIndexLevelThanThong(caster)];
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out hoTrao);
 
         if (hoTrao > 0)
         {
-            target.TakeDameByThanThong(caster, new List<int> { dame *2 });
+            target.TakeDameByThanThong(caster, new List<int> { dame *2 }, eTypeSkill);
         }
         else
         {
-            target.TakeDameByThanThong(caster, new List<int> { dame });
+            target.TakeDameByThanThong(caster, new List<int> { dame }, eTypeSkill);
         }
     }
 

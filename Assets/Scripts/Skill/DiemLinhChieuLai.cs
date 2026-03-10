@@ -14,7 +14,7 @@ public class DiemLinhChieuLai : ThanThong
     {
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Diem, require);
         int dame = dameValues[GetIndexLevelThanThong(caster)];
-        target.TakeDameByThanThong(caster,new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster,new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
 
 
@@ -22,7 +22,7 @@ public class DiemLinhChieuLai : ThanThong
   
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out int diem);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out SecureInt diem);
         if (diem >= require)
         {
             return true;

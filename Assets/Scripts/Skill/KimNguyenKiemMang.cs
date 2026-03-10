@@ -7,7 +7,7 @@ public class KimNguyenKiemMang : ThienNhanThuat , BaseSkill.TuongDong
 
     public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)
     {
-        target.TakeDameByThanThong(caster, new List<int> { dameBuff[GetIndexLevelThanThong(caster)] });
+        target.TakeDameByThanThong(caster, new List<int> { dameBuff[GetIndexLevelThanThong(caster)] }, eTypeSkill, true);
     }
 
     public override string GetDesc(int level)

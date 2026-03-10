@@ -12,16 +12,16 @@ public class KimHongQuanNhat : ThanThong
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KietSuc, 1);
 
 
-        int sucThe = 0;
+        SecureInt sucThe = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out sucThe);
-        int kiemKhi = 0;
+        SecureInt kiemKhi = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out kiemKhi);
 
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe,sucThe);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi,kiemKhi);
 
         int dame = this.dame[GetIndexLevelThanThong(caster)] + perDameKiemKhi[GetIndexLevelThanThong(caster)] * kiemKhi + perDameSucThe[GetIndexLevelThanThong(caster)] * sucThe;
-        target.TakeDameByThanThong(caster, new List<int> { dame });
+        target.TakeDameByThanThong(caster, new List<int> { dame }, eTypeSkill);
 
         ShowSkillEffectParticle(target, 1f);
     }

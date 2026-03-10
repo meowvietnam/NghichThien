@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class LinhKhiTieuTan
 {
     public ELinhKhi eLinhKhi;
-    public int count;
+    public SecureInt count;
 }
 public enum ETuongQuan
 {
@@ -78,8 +78,8 @@ public class CombatManager : MonoBehaviour
     }
     private void SetUIHpBar()
     {
-        SetUIHpBar(char1.characterStatsCurrent.hp, char1.characterStats.hp, progressHpChar1, textHpChar1);
-        SetUIHpBar(char2.characterStatsCurrent.hp, char2.characterStats.hp, progressHpChar2, textHpChar2);
+        SetUIHpBar(char1.characterStatsCurrent.hp, char1.characterStatsMax.hp, progressHpChar1, textHpChar1);
+        SetUIHpBar(char2.characterStatsCurrent.hp, char2.characterStatsMax.hp, progressHpChar2, textHpChar2);
 
     }
  
@@ -135,6 +135,8 @@ public class CombatManager : MonoBehaviour
             percentTho = 10,
             hp = 200,
             tocDoBay = 20,
+            thoNguyen = 1000,
+            thanThuc = 50
 
         });
         char2.Init(new CharacterStats()
@@ -147,6 +149,9 @@ public class CombatManager : MonoBehaviour
             percentTho = 10,
             hp = 200,
             tocDoBay = 10,
+            thoNguyen = 1000,
+            thanThuc = 30
+
         });
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, NewTurn);
@@ -176,45 +181,53 @@ public class CombatManager : MonoBehaviour
 
     public static ETuongQuan GetETuongQuan(List<LinhKhiTieuTan> linhKhiTieuTan)
     {
-        // Lấy danh sách các hệ có mặt
-        List<ELinhKhi> list = linhKhiTieuTan
-                              .Where(x => x.count > 0)
-                              .Select(x => x.eLinhKhi)
-                              .ToList();
+        var list = linhKhiTieuTan
+                .Where(x => x.count > 0)
+                .Select(x => x.eLinhKhi)
+                .Distinct()
+                .OrderBy(x => (int)x) // Giả định: Kim=0, Thủy=1, Mộc=2, Hỏa=3, Thổ=4
+                .ToList();
 
+        if (list.Count <= 1) return ETuongQuan.None;
+        if (list.Count >= 4) return ETuongQuan.TuongKhac;
 
-        if (list.Count == 1)
-            return ETuongQuan.None;
-        if (list.All(x => x == list[0]))
-            return ETuongQuan.None;
-
-        if (list.Count >= 4)
-            return ETuongQuan.TuongKhac;
-
-        // totalCount == 2 || 3 → cần kiểm tra tương sinh
-        bool allSinh = true;
-
-        for (int i = 0; i < list.Count; i++)
+        // Hàm phụ kiểm tra nhanh A có sinh B không (có tính nối vòng)
+        bool IsSinh(ELinhKhi a, ELinhKhi b)
         {
-            for (int j = i + 1; j < list.Count; j++)
-            {
-                ELinhKhi a = list[i];
-                ELinhKhi b = list[j];
-
-                bool sinh =
-                    (TuongSinh.ContainsKey(a) && TuongSinh[a] == b) ||
-                    (TuongSinh.ContainsKey(b) && TuongSinh[b] == a);
-
-                if (!sinh)
-                {
-                    allSinh = false;
-                    break;
-                }
-            }
-            if (!allSinh) break;
+            bool sinh =
+                        (TuongSinh.ContainsKey(a) && TuongSinh[a] == b) ||
+                        (TuongSinh.ContainsKey(b) && TuongSinh[b] == a);
+            return sinh;
         }
 
-        return allSinh ? ETuongQuan.TuongSinh : ETuongQuan.TuongKhac;
+        // THẾ TRẬN BỘ 2: [A, B]
+        if (list.Count == 2)
+        {
+            if (IsSinh(list[0], list[1]) || IsSinh(list[1], list[0]))
+                return ETuongQuan.TuongSinh;
+            return ETuongQuan.TuongKhac;
+        }
+
+        // THẾ TRẬN BỘ 3: [A, B, C] (đã sort)
+        if (list.Count == 3)
+        {
+            // Chỉ có 5 bộ 3 duy nhất là Tương Sinh liên hoàn:
+            // 1. Kim - Thủy - Mộc (0, 1, 2)
+            // 2. Thủy - Mộc - Hỏa (1, 2, 3)
+            // 3. Mộc - Hỏa - Thổ (2, 3, 4)
+            // 4. Hỏa - Thổ - Kim (3, 4, 0) -> Sort: [Kim, Hỏa, Thổ]
+            // 5. Thổ - Kim - Thủy (4, 0, 1) -> Sort: [Kim, Thủy, Thổ]
+
+            bool case123 = IsSinh(list[0], list[1]) && IsSinh(list[1], list[2]);
+            bool case4 = IsSinh(list[1], list[2]) && IsSinh(list[2], list[0]); // Hỏa-Thổ, Thổ-Kim
+            bool case5 = IsSinh(list[2], list[0]) && IsSinh(list[0], list[1]); // Thổ-Kim, Kim-Thủy
+
+            if (case123 || case4 || case5)
+                return ETuongQuan.TuongSinh;
+        }
+
+        return ETuongQuan.TuongKhac;
+        
     }
     public static bool IsLienKich(ThanThong thanThong, ThanThong thanThongOldUse)
     {
@@ -257,11 +270,17 @@ public class CombatManager : MonoBehaviour
 
 
         }
-        if (thanThong!= null)
+        if (thanThong!= null )
         {
 
 
             caster.PlaySkill(thanThong, linhKhiTieuTan);
+            if(target.specialThanThongImpactAfterPlaySkill.Any(x=>x is AmDuongDong))
+            {
+                target.RemoveAllThanThongImpactAfterPlaySkill(target.specialThanThongImpactAfterPlaySkill.FirstOrDefault(x=>x is AmDuongDong));
+                return;
+
+            }    
             ThanThong thanThongOldUse = caster.thanThongOldUse != null ? caster.thanThongOldUse.thanThong : null;
             thanThong.Execute(caster, target, data);
             if (thanThong is BaseSkill.LienKich thanThongLienKich && thanThongOldUse != null)
@@ -288,7 +307,12 @@ public class CombatManager : MonoBehaviour
                 thanThongTuongDong.ExecuteTuongDong(caster, target);
 
             }
-            target.TakeDame(caster);
+            if (thanThong is BaseSkill.ThanThuc thanThongThanThuc && (caster.GetThanThuc() > target.GetThanThuc()))
+            {
+                thanThongThanThuc.ExecuteThanThuc(caster, target);
+
+            }
+            target.TakeDame(caster,!thanThong.GetEKeywordSkillHave().Contains(BaseSkill.EKeyWord.ChanThucTonThuong));
             if(thanThong.timeDelayTakeDame > 0)
             {
                 IsDelayEffectSkill = true;
@@ -327,15 +351,14 @@ public class CombatManager : MonoBehaviour
         {
             TieuTanLinhKhi(linhKhiTieuTan);
         }
-        if (currentTurn.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out int kiemKhi))
-        {
-            targetTurn.TakeDameByThanThong(currentTurn, new List<int> { kiemKhi });
-            targetTurn.TakeDame(currentTurn);
-
-        }
-        CombatStatic.KiemKhi(currentTurn,targetTurn);
+       
+        CombatStatic.AnhDich(currentTurn, targetTurn);
+        CombatStatic.KiemKhi(currentTurn, targetTurn);
         CombatStatic.TrungDoc(targetTurn, currentTurn);
+        CombatStatic.ThienKiem(currentTurn, targetTurn);
         currentTurn.EndTurn();
+
+        // swap turn
         if (currentTurn == char1)
         {
             currentTurn = char2;
@@ -427,11 +450,13 @@ public class CombatManager : MonoBehaviour
     [Button]
     public void NewTurn()
     {
+        CombatStatic.QuyTon(currentTurn,targetTurn);
         CombatStatic.SucThe(currentTurn, targetTurn);
         CombatStatic.ThieuDot(targetTurn, currentTurn);
 
 
         currentTurn.NewTurn();
+
         CombatStatic.AmKinhTTNewTurn(currentTurn, targetTurn);
 
         Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();

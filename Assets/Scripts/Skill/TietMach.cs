@@ -13,13 +13,13 @@ public class TietMach : ThanThong , BaseSkill.TuongDong
     [SerializeField] protected virtual EBuffAndDeBuff eBuffOrDebuff => EBuffAndDeBuff.TreKhi;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.TakeDameByThanThong(caster,new List<int> { dameMain[GetIndexLevelThanThong(caster)]});
+        target.TakeDameByThanThong(caster,new List<int> { dameMain[GetIndexLevelThanThong(caster)]}, eTypeSkill);
         target.AddBuffAndDebuffCount(eBuffOrDebuff, deBuff);
     }
 
     public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)
     {
-        target.TakeDameByThanThong(caster, new List<int> { buffDame[GetIndexLevelThanThong(caster)] });
+        target.TakeDameByThanThong(caster, new List<int> { buffDame[GetIndexLevelThanThong(caster)]}, eTypeSkill, true);
     }
 
     public override string GetDesc(int level)

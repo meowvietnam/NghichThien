@@ -14,8 +14,8 @@ public class ThienTinhHoaHaiQuyet : CongPhap
     {
         int currentBuff = buffValues[CurrentLevelCongPhapInCombat(caster) - 1];
         int dame = caster.totalKhi * currentBuff;
-        target.AddDamageData(new List<int>(dame));
-        target.TakeDame(caster);
+        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int> { dame }, true, eTypeSkill);
+
     }
 
     public override string GetDesc(int level)

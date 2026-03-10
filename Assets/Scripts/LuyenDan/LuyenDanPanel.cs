@@ -23,7 +23,7 @@ namespace LuyenDan
 
         private void Start()
         {
-            FurnaceInventory.Init();
+          //  FurnaceInventory.Init();
         }
     }
 }

@@ -21,7 +21,7 @@ public class TichDietChi : ThanThong
         {
             dame += buffValues[GetIndexLevelThanThong(caster)];
         }    
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         ShowSkillEffectWorld(target, delayDelete);
     }
 

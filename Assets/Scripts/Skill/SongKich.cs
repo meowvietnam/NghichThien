@@ -18,7 +18,7 @@ public class SongKich : ThanThong , BaseSkill.LienKich
         {
             dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
         }
-        target.TakeDameByThanThong(caster, dames, false);
+        target.TakeDameByThanThong(caster, dames, eTypeSkill, false);
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect);
 
 
@@ -40,7 +40,7 @@ public class SongKich : ThanThong , BaseSkill.LienKich
     }
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{countAttack[level - 1]} lần {damePerCountAttack[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} Nếu trước đó dùng Kim hệ thần thông, thì thu hoạch được {GetColoredText($"+{sucLucs[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucLuc)} (Có thể cộng dồn)";
+        return $"Tạo thành {GetColoredText($"{countAttack[level - 1]} lần {damePerCountAttack[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} Nếu trước đó dùng Kim hệ thần thông, thì hiệp tiếp theo thu hoạch được {GetColoredText($"+{sucLucs[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucLuc)} (Có thể cộng dồn)";
 
     }
 

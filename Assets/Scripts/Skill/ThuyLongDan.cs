@@ -11,7 +11,7 @@ public class ThuyLongDan : ThanThong , BaseSkill.LienKich
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
-        target.TakeDameByThanThong(caster, new List<int> { dame[GetIndexLevelThanThong(caster)] });
+        target.TakeDameByThanThong(caster, new List<int> { dame[GetIndexLevelThanThong(caster)] }, eTypeSkill);
         //ShowSkillEffect(target, delayTimeEffect);
 
     }

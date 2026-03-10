@@ -14,7 +14,7 @@ public class TuDiem : ThanThong
 
 
         caster.HapThuLinhKhi(ELinhKhi.Hoa, hapThu);
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out int hoaDiem);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt  hoaDiem);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Diem, hoaDiem);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoaDiem, hoaDiem);
     }

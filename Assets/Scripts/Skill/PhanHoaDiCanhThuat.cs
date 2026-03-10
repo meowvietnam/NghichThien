@@ -8,7 +8,7 @@ public class PhanHoaDiCanhThuat : ThanThong
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out int myThieuDot);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt  myThieuDot);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, myThieuDot);
 
 
@@ -16,7 +16,7 @@ public class PhanHoaDiCanhThuat : ThanThong
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out int myThieuDot);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt  myThieuDot);
         if(myThieuDot > 0)
         {
             return true;

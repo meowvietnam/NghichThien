@@ -43,6 +43,8 @@ public class PlayerUICombat : MonoBehaviour
     public CombatManager CombatManager => transform.GetComponentInParent<CombatManager>();
 
     public SkillTip skillTip;
+
+    public GameObject linhKhiSelectUI;
     public void SetStateControl(EStateControl eState)
     {
         eStateControl = eState;
@@ -246,7 +248,7 @@ public class PlayerUICombat : MonoBehaviour
             Action actionHolder = new Action(() =>
             {
                 skillTip.SetPosition(new Vector3(skill.transform.position.x,skillTip.transform.position.y,skillTip.transform.position.z));
-                skillTip.ShowSkillTip(skill.ThanThongData.name,skill.ThanThongData.GetDesc(ThanThong.GetLevelThanThong(player.characterStatsCurrent)),skill.ThanThongData.GetTextTypeSkill(),skill.ThanThongData.GetRequireActive(player),skill.ThanThongData);
+                skillTip.ShowSkillTip(skill.ThanThongData.name,skill.ThanThongData.GetDesc(ThanThong.GetDaiCanhGioi(player.characterStatsCurrent.level)),skill.ThanThongData.GetTextTypeSkill(),skill.ThanThongData.GetRequireActive(player),skill.ThanThongData , player.characterStatsCurrent.level);
             });
             Action actionPointerUp = new Action(() =>
             {
@@ -391,30 +393,30 @@ public class PlayerUICombat : MonoBehaviour
 
                     }
                 }    
-                else if(item.ThanThongData is BaseSkill.TuongSinh)
-                {
-                    if (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(linhKhiRemains)) == ETuongQuan.TuongSinh)
-                    {
-                        item.ShowRecommentHighlight(true);
+                //else if(item.ThanThongData is BaseSkill.TuongSinh)
+                //{
+                //    if (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(linhKhiRemains)) == ETuongQuan.TuongSinh)
+                //    {
+                //        item.ShowRecommentHighlight(true);
 
-                    }
-                }
-                else if (item.ThanThongData is BaseSkill.TuongKhac)
-                {
-                    if (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(linhKhiRemains)) == ETuongQuan.TuongKhac)
-                    {
-                        item.ShowRecommentHighlight(true);
+                //    }
+                //}
+                //else if (item.ThanThongData is BaseSkill.TuongKhac)
+                //{
+                //    if (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(linhKhiRemains)) == ETuongQuan.TuongKhac)
+                //    {
+                //        item.ShowRecommentHighlight(true);
 
-                    }
-                }
-                else if (item.ThanThongData is BaseSkill.TuongDong)
-                {
-                    if (CombatManager.IsTuongDong(GetLinhKhiTieuTans(linhKhiRemains)))
-                    {
-                        item.ShowRecommentHighlight(true);
+                //    }
+                //}
+                //else if (item.ThanThongData is BaseSkill.TuongDong)
+                //{
+                //    if (CombatManager.IsTuongDong(GetLinhKhiTieuTans(linhKhiRemains)))
+                //    {
+                //        item.ShowRecommentHighlight(true);
 
-                    }
-                }
+                //    }
+                //}
             }
 
         }
@@ -584,14 +586,9 @@ public class PlayerUICombat : MonoBehaviour
             nodes[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(x, y);
         }
     }
-    void Start()
+    public void HapThuLinhKhiBtnAction(int linhKhi)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        player.HapThuLinhKhi((ELinhKhi)linhKhi, 1);
+        linhKhiSelectUI.SetActive(false);
+    }    
 }

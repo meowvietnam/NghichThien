@@ -16,9 +16,9 @@ public class LacNhamThuat : ThanThong
     };
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out int danLuc);
+        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out SecureInt  danLuc);
         int dame = dames[GetIndexLevelThanThong(caster)] + (dameBuffPerDanLuc[GetIndexLevelThanThong(caster)] * danLuc);
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
 
     }

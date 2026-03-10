@@ -12,7 +12,7 @@ public class HuyetTePheHonThuat : ThanThong
     };
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon, out int hon);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon, out SecureInt  hon);
         int heal = hon * buffValues[GetIndexLevelThanThong(caster)];
 
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Hon, hon);

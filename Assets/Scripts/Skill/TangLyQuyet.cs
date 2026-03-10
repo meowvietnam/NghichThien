@@ -16,7 +16,7 @@ public class TangLyQuyet : CongPhap
         Debug.Log($"dcmmm + lv "+ CurrentLevelCongPhapInCombat(caster) + " length là " + dameBuffPercent.Length);
         
         int percentDame = dameBuffPercent[level - 1];
-        int noiThuong = 0;
+        SecureInt noiThuong = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NoiThuong, out noiThuong);
 
         if(noiThuong >0)
@@ -51,7 +51,7 @@ public class TangLyQuyet : CongPhap
         
         List<int> dames = (List<int>)data[2];
         int percentDame = dameDebuffPercent[level - 1];
-        int noiThuong = 0;
+        SecureInt noiThuong = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NoiThuong, out noiThuong);
 
         if (noiThuong > 0)

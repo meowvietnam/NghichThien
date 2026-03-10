@@ -10,7 +10,7 @@ public class BaoNhien : ThanThong, BaseSkill.LienKich
      
     private void ExcuteDiem(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out int diem);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out SecureInt diem);
         target.AddDamageData(new System.Collections.Generic.List<int> { diem });
     }    
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
@@ -19,7 +19,7 @@ public class BaoNhien : ThanThong, BaseSkill.LienKich
 
         int dame = dameValues[GetIndexLevelThanThong(caster)];
 
-        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame });
+        target.TakeDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         Debug.Log("BaoNhien before" + target.allDamages[0]);
 
         ExcuteDiem(caster,target);
