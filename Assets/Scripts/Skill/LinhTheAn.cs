@@ -10,6 +10,7 @@ public class LinhTheAn : ThanThong
     [SerializeField] private int[] hoTraos;
     [SerializeField] private int[] hoTraoAdds;
     [SerializeField] private int require = 1;
+    [SerializeField] private float delayTimeEffect = 0.5f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -17,6 +18,8 @@ public class LinhTheAn : ThanThong
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hoTraos[GetIndexLevelThanThong(caster)]);
         Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, ObserverEffect);
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ObserverEffect2);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
 
     }
     private void ObserverEffect(params object[] data)

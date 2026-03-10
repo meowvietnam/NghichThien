@@ -9,6 +9,7 @@ public class CuLinhTrao : ThanThong
 
     [SerializeField] private int[] dames;
     [SerializeField] private int[] dameBuffs;
+    [SerializeField] private float delayTimeEffect = 0.5f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
@@ -16,6 +17,7 @@ public class CuLinhTrao : ThanThong
             .Count(data => data.thanThong is CuLinhTrao);
         
         target.TakeDameByThanThong(caster, new List<int> { dame + (countUse * dameBuffs[GetIndexLevelThanThong(caster)])}, eTypeSkill);
+        ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
     protected virtual  List<CharacterCombat.PlaySkillData> GetListSkillUseCheck(CharacterCombat caster)

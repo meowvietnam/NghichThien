@@ -7,12 +7,14 @@ using UnityEngine;
 public class PhanKimAn : ThanThong
 {
     [SerializeField] private int[] deTonThuong;
+    [SerializeField] private float delayTimeEffect = 0.5f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.GamePlay.LIEN_KICH, ObserverEffect);
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ObserverEffect2);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

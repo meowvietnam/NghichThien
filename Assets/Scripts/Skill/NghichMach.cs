@@ -7,6 +7,7 @@ using UnityEngine;
 public class NghichMach : ThanThong
 {
     [SerializeField] private int treKhi = 2;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -14,6 +15,7 @@ public class NghichMach : ThanThong
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, treKhi);
         Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, ObserverEffect);
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ObserverEffect2);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

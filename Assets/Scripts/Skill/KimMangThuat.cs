@@ -6,6 +6,7 @@ public class KimMangThuat : ThanThong , BaseSkill.LienKich
     [SerializeField] private int[] dames;
     [SerializeField] private int[] dameBuffs;
     [SerializeField] private int noiThuong = 1;
+    private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -13,7 +14,7 @@ public class KimMangThuat : ThanThong , BaseSkill.LienKich
         target.TakeDameByThanThong(caster,new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NoiThuong, noiThuong);
 
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
