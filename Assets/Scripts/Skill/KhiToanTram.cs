@@ -5,9 +5,11 @@ using UnityEngine;
 public class KhiToanTram : ThanThong
 {
     [SerializeField] private int[] buff;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, buff[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     

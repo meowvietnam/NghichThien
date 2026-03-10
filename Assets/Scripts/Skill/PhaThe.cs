@@ -4,10 +4,11 @@ public class PhaThe : ThanThong , BaseSkill.TuongDong
 {
     [SerializeField]private int[] debuffValues;
     [SerializeField]private int[] debuffTuongDong;
-
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, debuffValues[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)

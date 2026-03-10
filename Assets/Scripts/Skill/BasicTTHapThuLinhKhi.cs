@@ -9,6 +9,7 @@ public class BasicTTHapThuLinhKhi : ThanThong , BaseSkill.TuongSinh
     [SerializeField] private int[] hapThus;
     [SerializeField] private int[] hapThuAdds;
     [SerializeField] private ELinhKhi eLinhKhi;
+    [SerializeField] private float delayTimeEffect = 1f;
     ELinhKhi linhKhiHapThu => CombatManager.TuongSinh[eLinhKhi];
 
 
@@ -16,8 +17,10 @@ public class BasicTTHapThuLinhKhi : ThanThong , BaseSkill.TuongSinh
     {
         HauKeVoLuc(caster);
         caster.HapThuLinhKhi(linhKhiHapThu, hapThus[GetIndexLevelThanThong(caster)]);
-        
-        
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
+
+
 
     }
 

@@ -6,7 +6,8 @@ using UnityEngine;
 public class KimCuongLuyenTheQuyet : CongPhap
 {
     [SerializeField] private int[] hoTraoBuff;
-   
+   // private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data )
     {
         List<LinhKhiTieuTan> linhKhiTieuTan = data[2] as List<LinhKhiTieuTan>;
@@ -16,6 +17,8 @@ public class KimCuongLuyenTheQuyet : CongPhap
             count += item.count;
         }
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao,count * hoTraoBuff[CurrentLevelCongPhapInCombat(caster) - 1]);
+      //  ShowSkillEffectWorld(caster, delayTimeEffect);
+
 
     }
 
