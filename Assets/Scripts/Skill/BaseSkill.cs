@@ -61,6 +61,7 @@ public enum EBuffAndDeBuff
     QuyTuong,
     QuyDe,
     KiemTam,
+    ChanThan,
 
 }
 
@@ -353,6 +354,9 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.KiemTam:
                 text = "Kiếm Tâm";
                 break;
+            case EBuffAndDeBuff.ChanThan:
+                text = "Chấn Thần";
+                break;
             default:
                 break;
         }
@@ -525,6 +529,9 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.KiemTam:
                 text = $"Mỗi khi sử dụng {GetTextTypeSkill(ETypeSkill.Kiem)} hệ thần thông thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiem)}, sau đó giải trừ một tầng. Kết thúc hiệp giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.ChanThan:
+                text = $"Thần thức thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ toàn bộ";
                 break;
             default:
                 break;

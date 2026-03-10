@@ -103,6 +103,7 @@ public class CharacterCombat : MonoBehaviour
             this.RemainingTurns = turns;
         }
     }
+    public SecureBool isSkipTieuTanLinhKhi;
     public void AddAmKinhTT(AmKinhTT thanThong , SecureInt countHiep)
     {
         if (thanThong != null && thanThong is AmKinhTT) ;
@@ -821,6 +822,7 @@ public class CharacterCombat : MonoBehaviour
            
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemTam, kiemTam);
         }
+        isSkipTieuTanLinhKhi = false;
 
     }
 
@@ -872,7 +874,7 @@ public class CharacterCombat : MonoBehaviour
     {
         if (sender != null && eTypeSkils != null)
         {
-            SecureInt chanKim = 0, chanMoc = 0, chanThuy = 0, chanHoa = 0, chanTho = 0, chanKiem = 0, nguKiem = 0, diem = 0;
+            SecureInt chanKim = 0, chanMoc = 0, chanThuy = 0, chanHoa = 0, chanTho = 0, chanKiem = 0, nguKiem = 0, diem = 0 , chanThan = 0;
 
             sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SuongGia, out SecureInt suongGia);
             bool isChanKim = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanKim, out chanKim)
@@ -892,6 +894,8 @@ public class CharacterCombat : MonoBehaviour
 
             bool isChanKiem = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanKiem, out chanKiem)
                              && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Kiem);
+            bool isChanThan = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanThan, out chanThan)
+                           && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Than);
             bool isNguKiem = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguKiem, out nguKiem)
                              && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Kiem);
             bool isDiem = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out diem)
@@ -915,6 +919,7 @@ public class CharacterCombat : MonoBehaviour
                 if (isChanKiem) dame += chanKiem;
                 if (isNguKiem) dame += nguKiem;
                 if (isDiem) dame += diem;
+                if (isChanThan) dame += chanThan;
 
                 dame += sucLuc;
                 dame += deTonThuong;
@@ -935,6 +940,8 @@ public class CharacterCombat : MonoBehaviour
             if (isChanHoa) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanHoa, chanHoa);
             if (isChanTho) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanTho, chanTho);
             if (isChanKiem) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanKiem, chanKiem);
+            if (isChanThan) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanThan, chanThan);
+
         }
 
         AddDamageData(dames, isCongDon);

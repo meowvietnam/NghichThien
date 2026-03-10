@@ -65,7 +65,7 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private Tooltip buffInfor;
     [SerializeField] public Transform parentUIFight => buffInfor.transform.parent;
 
-    public bool IsDelayEffectSkill = false;
+    public SecureBool IsDelayEffectSkill;
 
     public Text GetTextDame()
     {

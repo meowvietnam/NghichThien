@@ -12,9 +12,7 @@ public class LienNhac : ThanThong
     {
         HauKeVoLuc(caster);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, require);
-        caster.totalKhi += 999999;
-        caster.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ObserverEffect);
+        caster.isSkipTieuTanLinhKhi = true;
 
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
@@ -23,24 +21,7 @@ public class LienNhac : ThanThong
 
         return tran>= require;
     }
-    private void ObserverEffect(params object[] data)
-    {
-        CharacterCombat currentTurn = (CharacterCombat)data[0];
-        CharacterCombat targetTurn = (CharacterCombat)data[1];
-
-        if (currentTurn == null) return;
-
-        if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is LienNhac))
-        {
-
-            currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
-            currentTurn.totalKhi -= 999999;
-
-            
-        }
-
-
-    }
+    
 
     public override string GetDesc(int level)
     {
