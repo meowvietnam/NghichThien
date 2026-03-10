@@ -25,7 +25,8 @@ namespace LuyenDan
         }
         public HerbData FindHerb(int id)
         {
-            return HerbDatas.FirstOrDefault(x => x.Id == id);
+            var herb = HerbDatas.FirstOrDefault(x => x.Id == id);
+            return herb;
         }
         #region import1
 
@@ -167,7 +168,10 @@ namespace LuyenDan
         //     public string Name { get; set; }
         // }
         #endregion
+
+        public RecipeData FindRecipe(int i)
+        {
+            return Recipes.FirstOrDefault(x => x.Id == i);
+        }
     }
-
-
 }

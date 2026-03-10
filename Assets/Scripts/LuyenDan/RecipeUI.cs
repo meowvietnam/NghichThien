@@ -15,7 +15,9 @@ namespace LuyenDan
         [SerializeField] private GameObject selected;
         [SerializeField] private MiniRecipeUI prefab;
         private RecipeData data;
-        private List<MiniRecipeUI> recipes = new List<MiniRecipeUI>();
+        private List<MiniRecipeUI> recipes = new();
+        [SerializeField] private GameObject thisObject;
+        public RecipeData Data => data;
         public void Init(RecipeData data, ToggleGroup group)
         {
             this.data = data;
@@ -30,19 +32,28 @@ namespace LuyenDan
             toggle.SetIsOnWithoutNotify(false);
             SetSize(false);
         }
-
+        public void SetCraftable(bool active)
+        {
+            craftale.SetActive(active);
+        }
+        
         private void SetSize(bool active)
         {
             var size = thisTransform.sizeDelta;
             if (active)
             {
-                size.y = 72 + 93 * data.Recipes.Count;
+                size.y = 82 + 93 * data.Recipes.Count;
             }
             else
             {
-                size.y = 72;
+                size.y = 52;
             }
             thisTransform.sizeDelta = size;
+        }
+
+        public void SetActive(bool active)
+        {
+            thisObject.SetActive(active);
         }
         private void OnValueChanged(bool active)
         {

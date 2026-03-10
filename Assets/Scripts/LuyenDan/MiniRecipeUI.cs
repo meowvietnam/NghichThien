@@ -23,12 +23,17 @@ namespace LuyenDan
             this.chuduoc.text = $"{chuduoc.Name}x{chuduocRef.Count}";
             RecipeData.Herbs[] phuduocRefs = { data.PhuDuoc1, data.PhuDuoc2 };
             var phuduocs = phuduocRefs
-                .Where(x => x != null)
+                .Where(x => x != null && x.Id != 0)
                 .Select(x => new
                 {
                     PhuDuoc = r.FindHerb(x.Id),
                     Ref = x
-                }).ToArray();
+                })
+                .ToArray();
+            if (phuduocs.Any(i => i.PhuDuoc == null))
+            {
+                Debug.Log("Null phuduoc");
+            }
             this.phuduoc.text = string.Join(", ", phuduocs.Select(x => $"{x.PhuDuoc.Name}x{x.Ref.Count}"));
             var thuocdanRef = data.DuocDan;
             var thuocdan = r.FindHerb(thuocdanRef.Id);
