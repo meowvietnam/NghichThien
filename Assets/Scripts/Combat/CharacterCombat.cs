@@ -453,6 +453,11 @@ public class CharacterCombat : MonoBehaviour
 
 
 
+        //Test
+        currentCharGender.GetComponent<SpineSkinMixer>().RandomizeAndApplySkin();
+
+
+
     }
 
     public void HapThuLinhKhi(ELinhKhi elinhKhi , int count)
