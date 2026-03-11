@@ -2,68 +2,87 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: E3D-Loop-Direction15-ase
-  m_Shader: {fileID: 4800000, guid: ece26e06f26c1694d9da00482da09938, type: 3}
-  m_ShaderKeywords:
+  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-      _Base:
-        m_Texture: {fileID: 2800000, guid: e64ec6296f7b9aa4eb949d9dd5560115, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-      _Shape:
-        m_Texture: {fileID: 2800000, guid: d51b1eae9dc70594ea9f7dd26f390961, type: 3}
-        m_Scale: {x: 0.85, y: -1}
-        m_Offset: {x: 0, y: 0}
-      _texcoord:
+    - _AlphaTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Base:
+        m_Texture: {fileID: 2800000, guid: e64ec6296f7b9aa4eb949d9dd5560115, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Shape:
+        m_Texture: {fileID: 2800000, guid: d51b1eae9dc70594ea9f7dd26f390961, type: 3}
+        m_Scale: {x: 0.85, y: -1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
-      _Alpha: 1
-      _Base2uv: 0
-      _BaseAlpha: 0.93
-      _BaseAlphaAdd: 0.367
-      _BumpScale: 1
-      _Cutoff: 0.5
-      _DetailNormalMapScale: 1
-      _DstBlend: 0
-      _EdgeClip: 6.7
-      _Glossiness: 0.5
-      _Lighten: -20
-      _LightenMain: -2
-      _Metallic: 0
-      _Mode: 0
-      _OcclusionStrength: 1
-      _Parallax: 0.02
-      _Progess: -0.05
-      _Shape2uv: 0
-      _Speed01: 1
-      _Speed02: 1
-      _SrcBlend: 1
-      _UVSec: 0
-      _Width: 0.05
-      _ZWrite: 1
-      __dirty: 0
+    - PixelSnap: 0
+    - _Alpha: 1
+    - _Base2uv: 0
+    - _BaseAlpha: 0.93
+    - _BaseAlphaAdd: 0.367
+    - _BumpScale: 1
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EdgeClip: 6.7
+    - _EnableExternalAlpha: 0
+    - _Glossiness: 0.5
+    - _Lighten: -20
+    - _LightenMain: -2
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _Progess: -0.05
+    - _Shape2uv: 0
+    - _Speed01: 1
+    - _Speed02: 1
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _Width: 0.05
+    - _ZWrite: 1
+    - __dirty: 0
     m_Colors:
-      _AddColor: {r: 0.6102941, g: 0.18940145, b: 0, a: 1}
-      _BaseColor: {r: 0.2352941, g: 0.10223123, b: 0, a: 1}
-      _Color: {r: 1, g: 1, b: 1, a: 1}
-      _Color01: {r: 0.09558821, g: 0.012961115, b: 0, a: 1}
-      _Color02: {r: 1, g: 0.345339, b: 0.24264705, a: 1}
-      _Color03: {r: 1, g: 1, b: 1, a: 1}
-      _EdgeColor: {r: 0, g: 0, b: 0, a: 1}
-      _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-      _MainColor: {r: 0.29411766, g: 0.07450981, b: 0.058823533, a: 1}
+    - _AddColor: {r: 0.6102941, g: 0.18940145, b: 0, a: 1}
+    - _BaseColor: {r: 0.2352941, g: 0.10223123, b: 0, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color01: {r: 0.09558821, g: 0.012961115, b: 0, a: 1}
+    - _Color02: {r: 1, g: 0.345339, b: 0.24264705, a: 1}
+    - _Color03: {r: 1, g: 1, b: 1, a: 1}
+    - _EdgeColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _MainColor: {r: 0.29411766, g: 0.07450981, b: 0.058823533, a: 1}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

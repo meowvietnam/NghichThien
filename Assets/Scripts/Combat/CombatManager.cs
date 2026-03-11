@@ -67,6 +67,8 @@ public class CombatManager : MonoBehaviour
 
     public SecureBool IsDelayEffectSkill;
 
+    public Camera cameraEffectSkill;
+
     public Text GetTextDame()
     {
         return prefabTextDame.Spawn(this.transform);

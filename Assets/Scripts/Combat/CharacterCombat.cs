@@ -1124,6 +1124,15 @@ public class CharacterCombat : MonoBehaviour
         }
 
 
+        var listBuff = transform.GetComponentsInChildren<BuffEffect>();
+        foreach (var item in listBuff)
+        {
+            if (item.eBuff == EBuffAndDeBuff.TriLieu)
+            {
+                item.ShowEffect();
+                break;
+            }
+        }
         Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);
 
     }

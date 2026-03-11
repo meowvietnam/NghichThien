@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using LongDH.LongDHModules;
 using LongDH.Script.ObjectPool;
 using System.Collections.Generic;
 using System.Linq;
@@ -133,7 +134,7 @@ public abstract class ThanThong : BaseSkill
 
         }
 
-        Camera.main.orthographicSize = cameraSize;
+        Pool.Get<CombatManager>().cameraEffectSkill.orthographicSize = cameraSize;
 
         DOVirtual.DelayedCall(delay, () =>
         {
@@ -152,7 +153,7 @@ public abstract class ThanThong : BaseSkill
         effect.transform.localScale = new Vector3(1 * signX, 1, 1);
 
 
-        Camera.main.orthographicSize = 50;
+        Pool.Get<CombatManager>().cameraEffectSkill.orthographicSize = 50;
 
         DOVirtual.DelayedCall(delay, () =>
         {
@@ -168,7 +169,8 @@ public abstract class ThanThong : BaseSkill
         effect.transform.localEulerAngles = prefabEffectSkill.transform.localEulerAngles;
         effect.transform.localScale = Vector3.one;
         effect.transform.localPosition = Vector3.zero;
-        Camera.main.orthographicSize = 50;
+
+        Pool.Get<CombatManager>().cameraEffectSkill.orthographicSize = 50;
 
         DOVirtual.DelayedCall(delay, () =>
         {
