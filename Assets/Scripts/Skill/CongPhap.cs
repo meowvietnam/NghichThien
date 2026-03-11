@@ -11,13 +11,13 @@ public class CongPhapMono
 }
 public abstract class CongPhap : BaseSkill
 {
-    [SerializeField] private SecureInt tocDoTuLuyenBase;
+    [SerializeField] private int tocDoTuLuyenBase;
 
-    public virtual void EquipCongPhap(CharacterStats stats, int level)
+    public virtual void EquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int daiCanhGioi)
     {
 
     }
-    public virtual void UnEquipCongPhap(CharacterStats stats, int level)
+    public virtual void UnEquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int daiCanhGioi)
     {
 
     }

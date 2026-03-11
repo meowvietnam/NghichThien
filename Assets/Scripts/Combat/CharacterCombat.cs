@@ -286,7 +286,7 @@ public class CharacterCombat : MonoBehaviour
    
     public Dictionary<BaseSkill, SecureInt> skillTichLuy = new Dictionary<BaseSkill, SecureInt>();
 
-    public CharacterStats characterStatsBase;
+    public CharacterStats characterStatsBase; // là stats current của player khi end combat
     public CharacterStats characterStatsMax;
     public CharacterStats characterStatsCurrent;
     public List<PlaySkillData> thanThongUseThisTurn =>
@@ -722,22 +722,28 @@ public class CharacterCombat : MonoBehaviour
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanLongChiHuyet,out SecureInt chanLongChiHuyet);
         if(chanLongChiHuyet > 0)
         {
-            var debuffKeys = buffAndDebuffCount.Keys
-                    .Where(key => BaseSkill.eDebuffs.Contains(key))
-                    .ToList();
-            // 2. Kiểm tra xem có debuff nào để xóa không
-            if (debuffKeys.Count > 0)
+            for (int i = 0; i < 10; i++)
             {
-                for (int i = 0; i < 10; i++)
+                var debuffKeys = buffAndDebuffCount.Keys
+                .Where(key => BaseSkill.eDebuffs.Contains(key))
+                .ToList();
+                // 2. Kiểm tra xem có debuff nào để xóa không
+                if (debuffKeys.Count > 0)
                 {
                     // 3. Chọn ngẫu nhiên một key trong danh sách debuff đã lọc
                     var randomDebuffKey = debuffKeys[CombatStatic.IndexRandom(0, debuffKeys.Count)];
 
                     // 4. Thực hiện xóa 1 count
                     RemoveBuffAndDebuffCount(randomDebuffKey, 1);
+
                 }
-               
+                else
+                {
+                    break;
+                }    
+              
             }
+           
 
         }
        
@@ -866,16 +872,16 @@ public class CharacterCombat : MonoBehaviour
     }
 
     [Button]
-    public void TakeDameByThanThong(CharacterCombat sender, List<int> dames, BaseSkill.ETypeSkill[] eTypeSkils, bool isCongDon = false)
+    public void CaculateDameByThanThong(CharacterCombat sender, List<int> dames, BaseSkill.ETypeSkill[] eTypeSkils, bool isCongDon = false)
     {
 
-        CaculatorDame(sender, dames, isCongDon, eTypeSkils);
+        CaculateDame(sender, dames, isCongDon, eTypeSkils);
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt hoaDiem);
         sender.TakeDameByStatic(this, new List<int> { hoaDiem }, false , new[] { BaseSkill.ETypeSkill.Hoa });
-        Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG, sender, this, dames);
+        Observer.Notify(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, sender, this, dames);
 
     }
-    private void CaculatorDame(CharacterCombat sender, List<int> dames, bool isCongDon = false, BaseSkill.ETypeSkill[] eTypeSkils = null)
+    private void CaculateDame(CharacterCombat sender, List<int> dames, bool isCongDon = false, BaseSkill.ETypeSkill[] eTypeSkils = null)
     {
         if (sender != null && eTypeSkils != null)
         {
@@ -954,7 +960,7 @@ public class CharacterCombat : MonoBehaviour
     public void TakeDameByStatic(CharacterCombat sender, List<int> dames,  bool isCongDon = false , BaseSkill.ETypeSkill[] eTypeSkils = null , bool isDef = true)
     {
 
-        CaculatorDame(sender, dames, isCongDon, eTypeSkils);
+        CaculateDame(sender, dames, isCongDon, eTypeSkils);
         TakeDame(sender,isDef);
     }
     [Button]

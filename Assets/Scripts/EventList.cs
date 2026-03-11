@@ -10,7 +10,7 @@ public static partial class EventList
         public const string ADJUST_LINHKHI = "GamePlay.HAPTHU_LINHKHI";
         public const string ADD_BUFF = "GamePlay.ADD_BUFF";
         public const string CHARACTER_ADJUST_HP = "GamePlay.CHARACTER_ADJUST_HP";
-        public const string CHARACTER_TAKE_DAME_BY_THANTHONG = "GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG";
+        public const string CACULATE_DAME_BY_THANTHONG = "GamePlay.CACULATE_DAME_BY_THANTHONG";
         public const string CHARACTER_TAKE_DAME = "GamePlay.CHARACTER_TAKE_DAME";
         public const string CHARACTER_BEFORE_TAKE_DAME = "GamePlay.CHARACTER_BEFORE_TAKE_DAME";
 
