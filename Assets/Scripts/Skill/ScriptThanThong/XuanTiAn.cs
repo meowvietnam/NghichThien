@@ -47,7 +47,7 @@ public class XuanTiAn : ThanThong
     }
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Lần tiếp theo tạo thành {GetTextLinhKhi(ELinhKhi.Moc)} hệ tổn thương thì sát thương {GetColoredText($"+{dames[level - 1]}", "red")}";
+        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Lần tiếp theo sửa dụng thần thông tạo thành {GetTextLinhKhi(ELinhKhi.Moc)} hệ tổn thương thì sát thương {GetColoredText($"+{dames[level - 1]}", "red")}";
     }
 
 

@@ -13,8 +13,9 @@ public class UViemQuyet : CongPhap
       };
     public void ExecuteParams2(params object[] data)
     {
-        CharacterCombat caster = (CharacterCombat)data[0];
-        CharacterCombat target = (CharacterCombat)data[1];
+        // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
+        CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
+        CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
 
         // Tìm trong danh sách trang bị của caster
         if (IsCanUse(target))
@@ -46,15 +47,71 @@ public class UViemQuyet : CongPhap
 
 
     }
+    public void ExecuteParams3(params object[] data)
+    {
+        // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
+        CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
+        CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
+
+        // Tìm trong danh sách trang bị của caster
+        if (IsCanUse(caster))
+        {
+            Execute3(caster, target, data);
+
+        }
+    }
+    public void Execute3(CharacterCombat caster, CharacterCombat target, params object[] data)
+    {
+        ETypeSkill[] eTypeSkills = (ETypeSkill[])data[3];
+        if (eTypeSkills != null && CheckIsEqualETypeSkill(eTypeSkills)) // sender là hỏa hệ thần thông thì giảm dame cho target
+        {
+            target.AddDamageData(new List<int> { buffValues[CurrentLevelCongPhapInCombat(caster) - 1] });
+
+
+        }
+
+
+    }
+    public void ExecuteParams4(params object[] data)
+    {
+        // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
+        CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
+        CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
+
+        // Tìm trong danh sách trang bị của caster
+        if (IsCanUse(target))
+        {
+            Execute4(caster, target, data);
+
+        }
+    }
+    public void Execute4(CharacterCombat caster, CharacterCombat target, params object[] data)
+    {
+        ETypeSkill[] eTypeSkills = (ETypeSkill[])data[3];
+
+        if (eTypeSkills != null && CheckIsEqualETypeSkill(eTypeSkills)) // sender là hỏa hệ thần thông thì giảm dame cho target
+        {
+            target.AddDamageData(new List<int> { -buffValues[CurrentLevelCongPhapInCombat(caster) - 1] });
+
+
+        }
+
+
+    }
     public override string GetDesc(int level)
     {
-        return $"Nhận thần thông {GetTextLinhKhi(ELinhKhi.Hoa)} hệ tổn thương {GetColoredText($"-{buffValues[level - 1]}", "red")}, tăng lên {GetTextLinhKhi(ELinhKhi.Hoa)} hệ tổn thương {GetColoredText($"+{buffValues[level - 1]}", "red")}";
+        return $"Nhận {GetTextLinhKhi(ELinhKhi.Hoa)} hệ tổn thương {GetColoredText($"-{buffValues[level - 1]}", "red")}, tăng lên {GetTextLinhKhi(ELinhKhi.Hoa)} hệ tổn thương {GetColoredText($"+{buffValues[level - 1]}", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
+        // 1 2 là add dame và giảm dame của play thần thông
+        // 3 4 là add dame và giảm dame của static 
         Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
         Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ExecuteParams2);
+
+        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_STATIC, ExecuteParams3);
+        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_STATIC, ExecuteParams4);
 
     }
 }
