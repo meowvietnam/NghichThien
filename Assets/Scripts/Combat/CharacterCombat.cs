@@ -87,7 +87,8 @@ public class CharacterCombat : MonoBehaviour
     public List<CongPhapMono> congPhapDynamic = new List<CongPhapMono>();
     [SerializeField]
     public SecureInt allDameTaked;
-
+    [SerializeField]
+    public SecureInt currentTurnDameTaked;
     public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill = new List<LinhKhiTieuTan>();
     public List<ThanThong> specialThanThongImpactAfterPlaySkill = new List<ThanThong>();
     public List<AmKinhEntry> listAmKinhTT = new List<AmKinhEntry>();
@@ -750,7 +751,7 @@ public class CharacterCombat : MonoBehaviour
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, 1);
 
         thanThongUseThisComBat.Add(new List<PlaySkillData>());
-        
+        currentTurnDameTaked = 0;
     }
     public bool IsKietSuc()
     {
@@ -771,6 +772,7 @@ public class CharacterCombat : MonoBehaviour
         {
             TakeDameByStatic(null, new List<int> { (int)(chayMau * 0.01f * (characterStatsMax.hp - characterStatsCurrent.hp)) });
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChayMau, 1);
+            Debug.Log("Static ChayMau");
 
 
         }
@@ -855,10 +857,18 @@ public class CharacterCombat : MonoBehaviour
                 for (int i = 0; i < allDamages.Count; i++)
                 {
                     allDamages[i] += sum;
+                    if (allDamages[i] < 0)
+                    {
+                        allDamages[i] = 0;
+                    }    
                 }
             }   
             else
             {
+                if (sum<0)
+                {
+                    return;
+                }
                 allDamages.Add(sum);
             }    
 
@@ -875,13 +885,22 @@ public class CharacterCombat : MonoBehaviour
     public void CaculateDameByThanThong(CharacterCombat sender, List<int> dames, BaseSkill.ETypeSkill[] eTypeSkils, bool isCongDon = false)
     {
 
-        CaculateDame(sender, dames, isCongDon, eTypeSkils);
-        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt hoaDiem);
-        sender.TakeDameByStatic(this, new List<int> { hoaDiem }, false , new[] { BaseSkill.ETypeSkill.Hoa });
-        Observer.Notify(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, sender, this, dames);
+        var listNewDames = CaculateDame(sender, dames, isCongDon, eTypeSkils);
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt hoaDiem))
+        {
+            sender.TakeDameByStatic(this, new List<int> { hoaDiem }, false, new[] { BaseSkill.ETypeSkill.Hoa });
+
+        }
+
+        foreach (var item in listNewDames)
+        {
+            currentTurnDameTaked += item;
+        }
+        Observer.Notify(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, sender, this, listNewDames);
+
 
     }
-    private void CaculateDame(CharacterCombat sender, List<int> dames, bool isCongDon = false, BaseSkill.ETypeSkill[] eTypeSkils = null)
+    private List<int> CaculateDame(CharacterCombat sender, List<int> dames, bool isCongDon = false, BaseSkill.ETypeSkill[] eTypeSkils = null)
     {
         if (sender != null && eTypeSkils != null)
         {
@@ -954,14 +973,22 @@ public class CharacterCombat : MonoBehaviour
             if (isChanThan) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanThan, chanThan);
 
         }
-
         AddDamageData(dames, isCongDon);
+        return dames;
+
     }
     public void TakeDameByStatic(CharacterCombat sender, List<int> dames,  bool isCongDon = false , BaseSkill.ETypeSkill[] eTypeSkils = null , bool isDef = true)
     {
 
-        CaculateDame(sender, dames, isCongDon, eTypeSkils);
+        var newListDames = CaculateDame(sender, dames, isCongDon, eTypeSkils);
+        if (sender != null && eTypeSkils != null)
+        {
+            Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_STATIC, sender, this, newListDames, eTypeSkils);
+
+        }
         TakeDame(sender,isDef);
+       
+
     }
     [Button]
     public void  TakeDame(CharacterCombat sender , bool isDef)
@@ -978,25 +1005,28 @@ public class CharacterCombat : MonoBehaviour
             if(!isDef)
             {
                 TakeDame(sender, allDamages[i], isDef);
-                Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, sender, this, allDamages[i]);
                 continue;
             }    
-            if (allDamages[i] == 0) continue;
-            bool isActiveHuyenVu = CombatStatic.IsActiveHuyenVu(null, this);
-            bool isActiveAnNac = CombatStatic.IsActiveAnNac(null, this);
-            bool isActiveAnhNac = CombatStatic.IsActiveAnhNac(null, this);
-
-            if (isActiveHuyenVu || isActiveAnNac)
+            if (allDamages[i] != 0)
             {
-                allDamages[i] = -1;
+                bool isActiveHuyenVu = CombatStatic.IsActiveHuyenVu(null, this);
+                bool isActiveAnNac = CombatStatic.IsActiveAnNac(null, this);
+                bool isActiveAnhNac = CombatStatic.IsActiveAnhNac(null, this);
+
+                if (isActiveHuyenVu || isActiveAnNac)
+                {
+                    allDamages[i] = -1;
+                }
+
+                Observer.Notify(EventList.GamePlay.CHECK_NE_TRANH, sender, this, i);
+               
             }
-            
-            Observer.Notify(EventList.GamePlay.CHECK_NE_TRANH, sender, this, i);
             var dame = allDamages[i];
             bool isNeTranh = dame == -1;
 
 
-            
+
+
             if (isNeTranh)
             {
                 NeTranh();
@@ -1007,7 +1037,6 @@ public class CharacterCombat : MonoBehaviour
             {
 
                 TakeDame(sender, allDamages[i] , isDef);
-                Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, sender, this, allDamages[i]);
             }
 
         }
@@ -1037,7 +1066,7 @@ public class CharacterCombat : MonoBehaviour
         characterStatsCurrent.hp -= dame;
         characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStatsMax.hp);
 
-        if (dame > 0)
+        if (dame >= 0)
         {
             StartAnimHit();
             SetTextDameAnim($"-{dame}", isDef ? Color.red : Color.purple);
@@ -1087,6 +1116,7 @@ public class CharacterCombat : MonoBehaviour
 
             }
         }
+        Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, sender, this, dame);
         Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);
         
 

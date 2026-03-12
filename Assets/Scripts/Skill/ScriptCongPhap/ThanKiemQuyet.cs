@@ -32,7 +32,7 @@ public class ThanKiemQuyet : CongPhap
         CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
         CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
         // Tìm trong danh sách trang b? c?a caster
-        if (IsCanUse(caster))
+        if (caster!= null&&IsCanUse(caster))
         {
             Execute2(caster, target, data);
 
@@ -49,7 +49,7 @@ public class ThanKiemQuyet : CongPhap
 
             dame *= buff[CurrentLevelCongPhapInCombat(caster) - 1];
 
-            target.TakeDameByStatic(caster,new List<int> { dame }, true , null);
+            target.AddDamageData(new List<int> { dame }, true );
         }
     }
     public void ExecuteParams3(params object[] data)
@@ -61,7 +61,7 @@ public class ThanKiemQuyet : CongPhap
         CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
         CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
         // Tìm trong danh sách trang b? c?a caster
-        if (IsCanUse(caster))
+        if (caster != null && IsCanUse(caster))
         {
             Execute3(caster, target, data);
 

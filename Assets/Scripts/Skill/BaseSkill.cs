@@ -758,7 +758,13 @@ public abstract class BaseSkill : BaseItemData
         Debug.Log("Check Equal " + isExecute);
         return isExecute;
     }
-   
+    public bool CheckIsEqualETypeSkill(ETypeSkill[] eTypeSkills)
+    {
+        
+        bool isExecute = eTypeSkills.Any(skill => this.eTypeSkill.Contains(skill));
+        Debug.Log("Check Equal " + isExecute);
+        return isExecute;
+    }
     public void KiemY(CharacterCombat caster)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, 1);

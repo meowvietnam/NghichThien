@@ -18,7 +18,7 @@ public class UViemQuyet : CongPhap
         CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
 
         // Tìm trong danh sách trang bị của caster
-        if (IsCanUse(target))
+        if (target  != null && IsCanUse(target))
         {
             Execute2(caster, target, data);
 
@@ -29,6 +29,8 @@ public class UViemQuyet : CongPhap
     {
         if (CheckIsEqualETypeSkill(caster)) 
         {
+            Debug.Log("UViemQuyetExcute1");
+
             target.AddDamageData(new List<int> { buffValues[CurrentLevelCongPhapInCombat(caster)-1] });
         }
 
@@ -38,12 +40,11 @@ public class UViemQuyet : CongPhap
     {
        if(CheckIsEqualETypeSkill(caster)) // sender là hỏa hệ thần thông thì giảm dame cho target
        {
-            for (int i = 0; i < target.allDamages.Count; i++)
-            {
-                target.allDamages[i] -= buffValues[CurrentLevelCongPhapInCombat(target) - 1];
-            } 
-                
-       }    
+            Debug.Log("UViemQuyetExcute2");
+            target.AddDamageData(new List<int> { -buffValues[CurrentLevelCongPhapInCombat(target) - 1] });
+
+
+       }
 
 
     }
@@ -54,7 +55,7 @@ public class UViemQuyet : CongPhap
         CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
 
         // Tìm trong danh sách trang bị của caster
-        if (IsCanUse(caster))
+        if (caster != null && IsCanUse(caster))
         {
             Execute3(caster, target, data);
 
@@ -65,6 +66,8 @@ public class UViemQuyet : CongPhap
         ETypeSkill[] eTypeSkills = (ETypeSkill[])data[3];
         if (eTypeSkills != null && CheckIsEqualETypeSkill(eTypeSkills)) // sender là hỏa hệ thần thông thì giảm dame cho target
         {
+            Debug.Log("UViemQuyetExcute3");
+
             target.AddDamageData(new List<int> { buffValues[CurrentLevelCongPhapInCombat(caster) - 1] });
 
 
@@ -79,7 +82,7 @@ public class UViemQuyet : CongPhap
         CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
 
         // Tìm trong danh sách trang bị của caster
-        if (IsCanUse(target))
+        if (target != null && IsCanUse(target))
         {
             Execute4(caster, target, data);
 
@@ -91,7 +94,9 @@ public class UViemQuyet : CongPhap
 
         if (eTypeSkills != null && CheckIsEqualETypeSkill(eTypeSkills)) // sender là hỏa hệ thần thông thì giảm dame cho target
         {
-            target.AddDamageData(new List<int> { -buffValues[CurrentLevelCongPhapInCombat(caster) - 1] });
+            Debug.Log("UViemQuyetExcute4");
+
+            target.AddDamageData(new List<int> { -buffValues[CurrentLevelCongPhapInCombat(target) - 1] });
 
 
         }
