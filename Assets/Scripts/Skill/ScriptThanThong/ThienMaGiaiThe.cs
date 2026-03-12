@@ -1,6 +1,8 @@
 ﻿using LongDH.LongDHModules;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 [CreateAssetMenu(fileName = nameof(ThienMaGiaiThe), menuName = "Skill/Thần Thông/" + nameof(ThienMaGiaiThe))]
 
 public class ThienMaGiaiThe : ThanThong
@@ -36,11 +38,8 @@ public class ThienMaGiaiThe : ThanThong
 
         if (targetTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is ThienMaGiaiThe))
         {
-            for (int i = 0; i < targetTurn.allDamages.Count; i++)
-            {
-                int dame= targetTurn.allDamages[i];
-                targetTurn.allDamages[i] -= (int)(percent * dame / 100f); 
-            }
+            targetTurn.AddDamageData(new List<int> { -(int)(percent * targetTurn.allDamages[0] / 100f) });
+          
         }
 
 

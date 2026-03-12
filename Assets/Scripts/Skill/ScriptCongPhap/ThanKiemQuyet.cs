@@ -28,9 +28,9 @@ public class ThanKiemQuyet : CongPhap
     {
         // target là ng nh?n dame 
         // ktra xem ng nh?n dame có công pháp này k
-
-        CharacterCombat caster = (CharacterCombat)data[0];
-        CharacterCombat target = (CharacterCombat)data[1];
+        // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
+        CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
+        CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
         // Tìm trong danh sách trang b? c?a caster
         if (IsCanUse(caster))
         {
@@ -39,6 +39,35 @@ public class ThanKiemQuyet : CongPhap
         }
     }
     public void Execute2(CharacterCombat caster, CharacterCombat target, params object[] data)
+    {
+        ETypeSkill[] eTypeSkills = (ETypeSkill[])data[3];
+
+        if (eTypeSkills != null && CheckIsEqualETypeSkill(eTypeSkills))
+        {
+            SecureInt dame = 0;
+            caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out dame);
+
+            dame *= buff[CurrentLevelCongPhapInCombat(caster) - 1];
+
+            target.TakeDameByStatic(caster,new List<int> { dame }, true , null);
+        }
+    }
+    public void ExecuteParams3(params object[] data)
+    {
+        // target là ng nh?n dame 
+        // ktra xem ng nh?n dame có công pháp này k
+
+        // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
+        CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
+        CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
+        // Tìm trong danh sách trang b? c?a caster
+        if (IsCanUse(caster))
+        {
+            Execute3(caster, target, data);
+
+        }
+    }
+    public void Execute3(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         SecureInt count = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi , out count);
@@ -56,7 +85,8 @@ public class ThanKiemQuyet : CongPhap
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams2);
+        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_STATIC, ExecuteParams2);
+        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams3);
 
     }
 }

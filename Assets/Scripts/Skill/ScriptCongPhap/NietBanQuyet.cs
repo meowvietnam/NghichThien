@@ -24,8 +24,7 @@ public class NietBanQuyet : CongPhap
     }
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        int dame = (int)data[2];
-        if(dame >= target.characterStatsCurrent.hp)
+        if(target.characterStatsCurrent.hp <=0)
         {
             RemoveCongPhap(target);
             target.SetHp(1);
