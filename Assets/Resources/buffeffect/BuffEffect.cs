@@ -41,8 +41,12 @@ public class BuffEffect : MonoBehaviour
         }
         else
         {
-            child.gameObject.SetActive(false);
-            child.gameObject.SetActive(true);
+            if(!child.gameObject.activeSelf || (eBuffParam != EBuffAndDeBuff.KiemKhi && eBuffParam != EBuffAndDeBuff.HoTrao && eBuffParam != EBuffAndDeBuff.SucThe))
+            {
+                child.gameObject.SetActive(false);
+                child.gameObject.SetActive(true);
+            }    
+           
         }    
 
     }

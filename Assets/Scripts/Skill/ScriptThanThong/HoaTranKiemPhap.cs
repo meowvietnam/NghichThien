@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = nameof(HoaTranKiemPhap), menuName = "Skill/Thần Thông/" + nameof(HoaTranKiemPhap))]
 
-public class HoaTranKiemPhap : ThanThong
+public class HoaTranKiemPhap : ThanThong , BaseSkill.LienKich
 {
     [SerializeField]
     private int[] dames = new int[]

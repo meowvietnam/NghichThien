@@ -73,7 +73,9 @@ public class CombatStatic : MonoBehaviour
                     item.anim.SetTrigger("Active");
                     break;
                 }    
-            } 
+            }
+            Observer.Notify(EventList.GamePlay.KIEM_KHI, charSender, charTakeDame);
+
         }
 
     }

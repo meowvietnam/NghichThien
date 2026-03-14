@@ -89,6 +89,8 @@ public class CharacterCombat : MonoBehaviour
     public SecureInt allDameTaked;
     [SerializeField]
     public SecureInt currentTurnDameTaked;
+    [SerializeField]
+    public int CurrentTurn => thanThongUseThisComBat.Count;
     public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill = new List<LinhKhiTieuTan>();
     public List<ThanThong> specialThanThongImpactAfterPlaySkill = new List<ThanThong>();
     public List<AmKinhEntry> listAmKinhTT = new List<AmKinhEntry>();
@@ -139,13 +141,16 @@ public class CharacterCombat : MonoBehaviour
         specialThanThongImpactAfterPlaySkill.Remove(thanThongRemove);
         // call observer event update UI
     }
-    public void AddCPDynamic(CongPhapMono cp)
+    public void AddCPDynamic(CongPhapMono cp , int count = 1)
     {
-        congPhapDynamic.Add(new CongPhapMono
+        for (int i = 0; i < count; i++)
         {
-            congPhap = cp.congPhap,
-            level = cp.level,
-        });
+            congPhapDynamic.Add(new CongPhapMono
+            {
+                congPhap = cp.congPhap,
+                level = cp.level,
+            });
+        }
     }
    
     protected void VisualPlaySkill(ThanThong thanThong)

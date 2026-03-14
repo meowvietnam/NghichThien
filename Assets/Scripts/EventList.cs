@@ -20,6 +20,7 @@ public static partial class EventList
         public const string NE_TRANH_SUCCESS = "GamePlay.NE_TRANH_SUCCESS";
         public const string CHECK_NE_TRANH = "GamePlay.CHECK_NE_TRANH";
         public const string CHARACTER_TAKE_DAME_BY_STATIC = "GamePlay.CHARACTER_TAKE_DAME_BY_STATIC";
+        public const string KIEM_KHI = "GamePlay.KIEM_KHI";
 
 
     }
