@@ -7,7 +7,7 @@ namespace LuyenDan.Inventory
 {
     public class FilterGroup : MonoBehaviour
     {
-        [SerializeField] private List<FilterItem> items;
+        [SerializeField] private List<ToggleFilterItem> items;
         public void Init()
         {
             if (items != null && items.Count > 0)

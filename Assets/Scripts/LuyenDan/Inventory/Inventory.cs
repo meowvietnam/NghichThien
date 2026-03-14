@@ -7,14 +7,18 @@ namespace LuyenDan.Inventory
     public class Inventory : MonoBehaviour
     {
         [field: SerializeField] public ItemListUI ItemListUI { get; private set; }
-        [SerializeField] private FilterGroup filterGroup;
+        [SerializeField] private List<FilterGroup> filterGroups;
         [SerializeField] private Button closeButton;
         [SerializeField] private GameObject thisObject;
+        
         public void Init(IEnumerable<ItemRef> data)
         {
             closeButton.onClick.AddListener(Close);
             ItemListUI.Init(data);
-            filterGroup.Init();
+            foreach (var filterGroup in filterGroups)
+            {
+                filterGroup.Init();
+            }
         }
         private void Close()
         {

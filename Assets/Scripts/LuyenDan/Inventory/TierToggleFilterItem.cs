@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace LuyenDan.Inventory
 {
-    public class TierFilterItem : FilterItem
+    public class TierToggleFilterItem : ToggleFilterItem
     {
         [SerializeField] private ItemListUI target;
         [SerializeField] private Tier tier;

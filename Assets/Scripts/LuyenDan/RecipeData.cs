@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace LuyenDan
@@ -29,7 +30,6 @@ namespace LuyenDan
             [field: SerializeField] public Herbs PhuDuoc1 { get; private set; }
             [field: SerializeField] public Herbs PhuDuoc2 { get; private set; }
             [field: SerializeField] public Herbs DuocDan { get; private set; }
-
             public void Create(int id, int index ,string[,] matrix)
             {
                 Id = id;

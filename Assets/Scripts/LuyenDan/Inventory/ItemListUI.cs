@@ -3,35 +3,26 @@ using UnityEngine;
 
 namespace LuyenDan.Inventory
 {
-    public class ItemListUI : MonoBehaviour
+    public abstract class ItemListUI : MonoBehaviour
     {
-        private List<InventoryItemUI> items = new List<InventoryItemUI>();
-        [SerializeField] private InventoryItemUI prefab;
+        public abstract void Init(IEnumerable<ItemRef> datas);
+
+        public abstract void Filter(Tier tier);
+        public abstract void NoFilter();
+    }
+    public abstract class ItemListUI<T> : ItemListUI where T : InventoryItemUI
+    {
+        protected List<T> Items { get; private set;} = new List<T>();
+        [SerializeField] private T prefab;
         [SerializeField] private RectTransform content;
 
-        public void Init(IEnumerable<ItemRef> datas)
+        public override void Init(IEnumerable<ItemRef> datas)
         {
             foreach (var data in datas)
             {
                 var instance = Instantiate(prefab, content);
                 instance.Init(data);
-                items.Add(instance);
-            }
-        }
-
-        public void Filter(Tier tier)
-        {
-            foreach (var item in items)
-            {
-                var active = item.Tier == tier;
-                item.SetActive(active);
-            }
-        }
-        public void NoFilter()
-        {
-            foreach (var item in items)
-            {
-                item.SetActive(true);
+                Items.Add(instance);
             }
         }
     }
