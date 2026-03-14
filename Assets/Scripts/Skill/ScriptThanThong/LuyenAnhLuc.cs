@@ -28,7 +28,7 @@ public class LuyenAnhLuc : ThanThong , BaseSkill.TuongSinh , BaseSkill.TuongKhac
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhDich, out SecureInt  anhDich);
         int require = tieuHaos[GetIndexLevelThanThong(caster)];
-        if (anhDich >= require)
+        if (anhDich >= require && base.IsCanUse(caster, target))
         {
             return true;
         }

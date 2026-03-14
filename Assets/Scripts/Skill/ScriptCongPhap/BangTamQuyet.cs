@@ -33,7 +33,7 @@ public class BangTamQuyet : CongPhap
 
     public override string GetDesc(int level)
     {
-        return $"Độn tốc {GetColoredText($"+{buffValues[level - 1]}", "red")}";
+        return $"Tâm cảnh {GetColoredText($"+{buffValues[level - 1]}", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

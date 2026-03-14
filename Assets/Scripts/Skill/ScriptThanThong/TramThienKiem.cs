@@ -23,7 +23,7 @@ public class TramThienKiem : ThanThong
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out SecureInt kiemKhi);
-        if(kiemKhi >= require)
+        if(kiemKhi >= require && base.IsCanUse(caster, target))
         {
             return true;
         }    

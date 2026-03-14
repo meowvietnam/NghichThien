@@ -19,7 +19,7 @@ public class TinhViThanDietQuyet : ThanNiemQuyet
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnNac, out SecureInt anNac);
-        if(anNac>0)
+        if(anNac>0 && base.IsCanUse(caster, target))
         {
             return true;
         }    

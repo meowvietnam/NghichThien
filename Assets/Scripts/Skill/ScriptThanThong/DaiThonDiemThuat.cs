@@ -24,7 +24,7 @@ public class DaiThonDiemThuat : ThanThong
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out SecureInt diem);
-        if (diem > 0)
+        if (diem > 0 && base.IsCanUse(caster, target))
         {
             return true;
         }

@@ -36,7 +36,7 @@ public class TrienTiChu : ThanThong
     {
         SecureInt trienNhieu = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out trienNhieu);
-        return trienNhieu > 0;
+        return trienNhieu > 0 && base.IsCanUse(caster, target);
     }
     public override string GetDesc(int level)
     {

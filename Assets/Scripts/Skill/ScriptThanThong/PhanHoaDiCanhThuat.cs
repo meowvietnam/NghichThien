@@ -17,7 +17,7 @@ public class PhanHoaDiCanhThuat : ThanThong
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt  myThieuDot);
-        if(myThieuDot > 0)
+        if(myThieuDot > 0 && base.IsCanUse(caster, target))
         {
             return true;
         }

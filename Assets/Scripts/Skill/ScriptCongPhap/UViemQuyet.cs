@@ -64,7 +64,7 @@ public class UViemQuyet : CongPhap
     public void Execute3(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         ETypeSkill[] eTypeSkills = (ETypeSkill[])data[3];
-        if (eTypeSkills != null && CheckIsEqualETypeSkill(eTypeSkills)) // sender là hỏa hệ thần thông thì giảm dame cho target
+        if (eTypeSkills != null && CheckIsEqualETypeSkill(eTypeSkills)) // sender là hỏa hệ thần thông thì tăng dame cho target
         {
             Debug.Log("UViemQuyetExcute3");
 

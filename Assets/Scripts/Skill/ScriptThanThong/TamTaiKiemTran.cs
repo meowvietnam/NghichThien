@@ -23,7 +23,7 @@ public class TamTaiKiemTran : TranPhapTT
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DiaKiem, out SecureInt DiaKiem);
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThienKiem, out SecureInt ThienKiem);
 
-        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong.GetType() == this.GetType())) && NhanKiem > 0 && DiaKiem > 0 && ThienKiem> 0)
+        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong.GetType() == this.GetType())) && NhanKiem > 0 && DiaKiem > 0 && ThienKiem> 0 && base.IsCanUse(caster, target))
         {
             return true;
         }

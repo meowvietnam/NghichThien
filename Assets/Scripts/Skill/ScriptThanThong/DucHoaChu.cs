@@ -28,7 +28,7 @@ public class DucHoaChu : ThanThong
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt hoaDiem);
-        if (hoaDiem > 0 )
+        if (hoaDiem > 0 && base.IsCanUse(caster, target))
         {
             return true;
         }

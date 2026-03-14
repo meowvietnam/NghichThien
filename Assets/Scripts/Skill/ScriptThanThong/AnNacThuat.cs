@@ -17,7 +17,7 @@ public class AnNacThuat : ThanThong, BaseSkill.ThanThuc
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        if (caster.thanThongUseThisTurn.Count <= 0 && caster.GetThanThuc() > target.GetThanThuc())
+        if (caster.thanThongUseThisTurn.Count <= 0 && caster.GetThanThuc() > target.GetThanThuc() && base.IsCanUse(caster, target))
         {
             return true;
         }    

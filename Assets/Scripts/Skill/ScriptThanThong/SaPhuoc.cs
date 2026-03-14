@@ -25,7 +25,7 @@ public class SaPhuoc : ThanThong
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Cat, out SecureInt  cat);
-        if (cat > 0)
+        if (cat > 0 && base.IsCanUse(caster, target))
         {
             return true;
         }

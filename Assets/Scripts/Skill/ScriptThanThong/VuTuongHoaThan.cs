@@ -23,7 +23,7 @@ public class VuTuongHoaThan : NeTranhTT
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HuyenVu, out SecureInt  huyenVu);
-        if (huyenVu >= requireHuyenVu)
+        if (huyenVu >= requireHuyenVu && base.IsCanUse(caster, target))
         {
             return true;
         }

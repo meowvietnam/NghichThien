@@ -25,7 +25,7 @@ public class HoanLinhChu : ThanThong
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyCuu, out SecureInt quyCuu);
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon, out SecureInt hon);
 
-        if (quyCuu > 0 && hon >= tieuHaos[GetIndexLevelThanThong(caster)])
+        if (quyCuu > 0 && hon >= tieuHaos[GetIndexLevelThanThong(caster)] && base.IsCanUse(caster, target))
         {
             return true;
         }

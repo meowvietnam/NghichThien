@@ -10,9 +10,10 @@ public class VanKhiThuat : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int hapThu = this.hapThuSO;
-        TuDuongHonNguyenKinh tuDuongHonNguyenKinh = caster.congPhapEquip.FirstOrDefault(x => x.congPhap is TuDuongHonNguyenKinh).congPhap as TuDuongHonNguyenKinh;
-        if(tuDuongHonNguyenKinh != null)
+        var equippedItem = caster?.congPhapEquip?.FirstOrDefault(x => x.congPhap is TuDuongHonNguyenKinh);
+        if (equippedItem != null)
         {
+            TuDuongHonNguyenKinh tuDuongHonNguyenKinh = equippedItem.congPhap as TuDuongHonNguyenKinh;
             if (CombatStatic.IsActiveWithPercent(tuDuongHonNguyenKinh.GetPercent(caster)))
             {
                 hapThu *= 2;

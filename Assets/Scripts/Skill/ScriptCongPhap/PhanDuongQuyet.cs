@@ -13,10 +13,11 @@ public class PhanDuongQuyet : CongPhap
      };
     public override void ExecuteParams(params object[] data)
     {
-        CharacterCombat caster = (CharacterCombat)data[0];
-        CharacterCombat target = (CharacterCombat)data[1]; // target trong observer lần này là ng nhận dame và check hắn ta
+        // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
+        CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
+        CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
         // Tìm trong danh sách trang bị của caster
-        if (IsCanUse(target))
+        if (target!=null&&IsCanUse(target))
         {
             Execute(caster, target, data);
 
@@ -24,7 +25,7 @@ public class PhanDuongQuyet : CongPhap
     }
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, buffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, buffValues[CurrentLevelCongPhapInCombat(target) - 1]);
 
 
     }

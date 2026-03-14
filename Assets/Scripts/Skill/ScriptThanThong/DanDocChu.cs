@@ -45,7 +45,7 @@ public class DanDocChu : ThanThong
     {
         SecureInt countTrungDoc = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out countTrungDoc);
-        return countTrungDoc > 0;
+        return countTrungDoc > 0 && base.IsCanUse(caster, target);
     }
 
 

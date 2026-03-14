@@ -13,17 +13,14 @@ public class CuuHuyenNoiKinh : CongPhap
     
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        for (int i = 0; i < target.allDamages.Count; i++)
-        {
-            int dame = target.allDamages[i];
-            int count = caster.listAmKinhTT
+        int count = caster.listAmKinhTT
                 .Where(x => x.ThanThong is AmKinhTT)
                 .Select(x => x.ThanThong.name)
                 .Distinct()
                 .Count();
-            float multiplier = count * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100f;
-            target.allDamages[i] += (int)(dame * multiplier);
-        }
+        float multiplier = count * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100f;
+        target.AddDamageData(new List<int> { (int)(target.allDamages[0] * multiplier) });
+        
     }
 
     public override string GetDesc(int level)

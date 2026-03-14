@@ -25,7 +25,7 @@ public class AnhNac : ThanThong
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Anh, out SecureInt anh);
-        if (anh > 0)
+        if (anh > 0 && base.IsCanUse(caster, target))
         {
             return true;
         }

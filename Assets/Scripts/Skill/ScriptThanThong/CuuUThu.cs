@@ -33,7 +33,7 @@ public class CuuUThu : ThanThong
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
       
-        if (caster.characterStatsBase.thoNguyen > tieuHao && !caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is CuuUThu)))
+        if (caster.characterStatsBase.thoNguyen > tieuHao && !caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is CuuUThu)) && base.IsCanUse(caster, target))
         {
             return true;
         }

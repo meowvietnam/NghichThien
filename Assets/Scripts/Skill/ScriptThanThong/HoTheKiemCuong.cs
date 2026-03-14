@@ -22,7 +22,7 @@ public class HoTheKiemCuong : ThanThong
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out SecureInt kiemKhi);
-        if(kiemKhi > 0)
+        if(kiemKhi > 0 && base.IsCanUse(caster, target))
         {
             return true;
         }

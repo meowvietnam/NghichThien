@@ -27,7 +27,7 @@ public class HacHoiTuong : ThanThong
         SecureInt cham = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Cham, out cham);
 
-        return cham > 0;
+        return cham > 0 && base.IsCanUse(caster, target);
     }
     public override string GetDesc(int level)
     {

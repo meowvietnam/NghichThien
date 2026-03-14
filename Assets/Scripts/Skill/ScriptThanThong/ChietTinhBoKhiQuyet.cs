@@ -20,7 +20,7 @@ public class ChietTinhBoKhiQuyet : ThanThong
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NgungThan, out SecureInt ngungThan);
 
-        if (ngungThan > 0)
+        if (ngungThan > 0 && base.IsCanUse(caster, target))
         {
             return true;
         }

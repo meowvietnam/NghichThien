@@ -25,7 +25,7 @@ public class TuQuyThuat : ThanThong
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon, out SecureInt hon);
-        if(hon>0)
+        if(hon>0 && base.IsCanUse(caster, target))
         {
             return true;
         }    

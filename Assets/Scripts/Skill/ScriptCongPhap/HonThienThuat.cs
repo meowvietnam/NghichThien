@@ -26,15 +26,14 @@ public class HonThienThuat : ThoNapCongPhap
     }
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        for (int i = 0; i < target.allDamages.Count; i++)
-        {
-            target.allDamages[i] += dames[CurrentLevelCongPhapInCombat(target)-1];
-        }
+        target.AddDamageData(new List<int> { (int)(dames[CurrentLevelCongPhapInCombat(target) - 1]) });
+
+       
     }
 
     public override string GetDesc(int level)
     {
-        return $"{base.GetDesc(level)} nhưng nhận tất cả tổn thương tầng {GetColoredText($"+{dames[level - 1]}", "red")}";
+        return $"{base.GetDesc(level)} nhưng nhận tất cả tổn thương tăng {GetColoredText($"+{dames[level - 1]}", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

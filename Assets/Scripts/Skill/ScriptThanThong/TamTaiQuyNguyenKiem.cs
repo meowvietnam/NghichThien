@@ -15,7 +15,7 @@ public class TamTaiQuyNguyenKiem : AmDuongLuongNghiKiem
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DiaKiem, out SecureInt diaKiem);
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NhanKiem, out SecureInt nhanKiem);
 
-        if (thienKiem > 0 && diaKiem > 0 && nhanKiem > 0)
+        if (thienKiem > 0 && diaKiem > 0 && nhanKiem > 0 && base.IsCanUse(caster, target))
         {
             return true;
         }

@@ -13,11 +13,12 @@ public class HuyenDuongBoDiemQuyet : CongPhap
      };
     public override void ExecuteParams(params object[] data)
     {
-        CharacterCombat caster = (CharacterCombat)data[0];
+        // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
+        CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
         CharacterCombat target = caster != Pool.Get<CombatManager>().char1 ? Pool.Get<CombatManager>().char1 : Pool.Get<CombatManager>().char2;
 
         // Tìm trong danh sách trang bị của caster
-        if (IsCanUse(caster))
+        if (caster!= null&&IsCanUse(caster))
         {
             Execute(caster, target, data);
 

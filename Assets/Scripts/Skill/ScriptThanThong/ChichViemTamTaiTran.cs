@@ -33,7 +33,7 @@ public class ChichViemTamTaiTran : TranPhapTT
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out SecureInt kiemKhi);
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt thieuDot);
 
-        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong.GetType() == this.GetType())) && kiemKhi >= kiemKhiRequire && thieuDot >= thieuDotRequire)
+        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong.GetType() == this.GetType())) && kiemKhi >= kiemKhiRequire && thieuDot >= thieuDotRequire && base.IsCanUse(caster, target))
         {
             return true;
         }

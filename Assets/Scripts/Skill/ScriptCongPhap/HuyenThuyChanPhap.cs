@@ -11,9 +11,9 @@ public class HuyenThuyChanPhap : CongPhap
     };
     public override void ExecuteParams(params object[] data)
     {
-        CharacterCombat target = (CharacterCombat)data[1];
-        // Tìm trong danh sách trang bị của caster
-        if (IsCanUse(target))
+        // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
+        CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;        // Tìm trong danh sách trang bị của caster
+        if (target != null && IsCanUse(target))
         {
             Execute(null, target, data);
 

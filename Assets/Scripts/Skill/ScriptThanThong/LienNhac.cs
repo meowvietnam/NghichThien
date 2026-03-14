@@ -19,7 +19,7 @@ public class LienNhac : ThanThong
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt  tran);
 
-        return tran>= require;
+        return tran>= require && base.IsCanUse(caster, target);
     }
     
 

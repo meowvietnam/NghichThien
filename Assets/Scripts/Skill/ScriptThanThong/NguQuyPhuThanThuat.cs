@@ -40,7 +40,7 @@ public class NguQuyPhuThanThuat : ThanThong
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is NguQuyPhuThanThuat)))
+        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is NguQuyPhuThanThuat)) && base.IsCanUse(caster, target))
         {
             return true;
         }

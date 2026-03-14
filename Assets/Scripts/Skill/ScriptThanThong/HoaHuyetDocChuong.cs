@@ -24,7 +24,7 @@ public class HoaHuyetDocChuong : ThanThong
     {
         SecureInt trungDoc = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out trungDoc);
-        return trungDoc > 0;
+        return trungDoc > 0 && base.IsCanUse(caster, target);
     }
     public override string GetDesc(int level)
     {

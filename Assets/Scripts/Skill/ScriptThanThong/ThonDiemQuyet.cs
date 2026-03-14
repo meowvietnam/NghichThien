@@ -46,7 +46,7 @@ public class ThonDiemQuyet : ThanThong
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt  thieuDot);
-        if(thieuDot >= require)
+        if(thieuDot >= require && base.IsCanUse(caster, target))
         {
             return true;
         }    

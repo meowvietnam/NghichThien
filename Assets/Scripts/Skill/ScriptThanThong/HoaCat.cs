@@ -16,7 +16,7 @@ public class HoaCat : ThanThong
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt tran);
-        if (tran > 0)
+        if (tran > 0 && base.IsCanUse(caster, target))
         {
             return true;
         }

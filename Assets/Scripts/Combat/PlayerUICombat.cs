@@ -308,6 +308,7 @@ public class PlayerUICombat : MonoBehaviour
             ThanThong thanThong = s < thanthongtest.Length ? thanthongtest[s] : null;
             skill.Init(thanThong, thanThong != null ? spriteFrame[(int)(((int)thanThong.eTierSkill - 1) / 3)] : null, actionHolder, actionPointerUp); // test data 
         } 
+        skillTip.DoHide();
             
        
 

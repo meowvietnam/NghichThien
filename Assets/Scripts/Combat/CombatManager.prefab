@@ -5558,7 +5558,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 165, y: -26.739132}
-  m_SizeDelta: {x: 300, y: 23.478262}
+  m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &265782253835907214
 CanvasRenderer:
@@ -6117,7 +6117,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &496762352139385354
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6137,7 +6137,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 330, y: 58.478264}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &6040632612177734122
 CanvasRenderer:
@@ -6754,7 +6754,7 @@ PrefabInstance:
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
       propertyPath: congPhapEquip.Array.size
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
@@ -6860,6 +6860,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CharacterCombat
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125557418883940296, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.0291097
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125557418883940296, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.72897124
       objectReference: {fileID: 0}
     - target: {fileID: 3507749838044196573, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
@@ -7014,7 +7024,7 @@ PrefabInstance:
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
       propertyPath: congPhapEquip.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
@@ -7030,17 +7040,22 @@ PrefabInstance:
         type: 3}
       propertyPath: congPhapEquip.Array.data[0].congPhap
       value: 
-      objectReference: {fileID: 11400000, guid: 0897030efdb5fb74dad0113549d78aa9,
+      objectReference: {fileID: 11400000, guid: 2b85a022c633b12429f5c6d4c21107dc,
         type: 2}
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
       propertyPath: congPhapEquip.Array.data[1].congPhap
       value: 
-      objectReference: {fileID: 11400000, guid: 959b5547cbd3a084f9b43cfcc1718215,
+      objectReference: {fileID: 11400000, guid: 47ab822a6d635734fac246ef9776c280,
         type: 2}
     - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
         type: 3}
       propertyPath: congPhapEquip.Array.data[0].level.fakeValue
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045433338109645729, guid: 202dd05d9d72b2b4d996b0185f368353,
+        type: 3}
+      propertyPath: congPhapEquip.Array.data[1].level.fakeValue
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8166118867486249300, guid: 202dd05d9d72b2b4d996b0185f368353,
@@ -7122,7 +7137,7 @@ PrefabInstance:
     - target: {fileID: 452775976213002301, guid: a7e2c419fd4fb9148b5663a8973cab45,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1039353874201284688, guid: a7e2c419fd4fb9148b5663a8973cab45,
         type: 3}
@@ -7173,6 +7188,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingLayer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2131233773277049219, guid: a7e2c419fd4fb9148b5663a8973cab45,
+        type: 3}
+      propertyPath: m_Text
+      value: Type
+      objectReference: {fileID: 0}
+    - target: {fileID: 2524593530099942042, guid: a7e2c419fd4fb9148b5663a8973cab45,
+        type: 3}
+      propertyPath: m_Text
+      value: SkillName
       objectReference: {fileID: 0}
     - target: {fileID: 2653187361859690389, guid: a7e2c419fd4fb9148b5663a8973cab45,
         type: 3}
@@ -7343,7 +7368,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'thanthongtest.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: 280650510608d7847a6a88531ca7195f,
+      objectReference: {fileID: 11400000, guid: ec69e5fca020868499ac8533fcd8fffb,
         type: 2}
     - target: {fileID: 4737881782164790726, guid: a7e2c419fd4fb9148b5663a8973cab45,
         type: 3}

@@ -17,16 +17,7 @@ public class HuyenVuThoNapThuat : CongPhap
      {
         10, 15 , 20 ,25 , 30
      };
-    public override void ExecuteParams(params object[] data)
-    {
-        CharacterCombat caster = (CharacterCombat)data[0];
-        // Tìm trong danh sách trang bị của caster
-        if (IsCanUse(caster))
-        {
-            Execute(caster, null, data);
-
-        }
-    }
+  
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {

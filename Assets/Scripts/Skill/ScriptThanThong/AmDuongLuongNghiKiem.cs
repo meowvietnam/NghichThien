@@ -29,7 +29,7 @@ public class AmDuongLuongNghiKiem : ThanThong , BaseSkill.TuongSinh
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThienKiem, out SecureInt thienKiem);
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DiaKiem, out SecureInt diaKiem);
-        if(thienKiem >0 && diaKiem >0)
+        if(thienKiem >0 && diaKiem >0 && base.IsCanUse(caster, target))
         {
             return true;
         }

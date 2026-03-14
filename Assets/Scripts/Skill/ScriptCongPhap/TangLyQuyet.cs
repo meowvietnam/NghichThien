@@ -29,10 +29,11 @@ public class TangLyQuyet : CongPhap
     }
     public virtual void ExecuteParams2(params object[] data)
     {
-        CharacterCombat caster = (CharacterCombat)data[0];
-        CharacterCombat target = (CharacterCombat)data[1];
+        // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
+        CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
+        CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
         // lúc này là xem bản thân nhận dame là target có skill k nếu có thì sát thương phải nhận tăng lên
-        if (IsCanUse(target))
+        if (target!=null&&IsCanUse(target))
         {
             Execute2(caster, target, data);
 

@@ -49,7 +49,7 @@ public class NhienTan : ThanThong
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out SecureInt  diem);
-        if (diem >= requires[GetIndexLevelThanThong(caster)])
+        if (diem >= requires[GetIndexLevelThanThong(caster)] && base.IsCanUse(caster, target))
         {
             return true;
         }

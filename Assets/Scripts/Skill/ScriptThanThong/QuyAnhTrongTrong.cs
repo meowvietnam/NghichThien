@@ -26,7 +26,7 @@ public class QuyAnhTrongTrong : ThanThong
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhDich, out SecureInt  anhDich);
         int require = tieuHaos[GetIndexLevelThanThong(caster)];
-        if (anhDich >= require)
+        if (anhDich >= require && base.IsCanUse(caster, target))
         {
             return true;
         }

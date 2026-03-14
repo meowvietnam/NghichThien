@@ -105,6 +105,7 @@ public class CombatStatic : MonoBehaviour
         if (charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NoiThuong, out SecureInt noiThuong))
         {
             charTakeDame.TakeDameByStatic(charSender, new List<int> { (int)noiThuong }, false);
+            Debug.Log("Static NoiThuong");
 
 
         }
@@ -115,7 +116,7 @@ public class CombatStatic : MonoBehaviour
         if (charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out SecureInt trienNhieu))
         {
             charTakeDame.TakeDameByStatic(charSender, new List<int> { (int)trienNhieu }, false, new[] { BaseSkill.ETypeSkill.Moc });
-
+            Debug.Log("Static TrienNhieu");
 
         }
 

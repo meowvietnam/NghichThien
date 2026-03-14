@@ -39,7 +39,7 @@ public class TuyetTran : ThanThong , BaseSkill.LienKich
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt  tran);
-        if (tran >= requires[GetIndexLevelThanThong(caster)])
+        if (tran >= requires[GetIndexLevelThanThong(caster)] && base.IsCanUse(caster, target))
         {
             return true;
         }

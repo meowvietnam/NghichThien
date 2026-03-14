@@ -111,7 +111,7 @@ public abstract class ThanThong : BaseSkill
    
     public virtual bool IsCanUse(CharacterCombat caster , CharacterCombat target)
     {
-        return true;
+        return caster.congPhapDynamic.Count(x => x.congPhap is DietLinhQuyet) <= DietLinhQuyet.require-1;
     }    
    
     protected virtual void ShowSkillEffectParticle(CharacterCombat target, float delay, float cameraSize = 50f) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi

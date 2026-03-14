@@ -38,12 +38,13 @@ public class KimHongKiemQuyet : CongPhap
     }
     public virtual void ExecuteParams2(params object[] data)
     {
-        CharacterCombat caster = (CharacterCombat)data[0];
-        CharacterCombat target = (CharacterCombat)data[1];
+        // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
+        CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
+        CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
         List<int> dame = (List<int>)data[2];
 
         // Tìm trong danh sách trang bị của caster
-        if (IsCanUse(caster))
+        if (caster != null&&IsCanUse(caster))
         {
             Execute2(caster, target,dame);
 

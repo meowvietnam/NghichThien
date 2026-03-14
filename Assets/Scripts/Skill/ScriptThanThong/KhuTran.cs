@@ -18,7 +18,7 @@ public class KhuTran : ThanThong
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        if(caster.specialThanThongImpactAfterPlaySkill.Any(x => x is TranPhapTT))
+        if(caster.specialThanThongImpactAfterPlaySkill.Any(x => x is TranPhapTT) && base.IsCanUse(caster, target))
         {
             return true;
         }    

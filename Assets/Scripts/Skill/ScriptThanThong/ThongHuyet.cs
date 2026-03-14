@@ -19,7 +19,7 @@ public class ThongHuyet : ThanThong
     {
         SecureInt noiThuong = 0;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NoiThuong, out noiThuong);
-        return noiThuong > 0;
+        return noiThuong > 0 && base.IsCanUse(caster, target);
     }
     protected virtual string TextThuHoach()
     {

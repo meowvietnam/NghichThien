@@ -38,7 +38,7 @@ public class ThanHoangAn : ThanThong
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out sucThe);
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out hoTrao);
 
-        if (sucThe > 0 || hoTrao >0 )
+        if ((sucThe > 0 || hoTrao >0 ) && base.IsCanUse(caster, target))
         {
             return true;
         }

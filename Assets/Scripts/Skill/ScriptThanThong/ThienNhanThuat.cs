@@ -23,7 +23,7 @@ public class ThienNhanThuat : ThanThong
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        if (caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out SecureInt  kiemKhi))
+        if (caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out SecureInt  kiemKhi) && base.IsCanUse(caster, target))
         {
             return kiemKhi >= requireKiemKhi;
         }

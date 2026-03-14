@@ -158,6 +158,7 @@ public class CombatManager : MonoBehaviour
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, NewTurn);
         SetUIHpBar();
+        buffInfor.DoHide();
     }
     
     public static bool IsTuongDong(List<LinhKhiTieuTan> linhKhiTieuTan)

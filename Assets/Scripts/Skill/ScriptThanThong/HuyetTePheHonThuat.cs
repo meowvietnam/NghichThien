@@ -24,7 +24,7 @@ public class HuyetTePheHonThuat : ThanThong
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is HuyetTePheHonThuat)))
+        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is HuyetTePheHonThuat)) && base.IsCanUse(caster, target))
         {
             return true;
         }

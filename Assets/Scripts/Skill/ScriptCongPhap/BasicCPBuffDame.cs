@@ -43,7 +43,7 @@ public class BasicCPBuffDame : CongPhap
         CharacterCombat caster = (CharacterCombat)data[0];
         CharacterCombat target = (CharacterCombat)data[1];
         // Tìm trong danh sách trang bị của caster
-        if (IsCanUse(caster))
+        if (GetCongPhapMono(caster.congPhapEquip) != null)
         {
             Execute2(caster, target, data);
 
