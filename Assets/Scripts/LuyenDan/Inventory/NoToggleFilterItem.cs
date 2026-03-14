@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace LuyenDan.Inventory
 {
-    public class NoFilterItem : FilterItem
+    public class NoToggleFilterItem : ToggleFilterItem
     {
         [SerializeField] private ItemListUI target;
         protected override void OnValueChanged(bool isOn)

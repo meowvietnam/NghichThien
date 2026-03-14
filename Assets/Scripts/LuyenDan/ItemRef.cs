@@ -1,15 +1,24 @@
 using System;
 using Network;
 using Network.Extensions;
+using UnityEngine;
 
 namespace LuyenDan
 {
+    [Serializable]
     public class ItemRef : IMemorySerializable<ItemRef>
     {
-        public int Id { get; private set; }
-        public ItemType Type { get; private set; }
-        public int Count { get; private set; }
+        [field: SerializeField] public int Id { get; private set; }
+        [field: SerializeField] public ItemType Type { get; private set; }
+        [field: SerializeField] public int Count { get; private set; }
         public Action<int> OnCountChanged { get; set; }
+        public ItemRef() {}
+        public ItemRef(int id, ItemType type, int count)
+        {
+            Id = id;
+            Type = type;
+            Count = count;
+        }
         public int ByteSize()
         {
             return Id.ByteSize() + Type.ByteSize() + Count.ByteSize();

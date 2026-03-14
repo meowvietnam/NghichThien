@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using LuyenDan.Inventory;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace LuyenDan
@@ -18,6 +19,29 @@ namespace LuyenDan
         [field: SerializeField] public string Description { get; private set; }
         [field: SerializeField] public Sprite Icon { get; private set; }
 
+        [ShowInInspector]
+        public HerbType HerbType
+        {
+            get
+            {
+                var type = HerbType.None;
+                if (!string.IsNullOrWhiteSpace(ChuDuoc))
+                {
+                    type |= HerbType.ChuDuoc;
+                }
+
+                if (!string.IsNullOrWhiteSpace(PhuDuoc))
+                {
+                    type |= HerbType.PhuDuoc;
+                }
+
+                if (!string.IsNullOrWhiteSpace(ThuocDan))
+                {
+                    type |= HerbType.DuocDan;
+                }
+                return type;
+            }
+        }
         public HerbData(int id, Tier tier, string name, string chuduoc, string phuduoc, string thuocdan,
             string locations)
         {
@@ -53,6 +77,12 @@ namespace LuyenDan
         {
             text = text.Trim();
             return Normalize(text);
+        }
+
+        public bool Is(HerbType type)
+        {
+            var myType = HerbType;
+            return myType.HasFlag(type);
         }
     }
 }
