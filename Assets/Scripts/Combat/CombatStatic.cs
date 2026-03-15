@@ -197,12 +197,16 @@ public class CombatStatic : MonoBehaviour
             {
                 // Giảm số hiệp chờ
                 entry.RemainingTurns -= 1;
+                Observer.Notify(EventList.GamePlay.UPDATE_AMKINH_THANTHONG, currentTurn, entry);
+
             }
         }
         foreach(var entry in entryRemoves)
         {
             currentTurn.listAmKinhTT.Remove(entry);
-        }    
+            Observer.Notify(EventList.GamePlay.UPDATE_AMKINH_THANTHONG, currentTurn, entry,-1);
+
+        }
 
     }
     public static bool IsActiveAnNac(CharacterCombat charSender, CharacterCombat charTakeDame)

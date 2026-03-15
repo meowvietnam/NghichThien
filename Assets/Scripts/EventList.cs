@@ -23,6 +23,8 @@ public static partial class EventList
         public const string CHARACTER_TAKE_DAME_BY_STATIC = "GamePlay.CHARACTER_TAKE_DAME_BY_STATIC";
         public const string KIEM_KHI = "GamePlay.KIEM_KHI";
 
+        public const string ADD_BASESKILL = "GamePlay.ADD_BASESKILL";
+        public const string UPDATE_AMKINH_THANTHONG= "GamePlay.UPDATE_AMKINH_THANTHONG";
 
     }
 }

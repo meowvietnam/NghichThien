@@ -64,6 +64,6 @@ public class CuongThuyAn : ThanThong
     }
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Hiệp sau sử dụng {GetTextTypeSkill()} hệ thần thông thì tổn thương {GetColoredText($"+{dames[level - 1]}", "red")}";
+        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Sử dụng {GetTextTypeSkill()} hệ thần thông thì tổn thương {GetColoredText($"+{dames[level - 1]}", "red")} (tồn tại ở hiệp sau)";
     }
 }

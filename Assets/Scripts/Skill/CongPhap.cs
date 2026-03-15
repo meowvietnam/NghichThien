@@ -66,10 +66,18 @@ public abstract class CongPhap : BaseSkill
     }    
     protected virtual void RemoveCongPhap(CharacterCombat caster)
     {
+        var cp = caster.congPhapDynamic.FirstOrDefault(x =>
+            x.congPhap.GetType() == this.GetType()
+        );
+        var currentValue = caster.congPhapDynamic.Count(x =>
+            x.congPhap.GetType() == this.GetType()
+        );
+        Observer.Notify(EventList.GamePlay.ADD_BASESKILL, this, cp.congPhap, 0, currentValue);
         caster.congPhapDynamic.RemoveAll(x =>
             x.congPhap.GetType() == this.GetType()
         );
-    }    
+
+    }
     public virtual int CurrentLevelCongPhapInCombat(CharacterCombat caster)
     {
         // 1. Tìm trong danh sách trang bị của caster

@@ -115,15 +115,23 @@ public class CharacterCombat : MonoBehaviour
     public SecureBool isSkipTieuTanLinhKhi;
     public void AddAmKinhTT(AmKinhTT thanThong , SecureInt countHiep)
     {
-        if (thanThong != null && thanThong is AmKinhTT) ;
-        listAmKinhTT.Add(new AmKinhEntry(thanThong, countHiep));
+        if (thanThong != null && thanThong is AmKinhTT);
+        AmKinhEntry amKinh = new AmKinhEntry(thanThong, countHiep);
+        listAmKinhTT.Add(amKinh);
+        Observer.Notify(EventList.GamePlay.UPDATE_AMKINH_THANTHONG,this, amKinh);
+
         // call observer event add UI 
 
     }
-     
+
     public void AddThanThongImpactAfterPlaySkill(ThanThong thanThong)
     {
+        int currentValue = specialThanThongImpactAfterPlaySkill.Count(x => x == thanThong);
         specialThanThongImpactAfterPlaySkill.Add(thanThong);
+        int newValue = currentValue+1;
+
+        Observer.Notify(EventList.GamePlay.ADD_BASESKILL,this, thanThong, newValue,currentValue);
+
         // call observer event add UI 
 
     }
@@ -131,9 +139,10 @@ public class CharacterCombat : MonoBehaviour
     {
         // Lấy type của đối tượng truyền vào
         var typeToRemove = thanThong.GetType();
-
+        int currentValue = specialThanThongImpactAfterPlaySkill.Count(item => item.GetType() == typeToRemove);
         // Xóa tất cả các item có cùng Type
         specialThanThongImpactAfterPlaySkill.RemoveAll(item => item.GetType() == typeToRemove);
+        Observer.Notify(EventList.GamePlay.ADD_BASESKILL,this, thanThong, 0, currentValue);
 
         // call observer event update UI
     }
@@ -141,24 +150,30 @@ public class CharacterCombat : MonoBehaviour
     {
         // Lấy type của đối tượng truyền vào
         var typeToRemove = thanThong.GetType();
+        int currentValue = specialThanThongImpactAfterPlaySkill.Count(x => x == thanThong);
 
         // Xóa tất cả các item có cùng Type
         var thanThongRemove = specialThanThongImpactAfterPlaySkill.FirstOrDefault(item => item.GetType() == typeToRemove);
         specialThanThongImpactAfterPlaySkill.Remove(thanThongRemove);
+        int newValue = currentValue - 1;
+
+        Observer.Notify(EventList.GamePlay.ADD_BASESKILL,this, thanThong, newValue,currentValue);
+
         // call observer event update UI
     }
     public void AddCPDynamic(CongPhapMono cp , int count = 1)
     {
         for (int i = 0; i < count; i++)
         {
-            congPhapDynamic.Add(new CongPhapMono
-            {
-                congPhap = cp.congPhap,
-                level = cp.level,
-            });
+            int currentValue = congPhapDynamic.Count(x => x.congPhap == cp.congPhap);
+            congPhapDynamic.Add(cp);
+            int newValue = currentValue + 1;
+            Observer.Notify(EventList.GamePlay.ADD_BASESKILL, this, cp.congPhap, newValue, currentValue);
+
         }
+
     }
-   
+
     protected void VisualPlaySkill(ThanThong thanThong)
     {
         DOTween.Kill("HideSkillName");
@@ -458,6 +473,9 @@ public class CharacterCombat : MonoBehaviour
         foreach (var cp in congPhapEquip)
         {
             AddCPDynamic(cp);
+        }
+        foreach (var cp in congPhapEquip)
+        {
             cp.congPhap.InitPosCallExecute(this);
         }
         Debug.Log("dcmmm " + congPhapDynamic.Count);

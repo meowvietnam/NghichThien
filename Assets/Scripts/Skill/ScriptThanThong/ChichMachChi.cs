@@ -36,12 +36,16 @@ public class ChichMachChi : ThanThong
         CharacterCombat currentTurn = (CharacterCombat)data[0];
         int count = (int)data[2];
         if (currentTurn == null) return;
-
-        if (Mathf.Abs(count) >= requires[GetIndexLevelThanThong(currentTurn)])
+        if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is ChichMachChi))
         {
-            CombatStatic.ThieuDot(null,currentTurn);
+            if (Mathf.Abs(count) >= requires[GetIndexLevelThanThong(currentTurn)])
+            {
+                CombatStatic.ThieuDot(null, currentTurn);
+
+            }
 
         }
+        
 
 
     }

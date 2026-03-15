@@ -30,6 +30,8 @@ public class CombatManager : MonoBehaviour
     }
     [SerializeField]
     private List<BuffOrDebuffIcon> buffOrDebuffIcons;
+    private Dictionary<CharacterCombat.AmKinhEntry,ItemUI> dictAmKinhItemUI = new Dictionary<CharacterCombat.AmKinhEntry, ItemUI>();
+
     [SerializeField] public CharacterCombat char1;
     [SerializeField] public CharacterCombat char2;
     [SerializeField]
@@ -123,7 +125,10 @@ public class CombatManager : MonoBehaviour
         Pool.Set(this);
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, EndTurn);
         Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, PlaySkill);
+        Observer.AddObserver(EventList.GamePlay.ADD_BASESKILL, SetUIBaseSkill);
         Observer.AddObserver(EventList.GamePlay.ADD_BUFF, SetUIBuff);
+        Observer.AddObserver(EventList.GamePlay.UPDATE_AMKINH_THANTHONG, SetUIAmKinh);
+
         Observer.AddObserver(EventList.GamePlay.CHARACTER_ADJUST_HP, SetUIHpBar);
         if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
         if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
@@ -286,6 +291,7 @@ public class CombatManager : MonoBehaviour
 
             if (caster.skillVoHieuHoa.Count > 0)
             {
+                target.RemoveAllThanThongImpactAfterPlaySkill(target.specialThanThongImpactAfterPlaySkill.FirstOrDefault(x=>x is AmDuongDong));
                 caster.skillVoHieuHoa.Clear();
                 return;
 
@@ -378,14 +384,168 @@ public class CombatManager : MonoBehaviour
             currentTurn = char1;
         }
     }
-   
   
+
+    public void SetUIAmKinh(params object[] data)
+    {
+        if (data[0] is CharacterCombat characterCombat)
+        {
+            CharacterCombat.AmKinhEntry entry = (CharacterCombat.AmKinhEntry)data[1];
+
+            int remove = data.Length > 2 ? (int)data[2] : 0;
+
+            ItemUI buffIcon = null;
+            ScrollRect scrollRect = null;
+            if (characterCombat == char1)
+            {
+                scrollRect = statusChar1;
+
+            }
+            else
+            {
+                scrollRect = statusChar2;
+
+
+            }
+            bool isHave = false;
+            int scaleX = (int)scrollRect.transform.parent.localScale.x;
+            int signX = scaleX / Mathf.Abs(scaleX);
+            if(dictAmKinhItemUI.TryGetValue(entry,out ItemUI item))
+            {
+                isHave = true;
+                buffIcon = item;
+            }    
+           
+            if (remove == -1)
+            {
+                if (isHave)
+                {
+                    buffIcon.Recycle();
+                }
+            }
+            else
+            {
+
+                if (!isHave)
+                {
+                    buffIcon = prefabBuffIcon.Spawn(scrollRect.content.transform);
+                    buffIcon.transform.localScale = new Vector3(1 * signX, 1, 1);
+                    buffIcon.InitIcon(entry.ThanThong.spriteItem, null);
+                    buffIcon.InitAction(null, () =>
+                    {
+                        Debug.Log("cos goi pointer up buff icon show tip");
+
+                        buffInfor.SetText(entry.ThanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level)));
+                        buffInfor.transform.SetParent(buffIcon.transform);
+                        if (signX > 0)
+                        {
+                            buffInfor.thisTransform.pivot = new Vector2(0, 0.5f);
+                        }
+                        else
+                        {
+                            buffInfor.thisTransform.pivot = new Vector2(1, 0.5f);
+
+                        }
+                        buffInfor.transform.localPosition = new Vector3(0, -80, 0);
+
+
+                        buffInfor.DoShow();
+
+                    });
+                    dictAmKinhItemUI.Add(entry, buffIcon);
+
+                }
+
+                buffIcon.AddCount(entry.RemainingTurns - buffIcon.count);
+            }
+
+        }
+
+    }
+    public void SetUIBaseSkill(params object[] data)
+    {
+        if (data[0] is CharacterCombat characterCombat)
+        {
+            BaseSkill thanThong = (BaseSkill)data[1];
+            int newValue = (int)data[2];
+            ItemUI buffIcon = null;
+            ScrollRect scrollRect = null;
+            if (characterCombat == char1)
+            {
+                scrollRect = statusChar1;
+
+            }
+            else
+            {
+                scrollRect = statusChar2;
+
+
+            }
+            bool isHave = false;
+            int scaleX = (int)scrollRect.transform.parent.localScale.x;
+            int signX = scaleX / Mathf.Abs(scaleX);
+            for (int i = 0; i < scrollRect.content.transform.childCount; i++)
+            {
+                ItemUI itemUI = scrollRect.content.transform.GetChild(i).GetComponent<ItemUI>();
+                if (itemUI.icon.sprite == thanThong.spriteItem) // cos toon tai
+                {
+                    isHave = true;
+                    buffIcon = itemUI;
+                    break;
+                }
+
+            }
+            if (newValue <= 0)
+            {
+                if (isHave)
+                {
+                    buffIcon.Recycle();
+                }
+            }
+            else
+            {
+
+                if (!isHave)
+                {
+                    buffIcon = prefabBuffIcon.Spawn(scrollRect.content.transform);
+                    buffIcon.transform.localScale = new Vector3(1 * signX, 1, 1);
+                    buffIcon.InitIcon(thanThong.spriteItem, null);
+                    buffIcon.InitAction(null, () =>
+                    {
+                        Debug.Log("cos goi pointer up buff icon show tip");
+
+                        buffInfor.SetText(thanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level)));
+                        buffInfor.transform.SetParent(buffIcon.transform);
+                        if (signX > 0)
+                        {
+                            buffInfor.thisTransform.pivot = new Vector2(0, 0.5f);
+                        }
+                        else
+                        {
+                            buffInfor.thisTransform.pivot = new Vector2(1, 0.5f);
+
+                        }
+                        buffInfor.transform.localPosition = new Vector3(0, -80, 0);
+
+
+                        buffInfor.DoShow();
+
+                    });
+                }
+
+                buffIcon.AddCount(newValue - buffIcon.count);
+            }
+
+        }
+
+    }
+
     public void SetUIBuff(params object[] data)
     {
         if (data[0] is CharacterCombat characterCombat)
         {
             EBuffAndDeBuff buffType = (EBuffAndDeBuff)data[1];
-            int currentValue = (int)data[2];
+            int newValues = (int)data[2];
             ItemUI buffIcon = null;
             ScrollRect scrollRect = null;
             if (characterCombat == char1)
@@ -413,7 +573,7 @@ public class CombatManager : MonoBehaviour
                 }
 
             }
-            if (currentValue <= 0)
+            if (newValues <= 0)
             {
                 if(isHave)
                 {
@@ -451,7 +611,7 @@ public class CombatManager : MonoBehaviour
                     });
                 }
                 
-                buffIcon.AddCount(currentValue - buffIcon.count);
+                buffIcon.AddCount(newValues - buffIcon.count);
             }
           
         }
