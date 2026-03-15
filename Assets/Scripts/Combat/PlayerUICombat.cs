@@ -129,7 +129,7 @@ public class PlayerUICombat : MonoBehaviour
                     CheckFightSkillCanUse();
                     break;
                 case EStateControl.DeleteLinhKhi:
-                    if (CurrentLinhKhi <= maxLinhKhi)
+                    if (CurrentLinhKhi <= maxLinhKhi || player.isSkipTieuTanLinhKhi == true)
                     {
 
                         Observer.Notify(EventList.GamePlay.END_TURN_COMBAT,player,CombatManager.char2, GetLinhKhiTieuTans(currentNodes));
@@ -168,17 +168,18 @@ public class PlayerUICombat : MonoBehaviour
         {
             if (CombatManager.IsDelayEffectSkill) return;
             SetStateControl(EStateControl.DeleteLinhKhi);
-            if (CurrentLinhKhi > maxLinhKhi)
+            if (CurrentLinhKhi <= maxLinhKhi || player.isSkipTieuTanLinhKhi == true)
+            {
+                btnConfirm.onClick.Invoke();
+
+
+            }
+            else
             {
                 ShowNodes(6);
                 textTip.transform.parent.parent.localPosition = new Vector3(370, 0, 0);
                 textTip.transform.parent.parent.DOLocalMove(new Vector3(0, 0, 0), 0.5f);
                 textTip.text = $"{CurrentLinhKhi - maxLinhKhi}";
-
-            }
-            else
-            {
-                btnConfirm.onClick.Invoke();
             }
             CheckFightSkillCanUse();
 
@@ -307,6 +308,7 @@ public class PlayerUICombat : MonoBehaviour
             ThanThong thanThong = s < thanthongtest.Length ? thanthongtest[s] : null;
             skill.Init(thanThong, thanThong != null ? spriteFrame[(int)(((int)thanThong.eTierSkill - 1) / 3)] : null, actionHolder, actionPointerUp); // test data 
         } 
+        skillTip.DoHide();
             
        
 

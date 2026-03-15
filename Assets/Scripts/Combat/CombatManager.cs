@@ -65,7 +65,9 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private Tooltip buffInfor;
     [SerializeField] public Transform parentUIFight => buffInfor.transform.parent;
 
-    public bool IsDelayEffectSkill = false;
+    public SecureBool IsDelayEffectSkill;
+
+    public Camera cameraEffectSkill;
 
     public Text GetTextDame()
     {
@@ -156,6 +158,7 @@ public class CombatManager : MonoBehaviour
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
         Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, NewTurn);
         SetUIHpBar();
+        buffInfor.DoHide();
     }
     
     public static bool IsTuongDong(List<LinhKhiTieuTan> linhKhiTieuTan)

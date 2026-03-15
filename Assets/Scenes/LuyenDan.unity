@@ -387,6 +387,7 @@ GameObject:
   - component: {fileID: 34706918}
   - component: {fileID: 34706917}
   - component: {fileID: 34706916}
+  - component: {fileID: 34706919}
   m_Layer: 0
   m_Name: NguPham
   m_TagString: Untagged
@@ -496,6 +497,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 34706914}
   m_CullTransparentMesh: 0
+--- !u!114 &34706919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34706914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6149fa14152429b87bef3c36c312e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.TierSelection
+  btn: {fileID: 34706916}
+  tier: 4
 --- !u!1 &55943212
 GameObject:
   m_ObjectHideFlags: 0
@@ -10285,6 +10300,7 @@ GameObject:
   - component: {fileID: 1135288624}
   - component: {fileID: 1135288623}
   - component: {fileID: 1135288622}
+  - component: {fileID: 1135288625}
   m_Layer: 0
   m_Name: TamPham
   m_TagString: Untagged
@@ -10394,6 +10410,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1135288620}
   m_CullTransparentMesh: 0
+--- !u!114 &1135288625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135288620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6149fa14152429b87bef3c36c312e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.TierSelection
+  btn: {fileID: 1135288622}
+  tier: 2
 --- !u!1 &1139815380
 GameObject:
   m_ObjectHideFlags: 0
@@ -15988,6 +16018,7 @@ GameObject:
   - component: {fileID: 1875632454}
   - component: {fileID: 1875632453}
   - component: {fileID: 1875632452}
+  - component: {fileID: 1875632455}
   m_Layer: 0
   m_Name: All
   m_TagString: Untagged
@@ -16097,6 +16128,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1875632450}
   m_CullTransparentMesh: 0
+--- !u!114 &1875632455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875632450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b9f069b2a19464aa87e25b27df394bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.AllTierSelection
+  btn: {fileID: 1875632452}
 --- !u!1 &1898906864
 GameObject:
   m_ObjectHideFlags: 0
@@ -17152,6 +17196,7 @@ GameObject:
   - component: {fileID: 1993765525}
   - component: {fileID: 1993765524}
   - component: {fileID: 1993765523}
+  - component: {fileID: 1993765526}
   m_Layer: 0
   m_Name: NhatPham
   m_TagString: Untagged
@@ -17261,6 +17306,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1993765521}
   m_CullTransparentMesh: 0
+--- !u!114 &1993765526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1993765521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6149fa14152429b87bef3c36c312e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.TierSelection
+  btn: {fileID: 1993765523}
+  tier: 0
 --- !u!1 &1995679932
 GameObject:
   m_ObjectHideFlags: 0
@@ -17749,6 +17808,7 @@ GameObject:
   - component: {fileID: 2049676104}
   - component: {fileID: 2049676103}
   - component: {fileID: 2049676102}
+  - component: {fileID: 2049676105}
   m_Layer: 0
   m_Name: TuPham
   m_TagString: Untagged
@@ -17858,6 +17918,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049676100}
   m_CullTransparentMesh: 0
+--- !u!114 &2049676105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049676100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6149fa14152429b87bef3c36c312e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.TierSelection
+  btn: {fileID: 2049676102}
+  tier: 3
 --- !u!1 &2051080127
 GameObject:
   m_ObjectHideFlags: 0
@@ -18190,6 +18264,7 @@ GameObject:
   - component: {fileID: 2109892988}
   - component: {fileID: 2109892987}
   - component: {fileID: 2109892986}
+  - component: {fileID: 2109892989}
   m_Layer: 0
   m_Name: NhiPham
   m_TagString: Untagged
@@ -18299,6 +18374,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2109892984}
   m_CullTransparentMesh: 0
+--- !u!114 &2109892989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109892984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6149fa14152429b87bef3c36c312e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.TierSelection
+  btn: {fileID: 2109892986}
+  tier: 1
 --- !u!1 &2110305035
 GameObject:
   m_ObjectHideFlags: 0
@@ -18905,7 +18994,8 @@ GameObject:
   - component: {fileID: 224066563550138400}
   - component: {fileID: 222685369952475204}
   - component: {fileID: 114248898452762571}
-  - component: {fileID: 114772431190312165}
+  - component: {fileID: 224066563550138402}
+  - component: {fileID: 224066563550138401}
   m_Layer: 0
   m_Name: All
   m_TagString: Untagged
@@ -20602,6 +20692,7 @@ GameObject:
   - component: {fileID: 222071984520701901}
   - component: {fileID: 114821961141255738}
   - component: {fileID: 224516848952104515}
+  - component: {fileID: 224516848952104516}
   m_Layer: 0
   m_Name: LucPham
   m_TagString: Untagged
@@ -25148,18 +25239,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &114772431190312165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1137654523696181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114772499563529383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27255,6 +27334,7 @@ MonoBehaviour:
   <Resources>k__BackingField: {fileID: 11400000, guid: 32210804ef43f4fa9b0abe79112e6cb3,
     type: 2}
   <FurnaceInventory>k__BackingField: {fileID: 786482286}
+  <RecipeListUI>k__BackingField: {fileID: 224723679888156402}
 --- !u!224 &224061783980252365
 RectTransform:
   m_ObjectHideFlags: 0
@@ -27315,6 +27395,63 @@ RectTransform:
   m_AnchoredPosition: {x: -81.00006, y: 261.7}
   m_SizeDelta: {x: 84, y: 136}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &224066563550138401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137654523696181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 114248898452762571}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &224066563550138402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137654523696181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d39e42aa09e4ceaa775eb1698202a35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.TierSelectionButton
+  btn: {fileID: 224066563550138401}
 --- !u!224 &224074926155928157
 RectTransform:
   m_ObjectHideFlags: 0
@@ -27998,7 +28135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
   m_Padding:
-    m_Left: 20
+    m_Left: 10
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
@@ -28898,6 +29035,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &224516848952104516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713572382969091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6149fa14152429b87bef3c36c312e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.TierSelection
+  btn: {fileID: 224516848952104515}
+  tier: 5
 --- !u!224 &224517257031758574
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29588,6 +29739,8 @@ MonoBehaviour:
   content: {fileID: 224280437303734934}
   toggleGroup: {fileID: 224723679888156401}
   prefab: {fileID: 9156055260024757772, guid: 404aaa12b45404ec6bc13bfdcefdfe69, type: 3}
+  myRecipes: b80b0000c20b0000cc0b0000
+  tierSelection: {fileID: 1596444178116165}
 --- !u!224 &224724216693888518
 RectTransform:
   m_ObjectHideFlags: 0

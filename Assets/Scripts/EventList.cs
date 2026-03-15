@@ -10,7 +10,7 @@ public static partial class EventList
         public const string ADJUST_LINHKHI = "GamePlay.HAPTHU_LINHKHI";
         public const string ADD_BUFF = "GamePlay.ADD_BUFF";
         public const string CHARACTER_ADJUST_HP = "GamePlay.CHARACTER_ADJUST_HP";
-        public const string CHARACTER_TAKE_DAME_BY_THANTHONG = "GamePlay.CHARACTER_TAKE_DAME_BY_THANTHONG";
+        public const string CACULATE_DAME_BY_THANTHONG = "GamePlay.CACULATE_DAME_BY_THANTHONG";
         public const string CHARACTER_TAKE_DAME = "GamePlay.CHARACTER_TAKE_DAME";
         public const string CHARACTER_BEFORE_TAKE_DAME = "GamePlay.CHARACTER_BEFORE_TAKE_DAME";
 
@@ -19,6 +19,8 @@ public static partial class EventList
         public const string TRUNG_DOC = "GamePlay.TRUNG_DOC";
         public const string NE_TRANH_SUCCESS = "GamePlay.NE_TRANH_SUCCESS";
         public const string CHECK_NE_TRANH = "GamePlay.CHECK_NE_TRANH";
+        public const string CHARACTER_TAKE_DAME_BY_STATIC = "GamePlay.CHARACTER_TAKE_DAME_BY_STATIC";
+        public const string KIEM_KHI = "GamePlay.KIEM_KHI";
 
 
     }

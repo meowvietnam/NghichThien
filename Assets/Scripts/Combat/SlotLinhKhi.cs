@@ -17,13 +17,13 @@ public enum ELinhKhi
 }
 public class SlotLinhKhi : MonoBehaviour , IPointerDownHandler
 {
-    public int count;
+    public SecureInt count;
     public ELinhKhi eLinhKhi;
     public Text textCount;
     public Image icon;
     public Action actionPointerDown;
     public bool isLock;
-    public int countRequire = 0;
+    public SecureInt countRequire;
     public void AddCountRequire(int countRequire)
     {
         this.countRequire += countRequire;
@@ -43,7 +43,7 @@ public class SlotLinhKhi : MonoBehaviour , IPointerDownHandler
     {
         this.count += count;
 
-        textCount.text = this.count.ToString();
+        textCount.text = this.count.Value.ToString();
         if (this.count <= 0)
         {
             icon?.gameObject.SetActive(false);
@@ -58,7 +58,7 @@ public class SlotLinhKhi : MonoBehaviour , IPointerDownHandler
     {
         this.count = count;
 
-        textCount.text = this.count.ToString();
+        textCount.text = this.count.Value.ToString();
         if (this.count <= 0)
         {
             icon?.gameObject.SetActive(false);

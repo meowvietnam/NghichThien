@@ -13,6 +13,15 @@ public class CombatStatic : MonoBehaviour
             charTrungDoc.TakeDameByStatic(charSender, new List<int> { (int)trungDoc }, false, new[] {BaseSkill.ETypeSkill.Moc});
            
             Observer.Notify(EventList.GamePlay.TRUNG_DOC, charSender, charTrungDoc);
+            var listBuff = charTrungDoc.GetComponentsInChildren<BuffEffect>();
+            foreach (var item in listBuff)
+            {
+                if (item.eBuff == EBuffAndDeBuff.TrungDoc)
+                {
+                    item.ShowEffect();
+                    break;
+                }
+            }
         }
     }
     public static void ThieuDot(CharacterCombat charSender, CharacterCombat charThieuDot)
@@ -20,7 +29,15 @@ public class CombatStatic : MonoBehaviour
         if (charThieuDot.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt thieuDot))
         {
             charThieuDot.TakeDameByStatic(charSender, new List<int> { (int)thieuDot }, false, new[] { BaseSkill.ETypeSkill.Hoa });
-
+            var listBuff = charThieuDot.GetComponentsInChildren<BuffEffect>();
+            foreach (var item in listBuff)
+            {
+                if (item.eBuff == EBuffAndDeBuff.ThieuDot)
+                {
+                    item.ShowEffect();
+                    break;
+                }
+            }
             // Observer.Notify(EventList.GamePlay.TRUNG_DOC, charSender, charThieuDot);
         }
     }
@@ -30,8 +47,16 @@ public class CombatStatic : MonoBehaviour
         {
             charTakeDame.TakeDameByStatic(charSender, new List<int> { sucThe }, false, new[] { BaseSkill.ETypeSkill.Kiem });
 
-         
+            var listBuff = charSender.GetComponentsInChildren<SucTheEffect>();
 
+            foreach (var item in listBuff)
+            {
+                if (item.eBuff == EBuffAndDeBuff.SucThe)
+                {
+                    item.ShowSucTheAtk();
+                    break;
+                }
+            }
         }
 
     }
@@ -40,6 +65,16 @@ public class CombatStatic : MonoBehaviour
         if (charSender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out SecureInt kiemKhi))
         {
             charTakeDame.TakeDameByStatic(charSender, new List<int> { kiemKhi }, false, new[] { BaseSkill.ETypeSkill.Kiem });
+            var listBuff = charSender.GetComponentsInChildren<BuffEffect>();
+            foreach (var item in listBuff)
+            {
+                if(item.eBuff == EBuffAndDeBuff.KiemKhi)
+                {
+                    item.anim.SetTrigger("Active");
+                    break;
+                }    
+            }
+            Observer.Notify(EventList.GamePlay.KIEM_KHI, charSender, charTakeDame);
 
         }
 
@@ -72,6 +107,7 @@ public class CombatStatic : MonoBehaviour
         if (charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NoiThuong, out SecureInt noiThuong))
         {
             charTakeDame.TakeDameByStatic(charSender, new List<int> { (int)noiThuong }, false);
+            Debug.Log("Static NoiThuong");
 
 
         }
@@ -82,7 +118,7 @@ public class CombatStatic : MonoBehaviour
         if (charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out SecureInt trienNhieu))
         {
             charTakeDame.TakeDameByStatic(charSender, new List<int> { (int)trienNhieu }, false, new[] { BaseSkill.ETypeSkill.Moc });
-
+            Debug.Log("Static TrienNhieu");
 
         }
 

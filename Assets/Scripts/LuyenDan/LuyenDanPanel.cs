@@ -20,7 +20,7 @@ namespace LuyenDan
         }
         [field: SerializeField] public LuyenDanResources Resources { get; private set; }
         [field: SerializeField] public Inventory.Inventory FurnaceInventory { get; private set; }
-
+        [field: SerializeField] public RecipeListUI RecipeListUI { get; private set; }
         private void Start()
         {
           //  FurnaceInventory.Init();

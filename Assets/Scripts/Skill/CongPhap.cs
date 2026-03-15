@@ -11,13 +11,13 @@ public class CongPhapMono
 }
 public abstract class CongPhap : BaseSkill
 {
-    [SerializeField] private SecureInt tocDoTuLuyenBase;
+    [SerializeField] private int tocDoTuLuyenBase;
 
-    public virtual void EquipCongPhap(CharacterStats stats, int level)
+    public virtual void EquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int daiCanhGioi)
     {
 
     }
-    public virtual void UnEquipCongPhap(CharacterStats stats, int level)
+    public virtual void UnEquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int daiCanhGioi)
     {
 
     }
@@ -62,11 +62,30 @@ public abstract class CongPhap : BaseSkill
     }    
     public virtual int CurrentLevelCongPhapInCombat(CharacterCombat caster)
     {
-        // Tìm trong danh sách trang bị của caster
+        // 1. Tìm trong danh sách trang bị của caster
         var equip = GetCongPhapMono(caster.congPhapEquip);
 
-        // Trả về level nếu tìm thấy, ngược lại trả về 0 (hoặc 1 tùy logic của bạn)
-        return equip != null || equip.level.Value != 0 ? equip.level : 1;
+        // 2. Kiểm tra log từng bước
+        if (equip == null)
+        {
+            Debug.LogError("DEBUG: 'equip' bị NULL - Không tìm thấy Công Pháp tương ứng!");
+        }
+        else if (equip.level == null)
+        {
+            Debug.LogError("DEBUG: 'equip.level' bị NULL - Đối tượng level chưa được khởi tạo!");
+        }
+        else
+        {
+            Debug.Log($"DEBUG: Tìm thấy equip, Level hiện tại là: {equip.level.Value}");
+        }
+
+        // 3. Trả về kết quả an toàn
+        if (equip != null && equip.level != null && equip.level.Value != 0)
+        {
+            return equip.level.Value; // Trả về giá trị cụ thể
+        }
+
+        return 1; // Giá trị mặc định nếu có bất kỳ thứ gì null
     }
 
     public abstract void InitPosCallExecute(CharacterCombat caster);
