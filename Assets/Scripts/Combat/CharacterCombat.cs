@@ -29,6 +29,7 @@ public class CharacterStats
 
     public SecureInt level;
     public SecureFloat hp;
+    public SecureFloat hpMax;
     public string nameUser;
     public SecureInt tuoiTac;
     public SecureInt thoNguyen;
@@ -90,6 +91,11 @@ public class CharacterCombat : MonoBehaviour
     [SerializeField]
     public SecureInt currentTurnDameTaked;
     [SerializeField]
+    public List<BaseSkill> skillVoHieuHoa;
+    public void AddSkillVoHieuHoa(BaseSkill baseSkill)
+    {
+        skillVoHieuHoa.Add(baseSkill);
+    }
     public int CurrentTurn => thanThongUseThisComBat.Count;
     public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill = new List<LinhKhiTieuTan>();
     public List<ThanThong> specialThanThongImpactAfterPlaySkill = new List<ThanThong>();
@@ -195,7 +201,6 @@ public class CharacterCombat : MonoBehaviour
         Debug.Log(this.thanThongCurrentUse.thanThong.name);
         Debug.Log(this.thanThongOldUse?.thanThong.name);
        
-        CombatStatic.TrienNhieu(null,this);
       
 
     }
@@ -292,9 +297,8 @@ public class CharacterCombat : MonoBehaviour
    
     public Dictionary<BaseSkill, SecureInt> skillTichLuy = new Dictionary<BaseSkill, SecureInt>();
 
-    public CharacterStats characterStatsBase; // là stats current của player khi end combat
-    public CharacterStats characterStatsMax;
-    public CharacterStats characterStatsCurrent;
+    public CharacterStats characterStatsBase; // khi end combat thì characterStatsBase sẽ lấy hp từ hp của stats Temp
+    public CharacterStats characterStatsTemp;
     public List<PlaySkillData> thanThongUseThisTurn =>
         thanThongUseThisComBat.Count > 0 ? thanThongUseThisComBat[^1] : null;
     public List<PlaySkillData> thanThongUseLastTurn =>
@@ -332,7 +336,7 @@ public class CharacterCombat : MonoBehaviour
 
 
 
-    public bool IsSkillTichLuyCanUse(BaseSkill thanThong, SecureInt linhKhiNeedSave , SecureInt require )
+    public bool IsSkillTichLuyCanUse(BaseSkill thanThong, SecureInt ValueNeedSave , SecureInt require )
     {
         // 1. Tìm chính xác cái Key đang nằm trong Dictionary dựa trên điều kiện của bạn
         var key = skillTichLuy.Keys.FirstOrDefault(x =>
@@ -345,10 +349,10 @@ public class CharacterCombat : MonoBehaviour
         if (key == null)
         {
             Debug.Log("key null");
-            skillTichLuy.Add(thanThong, linhKhiNeedSave);
+            skillTichLuy.Add(thanThong, ValueNeedSave);
             return false;
         }
-        skillTichLuy[key] += linhKhiNeedSave;
+        skillTichLuy[key] += ValueNeedSave;
 
         // 3. Kiểm tra số lượng tích lũy
         if (skillTichLuy[key] >= require)
@@ -432,7 +436,9 @@ public class CharacterCombat : MonoBehaviour
     {
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThanThuong, out SecureInt thanThuong);
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NgungThan, out SecureInt ngungThan);
-        int thanThuc = characterStatsCurrent.thanThuc + ngungThan - thanThuong;
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TinhHonChiLuc, out SecureInt TinhHonChiLuc);
+
+        int thanThuc = characterStatsTemp.thanThuc + TinhHonChiLuc + ngungThan - thanThuong;
         thanThuc = Mathf.Clamp(thanThuc, 0, int.MaxValue);
         Debug.Log("thanThuc" + thanThuc);
         return thanThuc;
@@ -441,8 +447,7 @@ public class CharacterCombat : MonoBehaviour
     public void Init(CharacterStats characterStat)
     {
         characterStatsBase = characterStat;
-        characterStatsMax = characterStat.Clone();
-        characterStatsCurrent = characterStat.Clone();
+        characterStatsTemp = characterStat.Clone();
         thanThongCoolDown.Clear();
         currentCharGender.gameObject.SetActive(true);
         currentCharGender.AnimationState.SetAnimation(0, ANIM_IDLE, true);
@@ -513,7 +518,7 @@ public class CharacterCombat : MonoBehaviour
 
     private void InitTotalKhi()
     {
-        int level = characterStatsCurrent.level;
+        int level = characterStatsTemp.level;
 
         // 1) Tính đại cảnh giới (3 level = 1 đại cảnh giới)
         int daiCanhGioi = ((level - 1) / 3) + 1;
@@ -620,6 +625,10 @@ public class CharacterCombat : MonoBehaviour
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TuKhi, out tuKhi);
 
         int totalKhiHapThu = baseCountHapThuLinhKhi + tuKhi - treKhi;
+        if(buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NhieuHon, out SecureInt NhieuHon))
+        {
+            totalKhiHapThu /= 2;
+        }
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, treKhi);
         totalKhiHapThu = Mathf.Clamp(totalKhiHapThu,0,int.MaxValue);
         dictHapThuLinhKhi = DictHapThuLinhKhi(totalKhiHapThu);
@@ -651,12 +660,12 @@ public class CharacterCombat : MonoBehaviour
         Dictionary<ELinhKhi, int> result = new Dictionary<ELinhKhi, int>();
 
         // Lấy % từ stats hiện tại
-        float pKim = characterStatsCurrent.percentKim;
-        float pMoc = characterStatsCurrent.percentMoc;
-        float pThuy = characterStatsCurrent.percentThuy;
-        float pHoa = characterStatsCurrent.percentHoa;
-        float pTho = characterStatsCurrent.percentTho;
-        float pMa = characterStatsCurrent.percentMa;
+        float pKim = characterStatsTemp.percentKim;
+        float pMoc = characterStatsTemp.percentMoc;
+        float pThuy = characterStatsTemp.percentThuy;
+        float pHoa = characterStatsTemp.percentHoa;
+        float pTho = characterStatsTemp.percentTho;
+        float pMa = characterStatsTemp.percentMa;
 
         float totalPercent = pKim + pMoc + pThuy + pHoa + pTho + pMa;
 
@@ -773,14 +782,8 @@ public class CharacterCombat : MonoBehaviour
     [Button]   
     public void EndTurn()
     {
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChayMau, out SecureInt chayMau))
-        {
-            TakeDameByStatic(null, new List<int> { (int)(chayMau * 0.01f * (characterStatsMax.hp - characterStatsCurrent.hp)) });
-            RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChayMau, 1);
-            Debug.Log("Static ChayMau");
+        RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChayMau, 1);
 
-
-        }
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DeTonThuong, out SecureInt value))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, value);
@@ -839,6 +842,11 @@ public class CharacterCombat : MonoBehaviour
         {
            
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemTam, kiemTam);
+        }
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TinhHonChiLuc, out SecureInt TinhHonChiLuc))
+        {
+
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.TinhHonChiLuc, TinhHonChiLuc);
         }
         isSkipTieuTanLinhKhi = false;
 
@@ -1068,8 +1076,8 @@ public class CharacterCombat : MonoBehaviour
 
         Debug.Log(this.gameObject.name + "nhận dame là : " + dame);
         
-        characterStatsCurrent.hp -= dame;
-        characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStatsMax.hp);
+        characterStatsTemp.hp -= dame;
+        characterStatsTemp.hp = Mathf.Clamp(characterStatsTemp.hp, 0, characterStatsTemp.hpMax);
 
         if (dame >= 0)
         {
@@ -1128,14 +1136,14 @@ public class CharacterCombat : MonoBehaviour
     }
     public void SetHp(int hp)
     {
-        characterStatsCurrent.hp = hp;
+        characterStatsTemp.hp = hp;
         Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);
 
     }
 
     public virtual bool CheckDie()
     {
-        if (characterStatsCurrent.hp > 0)
+        if (characterStatsTemp.hp > 0)
         {
             Die();
             return true;
@@ -1155,8 +1163,8 @@ public class CharacterCombat : MonoBehaviour
         int finalHpGain = Mathf.RoundToInt(hp * reductionFactor);
 
         // Áp dụng vào chỉ số nhân vật
-        characterStatsCurrent.hp += finalHpGain;
-        characterStatsCurrent.hp = Mathf.Clamp(characterStatsCurrent.hp, 0, characterStatsMax.hp);
+        characterStatsTemp.hp += finalHpGain;
+        characterStatsTemp.hp = Mathf.Clamp(characterStatsTemp.hp, 0, characterStatsTemp.hpMax);
 
         // Hiển thị hiệu ứng số nhảy (Nếu hồi phục > 0 thì mới hiện)
         if (finalHpGain > 0)

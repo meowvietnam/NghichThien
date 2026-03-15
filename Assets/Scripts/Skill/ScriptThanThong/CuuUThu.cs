@@ -21,7 +21,7 @@ public class CuuUThu : ThanThong
     {
         caster.characterStatsBase.thoNguyen -= tieuHao;
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Anh, out SecureInt anh);
-        int dameHP = (int)(percent * caster.characterStatsCurrent.hp / 100f);
+        int dameHP = (int)(percent * caster.characterStatsTemp.hp / 100f);
         int dame = dames[GetIndexLevelThanThong(caster)] + anh * dames2[GetIndexLevelThanThong(caster)] + dameHP;
         caster.TakeDameByStatic(null, new System.Collections.Generic.List<int> { dameHP } ,false , null , false);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Anh, anh);

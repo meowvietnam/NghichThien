@@ -62,6 +62,8 @@ public enum EBuffAndDeBuff
     QuyDe,
     KiemTam,
     ChanThan,
+    NhieuHon,
+    TinhHonChiLuc,
 
 }
 
@@ -82,6 +84,7 @@ public abstract class BaseSkill : BaseItemData
         EBuffAndDeBuff.DanLuc,
         EBuffAndDeBuff.PhaThe,
         EBuffAndDeBuff.ThanThuong,
+        EBuffAndDeBuff.NhieuHon
     };
     public static List<EBuffAndDeBuff> eNoneBuff = new List<EBuffAndDeBuff>
     {
@@ -357,6 +360,12 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.ChanThan:
                 text = "Chấn Thần";
                 break;
+            case EBuffAndDeBuff.NhieuHon:
+                text = "Nhiễu Hồn";
+                break;
+            case EBuffAndDeBuff.TinhHonChiLuc:
+                text = "Tinh Hồn Chi Lực";
+                break;
             default:
                 break;
         }
@@ -532,6 +541,12 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.ChanThan:
                 text = $"Thần thức thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.NhieuHon:
+                text = $"Giai đoạn hấp thụ linh khí, số lượng linh khí hấp thụ giảm một nửa";
+                break;
+            case EBuffAndDeBuff.TinhHonChiLuc:
+                text = $"Mỗi tầng thần thức +1. Kết thúc hiệp giải trừ toàn bộ";
                 break;
             default:
                 break;

@@ -24,16 +24,16 @@ public class MaDiemQuyet : CongPhap
         return;
     }
 
-    public override void EquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int level)
+    public override void EquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
     {
-        statsMax.thoNguyen -= thoNguyens[level - 1];
-        statsCurrent.thoNguyen -= thoNguyens[level - 1];
+
+        statsCurrent.thoNguyen -= thoNguyens[daiCanhGioiCongPhap - 1];
 
     }
-    public override void UnEquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int level)
+    public override void UnEquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
     {
-        statsMax.thoNguyen += thoNguyens[level - 1];
-        statsCurrent.thoNguyen += thoNguyens[level - 1];
+
+        statsCurrent.thoNguyen += thoNguyens[daiCanhGioiCongPhap - 1];
 
 
     }

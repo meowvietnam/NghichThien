@@ -25,12 +25,12 @@ public class ThuyVuQuyet : CongPhap
         {
             var congPhapMono = GetCongPhapMono(caster.congPhapEquip);
             caster.AddCPDynamic(congPhapMono);
-            caster.characterStatsCurrent.percentThuy += buffLinhCan[CurrentLevelCongPhapInCombat(caster) - 1];
+            caster.characterStatsTemp.percentThuy += buffLinhCan[CurrentLevelCongPhapInCombat(caster) - 1];
 
         }
         else if (countHuyenVu <= 0 && GetCongPhapMono(caster.congPhapDynamic) != null)
         {
-            caster.characterStatsCurrent.percentThuy -= buffLinhCan[CurrentLevelCongPhapInCombat(caster) - 1];
+            caster.characterStatsTemp.percentThuy -= buffLinhCan[CurrentLevelCongPhapInCombat(caster) - 1];
             RemoveCongPhap(caster);
 
         }

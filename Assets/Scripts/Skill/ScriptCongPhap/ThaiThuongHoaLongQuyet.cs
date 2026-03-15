@@ -9,7 +9,7 @@ public class ThaiThuongHoaLongQuyet : ThoNapCongPhap
     [SerializeField] private int percent = 5;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.Healing((int)(caster.characterStatsMax.hp*percent/100));
+        caster.Healing((int)(caster.characterStatsTemp.hpMax *percent/100));
     }
    
     public override string GetDesc(int level)

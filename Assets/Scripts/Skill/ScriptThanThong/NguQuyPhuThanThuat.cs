@@ -14,7 +14,7 @@ public class NguQuyPhuThanThuat : ThanThong
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.characterStatsMax.hp += buffs[GetIndexLevelThanThong(caster)];
+        caster.characterStatsTemp.hpMax += buffs[GetIndexLevelThanThong(caster)];
         caster.Healing(0);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.GamePlay.CHARACTER_BEFORE_TAKE_DAME, ObserverEffect);

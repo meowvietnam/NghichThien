@@ -18,17 +18,17 @@ public class DietLinhQuyet : CongPhap
             1, 2, 3,4, 5
         };
     [SerializeField] public static int require = 3;
-    public override void EquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int level)
+    public override void EquipCongPhap(CharacterStats statsCurrent , int daiCanhGioiCongPhap)
     {
-        statsMax.thanThuc += buffValues[level - 1];
-        statsCurrent.thanThuc += buffValues[level - 1];
+
+        statsCurrent.thanThuc += buffValues[daiCanhGioiCongPhap - 1];
 
       
     }
-    public override void UnEquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int level)
+    public override void UnEquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
     {
-        statsMax.thanThuc -= buffValues[level - 1];
-        statsCurrent.thanThuc -= buffValues[level - 1];
+
+        statsCurrent.thanThuc -= buffValues[daiCanhGioiCongPhap - 1];
 
     
 

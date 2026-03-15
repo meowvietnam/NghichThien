@@ -12,7 +12,7 @@ public class NguThuyQuyet : ThanThong
     {
         HauKeVoLuc(caster);
         caster.HapThuLinhKhi(ELinhKhi.Thuy, hapThuLinhKhi);
-        caster.characterStatsCurrent.percentThuy += buffValues[GetIndexLevelThanThong(caster)]; 
+        caster.characterStatsTemp.percentThuy += buffValues[GetIndexLevelThanThong(caster)]; 
         //ShowSkillEffect(target, delayTimeEffect);
 
     }

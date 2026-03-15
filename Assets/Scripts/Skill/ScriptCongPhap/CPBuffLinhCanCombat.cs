@@ -34,26 +34,26 @@ public class CPBuffLinhCanCombat : CongPhap
             case ELinhKhi.None:
                 break;
             case ELinhKhi.Kim:
-                caster.characterStatsCurrent.percentKim += buff;
+                caster.characterStatsTemp.percentKim += buff;
                 break;
             case ELinhKhi.Moc:
-                caster.characterStatsCurrent.percentMoc += buff;
+                caster.characterStatsTemp.percentMoc += buff;
 
                 break;
             case ELinhKhi.Thuy:
-                caster.characterStatsCurrent.percentThuy += buff;
+                caster.characterStatsTemp.percentThuy += buff;
 
                 break;
             case ELinhKhi.Hoa:
-                caster.characterStatsCurrent.percentHoa += buff;
+                caster.characterStatsTemp.percentHoa += buff;
 
                 break;
             case ELinhKhi.Tho:
-                caster.characterStatsCurrent.percentTho += buff;
+                caster.characterStatsTemp.percentTho += buff;
 
                 break;
             case ELinhKhi.Ma:
-                caster.characterStatsCurrent.percentMa += buff;
+                caster.characterStatsTemp.percentMa += buff;
 
                 break;
             default:

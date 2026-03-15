@@ -11,16 +11,16 @@ public class PhiVanKinh : CongPhap
             1, 2 , 3,4, 5
        };
 
-    public override void EquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int level)
+    public override void EquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
     {
-        statsMax.tocDoBay += buffValues[level - 1];
-        statsCurrent.tocDoBay += buffValues[level - 1];
+
+        statsCurrent.tocDoBay += buffValues[daiCanhGioiCongPhap - 1];
 
     }
-    public override void UnEquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int level)
+    public override void UnEquipCongPhap(CharacterStats statsCurrent , int daiCanhGioiCongPhap)
     {
-        statsMax.tocDoBay -= buffValues[level - 1];
-        statsCurrent.tocDoBay -= buffValues[level - 1];
+
+        statsCurrent.tocDoBay -= buffValues[daiCanhGioiCongPhap - 1];
 
     }
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)

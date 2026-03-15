@@ -14,21 +14,19 @@ public class BaoThapQuanTuongPhap : CongPhap
         5,10,15,20,25
 
     };
-    public override void EquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int level)
+    public override void EquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
     {
-        statsMax.thanThuc += buffValues[level - 1];
-        statsCurrent.thanThuc += buffValues[level - 1];
 
-        statsMax.tamCanh += buffValues2[level - 1];
-        statsCurrent.tamCanh += buffValues2[level - 1];
+        statsCurrent.thanThuc += buffValues[daiCanhGioiCongPhap - 1];
+
+        statsCurrent.tamCanh += buffValues2[daiCanhGioiCongPhap - 1];
     }
-    public override void UnEquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int level)
+    public override void UnEquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
     {
-        statsMax.thanThuc -= buffValues[level - 1];
-        statsCurrent.thanThuc -= buffValues[level - 1];
 
-        statsMax.tamCanh -= buffValues2[level - 1];
-        statsCurrent.tamCanh -= buffValues2[level - 1];
+        statsCurrent.thanThuc -= buffValues[daiCanhGioiCongPhap - 1];
+
+        statsCurrent.tamCanh -= buffValues2[daiCanhGioiCongPhap - 1];
 
     }
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)

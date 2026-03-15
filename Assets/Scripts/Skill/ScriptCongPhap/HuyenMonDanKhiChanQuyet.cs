@@ -12,7 +12,7 @@ public class HuyenMonDanKhiChanQuyet : CongPhap
         };
 
     [SerializeField] private int require = 30;
-    public virtual void ExecuteParams(params object[] data)
+    public override void ExecuteParams(params object[] data)
     {
         // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
         CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
@@ -26,10 +26,10 @@ public class HuyenMonDanKhiChanQuyet : CongPhap
     }
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if(target.characterStatsCurrent.hp < target.characterStatsMax.hp * (require / 100f))
+        if(target.characterStatsTemp.hp < target.characterStatsTemp.hpMax * (require / 100f))
         {
             RemoveCongPhap(target);
-            target.Healing((int)(target.characterStatsMax.hp*buffValues[CurrentLevelCongPhapInCombat(target) -1]));
+            target.Healing((int)(target.characterStatsTemp.hpMax*buffValues[CurrentLevelCongPhapInCombat(target) -1]));
 
         }
 

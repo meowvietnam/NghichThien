@@ -43,7 +43,7 @@ public abstract class ThanThong : BaseSkill
 
     public static int GetIndexLevelThanThong(CharacterCombat caster)
     {
-        return GetIndexLevelThanThong(caster.characterStatsCurrent);
+        return GetIndexLevelThanThong(caster.characterStatsTemp);
     }
     public static int GetIndexLevelThanThong(CharacterStats characterStatsCurrent)
     {

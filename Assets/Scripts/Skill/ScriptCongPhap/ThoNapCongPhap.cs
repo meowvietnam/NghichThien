@@ -5,16 +5,18 @@ public class ThoNapCongPhap : CongPhap
 {
     [SerializeField]
     private int[] buffValues;
-    public override void EquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int level)
+    public override void EquipCongPhap(CharacterStats statsCurrent , int daiCanhGioiCongPhap)
     {
-        statsMax.hp += buffValues[level - 1];
+
+        statsCurrent.hpMax += buffValues[daiCanhGioiCongPhap - 1];
     }
-    public override void UnEquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int level)
+    public override void UnEquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
     {
-        statsMax.hp -= buffValues[level - 1];
-        if(statsCurrent.hp >= statsMax.hp)
+
+        statsCurrent.hpMax -= buffValues[daiCanhGioiCongPhap - 1];
+        if(statsCurrent.hp >= statsCurrent.hpMax)
         {
-            statsCurrent.hp -= buffValues[level - 1];
+            statsCurrent.hp -= buffValues[daiCanhGioiCongPhap - 1];
 
         }
 

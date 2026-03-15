@@ -13,11 +13,21 @@ public abstract class CongPhap : BaseSkill
 {
     [SerializeField] private int tocDoTuLuyenBase;
 
-    public virtual void EquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int daiCanhGioi)
+    public virtual void EquipCongPhap(CharacterStats statsCurrent , int daiCanhGioiCongPhap)
     {
 
     }
-    public virtual void UnEquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int daiCanhGioi)
+    public virtual void UnEquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
+    {
+
+    }
+    public virtual void UpgradeCongPhapSuccess(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
+    {
+        UnEquipCongPhap(statsCurrent, daiCanhGioiCongPhap);
+        EquipCongPhap(statsCurrent, daiCanhGioiCongPhap);
+
+    }
+    public virtual void LearnCongPhapSuccess(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
     {
 
     }

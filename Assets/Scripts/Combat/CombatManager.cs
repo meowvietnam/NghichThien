@@ -68,7 +68,7 @@ public class CombatManager : MonoBehaviour
     public SecureBool IsDelayEffectSkill;
 
     public Camera cameraEffectSkill;
-
+    
     public Text GetTextDame()
     {
         return prefabTextDame.Spawn(this.transform);
@@ -80,8 +80,8 @@ public class CombatManager : MonoBehaviour
     }
     private void SetUIHpBar()
     {
-        SetUIHpBar(char1.characterStatsCurrent.hp, char1.characterStatsMax.hp, progressHpChar1, textHpChar1);
-        SetUIHpBar(char2.characterStatsCurrent.hp, char2.characterStatsMax.hp, progressHpChar2, textHpChar2);
+        SetUIHpBar(char1.characterStatsTemp.hp, char1.characterStatsTemp.hpMax, progressHpChar1, textHpChar1);
+        SetUIHpBar(char2.characterStatsTemp.hp, char2.characterStatsTemp.hpMax, progressHpChar2, textHpChar2);
 
     }
  
@@ -136,6 +136,7 @@ public class CombatManager : MonoBehaviour
             percentHoa = 10,
             percentTho = 10,
             hp = 200,
+            hpMax = 200,
             tocDoBay = 20,
             thoNguyen = 1000,
             thanThuc = 50
@@ -150,6 +151,8 @@ public class CombatManager : MonoBehaviour
             percentHoa = 10,
             percentTho = 10,
             hp = 200,
+            hpMax = 300,
+
             tocDoBay = 10,
             thoNguyen = 1000,
             thanThuc = 30
@@ -278,12 +281,15 @@ public class CombatManager : MonoBehaviour
 
 
             caster.PlaySkill(thanThong, linhKhiTieuTan);
-            if(target.specialThanThongImpactAfterPlaySkill.Any(x=>x is AmDuongDong))
+            CombatStatic.TrienNhieu(target, caster);
+            Observer.Notify(EventList.GamePlay.BEFORE_EXCUTE_SKILL , caster, target);
+
+            if (caster.skillVoHieuHoa.Count > 0)
             {
-                target.RemoveAllThanThongImpactAfterPlaySkill(target.specialThanThongImpactAfterPlaySkill.FirstOrDefault(x=>x is AmDuongDong));
+                caster.skillVoHieuHoa.Clear();
                 return;
 
-            }    
+            }
             ThanThong thanThongOldUse = caster.thanThongOldUse != null ? caster.thanThongOldUse.thanThong : null;
             thanThong.Execute(caster, target, data);
             if (thanThong is BaseSkill.LienKich thanThongLienKich && thanThongOldUse != null)
@@ -359,6 +365,7 @@ public class CombatManager : MonoBehaviour
         CombatStatic.KiemKhi(currentTurn, targetTurn);
         CombatStatic.TrungDoc(targetTurn, currentTurn);
         CombatStatic.ThienKiem(currentTurn, targetTurn);
+        CombatStatic.ChayMau(targetTurn, currentTurn);
         currentTurn.EndTurn();
 
         // swap turn
@@ -488,7 +495,7 @@ public class CombatManager : MonoBehaviour
 
     private void StartTurn()
     {
-        currentTurn = char1.characterStatsCurrent.tocDoBay >= char2.characterStatsCurrent.tocDoBay ? char1 : char2;
+        currentTurn = char1.characterStatsTemp.tocDoBay >= char2.characterStatsTemp.tocDoBay ? char1 : char2;
 
     }    
     void Start()

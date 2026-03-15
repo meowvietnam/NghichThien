@@ -15,7 +15,7 @@ public class KimCuongDiSonQuyet : CongPhap
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if(caster.characterStatsCurrent.hp >= caster.characterStatsMax.hp*(require/100f))
+        if(caster.characterStatsTemp.hp >= caster.characterStatsTemp.hpMax*(require/100f))
         {
             target.AddDamageData(new List<int> { (int)(target.allDamages[0] * buffValues[CurrentLevelCongPhapInCombat(caster)-1]/100) });
 

@@ -249,7 +249,7 @@ public class PlayerUICombat : MonoBehaviour
             Action actionHolder = new Action(() =>
             {
                 skillTip.SetPosition(new Vector3(skill.transform.position.x,skillTip.transform.position.y,skillTip.transform.position.z));
-                skillTip.ShowSkillTip(skill.ThanThongData.name,skill.ThanThongData.GetDesc(ThanThong.GetDaiCanhGioi(player.characterStatsCurrent.level)),skill.ThanThongData.GetTextTypeSkill(),skill.ThanThongData.GetRequireActive(player),skill.ThanThongData , player.characterStatsCurrent.level);
+                skillTip.ShowSkillTip(skill.ThanThongData.name,skill.ThanThongData.GetDesc(ThanThong.GetDaiCanhGioi(player.characterStatsTemp.level)),skill.ThanThongData.GetTextTypeSkill(),skill.ThanThongData.GetRequireActive(player),skill.ThanThongData , player.characterStatsTemp.level);
             });
             Action actionPointerUp = new Action(() =>
             {

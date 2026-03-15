@@ -11,18 +11,16 @@ public class BangTamQuyet : CongPhap
             5, 10 , 15,20, 25
        };
 
-    public override void EquipCongPhap(CharacterStats statsMax , CharacterStats statsCurrent, int level)
+    public override void EquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
     {
-        base.EquipCongPhap(statsMax,statsCurrent, level);
-        statsMax.tamCanh += buffValues[level - 1];
-        statsCurrent.tamCanh += buffValues[level - 1];
+
+        statsCurrent.tamCanh += buffValues[daiCanhGioiCongPhap - 1];
 
     }
-    public override void UnEquipCongPhap(CharacterStats statsMax, CharacterStats statsCurrent, int level)
+    public override void UnEquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
     {
-        base.UnEquipCongPhap(statsMax,statsCurrent, level);
-        statsMax.tamCanh -= buffValues[level - 1];
-        statsCurrent.tamCanh -= buffValues[level - 1];
+
+        statsCurrent.tamCanh -= buffValues[daiCanhGioiCongPhap - 1];
 
 
     }

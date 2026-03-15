@@ -19,35 +19,16 @@ public class TinhDieuNgungHonQuyet : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
-        caster.AddThanThongImpactAfterPlaySkill(this);
-        caster.characterStatsCurrent.thanThuc.Value += buffValues[GetIndexLevelThanThong(caster)];
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TinhHonChiLuc, buffValues[GetIndexLevelThanThong(caster)]);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, debuffValues[GetIndexLevelThanThong(caster)]);
-        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ObserverEffect);
 
 
     }
-    private void ObserverEffect(params object[] data)
-    {
-        CharacterCombat currentTurn = (CharacterCombat)data[0];
-        CharacterCombat targetTurn = (CharacterCombat)data[1];
-
-        if (currentTurn == null) return;
-
-        if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is TinhDieuNgungHonQuyet))
-        {
-            currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
-            currentTurn.characterStatsCurrent.thanThuc.Value -= buffValues[GetIndexLevelThanThong(currentTurn)];
-
-
-        }
-
-
-    }
-
+  
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Bản thân nhận phải {GetColoredText($"+{debuffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}. Trong hiệp này tạm thời tăng lên {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm thần thức";
+        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TinhHonChiLuc)}. Đồng thời nhận phải {GetColoredText($"+{debuffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}.";
 
     }
 }

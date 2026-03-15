@@ -7,7 +7,7 @@ public class AmDuongDong : ThanThong
    
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.AddThanThongImpactAfterPlaySkill(this);
+        target.AddSkillVoHieuHoa(this);
 
     }
 

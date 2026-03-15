@@ -15,7 +15,7 @@ public class HoanLinhChu : ThanThong
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyCuu, out SecureInt quyCuu);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.QuyCuu, quyCuu);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Hon, tieuHaos[GetIndexLevelThanThong(caster)]);
-        caster.AddBuffAndDebuffCount(GetEKeywordBuffSkillQuy(caster.characterStatsCurrent.level), 1);
+        caster.AddBuffAndDebuffCount(GetEKeywordBuffSkillQuy(caster.characterStatsTemp.level), 1);
         CombatStatic.QuyTon(caster, target);
 
     }

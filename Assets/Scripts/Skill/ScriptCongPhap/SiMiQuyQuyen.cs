@@ -1,0 +1,49 @@
+﻿using LongDH.LongDHModules;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(SiMiQuyQuyen))]
+
+public class SiMiQuyQuyen : CPTieuHaoThoNguyen
+{
+    [SerializeField]
+    private int[] buffValues = new int[]
+        {
+            5, 18 , 33,48, 63
+        };
+   
+    [SerializeField]
+    private int[] donTocs = new int[]
+       {
+            2, 4 , 6,8,10
+       };
+
+    public override void EquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
+    {
+
+        statsCurrent.tocDoBay += donTocs[daiCanhGioiCongPhap - 1];
+
+    }
+    public override void UnEquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
+    {
+
+        statsCurrent.tocDoBay -= donTocs[daiCanhGioiCongPhap - 1];
+
+    }
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
+    {
+      
+
+    }
+
+    public override string GetDesc(int level)
+    {
+        return $"Độn tốc {GetColoredText($"+{donTocs[level - 1]}", "red")}. Bắt đầu chiến đấu, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Anh)}. {base.GetDesc(level)}";
+    }
+
+    public override void InitPosCallExecute(CharacterCombat caster)
+    {
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Anh, buffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
+
+    }
+}

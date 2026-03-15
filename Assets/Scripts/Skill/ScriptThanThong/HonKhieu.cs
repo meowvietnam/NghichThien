@@ -25,7 +25,7 @@ public class HonKhieu : ThanThong
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(GetEKeywordBuffSkillQuy(caster.characterStatsCurrent.level), out SecureInt quy);
+        caster.buffAndDebuffCount.TryGetValue(GetEKeywordBuffSkillQuy(caster.characterStatsTemp.level), out SecureInt quy);
         if(quy > 0 && base.IsCanUse(caster, target))
         {
             return true;

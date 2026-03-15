@@ -15,7 +15,7 @@ public class TruongSinhQuyet : CongPhap
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if (caster.characterStatsCurrent.hp <= caster.characterStatsMax.hp * (require / 100f))
+        if (caster.characterStatsTemp.hp <= caster.characterStatsTemp.hpMax * (require / 100f))
         {
             caster.Healing(buffValues[CurrentLevelCongPhapInCombat(caster)-1]);
 

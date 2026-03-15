@@ -14,7 +14,7 @@ public class LaYenBo : ThanThong
     private int dameBuffs = 1;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        int X = (int)caster.characterStatsCurrent.tocDoBay / require;
+        int X = (int)caster.characterStatsTemp.tocDoBay / require;
         int dame = dames[GetIndexLevelThanThong(caster)] + X * dameBuffs;
 
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);

@@ -123,6 +123,17 @@ public class CombatStatic : MonoBehaviour
         }
 
     }
+    public static void ChayMau(CharacterCombat charSender, CharacterCombat charTakeDame)
+    {
+        if (charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChayMau, out SecureInt chayMau))
+        {
+
+            charTakeDame.TakeDameByStatic(charSender, new List<int> { (int)(chayMau * 0.01f * (charTakeDame.characterStatsTemp.hpMax - charTakeDame.characterStatsTemp.hp)) });
+            Debug.Log("Static ChayMau");
+
+        }
+
+    }
     public static void QuyTon(CharacterCombat charActive, CharacterCombat charTakeDame)
     {
         void ActiveQuyTon(int countDebuff , int resetHonLuc)

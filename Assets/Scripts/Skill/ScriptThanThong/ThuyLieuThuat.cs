@@ -8,7 +8,7 @@ public class ThuyLieuThuat : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int heal = healValues[GetIndexLevelThanThong(caster)];
-        int remainHeal = heal - (int)caster.characterStatsCurrent.hp;
+        int remainHeal = heal - (int)caster.characterStatsTemp.hp;
         if(remainHeal > 0)
         {
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao,remainHeal);

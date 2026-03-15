@@ -15,7 +15,7 @@ public class ManNguuHoTheQuyet : CongPhap
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if (caster.characterStatsCurrent.hp >= caster.characterStatsMax.hp)
+        if (caster.characterStatsTemp.hp >= caster.characterStatsTemp.hpMax)
         {
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, buffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
 
