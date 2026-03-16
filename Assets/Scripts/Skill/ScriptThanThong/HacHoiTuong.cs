@@ -14,7 +14,7 @@ public class HacHoiTuong : ThanThong
         for (int i = 0; i < cham; i++)
         {
             Debug.Log("HacHoiTuong");
-            Observer.Notify(EventList.GamePlay.PLAY_SKILL, caster, target, thanThongActive, new List<LinhKhiTieuTan>());
+            Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, thanThongActive, new List<LinhKhiTieuTan>());
 
         }
 

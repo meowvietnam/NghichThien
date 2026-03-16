@@ -10,7 +10,7 @@ public class VuTuongHoaThan : NeTranhTT
     {
         caster.AddThanThongImpactAfterPlaySkill(this);
 
-        Observer.AddObserver(EventList.GamePlay.CHECK_NE_TRANH, ObserverEffectNeTranh, 0);
+        Observer.AddObserver(EventList.Combat.CHECK_NE_TRANH, ObserverEffectNeTranh, 0);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HuyenVu, requireHuyenVu);
 
     }

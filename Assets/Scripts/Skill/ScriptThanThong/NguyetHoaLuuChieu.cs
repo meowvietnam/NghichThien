@@ -19,8 +19,8 @@ public class NguyetHoaLuuChieu : ThanThong
         
         caster.AddThanThongImpactAfterPlaySkill(this);
         target.HapThuLinhKhi(buffs[GetIndexLevelThanThong(caster)]);
-        Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect3);
+        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect3);
 
     }
     private void ObserverEffect(params object[] data)

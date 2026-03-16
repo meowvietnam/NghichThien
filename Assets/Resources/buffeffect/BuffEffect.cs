@@ -9,7 +9,7 @@ public class BuffEffect : MonoBehaviour
 
     protected virtual void Awake()
     {
-        Observer.AddObserver(EventList.GamePlay.ADD_BUFF, CharacterAddBuff);
+        Observer.AddObserver(EventList.Combat.ADD_BUFF, CharacterAddBuff);
 
     }
     private void CharacterAddBuff(params object[] data)

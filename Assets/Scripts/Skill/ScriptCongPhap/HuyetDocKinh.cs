@@ -18,7 +18,7 @@ public class HuyetDocKinh : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.TRUNG_DOC, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.TRUNG_DOC, ExecuteParams);
 
     }
 

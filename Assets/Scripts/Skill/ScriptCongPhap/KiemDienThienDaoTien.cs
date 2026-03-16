@@ -19,7 +19,7 @@ public class KiemDienThienDaoTien : KiemDienNhanDiaThien
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         base.InitPosCallExecute(caster);
-        Observer.AddObserver(EventList.GamePlay.KIEM_KHI, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.KIEM_KHI, ExecuteParams);
 
     }
 }

@@ -72,7 +72,7 @@ public abstract class CongPhap : BaseSkill
         var currentValue = caster.congPhapDynamic.Count(x =>
             x.congPhap.GetType() == this.GetType()
         );
-        Observer.Notify(EventList.GamePlay.ADD_BASESKILL, this, cp.congPhap, 0, currentValue);
+        Observer.Notify(EventList.Combat.ADD_BASESKILL, this, cp.congPhap, 0, currentValue);
         caster.congPhapDynamic.RemoveAll(x =>
             x.congPhap.GetType() == this.GetType()
         );

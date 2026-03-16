@@ -56,8 +56,8 @@ public class ThatSatKiemQuyet : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_STATIC, ExecuteParams);
-        Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ExecuteParams2);
+        Observer.AddObserver(EventList.Combat.CHARACTER_TAKE_DAME_BY_STATIC, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams2);
 
     }
 }

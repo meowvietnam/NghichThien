@@ -41,6 +41,6 @@ public class HoiXuanQuyet : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.PLAY_SKILL, ExecuteParams);
     }
 }

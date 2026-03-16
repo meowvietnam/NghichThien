@@ -49,7 +49,7 @@ public class VanTuongKySinhQuyet : CongPhap
         {
            if(CombatStatic.IsActiveWithPercent(percent))
            {
-                Observer.Notify(EventList.GamePlay.PLAY_SKILL, caster, target, thanThongActive, new List<LinhKhiTieuTan>());
+                Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, thanThongActive, new List<LinhKhiTieuTan>());
            }
 
         }
@@ -65,8 +65,8 @@ public class VanTuongKySinhQuyet : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, ExecuteParams2);
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.PLAY_SKILL, ExecuteParams2);
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ExecuteParams);
 
     }
 }

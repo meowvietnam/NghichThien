@@ -12,8 +12,8 @@ public class PhanKimAn : ThanThong
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.LIEN_KICH, ObserverEffect);
-        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ObserverEffect2);
+        Observer.AddObserver(EventList.Combat.LIEN_KICH, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect2);
         ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }

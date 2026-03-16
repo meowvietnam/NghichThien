@@ -9,8 +9,8 @@ public class LinhQuangAn : ThanThong
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect);
-        Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ObserverEffect2);
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect2);
 
     }
     private void ObserverEffect(params object[] data)

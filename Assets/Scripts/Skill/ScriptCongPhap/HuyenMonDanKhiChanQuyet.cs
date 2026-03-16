@@ -42,7 +42,7 @@ public class HuyenMonDanKhiChanQuyet : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.CHARACTER_TAKE_DAME, ExecuteParams);
 
     }
 }

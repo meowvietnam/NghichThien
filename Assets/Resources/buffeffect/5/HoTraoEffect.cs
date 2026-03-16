@@ -8,7 +8,7 @@ public class HoTraoEffect : BuffEffect
     protected override void Awake()
     {
         base.Awake();
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME , CharacterTakeDame);
+        Observer.AddObserver(EventList.Combat.CHARACTER_TAKE_DAME , CharacterTakeDame);
 
     }
     private void CharacterTakeDame(params object[] data)

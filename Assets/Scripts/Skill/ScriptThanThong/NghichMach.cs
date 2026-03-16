@@ -13,8 +13,8 @@ public class NghichMach : ThanThong
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, treKhi);
-        Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
-        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ObserverEffect2);
+        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect2);
         ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }

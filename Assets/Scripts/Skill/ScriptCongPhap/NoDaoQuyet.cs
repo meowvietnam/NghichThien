@@ -10,7 +10,7 @@ public class NoDaoQuyet : CongPhap
     {
         if(CheckIsEqualETypeSkill(caster) && CombatStatic.IsActiveWithPercent(percentActive[CurrentLevelCongPhapInCombat(caster)-1]))
         {
-            Observer.Notify(EventList.GamePlay.PLAY_SKILL, caster, target, thanThongActive, new List<LinhKhiTieuTan>());
+            Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, thanThongActive, new List<LinhKhiTieuTan>());
 
         }
     }
@@ -23,7 +23,7 @@ public class NoDaoQuyet : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
 
     }
 

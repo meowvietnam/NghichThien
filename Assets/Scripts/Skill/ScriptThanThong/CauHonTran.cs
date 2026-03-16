@@ -16,7 +16,7 @@ public class CauHonTran : TranPhapTT
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
-        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect);
 
 
     }

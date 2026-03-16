@@ -17,60 +17,7 @@ using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.Networking.UnityWebRequest;
 
-[System.Serializable]
-public class CharacterStats
-{    // chỉ số
-    public SecureFloat percentKim;
-    public SecureFloat percentMoc;
-    public SecureFloat percentThuy;
-    public SecureFloat percentHoa;
-    public SecureFloat percentTho;
-    public SecureFloat percentMa;
 
-    public SecureInt level;
-    public SecureFloat hp;
-    public SecureFloat hpMax;
-    public string nameUser;
-    public SecureInt tuoiTac;
-    public SecureInt thoNguyen;
-    public SecureInt tuChat;
-    public SecureInt thanThuc;
-    public SecureInt ngoTinh;
-    public SecureInt tocDoBay;
-    public SecureInt tamCanh;
-    public SecureInt danDoc;
-    public SecureInt money;
-    public SecureInt idLinhCan;
-    // tông môn
-    public SecureInt chucVi;
-    public SecureInt monPhai;
-    // skill
-    public SecureInt[] thanThongOwner;
-    public SecureInt[] thanThongEquip;
-    public class CongPhapSave
-    {
-        public SecureInt id;
-        public SecureInt level;
-    }
-    public CongPhapSave[] congPhapOwner;
-    // công pháp used
-    // -1 hoặc là 0 là chưa trang bị
-    public SecureInt donThuatUsed;
-    public SecureInt phuTu1Used;
-    public SecureInt phuTu2Used ;
-    public SecureInt phuTu3Used ;
-    public SecureInt phuTu4Used ;
-    public SecureInt chuTu1Used ;
-    public SecureInt chuTu2Used ;
-   
-    public CharacterStats Clone()
-    {
-        return (CharacterStats)this.MemberwiseClone();
-    }
-
-
-
-}
 public class CharacterCombat : MonoBehaviour
 {
     public const string ANIM_IDLE = "Idle_0";
@@ -118,7 +65,7 @@ public class CharacterCombat : MonoBehaviour
         if (thanThong != null && thanThong is AmKinhTT);
         AmKinhEntry amKinh = new AmKinhEntry(thanThong, countHiep);
         listAmKinhTT.Add(amKinh);
-        Observer.Notify(EventList.GamePlay.UPDATE_AMKINH_THANTHONG,this, amKinh);
+        Observer.Notify(EventList.Combat.UPDATE_AMKINH_THANTHONG,this, amKinh);
 
         // call observer event add UI 
 
@@ -130,7 +77,7 @@ public class CharacterCombat : MonoBehaviour
         specialThanThongImpactAfterPlaySkill.Add(thanThong);
         int newValue = currentValue+1;
 
-        Observer.Notify(EventList.GamePlay.ADD_BASESKILL,this, thanThong, newValue,currentValue);
+        Observer.Notify(EventList.Combat.ADD_BASESKILL,this, thanThong, newValue,currentValue);
 
         // call observer event add UI 
 
@@ -142,7 +89,7 @@ public class CharacterCombat : MonoBehaviour
         int currentValue = specialThanThongImpactAfterPlaySkill.Count(item => item.GetType() == typeToRemove);
         // Xóa tất cả các item có cùng Type
         specialThanThongImpactAfterPlaySkill.RemoveAll(item => item.GetType() == typeToRemove);
-        Observer.Notify(EventList.GamePlay.ADD_BASESKILL,this, thanThong, 0, currentValue);
+        Observer.Notify(EventList.Combat.ADD_BASESKILL,this, thanThong, 0, currentValue);
 
         // call observer event update UI
     }
@@ -157,7 +104,7 @@ public class CharacterCombat : MonoBehaviour
         specialThanThongImpactAfterPlaySkill.Remove(thanThongRemove);
         int newValue = currentValue - 1;
 
-        Observer.Notify(EventList.GamePlay.ADD_BASESKILL,this, thanThong, newValue,currentValue);
+        Observer.Notify(EventList.Combat.ADD_BASESKILL,this, thanThong, newValue,currentValue);
 
         // call observer event update UI
     }
@@ -168,7 +115,7 @@ public class CharacterCombat : MonoBehaviour
             int currentValue = congPhapDynamic.Count(x => x.congPhap == cp.congPhap);
             congPhapDynamic.Add(cp);
             int newValue = currentValue + 1;
-            Observer.Notify(EventList.GamePlay.ADD_BASESKILL, this, cp.congPhap, newValue, currentValue);
+            Observer.Notify(EventList.Combat.ADD_BASESKILL, this, cp.congPhap, newValue, currentValue);
 
         }
 
@@ -413,7 +360,7 @@ public class CharacterCombat : MonoBehaviour
         SecureInt newValue = current + count;
         buffAndDebuffCount[type] = newValue;
 
-        Observer.Notify(EventList.GamePlay.ADD_BUFF, this, type, (int)newValue, (int)current);
+        Observer.Notify(EventList.Combat.ADD_BUFF, this, type, (int)newValue, (int)current);
 
     }
     [Button]
@@ -444,7 +391,7 @@ public class CharacterCombat : MonoBehaviour
             buffAndDebuffCount[type] = newValue;
         }
 
-        Observer.Notify(EventList.GamePlay.ADD_BUFF, this, type, (int)newValue, (int)current);
+        Observer.Notify(EventList.Combat.ADD_BUFF, this, type, (int)newValue, (int)current);
     }
     [Button]
     public int GetThanThuc()
@@ -523,7 +470,7 @@ public class CharacterCombat : MonoBehaviour
             default:
                 break;
         }
-        Observer.Notify(EventList.GamePlay.ADJUST_LINHKHI, this,elinhKhi,count );
+        Observer.Notify(EventList.Combat.ADJUST_LINHKHI, this,elinhKhi,count );
 
     }
     public SecureInt totalKhi;
@@ -589,7 +536,7 @@ public class CharacterCombat : MonoBehaviour
             default:
                 break;
         }
-        Observer.Notify(EventList.GamePlay.ADJUST_LINHKHI, this, eLinhKhi, -count);
+        Observer.Notify(EventList.Combat.ADJUST_LINHKHI, this, eLinhKhi, -count);
 
     }
     public void TieuTanAllLinhKhi()
@@ -927,7 +874,7 @@ public class CharacterCombat : MonoBehaviour
         {
             currentTurnDameTaked += item;
         }
-        Observer.Notify(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, sender, this, listNewDames);
+        Observer.Notify(EventList.Combat.CACULATE_DAME_BY_THANTHONG, sender, this, listNewDames);
 
 
     }
@@ -1014,7 +961,7 @@ public class CharacterCombat : MonoBehaviour
         var newListDames = CaculateDame(sender, dames, isCongDon, eTypeSkils);
         if (sender != null && eTypeSkils != null)
         {
-            Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_STATIC, sender, this, newListDames, eTypeSkils);
+            Observer.Notify(EventList.Combat.CHARACTER_TAKE_DAME_BY_STATIC, sender, this, newListDames, eTypeSkils);
 
         }
         TakeDame(sender,isDef);
@@ -1027,9 +974,9 @@ public class CharacterCombat : MonoBehaviour
         void NeTranh()
         {
             SetTextDameAnim("Né Tránh!", Color.whiteSmoke);
-            Observer.Notify(EventList.GamePlay.NE_TRANH_SUCCESS, sender, this);
+            Observer.Notify(EventList.Combat.NE_TRANH_SUCCESS, sender, this);
         }
-        Observer.Notify(EventList.GamePlay.CHARACTER_BEFORE_TAKE_DAME, sender, this);
+        Observer.Notify(EventList.Combat.CHARACTER_BEFORE_TAKE_DAME, sender, this);
 
         for (int i = 0; i < allDamages.Count; i++)
         {
@@ -1049,7 +996,7 @@ public class CharacterCombat : MonoBehaviour
                     allDamages[i] = -1;
                 }
 
-                Observer.Notify(EventList.GamePlay.CHECK_NE_TRANH, sender, this, i);
+                Observer.Notify(EventList.Combat.CHECK_NE_TRANH, sender, this, i);
                
             }
             var dame = allDamages[i];
@@ -1147,15 +1094,15 @@ public class CharacterCombat : MonoBehaviour
 
             }
         }
-        Observer.Notify(EventList.GamePlay.CHARACTER_TAKE_DAME, sender, this, dame);
-        Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);
+        Observer.Notify(EventList.Combat.CHARACTER_TAKE_DAME, sender, this, dame);
+        Observer.Notify(EventList.Combat.CHARACTER_ADJUST_HP);
         
 
     }
     public void SetHp(int hp)
     {
         characterStatsTemp.hp = hp;
-        Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);
+        Observer.Notify(EventList.Combat.CHARACTER_ADJUST_HP);
 
     }
 
@@ -1200,7 +1147,7 @@ public class CharacterCombat : MonoBehaviour
                 break;
             }
         }
-        Observer.Notify(EventList.GamePlay.CHARACTER_ADJUST_HP);
+        Observer.Notify(EventList.Combat.CHARACTER_ADJUST_HP);
 
     }
 

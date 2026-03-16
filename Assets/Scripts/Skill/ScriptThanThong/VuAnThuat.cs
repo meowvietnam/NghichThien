@@ -10,7 +10,7 @@ public class VuAnThuat : NeTranhTT
     {
         base.Execute(caster, target, data);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HuyenVu, requireHuyenVu);
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
 
     }
     private void ObserverEffect(params object[] data)

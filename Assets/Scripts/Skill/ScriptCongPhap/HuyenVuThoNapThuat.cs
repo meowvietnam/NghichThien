@@ -44,7 +44,7 @@ public class HuyenVuThoNapThuat : CongPhap
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HuyenVu, buffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
-        Observer.AddObserver(EventList.GamePlay.ADJUST_LINHKHI, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.ADJUST_LINHKHI, ExecuteParams);
 
     }
 }

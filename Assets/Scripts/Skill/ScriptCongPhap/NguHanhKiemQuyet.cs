@@ -65,8 +65,8 @@ public class NguHanhKiemQuyet : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.LIEN_KICH, ExecuteParams);
-        Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, ExecuteParams2);
+        Observer.AddObserver(EventList.Combat.LIEN_KICH, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.PLAY_SKILL, ExecuteParams2);
 
     }
 }

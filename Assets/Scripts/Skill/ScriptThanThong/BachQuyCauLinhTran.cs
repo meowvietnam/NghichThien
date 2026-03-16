@@ -16,7 +16,7 @@ public class BachQuyCauLinhTran : TranPhapTT
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
 
 
     }

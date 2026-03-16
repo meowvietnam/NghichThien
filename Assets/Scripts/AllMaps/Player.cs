@@ -1,9 +1,11 @@
+using Base;
+using LongDH.LongDHModules;
+using Spine.Unity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Base;
-using Spine.Unity;
+using System.Security.Cryptography;
 using UnityEngine;
 
 namespace AllMaps
@@ -16,6 +18,9 @@ namespace AllMaps
         [SerializeField] private float speed = 2;
         public bool IsSwordRiding { get; private set; }
         public bool IsMoving { get; private set; }
+        [SerializeField] public CharacterStats characterStatsBase;
+
+        
         public void Init(Gender gender, bool isSwordRiding)
         {
             this.IsSwordRiding = isSwordRiding;
@@ -32,6 +37,26 @@ namespace AllMaps
             anim.Skeleton.SetSkin(genderStr);
             anim.timeScale = speed;
             SetMoving(false);
+            Pool.Set(this);
+
+            // test
+            characterStatsBase=(new CharacterStats()
+            {
+                level = 9,
+                percentKim = 60,
+                percentMoc = 10,
+                percentThuy = 10,
+                percentHoa = 10,
+                percentTho = 10,
+                hp = 200,
+                hpMax = 300,
+                currentExp = 200,
+                tocDoBay = 10,
+                thoNguyen = 1000,
+                thanThuc = 30
+
+            });
+            Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
         }
         public void SetPosition(Vector2 position)
         {

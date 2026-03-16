@@ -26,7 +26,7 @@ public class CuuChuyenDuThanKiem : ThanThong
                 caster.TieuTanLinhKhi(linhKhiNguatNhien, 1);
 
             }
-            Observer.Notify(EventList.GamePlay.PLAY_SKILL, caster, target, thanThongActive, new List<LinhKhiTieuTan>());
+            Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, thanThongActive, new List<LinhKhiTieuTan>());
 
         }
 

@@ -58,9 +58,9 @@ public class UyenHuyetMinhDo : CPTieuHaoThoNguyen
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ExecuteParams);
 
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME, ExecuteParams2);
+        Observer.AddObserver(EventList.Combat.CHARACTER_TAKE_DAME, ExecuteParams2);
 
     }
 }

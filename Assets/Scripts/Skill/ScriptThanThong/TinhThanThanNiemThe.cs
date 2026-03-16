@@ -34,9 +34,9 @@ public class TinhThanThanNiemThe : ThanThong
         }
         caster.AddThanThongImpactAfterPlaySkill(this);
       
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect3);
-        Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_BEFORE_TAKE_DAME, ObserverEffect2);
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect3);
+        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.CHARACTER_BEFORE_TAKE_DAME, ObserverEffect2);
 
 
     }

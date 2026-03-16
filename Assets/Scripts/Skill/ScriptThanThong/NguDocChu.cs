@@ -12,7 +12,7 @@ public class NguDocChu : ThanThong
 
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
 
 
 

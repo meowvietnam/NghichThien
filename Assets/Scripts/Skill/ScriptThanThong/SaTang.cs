@@ -37,6 +37,6 @@ public class SaTang : ThanThong , BaseSkill.LienKich
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, buffValues[GetIndexLevelThanThong(caster)]);
         caster.AddThanThongCoolDown(hoaCat, -1);
-        Observer.Notify(EventList.GamePlay.PLAY_SKILL, caster, target, hoaCat, new List<LinhKhiTieuTan>());
+        Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, hoaCat, new List<LinhKhiTieuTan>());
     }
 }

@@ -10,7 +10,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerUICombat : MonoBehaviour
+public class PlayerUICombat : BaseBehaviour
 {
     public enum EStateControl
     {
@@ -113,9 +113,8 @@ public class PlayerUICombat : MonoBehaviour
    
     private void Awake()
     {
-        btnConfirm.onClick.AddListener(() =>
+        SetEventButton(btnConfirm, () =>
         {
-
             if (CombatManager.IsDelayEffectSkill) return;
             switch (eStateControl)
             {
@@ -124,7 +123,7 @@ public class PlayerUICombat : MonoBehaviour
                     break;
                 case EStateControl.UseSkill:
                     if (currentNodes.Any(x => x.countRequire > 0)) return;
-                    Observer.Notify(EventList.GamePlay.PLAY_SKILL,player,CombatManager.char2, fightSkillSelect.ThanThongData, GetLinhKhiTieuTans(currentNodes));
+                    Observer.Notify(EventList.Combat.PLAY_SKILL, player, CombatManager.char2, fightSkillSelect.ThanThongData, GetLinhKhiTieuTans(currentNodes));
                     SetStateControl(EStateControl.None);
                     CheckFightSkillCanUse();
                     break;
@@ -132,7 +131,7 @@ public class PlayerUICombat : MonoBehaviour
                     if (CurrentLinhKhi <= maxLinhKhi || player.isSkipTieuTanLinhKhi == true)
                     {
 
-                        Observer.Notify(EventList.GamePlay.END_TURN_COMBAT,player,CombatManager.char2, GetLinhKhiTieuTans(currentNodes));
+                        Observer.Notify(EventList.Combat.END_TURN_COMBAT, player, CombatManager.char2, GetLinhKhiTieuTans(currentNodes));
                         SetStateControl(EStateControl.None);
 
                     }
@@ -141,11 +140,8 @@ public class PlayerUICombat : MonoBehaviour
                 default:
                     break;
             }
-
-
-
         });
-        btnCancel.onClick.AddListener(() =>
+        SetEventButton(btnCancel, () =>
         {
             if (CombatManager.IsDelayEffectSkill) return;
             foreach (var item in currentNodes)
@@ -158,13 +154,14 @@ public class PlayerUICombat : MonoBehaviour
                       linhKhiRemains.FirstOrDefault(x => x.eLinhKhi == item.eLinhKhi),
                       count
                 );
-                
+
             }
             SetStateControl(EStateControl.None);
             CheckFightSkillCanUse();
 
         });
-        btnEndRound.onClick.AddListener(() =>
+        
+        SetEventButton(btnEndRound, () =>
         {
             if (CombatManager.IsDelayEffectSkill) return;
             SetStateControl(EStateControl.DeleteLinhKhi);
@@ -182,13 +179,10 @@ public class PlayerUICombat : MonoBehaviour
                 textTip.text = $"{CurrentLinhKhi - maxLinhKhi}";
             }
             CheckFightSkillCanUse();
-
-
-
-
         });
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, NewTurn);
-        Observer.AddObserver(EventList.GamePlay.ADJUST_LINHKHI, AdjustLinhKhi);
+        
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, NewTurn);
+        Observer.AddObserver(EventList.Combat.ADJUST_LINHKHI, AdjustLinhKhi);
 
         foreach (var item1 in linhKhiRemains)
         {

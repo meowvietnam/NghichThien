@@ -27,7 +27,7 @@ public class NguPhuDoanNguyenQuyet : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_BEFORE_TAKE_DAME, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.CHARACTER_BEFORE_TAKE_DAME, ExecuteParams);
 
     }
 }

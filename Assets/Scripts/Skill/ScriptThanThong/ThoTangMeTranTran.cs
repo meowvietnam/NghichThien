@@ -12,7 +12,7 @@ public class ThoTangMeTranTran : TranPhapTT
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
-        Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.PLAY_SKILL, ObserverEffect);
 
 
     }

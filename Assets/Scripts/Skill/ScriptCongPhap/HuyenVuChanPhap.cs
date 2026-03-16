@@ -45,7 +45,7 @@ public class HuyenVuChanPhap : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.NE_TRANH_SUCCESS, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.NE_TRANH_SUCCESS, ExecuteParams);
     }
 
 

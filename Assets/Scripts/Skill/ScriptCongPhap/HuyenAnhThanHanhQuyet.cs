@@ -48,7 +48,7 @@ public class HuyenAnhThanHanhQuyet : PhiVanKinh
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.CHECK_NE_TRANH, ExecuteParams,1);
+        Observer.AddObserver(EventList.Combat.CHECK_NE_TRANH, ExecuteParams,1);
 
     }
 }

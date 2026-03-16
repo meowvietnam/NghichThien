@@ -13,7 +13,7 @@ public class LacThachTran : TranPhapTT
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
-        Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
 
 
     }
@@ -35,7 +35,7 @@ public class LacThachTran : TranPhapTT
         int count = target.specialThanThongImpactAfterPlaySkill.Count(x=> x is LacThachTran);
         if (count >= require)
         {
-            Observer.Notify(EventList.GamePlay.PLAY_SKILL, target, caster, thanThongActive, new List<LinhKhiTieuTan>());
+            Observer.Notify(EventList.Combat.PLAY_SKILL, target, caster, thanThongActive, new List<LinhKhiTieuTan>());
             target.RemoveAllThanThongImpactAfterPlaySkill(this);
             target.AddThanThongImpactAfterPlaySkill(this);
 

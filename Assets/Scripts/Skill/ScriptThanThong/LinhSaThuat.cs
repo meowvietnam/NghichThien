@@ -16,7 +16,7 @@ public class LinhSaThuat : ThanThong
     {
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, require);
         caster.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.PLAY_SKILL, ObserverEffect);
 
     }
     private void ObserverEffect(params object[] data)

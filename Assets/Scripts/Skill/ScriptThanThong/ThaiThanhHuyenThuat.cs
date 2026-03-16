@@ -9,7 +9,7 @@ public class ThaiThanhHuyenThuat : NeTranhTT
     {
         base.Execute(caster, target, data);
         HauKeVoLuc(caster);
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
 
     }
     protected void ObserverEffect(params object[] data)

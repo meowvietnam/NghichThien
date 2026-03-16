@@ -54,7 +54,7 @@ public class QuangViNgungNguyetCong : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.BEFORE_EXCUTE_SKILL, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.BEFORE_EXCUTE_SKILL, ExecuteParams);
 
     }
 }

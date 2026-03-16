@@ -24,7 +24,7 @@ public class ChichViemTamTaiTran : TranPhapTT
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, kiemKhiRequire);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, thieuDotRequire);
 
-        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect);
 
 
     }

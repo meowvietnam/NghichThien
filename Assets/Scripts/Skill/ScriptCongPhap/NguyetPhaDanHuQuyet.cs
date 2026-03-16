@@ -56,8 +56,8 @@ public class NguyetPhaDanHuQuyet : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
-        Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, ExecuteParams2);
+        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.PLAY_SKILL, ExecuteParams2);
 
     }
 }

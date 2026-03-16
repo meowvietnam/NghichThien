@@ -17,7 +17,7 @@ public class SaLao : ThanThong
     {
         HauKeVoLuc(caster);
         caster.AddThanThongCoolDown(hoaCat, -1);
-        Observer.Notify(EventList.GamePlay.PLAY_SKILL, caster, target, hoaCat, new List<LinhKhiTieuTan>());
+        Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, hoaCat, new List<LinhKhiTieuTan>());
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieus[GetIndexLevelThanThong(caster)]);
     }
 

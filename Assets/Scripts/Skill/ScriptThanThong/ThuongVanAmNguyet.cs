@@ -16,8 +16,8 @@ public class ThuongVanAmNguyet : ThanThong
         
         caster.AddThanThongImpactAfterPlaySkill(this);
 
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect3);
-        Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect3);
+        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
 
 
     }

@@ -25,8 +25,8 @@ public class ChichMachChi : ThanThong
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
 
         target.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.ADJUST_LINHKHI, ObserverEffect);
-        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ObserverEffect2);
+        Observer.AddObserver(EventList.Combat.ADJUST_LINHKHI, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect2);
 
     }
 

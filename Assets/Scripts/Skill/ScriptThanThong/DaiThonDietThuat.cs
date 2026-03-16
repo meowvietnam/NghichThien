@@ -19,7 +19,7 @@ public class DaiThonDietThuat : ThanThong
         target.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hoTraoTarget);
 
         caster.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect);
 
     }
     private void ObserverEffect(params object[] data)

@@ -115,7 +115,7 @@ public class CombatManager : MonoBehaviour
         }    
         if(characterDie != null)
         {
-            Observer.Notify(EventList.GamePlay.END_COMBAT, characterWin, characterDie);// thằng đầu là thằng win thằng sau là thằng die
+            Observer.Notify(EventList.Combat.END_COMBAT, characterWin, characterDie);// thằng đầu là thằng win thằng sau là thằng die
         } 
             
 
@@ -123,13 +123,13 @@ public class CombatManager : MonoBehaviour
     private void Awake()
     {
         Pool.Set(this);
-        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, EndTurn);
-        Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, PlaySkill);
-        Observer.AddObserver(EventList.GamePlay.ADD_BASESKILL, SetUIBaseSkill);
-        Observer.AddObserver(EventList.GamePlay.ADD_BUFF, SetUIBuff);
-        Observer.AddObserver(EventList.GamePlay.UPDATE_AMKINH_THANTHONG, SetUIAmKinh);
+        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, EndTurn);
+        Observer.AddObserver(EventList.Combat.PLAY_SKILL, PlaySkill);
+        Observer.AddObserver(EventList.Combat.ADD_BASESKILL, SetUIBaseSkill);
+        Observer.AddObserver(EventList.Combat.ADD_BUFF, SetUIBuff);
+        Observer.AddObserver(EventList.Combat.UPDATE_AMKINH_THANTHONG, SetUIAmKinh);
 
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_ADJUST_HP, SetUIHpBar);
+        Observer.AddObserver(EventList.Combat.CHARACTER_ADJUST_HP, SetUIHpBar);
         if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
         if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
         char1.Init(new CharacterStats()
@@ -164,7 +164,7 @@ public class CombatManager : MonoBehaviour
 
         });
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
-        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, NewTurn);
+        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, NewTurn);
         SetUIHpBar();
         buffInfor.DoHide();
     }
@@ -264,7 +264,7 @@ public class CombatManager : MonoBehaviour
     [Button]
     public void PlaySkilButton(ThanThong thanThong)
     {
-        Observer.Notify(EventList.GamePlay.PLAY_SKILL, currentTurn,targetTurn, thanThong, new List<LinhKhiTieuTan>());
+        Observer.Notify(EventList.Combat.PLAY_SKILL, currentTurn,targetTurn, thanThong, new List<LinhKhiTieuTan>());
 
     }
     public void PlaySkill(params object[] data)
@@ -287,7 +287,7 @@ public class CombatManager : MonoBehaviour
 
             caster.PlaySkill(thanThong, linhKhiTieuTan);
             CombatStatic.TrienNhieu(target, caster);
-            Observer.Notify(EventList.GamePlay.BEFORE_EXCUTE_SKILL , caster, target);
+            Observer.Notify(EventList.Combat.BEFORE_EXCUTE_SKILL , caster, target);
 
             if (caster.skillVoHieuHoa.Count > 0)
             {
@@ -304,7 +304,7 @@ public class CombatManager : MonoBehaviour
                 {
                     Debug.Log("Liên kích!");
                     thanThongLienKich.ExecuteLienKich(caster, target);
-                    Observer.Notify(EventList.GamePlay.LIEN_KICH, caster, target, thanThong, linhKhiTieuTan);
+                    Observer.Notify(EventList.Combat.LIEN_KICH, caster, target, thanThong, linhKhiTieuTan);
                 }
             }
             if (thanThong is BaseSkill.TuongSinh thanThongTuongSinh && GetETuongQuan(linhKhiTieuTan) == ETuongQuan.TuongSinh)
@@ -355,7 +355,7 @@ public class CombatManager : MonoBehaviour
     [Button]
     public void EndTurnButton()
     {
-        Observer.Notify(EventList.GamePlay.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
+        Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
 
     }
     public void EndTurn(params object[] data)
@@ -645,10 +645,10 @@ public class CombatManager : MonoBehaviour
                     currentTurn.RemoveBuffAndDebuffCount(type, count);
             }
 
-            Observer.Notify(EventList.GamePlay.END_TURN_COMBAT,currentTurn,targetTurn, new List<LinhKhiTieuTan>());
+            Observer.Notify(EventList.Combat.END_TURN_COMBAT,currentTurn,targetTurn, new List<LinhKhiTieuTan>());
         }
         // param 0 là bool isPlayer == char1 
-        Observer.Notify(EventList.GamePlay.NEW_TURN_COMBAT, currentTurn,targetTurn,currentTurn == char1? true: false, dictHapThuKhi);
+        Observer.Notify(EventList.Combat.NEW_TURN_COMBAT, currentTurn,targetTurn,currentTurn == char1? true: false, dictHapThuKhi);
 
 
     }

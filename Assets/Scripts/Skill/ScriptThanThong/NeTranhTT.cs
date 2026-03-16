@@ -9,7 +9,7 @@ public abstract class NeTranhTT : ThanThong
     {
         caster.AddThanThongImpactAfterPlaySkill(this);
 
-        Observer.AddObserver(EventList.GamePlay.CHECK_NE_TRANH, ObserverEffectNeTranh,1);
+        Observer.AddObserver(EventList.Combat.CHECK_NE_TRANH, ObserverEffectNeTranh,1);
     }
 
     public abstract override string GetDesc(int level);

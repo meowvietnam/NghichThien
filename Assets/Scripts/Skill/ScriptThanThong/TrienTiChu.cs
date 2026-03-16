@@ -11,7 +11,7 @@ public class TrienTiChu : ThanThong
       
         HauKeVoLuc(caster);
         target.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect);
 
 
 

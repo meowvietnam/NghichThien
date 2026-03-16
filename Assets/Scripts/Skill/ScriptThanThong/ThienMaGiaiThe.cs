@@ -25,7 +25,7 @@ public class ThienMaGiaiThe : ThanThong
         caster.characterStatsBase.thoNguyen -= tieuHao;
         caster.totalKhiRandom += buffValues[GetIndexLevelThanThong(caster)];
         caster.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_BEFORE_TAKE_DAME, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.CHARACTER_BEFORE_TAKE_DAME, ObserverEffect);
 
 
 

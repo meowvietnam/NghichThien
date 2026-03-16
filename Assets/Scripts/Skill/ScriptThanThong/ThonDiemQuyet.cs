@@ -20,7 +20,7 @@ public class ThonDiemQuyet : ThanThong
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, require);
         caster.Healing(healValues[GetIndexLevelThanThong(caster)]);
         caster.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
 
 
 

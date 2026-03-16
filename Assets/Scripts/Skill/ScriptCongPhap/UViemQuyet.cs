@@ -112,11 +112,11 @@ public class UViemQuyet : CongPhap
     {
         // 1 2 là add dame và giảm dame của play thần thông
         // 3 4 là add dame và giảm dame của static 
-        Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
-        Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ExecuteParams2);
+        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams2);
 
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_STATIC, ExecuteParams3);
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME_BY_STATIC, ExecuteParams4);
+        Observer.AddObserver(EventList.Combat.CHARACTER_TAKE_DAME_BY_STATIC, ExecuteParams3);
+        Observer.AddObserver(EventList.Combat.CHARACTER_TAKE_DAME_BY_STATIC, ExecuteParams4);
 
     }
 }

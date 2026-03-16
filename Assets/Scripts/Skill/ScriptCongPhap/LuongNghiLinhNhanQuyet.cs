@@ -31,7 +31,7 @@ public class LuongNghiLinhNhanQuyet : CongPhap
         {
             Debug.Log("PercenOk");
 
-            Observer.Notify(EventList.GamePlay.PLAY_SKILL, target, caster, thanThongActive, new List<LinhKhiTieuTan>());
+            Observer.Notify(EventList.Combat.PLAY_SKILL, target, caster, thanThongActive, new List<LinhKhiTieuTan>());
 
         }
 
@@ -47,6 +47,6 @@ public class LuongNghiLinhNhanQuyet : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
     }
 }

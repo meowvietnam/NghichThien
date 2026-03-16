@@ -11,7 +11,7 @@ public class NoThuyAn : ThanThong , BaseSkill.LienKich
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.LIEN_KICH, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.LIEN_KICH, ObserverEffect);
 
 
 

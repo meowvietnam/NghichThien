@@ -14,8 +14,8 @@ public class HoiPhongAn : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.CHARACTER_TAKE_DAME, ObserverEffect);
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect2);
+        Observer.AddObserver(EventList.Combat.CHARACTER_TAKE_DAME, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect2);
 
     }
     private void ObserverEffect(params object[] data)

@@ -12,7 +12,7 @@ public class CombatStatic : MonoBehaviour
         {
             charTrungDoc.TakeDameByStatic(charSender, new List<int> { (int)trungDoc }, false, new[] {BaseSkill.ETypeSkill.Moc});
            
-            Observer.Notify(EventList.GamePlay.TRUNG_DOC, charSender, charTrungDoc);
+            Observer.Notify(EventList.Combat.TRUNG_DOC, charSender, charTrungDoc);
             var listBuff = charTrungDoc.GetComponentsInChildren<BuffEffect>();
             foreach (var item in listBuff)
             {
@@ -74,7 +74,7 @@ public class CombatStatic : MonoBehaviour
                     break;
                 }    
             }
-            Observer.Notify(EventList.GamePlay.KIEM_KHI, charSender, charTakeDame);
+            Observer.Notify(EventList.Combat.KIEM_KHI, charSender, charTakeDame);
 
         }
 
@@ -197,14 +197,14 @@ public class CombatStatic : MonoBehaviour
             {
                 // Giảm số hiệp chờ
                 entry.RemainingTurns -= 1;
-                Observer.Notify(EventList.GamePlay.UPDATE_AMKINH_THANTHONG, currentTurn, entry);
+                Observer.Notify(EventList.Combat.UPDATE_AMKINH_THANTHONG, currentTurn, entry);
 
             }
         }
         foreach(var entry in entryRemoves)
         {
             currentTurn.listAmKinhTT.Remove(entry);
-            Observer.Notify(EventList.GamePlay.UPDATE_AMKINH_THANTHONG, currentTurn, entry,-1);
+            Observer.Notify(EventList.Combat.UPDATE_AMKINH_THANTHONG, currentTurn, entry,-1);
 
         }
 

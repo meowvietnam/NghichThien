@@ -17,7 +17,7 @@ public class SaPhuoc : ThanThong
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
         caster.AddThanThongCoolDown(hoanTran, -1);
-        Observer.Notify(EventList.GamePlay.PLAY_SKILL, caster, target, hoanTran, new List<LinhKhiTieuTan>());
+        Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, hoanTran, new List<LinhKhiTieuTan>());
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         
     }

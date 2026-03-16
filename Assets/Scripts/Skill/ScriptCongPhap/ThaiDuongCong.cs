@@ -44,7 +44,7 @@ public class ThaiDuongCong : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.ADJUST_LINHKHI, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.ADJUST_LINHKHI, ExecuteParams);
 
     }
 }

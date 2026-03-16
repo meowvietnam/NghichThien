@@ -55,7 +55,7 @@ public class LietBangQuyet : CongPhap
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         RemoveCongPhap(caster);
-        Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
 
     }
 }

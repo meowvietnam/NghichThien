@@ -44,7 +44,7 @@ public class KhoTanCamLai : ThanThong
 
         caster.AddThanThongImpactAfterPlaySkill(this);
         caster.SetHp(1);
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
 
     }
 

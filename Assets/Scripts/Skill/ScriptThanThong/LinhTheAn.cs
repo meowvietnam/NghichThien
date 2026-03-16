@@ -16,8 +16,8 @@ public class LinhTheAn : ThanThong
     {
         caster.AddThanThongImpactAfterPlaySkill(this);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hoTraos[GetIndexLevelThanThong(caster)]);
-        Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, ObserverEffect);
-        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ObserverEffect2);
+        Observer.AddObserver(EventList.Combat.PLAY_SKILL, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect2);
         ShowSkillEffectWorld(caster, delayTimeEffect);
 
 

@@ -13,7 +13,7 @@ public class TuLienKimAnhTrao : ThanThong
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hoTrao[GetIndexLevelThanThong(caster)]);
         caster.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.END_TURN_COMBAT, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect);
 
     }
     private void ObserverEffect(params object[] data)

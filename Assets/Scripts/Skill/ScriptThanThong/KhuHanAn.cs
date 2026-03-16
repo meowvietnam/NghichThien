@@ -12,7 +12,7 @@ public class KhuHanAn : ThanThong
 
 
         caster.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.GamePlay.ADJUST_LINHKHI, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.ADJUST_LINHKHI, ObserverEffect);
 
     }
 

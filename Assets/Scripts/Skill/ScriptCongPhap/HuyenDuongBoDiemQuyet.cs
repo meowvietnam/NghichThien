@@ -46,7 +46,7 @@ public class HuyenDuongBoDiemQuyet : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.GamePlay.ADD_BUFF, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.ADD_BUFF, ExecuteParams);
 
     }
 }

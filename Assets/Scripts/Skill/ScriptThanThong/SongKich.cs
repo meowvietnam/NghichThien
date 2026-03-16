@@ -19,7 +19,7 @@ public class SongKich : ThanThong , BaseSkill.LienKich
             dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
         }
         target.CaculateDameByThanThong(caster, dames, eTypeSkill, false);
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
 
 
     }

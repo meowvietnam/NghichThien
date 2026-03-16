@@ -2,29 +2,34 @@ using UnityEngine;
 
 public static partial class EventList
 {
-    public static class GamePlay
+    public static class Combat
     {
-        public const string END_TURN_COMBAT = "GamePlay.END_TURN_COMBAT";
-        public const string NEW_TURN_COMBAT = "GamePlay.NEW_TURN_COMBAT";
-        public const string PLAY_SKILL = "GamePlay.PLAY_SKILL";
-        public const string ADJUST_LINHKHI = "GamePlay.HAPTHU_LINHKHI";
-        public const string ADD_BUFF = "GamePlay.ADD_BUFF";
-        public const string CHARACTER_ADJUST_HP = "GamePlay.CHARACTER_ADJUST_HP";
-        public const string CACULATE_DAME_BY_THANTHONG = "GamePlay.CACULATE_DAME_BY_THANTHONG";
-        public const string CHARACTER_TAKE_DAME = "GamePlay.CHARACTER_TAKE_DAME";
-        public const string CHARACTER_BEFORE_TAKE_DAME = "GamePlay.CHARACTER_BEFORE_TAKE_DAME";
-        public const string BEFORE_EXCUTE_SKILL = "GamePlay.BEFORE_EXCUTE_SKILL";
+        public const string END_TURN_COMBAT = "Combat.END_TURN_COMBAT";
+        public const string NEW_TURN_COMBAT = "Combat.NEW_TURN_COMBAT";
+        public const string PLAY_SKILL = "Combat.PLAY_SKILL";
+        public const string ADJUST_LINHKHI = "Combat.HAPTHU_LINHKHI";
+        public const string ADD_BUFF = "Combat.ADD_BUFF";
+        public const string CHARACTER_ADJUST_HP = "Combat.CHARACTER_ADJUST_HP";
+        public const string CACULATE_DAME_BY_THANTHONG = "Combat.CACULATE_DAME_BY_THANTHONG";
+        public const string CHARACTER_TAKE_DAME = "Combat.CHARACTER_TAKE_DAME";
+        public const string CHARACTER_BEFORE_TAKE_DAME = "Combat.CHARACTER_BEFORE_TAKE_DAME";
+        public const string BEFORE_EXCUTE_SKILL = "Combat.BEFORE_EXCUTE_SKILL";
 
-        public const string LIEN_KICH = "GamePlay.LIEN_KICH";
-        public const string END_COMBAT = "GamePlay.END_COMBAT";
-        public const string TRUNG_DOC = "GamePlay.TRUNG_DOC";
-        public const string NE_TRANH_SUCCESS = "GamePlay.NE_TRANH_SUCCESS";
-        public const string CHECK_NE_TRANH = "GamePlay.CHECK_NE_TRANH";
+        public const string LIEN_KICH = "Combat.LIEN_KICH";
+        public const string END_COMBAT = "Combat.END_COMBAT";
+        public const string TRUNG_DOC = "Combat.TRUNG_DOC";
+        public const string NE_TRANH_SUCCESS = "Combat.NE_TRANH_SUCCESS";
+        public const string CHECK_NE_TRANH = "Combat.CHECK_NE_TRANH";
         public const string CHARACTER_TAKE_DAME_BY_STATIC = "GamePlay.CHARACTER_TAKE_DAME_BY_STATIC";
-        public const string KIEM_KHI = "GamePlay.KIEM_KHI";
+        public const string KIEM_KHI = "Combat.KIEM_KHI";
 
-        public const string ADD_BASESKILL = "GamePlay.ADD_BASESKILL";
-        public const string UPDATE_AMKINH_THANTHONG= "GamePlay.UPDATE_AMKINH_THANTHONG";
+        public const string ADD_BASESKILL = "Combat.ADD_BASESKILL";
+        public const string UPDATE_AMKINH_THANTHONG= "Combat.UPDATE_AMKINH_THANTHONG";
+
+    }
+    public static class GamePlay
+    {  
+        public const string UPDATE_PLAYER_STATS = "GamePlay.UPDATE_PLAYER_STATS";
 
     }
 }

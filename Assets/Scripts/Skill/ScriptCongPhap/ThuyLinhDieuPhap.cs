@@ -50,8 +50,8 @@ public class ThuyLinhDieuPhap : CongPhap
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         RemoveCongPhap(caster);
-        Observer.AddObserver(EventList.GamePlay.PLAY_SKILL, ExecuteParams2);
-        Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.PLAY_SKILL, ExecuteParams2);
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ExecuteParams);
 
     }
 }
