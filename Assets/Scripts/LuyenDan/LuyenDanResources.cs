@@ -12,7 +12,7 @@ namespace LuyenDan
     {
         [TabGroup("Inventory")]
         [field: SerializeField, ReadOnly] public List<Quality> Qualities { get; private set; }
-        [field: SerializeField, ReadOnly] public List<TempFurnaceData> TempFurnaceDatas { get; private set; }
+        [field: SerializeField] public List<TempFurnaceData> TempFurnaceDatas { get; private set; }
         [field: SerializeField, ReadOnly] public List<HerbData> HerbDatas { get; private set; }
         [field: SerializeField, ReadOnly] public List<RecipeData> Recipes { get; private set; }
         public IInventoryItemData FindItem(ItemRef itemRef)

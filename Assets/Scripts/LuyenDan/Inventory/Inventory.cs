@@ -10,17 +10,19 @@ namespace LuyenDan.Inventory
         [SerializeField] private List<FilterGroup> filterGroups;
         [SerializeField] private Button closeButton;
         [SerializeField] private GameObject thisObject;
-        
-        public void Init(IEnumerable<ItemRef> data)
+        private void Start()
         {
             closeButton.onClick.AddListener(Close);
+        }
+        public void Init(IEnumerable<ItemRef> data)
+        {
             ItemListUI.Init(data);
             foreach (var filterGroup in filterGroups)
             {
                 filterGroup.Init();
             }
         }
-        private void Close()
+        public void Close()
         {
             thisObject.SetActive(false);
         }
@@ -28,6 +30,11 @@ namespace LuyenDan.Inventory
         private void OnDestroy()
         {
             closeButton.onClick.RemoveListener(Close);
+        }
+
+        public void SetActive(bool active)
+        {
+            thisObject.SetActive(active);
         }
     }
 }

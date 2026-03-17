@@ -11,9 +11,21 @@ namespace LuyenDan.Inventory
             Data = data as HerbData;
         }
 
+        protected override void OnSelected()
+        {
+            var instance =  LuyenDanPanel.Instance;
+            instance.Alchermy.Select(this);
+            instance.HerbInventory.Close();
+        }
+
         public bool Is(HerbType type)
         {
             return Data.Is(type);
+        }
+
+        public override IInventoryItemData GetData()
+        {
+            return Data;
         }
     } 
 }
