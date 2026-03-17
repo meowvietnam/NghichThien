@@ -31,6 +31,7 @@ namespace LuyenDan.Inventory
         [TabGroup("Has Item")] 
         [SerializeField] private GameObject hover;
         private ItemRef itemRef;
+        public ItemRef ItemRef => itemRef;
         public bool IsHasItem { get;private set; }
         protected virtual void Init(IInventoryItemData data)
         {
@@ -50,21 +51,37 @@ namespace LuyenDan.Inventory
             selectButton.onClick.AddListener(OnSelected);
         }
 
-        public void Init(ItemRef itemRef)
+        public virtual void Init(ItemRef itemRef)
         {
             this.itemRef = itemRef;
-            countText.text = itemRef.Count.ToString();
+            SetCount(itemRef.Count);
             var data = LuyenDanPanel.Instance.Resources.FindItem(itemRef);
+            if (data != null)
+            {
+                itemRef.OnCountChanged += OnCountChanged;
+            }
             Init(data);
-            
         }
-        private void OnSelected()
+
+        private void SetCount(int count)
+        {
+            countText.text = count > 1 ? count.ToString() : "";
+        }
+        protected virtual void OnSelected()
         {
             Debug.Log("OnSelected");
         }
         private void OnCountChanged(int count)
         {
-            countText.text = count.ToString();
+            SetCount(count);
+            if (count <= 0)
+            {
+                SetActive(false);
+            }
+            else
+            {
+                SetActive(true);
+            }
         }
         private void SetTier(Tier tier)
         {
@@ -73,7 +90,6 @@ namespace LuyenDan.Inventory
             iconUp.sprite = quality.IconUp;
             nameText.color = quality.Color;
         }
-
         public void SetActive(bool active)
         {
             thisObject.SetActive(active);
@@ -86,7 +102,6 @@ namespace LuyenDan.Inventory
                 selectButton.onClick.RemoveListener(OnSelected);
             }
         }
-
         public void OnPointerEnter(PointerEventData eventData)
         {
             hover.SetActive(true);
@@ -95,6 +110,11 @@ namespace LuyenDan.Inventory
         public void OnPointerExit(PointerEventData eventData)
         {
             hover.SetActive(false);
+        }
+
+        public virtual IInventoryItemData GetData()
+        {
+            return null;
         }
     }
 }

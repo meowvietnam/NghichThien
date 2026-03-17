@@ -11,5 +11,15 @@ namespace LuyenDan.Inventory
             base.Init(data);
             Data = data as TempFurnaceData;
         }
+
+        protected override void OnSelected()
+        {
+            LuyenDanPanel.Instance.SelectDanLu(this);
+        }
+
+        public override IInventoryItemData GetData()
+        {
+            return Data;
+        }
     }
 }
