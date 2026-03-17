@@ -776,7 +776,14 @@ public abstract class BaseSkill : BaseItemData
     public bool CheckIsEqualETypeSkill(ETypeSkill[] eTypeSkills)
     {
         
-        bool isExecute = eTypeSkills.Any(skill => this.eTypeSkill.Contains(skill));
+        bool isExecute = CheckIsEqualETypeSkill(eTypeSkills,this.eTypeSkill);
+        Debug.Log("Check Equal " + isExecute);
+        return isExecute;
+    }
+    public static bool CheckIsEqualETypeSkill(ETypeSkill[] eTypeSkills , ETypeSkill[] eTypeSkillsCurrent)
+    {
+
+        bool isExecute = eTypeSkills.Any(skill => eTypeSkillsCurrent.Contains(skill));
         Debug.Log("Check Equal " + isExecute);
         return isExecute;
     }

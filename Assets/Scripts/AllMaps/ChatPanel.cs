@@ -1,10 +1,12 @@
 using LongDH.LongDHModules;
 using UnityEngine;
 
-public class ChatPanel : MonoBehaviour
+public class ChatPanel : PanelGroup
 {
-    private void Awake()
+    public override void Init()
     {
-        Pool.Set(this);
+        base.Init();
+
     }
+
 }

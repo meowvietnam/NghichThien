@@ -4,7 +4,7 @@ using LongDH.LongDHModules;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIHeadPanel : BaseBehaviour
+public class UIHeadPanel : PanelGroup
 {
     [SerializeField] private Button headBtn;
     [SerializeField] private Button chatBtn;
@@ -15,16 +15,20 @@ public class UIHeadPanel : BaseBehaviour
     [SerializeField] private Text nameText;
     [SerializeField] private Sprite[] listSpriteIconLevel;
 
-
-    private void Awake()
+    public override void Init()
     {
-        Pool.Set(this);
+        base.Init();
         Observer.AddObserver(EventList.GamePlay.UPDATE_PLAYER_STATS, UpdatePlayerStats);
         SetEventButton(chatBtn, () =>
         {
             Pool.Get<ChatPanel>().gameObject.SetActive(true);
         });
+        SetEventButton(headBtn, () =>
+        {
+            Pool.Get<TabPanel>().gameObject.SetActive(true);
+        });
     }
+   
     private void UpdatePlayerStats()
     {
         var player = Pool.Get<Player>();
@@ -32,11 +36,12 @@ public class UIHeadPanel : BaseBehaviour
         Slider hpSlider = hpText.transform.parent.GetComponent<Slider>();
         hpSlider.value = (float)player.characterStatsBase.hp.Value/player.characterStatsBase.hpMax.Value;
 
-        tuviText.text = $"{player.characterStatsBase.currentExp.Value}/{ValueConstants.GetTuviRequired(player.characterStatsBase.level).Value}";
+        tuviText.text = $"{player.characterStatsBase.currentExp.Value}/{GameConfig.GetTuviRequired(player.characterStatsBase.level)}";
         Slider expSlider = tuviText.transform.parent.GetComponent<Slider>();
-        expSlider.value = (float)player.characterStatsBase.currentExp.Value / ValueConstants.GetTuviRequired(player.characterStatsBase.level).Value;
+        expSlider.value = (float)player.characterStatsBase.currentExp.Value / GameConfig.GetTuviRequired(player.characterStatsBase.level);
 
         iconLevel.sprite = listSpriteIconLevel[player.characterStatsBase.level-1];
         iconLevel.SetNativeSize();
+        nameText.text = player.characterStatsBase.nameUser;
     }
 }

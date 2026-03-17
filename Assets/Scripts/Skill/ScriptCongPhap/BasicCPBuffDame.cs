@@ -10,13 +10,7 @@ public class BasicCPBuffDame : CongPhap
 
 
 
-    public override void ExecuteParams(params object[] data)
-    {
-        // BỎ DÒNG NÀY Ở ĐÂY: Observer.RemoveObserver(..., ExecuteParams);
-
-        // Chỉ gọi base để thực thi logic Execute
-        base.ExecuteParams(data);
-    }
+    
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -40,8 +34,8 @@ public class BasicCPBuffDame : CongPhap
     }
     public virtual void ExecuteParams2(params object[] data)
     {
-        CharacterCombat caster = (CharacterCombat)data[0];
-        CharacterCombat target = (CharacterCombat)data[1];
+        CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
+        CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
         // Tìm trong danh sách trang bị của caster
         if (GetCongPhapMono(caster.congPhapEquip) != null)
         {

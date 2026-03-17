@@ -32,6 +32,8 @@ public class CharacterCombat : MonoBehaviour
     [SerializeField]
     public List<CongPhapMono> congPhapEquip = new List<CongPhapMono>();
     [SerializeField]
+    public List<ThanThong> thanThongEquip = new List<ThanThong>();
+    [SerializeField]
     public List<CongPhapMono> congPhapDynamic = new List<CongPhapMono>();
     [SerializeField]
     public SecureInt allDameTaked;
@@ -46,6 +48,7 @@ public class CharacterCombat : MonoBehaviour
     public int CurrentTurn => thanThongUseThisComBat.Count;
     public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill = new List<LinhKhiTieuTan>();
     public List<ThanThong> specialThanThongImpactAfterPlaySkill = new List<ThanThong>();
+    public List<NgoDaoCombat> ngoDaoCombats = new List<NgoDaoCombat>();
     public List<AmKinhEntry> listAmKinhTT = new List<AmKinhEntry>();
     [System.Serializable]
     public class AmKinhEntry
@@ -425,7 +428,16 @@ public class CharacterCombat : MonoBehaviour
         {
             cp.congPhap.InitPosCallExecute(this);
         }
+        foreach (var nd in ngoDaoCombats)
+        {
+           nd.InitPosCallExecute(this);
+        }
         Debug.Log("dcmmm " + congPhapDynamic.Count);
+        foreach (var item in characterStat.thanThongEquip)
+        {
+            thanThongEquip.Add(Pool.Get<GameConfig>().GetThanThongWithId(item.Value));
+
+        }
 
 
 

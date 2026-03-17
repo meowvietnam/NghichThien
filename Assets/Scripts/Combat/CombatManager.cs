@@ -144,7 +144,9 @@ public class CombatManager : MonoBehaviour
             hpMax = 200,
             tocDoBay = 20,
             thoNguyen = 1000,
-            thanThuc = 50
+            thanThuc = 50,
+            thanThongEquip = new SecureInt[] { 874, 527, 417}
+            
 
         });
         char2.Init(new CharacterStats()
@@ -160,13 +162,16 @@ public class CombatManager : MonoBehaviour
 
             tocDoBay = 10,
             thoNguyen = 1000,
-            thanThuc = 30
+            thanThuc = 30,
+            thanThongEquip = new SecureInt[] { 874, 527, 417 }
+
 
         });
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, NewTurn);
         SetUIHpBar();
         buffInfor.DoHide();
+        transform.GetComponentInChildren<PlayerUICombat>().Init();
     }
     
     public static bool IsTuongDong(List<LinhKhiTieuTan> linhKhiTieuTan)
@@ -434,8 +439,8 @@ public class CombatManager : MonoBehaviour
                     buffIcon.InitAction(null, () =>
                     {
                         Debug.Log("cos goi pointer up buff icon show tip");
-
-                        buffInfor.SetText(entry.ThanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level)));
+                        
+                        buffInfor.SetText($"{BaseSkill.GetColoredText($"[{entry.ThanThong.nameItem}]", "green")}: {entry.ThanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level))}");
                         buffInfor.transform.SetParent(buffIcon.transform);
                         if (signX > 0)
                         {
@@ -514,7 +519,7 @@ public class CombatManager : MonoBehaviour
                     {
                         Debug.Log("cos goi pointer up buff icon show tip");
 
-                        buffInfor.SetText(thanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level)));
+                        buffInfor.SetText($"{BaseSkill.GetColoredText($"[{thanThong.nameItem}]", "green")}: {thanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level))}");
                         buffInfor.transform.SetParent(buffIcon.transform);
                         if (signX > 0)
                         {

@@ -39,7 +39,7 @@ public class PlayerUICombat : BaseBehaviour
     public Image tuongKhacImg;
     private CharacterCombat player => CombatManager.char1;
     public Text textTip;
-    public ThanThong[] thanthongtest;// test
+    public ThanThong[] currentThanThong=>player.thanThongEquip.ToArray();// test
     public CombatManager CombatManager => transform.GetComponentInParent<CombatManager>();
 
     public SkillTip skillTip;
@@ -110,8 +110,7 @@ public class PlayerUICombat : BaseBehaviour
         }
     }
 
-   
-    private void Awake()
+    public void Init()
     {
         SetEventButton(btnConfirm, () =>
         {
@@ -160,7 +159,7 @@ public class PlayerUICombat : BaseBehaviour
             CheckFightSkillCanUse();
 
         });
-        
+
         SetEventButton(btnEndRound, () =>
         {
             if (CombatManager.IsDelayEffectSkill) return;
@@ -180,7 +179,7 @@ public class PlayerUICombat : BaseBehaviour
             }
             CheckFightSkillCanUse();
         });
-        
+
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, NewTurn);
         Observer.AddObserver(EventList.Combat.ADJUST_LINHKHI, AdjustLinhKhi);
 
@@ -188,11 +187,11 @@ public class PlayerUICombat : BaseBehaviour
         {
             item1.Init(() =>
             {
-                if (item1.count <= 0 || item1.isLock || (currentNodes.Any(x => x.eLinhKhi == item1.eLinhKhi && x.isLock == false && x.countRequire<=0) && eStateControl == EStateControl.UseSkill )) return;
-                Debug.Log("lmm"+currentNodes.Count);
+                if (item1.count <= 0 || item1.isLock || (currentNodes.Any(x => x.eLinhKhi == item1.eLinhKhi && x.isLock == false && x.countRequire <= 0) && eStateControl == EStateControl.UseSkill)) return;
+                Debug.Log("lmm" + currentNodes.Count);
 
                 if (CurrentLinhKhi <= maxLinhKhi && eStateControl == EStateControl.DeleteLinhKhi) return;
-                Debug.Log("cmm" +currentNodes.Count);
+                Debug.Log("cmm" + currentNodes.Count);
 
                 foreach (var item2 in currentNodes)
                 {
@@ -216,7 +215,7 @@ public class PlayerUICombat : BaseBehaviour
                         break;
                     }
                 }
-             
+
 
             });
         }
@@ -224,16 +223,16 @@ public class PlayerUICombat : BaseBehaviour
         {
             item1.Init(() =>
             {
-                if (item1.count <= 0 || item1.isLock ) return;
+                if (item1.count <= 0 || item1.isLock) return;
 
                 foreach (var item2 in linhKhiRemains)
                 {
                     if ((item2.eLinhKhi == item1.eLinhKhi))
                     {
-                        AddLinhKhiFromNodeToRemain(item1,item2 , item1.count);
+                        AddLinhKhiFromNodeToRemain(item1, item2, item1.count);
                     }
                 }
-              
+
 
             });
         }
@@ -242,8 +241,8 @@ public class PlayerUICombat : BaseBehaviour
             var skill = fightSkills[s];
             Action actionHolder = new Action(() =>
             {
-                skillTip.SetPosition(new Vector3(skill.transform.position.x,skillTip.transform.position.y,skillTip.transform.position.z));
-                skillTip.ShowSkillTip(skill.ThanThongData.name,skill.ThanThongData.GetDesc(ThanThong.GetDaiCanhGioi(player.characterStatsTemp.level)),skill.ThanThongData.GetTextTypeSkill(),skill.ThanThongData.GetRequireActive(player),skill.ThanThongData , player.characterStatsTemp.level);
+                skillTip.SetPosition(new Vector3(skill.transform.position.x, skillTip.transform.position.y, skillTip.transform.position.z));
+                skillTip.ShowSkillTip(skill.ThanThongData.nameItem, skill.ThanThongData.GetDesc(ThanThong.GetDaiCanhGioi(player.characterStatsTemp.level)), skill.ThanThongData.GetTextTypeSkill(), skill.ThanThongData.GetRequireActive(player), skill.ThanThongData, player.characterStatsTemp.level);
             });
             Action actionPointerUp = new Action(() =>
             {
@@ -273,10 +272,10 @@ public class PlayerUICombat : BaseBehaviour
                         SlotLinhKhi node = null;
                         foreach (var item in currentNodes)
                         {
-                            if(item.count<=0)
+                            if (item.count <= 0)
                             {
                                 node = item;
-                                item.SetCountRequire(require.count,require.linhKhiRequire);
+                                item.SetCountRequire(require.count, require.linhKhiRequire);
                                 break;
                             }
                         }
@@ -286,23 +285,28 @@ public class PlayerUICombat : BaseBehaviour
                         if (hasSpecificType)
                         {
                             node?.SetLock(true);
-                        }    
-                        
-                        
+                        }
+
+
                         continue;
                     }
-                  
+
 
 
                 }
-              
+
 
 
             });
-            ThanThong thanThong = s < thanthongtest.Length ? thanthongtest[s] : null;
+            ThanThong thanThong = s < currentThanThong.Length ? currentThanThong[s] : null;
             skill.Init(thanThong, thanThong != null ? spriteFrame[(int)(((int)thanThong.eTierSkill - 1) / 3)] : null, actionHolder, actionPointerUp); // test data 
-        } 
+        }
         skillTip.DoHide();
+    }
+   
+    private void Awake()
+    {
+       
             
        
 

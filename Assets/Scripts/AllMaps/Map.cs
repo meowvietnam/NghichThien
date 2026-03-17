@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 namespace AllMaps
 {
     public class Map : MonoBehaviour
@@ -19,6 +20,10 @@ namespace AllMaps
         }
         private void OnMouseDown()
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
             mapManager.PlayerMoveTo(this);
         }
         public virtual void OnPlayerEnter()

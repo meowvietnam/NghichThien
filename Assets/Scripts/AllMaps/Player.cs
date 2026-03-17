@@ -1,4 +1,4 @@
-using Base;
+﻿using Base;
 using LongDH.LongDHModules;
 using Spine.Unity;
 using System;
@@ -40,7 +40,7 @@ namespace AllMaps
             Pool.Set(this);
 
             // test
-            characterStatsBase=(new CharacterStats()
+            characterStatsBase = (new CharacterStats()
             {
                 level = 9,
                 percentKim = 60,
@@ -53,8 +53,25 @@ namespace AllMaps
                 currentExp = 200,
                 tocDoBay = 10,
                 thoNguyen = 1000,
-                thanThuc = 30
+                thanThuc = 30,
+                tamCanh = 50,
+                danDoc = 50,
+                tuoiTac = 18,
+                tuChat = 100,
+                ngoTinh = 100,
+                nameUser = "Viêm Đế",
+                ngoDaoDiem = 100,
+                camNgoSaves = new CharacterStats.DataSave[]
+                {
+                    new CharacterStats.DataSave { id = 1, value = 9000 },
+                    new CharacterStats.DataSave { id = 2, value = 0 },
 
+                },
+                ngoDaoSaves = new SecureInt[]
+                {
+                    101,20
+
+                }
             });
             Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
         }

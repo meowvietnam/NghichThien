@@ -17,7 +17,7 @@ public class LuongNghiLinhNhanQuyet : CongPhap
         CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
         CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
         // Tìm trong danh sách trang bị của caster
-        if (target!=null&&IsCanUse(target))
+        if (target!=null&&IsCanUse(target) && caster != null)
         {
             Execute(caster, target, data);
 
@@ -47,6 +47,6 @@ public class LuongNghiLinhNhanQuyet : CongPhap
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.CHARACTER_TAKE_DAME, ExecuteParams);
     }
 }

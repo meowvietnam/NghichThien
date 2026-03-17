@@ -19,6 +19,7 @@ namespace CreateCharacter.CharStats
         TamCanh,
         LinhCan,
         
-        Ability
+        Ability,
+        DanDoc
     }
 }

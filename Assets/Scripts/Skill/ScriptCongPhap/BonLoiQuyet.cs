@@ -7,29 +7,24 @@ public class BonLoiQuyet : CongPhap
 {
     [SerializeField] private int[] sucTheBuff;
     [SerializeField] private int require = 5;
-    public override void ExecuteParams(params object[] data)
+   
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        Debug.Log("Vao day0");
+        Debug.Log("Vao day2");
         List<LinhKhiTieuTan> linhKhiTieuTan = data[3] as List<LinhKhiTieuTan>;
         if (IsCanActive(linhKhiTieuTan))
         {
             Debug.Log("Vao day1");
 
-            base.ExecuteParams(data);
+            caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SucThe, sucTheBuff[CurrentLevelCongPhapInCombat(caster) - 1]);
 
         }
-    }
-    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
-    {
-        Debug.Log("Vao day2");
-
-        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SucThe, sucTheBuff[CurrentLevelCongPhapInCombat(caster)-1]);
 
     }
 
     public override string GetDesc(int level)
     {
-        return $"Sử dụng thần thông có linh khí tiêu hao lớn hơn hoặc bằng {GetColoredText($"{require}", "red")} điểm thì thu hoạch được {GetColoredText($"+{sucTheBuff[level - 1]}", "red")}";
+        return $"Sử dụng thần thông có linh khí tiêu hao lớn hơn hoặc bằng {GetColoredText($"{require}", "red")} điểm thì thu hoạch được {GetColoredText($"+{sucTheBuff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}";
 
     }
     private bool IsCanActive(List<LinhKhiTieuTan> linhKhiTieuTan)

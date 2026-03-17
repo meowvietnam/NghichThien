@@ -25,18 +25,24 @@ public class CharacterStats
     public SecureInt danDoc;
     public SecureInt money;
     public SecureInt idLinhCan;
+    public SecureInt ngoDaoDiem;
+    public SecureInt[] ngoDaoSaves;
+    public DataSave[] camNgoSaves;
+
+    public class DataSave
+    {
+        public SecureInt id;
+        public SecureInt value;
+    }
+   
     // tông môn
     public SecureInt chucVi;
     public SecureInt monPhai;
     // skill
     public SecureInt[] thanThongOwner;
     public SecureInt[] thanThongEquip;
-    public class CongPhapSave
-    {
-        public SecureInt id;
-        public SecureInt level;
-    }
-    public CongPhapSave[] congPhapOwner;
+   
+    public DataSave[] congPhapOwner;
     // công pháp used
     // -1 hoặc là 0 là chưa trang bị
     public SecureInt donThuatUsed;

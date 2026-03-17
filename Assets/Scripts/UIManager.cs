@@ -1,16 +1,13 @@
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
+public class UIManager : BaseBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        var listPanel = transform.GetComponentsInChildren<PanelGroup>(true);
+        foreach (var item in listPanel)
+        {
+            item.Init();
+        }    
     }
 }

@@ -1,3 +1,4 @@
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
 public enum ETierSkill {
@@ -38,12 +39,11 @@ public enum ETypeItem
     DuocLieu,
     VatLieu
 }
-public abstract class BaseItemData : ScriptableObject
+public abstract class BaseItemData : BaseData
 {
-    [SerializeField] protected string nameItem;
+
     protected abstract ETypeItem typeItem { get; }
-    [SerializeField]
-    public Sprite spriteItem;
+    
     [SerializeField]
     public Sprite frameItem => null;
 
@@ -52,5 +52,7 @@ public abstract class BaseItemData : ScriptableObject
     {
         return $"<color={colorName}>{text}</color>";
     }
+
+   
 
 }

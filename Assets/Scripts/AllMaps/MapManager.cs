@@ -28,7 +28,7 @@ namespace AllMaps
                     .ToList();
             }
         }
-        private void Start()
+        private void Awake()
         {
             SetUpGraph();
             var map = FindMap(entryMapId);

@@ -20,14 +20,14 @@ public abstract class TranPhapTT : ThanThong
 
     public virtual void ObserverEffect(params object[] data)
     {
-        CharacterCombat currentTurn = (CharacterCombat)data[0];
-        CharacterCombat targetTurn = (CharacterCombat)data[1];
+        CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
+        CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
 
-        if (currentTurn == null) return;
+        if (caster == null) return;
 
-        if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x.GetType() == this.GetType()))
+        if (caster.specialThanThongImpactAfterPlaySkill.Any(x => x.GetType() == this.GetType()))
         {
-            ExecuteTranPhap(currentTurn,targetTurn);
+            ExecuteTranPhap(caster,target);
 
         }
 
