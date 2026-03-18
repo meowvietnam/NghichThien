@@ -9,7 +9,7 @@ public class BasicTTDealDame : ThanThong, BaseSkill.LienKich
     [SerializeField] private int[] dameLienKich;
     [SerializeField] private ELinhKhi elinhKhi;
     [SerializeField]
-    private float delayTimeEffect  = 0.5f;
+    private float delayTimeEffect  = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
