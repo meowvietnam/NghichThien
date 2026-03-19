@@ -33,6 +33,7 @@ namespace LuyenDan
         [SerializeField] public List<ItemRef> myFurnaces;
         [SerializeField] public List<ItemRef> myHerbs;
         [SerializeField] public List<int> myRecipes;
+
         [Button]
         private void GenMyHerbs()
         {

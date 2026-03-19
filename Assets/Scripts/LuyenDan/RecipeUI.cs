@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,9 @@ namespace LuyenDan
         private RecipeData data;
         private List<MiniRecipeUI> recipes = new();
         [SerializeField] private GameObject thisObject;
+
+        [SerializeField] private Text chuduocDetail;
+        [SerializeField] private Text phuduocDetail;
         public RecipeData Data => data;
         public void Init(RecipeData data, ToggleGroup group)
         {
@@ -31,6 +35,22 @@ namespace LuyenDan
             }
             toggle.SetIsOnWithoutNotify(false);
             SetSize(false);
+            var rData = data.Recipes.First();
+            if (rData != null)
+            {
+                var chuduoc = rData.ChuDuoc;
+                var phuduoc = rData.PhuDuoc1;
+                var resources = LuyenDanPanel.Instance.Resources;
+                if (chuduoc != null)
+                {
+                    chuduocDetail.text = resources.GetHerbDetail(chuduoc.Id,HerbType.ChuDuoc);
+                }
+
+                if (phuduoc != null)
+                {
+                    phuduocDetail.text = resources.GetHerbDetail(phuduoc.Id,HerbType.ChuDuoc);
+                }
+            }
         }
         public void SetCraftable(bool active)
         {

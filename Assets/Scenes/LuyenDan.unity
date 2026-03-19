@@ -12479,7 +12479,8 @@ GameObject:
   - component: {fileID: 224360696187865434}
   - component: {fileID: 222664233147575484}
   - component: {fileID: 114798075799695344}
-  - component: {fileID: 114095730755297588}
+  - component: {fileID: 224360696187865436}
+  - component: {fileID: 224360696187865435}
   m_Layer: 0
   m_Name: ClearAll
   m_TagString: Untagged
@@ -13562,7 +13563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1518684113639939
 GameObject:
   m_ObjectHideFlags: 0
@@ -13844,7 +13845,6 @@ GameObject:
   - component: {fileID: 224825605449151166}
   - component: {fileID: 222731366882755156}
   - component: {fileID: 114133851910082915}
-  - component: {fileID: 114803207907810267}
   m_Layer: 8
   m_Name: Back
   m_TagString: Untagged
@@ -15477,18 +15477,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &114095730755297588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1134534943526807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114107116912638869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18682,18 +18670,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &114803207907810267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1596142807414038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114807921115793874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20961,7 +20937,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 18
     <Durability>k__BackingField: 0
-  myRecipes: b80b0000c20b0000cc0b0000d60b0000
+  myRecipes: b80b0000c20b0000cc0b0000d60b0000e00b0000ea0b0000f40b0000fe0b0000080c0000120c00001c0c0000260c0000300c00003a0c0000440c00004e0c0000580c0000620c00006c0c0000760c0000800c00008a0c0000940c00009e0c0000a80c0000b20c0000bc0c0000c60c0000d00c0000da0c0000e40c0000ee0c0000f80c0000020d00000c0d0000160d0000200d00002a0d0000340d00003e0d0000480d0000520d00005c0d0000660d0000700d00007a0d0000840d00008e0d0000980d0000a20d0000ac0d0000b60d0000c00d0000ca0d0000d40d0000de0d0000e80d0000f20d0000fc0d0000060e0000100e00001a0e0000240e00002e0e0000380e0000420e00004c0e0000560e0000600e00006a0e0000740e00007e0e0000880e0000920e00009c0e0000a60e0000b00e0000ba0e0000c40e0000ce0e0000d80e0000e20e0000ec0e0000f60e0000000f00000a0f0000140f00001e0f0000280f0000320f00003c0f0000460f0000500f00005a0f0000640f00006e0f0000780f0000820f00008c0f0000960f0000a00f0000aa0f0000b40f0000be0f0000c80f0000d20f0000dc0f0000e60f0000f00f0000fa0f0000041000000e10000018100000221000002c10000036100000401000004a100000541000005e10000068100000721000007c10000086100000901000009a100000a4100000ae100000
 --- !u!224 &224061783980252365
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22103,6 +22079,63 @@ RectTransform:
   m_AnchoredPosition: {x: -81.00006, y: -277}
   m_SizeDelta: {x: 82, y: 136}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &224360696187865435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134534943526807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b41bfc558a63468aaf1ba2e5519c63b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.ClearAll
+  clearButton: {fileID: 224360696187865436}
+--- !u!114 &224360696187865436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134534943526807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 114798075799695344}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!224 &224374196638557398
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22321,7 +22354,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -344}
+  m_AnchoredPosition: {x: 8, y: -344}
   m_SizeDelta: {x: 352, y: 113}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224424922343947838

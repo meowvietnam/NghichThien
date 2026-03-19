@@ -1,6 +1,7 @@
 using LuyenDan.Inventory;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 namespace LuyenDan
@@ -13,7 +14,6 @@ namespace LuyenDan
         [SerializeField] private Text countText;
         [SerializeField] private Text propertyText;
         [SerializeField] private HerbType herbType;
-        [ShowInInspector, ReadOnly]
         public int Count { get; private set; }
         public void SetCount(int newCount)
         {
@@ -35,10 +35,9 @@ namespace LuyenDan
                 ReturnCurrentItemToInventory();
                 Count = 0;
                 Item = item;
-
                 if (item == null)
                 {
-                    SetData(null);
+                    ClearSlot();
                     return;
                 }
             }
@@ -48,8 +47,25 @@ namespace LuyenDan
             }
             SetCount(count);
             SetData(item.GetData());
+            UpdatePropertyText();
         }
 
+        private void UpdatePropertyText()
+        {
+            if (propertyText == null)
+            {
+                return;
+            }
+
+            if (Item == null)
+            {
+                propertyText.text = LuyenDanResources.EmptyDetail;
+            }
+            else
+            {
+                propertyText.text = LuyenDanPanel.Instance.Resources.GetHerbDetail(Item.ItemRef.Id,herbType);
+            }
+        }
         public override void OnLuyenDanCompleted()
         {
             if (Item == null) return;
@@ -82,6 +98,7 @@ namespace LuyenDan
             Count = 0;
             Item  = null;
             SetData(null);
+            UpdatePropertyText();
         }
     }
 }
