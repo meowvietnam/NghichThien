@@ -17,6 +17,11 @@ namespace LuyenDan
         public override void Select(InventoryItemUI item)
         {
             var instance = LuyenDanPanel.Instance;
+            if (item != null && item is not FurnaceInventoryItemUI)
+            {
+                Debug.LogWarning($"[AlchermyFurnace] Select: item không phải FurnaceInventoryItemUI ({item.GetType().Name}). Bỏ qua.");
+                return;
+            }
             instance.Alchermy.SelectDanLu(item as FurnaceInventoryItemUI);
         }
 
@@ -31,7 +36,8 @@ namespace LuyenDan
             }
             else
             {
-                SetDurability(0);
+                SetData(null);
+                durabilityText.text = string.Empty;
             }
         }
 
@@ -41,6 +47,8 @@ namespace LuyenDan
             {
                 Item = null;
                 SetData(null);
+                durabilityText.text = string.Empty;
+                return;
             }
             durabilityText.text = $"{value}/100";
         }

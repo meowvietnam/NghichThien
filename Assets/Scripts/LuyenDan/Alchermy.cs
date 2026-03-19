@@ -27,7 +27,7 @@ namespace LuyenDan
             }
             currentSelectFurnace = furnace;
             thisObject.SetActive(true);
-            if (furnaceImage != null)
+            if (furnace != null)
             {
                 furnaceImage.sprite = furnace.Data.BigIcon;
                 furnace.ItemRef.OnDurabilityChanged += SetDurability;
@@ -36,13 +36,19 @@ namespace LuyenDan
             else
             {
                 furnaceImage.sprite = defaultFurnace;
+                SetDurabilityText(0);
             }
             this.furnace.Select(furnace);
+        }
+
+        private void SetDurabilityText(int durability)
+        {
+            durabilityText.text = $"{durability}/100";
         }
         private void SetDurability(int durability)
         {
             var dur = Math.Clamp(durability,0, 100);
-            durabilityText.text = $"{dur}/100";
+            SetDurabilityText(dur);
             if (dur <= 0)
             {
                 SelectDanLu(null);
@@ -52,7 +58,6 @@ namespace LuyenDan
         {
             currentSelected = alchemyEntity;
         }
-
         public void Select(InventoryItemUI item)
         {
             if (currentSelected != null)

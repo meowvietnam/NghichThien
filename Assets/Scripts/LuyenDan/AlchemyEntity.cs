@@ -23,7 +23,6 @@ namespace LuyenDan
         [SerializeField] private Image background;
         [TabGroup("Has Item")]
         [SerializeField] private Image iconUp;
-   
         [TabGroup("Has Item")]
         [SerializeField] private Text nameText;
         [TabGroup("Has Item")]
@@ -67,6 +66,7 @@ namespace LuyenDan
         {
 
         }
+        [Button]
         public virtual void Select(InventoryItemUI item)
         {
             Item = item;

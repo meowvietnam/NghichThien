@@ -12,6 +12,7 @@ namespace LuyenDan
 
         [SerializeField] private Text propertyText;
         [SerializeField] private HerbType herbType;
+        [ShowInInspector, ReadOnly]
         public int Count { get; private set; }
 
         protected override void OnClick()
@@ -41,9 +42,19 @@ namespace LuyenDan
             {
                 if (Item != null)
                 {
-                    Item.ItemRef.SetCount(Item.ItemRef.Count + Count);
+                    var itemRef = Item.ItemRef;
+                    itemRef.SetCount(itemRef.Count + Count);
                 }
+                // Reset Count về 0 trước khi gán Item mới.
+                // Nếu không reset, SetCount sẽ dùng Count cũ để tính delta
+                // và trừ nhầm vào kho của item mới.
+                Count = 0;
                 Item = item;
+                if (item == null)
+                {
+                    SetData(null);
+                    return;
+                }
             }
             var data = item.GetData();
             SetCount(count);
