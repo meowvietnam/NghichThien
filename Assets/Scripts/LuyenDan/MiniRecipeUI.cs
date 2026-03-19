@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,7 @@ namespace LuyenDan
         [SerializeField] private Text thuocdan;
         [SerializeField] private GameObject craftale;
         private RecipeData.Recipe data;
+        private bool isCraftable;
         public void Init(RecipeData.Recipe data, ToggleGroup toggleGroup)
         {
             this.data = data;
@@ -40,13 +42,60 @@ namespace LuyenDan
             this.thuocdan.text = $"{thuocdan.Name}x{thuocdanRef.Count}";
             
         }
+        public bool IsCraftable()
+        {
+            var chuduoc = data.ChuDuoc;
+            var phuduoc1 = data.PhuDuoc1;
+            var phuduoc2 = data.PhuDuoc2;
+            var duocdan = data.DuocDan;
+            var items = LuyenDanPanel.Instance.HerbInventory.ItemsSnapshot;
+            if (!IsSatisfied(chuduoc, items))
+            {
+                return false;
+            }
+            if (!IsSatisfied(phuduoc1, items))
+            {
+                return false;
+            }
+            if (!IsSatisfied(phuduoc2, items))
+            {
+                return false;
+            }
+            if (!IsSatisfied(duocdan, items))
+            {
+                return false;
+            }
+            return true;
+        }
 
+        private bool IsSatisfied(RecipeData.Herbs herbs, List<ItemSnapshot> items)
+        {
+            if (herbs == null)
+            {
+                return true;
+            }
+            var item = items.FirstOrDefault(x => x.Id == herbs.Id);
+            if (item == null)
+            {
+                return false;
+            }
+            return item.Count >= herbs.Count;
+        }
         public void UpdateCraftale(bool isCraftable)
         {
+            this.isCraftable = isCraftable;
             craftale.SetActive(isCraftable);
         }
         private void OnValueChanged(bool active)
         {
+            if (!isCraftable)
+            {
+                return;
+            }
+            if (active)
+            {
+                LuyenDanPanel.Instance.Alchermy.SelectReceipe(data);
+            }
         }
     }
 }

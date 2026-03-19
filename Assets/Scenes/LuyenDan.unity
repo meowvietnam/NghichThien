@@ -2096,15 +2096,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e8c4874381487fbbe75223a6c59539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.Ingredient
-  btn: {fileID: 323037768}
-  thisObject: {fileID: 323037763}
-  nullItem: {fileID: 1862655091}
-  hasItem: {fileID: 957698666}
-  icon: {fileID: 1313888469}
-  background: {fileID: 1976505036}
-  iconUp: {fileID: 504561665}
-  nameText: {fileID: 769777596}
-  hover: {fileID: 1900634099}
+  clickButton: {fileID: 323037768}
+  selfObject: {fileID: 323037763}
+  emptySlot: {fileID: 1862655091}
+  filledSlot: {fileID: 957698666}
+  itemIcon: {fileID: 1313888469}
+  qualityBackground: {fileID: 1976505036}
+  qualityIconUp: {fileID: 504561665}
+  itemNameText: {fileID: 769777596}
+  hoverHighlight: {fileID: 1900634099}
   countText: {fileID: 1448194820}
   propertyText: {fileID: 2089829885}
   herbType: 2
@@ -3922,9 +3922,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 520114037}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a48c283f07044ef808dce088afc8d7a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0112493d32394afeabddd152f38c7d06, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.Inventory.Inventory
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.HerbInventory
   <ItemListUI>k__BackingField: {fileID: 102294501}
   filterGroups:
   - {fileID: 935990322}
@@ -3942,7 +3942,6 @@ GameObject:
   - component: {fileID: 521081963}
   - component: {fileID: 521081966}
   - component: {fileID: 521081965}
-  - component: {fileID: 521081964}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -3969,18 +3968,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 128, y: 128}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &521081964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 521081962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &521081965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7365,7 +7352,6 @@ GameObject:
   - component: {fileID: 1313888467}
   - component: {fileID: 1313888470}
   - component: {fileID: 1313888469}
-  - component: {fileID: 1313888468}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -7392,18 +7378,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 128, y: 128}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1313888468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1313888466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1313888469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12348,25 +12322,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1070799356152149
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 224016282925418235}
-  - component: {fileID: 222333045089813848}
-  - component: {fileID: 114692428061348629}
-  - component: {fileID: 114453687448895436}
-  m_Layer: 5
-  m_Name: CountText
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1077124513148155
 GameObject:
   m_ObjectHideFlags: 0
@@ -12469,7 +12424,6 @@ GameObject:
   - component: {fileID: 224244015696093676}
   - component: {fileID: 222366934971037976}
   - component: {fileID: 114380024587920445}
-  - component: {fileID: 114757928518423138}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -12525,7 +12479,8 @@ GameObject:
   - component: {fileID: 224360696187865434}
   - component: {fileID: 222664233147575484}
   - component: {fileID: 114798075799695344}
-  - component: {fileID: 114095730755297588}
+  - component: {fileID: 224360696187865436}
+  - component: {fileID: 224360696187865435}
   m_Layer: 0
   m_Name: ClearAll
   m_TagString: Untagged
@@ -12992,7 +12947,6 @@ GameObject:
   - component: {fileID: 224608426796591573}
   - component: {fileID: 222689891815125920}
   - component: {fileID: 114843844417092655}
-  - component: {fileID: 114337141345753440}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -13408,7 +13362,6 @@ GameObject:
   - component: {fileID: 224863121993895283}
   - component: {fileID: 222694967687963045}
   - component: {fileID: 114129901783654637}
-  - component: {fileID: 114597633409208313}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -13517,7 +13470,6 @@ GameObject:
   - component: {fileID: 224649102779726411}
   - component: {fileID: 222557015610331057}
   - component: {fileID: 114139632216351340}
-  - component: {fileID: 114944421665296263}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -13611,7 +13563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1518684113639939
 GameObject:
   m_ObjectHideFlags: 0
@@ -13893,7 +13845,6 @@ GameObject:
   - component: {fileID: 224825605449151166}
   - component: {fileID: 222731366882755156}
   - component: {fileID: 114133851910082915}
-  - component: {fileID: 114803207907810267}
   m_Layer: 8
   m_Name: Back
   m_TagString: Untagged
@@ -13946,7 +13897,6 @@ GameObject:
   - component: {fileID: 224394008152855403}
   - component: {fileID: 222722908568368767}
   - component: {fileID: 114437508923983954}
-  - component: {fileID: 114853179845952413}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -15527,18 +15477,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &114095730755297588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1134534943526807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114107116912638869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16845,18 +16783,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &114337141345753440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1299025643286917}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114337411574946166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17457,21 +17383,6 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: "M\u1EDDi \u0111\u1EB7t tr\u01B0\u1EDBc v\xE0o \u0111an l\xF4"
---- !u!114 &114453687448895436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1070799356152149}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.10980392, g: 0.050980393, b: 0.003921569, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
-  m_UseGraphicAlpha: 1
 --- !u!114 &114455123098951594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17831,18 +17742,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &114597633409208313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1437716539111092}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114599305361837375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18353,40 +18252,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &114692428061348629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1070799356152149}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.9490196, g: 0.9254902, b: 0.77254903, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: dc144b02d262e8149bf991146baa801e, type: 3}
-    m_FontSize: 28
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 2
-    m_MaxSize: 40
-    m_Alignment: 2
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 1
-    m_VerticalOverflow: 1
-    m_LineSpacing: 1
-  m_Text: 999999
 --- !u!114 &114698706025744057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18621,18 +18486,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: 0, y: 0, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
---- !u!114 &114757928518423138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1104925607337980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114765862362030200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18817,18 +18670,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &114803207907810267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1596142807414038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114807921115793874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19024,18 +18865,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &114853179845952413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1634296106941887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114859517659360991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19319,18 +19148,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &114944421665296263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1481854393754116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114979428899752668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19686,14 +19503,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1103782198968672}
-  m_CullTransparentMesh: 0
---- !u!222 &222333045089813848
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1070799356152149}
   m_CullTransparentMesh: 0
 --- !u!222 &222346314440841266
 CanvasRenderer:
@@ -20510,16 +20319,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec719a6294774525a57101e7c9c7ff26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.Alchermy
-  thisObject: {fileID: 1509952108266353}
+  selfObject: {fileID: 1509952108266353}
   furnaceImage: {fileID: 114789254173761467}
   durabilityText: {fileID: 114291483882304765}
-  defaultFurnace: {fileID: 21300000, guid: 9b486d27dba5ae1418120b2c17981fac, type: 2}
-  <SelectNum>k__BackingField: {fileID: 224470199295152433}
+  defaultFurnaceSprite: {fileID: 21300000, guid: 9b486d27dba5ae1418120b2c17981fac,
+    type: 2}
   main1: {fileID: 224137990462551902}
   sub1: {fileID: 224707955042016906}
   sub2: {fileID: 323037767}
   primer: {fileID: 224587575005101334}
-  furnace: {fileID: 224629640651376879}
+  furnaceSlot: {fileID: 224629640651376879}
+  <SelectNum>k__BackingField: {fileID: 224470199295152433}
 --- !u!224 &224006000282878937
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20538,25 +20348,6 @@ RectTransform:
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 4000, y: 4000}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!224 &224016282925418235
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1070799356152149}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 224435109424859359}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -56, y: -12.5}
-  m_SizeDelta: {x: 100, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224017970668869724
 RectTransform:
@@ -20764,39 +20555,51 @@ MonoBehaviour:
   myHerbs:
   - <Id>k__BackingField: 2000
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 18
+    <Count>k__BackingField: 12
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2001
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 11
+    <Count>k__BackingField: 13
     <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2003
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 12
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2005
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 16
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2006
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 6
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2007
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 15
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2008
+  - <Id>k__BackingField: 2002
     <Type>k__BackingField: 0
     <Count>k__BackingField: 18
     <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2010
+  - <Id>k__BackingField: 2003
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 7
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2004
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 17
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2005
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 17
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2006
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 8
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2007
     <Type>k__BackingField: 0
     <Count>k__BackingField: 9
     <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2008
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 13
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2009
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 2
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2010
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 2
+    <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2011
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 8
+    <Count>k__BackingField: 3
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2012
     <Type>k__BackingField: 0
@@ -20804,95 +20607,71 @@ MonoBehaviour:
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2013
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 4
+    <Count>k__BackingField: 16
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2014
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 11
+    <Count>k__BackingField: 12
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2015
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 14
+    <Count>k__BackingField: 4
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2016
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 17
+    <Count>k__BackingField: 16
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2017
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 6
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2018
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 3
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2019
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 6
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2020
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 9
+    <Count>k__BackingField: 10
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2022
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 6
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2023
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 7
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2024
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 7
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2026
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 12
+    <Count>k__BackingField: 19
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2027
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 8
+    <Count>k__BackingField: 15
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2028
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 3
+    <Count>k__BackingField: 15
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2029
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 14
+    <Count>k__BackingField: 13
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2030
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 4
+    <Count>k__BackingField: 16
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2031
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 2
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2032
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 2
+    <Count>k__BackingField: 17
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2033
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 2
+    <Count>k__BackingField: 6
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2034
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 1
+    <Count>k__BackingField: 14
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2035
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 10
+    <Count>k__BackingField: 13
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2037
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 6
+    <Count>k__BackingField: 19
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2038
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 17
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2039
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 5
+    <Count>k__BackingField: 9
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2040
     <Type>k__BackingField: 0
@@ -20904,67 +20683,55 @@ MonoBehaviour:
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2042
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 18
+    <Count>k__BackingField: 17
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2043
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 19
+    <Count>k__BackingField: 14
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2044
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 3
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2045
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 2
+    <Count>k__BackingField: 14
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2047
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 2
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2048
-    <Type>k__BackingField: 0
     <Count>k__BackingField: 8
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2049
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 13
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2050
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 13
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2051
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 13
+    <Count>k__BackingField: 17
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2052
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 13
+    <Count>k__BackingField: 14
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2054
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 15
+    <Count>k__BackingField: 6
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2055
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 7
+    <Count>k__BackingField: 19
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2056
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 8
+    <Count>k__BackingField: 3
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2057
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 9
+    <Count>k__BackingField: 18
     <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2060
+  - <Id>k__BackingField: 2059
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 10
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2061
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 2
+    <Count>k__BackingField: 13
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2062
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 14
+    <Count>k__BackingField: 4
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2063
     <Type>k__BackingField: 0
@@ -20972,127 +20739,123 @@ MonoBehaviour:
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2064
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 10
+    <Count>k__BackingField: 13
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2065
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 1
+    <Count>k__BackingField: 13
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2066
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 5
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2067
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 1
+    <Count>k__BackingField: 6
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2068
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 17
+    <Count>k__BackingField: 5
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2069
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 9
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2070
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 16
+    <Count>k__BackingField: 13
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2071
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 4
+    <Count>k__BackingField: 17
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2072
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 15
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2073
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 14
+    <Count>k__BackingField: 3
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2074
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 15
+    <Count>k__BackingField: 5
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2075
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 1
+    <Count>k__BackingField: 12
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2076
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 15
+    <Count>k__BackingField: 3
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2077
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 12
+    <Count>k__BackingField: 18
     <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2080
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 4
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2081
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 1
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2082
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 19
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2083
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 9
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2085
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 11
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2086
+  - <Id>k__BackingField: 2078
     <Type>k__BackingField: 0
     <Count>k__BackingField: 18
     <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2087
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 19
-    <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2088
+  - <Id>k__BackingField: 2079
     <Type>k__BackingField: 0
     <Count>k__BackingField: 8
     <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2089
+  - <Id>k__BackingField: 2080
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 2
+    <Count>k__BackingField: 8
     <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2090
+  - <Id>k__BackingField: 2081
     <Type>k__BackingField: 0
     <Count>k__BackingField: 15
     <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2091
+  - <Id>k__BackingField: 2082
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 18
+    <Count>k__BackingField: 16
     <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2092
+  - <Id>k__BackingField: 2083
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 19
+    <Count>k__BackingField: 4
     <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2093
+  - <Id>k__BackingField: 2087
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 1
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2088
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 13
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2089
     <Type>k__BackingField: 0
     <Count>k__BackingField: 7
     <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2090
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 19
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2092
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 10
+    <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2094
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 12
+    <Count>k__BackingField: 10
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2095
     <Type>k__BackingField: 0
     <Count>k__BackingField: 2
     <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2097
+  - <Id>k__BackingField: 2096
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 3
+    <Count>k__BackingField: 15
     <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2098
+  - <Id>k__BackingField: 2097
     <Type>k__BackingField: 0
     <Count>k__BackingField: 10
     <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2098
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 5
+    <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2099
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 7
+    <Count>k__BackingField: 9
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2100
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 8
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2101
     <Type>k__BackingField: 0
@@ -21100,72 +20863,81 @@ MonoBehaviour:
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2102
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 5
+    <Count>k__BackingField: 6
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2103
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 13
+    <Count>k__BackingField: 5
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2104
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 15
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2105
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 10
+    <Count>k__BackingField: 1
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2106
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 4
+    <Count>k__BackingField: 1
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2107
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 5
+    <Count>k__BackingField: 15
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2108
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 3
+    <Count>k__BackingField: 1
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2109
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 12
+    <Count>k__BackingField: 19
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2110
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 8
+    <Count>k__BackingField: 11
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2111
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 4
+    <Count>k__BackingField: 8
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2112
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 5
+    <Count>k__BackingField: 9
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2113
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 12
+    <Count>k__BackingField: 9
     <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2116
+  - <Id>k__BackingField: 2114
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 5
+    <Count>k__BackingField: 14
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2115
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 6
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2117
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 9
+    <Count>k__BackingField: 10
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2118
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 3
+    <Count>k__BackingField: 18
+    <Durability>k__BackingField: 0
+  - <Id>k__BackingField: 2119
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 14
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2120
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 12
+    <Count>k__BackingField: 4
     <Durability>k__BackingField: 0
   - <Id>k__BackingField: 2121
     <Type>k__BackingField: 0
-    <Count>k__BackingField: 17
+    <Count>k__BackingField: 18
     <Durability>k__BackingField: 0
-  - <Id>k__BackingField: 2122
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 4
-    <Durability>k__BackingField: 0
+  myRecipes: b80b0000c20b0000cc0b0000d60b0000e00b0000ea0b0000f40b0000fe0b0000080c0000120c00001c0c0000260c0000300c00003a0c0000440c00004e0c0000580c0000620c00006c0c0000760c0000800c00008a0c0000940c00009e0c0000a80c0000b20c0000bc0c0000c60c0000d00c0000da0c0000e40c0000ee0c0000f80c0000020d00000c0d0000160d0000200d00002a0d0000340d00003e0d0000480d0000520d00005c0d0000660d0000700d00007a0d0000840d00008e0d0000980d0000a20d0000ac0d0000b60d0000c00d0000ca0d0000d40d0000de0d0000e80d0000f20d0000fc0d0000060e0000100e00001a0e0000240e00002e0e0000380e0000420e00004c0e0000560e0000600e00006a0e0000740e00007e0e0000880e0000920e00009c0e0000a60e0000b00e0000ba0e0000c40e0000ce0e0000d80e0000e20e0000ec0e0000f60e0000000f00000a0f0000140f00001e0f0000280f0000320f00003c0f0000460f0000500f00005a0f0000640f00006e0f0000780f0000820f00008c0f0000960f0000a00f0000aa0f0000b40f0000be0f0000c80f0000d20f0000dc0f0000e60f0000f00f0000fa0f0000041000000e10000018100000221000002c10000036100000401000004a100000541000005e10000068100000721000007c10000086100000901000009a100000a4100000ae100000
 --- !u!224 &224061783980252365
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21588,15 +21360,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e8c4874381487fbbe75223a6c59539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.Ingredient
-  btn: {fileID: 224137990462551903}
-  thisObject: {fileID: 1333815153824667}
-  nullItem: {fileID: 1413814894090027}
-  hasItem: {fileID: 1828889620839461}
-  icon: {fileID: 114139632216351340}
-  background: {fileID: 114765862362030200}
-  iconUp: {fileID: 114896518689312591}
-  nameText: {fileID: 114255836992240459}
-  hover: {fileID: 1321831694461007}
+  clickButton: {fileID: 224137990462551903}
+  selfObject: {fileID: 1333815153824667}
+  emptySlot: {fileID: 1413814894090027}
+  filledSlot: {fileID: 1828889620839461}
+  itemIcon: {fileID: 114139632216351340}
+  qualityBackground: {fileID: 114765862362030200}
+  qualityIconUp: {fileID: 114896518689312591}
+  itemNameText: {fileID: 114255836992240459}
+  hoverHighlight: {fileID: 1321831694461007}
   countText: {fileID: 114062643591809331}
   propertyText: {fileID: 114426141426973182}
   herbType: 1
@@ -22307,6 +22079,63 @@ RectTransform:
   m_AnchoredPosition: {x: -81.00006, y: -277}
   m_SizeDelta: {x: 82, y: 136}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &224360696187865435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134534943526807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b41bfc558a63468aaf1ba2e5519c63b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.ClearAll
+  clearButton: {fileID: 224360696187865436}
+--- !u!114 &224360696187865436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134534943526807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 114798075799695344}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!224 &224374196638557398
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22525,7 +22354,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -344}
+  m_AnchoredPosition: {x: 8, y: -344}
   m_SizeDelta: {x: 352, y: 113}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224424922343947838
@@ -22582,7 +22411,6 @@ RectTransform:
   - {fileID: 224493301458195326}
   - {fileID: 224570556700460353}
   - {fileID: 224579566498099020}
-  - {fileID: 224016282925418235}
   m_Father: {fileID: 224629640651376878}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -23274,15 +23102,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e8c4874381487fbbe75223a6c59539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.Ingredient
-  btn: {fileID: 224587575005101333}
-  thisObject: {fileID: 1383644390259706}
-  nullItem: {fileID: 1895556082537335}
-  hasItem: {fileID: 1199447792662159}
-  icon: {fileID: 114380024587920445}
-  background: {fileID: 114609065484629690}
-  iconUp: {fileID: 114150168799440684}
-  nameText: {fileID: 114455123098951594}
-  hover: {fileID: 1771103852751092}
+  clickButton: {fileID: 224587575005101333}
+  selfObject: {fileID: 1383644390259706}
+  emptySlot: {fileID: 1895556082537335}
+  filledSlot: {fileID: 1199447792662159}
+  itemIcon: {fileID: 114380024587920445}
+  qualityBackground: {fileID: 114609065484629690}
+  qualityIconUp: {fileID: 114150168799440684}
+  itemNameText: {fileID: 114455123098951594}
+  hoverHighlight: {fileID: 1771103852751092}
   countText: {fileID: 114870615669473495}
   propertyText: {fileID: 0}
   herbType: 4
@@ -23416,15 +23244,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3537bd6e0d79415790117ca9ac9232a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.AlchermyFurnace
-  btn: {fileID: 224629640651376880}
-  thisObject: {fileID: 1820189920124721}
-  nullItem: {fileID: 1939865768211501}
-  hasItem: {fileID: 1505369096353614}
-  icon: {fileID: 114437508923983954}
-  background: {fileID: 114644995996346385}
-  iconUp: {fileID: 114825745873081102}
-  nameText: {fileID: 114698706025744057}
-  hover: {fileID: 1387455764330770}
+  clickButton: {fileID: 224629640651376880}
+  selfObject: {fileID: 1820189920124721}
+  emptySlot: {fileID: 1939865768211501}
+  filledSlot: {fileID: 1505369096353614}
+  itemIcon: {fileID: 114437508923983954}
+  qualityBackground: {fileID: 114644995996346385}
+  qualityIconUp: {fileID: 114825745873081102}
+  itemNameText: {fileID: 114698706025744057}
+  hoverHighlight: {fileID: 1387455764330770}
   durabilityText: {fileID: 114337411574946166}
 --- !u!114 &224629640651376880
 MonoBehaviour:
@@ -23745,15 +23573,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e8c4874381487fbbe75223a6c59539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.Ingredient
-  btn: {fileID: 224707955042016907}
-  thisObject: {fileID: 1046526271154919}
-  nullItem: {fileID: 1240897328190695}
-  hasItem: {fileID: 1898324081672589}
-  icon: {fileID: 114843844417092655}
-  background: {fileID: 114881103246730494}
-  iconUp: {fileID: 114665103712597861}
-  nameText: {fileID: 114424262398388580}
-  hover: {fileID: 1728600918217822}
+  clickButton: {fileID: 224707955042016907}
+  selfObject: {fileID: 1046526271154919}
+  emptySlot: {fileID: 1240897328190695}
+  filledSlot: {fileID: 1898324081672589}
+  itemIcon: {fileID: 114843844417092655}
+  qualityBackground: {fileID: 114881103246730494}
+  qualityIconUp: {fileID: 114665103712597861}
+  itemNameText: {fileID: 114424262398388580}
+  hoverHighlight: {fileID: 1728600918217822}
   countText: {fileID: 114563477267733419}
   propertyText: {fileID: 114353533832327439}
   herbType: 2
@@ -23889,7 +23717,6 @@ MonoBehaviour:
   content: {fileID: 224280437303734934}
   toggleGroup: {fileID: 224723679888156401}
   prefab: {fileID: 9156055260024757772, guid: 404aaa12b45404ec6bc13bfdcefdfe69, type: 3}
-  myRecipes: b80b0000c20b0000cc0b0000
   tierSelection: {fileID: 1596444178116165}
 --- !u!224 &224724216693888518
 RectTransform:

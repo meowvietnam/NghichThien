@@ -12,7 +12,7 @@ namespace LuyenDan.Inventory
     }
     public abstract class ItemListUI<T> : ItemListUI where T : InventoryItemUI
     {
-        protected List<T> Items { get; private set;} = new List<T>();
+        public List<T> Items { get; private set;} = new List<T>();
         [SerializeField] private T prefab;
         [SerializeField] private RectTransform content;
 

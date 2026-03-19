@@ -12,9 +12,10 @@ namespace LuyenDan
     {
         [TabGroup("Inventory")]
         [field: SerializeField, ReadOnly] public List<Quality> Qualities { get; private set; }
-        [field: SerializeField] public List<TempFurnaceData> TempFurnaceDatas { get; private set; }
+        [field: SerializeField, ReadOnly] public List<TempFurnaceData> TempFurnaceDatas { get; private set; }
         [field: SerializeField, ReadOnly] public List<HerbData> HerbDatas { get; private set; }
         [field: SerializeField, ReadOnly] public List<RecipeData> Recipes { get; private set; }
+        public const string EmptyDetail = "Không";
         public IInventoryItemData FindItem(ItemRef itemRef)
         {
             if (itemRef.Type == ItemType.Furnace)
@@ -169,6 +170,25 @@ namespace LuyenDan
         // }
         #endregion
 
+        public string GetHerbDetail(int id, HerbType herbType)
+        {
+            var herb = HerbDatas.FirstOrDefault(x => x.Id == id);
+            if (herb == null)
+            {
+                return EmptyDetail;
+            }
+            switch (herbType)
+            {
+                case HerbType.ChuDuoc:
+                    return herb.ChuDuoc;
+                case HerbType.PhuDuoc:
+                    return herb.PhuDuoc;
+                case HerbType.DuocDan:
+                    return herb.ThuocDan;
+            }
+
+            return EmptyDetail;
+        }
         public RecipeData FindRecipe(int i)
         {
             return Recipes.FirstOrDefault(x => x.Id == i);

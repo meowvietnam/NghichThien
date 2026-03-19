@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ namespace LuyenDan
         [SerializeField] private Text recipeNameText;
         [SerializeField] private Toggle toggle;
         [SerializeField] private RectTransform thisTransform;
-        [SerializeField] private GameObject craftale;
+        [SerializeField] private GameObject[] craftales;
         [SerializeField] private Transform listTf;
         [SerializeField] private GameObject unselected;
         [SerializeField] private GameObject selected;
@@ -17,6 +18,9 @@ namespace LuyenDan
         private RecipeData data;
         private List<MiniRecipeUI> recipes = new();
         [SerializeField] private GameObject thisObject;
+
+        [SerializeField] private Text chuduocDetail;
+        [SerializeField] private Text phuduocDetail;
         public RecipeData Data => data;
         public void Init(RecipeData data, ToggleGroup group)
         {
@@ -31,10 +35,29 @@ namespace LuyenDan
             }
             toggle.SetIsOnWithoutNotify(false);
             SetSize(false);
+            var rData = data.Recipes.First();
+            if (rData != null)
+            {
+                var chuduoc = rData.ChuDuoc;
+                var phuduoc = rData.PhuDuoc1;
+                var resources = LuyenDanPanel.Instance.Resources;
+                if (chuduoc != null)
+                {
+                    chuduocDetail.text = resources.GetHerbDetail(chuduoc.Id,HerbType.ChuDuoc);
+                }
+
+                if (phuduoc != null)
+                {
+                    phuduocDetail.text = resources.GetHerbDetail(phuduoc.Id,HerbType.ChuDuoc);
+                }
+            }
         }
         public void SetCraftable(bool active)
         {
-            craftale.SetActive(active);
+            foreach (var craftale in craftales)
+            {
+                craftale.SetActive(active);
+            }
         }
         
         private void SetSize(bool active)
@@ -60,6 +83,20 @@ namespace LuyenDan
             SetSize(active);
             unselected.SetActive(!active);
             selected.SetActive(active);
+        }
+        public void Refresh()
+        {
+            var myCraftable = false;
+            foreach (var recipe in recipes)
+            {
+                var canCraft = recipe.IsCraftable();
+                if (canCraft)
+                {
+                    myCraftable = true;
+                }
+                recipe.UpdateCraftale(canCraft);
+            }
+            SetCraftable(myCraftable);
         }
     }
 }

@@ -7,96 +7,90 @@ using UnityEngine.UI;
 
 namespace LuyenDan
 {
+
     public class AlchemyEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private Button btn;
+        [SerializeField] private Button clickButton;
+        [SerializeField] private GameObject selfObject;
 
-        [SerializeField] private GameObject thisObject;
         [TabGroup("Null Item")]
-        [SerializeField] private GameObject nullItem;
-        
-        [TabGroup("Has Item")]
-        [SerializeField] private GameObject hasItem;
-        [TabGroup("Has Item")]
-        [SerializeField] private Image icon;
-        [TabGroup("Has Item")]
-        [SerializeField] private Image background;
-        [TabGroup("Has Item")]
-        [SerializeField] private Image iconUp;
-   
-        [TabGroup("Has Item")]
-        [SerializeField] private Text nameText;
-        [TabGroup("Has Item")]
-        [SerializeField] private GameObject hover;
-        public InventoryItemUI Item { get; protected set; }
+        [SerializeField] private GameObject emptySlot;
 
-        private void OnValidate()
-        {
-            btn = GetComponent<Button>();
-            thisObject = gameObject;
-            var tf = thisObject.transform;
-            nullItem = tf.Find("Null").gameObject;
-            hasItem = tf.Find("HasItem").gameObject;
-            icon = hasItem.transform.Find("IconMask/Icon").GetComponent<Image>();
-            background = hasItem.transform.Find("Quality").GetComponent<Image>();
-            iconUp = background.transform.Find("QualityUp").GetComponent<Image>();
-            hover = tf.Find("Selected").gameObject;
-            nameText = hasItem.transform.Find("NameMask/NameText").GetComponent<Text>();
-        }
+        [TabGroup("Has Item")]
+        [SerializeField] private GameObject filledSlot;
+        [TabGroup("Has Item")]
+        [SerializeField] private Image itemIcon;
+        [TabGroup("Has Item")]
+        [SerializeField] private Image qualityBackground;
+        [TabGroup("Has Item")]
+        [SerializeField] private Image qualityIconUp;
+        [TabGroup("Has Item")]
+        [SerializeField] private Text itemNameText;
+        [TabGroup("Has Item")]
+        [SerializeField] private GameObject hoverHighlight;
+        public InventoryItemUI Item { get; protected set; }
+        public bool IsEmpty => Item == null;
+        // private void OnValidate()
+        // {
+        //     clickButton = GetComponent<Button>();
+        //     selfObject   = gameObject;
+        //
+        //     var tf = selfObject.transform;
+        //     emptySlot  = tf.Find("Null").gameObject;
+        //     filledSlot = tf.Find("HasItem").gameObject;
+        //
+        //     itemIcon          = filledSlot.transform.Find("IconMask/Icon").GetComponent<Image>();
+        //     qualityBackground = filledSlot.transform.Find("Quality").GetComponent<Image>();
+        //     qualityIconUp     = qualityBackground.transform.Find("QualityUp").GetComponent<Image>();
+        //     hoverHighlight    = tf.Find("Selected").gameObject;
+        //     itemNameText      = filledSlot.transform.Find("NameMask/NameText").GetComponent<Text>();
+        // }
+
         private void Start()
         {
-            btn.onClick.AddListener(OnClick);
+            clickButton.onClick.AddListener(OnClick);
         }
-        protected void SetData(IInventoryItemData data)
-        {
-            var isHasItem = data != null;
-            if (!isHasItem)
-            {
-                nullItem.SetActive(true);
-                hasItem.SetActive(false);
-                return;
-            }
-            nullItem.SetActive(false);
-            hasItem.SetActive(true);
-            icon.sprite = data.Icon;
-            nameText.text = data.Name;
-            var tier = data.Tier;
-            SetTier(tier);
-        }
-        public virtual void OnLuyenDanCompleted()
-        {
 
+        private void OnDestroy()
+        {
+            clickButton.onClick.RemoveAllListeners();
         }
+        public void SetActive(bool active) => selfObject.SetActive(active);
+        public virtual void OnLuyenDanCompleted() { }
+
         public virtual void Select(InventoryItemUI item)
         {
             Item = item;
         }
-        private void SetTier(Tier tier)
+
+
+        public void OnPointerEnter(PointerEventData eventData) => hoverHighlight.SetActive(true);
+        public void OnPointerExit(PointerEventData eventData)  => hoverHighlight.SetActive(false);
+
+        protected void SetData(IInventoryItemData data)
         {
-            var quality = LuyenDanPanel.Instance.Resources.Qualities.First(x => x.Tier == tier);
-            background.sprite = quality.Background;
-            iconUp.sprite = quality.IconUp;
-            nameText.color = quality.Color;
+            bool hasItem = data != null;
+            emptySlot.SetActive(!hasItem);
+            filledSlot.SetActive(hasItem);
+
+            if (!hasItem) return;
+
+            itemIcon.sprite  = data.Icon;
+            itemNameText.text = data.Name;
+            ApplyQualityTheme(data.Tier);
         }
-        public void SetActive(bool active)
-        {
-            thisObject.SetActive(active);
-        }
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            hover.SetActive(true);
-        }
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            hover.SetActive(false);
-        }
+
         protected virtual void OnClick()
         {
             LuyenDanPanel.Instance.Alchermy.SetCurrentSelected(this);
         }
-        private void OnDestroy()
+
+        private void ApplyQualityTheme(Tier tier)
         {
-            btn.onClick.RemoveAllListeners();
+            var quality = LuyenDanPanel.Instance.Resources.Qualities.First(q => q.Tier == tier);
+            qualityBackground.sprite = quality.Background;
+            qualityIconUp.sprite     = quality.IconUp;
+            itemNameText.color       = quality.Color;
         }
     }
 }

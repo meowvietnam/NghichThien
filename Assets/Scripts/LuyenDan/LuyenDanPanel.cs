@@ -25,13 +25,14 @@ namespace LuyenDan
         }
         [field: SerializeField] public LuyenDanResources Resources { get; private set; }
         [field: SerializeField] public Inventory.Inventory FurnaceInventory { get; private set; }
-        [field: SerializeField] public Inventory.Inventory HerbInventory { get; private set; }
+        [field: SerializeField] public HerbInventory HerbInventory { get; private set; }
         [field: SerializeField] public AddFurnace AddFurnace { get; private set; }
         [field: SerializeField] public Alchermy Alchermy { get; private set; }
         [field: SerializeField] public RecipeListUI RecipeListUI { get; private set; }
         
         [SerializeField] public List<ItemRef> myFurnaces;
         [SerializeField] public List<ItemRef> myHerbs;
+        [SerializeField] public List<int> myRecipes;
 
         [Button]
         private void GenMyHerbs()
@@ -51,6 +52,8 @@ namespace LuyenDan
         {
             FurnaceInventory.Init(myFurnaces);
             HerbInventory.Init(myHerbs);
+            var datas = myRecipes.Select(x => Resources.FindRecipe(x)).ToList();
+            RecipeListUI.Init(datas);
         }
 
         public void SelectDanLu(FurnaceInventoryItemUI furnace)
@@ -58,6 +61,12 @@ namespace LuyenDan
             AddFurnace.SetActive(false);
             FurnaceInventory.Close();
             Alchermy.SelectDanLu(furnace);
+        }
+        public void OnLuyenDanCompleted()
+        {
+            Alchermy.OnLuyenDanCompleted();
+            HerbInventory.Refresh();
+            RecipeListUI.Refresh();
         }
     }
 }
