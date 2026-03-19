@@ -440,7 +440,7 @@ public class CombatManager : MonoBehaviour
                     {
                         Debug.Log("cos goi pointer up buff icon show tip");
                         
-                        buffInfor.SetText($"{BaseSkill.GetColoredText($"[{entry.ThanThong.nameItem}]", "green")}: {entry.ThanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level))}");
+                        buffInfor.SetText($"{BaseSkill.GetColoredText($"[{entry.ThanThong.nameItem}]", "#ffb143")}: {entry.ThanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level))}");
                         buffInfor.transform.SetParent(buffIcon.transform);
                         if (signX > 0)
                         {
@@ -473,6 +473,8 @@ public class CombatManager : MonoBehaviour
         {
             BaseSkill thanThong = (BaseSkill)data[1];
             int newValue = (int)data[2];
+            int level = (int)data[4];
+
             ItemUI buffIcon = null;
             ScrollRect scrollRect = null;
             if (characterCombat == char1)
@@ -519,7 +521,7 @@ public class CombatManager : MonoBehaviour
                     {
                         Debug.Log("cos goi pointer up buff icon show tip");
 
-                        buffInfor.SetText($"{BaseSkill.GetColoredText($"[{thanThong.nameItem}]", "green")}: {thanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level))}");
+                        buffInfor.SetText($"{BaseSkill.GetColoredText($"[{thanThong.nameItem}]", "#ffb143")}: {thanThong.GetDesc(level)}");
                         buffInfor.transform.SetParent(buffIcon.transform);
                         if (signX > 0)
                         {

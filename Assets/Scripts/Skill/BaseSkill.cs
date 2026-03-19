@@ -369,7 +369,7 @@ public abstract class BaseSkill : BaseItemData
             default:
                 break;
         }
-        return GetColoredText($"[{text}]", "green");
+        return GetColoredText($"[{text}]", "#ffb143");
 
     }
     public static string GetDescBuffOrDeBuff(EBuffAndDeBuff eKeyWord)
@@ -603,7 +603,7 @@ public abstract class BaseSkill : BaseItemData
             default:
                 break;
         }
-        return GetColoredText($"[{text}]","green");
+        return GetColoredText($"[{text}]", "#ffb143");
 
     }
     public static string GetDescKeyWord(EKeyWord eKeyWord)
@@ -702,7 +702,7 @@ public abstract class BaseSkill : BaseItemData
 
         }
        
-        return GetColoredText($"{text}","red");
+        return GetColoredText($"{text}", "#ffb143");
     }    
     public static string GetTextTypeSkill(ETypeSkill typeSkill)
     {

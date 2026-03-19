@@ -11,7 +11,8 @@ public class TrienTiChu : ThanThong
       
         HauKeVoLuc(caster);
         target.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.ADD_BUFF, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect2);
 
 
 
@@ -19,6 +20,25 @@ public class TrienTiChu : ThanThong
 
     }
     private void ObserverEffect(params object[] data)
+    {
+        CharacterCombat currentTurn = (CharacterCombat)data[0];
+        EBuffAndDeBuff type = (EBuffAndDeBuff)data[1];
+        int newValue = (int)data[2];
+        int currentValue = (int)data[3];
+
+        if (currentTurn == null) return;
+
+        if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is TrienTiChu) && newValue <= 0 && type == EBuffAndDeBuff.TrienNhieu)
+        {
+
+            currentTurn.AddBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, currentValue / 2);
+            // end turn giữ lại 1 nữa được xử lí ở character combat
+
+        }
+
+
+    }
+    private void ObserverEffect2(params object[] data)
     {
         CharacterCombat currentTurn = (CharacterCombat)data[0];
         if (currentTurn == null) return;
@@ -40,7 +60,7 @@ public class TrienTiChu : ThanThong
     }
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Đối thủ kết thúc hiệp, thì giữ lại một nửa số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)} của hắn";
+        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Đối thủ kết thúc hiệp, thì giữ lại một nửa số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}";
 
     }
 }

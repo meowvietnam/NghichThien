@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class NgoDaoCombat : NgoDao
 {
     public abstract void InitPosCallExecute(CharacterCombat caster);
-    public abstract void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target);
+    public abstract void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data);
 
 
     public virtual void ObserverEffect(params object[] data)
@@ -16,10 +16,11 @@ public abstract class NgoDaoCombat : NgoDao
 
         if (caster.ngoDaoCombats.Any(x => x.GetType() == this.GetType()))
         {
-            ExecuteNgoDao(caster, target);
+            ExecuteNgoDao(caster, target,data);
 
         }
 
 
     }
+    
 }

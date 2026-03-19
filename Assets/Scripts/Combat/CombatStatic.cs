@@ -28,7 +28,6 @@ public class CombatStatic : MonoBehaviour
     {
         if (charThieuDot.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt thieuDot))
         {
-            charThieuDot.TakeDameByStatic(charSender, new List<int> { (int)thieuDot }, false, new[] { BaseSkill.ETypeSkill.Hoa });
             var listBuff = charThieuDot.GetComponentsInChildren<BuffEffect>();
             foreach (var item in listBuff)
             {
@@ -38,6 +37,24 @@ public class CombatStatic : MonoBehaviour
                     break;
                 }
             }
+            if (charThieuDot.ngoDaoCombats.FirstOrDefault(x => x is DucHoa) is DucHoa ducHoa
+            && ducHoa.IsCanUse(charThieuDot))
+            {
+                // If DucHoa exists and can be used, heal the character
+                charThieuDot.Healing(thieuDot);
+            }
+            else
+            {
+                // Otherwise, apply damage
+                charThieuDot.TakeDameByStatic(
+                    charSender,
+                    new List<int> { (int)thieuDot },
+                    false,
+                    new[] { BaseSkill.ETypeSkill.Hoa }
+                );
+            }
+
+
             // Observer.Notify(EventList.GamePlay.TRUNG_DOC, charSender, charThieuDot);
         }
     }

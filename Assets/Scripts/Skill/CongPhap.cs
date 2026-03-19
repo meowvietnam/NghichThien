@@ -66,16 +66,8 @@ public abstract class CongPhap : BaseSkill
     }    
     protected virtual void RemoveCongPhap(CharacterCombat caster)
     {
-        var cp = caster.congPhapDynamic.FirstOrDefault(x =>
-            x.congPhap.GetType() == this.GetType()
-        );
-        var currentValue = caster.congPhapDynamic.Count(x =>
-            x.congPhap.GetType() == this.GetType()
-        );
-        Observer.Notify(EventList.Combat.ADD_BASESKILL, this, cp.congPhap, 0, currentValue);
-        caster.congPhapDynamic.RemoveAll(x =>
-            x.congPhap.GetType() == this.GetType()
-        );
+       caster.RemoveCPDynamic(this);
+       
 
     }
     public virtual int CurrentLevelCongPhapInCombat(CharacterCombat caster)

@@ -48,10 +48,15 @@ public abstract class ThanThong : BaseSkill
     public static int GetIndexLevelThanThong(CharacterStats characterStatsCurrent)
     {
        
-        int indexLevel = GetLevelThanThong(characterStatsCurrent) - 1;
+        int indexLevel = GetDaiCanhGioi(characterStatsCurrent) - 1;
         return indexLevel;
     }
-    public static int GetLevelThanThong(CharacterStats characterStatsCurrent)
+    public static int GetDaiCanhGioi(CharacterCombat caster)
+    {
+        int daiCanhGioi = GetDaiCanhGioi(caster.characterStatsTemp);
+        return daiCanhGioi;
+    }
+    public static int GetDaiCanhGioi(CharacterStats characterStatsCurrent)
     {
         int level = characterStatsCurrent.level;
         int daiCanhGioi = GetDaiCanhGioi(level);

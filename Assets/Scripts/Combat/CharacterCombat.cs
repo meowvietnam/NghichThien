@@ -49,6 +49,8 @@ public class CharacterCombat : MonoBehaviour
     public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill = new List<LinhKhiTieuTan>();
     public List<ThanThong> specialThanThongImpactAfterPlaySkill = new List<ThanThong>();
     public List<NgoDaoCombat> ngoDaoCombats = new List<NgoDaoCombat>();
+    public List<NgoDaoCombat> ngoDaoCombatsDynamic = new List<NgoDaoCombat>();
+
     public List<AmKinhEntry> listAmKinhTT = new List<AmKinhEntry>();
     [System.Serializable]
     public class AmKinhEntry
@@ -80,7 +82,7 @@ public class CharacterCombat : MonoBehaviour
         specialThanThongImpactAfterPlaySkill.Add(thanThong);
         int newValue = currentValue+1;
 
-        Observer.Notify(EventList.Combat.ADD_BASESKILL,this, thanThong, newValue,currentValue);
+        Observer.Notify(EventList.Combat.ADD_BASESKILL,this, thanThong, newValue,currentValue , ThanThong.GetDaiCanhGioi(this));
 
         // call observer event add UI 
 
@@ -92,7 +94,7 @@ public class CharacterCombat : MonoBehaviour
         int currentValue = specialThanThongImpactAfterPlaySkill.Count(item => item.GetType() == typeToRemove);
         // Xóa tất cả các item có cùng Type
         specialThanThongImpactAfterPlaySkill.RemoveAll(item => item.GetType() == typeToRemove);
-        Observer.Notify(EventList.Combat.ADD_BASESKILL,this, thanThong, 0, currentValue);
+        Observer.Notify(EventList.Combat.ADD_BASESKILL,this, thanThong, 0, currentValue, ThanThong.GetDaiCanhGioi(this));
 
         // call observer event update UI
     }
@@ -107,7 +109,7 @@ public class CharacterCombat : MonoBehaviour
         specialThanThongImpactAfterPlaySkill.Remove(thanThongRemove);
         int newValue = currentValue - 1;
 
-        Observer.Notify(EventList.Combat.ADD_BASESKILL,this, thanThong, newValue,currentValue);
+        Observer.Notify(EventList.Combat.ADD_BASESKILL,this, thanThong, newValue,currentValue, ThanThong.GetDaiCanhGioi(this));
 
         // call observer event update UI
     }
@@ -118,9 +120,38 @@ public class CharacterCombat : MonoBehaviour
             int currentValue = congPhapDynamic.Count(x => x.congPhap == cp.congPhap);
             congPhapDynamic.Add(cp);
             int newValue = currentValue + 1;
-            Observer.Notify(EventList.Combat.ADD_BASESKILL, this, cp.congPhap, newValue, currentValue);
+            Observer.Notify(EventList.Combat.ADD_BASESKILL, this, cp.congPhap, newValue, currentValue, cp.level.Value);
 
         }
+
+    }
+    public void RemoveCPDynamic(CongPhap cp)
+    {
+        int currentValue = congPhapDynamic.Count(x => x.congPhap == cp);
+
+        congPhapDynamic.RemoveAll(x =>
+            x.congPhap == cp
+        );
+        Observer.Notify(EventList.Combat.ADD_BASESKILL, this, cp, 0, currentValue, 1);
+
+       
+
+    }
+    public void AddNgoDaoCombatDynamic(NgoDaoCombat nd, int count = 1)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            ngoDaoCombatsDynamic.Add(nd);
+           
+
+        }
+
+    }
+    public void RemoveNgoDaoCombatDynamic(NgoDaoCombat nd)
+    {
+        ngoDaoCombatsDynamic.RemoveAll(x =>
+           x == nd
+       );
 
     }
 
@@ -260,7 +291,7 @@ public class CharacterCombat : MonoBehaviour
     public SecureInt khiMa;
 
    
-    public Dictionary<BaseSkill, SecureInt> skillTichLuy = new Dictionary<BaseSkill, SecureInt>();
+    public Dictionary<BaseData, SecureInt> skillTichLuy = new Dictionary<BaseData, SecureInt>();
 
     public CharacterStats characterStatsBase; // khi end combat thì characterStatsBase sẽ lấy hp từ hp của stats Temp
     public CharacterStats characterStatsTemp;
@@ -301,13 +332,12 @@ public class CharacterCombat : MonoBehaviour
 
 
 
-    public bool IsSkillTichLuyCanUse(BaseSkill thanThong, SecureInt ValueNeedSave , SecureInt require )
+    public bool IsSkillTichLuyCanUse(BaseData thanThong, SecureInt ValueNeedSave , SecureInt require )
     {
         // 1. Tìm chính xác cái Key đang nằm trong Dictionary dựa trên điều kiện của bạn
         var key = skillTichLuy.Keys.FirstOrDefault(x =>
                     x != null &&
-                    x.GetType() == thanThong.GetType() &&
-                    x.eTypeSkill == thanThong.eTypeSkill
+                    x.GetType() == thanThong.GetType() 
                   );
 
         // 2. Nếu không tìm thấy Key phù hợp, trả về false ngay lập tức
@@ -740,6 +770,10 @@ public class CharacterCombat : MonoBehaviour
         }
        
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, 1);
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.GiamTonThuong, out SecureInt giamTonThuong))
+        {
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, giamTonThuong);
+        }
 
         thanThongUseThisComBat.Add(new List<PlaySkillData>());
         currentTurnDameTaked = 0;
@@ -765,10 +799,7 @@ public class CharacterCombat : MonoBehaviour
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, value);
         }
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.GiamTonThuong, out SecureInt giamTonThuong))
-        {
-            RemoveBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, giamTonThuong);
-        }
+        
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TriLieu, out SecureInt triLieu))
         {
             Healing(triLieu);
@@ -777,11 +808,7 @@ public class CharacterCombat : MonoBehaviour
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out SecureInt trienNhieu))
         {
 
-            if (specialThanThongImpactAfterPlaySkill.Any(x => x is TrienTiChu))
-            {
-                trienNhieu /= 2;
-                // end turn giữ lại 1 nữa được xử lí ở character combat
-            }
+            
 
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieu);
 
@@ -1130,6 +1157,12 @@ public class CharacterCombat : MonoBehaviour
     public virtual void Die()
     {
         StartAnimDie();
+    }
+
+    int dataHeal = 0;
+    public void AddDataHeal(int hp)
+    {
+        dataHeal += hp;
     }    
     public void Healing(int hp)
     {
@@ -1138,15 +1171,25 @@ public class CharacterCombat : MonoBehaviour
         // Tính toán hệ số giảm hồi phục (mỗi điểm phaThe giảm 50%)
         float reductionFactor = Mathf.Pow(0.5f, phaThe);
         int finalHpGain = Mathf.RoundToInt(hp * reductionFactor);
+        AddDataHeal(finalHpGain);
+        int currentValueHp = (int)characterStatsTemp.hp + dataHeal;
+        Observer.Notify(EventList.Combat.CHARACTER_HEALING, this, currentValueHp, dataHeal);
+        Healing();
+    }
+    public void Healing()
+    {
 
+        
         // Áp dụng vào chỉ số nhân vật
-        characterStatsTemp.hp += finalHpGain;
+        characterStatsTemp.hp += dataHeal;
+
+      
         characterStatsTemp.hp = Mathf.Clamp(characterStatsTemp.hp, 0, characterStatsTemp.hpMax);
 
         // Hiển thị hiệu ứng số nhảy (Nếu hồi phục > 0 thì mới hiện)
-        if (finalHpGain > 0)
+        if (dataHeal > 0)
         {
-            SetTextDameAnim($"+{finalHpGain}", Color.green);
+            SetTextDameAnim($"+{dataHeal}", Color.green);
         }
 
 
@@ -1159,8 +1202,8 @@ public class CharacterCombat : MonoBehaviour
                 break;
             }
         }
+        dataHeal = 0;
         Observer.Notify(EventList.Combat.CHARACTER_ADJUST_HP);
-
-    }
+    }    
 
 }
