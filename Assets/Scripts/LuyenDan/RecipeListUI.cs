@@ -12,6 +12,17 @@ namespace LuyenDan
         [SerializeField] private RecipeUI prefab;
         private List<RecipeUI> recipes = new List<RecipeUI>();
         [SerializeField] private GameObject tierSelection;
+        [SerializeField] private Text filterText;
+        private Dictionary<Tier, string> map = new()
+        {
+            {Tier.NhatPham, "Nhất phẩm"},
+            {Tier.NhiPham, "Nhị phẩm"},
+            {Tier.TamPham, "Tam phẩm"},
+            {Tier.TuPham, "Tứ phẩm"},
+            {Tier.NguPham, "Ngũ phẩm"},
+            {Tier.LucPham, "Lục phẩm"}
+        };
+        private const string allFilter = "Tất cả phẩm giai";
         public void Init(List<RecipeData> datas) 
         {
             foreach (var recipe in datas)
@@ -24,11 +35,20 @@ namespace LuyenDan
         }
         public void ShowAll()
         {
-           
+            filterText.text = allFilter;
+            foreach (var recipeUI in recipes)
+            {
+                recipeUI.SetActive(true);
+            }
         }
         public void Filter(Tier tier)
         {
-            
+            filterText.text = map[tier];
+            foreach (var recipeUI in recipes)
+            {
+                var active = recipeUI.Data.Tier == tier;
+                recipeUI.SetActive(active);
+            }
         }
         public void OpenTierSelection()
         {
