@@ -2096,15 +2096,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e8c4874381487fbbe75223a6c59539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.Ingredient
-  btn: {fileID: 323037768}
-  thisObject: {fileID: 323037763}
-  nullItem: {fileID: 1862655091}
-  hasItem: {fileID: 957698666}
-  icon: {fileID: 1313888469}
-  background: {fileID: 1976505036}
-  iconUp: {fileID: 504561665}
-  nameText: {fileID: 769777596}
-  hover: {fileID: 1900634099}
+  clickButton: {fileID: 323037768}
+  selfObject: {fileID: 323037763}
+  emptySlot: {fileID: 1862655091}
+  filledSlot: {fileID: 957698666}
+  itemIcon: {fileID: 1313888469}
+  qualityBackground: {fileID: 1976505036}
+  qualityIconUp: {fileID: 504561665}
+  itemNameText: {fileID: 769777596}
+  hoverHighlight: {fileID: 1900634099}
   countText: {fileID: 1448194820}
   propertyText: {fileID: 2089829885}
   herbType: 2
@@ -20343,16 +20343,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec719a6294774525a57101e7c9c7ff26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.Alchermy
-  thisObject: {fileID: 1509952108266353}
+  selfObject: {fileID: 1509952108266353}
   furnaceImage: {fileID: 114789254173761467}
   durabilityText: {fileID: 114291483882304765}
-  defaultFurnace: {fileID: 21300000, guid: 9b486d27dba5ae1418120b2c17981fac, type: 2}
-  <SelectNum>k__BackingField: {fileID: 224470199295152433}
+  defaultFurnaceSprite: {fileID: 21300000, guid: 9b486d27dba5ae1418120b2c17981fac,
+    type: 2}
   main1: {fileID: 224137990462551902}
   sub1: {fileID: 224707955042016906}
   sub2: {fileID: 323037767}
   primer: {fileID: 224587575005101334}
-  furnace: {fileID: 224629640651376879}
+  furnaceSlot: {fileID: 224629640651376879}
+  <SelectNum>k__BackingField: {fileID: 224470199295152433}
 --- !u!224 &224006000282878937
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21402,15 +21403,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e8c4874381487fbbe75223a6c59539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.Ingredient
-  btn: {fileID: 224137990462551903}
-  thisObject: {fileID: 1333815153824667}
-  nullItem: {fileID: 1413814894090027}
-  hasItem: {fileID: 1828889620839461}
-  icon: {fileID: 114139632216351340}
-  background: {fileID: 114765862362030200}
-  iconUp: {fileID: 114896518689312591}
-  nameText: {fileID: 114255836992240459}
-  hover: {fileID: 1321831694461007}
+  clickButton: {fileID: 224137990462551903}
+  selfObject: {fileID: 1333815153824667}
+  emptySlot: {fileID: 1413814894090027}
+  filledSlot: {fileID: 1828889620839461}
+  itemIcon: {fileID: 114139632216351340}
+  qualityBackground: {fileID: 114765862362030200}
+  qualityIconUp: {fileID: 114896518689312591}
+  itemNameText: {fileID: 114255836992240459}
+  hoverHighlight: {fileID: 1321831694461007}
   countText: {fileID: 114062643591809331}
   propertyText: {fileID: 114426141426973182}
   herbType: 1
@@ -23087,15 +23088,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e8c4874381487fbbe75223a6c59539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.Ingredient
-  btn: {fileID: 224587575005101333}
-  thisObject: {fileID: 1383644390259706}
-  nullItem: {fileID: 1895556082537335}
-  hasItem: {fileID: 1199447792662159}
-  icon: {fileID: 114380024587920445}
-  background: {fileID: 114609065484629690}
-  iconUp: {fileID: 114150168799440684}
-  nameText: {fileID: 114455123098951594}
-  hover: {fileID: 1771103852751092}
+  clickButton: {fileID: 224587575005101333}
+  selfObject: {fileID: 1383644390259706}
+  emptySlot: {fileID: 1895556082537335}
+  filledSlot: {fileID: 1199447792662159}
+  itemIcon: {fileID: 114380024587920445}
+  qualityBackground: {fileID: 114609065484629690}
+  qualityIconUp: {fileID: 114150168799440684}
+  itemNameText: {fileID: 114455123098951594}
+  hoverHighlight: {fileID: 1771103852751092}
   countText: {fileID: 114870615669473495}
   propertyText: {fileID: 0}
   herbType: 4
@@ -23229,15 +23230,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3537bd6e0d79415790117ca9ac9232a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.AlchermyFurnace
-  btn: {fileID: 224629640651376880}
-  thisObject: {fileID: 1820189920124721}
-  nullItem: {fileID: 1939865768211501}
-  hasItem: {fileID: 1505369096353614}
-  icon: {fileID: 114437508923983954}
-  background: {fileID: 114644995996346385}
-  iconUp: {fileID: 114825745873081102}
-  nameText: {fileID: 114698706025744057}
-  hover: {fileID: 1387455764330770}
+  clickButton: {fileID: 224629640651376880}
+  selfObject: {fileID: 1820189920124721}
+  emptySlot: {fileID: 1939865768211501}
+  filledSlot: {fileID: 1505369096353614}
+  itemIcon: {fileID: 114437508923983954}
+  qualityBackground: {fileID: 114644995996346385}
+  qualityIconUp: {fileID: 114825745873081102}
+  itemNameText: {fileID: 114698706025744057}
+  hoverHighlight: {fileID: 1387455764330770}
   durabilityText: {fileID: 114337411574946166}
 --- !u!114 &224629640651376880
 MonoBehaviour:
@@ -23558,15 +23559,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e8c4874381487fbbe75223a6c59539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LuyenDan.Ingredient
-  btn: {fileID: 224707955042016907}
-  thisObject: {fileID: 1046526271154919}
-  nullItem: {fileID: 1240897328190695}
-  hasItem: {fileID: 1898324081672589}
-  icon: {fileID: 114843844417092655}
-  background: {fileID: 114881103246730494}
-  iconUp: {fileID: 114665103712597861}
-  nameText: {fileID: 114424262398388580}
-  hover: {fileID: 1728600918217822}
+  clickButton: {fileID: 224707955042016907}
+  selfObject: {fileID: 1046526271154919}
+  emptySlot: {fileID: 1240897328190695}
+  filledSlot: {fileID: 1898324081672589}
+  itemIcon: {fileID: 114843844417092655}
+  qualityBackground: {fileID: 114881103246730494}
+  qualityIconUp: {fileID: 114665103712597861}
+  itemNameText: {fileID: 114424262398388580}
+  hoverHighlight: {fileID: 1728600918217822}
   countText: {fileID: 114563477267733419}
   propertyText: {fileID: 114353533832327439}
   herbType: 2

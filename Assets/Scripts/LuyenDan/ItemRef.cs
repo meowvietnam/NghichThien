@@ -15,7 +15,6 @@ namespace LuyenDan
         
         [field: SerializeField, ShowIf(nameof(IsFurnace))] public int Durability { get; private set; }
         public Action<int> OnCountChanged { get; set; }
-        public Action<int> OnDurabilityChanged { get; set; }
         public ItemRef() {}
         public ItemRef(int id, ItemType type, int count)
         {
@@ -32,7 +31,6 @@ namespace LuyenDan
         public void SetDurability(int durability)
         {
             Durability = durability;
-            OnDurabilityChanged?.Invoke(durability);
         }
         public bool IsFurnace()
         {

@@ -1,4 +1,3 @@
-using System;
 using LuyenDan.Inventory;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,63 +6,68 @@ namespace LuyenDan
 {
     public class Alchermy : MonoBehaviour
     {
-        [SerializeField] private GameObject thisObject;
+
+        [SerializeField] private GameObject selfObject;
         [SerializeField] private Image furnaceImage;
         [SerializeField] private Text durabilityText;
-        [SerializeField] private Sprite defaultFurnace;
-        [field: SerializeField] public SelectNum SelectNum { get; private set; }
-        private FurnaceInventoryItemUI currentSelectFurnace;
-        private AlchemyEntity currentSelected;
+        [SerializeField] private Sprite defaultFurnaceSprite;
+
         [SerializeField] private Ingredient main1;
         [SerializeField] private Ingredient sub1;
         [SerializeField] private Ingredient sub2;
         [SerializeField] private Ingredient primer;
-        [SerializeField] private AlchermyFurnace furnace;
+        [SerializeField] private AlchermyFurnace furnaceSlot;
+        [field: SerializeField] public SelectNum SelectNum { get; private set; }
+
+        private FurnaceInventoryItemUI selectedFurnace;
+        private AlchemyEntity pendingSelectionTarget;
+
+        public void SetCurrentSelected(AlchemyEntity target)
+        {
+            pendingSelectionTarget = target;
+        }
+
+        public void Select(InventoryItemUI item)
+        {
+            pendingSelectionTarget?.Select(item);
+        }
+
         public void SelectDanLu(FurnaceInventoryItemUI furnace)
         {
-            if (currentSelectFurnace != null)
-            {
-                currentSelectFurnace.ItemRef.OnDurabilityChanged -= SetDurability;
-            }
-            currentSelectFurnace = furnace;
-            thisObject.SetActive(true);
+            selectedFurnace = furnace;
+            selfObject.SetActive(true);
+
             if (furnace != null)
             {
                 furnaceImage.sprite = furnace.Data.BigIcon;
-                furnace.ItemRef.OnDurabilityChanged += SetDurability;
-                SetDurability(furnace.ItemRef.Durability);
+                SetDurabilityText(furnace.ItemRef.Durability);
             }
             else
             {
-                furnaceImage.sprite = defaultFurnace;
+                furnaceImage.sprite = defaultFurnaceSprite;
                 SetDurabilityText(0);
             }
-            this.furnace.Select(furnace);
+
+            furnaceSlot.Select(furnace);
+        }
+        public void OnLuyenDanCompleted()
+        {
+            if (selectedFurnace != null)
+                SetDurabilityText(selectedFurnace.ItemRef.Durability);
+
+            furnaceSlot.OnLuyenDanCompleted();
+            main1.OnLuyenDanCompleted();
+            sub1.OnLuyenDanCompleted();
+            sub2.OnLuyenDanCompleted();
+            primer.OnLuyenDanCompleted();
+
+            if (selectedFurnace != null && selectedFurnace.ItemRef.Durability <= 0)
+                SelectDanLu(null);
         }
 
         private void SetDurabilityText(int durability)
         {
             durabilityText.text = $"{durability}/100";
-        }
-        private void SetDurability(int durability)
-        {
-            var dur = Math.Clamp(durability,0, 100);
-            SetDurabilityText(dur);
-            if (dur <= 0)
-            {
-                SelectDanLu(null);
-            }
-        }
-        public void SetCurrentSelected(AlchemyEntity alchemyEntity)
-        {
-            currentSelected = alchemyEntity;
-        }
-        public void Select(InventoryItemUI item)
-        {
-            if (currentSelected != null)
-            {
-                currentSelected.Select(item);
-            }
         }
     }
 }
