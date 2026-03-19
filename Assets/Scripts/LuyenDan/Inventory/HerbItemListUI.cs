@@ -27,7 +27,7 @@ namespace LuyenDan.Inventory
                 .OrderBy(x => x.Data.Id);
             foreach (var item in sorted)
             {
-                var active = item.IsHasItem && item.Data.Tier == tier && item.Data.Is(currentFilterType);
+                var active = item.IsHasItem && item.Data.Tier == tier && item.Data.Is(currentFilterType) && item.ItemRef.Count > 0;
                 item.SetActive(active);
             }
         }
@@ -42,7 +42,7 @@ namespace LuyenDan.Inventory
                     .OrderBy(x => x.Data.Id);
                 foreach (var item in sorted)
                 {
-                    var active = item.IsHasItem && item.Data.Tier == currentFilterTier && item.Data.Is(currentFilterType);
+                    var active = item.IsHasItem && item.Data.Tier == currentFilterTier && item.Data.Is(currentFilterType) && item.ItemRef.Count > 0;
                     item.SetActive(active);
                 }
             }
@@ -54,7 +54,7 @@ namespace LuyenDan.Inventory
                     .ThenBy(x => x.Data.Id);
                 foreach (var item in sorted)
                 {
-                    var active = item.IsHasItem && item.Data.Is(currentFilterType);
+                    var active = item.IsHasItem && item.Data.Is(currentFilterType) && item.ItemRef.Count > 0;
                     item.SetActive(active);
                 }
             }
@@ -69,7 +69,7 @@ namespace LuyenDan.Inventory
                 .ThenBy(x => x.Data.Id);
             foreach (var item in sorted)
             {
-                var active = item.IsHasItem && item.Data.Is(currentFilterType);
+                var active = item.IsHasItem && item.Data.Is(currentFilterType)  && item.ItemRef.Count > 0;
                 item.SetActive(active);
             }
         }

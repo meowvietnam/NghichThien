@@ -1,7 +1,6 @@
 using LuyenDan.Inventory;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 namespace LuyenDan
@@ -20,7 +19,7 @@ namespace LuyenDan
             int delta = Count - newCount;
             Item.ItemRef.SetCount(Item.ItemRef.Count + delta);
             Count = newCount;
-            countText.text = newCount > 1 ? newCount.ToString() : string.Empty;
+            countText.text = newCount.ToString();
         }
 
         public override void Select(InventoryItemUI item)
@@ -33,16 +32,22 @@ namespace LuyenDan
             if (Item != item)
             {
                 ReturnCurrentItemToInventory();
-                Count = 0;
                 Item = item;
                 if (item == null)
                 {
-                    ClearSlot();
+                    SetData(null);
+                    UpdatePropertyText();
                     return;
                 }
             }
             else if (item == null)
             {
+                return;
+            }
+            if (count == 0)
+            {
+                ReturnCurrentItemToInventory();
+                ClearSlot();
                 return;
             }
             SetCount(count);
@@ -69,7 +74,6 @@ namespace LuyenDan
         public override void OnLuyenDanCompleted()
         {
             if (Item == null) return;
-
             bool inventoryEmpty = Item.ItemRef.Count <= 0;
             if (inventoryEmpty)
             {
@@ -92,6 +96,7 @@ namespace LuyenDan
         {
             if (Item == null) return;
             Item.ItemRef.SetCount(Item.ItemRef.Count + Count);
+            Count = 0;
         }
         private void ClearSlot()
         {

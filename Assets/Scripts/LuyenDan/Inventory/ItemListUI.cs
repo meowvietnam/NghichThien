@@ -15,7 +15,6 @@ namespace LuyenDan.Inventory
         public List<T> Items { get; private set;} = new List<T>();
         [SerializeField] private T prefab;
         [SerializeField] private RectTransform content;
-
         public override void Init(IEnumerable<ItemRef> datas)
         {
             foreach (var data in datas)
