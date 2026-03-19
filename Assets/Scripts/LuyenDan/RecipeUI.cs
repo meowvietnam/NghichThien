@@ -9,7 +9,7 @@ namespace LuyenDan
         [SerializeField] private Text recipeNameText;
         [SerializeField] private Toggle toggle;
         [SerializeField] private RectTransform thisTransform;
-        [SerializeField] private GameObject craftale;
+        [SerializeField] private GameObject[] craftales;
         [SerializeField] private Transform listTf;
         [SerializeField] private GameObject unselected;
         [SerializeField] private GameObject selected;
@@ -34,7 +34,10 @@ namespace LuyenDan
         }
         public void SetCraftable(bool active)
         {
-            craftale.SetActive(active);
+            foreach (var craftale in craftales)
+            {
+                craftale.SetActive(active);
+            }
         }
         
         private void SetSize(bool active)
@@ -60,6 +63,20 @@ namespace LuyenDan
             SetSize(active);
             unselected.SetActive(!active);
             selected.SetActive(active);
+        }
+        public void Refresh()
+        {
+            var myCraftable = false;
+            foreach (var recipe in recipes)
+            {
+                var canCraft = recipe.IsCraftable();
+                if (canCraft)
+                {
+                    myCraftable = true;
+                }
+                recipe.UpdateCraftale(canCraft);
+            }
+            SetCraftable(myCraftable);
         }
     }
 }

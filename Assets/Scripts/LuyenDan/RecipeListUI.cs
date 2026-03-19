@@ -11,13 +11,7 @@ namespace LuyenDan
         [SerializeField] private ToggleGroup toggleGroup;
         [SerializeField] private RecipeUI prefab;
         private List<RecipeUI> recipes = new List<RecipeUI>();
-        [SerializeField] private List<int> myRecipes = new List<int>();
         [SerializeField] private GameObject tierSelection;
-        private void Start()
-        {
-            var datas = myRecipes.Select(x => LuyenDanPanel.Instance.Resources.FindRecipe(x)).ToList();
-            Init(datas);
-        }
         public void Init(List<RecipeData> datas) 
         {
             foreach (var recipe in datas)
@@ -26,6 +20,7 @@ namespace LuyenDan
                 instance.Init(recipe,toggleGroup);
                 recipes.Add(instance);
             }
+            Refresh();
         }
         public void ShowAll()
         {
@@ -35,7 +30,6 @@ namespace LuyenDan
         {
             
         }
-
         public void OpenTierSelection()
         {
             tierSelection.SetActive(true);
@@ -44,6 +38,13 @@ namespace LuyenDan
         public void CloseTierSelection()
         {
             tierSelection.SetActive(false);
+        }
+        public void Refresh()
+        {
+            foreach (var recipeUI in recipes)
+            {
+                recipeUI.Refresh();
+            }
         }
     }
 }

@@ -42,7 +42,10 @@ namespace LuyenDan
                     return;
                 }
             }
-
+            else if (item == null)
+            {
+                return;
+            }
             SetCount(count);
             SetData(item.GetData());
         }
