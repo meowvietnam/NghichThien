@@ -19,25 +19,45 @@ namespace LuyenDan
         [SerializeField] private AlchermyFurnace furnaceSlot;
         [field: SerializeField] public SelectNum SelectNum { get; private set; }
         [SerializeField] private RefineButton refineButton;
-        private FurnaceInventoryItemUI selectedFurnace;
+        public FurnaceInventoryItemUI SelectedFurnace { get; private set; }
         private AlchemyEntity pendingSelectionTarget;
-
+        private InventoryItemUI pendingSelectionItem;
         public void SetCurrentSelected(AlchemyEntity target)
         {
             pendingSelectionTarget = target;
         }
-
+        //Event function
+        public void ConfirmSelected()
+        {
+            pendingSelectionTarget?.Select(pendingSelectionItem);
+            refineButton.UpdateCanRefine();
+        }
         public void Select(InventoryItemUI item)
         {
-            pendingSelectionTarget?.Select(item);
-            refineButton.UpdateCanRefine();
+            pendingSelectionItem = item;
+            var count = item.ItemRef.Count;
+            if (pendingSelectionTarget is Ingredient ingredient)
+            {
+                if (ingredient.Item == item)
+                {
+                    count += ingredient.Count;
+                    SelectNum.SetValue(ingredient.Count);
+                }
+                else
+                {
+                    SelectNum.SetValue(1);
+                }
+            }
+            SelectNum.SetMax(count);
+            var herb = LuyenDanPanel.Instance.Resources.FindHerb(item.ItemRef.Id);
+            SelectNum.SetText(herb.Name);
+            SelectNum.SetActive(true);
         }
 
         public void SelectDanLu(FurnaceInventoryItemUI furnace)
         {
-            selectedFurnace = furnace;
+            SelectedFurnace = furnace;
             selfObject.SetActive(true);
-
             if (furnace != null)
             {
                 furnaceImage.sprite = furnace.Data.BigIcon;
@@ -54,8 +74,8 @@ namespace LuyenDan
 
         public void OnLuyenDanCompleted()
         {
-            if (selectedFurnace != null)
-                SetDurabilityText(selectedFurnace.ItemRef.Durability);
+            if (SelectedFurnace != null)
+                SetDurabilityText(SelectedFurnace.ItemRef.Durability);
 
             furnaceSlot.OnLuyenDanCompleted();
             main1.OnLuyenDanCompleted();
@@ -63,7 +83,7 @@ namespace LuyenDan
             sub2.OnLuyenDanCompleted();
             primer.OnLuyenDanCompleted();
 
-            if (selectedFurnace != null && selectedFurnace.ItemRef.Durability <= 0)
+            if (SelectedFurnace != null && SelectedFurnace.ItemRef.Durability <= 0)
                 SelectDanLu(null);
             refineButton.UpdateCanRefine();
         }

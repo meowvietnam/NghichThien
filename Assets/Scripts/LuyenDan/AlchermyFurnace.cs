@@ -15,7 +15,6 @@ namespace LuyenDan
                     $"[AlchermyFurnace] Select nhận sai type: {item.GetType().Name}. Bỏ qua.");
                 return;
             }
-
             LuyenDanPanel.Instance.Alchermy.SelectDanLu(item as FurnaceInventoryItemUI);
         }
         public void Select(FurnaceInventoryItemUI item)
@@ -45,6 +44,7 @@ namespace LuyenDan
             var panel = LuyenDanPanel.Instance;
             panel.Alchermy.SetCurrentSelected(this);
             panel.FurnaceInventory.SetActive(true);
+            panel.FurnaceInventory.ItemListUI.NoFilter();
         }
         private void RefreshDurability(int value)
         {

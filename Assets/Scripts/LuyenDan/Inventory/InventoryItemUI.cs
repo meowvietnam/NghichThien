@@ -31,8 +31,9 @@ namespace LuyenDan.Inventory
         [TabGroup("Has Item")] 
         [SerializeField] private GameObject hover;
         private ItemRef itemRef;
+        [ShowInInspector, ReadOnly]
         public ItemRef ItemRef => itemRef;
-        public bool IsHasItem { get;private set; }
+        public bool IsHasItem { get; private set; }
         protected virtual void Init(IInventoryItemData data)
         {
             IsHasItem = data != null;
