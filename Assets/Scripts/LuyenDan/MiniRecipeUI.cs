@@ -25,7 +25,7 @@ namespace LuyenDan
             this.chuduoc.text = $"{chuduoc.Name}x{chuduocRef.Count}";
             RecipeData.Herbs[] phuduocRefs = { data.PhuDuoc1, data.PhuDuoc2 };
             var phuduocs = phuduocRefs
-                .Where(x => x != null && x.Id != 0)
+                .Where(x => x != null && !x.IsDefault())
                 .Select(x => new
                 {
                     PhuDuoc = r.FindHerb(x.Id),
@@ -70,7 +70,7 @@ namespace LuyenDan
 
         private bool IsSatisfied(RecipeData.Herbs herbs, List<ItemSnapshot> items)
         {
-            if (herbs == null || herbs.Id == 0)
+            if (herbs == null || herbs.IsDefault())
             {
                 return true;
             }

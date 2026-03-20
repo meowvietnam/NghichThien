@@ -136,5 +136,16 @@ namespace LuyenDan
             Ingredient[] v = {main1, sub1, sub2, primer};
             return v.Any(x => !x.IsEmpty);
         }
+
+        public void Refine()
+        {
+            var (data,recipe) = LuyenDanPanel.Instance.RecipeListUI.FindBestRecipe(main1, sub1, sub2, primer);
+            if (data == null)
+            {
+                Debug.Log("No recipe found");
+                return;
+            }
+            Debug.Log($"{data.LinhDan.Name}: {recipe != null}");
+        }
     }
 }

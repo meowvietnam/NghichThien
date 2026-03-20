@@ -20,7 +20,6 @@ namespace LuyenDan
         public void Select(FurnaceInventoryItemUI item)
         {
             Item = item;
-
             if (item != null)
             {
                 SetData(item.GetData());

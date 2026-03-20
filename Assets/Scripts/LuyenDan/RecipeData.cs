@@ -22,6 +22,11 @@ namespace LuyenDan
                 Count = count;
                 BaDuoc = baDuoc;
             }
+
+            public bool IsDefault()
+            {
+                return Id == 0;
+            }
         }
         [Serializable]
         public class Recipe
