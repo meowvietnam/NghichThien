@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LuyenDan.Inventory
 {
-    public interface IInventoryItemData
+    public interface IItemData
     {
         int Id { get; }
         Sprite Icon { get; }

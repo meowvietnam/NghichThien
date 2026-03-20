@@ -22,7 +22,13 @@ namespace LuyenDan
             Type = type;
             Count = count;
         }
-
+        public ItemRef(int id, ItemType type, int count, int durability)
+        {
+            Id = id;
+            Type = type;
+            Count = count;
+            Durability = durability;
+        }
         public void SetCount(int count)
         {
             Count = count;
@@ -38,19 +44,21 @@ namespace LuyenDan
         }
         public int ByteSize()
         {
-            return Id.ByteSize() + Type.ByteSize() + Count.ByteSize();
+            return Id.ByteSize() + Type.ByteSize() + Count.ByteSize() + Durability.ByteSize();
         }
         public void Serialize(IWriter writer)
         {
             writer.Write(Id);
             writer.Write(Type);
             writer.Write(Count);
+            writer.Write(Durability);
         }
         public void Deserialize(IReader reader, ref ItemRef value)
         {
             value.Id = reader.Read<int>();
             value.Type = reader.Read<ItemType>();
             value.Count = reader.Read<int>();
+            value.Durability = reader.Read<int>();
         }
     }
 }

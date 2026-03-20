@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CreateCharacter;
 using LuyenDan.Inventory;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -24,16 +25,17 @@ namespace LuyenDan
             }
         }
         [field: SerializeField] public LuyenDanResources Resources { get; private set; }
-        [field: SerializeField] public Inventory.Inventory FurnaceInventory { get; private set; }
+        [field: SerializeField] public FurnaceInventory FurnaceInventory { get; private set; }
         [field: SerializeField] public HerbInventory HerbInventory { get; private set; }
         [field: SerializeField] public AddFurnace AddFurnace { get; private set; }
         [field: SerializeField] public Alchermy Alchermy { get; private set; }
         [field: SerializeField] public RecipeListUI RecipeListUI { get; private set; }
+        [field: SerializeField] public AlchermyResult AlchermyResult { get; private set; }
+        [field: SerializeField] public ProgressBar ProgressBar { get; private set; }
         
-        [SerializeField] public List<ItemRef> myFurnaces;
-        [SerializeField] public List<ItemRef> myHerbs;
-        [SerializeField] public List<int> myRecipes;
-
+        [SerializeField] private List<FurnaceData> myFurnaces;
+        [SerializeField] private List<ItemRef> myHerbs;
+        [SerializeField] private List<int> myRecipes;
         [Button]
         private void GenMyHerbs()
         {
@@ -55,18 +57,27 @@ namespace LuyenDan
             var datas = myRecipes.Select(x => Resources.FindRecipe(x)).ToList();
             RecipeListUI.Init(datas);
         }
-
         public void SelectDanLu(FurnaceInventoryItemUI furnace)
         {
             AddFurnace.SetActive(false);
             FurnaceInventory.Close();
             Alchermy.SelectDanLu(furnace);
         }
-        public void OnLuyenDanCompleted()
+        public void OnLuyenDanCompleted(LuyenDanResult result)
         {
-            Alchermy.OnLuyenDanCompleted();
-            HerbInventory.Refresh();
-            RecipeListUI.Refresh();
+            if (result.Success)
+            {
+                Alchermy.OnLuyenDanCompleted(result.NewDurability);
+                HerbInventory.Refresh();
+                RecipeListUI.Refresh();
+                AlchermyResult.SetData(result.ItemRefs);
+                AlchermyResult.SetDescription(result.Message);
+                AlchermyResult.SetActive(true);
+            }
+            else
+            {
+                NotifyGroup.Instance.Show(result.Message);
+            }
         }
     }
 }

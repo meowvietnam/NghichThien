@@ -14,9 +14,8 @@ namespace LuyenDan.Inventory
         {
             closeButton.onClick.AddListener(Close);
         }
-        public virtual void Init(IEnumerable<ItemRef> data)
+        protected void InitFilterGroup()
         {
-            ItemListUI.Init(data);
             foreach (var filterGroup in filterGroups)
             {
                 filterGroup.Init();

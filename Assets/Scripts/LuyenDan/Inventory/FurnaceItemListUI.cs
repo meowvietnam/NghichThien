@@ -6,11 +6,10 @@ namespace LuyenDan.Inventory
     {
         public override void Filter(Tier tier)
         {
-            Debug.Log(tier);
             var selectedFurnace = LuyenDanPanel.Instance.Alchermy.SelectedFurnace;
             foreach (var item in Items)
             {
-                var active = item.IsHasItem && item.Tier == tier && item != selectedFurnace;
+                var active = item.IsHasItem && item.Tier == tier && item != selectedFurnace && item.ItemRef.Durability > 0;
                 item.SetActive(active);
             }
         }
@@ -19,7 +18,7 @@ namespace LuyenDan.Inventory
             var selectedFurnace = LuyenDanPanel.Instance.Alchermy.SelectedFurnace;
             foreach (var item in Items)
             {
-                item.SetActive(selectedFurnace != item);
+                item.SetActive(selectedFurnace != item && item.ItemRef.Durability > 0);
             }
         }
     }

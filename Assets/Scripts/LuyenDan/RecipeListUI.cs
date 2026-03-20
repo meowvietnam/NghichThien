@@ -46,9 +46,45 @@ namespace LuyenDan
             filterText.text = map[tier];
             foreach (var recipeUI in recipes)
             {
-                var active = recipeUI.Data.Tier == tier;
+                var active = recipeUI.Data.LinhDan.Tier == tier;
                 recipeUI.SetActive(active);
             }
+        }
+        public (RecipeData data, RecipeData.Recipe recipe) FindBestRecipe(Ingredient main1, Ingredient sub1, Ingredient sub2, Ingredient primer)
+        {
+            foreach (var recipeUI in recipes)
+            {
+                var data = recipeUI.Data;
+                if (data == null || data.Recipes == null) continue;
+
+                foreach (var recipe in data.Recipes)
+                {
+                    if (recipe == null) continue;
+
+                    if (!IsMatch(recipe.ChuDuoc, main1)) continue;
+                    if (!IsMatch(recipe.DuocDan, primer)) continue;
+
+                    bool matchSub1 = IsMatch(recipe.PhuDuoc1, sub1) && IsMatch(recipe.PhuDuoc2, sub2);
+                    bool matchSub2 = IsMatch(recipe.PhuDuoc1, sub2) && IsMatch(recipe.PhuDuoc2, sub1);
+
+                    if (matchSub1 || matchSub2)
+                    {
+                        return (data, recipe);
+                    }
+                }
+            }
+            return (null, null);
+        }
+
+        private bool IsMatch(RecipeData.Herbs herb, Ingredient ingredient)
+        {
+            bool herbEmpty = herb == null || herb.IsDefault();
+            bool ingEmpty = ingredient == null || ingredient.IsEmpty || ingredient.Count == 0;
+
+            if (herbEmpty && ingEmpty) return true;
+            if (herbEmpty || ingEmpty) return false;
+
+            return herb.Id == ingredient.Item.ItemRef.Id && herb.Count == ingredient.Count;
         }
         public void OpenTierSelection()
         {

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace LuyenDan
 {
     [Serializable]
-    public class HerbData : IInventoryItemData
+    public class HerbData : IItemData
     {
         [field: SerializeField] public int Id { get; private set; }
         [field: SerializeField] public Tier Tier { get; private set; }
@@ -17,7 +17,7 @@ namespace LuyenDan
         [field: SerializeField] public string ThuocDan { get; private set; }
         [field: SerializeField] public string Locations { get; private set; }
         [field: SerializeField] public string Description { get; private set; }
-        [field: SerializeField] public Sprite Icon { get; private set; }
+        [field: SerializeField, PreviewField(75)] public Sprite Icon { get; private set; }
 
         [ShowInInspector]
         public HerbType HerbType
