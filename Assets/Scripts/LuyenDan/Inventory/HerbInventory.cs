@@ -11,6 +11,7 @@ namespace LuyenDan.Inventory
         {
             ItemListUI.Init(data);
             ItemsSnapshot = data.Select(x => new ItemSnapshot(x.Id,x.Count)).ToList();
+            InitFilterGroup();
         }
 
         private List<HerbInventoryItemUI> HerbInventoryItemUIs => (ItemListUI as HerbItemListUI).Items;

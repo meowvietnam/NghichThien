@@ -39,7 +39,7 @@ namespace LuyenDan
             var request = CreateRequest();
             currentRequest = request;
             //Send to server
-            var result = new LuyenDanResult(true, "Luyện đan thành công", new List<ItemRef>() { new ItemRef(4010,ItemType.LinhDan,20) }, SelectedFurnace.ItemRef.Durability - 20);
+            var result = new LuyenDanResult(true, "Luyện đan thành công", new List<ItemRef> { new(4010,ItemType.LinhDan,20),new(4020,ItemType.LinhDan,12) }, SelectedFurnace.ItemRef.Durability - 20);
             LuyenDanPanel.Instance.OnLuyenDanCompleted(result);
         }
 
