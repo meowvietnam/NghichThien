@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using DG.Tweening;
 using LuyenDan.Inventory;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,6 +27,7 @@ namespace LuyenDan
         private AlchemyEntity pendingSelectionTarget;
         private InventoryItemUI pendingSelectionItem;
         private LuyenDanRequest currentRequest;
+        private string phedan = "Phế Đan";
         public void SetCurrentSelected(AlchemyEntity target)
         {
             pendingSelectionTarget = target;
@@ -39,8 +42,18 @@ namespace LuyenDan
             var request = CreateRequest();
             currentRequest = request;
             //Send to server
-            var result = new LuyenDanResult(true, "Luyện đan thành công", new List<ItemRef> { new(4010,ItemType.LinhDan,20),new(4020,ItemType.LinhDan,12) }, SelectedFurnace.ItemRef.Durability - 20);
-            LuyenDanPanel.Instance.OnLuyenDanCompleted(result);
+            var result = new LuyenDanResult(true,
+                "Luyện đan thành công",
+                new List<ItemRef> { new(4010,ItemType.LinhDan,20),new(4020,ItemType.LinhDan,12) },
+                SelectedFurnace.ItemRef.Durability - 20,
+                20);
+            var progress = LuyenDanPanel.Instance.ProgressBar;
+            progress.SetText("Đang tiến hành luyện đan...");
+            progress.DoShow(1.75f,0.2f,null);
+            DOVirtual.DelayedCall(3, () =>
+            {
+                progress.DoKill(() => LuyenDanPanel.Instance.OnLuyenDanCompleted(result));
+            });
         }
 
         private LuyenDanRequest CreateRequest()
@@ -72,8 +85,27 @@ namespace LuyenDan
             }
             SelectHerbNum.SetMax(count);
             var herb = LuyenDanPanel.Instance.Resources.FindHerb(item.ItemRef.Id);
-            SelectHerbNum.SetText(herb.Name);
+
+            void UpdateText()
+            {
+                var value = SelectHerbNum.GetValue();
+                var tier = herb.Tier;
+                var colorStr = GetColorHexByTier(tier);
+                var text = $"<b><color=#{colorStr}>{herb.Name}</color></b> <color=#00ff00>x{value}</color>";
+                SelectHerbNum.SetText(text);
+            }
+            SelectHerbNum.ValueChanged += (value) =>
+            {
+                UpdateText();
+            };
+            UpdateText();
             SelectHerbNum.SetActive(true);
+        }
+
+        private string GetColorHexByTier(Tier tier)
+        {
+            var quality = LuyenDanPanel.Instance.Resources.Qualities.FirstOrDefault(q => q.Tier == tier);
+            return quality != null ? ColorUtility.ToHtmlStringRGB(quality.Color) : "ffcc00";
         }
 
         public void SelectDanLu(FurnaceInventoryItemUI furnace)
@@ -214,11 +246,35 @@ namespace LuyenDan
             if (max == int.MaxValue || max < 1) max = 1;
 
             var (data,recipe) = LuyenDanPanel.Instance.RecipeListUI.FindBestRecipe(main1, sub1, sub2, primer);
-            string lindanName = data != null ? data.LinhDan.Name : "Phế Đan";
-
+            var hasData = data != null;
+            string linhdanName = string.Empty;
+            int baseDaysRequired = 0;
+            Tier linhdanTier = Tier.NhatPham;
+            if (hasData)
+            {
+                var linhdan = data.LinhDan;
+                linhdanName = linhdan.Name;
+                baseDaysRequired = (int)linhdan.Tier + 3;
+                linhdanTier = linhdan.Tier;
+            }
+            else
+            {
+                linhdanName = phedan;
+                baseDaysRequired = 3;
+            }
+            void UpdateText()
+            {
+                var value = SelectLinhDanNum.GetValue();
+                var colorStr = hasData ? GetColorHexByTier(linhdanTier) : "aaaaaa";
+                var builder = new StringBuilder($"<b><color=#{colorStr}>{linhdanName}</color></b> <color=#00ff00>x{value}</color>");
+                builder.AppendLine();
+                builder.Append($"<i><color=#aaaaaa>Tiêu hao</color> <color=#ff4444>{baseDaysRequired * value}</color> <color=#aaaaaa>ngày</color></i>");
+                SelectLinhDanNum.SetText(builder.ToString());
+            }
             SelectLinhDanNum.SetMax(max);
             SelectLinhDanNum.SetValue(1);
-            SelectLinhDanNum.SetText(lindanName);
+            UpdateText();
+            SelectLinhDanNum.ValueChanged += (value) => UpdateText();
             SelectLinhDanNum.SetActive(true);
         }
     }

@@ -9,13 +9,13 @@ namespace LuyenDan
     {
         [SerializeField] private Text text;
         [SerializeField] private GameObject selfObject;
-        private string mainText;
         [SerializeField] private Slider slider;
         [SerializeField] private Button reduceButton;
         [SerializeField] private Button increaseButton;
         [SerializeField] private Button confirm;
         [SerializeField] private Button back;
         [SerializeField] private UnityEvent confirmAction;
+        public event Action<int> ValueChanged;
         private void Start()
         {
             slider.onValueChanged.AddListener(OnValueChanged);
@@ -52,25 +52,25 @@ namespace LuyenDan
         public void SetActive(bool active)
         {
             selfObject.SetActive(active);
+            if (!active)
+            {
+                ValueChanged = null;
+            }
         }
         private void OnValueChanged(float value)
         {
-            UpdateText();
+            ValueChanged?.Invoke((int)value);
         }
         public void SetText(string text)
         {
-            mainText = text; 
-            UpdateText();
+            this.text.text = text;
         }
 
         public void SetMin(int min)
         {
             slider.minValue = min;
         }
-        private void UpdateText()
-        {
-            text.text = $"{mainText} x{GetValue()}";
-        }
+  
         public void SetMax(int max)
         {
             slider.maxValue = max;
@@ -88,6 +88,7 @@ namespace LuyenDan
             increaseButton.onClick.RemoveAllListeners();
             reduceButton.onClick.RemoveAllListeners();
             confirmAction = null;
+            ValueChanged = null;
         }
         public void SetValue(int value)
         {

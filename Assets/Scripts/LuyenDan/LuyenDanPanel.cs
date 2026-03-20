@@ -31,6 +31,7 @@ namespace LuyenDan
         [field: SerializeField] public Alchermy Alchermy { get; private set; }
         [field: SerializeField] public RecipeListUI RecipeListUI { get; private set; }
         [field: SerializeField] public AlchermyResult AlchermyResult { get; private set; }
+        [field: SerializeField] public ProgressBar ProgressBar { get; private set; }
         
         [SerializeField] private List<FurnaceData> myFurnaces;
         [SerializeField] private List<ItemRef> myHerbs;

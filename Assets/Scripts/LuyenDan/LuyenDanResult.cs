@@ -7,12 +7,13 @@ namespace LuyenDan
 {
     public class LuyenDanResult : IMemorySerializable<LuyenDanResult>
     {
-        public LuyenDanResult(bool success, string message, List<ItemRef> itemRefs, int newDurability)
+        public LuyenDanResult(bool success, string message, List<ItemRef> itemRefs, int newDurability,  int newThoNguyen)
         {
             Success = success;
             Message = message;
             ItemRefs = itemRefs;
             NewDurability = newDurability;
+            NewThoNguyen = newThoNguyen;
         }
 
         public LuyenDanResult()
@@ -22,10 +23,11 @@ namespace LuyenDan
         public bool Success { get; private set; }
         public string Message { get; private set; }
         public List<ItemRef> ItemRefs { get; private set; }
-        public int NewDurability { get; set; }
+        public int NewDurability { get; private set; }
+        public int NewThoNguyen { get; private set; }
         public int ByteSize()
         {
-            return Success.ByteSize() + Message.ByteSize() + ItemRefs.ByteSize() + NewDurability.ByteSize();
+            return Success.ByteSize() + Message.ByteSize() + ItemRefs.ByteSize() + NewDurability.ByteSize() + NewThoNguyen.ByteSize();
         }
         public void Serialize(IWriter writer)
         {
@@ -40,6 +42,7 @@ namespace LuyenDan
             value.Message = reader.Read();
             value.ItemRefs = reader.ReadArray<ItemRef>().ToList();
             value.NewDurability = reader.Read<int>();
+            value.NewThoNguyen = reader.Read<int>();
         }
     }
 }
