@@ -24,7 +24,7 @@ namespace LuyenDan
 
         public override void Select(InventoryItemUI item)
         {
-            int count = LuyenDanPanel.Instance.Alchermy.SelectNum.GetValue();
+            int count = LuyenDanPanel.Instance.Alchermy.SelectHerbNum.GetValue();
             Select(item, count);
         }
         public void Select(InventoryItemUI item, int count)

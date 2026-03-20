@@ -62,6 +62,11 @@ namespace LuyenDan
             mainText = text; 
             UpdateText();
         }
+
+        public void SetMin(int min)
+        {
+            slider.minValue = min;
+        }
         private void UpdateText()
         {
             text.text = $"{mainText} x{GetValue()}";

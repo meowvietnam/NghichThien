@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LuyenDan.Inventory;
+using Network;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -21,6 +22,10 @@ namespace LuyenDan
                 Id = id;
                 Count = count;
                 BaDuoc = baDuoc;
+            }
+
+            public Herbs()
+            {
             }
 
             public bool IsDefault()

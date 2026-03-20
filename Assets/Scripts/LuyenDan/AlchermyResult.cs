@@ -20,7 +20,7 @@ namespace LuyenDan
 
         private void OnOk()
         {
-            
+            SetActive(false);
         }
         private void OnDestroy()
         {
