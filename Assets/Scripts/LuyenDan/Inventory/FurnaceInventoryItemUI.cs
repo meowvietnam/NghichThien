@@ -6,7 +6,7 @@ namespace LuyenDan.Inventory
     {
         public TempFurnaceData Data { get; private set; }
         public Tier Tier => Data.Tier;
-        protected override void Init(IInventoryItemData data)
+        protected override void Init(IItemData data)
         {
             base.Init(data);
             Data = data as TempFurnaceData;
@@ -17,7 +17,7 @@ namespace LuyenDan.Inventory
             LuyenDanPanel.Instance.SelectDanLu(this);
         }
 
-        public override IInventoryItemData GetData()
+        public override IItemData GetData()
         {
             return Data;
         }

@@ -46,7 +46,7 @@ namespace LuyenDan
             filterText.text = map[tier];
             foreach (var recipeUI in recipes)
             {
-                var active = recipeUI.Data.Tier == tier;
+                var active = recipeUI.Data.LinhDan.Tier == tier;
                 recipeUI.SetActive(active);
             }
         }

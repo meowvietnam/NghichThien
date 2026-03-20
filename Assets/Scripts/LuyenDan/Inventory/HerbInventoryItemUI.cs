@@ -5,7 +5,7 @@ namespace LuyenDan.Inventory
     public class HerbInventoryItemUI : InventoryItemUI
     {
         public HerbData Data { get; private set; }
-        protected override void Init(IInventoryItemData data)
+        protected override void Init(IItemData data)
         {
             base.Init(data);
             Data = data as HerbData;
@@ -23,7 +23,7 @@ namespace LuyenDan.Inventory
             return Data.Is(type);
         }
 
-        public override IInventoryItemData GetData()
+        public override IItemData GetData()
         {
             return Data;
         }

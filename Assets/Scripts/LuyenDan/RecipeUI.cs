@@ -26,7 +26,7 @@ namespace LuyenDan
         public void Init(RecipeData data, ToggleGroup group)
         {
             this.data = data;
-            recipeNameText.text = data.Name;
+            recipeNameText.text = data.LinhDan.Name;
             toggle.onValueChanged.AddListener(OnValueChanged);
             foreach (var recipeData in data.Recipes)
             {

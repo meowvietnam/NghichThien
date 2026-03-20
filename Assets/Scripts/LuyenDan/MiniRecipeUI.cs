@@ -36,7 +36,7 @@ namespace LuyenDan
             {
                 Debug.Log("Null phuduoc");
             }
-            this.phuduoc.text = string.Join(", ", phuduocs.Select(x => $"{x.PhuDuoc.Name}x{x.Ref.Count}"));
+            phuduoc.text = string.Join(", ", phuduocs.Select(x => $"{x.PhuDuoc.Name}x{x.Ref.Count}"));
             var thuocdanRef = data.DuocDan;
             var thuocdan = r.FindHerb(thuocdanRef.Id);
             this.thuocdan.text = $"{thuocdan.Name}x{thuocdanRef.Count}";
@@ -70,7 +70,7 @@ namespace LuyenDan
 
         private bool IsSatisfied(RecipeData.Herbs herbs, List<ItemSnapshot> items)
         {
-            if (herbs == null)
+            if (herbs == null || herbs.Id == 0)
             {
                 return true;
             }

@@ -10,16 +10,16 @@ namespace LuyenDan
     {
 
         [TabGroup("Has Item")]
-        [SerializeField] private Text countText;
         [SerializeField] private Text propertyText;
         [SerializeField] private HerbType herbType;
         public int Count { get; private set; }
-        public void SetCount(int newCount)
+
+        protected override void SetCount(int count)
         {
-            int delta = Count - newCount;
+            int delta = Count - count;
             Item.ItemRef.SetCount(Item.ItemRef.Count + delta);
-            Count = newCount;
-            countText.text = newCount.ToString();
+            Count = count;
+            base.SetCount(count);
         }
 
         public override void Select(InventoryItemUI item)
@@ -90,7 +90,7 @@ namespace LuyenDan
             inventory.SetActive(true);
 
             var herbList = inventory.ItemListUI as HerbItemListUI;
-            herbList.Filter(herbType);
+            if (herbList != null) herbList.Filter(herbType);
         }
         private void ReturnCurrentItemToInventory()
         {
