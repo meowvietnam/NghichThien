@@ -8,45 +8,60 @@ namespace LuyenDan.Inventory
 {
     public class InventoryItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private GameObject thisObject;
+        [SerializeField] private GameObject selfObject;
         [TabGroup("Null Item")]
-        [SerializeField] private GameObject nullItem;
+        [SerializeField] private GameObject emptySlot;
         
         [TabGroup("Has Item")]
-        [SerializeField] private GameObject hasItem;
+        [SerializeField] private GameObject filledSlot;
         [TabGroup("Has Item")]
-        [SerializeField] private Image icon;
+        [SerializeField] private Image itemIcon;
         [TabGroup("Has Item")]
-        [SerializeField] private Image background;
+        [SerializeField] private Image qualityBackground;
         [TabGroup("Has Item")]
-        [SerializeField] private Image iconUp;
+        [SerializeField] private Image qualityIconUp;
         [TabGroup("Has Item")]
         [SerializeField] private Text countText;
         [TabGroup("Has Item")]
-        [SerializeField] private Text nameText;
+        [SerializeField] private Text itemNameText;
         [TabGroup("Has Item")]
         [SerializeField] private Button infoButton;
         [TabGroup("Has Item")]
         [SerializeField] private Button selectButton;
         [TabGroup("Has Item")] 
-        [SerializeField] private GameObject hover;
+        [SerializeField] private GameObject hoverHighlight;
         private ItemRef itemRef;
         [ShowInInspector, ReadOnly]
         public ItemRef ItemRef => itemRef;
         public bool IsHasItem { get; private set; }
+        private void OnValidate()
+        {
+            selfObject   = gameObject;
+        
+            var tf = selfObject.transform;
+            emptySlot  = tf.Find("Null").gameObject;
+            filledSlot = tf.Find("HasItem").gameObject;
+        
+            itemIcon          = filledSlot.transform.Find("IconMask/Icon").GetComponent<Image>();
+            qualityBackground = filledSlot.transform.Find("Quality").GetComponent<Image>();
+            qualityIconUp     = qualityBackground.transform.Find("QualityUp").GetComponent<Image>();
+            hoverHighlight    = tf.Find("HasItem/Selected").gameObject;
+            itemNameText      = filledSlot.transform.Find("NameMask/NameText").GetComponent<Text>();
+        }
+
         protected virtual void Init(IInventoryItemData data)
         {
             IsHasItem = data != null;
             if (!IsHasItem)
             {
-                nullItem.SetActive(true);
-                hasItem.SetActive(false);
+                emptySlot.SetActive(true);
+                filledSlot.SetActive(false);
                 return;
             }
-            nullItem.SetActive(false);
-            hasItem.SetActive(true);
-            icon.sprite = data.Icon;
-            nameText.text = data.Name;
+            emptySlot.SetActive(false);
+            filledSlot.SetActive(true);
+            itemIcon.sprite = data.Icon;
+            itemNameText.text = data.Name;
             var tier = data.Tier;
             SetTier(tier);
             selectButton.onClick.AddListener(OnSelected);
@@ -75,25 +90,18 @@ namespace LuyenDan.Inventory
         private void OnCountChanged(int count)
         {
             SetCount(count);
-            if (count <= 0)
-            {
-                SetActive(false);
-            }
-            else
-            {
-                SetActive(true);
-            }
+            SetActive(count > 0);
         }
         private void SetTier(Tier tier)
         {
             var quality = LuyenDanPanel.Instance.Resources.Qualities.First(x => x.Tier == tier);
-            background.sprite = quality.Background;
-            iconUp.sprite = quality.IconUp;
-            nameText.color = quality.Color;
+            qualityBackground.sprite = quality.Background;
+            qualityIconUp.sprite = quality.IconUp;
+            itemNameText.color = quality.Color;
         }
         public void SetActive(bool active)
         {
-            thisObject.SetActive(active);
+            selfObject.SetActive(active);
         }
         private void OnDestroy()
         {
@@ -105,12 +113,12 @@ namespace LuyenDan.Inventory
         }
         public void OnPointerEnter(PointerEventData eventData)
         {
-            hover.SetActive(true);
+            hoverHighlight.SetActive(true);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            hover.SetActive(false);
+            hoverHighlight.SetActive(false);
         }
 
         public virtual IInventoryItemData GetData()
