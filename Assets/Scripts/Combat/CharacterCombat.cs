@@ -36,9 +36,14 @@ public class CharacterCombat : MonoBehaviour
     [SerializeField]
     public List<CongPhapMono> congPhapDynamic = new List<CongPhapMono>();
     [SerializeField]
-    public SecureInt allDameTaked;
+    public SecureInt allDameTaked => listDameTaked.Sum(x=>x.Value);
     [SerializeField]
-    public SecureInt currentTurnDameTaked;
+    public SecureInt currentTurnDameTaked => listDameTaked.Count > 0 ? listDameTaked[^1] : null;
+    public SecureInt oldTurnDameTaked => listDameTaked.Count > 1 ? listDameTaked[^2] : null;
+
+    [SerializeField]
+    public List<SecureInt> listDameTaked;
+
     [SerializeField]
     public List<BaseSkill> skillVoHieuHoa;
     public void AddSkillVoHieuHoa(BaseSkill baseSkill)
@@ -193,7 +198,16 @@ public class CharacterCombat : MonoBehaviour
             AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, 1);
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemTam, 1);
         }
-        StartCoroutine(DelayFrame());
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnNac, out SecureInt anNac))
+        {
+           if(!(thanThong is ThucThanThu || thanThong is ThuHonThuat || thanThong is TinhThanThanNiemThe))
+           {
+                RemoveBuffAndDebuffCount(EBuffAndDeBuff.AnNac, 1);
+           }    
+
+        }
+
+       // StartCoroutine(DelayFrame());
         Debug.Log(this.thanThongCurrentUse.thanThong.name);
         Debug.Log(this.thanThongOldUse?.thanThong.name);
        
@@ -520,7 +534,7 @@ public class CharacterCombat : MonoBehaviour
     public SecureInt totalKhiRandom;
     public int CurrentLinhKhi => khiKim + khiMoc+khiThuy+khiHoa+khiTho+khiMa;
 
-    public int baseCountHapThuLinhKhi => CurrentLinhKhi>=totalKhi? totalKhiRandom - totalKhi : totalKhiRandom - CurrentLinhKhi;
+    public int baseCountHapThuLinhKhi => CurrentTurn != 1? totalKhiRandom - totalKhi : totalKhiRandom - CurrentLinhKhi;
     public SecureInt countHapThuLinhKhiNewTurn;
 
     private void InitTotalKhi()
@@ -776,7 +790,6 @@ public class CharacterCombat : MonoBehaviour
         }
 
         thanThongUseThisComBat.Add(new List<PlaySkillData>());
-        currentTurnDameTaked = 0;
     }
     public bool IsKietSuc()
     {
@@ -908,11 +921,8 @@ public class CharacterCombat : MonoBehaviour
             sender.TakeDameByStatic(this, new List<int> { hoaDiem }, false, new[] { BaseSkill.ETypeSkill.Hoa });
 
         }
+        listDameTaked[listDameTaked.Count - 1] += listNewDames.Sum();
 
-        foreach (var item in listNewDames)
-        {
-            currentTurnDameTaked += item;
-        }
         Observer.Notify(EventList.Combat.CACULATE_DAME_BY_THANTHONG, sender, this, listNewDames);
 
 
@@ -1087,7 +1097,6 @@ public class CharacterCombat : MonoBehaviour
         {
             StartAnimHit();
             SetTextDameAnim($"-{dame}", isDef ? Color.red : Color.purple);
-            allDameTaked += dame;
 
             if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HonLuc, out SecureInt honLuc))
             {

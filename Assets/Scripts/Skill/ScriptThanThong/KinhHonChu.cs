@@ -19,7 +19,7 @@ public class KinhHonChu : ThanThong , BaseSkill.ThanThuc
     public void ExecuteThanThuc(CharacterCombat caster, CharacterCombat target)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill, true);
+        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int> { dame },true, eTypeSkill);
     }
 
     public override string GetDesc(int level)

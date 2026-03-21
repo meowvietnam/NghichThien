@@ -1,3 +1,4 @@
+using AllMaps;
 using LongDH.LongDHModules;
 using Sirenix.OdinInspector;
 using System.Linq;
@@ -37,6 +38,7 @@ public class NgoDaoSlot : BaseBehaviour
 
         TabPanel.SetNgoDaoDiem();
         TabPanel.InitNgoDaoSlotCanLearn(TabPanel.dictBtnWithNgoDaos.ElementAt(TabPanel.indexThisPage).Value);
+        ngoDaoSO.Learn(Pool.Get<Player>().characterStatsBase);
 
     }
     [Button]

@@ -241,8 +241,9 @@ public class PlayerUICombat : BaseBehaviour
             var skill = fightSkills[s];
             Action actionHolder = new Action(() =>
             {
+                int daiCanhGioi = ThanThong.GetDaiCanhGioi(player.characterStatsTemp.level);
                 skillTip.SetPosition(new Vector3(skill.transform.position.x, skillTip.transform.position.y, skillTip.transform.position.z));
-                skillTip.ShowSkillTip(skill.ThanThongData.nameItem, skill.ThanThongData.GetDesc(ThanThong.GetDaiCanhGioi(player.characterStatsTemp.level)), skill.ThanThongData.GetTextTypeSkill(), skill.ThanThongData.GetRequireActive(player), skill.ThanThongData, player.characterStatsTemp.level);
+                skillTip.ShowSkillTip(skill.ThanThongData.nameItem,skill.ThanThongData is TranPhapTT tranPhapTT? tranPhapTT.GetDescTranPhap(player,daiCanhGioi) : skill.ThanThongData.GetDesc(daiCanhGioi), skill.ThanThongData.GetTextTypeSkill(), skill.ThanThongData.GetRequireActive(player), skill.ThanThongData, player.characterStatsTemp.level);
             });
             Action actionPointerUp = new Action(() =>
             {

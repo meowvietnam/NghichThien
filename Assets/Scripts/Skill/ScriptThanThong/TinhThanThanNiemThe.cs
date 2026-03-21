@@ -13,11 +13,7 @@ public class TinhThanThanNiemThe : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
-        if(caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnNac,out SecureInt anNac))
-        {
-            caster.AddBuffAndDebuffCount(EBuffAndDeBuff.AnNac, 1);
-        }    
-
+      
         var debuffKeys = caster.buffAndDebuffCount.Keys
                     .Where(key => BaseSkill.eDebuffs.Contains(key))
                     .ToList();

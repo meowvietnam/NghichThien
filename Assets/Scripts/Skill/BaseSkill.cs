@@ -743,7 +743,7 @@ public abstract class BaseSkill : BaseItemData
 
                 break;
             case ETypeSkill.Than:
-                text = "Thần";
+                text = "Thần Thức";
 
                 break;
             case ETypeSkill.DiHoa:

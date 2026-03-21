@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
-[CreateAssetMenu(fileName = nameof(NgoDao), menuName = "Ngộ Đạo/" + nameof(NgoDao))]
 public abstract class NgoDao : BaseData
 {
     [SerializeField] public int require;
     [SerializeField] public BaseSkill.ETypeSkill[] eTypeRequire;
 
+    public virtual void Learn(CharacterStats charStats)
+    {
 
+    }    
     public abstract string GetDes();
    
 }

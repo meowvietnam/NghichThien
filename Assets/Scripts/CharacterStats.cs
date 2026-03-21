@@ -42,7 +42,8 @@ public class CharacterStats
     public SecureInt[] thanThongOwner;
     public SecureInt[] thanThongEquip;
    
-    public DataSave[] congPhapOwner;
+    public DataSave[] congPhapOwner; // id và level
+
     // công pháp used
     // -1 hoặc là 0 là chưa trang bị
     public SecureInt donThuatUsed;
