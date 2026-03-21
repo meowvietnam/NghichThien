@@ -44,10 +44,9 @@ public class SecureInt
             Set(value);
         }
     }
-
     void Set(int value)
     {
-        int split = UnityEngine.Random.Range(-1000, 1000);
+        int split = Random.Range(-1000, 1000);
         int partA = split;
         int partB = value - split;
 

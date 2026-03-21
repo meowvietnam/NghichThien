@@ -7,13 +7,34 @@ namespace CreateCharacter.CharStats
         public override string GetValue(object value)
         {
             var val = Convert.ToInt32(value);
-            if (val >= 0)
+            var tamCanh = GameConfig.tamCanh;
+            if (val < 0)
             {
-                return $"Thần tĩnh khí an ({value})";
+                return $"{tamCanh[0]} ({value})";
+            }
+            else if(val <= 49)
+            {
+                return $"{tamCanh[1]} ({value})";
+            }
+            else if (val <= 199)
+            {
+                return $"{tamCanh[2]} ({value})";
+            }
+            else if (val <= 599)
+            {
+                return $"{tamCanh[3]} ({value})";
+            }
+            else if (val <= 999)
+            {
+                return $"{tamCanh[4]} ({value})";
+            }
+            else if (val <= 1999)
+            {
+                return $"{tamCanh[5]} ({value})";
             }
             else
             {
-                return $"Tâm phiền ý loạn ({value})";
+                return $"{tamCanh[6]} ({value})";
             }
         }
     }

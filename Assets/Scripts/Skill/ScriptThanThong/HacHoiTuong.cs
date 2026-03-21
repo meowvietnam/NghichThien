@@ -15,12 +15,7 @@ public class HacHoiTuong : ThanThong
         {
             Debug.Log("HacHoiTuong");
             Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, thanThongActive, new List<LinhKhiTieuTan>());
-
         }
-
-
-
-
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
@@ -32,6 +27,5 @@ public class HacHoiTuong : ThanThong
     public override string GetDesc(int level)
     {
         return $"Liên tục phóng thích X lần thần thông [Phi Châm Thuật] (X là số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cham)} bạn đang có)";
-
     }
 }
