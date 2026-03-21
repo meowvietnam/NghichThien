@@ -22,10 +22,11 @@ namespace LuyenDan
         [SerializeField] private Text chuduocDetail;
         [SerializeField] private Text phuduocDetail;
         public RecipeData Data => data;
+        public bool IsCraftable { get; private set; }
         public void Init(RecipeData data, ToggleGroup group)
         {
             this.data = data;
-            recipeNameText.text = data.Name;
+            recipeNameText.text = data.LinhDan.Name;
             toggle.onValueChanged.AddListener(OnValueChanged);
             foreach (var recipeData in data.Recipes)
             {
@@ -54,6 +55,7 @@ namespace LuyenDan
         }
         public void SetCraftable(bool active)
         {
+            IsCraftable = active;
             foreach (var craftale in craftales)
             {
                 craftale.SetActive(active);

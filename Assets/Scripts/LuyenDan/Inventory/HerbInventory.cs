@@ -7,10 +7,11 @@ namespace LuyenDan.Inventory
     public class HerbInventory : Inventory
     {
         public List<ItemSnapshot> ItemsSnapshot { get; private set; }
-        public override void Init(IEnumerable<ItemRef> data)
+        public void Init(IEnumerable<ItemRef> data)
         {
-            base.Init(data);
+            ItemListUI.Init(data);
             ItemsSnapshot = data.Select(x => new ItemSnapshot(x.Id,x.Count)).ToList();
+            InitFilterGroup();
         }
 
         private List<HerbInventoryItemUI> HerbInventoryItemUIs => (ItemListUI as HerbItemListUI).Items;

@@ -18,7 +18,7 @@ namespace LuyenDan
         }
         private void OnClick()
         {
-            
+            LuyenDanPanel.Instance.Alchermy.Refine();
         }
 
         private void OnDestroy()

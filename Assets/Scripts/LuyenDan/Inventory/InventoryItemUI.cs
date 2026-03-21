@@ -6,49 +6,39 @@ using UnityEngine.UI;
 
 namespace LuyenDan.Inventory
 {
-    public class InventoryItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class InventoryItemUI : BaseItemUI
     {
-        [SerializeField] private GameObject thisObject;
-        [TabGroup("Null Item")]
-        [SerializeField] private GameObject nullItem;
-        
-        [TabGroup("Has Item")]
-        [SerializeField] private GameObject hasItem;
-        [TabGroup("Has Item")]
-        [SerializeField] private Image icon;
-        [TabGroup("Has Item")]
-        [SerializeField] private Image background;
-        [TabGroup("Has Item")]
-        [SerializeField] private Image iconUp;
-        [TabGroup("Has Item")]
-        [SerializeField] private Text countText;
-        [TabGroup("Has Item")]
-        [SerializeField] private Text nameText;
         [TabGroup("Has Item")]
         [SerializeField] private Button infoButton;
         [TabGroup("Has Item")]
         [SerializeField] private Button selectButton;
-        [TabGroup("Has Item")] 
-        [SerializeField] private GameObject hover;
         private ItemRef itemRef;
+        [ShowInInspector, ReadOnly]
         public ItemRef ItemRef => itemRef;
-        public bool IsHasItem { get;private set; }
-        protected virtual void Init(IInventoryItemData data)
+        public bool IsHasItem { get; private set; }
+        // private void OnValidate()
+        // {
+        //     selfObject   = gameObject;
+        //
+        //     var tf = selfObject.transform;
+        //     emptySlot  = tf.Find("Null").gameObject;
+        //     filledSlot = tf.Find("HasItem").gameObject;
+        //
+        //     itemIcon          = filledSlot.transform.Find("IconMask/Icon").GetComponent<Image>();
+        //     qualityBackground = filledSlot.transform.Find("Quality").GetComponent<Image>();
+        //     qualityIconUp     = qualityBackground.transform.Find("QualityUp").GetComponent<Image>();
+        //     hoverHighlight    = tf.Find("HasItem/Selected").gameObject;
+        //     itemNameText      = filledSlot.transform.Find("NameMask/NameText").GetComponent<Text>();
+        // }
+
+        protected virtual void Init(IItemData data)
         {
             IsHasItem = data != null;
-            if (!IsHasItem)
+            SetData(data);
+            if (IsHasItem)
             {
-                nullItem.SetActive(true);
-                hasItem.SetActive(false);
-                return;
+                selectButton.onClick.AddListener(OnSelected);
             }
-            nullItem.SetActive(false);
-            hasItem.SetActive(true);
-            icon.sprite = data.Icon;
-            nameText.text = data.Name;
-            var tier = data.Tier;
-            SetTier(tier);
-            selectButton.onClick.AddListener(OnSelected);
         }
 
         public virtual void Init(ItemRef itemRef)
@@ -63,10 +53,6 @@ namespace LuyenDan.Inventory
             Init(data);
         }
 
-        private void SetCount(int count)
-        {
-            countText.text = count > 1 ? count.ToString() : "";
-        }
         protected virtual void OnSelected()
         {
             Debug.Log("OnSelected");
@@ -74,45 +60,18 @@ namespace LuyenDan.Inventory
         private void OnCountChanged(int count)
         {
             SetCount(count);
-            if (count <= 0)
-            {
-                SetActive(false);
-            }
-            else
-            {
-                SetActive(true);
-            }
-        }
-        private void SetTier(Tier tier)
-        {
-            var quality = LuyenDanPanel.Instance.Resources.Qualities.First(x => x.Tier == tier);
-            background.sprite = quality.Background;
-            iconUp.sprite = quality.IconUp;
-            nameText.color = quality.Color;
-        }
-        public void SetActive(bool active)
-        {
-            thisObject.SetActive(active);
+            SetActive(count > 0);
         }
         private void OnDestroy()
         {
-            if (IsHasItem)
+            if (IsHasItem && itemRef != null)
             {
                 itemRef.OnCountChanged -= OnCountChanged;
                 selectButton.onClick.RemoveListener(OnSelected);
             }
         }
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            hover.SetActive(true);
-        }
 
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            hover.SetActive(false);
-        }
-
-        public virtual IInventoryItemData GetData()
+        public virtual IItemData GetData()
         {
             return null;
         }

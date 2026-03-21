@@ -1,7 +1,6 @@
 using LuyenDan.Inventory;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 namespace LuyenDan
@@ -11,21 +10,21 @@ namespace LuyenDan
     {
 
         [TabGroup("Has Item")]
-        [SerializeField] private Text countText;
         [SerializeField] private Text propertyText;
         [SerializeField] private HerbType herbType;
         public int Count { get; private set; }
-        public void SetCount(int newCount)
+
+        protected override void SetCount(int count)
         {
-            int delta = Count - newCount;
+            int delta = Count - count;
             Item.ItemRef.SetCount(Item.ItemRef.Count + delta);
-            Count = newCount;
-            countText.text = newCount > 1 ? newCount.ToString() : string.Empty;
+            Count = count;
+            base.SetCount(count);
         }
 
         public override void Select(InventoryItemUI item)
         {
-            int count = LuyenDanPanel.Instance.Alchermy.SelectNum.GetValue();
+            int count = LuyenDanPanel.Instance.Alchermy.SelectHerbNum.GetValue();
             Select(item, count);
         }
         public void Select(InventoryItemUI item, int count)
@@ -33,16 +32,22 @@ namespace LuyenDan
             if (Item != item)
             {
                 ReturnCurrentItemToInventory();
-                Count = 0;
                 Item = item;
                 if (item == null)
                 {
-                    ClearSlot();
+                    SetData(null);
+                    UpdatePropertyText();
                     return;
                 }
             }
             else if (item == null)
             {
+                return;
+            }
+            if (count == 0)
+            {
+                ReturnCurrentItemToInventory();
+                ClearSlot();
                 return;
             }
             SetCount(count);
@@ -69,7 +74,6 @@ namespace LuyenDan
         public override void OnLuyenDanCompleted()
         {
             if (Item == null) return;
-
             bool inventoryEmpty = Item.ItemRef.Count <= 0;
             if (inventoryEmpty)
             {
@@ -86,12 +90,13 @@ namespace LuyenDan
             inventory.SetActive(true);
 
             var herbList = inventory.ItemListUI as HerbItemListUI;
-            herbList.Filter(herbType);
+            if (herbList != null) herbList.Filter(herbType);
         }
         private void ReturnCurrentItemToInventory()
         {
             if (Item == null) return;
             Item.ItemRef.SetCount(Item.ItemRef.Count + Count);
+            Count = 0;
         }
         private void ClearSlot()
         {
