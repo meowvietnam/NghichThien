@@ -82,7 +82,7 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
         progressHold.fillAmount = 1f;
         isHolder = true;
     }
-    public void OnPointerDown(PointerEventData eventData)
+    public virtual void OnPointerDown(PointerEventData eventData)
     {
         enumerator = StartCoroutine(IECheckHolder());
 
@@ -91,7 +91,6 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
     public virtual void OnPointerUp()
     {
         Debug.Log("cos goi pointer up item ui");
-        actionPointerUp?.Invoke();
         SetSelectHighlight(true);
 
     }
@@ -104,6 +103,7 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
                 StopCoroutine(enumerator);
             }    
             enumerator = null;
+            actionPointerUp?.Invoke();
             OnPointerUp();
         }
         else

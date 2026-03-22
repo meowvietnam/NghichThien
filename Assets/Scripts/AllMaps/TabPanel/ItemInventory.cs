@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ItemInventory : BaseItemUI
@@ -45,7 +46,18 @@ public class ItemInventory : BaseItemUI
             default:
                 break;
         }
-    }    
+    }
+    public override void OnPointerDown(PointerEventData eventData)
+    {
+        base.OnPointerDown(eventData);
+        SetSelectHighlight(true);
+
+    }
+    public override void OnPointerUp()
+    {
+        SetSelectHighlight(false);
+
+    }
     public void SetColorName(Color color)
     {
         textName.color = color;
