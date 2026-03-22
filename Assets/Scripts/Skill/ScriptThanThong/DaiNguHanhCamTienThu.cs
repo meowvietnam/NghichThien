@@ -11,7 +11,7 @@ public class DaiNguHanhCamTienThu : ThanThong
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Tạo thành {GetColoredText($"một nửa", "red")} của tổng lượng sát thương mà đối thủ đã phải chịu trong trận chiến này";
+        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Tạo thành {GetColoredText($"một nửa", "red")} của tổng lượng sát thương từ thần thông mà đối thủ đã phải chịu trong trận chiến này";
     }
 
 

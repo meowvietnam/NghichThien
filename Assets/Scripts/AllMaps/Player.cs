@@ -71,7 +71,17 @@ namespace AllMaps
                 {
                     101,20
 
-                }
+                },
+                congPhapOwner  = new CharacterStats.DataSave[]
+                {
+                    new CharacterStats.DataSave { id = 211, value = 1 },
+                    new CharacterStats.DataSave { id = 304, value = 2 },
+                    new CharacterStats.DataSave { id = 749, value = 2 },
+                    new CharacterStats.DataSave { id = 402, value = 2 },
+                    new CharacterStats.DataSave { id = 214, value = 2 },
+                    new CharacterStats.DataSave { id = 548, value = 2 },
+
+                },
             });
             Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
         }

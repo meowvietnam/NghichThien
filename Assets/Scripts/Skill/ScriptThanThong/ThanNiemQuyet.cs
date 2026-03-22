@@ -31,7 +31,7 @@ public class ThanNiemQuyet : ThanThong, BaseSkill.ThanThuc
         int dame = remainThanThuc * buffValues[GetIndexLevelThanThong(caster)];
 
         Debug.Log("dame thần thức "+ dame);
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill, true);
+        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int> { dame }, true, eTypeSkill);
     }
 
     public override string GetDesc(int level)

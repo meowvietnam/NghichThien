@@ -145,7 +145,7 @@ public class CombatManager : MonoBehaviour
             tocDoBay = 20,
             thoNguyen = 1000,
             thanThuc = 50,
-            thanThongEquip = new SecureInt[] { 874, 527, 417}
+            thanThongEquip = new SecureInt[] { 802, 803, 804}
             
 
         });
@@ -627,6 +627,9 @@ public class CombatManager : MonoBehaviour
     [Button]
     public void NewTurn()
     {
+        currentTurn.listDameTaked.Add(0);
+        targetTurn.listDameTaked.Add(0);
+
         CombatStatic.QuyTon(currentTurn,targetTurn);
         CombatStatic.SucThe(currentTurn, targetTurn);
         CombatStatic.ThieuDot(targetTurn, currentTurn);

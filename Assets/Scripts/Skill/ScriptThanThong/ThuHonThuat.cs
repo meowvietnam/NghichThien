@@ -12,10 +12,7 @@ public class ThuHonThuat : ThanThong
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
-        if (caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnNac, out SecureInt anNac))
-        {
-            caster.AddBuffAndDebuffCount(EBuffAndDeBuff.AnNac, 1);
-        }
+       
 
     }
 

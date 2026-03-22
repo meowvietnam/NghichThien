@@ -14,10 +14,7 @@ public class ThucThanThu : ThanThong, BaseSkill.ThanThuc
     };
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if (caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnNac, out SecureInt anNac))
-        {
-            caster.AddBuffAndDebuffCount(EBuffAndDeBuff.AnNac, 1);
-        }
+       
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
     }
