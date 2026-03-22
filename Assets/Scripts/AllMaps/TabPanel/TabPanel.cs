@@ -9,11 +9,25 @@ using UnityEngine.UI;
 
 public class TabPanel : PanelGroup
 {
+    public enum ETypePanel { 
+        
+        None,
+        ThuocTinh,
+        NgoDao,
+        CongPhap,
+        ThanThong,
+        VatPham,
+        HeThong,
+    
+    
+    }
+
     [System.Serializable]
     public class ButtonWithPanel
     {
         [SerializeField] public Button btn;
         [SerializeField] public GameObject panel;
+        [SerializeField] public ETypePanel typePanel;
 
 
     }
@@ -28,6 +42,8 @@ public class TabPanel : PanelGroup
         {
             SetEventButton(item.btn, () =>
             {
+                bag.gameObject.SetActive(false);
+
                 foreach (var item2 in btns)
                 {
                     item2.btn.gameObject.transform.GetChild(1).gameObject.SetActive(false);
@@ -35,6 +51,10 @@ public class TabPanel : PanelGroup
                 }
                 item.btn.gameObject.transform.GetChild(1).gameObject.SetActive(true);
                 item.panel.SetActive(true);
+                if(item.typePanel == ETypePanel.CongPhap)
+                {
+                    InitCongPhap();
+                }    
             });
         }
         Observer.AddObserver(EventList.GamePlay.UPDATE_PLAYER_STATS, UpdatePlayerStats);
@@ -385,5 +405,83 @@ public class TabPanel : PanelGroup
             // Optional: Handle the case where no resource is found (e.g., hide the tooltip)
             ngoDaoToolTip.gameObject.SetActive(false);
         }
+    }
+    [Header("--- Bag ---")]
+    [SerializeField] private GameObject bag;
+    [SerializeField] private GameObject prefab5Item;
+    [SerializeField] private Text moneyText;
+    [SerializeField] private Sprite[] spriteQualityFulls;
+    [SerializeField] private Sprite[] spriteFrames;
+    [SerializeField] private Color[] colorQualitys;
+    public void InitItemBag(int count, ref List<ItemInventory> listItemInventory)
+    {
+       
+            
+        if (count <= 0) return; // Không có item thì không làm gì cả
+
+        // Ví dụ: 3/5 = 0.6 -> làm tròn lên 1
+        // Ví dụ: 7/5 = 1.4 -> làm tròn lên 2
+        int spawnCount = Mathf.CeilToInt((float)count / 5);
+        for (int i = 0; i < prefab5Item.transform.parent.childCount; i++)
+        {
+            prefab5Item.transform.parent.GetChild(i).gameObject.SetActive(false);
+        }   
+        for (int i = 0; i < spawnCount; i++)
+        {
+            GameObject item5 = null;
+              
+            if (prefab5Item.transform.parent.childCount > 1 && i + 1 < prefab5Item.transform.parent.childCount) // vì cái đầu tiên là prefab
+            {
+                item5 = prefab5Item.transform.parent.GetChild(i+1).gameObject;
+            }
+            if(item5 == null)
+            {
+                item5 = Instantiate(prefab5Item, prefab5Item.transform.parent); // Spawn prefab vào vị trí mong muốn
+
+            }
+
+            item5.gameObject.SetActive(true);
+            for (int j = 0; j < item5.transform.childCount; j++)
+            {
+                listItemInventory.Add(item5.transform.GetChild(j).GetComponent<ItemInventory>());
+
+            }
+
+        }
+
+
+    }
+    //[Header("--- Công Pháp ---")]
+
+    public void InitCongPhap()
+    {
+        bag.gameObject.SetActive(true);
+        var Player = Pool.Get<Player>();
+        var GameConfig = Pool.Get<GameConfig>();
+        List<ItemInventory> itemInven = new List<ItemInventory>();
+        List<CongPhap> listCongPhapData = new List<CongPhap>();
+
+        foreach (var item in Player.characterStatsBase.congPhapOwner)
+        {
+            listCongPhapData.Add(GameConfig.GetCongPhapWithId(item.id));
+        }
+        InitItemBag(listCongPhapData.Count, ref itemInven);
+        for (int i = 0; i < itemInven.Count; i++)
+        {
+            BaseSkill data = null;
+            if(i<= listCongPhapData.Count-1)
+            {
+                data = listCongPhapData[i];
+            }
+            if(data != null)
+            {
+                itemInven[i].Init(data, spriteFrames[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
+                itemInven[i].SetColorName(colorQualitys[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
+
+            }
+            itemInven[i].InitInventory(ItemInventory.ETypeInventory.Skill);
+        }
+
     }    
+
 }

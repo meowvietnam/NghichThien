@@ -17,7 +17,11 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
     [SerializeField] protected BaseItemData itemData;
     [SerializeField] protected Action actionHolder;
     [SerializeField] protected Action actionPointerUp;
-
+    [SerializeField] protected Image selectHighLight;
+    public void SetSelectHighlight(bool isActive)
+    {
+        selectHighLight.gameObject.SetActive(isActive);
+    }
     public virtual void Init(BaseItemData itemData , Sprite frameSprite, Action actionHolder = null , Action actionPointerUp = null)
     {
         InitItemData(itemData, frameSprite);
@@ -56,10 +60,11 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
     public virtual void EventHolder()
     {
         actionHolder?.Invoke();
-        progressHold.gameObject.SetActive(false);   
+        progressHold?.gameObject.SetActive(false);   
     }    
     protected IEnumerator IECheckHolder()
     {
+        if (progressHold == null)  yield break;
         progressHold.transform.parent.gameObject.SetActive(true);
 
         isHolder = false;
@@ -80,18 +85,24 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         enumerator = StartCoroutine(IECheckHolder());
+
     }
 
     public virtual void OnPointerUp()
     {
         Debug.Log("cos goi pointer up item ui");
         actionPointerUp?.Invoke();
-    }    
+        SetSelectHighlight(true);
+
+    }
     public void OnPointerUp(PointerEventData eventData)
     {
         if(!isHolder)
         {
-            StopCoroutine(enumerator);
+            if(enumerator != null)
+            {
+                StopCoroutine(enumerator);
+            }    
             enumerator = null;
             OnPointerUp();
         }
@@ -99,7 +110,7 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
         {
             isHolder = false;
         }
-        progressHold.transform.parent.gameObject.SetActive(false);
+        progressHold?.transform.parent.gameObject.SetActive(false);
 
     }
 

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class FightSkillItem : BaseItemUI
 {
     [SerializeField] private Image recommentHighLight;
-    [SerializeField] private Image selectHighLight;
     [SerializeField] private Image maskCoolDown;
     [SerializeField] private Button btnShowInfor;
     [SerializeField] private Text cdText;
@@ -38,12 +37,8 @@ public class FightSkillItem : BaseItemUI
     {
         if (isLock) return;
         base.OnPointerUp();
-        SetSelectHighlight(true);
     }
-    public void SetSelectHighlight(bool isActive)
-    {
-        selectHighLight.gameObject.SetActive(isActive);
-    }
+    
     public void ShowRecommentHighlight(bool isActive)
     {
         recommentHighLight.gameObject.SetActive(isActive);
