@@ -4,7 +4,7 @@ using Network;
 using Network.Extensions;
 using UnityEngine;
 
-namespace  CreateCharacter.CharStats
+namespace CreateCharacter.CharStats
 {
     [Serializable]
     public class CharacterStats : IMemorySerializable<CharacterStats>
@@ -14,17 +14,29 @@ namespace  CreateCharacter.CharStats
         [field: SerializeField] public float Thuy { get; private set; }
         [field: SerializeField] public float Hoa { get; private set; }
         [field: SerializeField] public float Tho { get; private set; }
-        [field: SerializeField] public int KinhMach { get; private set; }
+        [field: SerializeField] public float Ma { get; private set; }
+        [field: SerializeField] public int TuChat { get; private set; }
         [field: SerializeField] public int NgoTinh { get; private set; }
         [field: SerializeField] public int ThanThuc { get; private set; }
         [field: SerializeField] public int TocDoBay { get; private set; }
         [field: SerializeField] public int LinhThach { get; private set; }
         [field: SerializeField] public int SinhMenh { get; private set; }
-        [field: SerializeField] public int HuyetKhi { get; private set; }
+        [field: SerializeField] public int ThoNguyen { get; private set; }
         [field: SerializeField] public int TamCanh { get; private set; }
         [field: SerializeField] public LinhCan LinhCan { get; private set; }
         [field: SerializeField] public Ability Ability { get; private set; }
-        private readonly Dictionary<StatType,Action<object>> onStatChanges = new();
+        [field: SerializeField] public int NgoDao { get; private set; }
+        [field: SerializeField] public int DanDoc { get; private set; }
+        [field: SerializeField] public int TuoiTac { get; private set; }
+        private readonly Dictionary<StatType, Action<object>> onStatChanges = new();
+        public CharacterStats()
+        {
+        
+        }
+        public CharacterStats(CharacterStats stats)
+        {
+            CopyFrom(stats);
+        }
         public void CopyFrom(CharacterStats stats)
         {
             Kim = stats.Kim;
@@ -32,22 +44,27 @@ namespace  CreateCharacter.CharStats
             Thuy = stats.Thuy;
             Hoa = stats.Hoa;
             Tho = stats.Tho;
-            KinhMach = stats.KinhMach;
+            Ma = stats.Ma;
+            TuChat = stats.TuChat;
             NgoTinh = stats.NgoTinh;
             ThanThuc = stats.ThanThuc;
             TocDoBay = stats.TocDoBay;
             LinhThach = stats.LinhThach;
             SinhMenh = stats.SinhMenh;
-            HuyetKhi = stats.HuyetKhi;
+            ThoNguyen = stats.ThoNguyen;
             TamCanh = stats.TamCanh;
             LinhCan = stats.LinhCan;
             Ability = stats.Ability;
+            NgoDao = stats.NgoDao;
+            DanDoc = stats.DanDoc;
+            TuoiTac = stats.TuoiTac;
             foreach (var onStatChange in onStatChanges)
             {
                 var value = GetValue(onStatChange.Key);
                 onStatChange.Value(value);
             }
         }
+
         public void RegisterEvent(StatType stat, Action<object> action)
         {
             if (!onStatChanges.TryAdd(stat, action))
@@ -55,6 +72,7 @@ namespace  CreateCharacter.CharStats
                 onStatChanges[stat] += action;
             }
         }
+
         private void Emit(StatType stat, object data)
         {
             if (onStatChanges.TryGetValue(stat, out var action))
@@ -62,10 +80,13 @@ namespace  CreateCharacter.CharStats
                 action(data);
             }
         }
+
+
         public void Apply(StatModifier modifier)
         {
             Apply(modifier.Type, modifier.Action, modifier.Value);
         }
+
         public void Apply(StatType type, Action action, float value)
         {
             if (type == StatType.None) return;
@@ -86,120 +107,114 @@ namespace  CreateCharacter.CharStats
                 SetValue(type, newValue);
             }
         }
+
         public object GetValue(StatType type)
         {
             switch (type)
             {
-                case StatType.Kim:
-                    return Kim;
-                case StatType.Moc:
-                    return Moc;
-                case StatType.Thuy:
-                    return Thuy;
-                case StatType.Hoa:
-                    return Hoa;
-                case StatType.Tho:
-                    return Tho;
-                case StatType.KinhMach:
-                    return KinhMach;
-                case StatType.NgoTinh:
-                    return NgoTinh;
-                case StatType.ThanThuc:
-                    return ThanThuc;
-                case StatType.TocDoBay:
-                    return TocDoBay;
-                case StatType.LinhThach:
-                    return LinhThach;
-                case StatType.SinhMenh:
-                    return SinhMenh;
-                case StatType.HuyetKhi:
-                    return HuyetKhi;
-                case StatType.TamCanh:
-                    return TamCanh;
-                case StatType.LinhCan:
-                    return LinhCan;
-                case StatType.Ability:
-                    return Ability;
-                default:
-                    return null;
+                case StatType.Kim: return Kim;
+                case StatType.Moc: return Moc;
+                case StatType.Thuy: return Thuy;
+                case StatType.Hoa: return Hoa;
+                case StatType.Tho: return Tho;
+                case StatType.Ma: return Ma;
+                case StatType.TuChat: return TuChat;
+                case StatType.NgoTinh: return NgoTinh;
+                case StatType.ThanThuc: return ThanThuc;
+                case StatType.TocDoBay: return TocDoBay;
+                case StatType.LinhThach: return LinhThach;
+                case StatType.SinhMenh: return SinhMenh;
+                case StatType.ThoNguyen: return ThoNguyen;
+                case StatType.TamCanh: return TamCanh;
+                case StatType.LinhCan: return LinhCan;
+                case StatType.Ability: return Ability;
+                case StatType.NgoDao: return NgoDao;
+                case StatType.DanDoc: return DanDoc;
+                case StatType.TuoiTac: return TuoiTac;
+                default: return null;
             }
         }
+
+        private void SetFloat(StatType type, float value)
+        {
+            switch (type)
+            {
+                case StatType.Kim: Kim = value; break;
+                case StatType.Moc: Moc = value; break;
+                case StatType.Thuy: Thuy = value; break;
+                case StatType.Hoa: Hoa = value; break;
+                case StatType.Tho: Tho = value; break;
+                case StatType.Ma: Ma = value; break;
+            }
+
+            Emit(type, value);
+        }
+
+        private void SetInt(StatType type, int value)
+        {
+            switch (type)
+            {
+                case StatType.TuChat: TuChat = value; break;
+                case StatType.NgoTinh: NgoTinh = value; break;
+                case StatType.ThanThuc: ThanThuc = value; break;
+                case StatType.TocDoBay: TocDoBay = value; break;
+                case StatType.LinhThach: LinhThach = value; break;
+                case StatType.SinhMenh: SinhMenh = value; break;
+                case StatType.ThoNguyen: ThoNguyen = value; break;
+                case StatType.TamCanh: TamCanh = value; break;
+                case StatType.NgoDao: NgoDao = value; break;
+                case StatType.DanDoc: DanDoc = value; break;
+                case StatType.TuoiTac: TuoiTac = value; break;
+            }
+
+            Emit(type, value);
+        }
+
         public void SetValue(StatType type, float value)
         {
-            if (type < StatType.KinhMach)
+            switch (type)
             {
-                switch (type)
-                {
-                    case StatType.Kim:
-                        Kim = value;
-                        break;
-                    case StatType.Moc:
-                        Moc = value;
-                        break;
-                    case StatType.Thuy:
-                        Thuy = value;
-                        break;
-                    case StatType.Hoa:
-                        Hoa = value;
-                        break;
-                    case StatType.Tho:
-                        Tho = value;
-                        break;
-                }
-                Emit(type, value);
-            }
-            else if (type <= StatType.TamCanh)
-            {
-                var valueInt = (int)value;
-                switch (type)
-                {
-                    case StatType.KinhMach:
-                        KinhMach = valueInt;
-                        break;
-                    case StatType.NgoTinh:
-                        NgoTinh = valueInt;
-                        break;
-                    case StatType.ThanThuc:
-                        ThanThuc = valueInt;
-                        break;
-                    case StatType.TocDoBay:
-                        TocDoBay = valueInt;
-                        break;
-                    case StatType.LinhThach:
-                        LinhThach = valueInt;
-                        break;
-                    case StatType.SinhMenh:
-                        SinhMenh = valueInt;
-                        break;
-                    case StatType.HuyetKhi:
-                        HuyetKhi = valueInt;
-                        break;
-                    case StatType.TamCanh:
-                        TamCanh = valueInt;
-                        break;
-                }
-                Emit(type, valueInt);
-            }
-            else if (type == StatType.LinhCan)
-            {
-                var valueInt = (int)value;
-                LinhCan = (LinhCan)valueInt;
-                Emit(type, LinhCan);
-            }
-            else if (type == StatType.Ability)
-            {
-                var valueInt = (int)value;
-                Ability = (Ability)valueInt;
-                Emit(type, Ability);
+                case StatType.Kim:
+                case StatType.Moc:
+                case StatType.Thuy:
+                case StatType.Hoa:
+                case StatType.Tho:
+                case StatType.Ma:
+                    SetFloat(type, value);
+                    break;
+                case StatType.TuChat:
+                case StatType.NgoTinh:
+                case StatType.ThanThuc:
+                case StatType.TocDoBay:
+                case StatType.LinhThach:
+                case StatType.SinhMenh:
+                case StatType.ThoNguyen:
+                case StatType.TamCanh:
+                case StatType.NgoDao:
+                case StatType.DanDoc:
+                case StatType.TuoiTac:
+                    SetInt(type, (int)value);
+                    break;
+                case StatType.LinhCan:
+                    LinhCan = (LinhCan)(int)value;
+                    Emit(type, LinhCan);
+                    break;
+                case StatType.Ability:
+                    Ability = (Ability)(int)value;
+                    Emit(type, Ability);
+                    break;
             }
         }
 
         public int ByteSize()
         {
-           return Kim.ByteSize() + Moc.ByteSize() + Thuy.ByteSize() + Hoa.ByteSize() + Tho.ByteSize() + KinhMach.ByteSize() + NgoTinh.ByteSize()
-               + ThanThuc.ByteSize() + TocDoBay.ByteSize() + LinhThach.ByteSize() + SinhMenh.ByteSize() + HuyetKhi.ByteSize() + TamCanh.ByteSize()
-               + LinhCan.ByteSize() + Ability.ByteSize();
+            return Kim.ByteSize() + Moc.ByteSize() + Thuy.ByteSize() + Hoa.ByteSize()
+                   + Tho.ByteSize() + Ma.ByteSize() + TuChat.ByteSize() + NgoTinh.ByteSize()
+                   + ThanThuc.ByteSize() + TocDoBay.ByteSize() + LinhThach.ByteSize() + SinhMenh.ByteSize()
+                   + ThoNguyen.ByteSize() + TamCanh.ByteSize() + LinhCan.ByteSize() + Ability.ByteSize()
+                   + NgoDao.ByteSize() + DanDoc.ByteSize() + TuoiTac.ByteSize();
         }
+
         public void Serialize(IWriter writer)
         {
             writer.Write(Kim);
@@ -207,17 +222,22 @@ namespace  CreateCharacter.CharStats
             writer.Write(Thuy);
             writer.Write(Hoa);
             writer.Write(Tho);
-            writer.Write(KinhMach);
+            writer.Write(Ma);
+            writer.Write(TuChat);
             writer.Write(NgoTinh);
             writer.Write(ThanThuc);
             writer.Write(TocDoBay);
             writer.Write(LinhThach);
             writer.Write(SinhMenh);
-            writer.Write(HuyetKhi);
+            writer.Write(ThoNguyen);
             writer.Write(TamCanh);
             writer.Write(LinhCan);
             writer.Write(Ability);
+            writer.Write(NgoDao);
+            writer.Write(DanDoc);
+            writer.Write(TuoiTac);
         }
+
         public void Deserialize(IReader reader, ref CharacterStats value)
         {
             value.Kim = reader.Read<float>();
@@ -225,16 +245,20 @@ namespace  CreateCharacter.CharStats
             value.Thuy = reader.Read<float>();
             value.Hoa = reader.Read<float>();
             value.Tho = reader.Read<float>();
-            value.KinhMach = reader.Read<int>();
+            value.Ma = reader.Read<float>();
+            value.TuChat = reader.Read<int>();
             value.NgoTinh = reader.Read<int>();
             value.ThanThuc = reader.Read<int>();
             value.TocDoBay = reader.Read<int>();
             value.LinhThach = reader.Read<int>();
             value.SinhMenh = reader.Read<int>();
-            value.HuyetKhi = reader.Read<int>();
+            value.ThoNguyen = reader.Read<int>();
             value.TamCanh = reader.Read<int>();
             value.LinhCan = reader.Read<LinhCan>();
             value.Ability = reader.Read<Ability>();
+            value.NgoDao = reader.Read<int>();
+            value.DanDoc = reader.Read<int>();
+            value.TuoiTac = reader.Read<int>();
         }
     }
 }

@@ -2053,28 +2053,34 @@ MonoBehaviour:
   setPlayerNamePanel: {fileID: 1360749558}
   createCharacterPanel: {fileID: 1632159927}
   userData:
+    <Id>k__BackingField: 0
     <CharacterDatas>k__BackingField: []
   <NewCharacter>k__BackingField:
     <Id>k__BackingField: 0
     <Gender>k__BackingField: 0
     <Name>k__BackingField: 
     <Level>k__BackingField: 1
+    <CurrentExp>k__BackingField: 0
     <Stats>k__BackingField:
       <Kim>k__BackingField: 0
       <Moc>k__BackingField: 0
       <Thuy>k__BackingField: 0
       <Hoa>k__BackingField: 0
       <Tho>k__BackingField: 0
-      <KinhMach>k__BackingField: 0
+      <Ma>k__BackingField: 0
+      <TuChat>k__BackingField: 0
       <NgoTinh>k__BackingField: 0
       <ThanThuc>k__BackingField: 0
       <TocDoBay>k__BackingField: 0
       <LinhThach>k__BackingField: 0
       <SinhMenh>k__BackingField: 0
-      <HuyetKhi>k__BackingField: 0
+      <ThoNguyen>k__BackingField: 0
       <TamCanh>k__BackingField: 0
       <LinhCan>k__BackingField: 0
       <Ability>k__BackingField: 0
+      <NgoDao>k__BackingField: 0
+      <DanDoc>k__BackingField: 0
+      <TuoiTac>k__BackingField: 0
 --- !u!4 &494252467
 Transform:
   m_ObjectHideFlags: 0
@@ -2918,7 +2924,7 @@ GameObject:
   - component: {fileID: 724578017}
   - component: {fileID: 724578020}
   m_Layer: 5
-  m_Name: HuyetKhi
+  m_Name: ThoNguyen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3673,21 +3679,25 @@ MonoBehaviour:
   description: {fileID: 579470665}
   thisTransform: {fileID: 959511771}
   orginalStats:
-    <Kim>k__BackingField: 0.2
-    <Moc>k__BackingField: 0.2
-    <Thuy>k__BackingField: 0.2
-    <Hoa>k__BackingField: 0.2
-    <Tho>k__BackingField: 0.2
-    <KinhMach>k__BackingField: 15
+    <Kim>k__BackingField: 20
+    <Moc>k__BackingField: 20
+    <Thuy>k__BackingField: 20
+    <Hoa>k__BackingField: 20
+    <Tho>k__BackingField: 20
+    <Ma>k__BackingField: 0
+    <TuChat>k__BackingField: 15
     <NgoTinh>k__BackingField: 15
     <ThanThuc>k__BackingField: 4
     <TocDoBay>k__BackingField: 4
     <LinhThach>k__BackingField: 100
     <SinhMenh>k__BackingField: 30
-    <HuyetKhi>k__BackingField: 100
+    <ThoNguyen>k__BackingField: 100
     <TamCanh>k__BackingField: 0
     <LinhCan>k__BackingField: 4
     <Ability>k__BackingField: 0
+    <NgoDao>k__BackingField: 0
+    <DanDoc>k__BackingField: 0
+    <TuoiTac>k__BackingField: 0
   originalMoney: 40
   currentInfos:
   - {fileID: 1943284686}
@@ -7739,7 +7749,7 @@ GameObject:
   - component: {fileID: 1943284684}
   - component: {fileID: 1943284686}
   m_Layer: 5
-  m_Name: KinhMach
+  m_Name: TuChat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

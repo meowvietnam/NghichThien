@@ -24,7 +24,6 @@ namespace CreateCharacter.CharStats
         {
             return value.ToString();
         }
-
         protected virtual Color GetColor(object value, object originalValue)
         {
             int t = 0;

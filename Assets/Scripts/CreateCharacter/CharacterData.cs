@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using Network;
 using Network.Extensions;
-using Newtonsoft.Json;
 using UnityEngine;
 
 namespace CreateCharacter
@@ -15,13 +14,34 @@ namespace CreateCharacter
         [field: SerializeField] public Gender Gender { get; set; }
         [field: SerializeField] public string Name { get; set; }
         [field: SerializeField] public int Level { get; set; } = 1;
+        [field: SerializeField] public int CurrentExp { get; set; }
         [field: SerializeField] public CharStats.CharacterStats Stats { get; set; } = new CharStats.CharacterStats();
         public Dictionary<string, string> Skins { get; set; }
         public Dictionary<string, Color> Colors { get; set; }
+
+        public CharacterData()
+        {
+            
+        }
+        public CharacterData(CharacterData clone)
+        {
+            Id = clone.Id;
+            Gender = clone.Gender;
+            Name = clone.Name;
+            Level = clone.Level;
+            CurrentExp = clone.CurrentExp;
+            Stats.CopyFrom(clone.Stats);
+            Skins = new(clone.Skins);
+            Colors = new(clone.Colors);
+        }
         public int ByteSize()
         {
-            return Id.ByteSize() + Gender.ByteSize() + Name.ByteSize() + Level.ByteSize() 
-                   + Stats.ByteSize() + Skins.Keys.ByteSize() + Skins.Values.ByteSize() 
+            return Id.ByteSize() 
+                   + Gender.ByteSize() + Name.ByteSize() 
+                   + Level.ByteSize() 
+                   + CurrentExp.ByteSize()
+                   + Stats.ByteSize() 
+                   + Skins.Keys.ByteSize() + Skins.Values.ByteSize() 
                    + Colors.Keys.ByteSize() + Colors.Values.ByteSize();
         }
 
@@ -31,6 +51,7 @@ namespace CreateCharacter
             writer.Write(Gender);
             writer.Write(Name);
             writer.Write(Level);
+            writer.Write(CurrentExp);
             writer.Write(Stats);
             writer.WriteArray(Skins.Keys);
             writer.WriteArray(Skins.Values);
@@ -44,6 +65,7 @@ namespace CreateCharacter
             value.Gender = reader.Read<Gender>();
             value.Name = reader.Read();
             value.Level = reader.Read<int>();
+            value.CurrentExp = reader.Read<int>();
             value.Stats = reader.Read<CharStats.CharacterStats>();
             value.Skins = DictionaryUtils.CreateDictionary(reader.ReadArray(), reader.ReadArray());
             value.Colors = DictionaryUtils.CreateDictionary(reader.ReadArray(), reader.ReadArray<Color>());

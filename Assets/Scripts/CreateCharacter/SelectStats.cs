@@ -1,11 +1,16 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using CreateCharacter.CharStats;
 using CreateCharacter.States;
 using DG.Tweening;
+using Network;
+using Network.Extensions;
+using Newtonsoft.Json;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace CreateCharacter
 {
     public class SelectStats : MonoBehaviour
@@ -20,10 +25,12 @@ namespace CreateCharacter
 
         public CharStats.CharacterStats CharacterStats => CreateCharacterSystem.Instance.NewCharacter.Stats;
         private int money;
+
         [SerializeField] private List<CurrentInfo> currentInfos;
-        private Dictionary<int, Dictionary<int, List<StatModifier>>> statModifiersDictionary = new();
+
+        // private Dictionary<int, Dictionary<int, List<StatModifier>>> statModifiersDictionary = new();
         [SerializeField] private Text remainingText;
-        private List<Step> steps = new List<Step>();
+        private List<Step> steps = new ();
         private Step currentStep;
         private int currentStepIndex = -1;
         private CreateCharacterPanel createCharacterPanel;
@@ -32,6 +39,7 @@ namespace CreateCharacter
         [SerializeField] private Sprite finalSprite;
         private List<SelectionModel> selectionModels = new List<SelectionModel>();
         private List<StatModifier> statModifiers = new List<StatModifier>();
+
         public void Init(CreateCharacterPanel createCharacterPanel)
         {
             this.createCharacterPanel = createCharacterPanel;
@@ -39,15 +47,17 @@ namespace CreateCharacter
             SetMoney(originalMoney);
             foreach (var stepData in stepConfig.StepDatas)
             {
-                var step = stepData.CreateUI(this,thisTransform);
+                var step = stepData.CreateUI(this, thisTransform);
                 step.SetActive(false);
                 steps.Add(step);
             }
+
             foreach (var currentInfo in currentInfos)
             {
                 currentInfo.Init(this);
             }
         }
+
         public void FirstStep()
         {
             currentStep?.SetActive(false);
@@ -55,6 +65,76 @@ namespace CreateCharacter
             currentStep = steps[currentStepIndex];
             currentStep.OnEnter();
         }
+
+        public object Test()
+        {
+            var res = new List<object>();
+            foreach (var selectionModel in selectionModels)
+            {
+                var modelId = selectionModel.Id;
+                var step = stepConfig.StepDatas.FirstOrDefault(s => s.Id == modelId);
+                var gs = new List<object>();
+                res.Add(new
+                {
+                    Id = modelId,
+                    Step = step.Title,
+                    Groups = gs
+                });
+                if (step is SelectionStepData s)
+                {
+                    foreach (var selectionModelGroup in selectionModel.Groups)
+                    {
+                        var groupId = selectionModelGroup.Id;
+                        var group = s.Groups.FirstOrDefault(g => g.Id == groupId);
+                        var items = new List<object>();
+                        var g = new
+                        {
+                            Id = groupId,
+                            Items = items
+                        };
+                        gs.Add(g);
+                        foreach (var selectionItem in selectionModelGroup.Items)
+                        {
+                            var item = group.StatOptions.FirstOrDefault(x => x.Id == selectionItem);
+                            items.Add(new
+                            {
+                                Id = selectionItem,
+                                Name = item.Name
+                            });
+                        }
+                    }
+                }
+                else if (step is ElementalStepData e)
+                {
+                    foreach (var selectionModelGroup in selectionModel.Groups)
+                    {
+                        var groupId = selectionModelGroup.Id;
+                        if (e.GroupId == groupId)
+                        {
+                            var items = new List<object>();
+                            var g = new
+                            {
+                                Id = groupId,
+                                Items = items
+                            };
+                            gs.Add(g);
+                            foreach (var selectionItem in selectionModelGroup.Items)
+                            {
+                                var item = e.Elementals.FirstOrDefault(x => x.Id == selectionItem);
+                                items.Add(new
+                                {
+                                    Id = selectionItem,
+                                    Name = item.Name
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+
+            return res;
+        }
+
         public void NextStep()
         {
             if (currentStepIndex == steps.Count - 1)
@@ -64,25 +144,38 @@ namespace CreateCharacter
                     NotifyGroup.Instance.Show("Điểm thiên phú không thể là số âm");
                     return;
                 }
+
                 Final();
                 return;
             }
+
             currentStep?.SetActive(false);
             currentStepIndex++;
             if (currentStepIndex == steps.Count - 1)
             {
                 nextImage.sprite = finalSprite;
             }
+
             currentStep = steps[currentStepIndex];
             currentStep.OnEnter();
         }
-
+        [Button]
         private void Final()
         {
-            var c = CreateCharacterSystem.Instance;
-            c.AddCharacterData(c.NewCharacter);
+            // var c = CreateCharacterSystem.Instance;
+            // c.AddCharacterData(c.NewCharacter);
             NotifyGroup.Instance.Show("Tạo nhân vật thành công");
+            var writer = new Writer(selectionModels.ByteSize());
+            writer.WriteArray(selectionModels);
+            var exportDir = Path.Combine(Application.dataPath, "Exports");
+            if (!Directory.Exists(exportDir))
+            {
+                Directory.CreateDirectory(exportDir);
+            }
+            var path = Path.Combine(exportDir, "selection.bin");
+            File.WriteAllBytes(path, writer.Buffer);
         }
+
         public void PreviousStep()
         {
             if (currentStepIndex == 0)
@@ -91,27 +184,33 @@ namespace CreateCharacter
                 createCharacterPanel.SetState(new CreateSkin(createCharacterPanel));
                 return;
             }
+
             currentStep?.SetActive(false);
             currentStepIndex--;
             if (currentStepIndex != steps.Count - 1)
             {
                 nextImage.sprite = nextSprite;
             }
+
             currentStep = steps[currentStepIndex];
             currentStep.OnEnter();
         }
+
         public void SetActive(bool active)
         {
             thisObject.SetActive(active);
         }
+
         public void SetDescription(string description)
         {
             this.description.text = description;
         }
+
         public void SetTitle(string title)
         {
             this.title.text = title;
         }
+
         private void SetMoney(int money)
         {
             this.money = money;
@@ -125,11 +224,13 @@ namespace CreateCharacter
                 ReUpdate();
                 return false;
             }
+
             statModifiers.Add(statOptionModifier);
             CharacterStats.Apply(statOptionModifier);
             SetMoney(money - statOptionModifier.Cost);
             return true;
         }
+
         public void ReUpdate()
         {
             CharacterStats.CopyFrom(orginalStats);
@@ -140,6 +241,7 @@ namespace CreateCharacter
                 money -= statModifier.Cost;
                 CharacterStats.Apply(statModifier);
             }
+
             SetMoney(money);
         }
 
@@ -149,13 +251,16 @@ namespace CreateCharacter
             {
                 return false;
             }
+
             ReUpdate();
             return true;
         }
+
         public bool ValidateStep()
         {
             return currentStep.Validate();
         }
+
         public object GetOrginalValue(StatType statType)
         {
             return orginalStats.GetValue(statType);
@@ -169,14 +274,20 @@ namespace CreateCharacter
                 model = new SelectionModel(stepId);
                 selectionModels.Add(model);
             }
+
             var group = model.Groups.FirstOrDefault(x => x.Id == groupId);
             if (group == null)
             {
                 group = new SelectionGroup(groupId);
                 model.Groups.Add(group);
             }
-            group.Items.Add(selectionId);
+
+            if (!group.Items.Contains(selectionId))
+            {
+                group.Items.Add(selectionId);
+            }
         }
+
         public void UnSelect(int stepId, int groupId, int selectionId)
         {
             var model = selectionModels.FirstOrDefault(x => x.Id == stepId);
@@ -190,6 +301,10 @@ namespace CreateCharacter
                 return;
             }
             group.Items.Remove(selectionId);
+            if (group.Items.Count == 0)
+            {
+                model.Groups.Remove(group);
+            }
         }
     }
 }

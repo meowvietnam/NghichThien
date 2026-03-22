@@ -55,23 +55,16 @@ namespace CreateCharacter.CharStats
                 {
                     elementalUI.ToggleWithoutNotify(true);
                     selecteds.Add(elementalUI);
+                    selectStats.Select(elementalStepData.Id, elementalStepData.GroupId, elementalUI.Elemental.Id);
                 }
             }
             CalculatePercent();
-            foreach (var elementalUI in selecteds)
-            {
-                var modifier = elementalUI.StatModifier;
-                if (selectStats.Apply(modifier))
-                {
-                    selectStats.Select(elementalStepData.Id,elementalStepData.GroupId, elementalUI.Elemental.Id);
-                }
-            }
+            selectStats.ReUpdate();
         }
         private void OnSelect(ElementalUI elementalUI)
         {
             selecteds.Add(elementalUI);
             CalculatePercent();
-            var modifier = elementalUI.StatModifier;
             selectStats.ReUpdate();
             selectStats.Select(elementalStepData.Id,elementalStepData.GroupId, elementalUI.Elemental.Id);
         }
@@ -82,7 +75,7 @@ namespace CreateCharacter.CharStats
                 .Where(x => !selecteds.Contains(x))
                 .ToList();
             var unselectedCount = unselecteds.Count;
-            var unselectedPercent = unselectedCount != 0 ? unselectPercent[unselectedCount - 1] : 0;
+            var unselectedPercent = unselectedCount > 0 ? unselectPercent[unselectedCount - 1] : 0;
             foreach (var elementalUI in unselecteds)
             {
                 elementalUI.SetPercent(unselectedPercent);

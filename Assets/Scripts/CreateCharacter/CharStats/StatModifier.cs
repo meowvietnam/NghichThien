@@ -1,11 +1,13 @@
 using System;
+using Network;
+using Network.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace CreateCharacter.CharStats
 {
     [Serializable]
-    public class StatModifier
+    public class StatModifier : IMemorySerializable<StatModifier>
     {
         public StatModifier(StatType type, Action action, float value, int cost)
         {
@@ -14,6 +16,11 @@ namespace CreateCharacter.CharStats
             Value = value;
             Cost = cost;
         }
+
+        public StatModifier()
+        {
+        }
+
         [field: SerializeField] public StatType Type { get; private set; }
         [field: SerializeField] public Action Action { get; private set; }
         [field: SerializeField] public float Value { get; set; }
@@ -28,6 +35,27 @@ namespace CreateCharacter.CharStats
         public bool IsAbility()
         {
             return Type == StatType.Ability;
+        }
+
+        public int ByteSize()
+        {
+            return Type.ByteSize() + Action.ByteSize() + Value.ByteSize() + Cost.ByteSize();
+        }
+
+        public void Serialize(IWriter writer)
+        {
+            writer.Write(Type);
+            writer.Write(Action);
+            writer.Write(Value);
+            writer.Write(Cost);
+        }
+
+        public void Deserialize(IReader reader, ref StatModifier value)
+        {
+            value.Type = reader.Read<StatType>();
+            value.Action = reader.Read<Action>();
+            value.Value = reader.Read<float>();
+            value.Cost = reader.Read<int>();
         }
     }
 }

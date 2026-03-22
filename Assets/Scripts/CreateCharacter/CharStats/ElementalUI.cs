@@ -31,7 +31,7 @@ namespace CreateCharacter.CharStats
 
         public void SetPercent(float percent)
         {
-            StatModifier.Value = percent / 100f;
+            StatModifier.Value = percent;
             percentText.text = percent.ToString("F0") + "%";
         }
         private void OnValueChanged(bool isOn)
