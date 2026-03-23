@@ -11,8 +11,8 @@ namespace CreateCharacter
         [SerializeField] private ToggleGroupSkinCategoriesContainer toggleGroupSkinCategoriesContainer;
         [SerializeField] private ItemListGroupContainer itemListGroupContainer;
         [SerializeField] private GameObject thisObject;
-        public Dictionary<string, string> Skin { get; private set; } = new Dictionary<string, string>();
-        public Dictionary<string, Color> Colors { get; private set; } = new Dictionary<string, Color>();
+        public Dictionary<string, string> Skin { get; private set; } = new ();
+        public Dictionary<string, Color> Colors { get; private set; } = new ();
         public Gender Gender { get; private set; }
         public bool IsUsedToSelect { get; private set; }
         public void Init(GenderSkinGroup genderSkinGroup, List<Color> pallete)
@@ -33,6 +33,13 @@ namespace CreateCharacter
         public void SetActive(bool active)
         {
             thisObject.SetActive(active);
+        }
+        private bool IsSame(Color a, Color b, float tolerance = 0.001f)
+        {
+            return Mathf.Abs(a.r - b.r) < tolerance &&
+                   Mathf.Abs(a.g - b.g) < tolerance &&
+                   Mathf.Abs(a.b - b.b) < tolerance &&
+                   Mathf.Abs(a.a - b.a) < tolerance;
         }
         public void RandomSelector()
         {

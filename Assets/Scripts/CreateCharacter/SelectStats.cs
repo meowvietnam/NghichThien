@@ -162,18 +162,7 @@ namespace CreateCharacter
         [Button]
         private void Final()
         {
-            // var c = CreateCharacterSystem.Instance;
-            // c.AddCharacterData(c.NewCharacter);
-            NotifyGroup.Instance.Show("Tạo nhân vật thành công");
-            var writer = new Writer(selectionModels.ByteSize());
-            writer.WriteArray(selectionModels);
-            var exportDir = Path.Combine(Application.dataPath, "Exports");
-            if (!Directory.Exists(exportDir))
-            {
-                Directory.CreateDirectory(exportDir);
-            }
-            var path = Path.Combine(exportDir, "selection.bin");
-            File.WriteAllBytes(path, writer.Buffer);
+            CreateCharacterSystem.Instance.Final(selectionModels);
         }
 
         public void PreviousStep()

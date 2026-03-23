@@ -11,7 +11,7 @@ namespace CreateCharacter
     public class UserData : IMemorySerializable<UserData>
     {
         [field: SerializeField] public int Id { get; set; }
-        [field: SerializeField] public List<CharacterData> CharacterDatas { get; private set; }
+        [field: SerializeField] public List<CharacterData> CharacterDatas { get; set; }
         public UserData()
         {
             CharacterDatas = new List<CharacterData>();

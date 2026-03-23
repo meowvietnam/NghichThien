@@ -1,9 +1,10 @@
 using System;
 using Base;
 using DG.Tweening;
+using Network;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Network.Extensions;
 namespace CreateCharacter
 {
     public class SetPlayerNamePanel : MonoBehaviour, IPanel
@@ -23,12 +24,22 @@ namespace CreateCharacter
 
         private void Next()
         {
+            var name = nameInput.text;
+            Client.Instance.Send(MessageTag.SetCharName, name);
+        }
+
+        public void NextFailed(string message)
+        {
+            NotifyGroup.Instance.Show(message);
+        }
+        public void NextSuccess()
+        {
             CreateCharacterSystem.Instance.NewCharacter.Name = nameInput.text;
             CreateCharacterSystem.Instance.NextToCreateCharacterPanel();
         }
         private void Back()
         {
-            CreateCharacterSystem.Instance.BackToSelectCharacter();
+            Client.Instance.Send(MessageTag.BackToSelectChar);
         }
         public void SetActive(bool active)
         {

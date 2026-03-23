@@ -1,5 +1,8 @@
+using Network;
 using UnityEngine;
 using UnityEngine.UI;
+using Network.Extensions;
+using Sirenix.OdinInspector;
 
 namespace CreateCharacter
 {
@@ -64,9 +67,10 @@ namespace CreateCharacter
         {
             
         }
+        [Button]
         private void CreateCharacter()
         {
-            CreateCharacterSystem.Instance.BeginCreateCharacter();
+            Client.Instance.Send(MessageTag.CanCreateCharacter);
         }
         private void OnDestroy()
         {

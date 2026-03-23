@@ -1,70 +1,49 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Base;
+using CreateCharacter.CharStats;
+using CreateCharacter.States;
+using DG.Tweening;
+using LuyenDan;
 using Network;
+using Network.Callback;
+using Network.ClientState;
 using Network.Extensions;
+using Network.Models;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CreateCharacter
 {
-    public class CreateCharacterSystem : MonoBehaviour
+    public class CreateCharacterSystem : MonoBehaviour, ISelectCharacterCallback, ICreateCharacterCallback
     {
         [SerializeField] private int totalSlots = 3;
         [SerializeField] private SkinResources skinResources;
         [SerializeField] private SelectCharacterPanel selectCharacterPanel;
         [SerializeField] private SetPlayerNamePanel setPlayerNamePanel;
         [SerializeField] private CreateCharacterPanel createCharacterPanel;
-        [SerializeField]
-        private UserData userData;
-        private string userDataPath = "UserData";
+        [SerializeField] private ProgressBar progressBar;
+        [SerializeField] private string createCharacterSuccess;
+        private UserData UserData => Client.Instance.UserData;
         public static CreateCharacterSystem Instance { get; private set; }
         [field: SerializeField]
         public CharacterData NewCharacter { get; private set; }
+        public SkinResources SkinResources => skinResources;
         private void Start()
         {
             Instance = this;
-            userData = LoadUserData();
-            selectCharacterPanel.Init(userData.CharacterDatas, totalSlots,skinResources);
-            selectCharacterPanel.SetActive(true);
-            selectCharacterPanel.DoFade(0,1,0.5f,true);
+            var state = new SelectCharacter(this);
+            Client.Instance.ChangeState(state);
+            state.GetCharacters();
         }
-        private UserData LoadUserData()
-        {
-            var path = Path.Combine(Application.persistentDataPath, userDataPath);
-            if (!File.Exists(path))
-            {
-                File.Create(path).Close();
-            }
-            var bin = File.ReadAllBytes(path);
-            var reader = new Reader(bin);
-            UserData userData = null;
-            try
-            {
-                userData = reader.Read<UserData>();
-            }
-            catch (Exception ex)
-            {
-                userData = new UserData();
-            }
-            Save(path,userData);
-            return userData;
-        }
-
-        private void Save(string path,UserData userData)
-        {
-            var writer = new Writer(userData.ByteSize());
-            writer.Write(userData);
-            File.WriteAllBytes(path,writer.Buffer);
-        }
+        
         public void AddCharacterData(CharacterData characterData)
         {
-            if (userData.CharacterDatas.Count >= totalSlots) return;
-            userData.CharacterDatas.Add(characterData);
-            var path = Path.Combine(Application.persistentDataPath, userDataPath);
-            Save(path,userData);
+            if (UserData.CharacterDatas.Count >= totalSlots) return;
+            UserData.CharacterDatas.Add(characterData);
         }
-
         public void BeginCreateCharacter()
         {
             NewCharacter = new CharacterData();
@@ -98,12 +77,94 @@ namespace CreateCharacter
             createCharacterPanel.Init(skinResources);
             createCharacterPanel.DoFade(0,1,0.5f,true);
         }
-
-        [Button]
-        public void ClearData()
+        public void OnGetCharactes(List<CharacterData> characterDatas)
         {
-            var path = Path.Combine(Application.persistentDataPath, userDataPath);
-            File.Delete(path);
+            NetworkManager.Instance.Invoke(() =>
+            {
+                selectCharacterPanel.Init(characterDatas, totalSlots,skinResources);
+                selectCharacterPanel.SetActive(true);
+                selectCharacterPanel.DoFade(0,1,0.5f,true);
+            });
+        }
+        public void OnCanCreateCharacter(CanCreateChar result)
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (!result.CanCreate)
+                {
+                    NotifyGroup.Instance.Show(result.Message);
+                    return;
+                }
+                Client.Instance.ChangeState(new Network.ClientState.CreateCharacter(this));
+                BeginCreateCharacter();
+            });
+        }
+
+        public void BackToSelectChar()
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                BackToSelectCharacter();
+                Client.Instance.ChangeState(new SelectCharacter(this));
+            });
+        }
+
+        public void OnSetNameResult(SetCharNameResult result)
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (result.Success)
+                {
+                    setPlayerNamePanel.NextSuccess();
+                }
+                else
+                {
+                    setPlayerNamePanel.NextFailed(result.Message);
+                }
+            });
+        }
+
+        public void OnSetSkinsResult(SetSkinResult result)
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (result.Success)
+                {
+                    createCharacterPanel.SetState(new SelectStatsState(createCharacterPanel));
+                }
+                else
+                {
+                    NotifyGroup.Instance.Show(result.Message);
+                }
+            });
+        }
+
+        public void OnApplyStatsResult(ApplyStatsResult result)
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (result.Success)
+                {
+                    NotifyGroup.Instance.Show(createCharacterSuccess);
+                    progressBar.DoKill(() =>
+                    {
+                        SceneManager.LoadSceneAsync("CreateCharacter");
+                    });
+                }
+                else
+                {
+                    NotifyGroup.Instance.Show(result.Message);
+                    progressBar.DoKill(() =>
+                    {
+                    });
+                }
+            });
+        }
+
+        public void Final(List<SelectionModel> selectionModels)
+        {
+            Client.Instance.Send(MessageTag.ApplyStats, selectionModels);
+            progressBar.DoShow(0.5f,0.5f,null);
         }
     }
 }

@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 30}
   - component: {fileID: 24}
   m_Layer: 0
-  m_Name: "\u5F00\u573A\u52A8\u753B"
+  m_Name: Anim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -544,16 +544,16 @@ RectTransform:
   m_GameObject: {fileID: 3}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 40}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 100}
-  m_SizeDelta: {x: -400, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 200}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!224 &39
 RectTransform:
   m_ObjectHideFlags: 0
@@ -792,18 +792,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: dc144b02d262e8149bf991146baa801e, type: 3}
-    m_FontSize: 32
+    m_FontSize: 72
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
-    m_MaxSize: 78
+    m_MaxSize: 96
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 0
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Loading...
+  m_Text: "\u0110ang k\u1EBFt n\u1ED1i \u0111\u1EBFn m\xE1y ch\u1EE7..."
 --- !u!114 &57
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -850,7 +850,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 16183
 --- !u!114 &59
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1138,9 +1138,127 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &210111400
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 210111401}
+  - component: {fileID: 210111402}
+  m_Layer: 0
+  m_Name: Network
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &210111401
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210111400}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &210111402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210111400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 602f2a66fb9174c64a17d694a875fa4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkManager
+  host: localhost
+  port: 6785
+  connectFailMessage: "K\u1EBFt n\u1ED1i \u0111\u1EBFn m\xE1y ch\u1EE7 th\u1EA5t
+    b\u1EA1i"
+  <Version>k__BackingField: ABC
+--- !u!1 &775922831
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 775922833}
+  - component: {fileID: 775922832}
+  - component: {fileID: 775922834}
+  m_Layer: 0
+  m_Name: StartScene
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &775922832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775922831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd0f72815f2b84c3fa72decbb151ea6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Start.StartScene
+  statusText: {fileID: 56}
+  conneting: "\u0110ang k\u1EBFt n\u1ED1i \u0111\u1EBFn m\xE1y ch\u1EE7..."
+  checkingVersion: "\u0110ang ki\u1EC3m tra phi\xEAn b\u1EA3n..."
+  versionValid: "Phi\xEAn b\u1EA3n h\u1EE3p l\u1EC7"
+  versionInvalid: "Phi\xEAn b\u1EA3n kh\xF4ng h\u1EE3p l\u1EC7!"
+  disconnectMessage: "M\u1EA5t k\u1EBFt n\u1ED1i \u0111\u1EBFn m\xE1y ch\u1EE7"
+  authService: {fileID: 775922834}
+--- !u!4 &775922833
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775922831}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &775922834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775922831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97cb20902c33d456998fc6644045695d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AuthService
+  username: test02
+  loggedIn: "\u0110ang \u0111\u0103ng nh\u1EADp..."
+  startScene: {fileID: 775922832}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 19}
   - {fileID: 40}
+  - {fileID: 210111401}
+  - {fileID: 775922833}

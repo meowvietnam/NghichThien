@@ -1,3 +1,7 @@
+using System.IO;
+using Network;
+using Network.Extensions;
+using Network.Models;
 using UnityEngine;
 
 namespace CreateCharacter.States
@@ -16,13 +20,20 @@ namespace CreateCharacter.States
         public void Next()
         {
             var currentSelect = SetPlayerAvatar.Instance.CurrentSelect;
+            var gender = currentSelect.Gender;
             var skin = currentSelect.Skin;
             var color = currentSelect.Colors;
+            var request = new SetSkinRequest()
+            {
+                Gender = gender,
+                Skins = skin,
+                Colors = color,
+            };
             var newCharacter = CreateCharacterSystem.Instance.NewCharacter;
-            newCharacter.Gender = currentSelect.Gender;
+            newCharacter.Gender = gender;
             newCharacter.Skins = skin;
             newCharacter.Colors = color;
-            createCharacterPanel.SetState(new SelectStatsState(createCharacterPanel));
+            Client.Instance.Send(MessageTag.SetSkins, request);            
         }
         public void Back()
         {
