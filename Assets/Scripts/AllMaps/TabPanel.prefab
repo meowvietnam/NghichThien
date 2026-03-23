@@ -14034,6 +14034,7 @@ GameObject:
   - component: {fileID: 222882071567714909}
   - component: {fileID: 114613447837221695}
   - component: {fileID: 114519161995481715}
+  - component: {fileID: 2766884762755604313}
   m_Layer: 5
   m_Name: "\u9041\u672F"
   m_TagString: Untagged
@@ -14122,6 +14123,30 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &2766884762755604313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132561572609474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 630d12c37ef87454086bd1d454694a46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemInventory
+  timeHolder: 1
+  isHolder: 0
+  icon: {fileID: 114322240220165813}
+  frame: {fileID: 114215458638889081}
+  progressHold: {fileID: 0}
+  itemData: {fileID: 0}
+  selectHighLight: {fileID: 114860867409602127}
+  hasItem: {fileID: 1154323460793653}
+  qualityFull: {fileID: 114966589794748520}
+  textCount: {fileID: 114058427200108268}
+  textName: {fileID: 114805322380129707}
+  leftUpMask: {fileID: 1195243943237944}
 --- !u!1 &1132864969215160
 GameObject:
   m_ObjectHideFlags: 0
@@ -20930,6 +20955,7 @@ GameObject:
   - component: {fileID: 222358227187361689}
   - component: {fileID: 114651661293037865}
   - component: {fileID: 114748734878249337}
+  - component: {fileID: 571515794685112037}
   m_Layer: 5
   m_Name: "\u8F85\u4FEE2"
   m_TagString: Untagged
@@ -21018,6 +21044,30 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &571515794685112037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208853586080215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 630d12c37ef87454086bd1d454694a46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemInventory
+  timeHolder: 1
+  isHolder: 0
+  icon: {fileID: 114871625769543696}
+  frame: {fileID: 114400754019318409}
+  progressHold: {fileID: 0}
+  itemData: {fileID: 0}
+  selectHighLight: {fileID: 114590585197398891}
+  hasItem: {fileID: 1446424427482340}
+  qualityFull: {fileID: 114437175171754821}
+  textCount: {fileID: 114860258671202194}
+  textName: {fileID: 114061324860254757}
+  leftUpMask: {fileID: 1148436660038713}
 --- !u!1 &1209808575675455
 GameObject:
   m_ObjectHideFlags: 0
@@ -24297,6 +24347,7 @@ GameObject:
   - component: {fileID: 222822255226466291}
   - component: {fileID: 114092602622453795}
   - component: {fileID: 114898602282864853}
+  - component: {fileID: 2504697584752807245}
   m_Layer: 5
   m_Name: "\u8F85\u4FEE3"
   m_TagString: Untagged
@@ -24385,6 +24436,30 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &2504697584752807245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1243043119366276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 630d12c37ef87454086bd1d454694a46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemInventory
+  timeHolder: 1
+  isHolder: 0
+  icon: {fileID: 114105429485386702}
+  frame: {fileID: 114357801248215223}
+  progressHold: {fileID: 0}
+  itemData: {fileID: 0}
+  selectHighLight: {fileID: 114971683462838180}
+  hasItem: {fileID: 1512649791074105}
+  qualityFull: {fileID: 114814997040834001}
+  textCount: {fileID: 114538219650704327}
+  textName: {fileID: 114329156002509703}
+  leftUpMask: {fileID: 1793918487690177}
 --- !u!1 &1243460831829348
 GameObject:
   m_ObjectHideFlags: 0
@@ -43020,8 +43095,9 @@ GameObject:
   - component: {fileID: 224228734130635744}
   - component: {fileID: 222248126783292473}
   - component: {fileID: 114886276421606506}
+  - component: {fileID: 7714371604130455056}
   m_Layer: 0
-  m_Name: "\u793A\u610F\u56FE"
+  m_Name: ItemInventorySelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43039,7 +43115,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 224944550276349865}
+  m_Father: {fileID: 224971249496830512}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -43067,7 +43143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.6117647}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -43084,6 +43160,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7714371604130455056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417736506664745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb2610e91504b744999d9c7f4212d440, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSelect
+  itemData: {fileID: 0}
+  img: {fileID: 114886276421606506}
+  rectTransform: {fileID: 224228734130635744}
+  canvas: {fileID: 0}
 --- !u!1 &1418056023903596
 GameObject:
   m_ObjectHideFlags: 0
@@ -50499,6 +50591,7 @@ RectTransform:
   m_Children:
   - {fileID: 224499839984922119}
   - {fileID: 224367999134041249}
+  - {fileID: 224228734130635744}
   m_Father: {fileID: 224944550276349865}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -50955,8 +51048,8 @@ RectTransform:
   - {fileID: 224416996761492200}
   - {fileID: 224568885043720467}
   - {fileID: 224181886420844565}
-  - {fileID: 224223808977509908}
   - {fileID: 224823796497039777}
+  - {fileID: 224223808977509908}
   - {fileID: 224155444201796391}
   - {fileID: 224116527052062944}
   m_Father: {fileID: 224971249496830512}
@@ -51938,6 +52031,7 @@ GameObject:
   - component: {fileID: 224080635789892861}
   - component: {fileID: 222982481074080404}
   - component: {fileID: 114269076787397614}
+  - component: {fileID: 5883021224659148917}
   m_Layer: 5
   m_Name: "\u5143\u5A74"
   m_TagString: Untagged
@@ -52006,6 +52100,30 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5883021224659148917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502482475349226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 630d12c37ef87454086bd1d454694a46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemInventory
+  timeHolder: 1
+  isHolder: 0
+  icon: {fileID: 114410875255101839}
+  frame: {fileID: 114405823006463030}
+  progressHold: {fileID: 0}
+  itemData: {fileID: 0}
+  selectHighLight: {fileID: 114609421989492963}
+  hasItem: {fileID: 1838125231871170}
+  qualityFull: {fileID: 114162313968701581}
+  textCount: {fileID: 114122681140036824}
+  textName: {fileID: 114479900847295605}
+  leftUpMask: {fileID: 1692189124110098}
 --- !u!1 &1503122754979176
 GameObject:
   m_ObjectHideFlags: 0
@@ -54143,6 +54261,7 @@ GameObject:
   - component: {fileID: 224952629038145130}
   - component: {fileID: 222454179501497607}
   - component: {fileID: 114184142860729569}
+  - component: {fileID: 8827243475747139667}
   m_Layer: 5
   m_Name: "\u4E3B\u4FEE"
   m_TagString: Untagged
@@ -54211,6 +54330,30 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8827243475747139667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522946782093022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 630d12c37ef87454086bd1d454694a46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemInventory
+  timeHolder: 1
+  isHolder: 0
+  icon: {fileID: 114713474504992587}
+  frame: {fileID: 114838031044833812}
+  progressHold: {fileID: 0}
+  itemData: {fileID: 0}
+  selectHighLight: {fileID: 114886082147333329}
+  hasItem: {fileID: 1713021220490356}
+  qualityFull: {fileID: 114809074666664742}
+  textCount: {fileID: 114623579117621427}
+  textName: {fileID: 114138099090728790}
+  leftUpMask: {fileID: 1736093958961872}
 --- !u!1 &1524374853676633
 GameObject:
   m_ObjectHideFlags: 0
@@ -54721,7 +54864,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &224863939405084497
 RectTransform:
   m_ObjectHideFlags: 0
@@ -64479,7 +64622,6 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 224971249496830512}
-  - {fileID: 224228734130635744}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -64650,6 +64792,14 @@ MonoBehaviour:
   - {r: 0.82641506, g: 0.4225631, b: 0.82641506, a: 1}
   - {r: 0.9924528, g: 0.5968838, b: 0.2003631, a: 1}
   - {r: 0.93962264, g: 0.21707256, b: 0.14714837, a: 1}
+  itemSelect: {fileID: 7714371604130455056}
+  donThuat: {fileID: 2766884762755604313}
+  chuTu: {fileID: 8827243475747139667}
+  nguyenAnh: {fileID: 5883021224659148917}
+  phuTu1: {fileID: 6201231721042158078}
+  phuTu2: {fileID: 571515794685112037}
+  phuTu3: {fileID: 2504697584752807245}
+  phuTu4: {fileID: 2606975399924923752}
 --- !u!1 &1606710616876859
 GameObject:
   m_ObjectHideFlags: 0
@@ -91789,6 +91939,7 @@ GameObject:
   - component: {fileID: 222543359510175277}
   - component: {fileID: 114064881158000443}
   - component: {fileID: 114511728668433388}
+  - component: {fileID: 6201231721042158078}
   m_Layer: 5
   m_Name: "\u8F85\u4FEE1"
   m_TagString: Untagged
@@ -91877,6 +92028,30 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &6201231721042158078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864479813507749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 630d12c37ef87454086bd1d454694a46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemInventory
+  timeHolder: 1
+  isHolder: 0
+  icon: {fileID: 114295575795077208}
+  frame: {fileID: 114444141054181015}
+  progressHold: {fileID: 0}
+  itemData: {fileID: 0}
+  selectHighLight: {fileID: 114491026391320685}
+  hasItem: {fileID: 1847045312012929}
+  qualityFull: {fileID: 114629959645056006}
+  textCount: {fileID: 114127869004429144}
+  textName: {fileID: 114824121533820039}
+  leftUpMask: {fileID: 1588466235549716}
 --- !u!1 &1864780953334577
 GameObject:
   m_ObjectHideFlags: 0
@@ -92540,6 +92715,7 @@ GameObject:
   - component: {fileID: 222306165440858214}
   - component: {fileID: 114761426870522586}
   - component: {fileID: 114191014052834769}
+  - component: {fileID: 2606975399924923752}
   m_Layer: 5
   m_Name: "\u8F85\u4FEE4"
   m_TagString: Untagged
@@ -92628,6 +92804,30 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &2606975399924923752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868361034270199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 630d12c37ef87454086bd1d454694a46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemInventory
+  timeHolder: 1
+  isHolder: 0
+  icon: {fileID: 114144586698097845}
+  frame: {fileID: 114239463759539869}
+  progressHold: {fileID: 0}
+  itemData: {fileID: 0}
+  selectHighLight: {fileID: 114851848752461812}
+  hasItem: {fileID: 1538311390954456}
+  qualityFull: {fileID: 114874614708716667}
+  textCount: {fileID: 114307291943678365}
+  textName: {fileID: 114749095817075042}
+  leftUpMask: {fileID: 1046250599485460}
 --- !u!1 &1868684391146412
 GameObject:
   m_ObjectHideFlags: 0

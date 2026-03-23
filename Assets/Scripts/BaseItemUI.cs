@@ -11,10 +11,10 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
     [SerializeField] protected Coroutine enumerator = null;
     [SerializeField] protected bool isHolder = false;
     [SerializeField] public Image icon;
-    [SerializeField] protected Image frame;
+    [SerializeField] public Image frame;
     [SerializeField] protected Image progressHold;
 
-    [SerializeField] protected BaseItemData itemData;
+    [SerializeField] public BaseItemData itemData;
     [SerializeField] protected Action actionHolder;
     [SerializeField] protected Action actionPointerUp;
     [SerializeField] protected Image selectHighLight;
@@ -31,11 +31,12 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
     [Button]
     public virtual void InitItemData(BaseItemData itemData , Sprite frameSprite)
     {
+        this.itemData = itemData;
+
         if (itemData == null)
         {
             return;
         }    
-        this.itemData = itemData;
         InitIcon(this.itemData.spriteItem, frameSprite);
 
     }
