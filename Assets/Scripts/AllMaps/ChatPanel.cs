@@ -6,7 +6,6 @@ public class ChatPanel : PanelGroup
     public override void Init()
     {
         base.Init();
-
     }
 
 }
