@@ -202798,7 +202798,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &545038857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204619,7 +204619,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 330, y: 57.8552}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &924805551
 MonoBehaviour:
@@ -206560,6 +206560,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 7714371604130455056, guid: 2abeea90382d2994b840ed6489c5008f,
+        type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 552180466}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -206886,13 +206891,31 @@ MonoBehaviour:
       keyA: 0
       keyB: 0
       fakeValue: 0
-    level:
+    tuChat:
       encA: 0
       encB: 0
       keyA: 0
       keyB: 0
       fakeValue: 0
-    currentExp:
+    ngoTinh:
+      encA: 0
+      encB: 0
+      keyA: 0
+      keyB: 0
+      fakeValue: 0
+    thanThuc:
+      encA: 0
+      encB: 0
+      keyA: 0
+      keyB: 0
+      fakeValue: 0
+    tocDoBay:
+      encA: 0
+      encB: 0
+      keyA: 0
+      keyB: 0
+      fakeValue: 0
+    money:
       encA: 0
       encB: 0
       keyA: 0
@@ -206910,38 +206933,7 @@ MonoBehaviour:
       keyA: 0
       keyB: 0
       fakeValue: 0
-    nameUser: 
-    tuoiTac:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
     thoNguyen:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    tuChat:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    thanThuc:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    ngoTinh:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    tocDoBay:
       encA: 0
       encB: 0
       keyA: 0
@@ -206953,25 +206945,39 @@ MonoBehaviour:
       keyA: 0
       keyB: 0
       fakeValue: 0
-    danDoc:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    money:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
     idLinhCan:
       encA: 0
       encB: 0
       keyA: 0
       keyB: 0
       fakeValue: 0
+    ability: 0
     ngoDaoDiem:
+      encA: 0
+      encB: 0
+      keyA: 0
+      keyB: 0
+      fakeValue: 0
+    danDoc:
+      encA: 0
+      encB: 0
+      keyA: 0
+      keyB: 0
+      fakeValue: 0
+    nameUser: 
+    level:
+      encA: 0
+      encB: 0
+      keyA: 0
+      keyB: 0
+      fakeValue: 0
+    tuoiTac:
+      encA: 0
+      encB: 0
+      keyA: 0
+      keyB: 0
+      fakeValue: 0
+    currentExp:
       encA: 0
       encB: 0
       keyA: 0
@@ -207181,7 +207187,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 165, y: -26.4276}
-  m_SizeDelta: {x: 300, y: 22.855202}
+  m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1909980699
 MonoBehaviour:

@@ -12,6 +12,7 @@ public class CongPhapMono
 public abstract class CongPhap : BaseSkill
 {
     [SerializeField] private int tocDoTuLuyenBase;
+    [SerializeField] public bool isDonThuat = false;
 
     public virtual void EquipCongPhap(CharacterStats statsCurrent , int daiCanhGioiCongPhap)
     {

@@ -17,7 +17,7 @@ public class ItemInventory : BaseItemUI
     [SerializeField] private GameObject hasItem;
     [SerializeField] private Image qualityFull;
     [SerializeField] private Text textCount;
-    [SerializeField] private Text textName;
+    [SerializeField] public Text textName;
     [SerializeField] private GameObject leftUpMask;
 
     public void InitInventory(ETypeInventory type)
@@ -27,6 +27,12 @@ public class ItemInventory : BaseItemUI
         {
             hasItem.SetActive(false);
             return;
+        }
+        else
+        {
+            hasItem.SetActive(true);
+
+
         }
         textName.text = itemData.nameItem;
         switch (type)
@@ -68,7 +74,7 @@ public class ItemInventory : BaseItemUI
         qualityFull.SetNativeSize();
     }
     [Button]
-    private void GetComponent()
+    private void GetComponentBag()
     {
         hasItem = transform.GetChild(1).gameObject;
         selectHighLight = transform.GetChild(2).GetComponent<Image>();
@@ -78,6 +84,19 @@ public class ItemInventory : BaseItemUI
         qualityFull = transform.GetChild(1).transform.GetChild(0).GetComponent<Image>();
         textName  = transform.GetChild(1).transform.GetChild(2).transform.GetChild(0).GetComponent<Text>();
         leftUpMask = transform.GetChild(1).transform.GetChild(3).gameObject;
+
+    }
+    [Button]
+    private void GetComponentCongPhap()
+    {
+        hasItem = transform.GetChild(2).gameObject;
+        selectHighLight = transform.GetChild(3).GetComponent<Image>();
+        textCount = transform.GetChild(2).transform.GetChild(4).GetComponent<Text>();
+        icon = transform.GetChild(2).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>();
+        frame = transform.GetChild(2).transform.GetChild(0).transform.GetChild(0).GetComponent<Image>();
+        qualityFull = transform.GetChild(2).transform.GetChild(0).GetComponent<Image>();
+        textName = transform.GetChild(2).transform.GetChild(2).transform.GetChild(0).GetComponent<Text>();
+        leftUpMask = transform.GetChild(2).transform.GetChild(3).gameObject;
 
     }
     [Button]

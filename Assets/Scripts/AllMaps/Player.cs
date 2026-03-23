@@ -82,6 +82,13 @@ namespace AllMaps
                     new CharacterStats.DataSave { id = 548, value = 2 },
 
                 },
+                donThuatUsed = 0,
+                chuTu1Used = 0,
+                chuTu2Used = 0,
+                phuTu1Used = 0,
+                phuTu2Used = 0,
+                phuTu3Used = 0,
+                phuTu4Used = 0,
             });
             Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
         }

@@ -413,6 +413,7 @@ public class TabPanel : PanelGroup
     [SerializeField] private Sprite[] spriteQualityFulls;
     [SerializeField] private Sprite[] spriteFrames;
     [SerializeField] private Color[] colorQualitys;
+    [SerializeField] private ItemSelect itemSelect;
     public void InitItemBag(int count, ref List<ItemInventory> listItemInventory)
     {
        
@@ -443,17 +444,47 @@ public class TabPanel : PanelGroup
             item5.gameObject.SetActive(true);
             for (int j = 0; j < item5.transform.childCount; j++)
             {
-                listItemInventory.Add(item5.transform.GetChild(j).GetComponent<ItemInventory>());
-
+                ItemInventory item = item5.transform.GetChild(j).GetComponent<ItemInventory>();
+                listItemInventory.Add(item);
+               
             }
 
         }
 
 
     }
-    //[Header("--- Công Pháp ---")]
+    private void InitVisualItemSkill(ItemInventory item, BaseSkill data)
+    {
+        if(data != null)
+        {
+            item.Init(data, spriteFrames[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
+            item.SetColorName(colorQualitys[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
+        }
+        item.InitInventory(ItemInventory.ETypeInventory.Skill);
 
-    public void InitCongPhap()
+       
+    }
+    [Header("--- Công Pháp ---")]
+    [SerializeField] private ItemInventory donThuat;
+    [SerializeField] private ItemInventory chuTu;
+    [SerializeField] private ItemInventory nguyenAnh;
+    [SerializeField] private ItemInventory phuTu1;
+    [SerializeField] private ItemInventory phuTu2;
+    [SerializeField] private ItemInventory phuTu3;
+    [SerializeField] private ItemInventory phuTu4;
+    [SerializeField]
+    private List<ItemInventory> listItemsCongPhapSlot => new List<ItemInventory>()
+    {
+        donThuat,
+        chuTu,
+        nguyenAnh,
+        phuTu1,
+        phuTu2,
+        phuTu3,
+        phuTu4,
+    }; 
+       
+   public void InitCongPhap()
     {
         bag.gameObject.SetActive(true);
         var Player = Pool.Get<Player>();
@@ -466,20 +497,90 @@ public class TabPanel : PanelGroup
             listCongPhapData.Add(GameConfig.GetCongPhapWithId(item.id));
         }
         InitItemBag(listCongPhapData.Count, ref itemInven);
+
+        // load data 
+        InitVisualItemSkill(donThuat, GameConfig.GetCongPhapWithId(Player.characterStatsBase.donThuatUsed));
+        InitVisualItemSkill(chuTu, GameConfig.GetCongPhapWithId(Player.characterStatsBase.chuTu1Used));
+        InitVisualItemSkill(nguyenAnh, GameConfig.GetCongPhapWithId(Player.characterStatsBase.chuTu2Used));
+        InitVisualItemSkill(phuTu1, GameConfig.GetCongPhapWithId(Player.characterStatsBase.phuTu1Used));
+        InitVisualItemSkill(phuTu2, GameConfig.GetCongPhapWithId(Player.characterStatsBase.phuTu2Used));
+        InitVisualItemSkill(phuTu3, GameConfig.GetCongPhapWithId(Player.characterStatsBase.phuTu3Used));
+        InitVisualItemSkill(phuTu4, GameConfig.GetCongPhapWithId(Player.characterStatsBase.phuTu4Used));
+
+
+
+
         for (int i = 0; i < itemInven.Count; i++)
-        {
+        {// TẠO BIẾN TẠM Ở ĐÂY
+            int index = i;
+            var currentItem = itemInven[i];
             BaseSkill data = null;
             if(i<= listCongPhapData.Count-1)
             {
                 data = listCongPhapData[i];
             }
-            if(data != null)
+            InitVisualItemSkill(currentItem, data);
+            if (data != null)
             {
-                itemInven[i].Init(data, spriteFrames[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
-                itemInven[i].SetColorName(colorQualitys[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
 
+                currentItem.InitAction(null, () =>
+                {
+                    itemSelect.Show(currentItem.itemData, listItemsCongPhapSlot.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
+                    {
+                        if (resultRect != null)
+                        {
+
+                            var itemSlot = resultRect.GetComponent<ItemInventory>();
+                            CongPhap congPhap = currentItem.itemData as CongPhap;
+                            // 1. Lấy RectTransform của ô Độn Thuật để so sánh chính xác
+                            RectTransform donThuatRect = donThuat.GetComponent<RectTransform>();
+
+                            // 2. Kiểm tra điều kiện chặn
+                            bool isDroppingIntoDonThuat = (resultRect == donThuatRect);
+                            if (itemSlot != null && congPhap != null)
+                            {// ĐIỀU KIỆN: Nếu thả vào ô Độn Thuật MÀ kỹ năng KHÔNG PHẢI Độn Thuật thì BỎ QUA
+                                if (isDroppingIntoDonThuat && !congPhap.isDonThuat)
+                                {
+                                    Debug.Log("Không thể trang bị: Kỹ năng này không phải Độn Thuật!");
+                                    return; // Thoát ra, không chạy code Init bên dưới
+                                }
+                                Debug.Log("Item slot sẵn sàng");
+
+                                // Sử dụng biến tạm 'currentItem' hoặc 'index' thay vì 'i'
+                                InitVisualItemSkill(itemSlot, congPhap);
+                                //equip
+                                //congPhap.EquipCongPhap();
+                                //save player cong phap equip id
+                                UpdatePlayerStats(resultRect, congPhap.Id);
+                                // Cách viết chuẩn
+                                void UpdatePlayerStats(RectTransform hitRect, int itemId)
+                                {
+                                    var stats = Player.characterStatsBase;
+
+                                    if (hitRect == donThuat.GetComponent<RectTransform>()) stats.donThuatUsed.Value = itemId;
+                                    else if (hitRect == phuTu1.GetComponent<RectTransform>()) stats.phuTu1Used.Value = itemId;
+                                    else if (hitRect == phuTu2.GetComponent<RectTransform>()) stats.phuTu2Used.Value = itemId;
+                                    else if (hitRect == phuTu3.GetComponent<RectTransform>()) stats.phuTu3Used.Value = itemId;
+                                    else if (hitRect == phuTu4.GetComponent<RectTransform>()) stats.phuTu4Used.Value = itemId;
+                                    else if (hitRect == chuTu.GetComponent<RectTransform>()) stats.chuTu1Used.Value = itemId;
+                                    else if (hitRect == nguyenAnh.GetComponent<RectTransform>()) stats.chuTu2Used.Value = itemId;
+
+                                    // ... thêm các ô khác tương tự
+
+                                    Debug.Log($"Đã lưu Item ID {itemId} vào dữ liệu Player.");
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("Thả trượt rồi!");
+                        }
+                    });
+                });
             }
-            itemInven[i].InitInventory(ItemInventory.ETypeInventory.Skill);
+            
+
         }
 
     }    
