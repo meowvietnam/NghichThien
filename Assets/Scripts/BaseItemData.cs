@@ -1,20 +1,7 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
-public enum ETierSkill {
 
-    None,
-    NhanGiaiHa,
-    NhanGiaiTrung,
-    NhanGiaiThuong,
-    DiaGiaiHa,
-    DiaGiaiTrung,
-    DiaGiaiThuong,
-    ThienGiaiHa,
-    ThienGiaiTrung,
-    ThienGiaiThuong,
-
-}
 public enum ETirePhapBao
 {
 

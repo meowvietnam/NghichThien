@@ -1,50 +1,64 @@
+using Base;
+using LongDH.LongDHModules;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+public enum ETypeInventoryItem
+{
 
+    None,
+    Skill,
+    Item,
+
+}
 public class ItemInventory : BaseItemUI
 {
-    public enum ETypeInventory {
-    
-        None,
-        Skill,
-        Item,
-    
-    }
 
 
+    
     [SerializeField] private GameObject hasItem;
     [SerializeField] private Image qualityFull;
     [SerializeField] private Text textCount;
     [SerializeField] public Text textName;
     [SerializeField] private GameObject leftUpMask;
+    [SerializeField] private Button btnShowInfor;
 
-    public void InitInventory(ETypeInventory type)
+    public void InitInventory(ETypeInventoryItem type)
     {
        
         if(itemData == null)
         {
+            btnShowInfor?.gameObject.SetActive(false);
+
             hasItem.SetActive(false);
             return;
         }
         else
         {
             hasItem.SetActive(true);
+            btnShowInfor?.gameObject.SetActive(true);
 
 
         }
+        if (btnShowInfor != null)
+        {
+            SetEventButton(btnShowInfor, () =>
+            {
+                Pool.Get<TabPanel>().toolTipItems.InitShow(itemData,frame.sprite,qualityFull.sprite,textName.color,type);
+            });
+        }    
         textName.text = itemData.nameItem;
         switch (type)
         {
-            case ETypeInventory.None:
+            case ETypeInventoryItem.None:
                 break;
-            case ETypeInventory.Skill:
+            case ETypeInventoryItem.Skill:
                 textCount.gameObject.SetActive(false);
                 leftUpMask.gameObject.SetActive(false);
 
                 break;
-            case ETypeInventory.Item:
+            case ETypeInventoryItem.Item:
                 textCount.gameObject.SetActive(true);
 
                 //leftUpMask.gameObject.SetActive(true);
@@ -117,6 +131,12 @@ public class ItemInventory : BaseItemUI
     {
         qualityFull.transform.localScale = Vector3.one * 1.03f;
         icon.transform.parent.gameObject.AddComponent<RectMask2D>().softness = new Vector2Int(25,25);
+
+    }
+    [Button]
+    private void GetBtnShowInfor()
+    {
+        btnShowInfor = transform.GetChild(3).GetComponent<Button>();
 
     }
 }

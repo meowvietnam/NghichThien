@@ -35,7 +35,7 @@ public class TabPanel : PanelGroup
     [SerializeField] private ButtonWithPanel[] btns;
     [SerializeField] private Button btnClose;
     [SerializeField] private ButtonWithPanel currentBtnWithPanel;
-
+    [SerializeField] public ToolTipItems toolTipItems;
     public override void Init()
     {
         base.Init();
@@ -470,12 +470,15 @@ public class TabPanel : PanelGroup
         if(data != null)
         {
             frame = spriteFrames[((((int)data.eTierSkill - 1) / 3) * 2) + 1];
+
             item.SetColorName(colorQualitys[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
+            item.SetQualityFull(spriteQualityFulls[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
+
         }
-      
+
         item.Init(data, frame);
 
-        item.InitInventory(ItemInventory.ETypeInventory.Skill);
+        item.InitInventory(ETypeInventoryItem.Skill);
 
        
     }

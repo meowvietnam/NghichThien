@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
+public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
 {
     [SerializeField] private float timeHolder = 1f;
     [SerializeField] protected Coroutine enumerator = null;

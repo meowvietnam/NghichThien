@@ -13,6 +13,7 @@ public abstract class ThanThong : BaseSkill
         public int count;
     }
     [SerializeField]protected List<RequireActive> requireActives;
+    public List<RequireActive> BaseRequireActive => requireActives;
     public virtual List<RequireActive> GetRequireActive(CharacterCombat caster)
     {
         return requireActives;
