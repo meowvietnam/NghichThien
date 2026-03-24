@@ -145,7 +145,7 @@ public class CombatManager : MonoBehaviour
             tocDoBay = 20,
             thoNguyen = 1000,
             thanThuc = 50,
-            thanThongEquip = new SecureInt[] { 802, 803, 804}
+            thanThongEquip = new SecureInt[] { 1, 2, 4,7,10,13,14,18 , 701}
             
 
         });

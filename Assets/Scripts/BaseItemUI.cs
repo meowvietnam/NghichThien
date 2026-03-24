@@ -17,6 +17,8 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
     [SerializeField] public BaseItemData itemData;
     [SerializeField] protected Action actionHolder;
     [SerializeField] protected Action actionPointerUp;
+    [SerializeField] protected Action actionPointerDown;
+
     [SerializeField] protected Image selectHighLight;
     public void SetSelectHighlight(bool isActive)
     {
@@ -53,10 +55,22 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
         }
 
     }
-    public void InitAction(Action actionHolder = null, Action actionPointerUp = null)
+    public void InitAction(Action actionHolder = null, Action actionPointerUp = null ,  Action actionPointerDown = null)
     {
-        this.actionHolder = actionHolder;
-        this.actionPointerUp = actionPointerUp;
+        if(actionHolder != null) 
+        {
+            this.actionHolder = actionHolder;
+        }    
+        if(actionPointerUp != null)
+        {
+            this.actionPointerUp = actionPointerUp;
+
+        }
+        if (actionPointerDown != null)
+        {
+            this.actionPointerDown = actionPointerDown;
+
+        }
     }
     public virtual void EventHolder()
     {
@@ -86,12 +100,12 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
     public virtual void OnPointerDown(PointerEventData eventData)
     {
         enumerator = StartCoroutine(IECheckHolder());
+        actionPointerDown?.Invoke();
 
     }
 
     public virtual void OnPointerUp()
     {
-        Debug.Log("cos goi pointer up item ui");
         SetSelectHighlight(true);
 
     }
@@ -106,6 +120,8 @@ public class BaseItemUI : MonoBehaviour, IPointerUpHandler , IPointerDownHandler
             enumerator = null;
             actionPointerUp?.Invoke();
             OnPointerUp();
+            Debug.Log("cos goi pointer up item ui");
+
         }
         else
         {

@@ -87,6 +87,19 @@ public class ItemInventory : BaseItemUI
 
     }
     [Button]
+    private void GetComponentThanThong()
+    {
+        hasItem = transform.GetChild(1).gameObject;
+        selectHighLight = transform.GetChild(3).GetComponent<Image>();
+        textCount = transform.GetChild(1).transform.GetChild(4).GetComponent<Text>();
+        icon = transform.GetChild(1).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>();
+        frame = transform.GetChild(1).transform.GetChild(0).transform.GetChild(0).GetComponent<Image>();
+        qualityFull = transform.GetChild(1).transform.GetChild(0).GetComponent<Image>();
+        textName = transform.GetChild(1).transform.GetChild(2).transform.GetChild(0).GetComponent<Text>();
+        leftUpMask = transform.GetChild(1).transform.GetChild(3).gameObject;
+
+    }
+    [Button]
     private void GetComponentCongPhap()
     {
         hasItem = transform.GetChild(2).gameObject;

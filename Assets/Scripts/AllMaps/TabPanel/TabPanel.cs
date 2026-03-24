@@ -34,6 +34,7 @@ public class TabPanel : PanelGroup
 
     [SerializeField] private ButtonWithPanel[] btns;
     [SerializeField] private Button btnClose;
+    [SerializeField] private ButtonWithPanel currentBtnWithPanel;
 
     public override void Init()
     {
@@ -42,6 +43,11 @@ public class TabPanel : PanelGroup
         {
             SetEventButton(item.btn, () =>
             {
+                if(currentBtnWithPanel.typePanel == item.typePanel)
+                {
+                    return;
+                }
+                currentBtnWithPanel = item;
                 bag.gameObject.SetActive(false);
 
                 foreach (var item2 in btns)
@@ -54,7 +60,12 @@ public class TabPanel : PanelGroup
                 if(item.typePanel == ETypePanel.CongPhap)
                 {
                     InitCongPhap();
-                }    
+                }
+                if (item.typePanel == ETypePanel.ThanThong)
+                {
+                    InitThanThong();
+                }
+                
             });
         }
         Observer.AddObserver(EventList.GamePlay.UPDATE_PLAYER_STATS, UpdatePlayerStats);
@@ -455,14 +466,30 @@ public class TabPanel : PanelGroup
     }
     private void InitVisualItemSkill(ItemInventory item, BaseSkill data)
     {
+        Sprite frame = null;
         if(data != null)
         {
-            item.Init(data, spriteFrames[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
+            frame = spriteFrames[((((int)data.eTierSkill - 1) / 3) * 2) + 1];
             item.SetColorName(colorQualitys[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
         }
+      
+        item.Init(data, frame);
+
         item.InitInventory(ItemInventory.ETypeInventory.Skill);
 
        
+    }
+    void DisableHighlight(ItemInventory item)
+    {
+        HighlightAnim anim = item.GetComponentInChildren<HighlightAnim>(true);
+
+        if (anim != null)
+        {
+            anim.gameObject.SetActive(false);
+
+            // Nếu bạn muốn dùng cái shader "con rắn" hồi nãy để bật bằng code:
+            // anim.EnableBorder(true); 
+        }
     }
     [Header("--- Công Pháp ---")]
     [SerializeField] private ItemInventory donThuat;
@@ -482,10 +509,27 @@ public class TabPanel : PanelGroup
         phuTu2,
         phuTu3,
         phuTu4,
-    }; 
-       
-   public void InitCongPhap()
+    };
+  
+    public void InitCongPhap()
     {
+        void UpdatePlayerStatsCongPhap(RectTransform hitRect, int itemId)
+        {
+            var stats = Pool.Get<Player>().characterStatsBase;
+
+            if (hitRect == donThuat.GetComponent<RectTransform>()) stats.donThuatUsed.Value = itemId;
+            else if (hitRect == phuTu1.GetComponent<RectTransform>()) stats.phuTu1Used.Value = itemId;
+            else if (hitRect == phuTu2.GetComponent<RectTransform>()) stats.phuTu2Used.Value = itemId;
+            else if (hitRect == phuTu3.GetComponent<RectTransform>()) stats.phuTu3Used.Value = itemId;
+            else if (hitRect == phuTu4.GetComponent<RectTransform>()) stats.phuTu4Used.Value = itemId;
+            else if (hitRect == chuTu.GetComponent<RectTransform>()) stats.chuTu1Used.Value = itemId;
+            else if (hitRect == nguyenAnh.GetComponent<RectTransform>()) stats.chuTu2Used.Value = itemId;
+
+            // ... thêm các ô khác tương tự
+
+            Debug.Log($"Đã lưu Item ID {itemId} vào dữ liệu Player.");
+        }
+
         bag.gameObject.SetActive(true);
         var Player = Pool.Get<Player>();
         var GameConfig = Pool.Get<GameConfig>();
@@ -507,9 +551,43 @@ public class TabPanel : PanelGroup
         InitVisualItemSkill(phuTu3, GameConfig.GetCongPhapWithId(Player.characterStatsBase.phuTu3Used));
         InitVisualItemSkill(phuTu4, GameConfig.GetCongPhapWithId(Player.characterStatsBase.phuTu4Used));
 
+        // unEquip
+        foreach (var currentItem in listItemsCongPhapSlot)
+        {
+            currentItem.InitAction(null,null, () =>
+            {
+                Debug.Log("có vào đây");
+                if (currentItem.itemData == null)
+                {
+                    Debug.Log("data null");
+
+                    return;
+                } 
+                    
+                itemSelect.Show(currentItem.itemData, new List<RectTransform> { bag.GetComponent<RectTransform>()}, (resultRect) =>
+                {
+                    if (resultRect != null)
+                    {
+
+                        UpdatePlayerStatsCongPhap(currentItem.GetComponent<RectTransform>(), -1);
+                        // Cách viết chuẩn
 
 
+                    }
+                    else
+                    {
+                        Debug.Log("Thả trượt rồi!");
 
+                        InitVisualItemSkill(currentItem, (BaseSkill)itemSelect.itemData);
+
+                    }
+                });
+                InitVisualItemSkill(currentItem, null);
+
+            });
+        }
+
+        //equip
         for (int i = 0; i < itemInven.Count; i++)
         {// TẠO BIẾN TẠM Ở ĐÂY
             int index = i;
@@ -523,23 +601,27 @@ public class TabPanel : PanelGroup
             if (data != null)
             {
 
-                currentItem.InitAction(null, () =>
+                currentItem.InitAction(null,null, () =>
                 {
+                    CongPhap congPhap = currentItem.itemData as CongPhap;
+                    // 1. Lấy RectTransform của ô Độn Thuật để so sánh chính xác
+                    RectTransform donThuatRect = donThuat.GetComponent<RectTransform>();
+
+                        
+
                     itemSelect.Show(currentItem.itemData, listItemsCongPhapSlot.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
                     {
                         if (resultRect != null)
                         {
 
                             var itemSlot = resultRect.GetComponent<ItemInventory>();
-                            CongPhap congPhap = currentItem.itemData as CongPhap;
-                            // 1. Lấy RectTransform của ô Độn Thuật để so sánh chính xác
-                            RectTransform donThuatRect = donThuat.GetComponent<RectTransform>();
+                            
 
                             // 2. Kiểm tra điều kiện chặn
                             bool isDroppingIntoDonThuat = (resultRect == donThuatRect);
                             if (itemSlot != null && congPhap != null)
                             {// ĐIỀU KIỆN: Nếu thả vào ô Độn Thuật MÀ kỹ năng KHÔNG PHẢI Độn Thuật thì BỎ QUA
-                                if (isDroppingIntoDonThuat && !congPhap.isDonThuat)
+                                if (isDroppingIntoDonThuat && !congPhap.isDonThuat || itemSlot.itemData != null || listItemsCongPhapSlot.Any(x=>x.itemData == congPhap))
                                 {
                                     Debug.Log("Không thể trang bị: Kỹ năng này không phải Độn Thuật!");
                                     return; // Thoát ra, không chạy code Init bên dưới
@@ -551,24 +633,9 @@ public class TabPanel : PanelGroup
                                 //equip
                                 //congPhap.EquipCongPhap();
                                 //save player cong phap equip id
-                                UpdatePlayerStats(resultRect, congPhap.Id);
+                                UpdatePlayerStatsCongPhap(resultRect, congPhap.Id);
                                 // Cách viết chuẩn
-                                void UpdatePlayerStats(RectTransform hitRect, int itemId)
-                                {
-                                    var stats = Player.characterStatsBase;
-
-                                    if (hitRect == donThuat.GetComponent<RectTransform>()) stats.donThuatUsed.Value = itemId;
-                                    else if (hitRect == phuTu1.GetComponent<RectTransform>()) stats.phuTu1Used.Value = itemId;
-                                    else if (hitRect == phuTu2.GetComponent<RectTransform>()) stats.phuTu2Used.Value = itemId;
-                                    else if (hitRect == phuTu3.GetComponent<RectTransform>()) stats.phuTu3Used.Value = itemId;
-                                    else if (hitRect == phuTu4.GetComponent<RectTransform>()) stats.phuTu4Used.Value = itemId;
-                                    else if (hitRect == chuTu.GetComponent<RectTransform>()) stats.chuTu1Used.Value = itemId;
-                                    else if (hitRect == nguyenAnh.GetComponent<RectTransform>()) stats.chuTu2Used.Value = itemId;
-
-                                    // ... thêm các ô khác tương tự
-
-                                    Debug.Log($"Đã lưu Item ID {itemId} vào dữ liệu Player.");
-                                }
+                                
 
                             }
                         }
@@ -577,12 +644,189 @@ public class TabPanel : PanelGroup
                             Debug.Log("Thả trượt rồi!");
                         }
                     });
+
+                    foreach (var item in listItemsCongPhapSlot)
+                    {
+                        if (item.itemData != null)
+                        {
+                            DisableHighlight(item);
+                        }
+                    }
+                    if (!congPhap.isDonThuat)
+                    {
+                        DisableHighlight(donThuat);
+
+                    }
+                    else
+                    {
+                        foreach (var item in listItemsCongPhapSlot)
+                        {
+                            if (item != donThuat)
+                            {
+                                DisableHighlight(item);
+                            }
+                        }
+                    }
+
                 });
             }
             
 
         }
 
+    }
+    [Header("--- Thần Thông ---")]
+    [SerializeField] private List<ItemInventory> listItemSlotThanThongs;
+    public void InitThanThong()
+    {
+        void UpdatePlayerStatsThanThong(int index,int itemId)
+        {
+            var stats = Pool.Get<Player>().characterStatsBase;
+
+            if (index < stats.thanThongEquip.Length)
+            {
+
+                stats.thanThongEquip[index] = itemId; // Gán ngược lại để trigger việc lưu
+            }
+            else
+            {
+                // Logic Add New của bạn giữ nguyên
+                var newArray = new SecureInt[stats.thanThongEquip.Length + 1];
+                stats.thanThongEquip.CopyTo(newArray, 0);
+                newArray[newArray.Length - 1] = itemId;
+                stats.thanThongEquip = newArray;
+            }
+            // ... thêm các ô khác tương tự
+
+            Debug.Log($"Đã lưu Item ID {itemId} vào dữ liệu Player.");
+        }
+        bag.gameObject.SetActive(true);
+        var Player = Pool.Get<Player>();
+        var GameConfig = Pool.Get<GameConfig>();
+        List<ItemInventory> itemInven = new List<ItemInventory>();
+        List<ThanThong> listThanThongData = new List<ThanThong>();
+
+        foreach (var item in Player.characterStatsBase.thanThongOwner)
+        {
+            listThanThongData.Add(GameConfig.GetThanThongWithId(item.Value));
+        }
+        InitItemBag(listThanThongData.Count, ref itemInven);
+        // load data 
+        for (int i = 0; i < listItemSlotThanThongs.Count; i++)
+        {
+            var item = listItemSlotThanThongs[i];
+            ThanThong thanThongData = null;
+            if(i < Player.characterStatsBase.thanThongEquip.Length)
+            {
+                thanThongData = GameConfig.GetThanThongWithId(Player.characterStatsBase.thanThongEquip[i]);
+            }    
+
+            InitVisualItemSkill(item, thanThongData);
+        }
+        // unEquip
+        foreach (var currentItem in listItemSlotThanThongs)
+        {
+            currentItem.InitAction(null, null, () =>
+            {
+                Debug.Log("có vào đây");
+                if (currentItem.itemData == null)
+                {
+                    Debug.Log("data null");
+
+                    return;
+                }
+
+                itemSelect.Show(currentItem.itemData, new List<RectTransform> { bag.GetComponent<RectTransform>() }, (resultRect) =>
+                {
+                    if (resultRect != null)
+                    {
+
+                        UpdatePlayerStatsThanThong(listItemSlotThanThongs.IndexOf(currentItem), -1);
+                        Debug.Log("updaet thần thông id unequip");
+                        // Cách viết chuẩn
+
+
+                    }
+                    else
+                    {
+                        Debug.Log("Thả trượt rồi!");
+
+                        InitVisualItemSkill(currentItem, (BaseSkill)itemSelect.itemData);
+
+                    }
+                });
+                InitVisualItemSkill(currentItem, null);
+
+            });
+        }
+
+        //equip
+        for (int i = 0; i < itemInven.Count; i++)
+        {// TẠO BIẾN TẠM Ở ĐÂY
+            int index = i;
+            var currentItem = itemInven[i];
+            BaseSkill data = null;
+            if (i <= listThanThongData.Count - 1)
+            {
+                data = listThanThongData[i];
+            }
+            InitVisualItemSkill(currentItem, data);
+            if (data != null)
+            {
+
+                currentItem.InitAction(null, null, () =>
+                {
+                    ThanThong thanThong = currentItem.itemData as ThanThong;
+                  
+
+                    itemSelect.Show(currentItem.itemData, listItemSlotThanThongs.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
+                    {
+                        if (resultRect != null)
+                        {
+
+                            var itemSlot = resultRect.GetComponent<ItemInventory>();
+
+
+                            if (itemSlot != null && thanThong != null)
+                            {// ĐIỀU KIỆN: Nếu thả vào ô Độn Thuật MÀ kỹ năng KHÔNG PHẢI Độn Thuật thì BỎ QUA
+                                if (itemSlot.itemData != null || listItemSlotThanThongs.Any(x => x.itemData == thanThong))
+                                {
+                                    Debug.Log("Không thể trang bị: Kỹ năng này không phải Độn Thuật!");
+                                    return; // Thoát ra, không chạy code Init bên dưới
+                                }
+                                Debug.Log("Item slot sẵn sàng");
+
+                                // Sử dụng biến tạm 'currentItem' hoặc 'index' thay vì 'i'
+                                InitVisualItemSkill(itemSlot, thanThong);
+                                //equip
+                                //congPhap.EquipCongPhap();
+                                //save player thần thông equip id
+                                UpdatePlayerStatsThanThong(listItemSlotThanThongs.IndexOf(itemSlot), thanThong.Id);
+                                // Cách viết chuẩn
+
+
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("Thả trượt rồi!");
+                        }
+                    });
+                    foreach (var item in listItemSlotThanThongs)
+                    {
+                        if (item.itemData != null)
+                        {
+                            DisableHighlight(item);
+                        }
+                    }
+
+
+
+                });
+            }
+
+
+        }
     }    
 
 }
