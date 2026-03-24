@@ -7,7 +7,7 @@ public class CuongNhuTinhTe : ThanThong
     [SerializeField] private int[] kiemKhiPerKinhDaoValues;
     [SerializeField] private int[] triLieuPerChiThuyValues;
 
-
+    [SerializeField] private float delayTimeEffect = 1f;
 
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
@@ -21,7 +21,7 @@ public class CuongNhuTinhTe : ThanThong
 
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KinhDao, kinhDao);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChiThuy, chiThuy);
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public override string GetDesc(int level)

@@ -5,10 +5,12 @@ public class NgungThuyQuyLuu : ThanThong
 {
 
     [SerializeField] private int[] healValues;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int heal = healValues[GetIndexLevelThanThong(caster)];
-       
+
+        ShowSkillEffectWorld(caster, delayTimeEffect);
         caster.Healing(heal * caster.CurrentLinhKhi);
 
     }

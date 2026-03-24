@@ -7,10 +7,11 @@ public class HuyenVuThuat : ThanThong
     {
         1,1,1,1,1
     };
+    [SerializeField] private float delayTimeEffect = 0.5f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HuyenVu, huyenVus[GetIndexLevelThanThong(caster)]);
-        //ShowSkillEffect(target, delayTimeEffect);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 
