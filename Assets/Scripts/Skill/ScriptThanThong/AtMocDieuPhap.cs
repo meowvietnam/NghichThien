@@ -6,6 +6,7 @@ public class AtMocDieuPhap : ThanThong
 {
     [SerializeField] private int[] dames;
     [SerializeField] private int hapThu = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
@@ -16,7 +17,8 @@ public class AtMocDieuPhap : ThanThong
         if(isHaveMoc)
         {
             caster.Healing(dame);
-        }    
+        }
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

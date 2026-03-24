@@ -5,6 +5,7 @@ public class PhiChamThuat : ThanThong
 
     [SerializeField] private int[] dames;
     [SerializeField] private int deTonThuong=1;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -12,6 +13,7 @@ public class PhiChamThuat : ThanThong
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong,deTonThuong);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
     public override string GetDesc(int level)

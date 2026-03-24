@@ -6,10 +6,12 @@ public class HoaVuThuat : ThanThong , BaseSkill.LienKich
 {
     [SerializeField] private int[] dames;
     [SerializeField] private int debuffCount=2;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
 
     }

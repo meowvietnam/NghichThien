@@ -7,6 +7,7 @@ using LongDH.LongDHModules;
 public class XuanTiAn : ThanThong
 {
     [SerializeField] private int[] dames;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -14,6 +15,7 @@ public class XuanTiAn : ThanThong
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect);
         Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ObserverEffect2);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
     private void ObserverEffect(params object[] data)
     {

@@ -5,12 +5,14 @@ public class HuDocChu : ThanThong
 {
     [SerializeField] private int[] trungDoc;
     [SerializeField] private int[] dame;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame[GetIndexLevelThanThong(caster)] }, eTypeSkill);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, trungDoc[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

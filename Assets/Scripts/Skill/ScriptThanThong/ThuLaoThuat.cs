@@ -9,9 +9,12 @@ public class ThuLaoThuat : ThanThong , BaseSkill.LienKich
     [SerializeField] private int[] dameBuffs;
 
     [SerializeField] private int[] trienNhieu;
+    [SerializeField]
+    private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.CaculateDameByThanThong(caster,new List<int> { dameBuffs[GetIndexLevelThanThong(caster)] }, eTypeSkill);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

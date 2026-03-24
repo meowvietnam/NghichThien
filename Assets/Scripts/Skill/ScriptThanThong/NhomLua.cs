@@ -5,11 +5,13 @@ using UnityEngine;
 public class NhomLua : ThanThong
 {
     [SerializeField] private int[] dames;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.GamePlay.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
     private void ObserverEffect(params object[] data)
     {

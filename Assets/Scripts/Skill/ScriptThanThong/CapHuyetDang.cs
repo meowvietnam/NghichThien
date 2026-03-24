@@ -7,12 +7,13 @@ public class CapHuyetDang : ThanThong , BaseSkill.TuongDong
 {
     [SerializeField] private int[] dames;
     [SerializeField] private int[] dameBuffs;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         caster.Healing(dame);
-
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
     public override string GetDesc(int level)

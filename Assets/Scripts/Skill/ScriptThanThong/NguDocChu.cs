@@ -7,12 +7,14 @@ public class NguDocChu : ThanThong
 {
     [SerializeField] private int[] trungDocPerRequire;
     [SerializeField] private int require = 10;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.GamePlay.NEW_TURN_COMBAT, ObserverEffect);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
 
 

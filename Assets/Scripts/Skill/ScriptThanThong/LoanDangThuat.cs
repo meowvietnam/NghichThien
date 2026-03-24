@@ -5,6 +5,7 @@ public class LoanDangThuat : ThanThong
 {
     [SerializeField] private int[] dames;
     [SerializeField] private int[] dameBuffs;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
@@ -13,6 +14,7 @@ public class LoanDangThuat : ThanThong
         dame += trienNhieu * dameBuffs[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         caster.Healing(dame);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 
