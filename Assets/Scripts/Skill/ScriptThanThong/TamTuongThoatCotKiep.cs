@@ -4,12 +4,14 @@ public class TamTuongThoatCotKiep : ThanThong
 {
     [SerializeField] private int[] dames;
     [SerializeField] private int[] percentBuffDames;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
         float percent = (float)percentBuffDames[GetIndexLevelThanThong(caster)]/100f;
         dame += (int)(percent * caster.characterStatsTemp.hpMax);
         target.CaculateDameByThanThong(caster,new System.Collections.Generic.List<int> { dame}, eTypeSkill);
+            ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public override string GetDesc(int level)

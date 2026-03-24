@@ -5,6 +5,8 @@ public class KyTruongQuyet : ThanThong
 {
 
     [SerializeField] private int hapThuLinhKhi = 3;
+    [SerializeField]
+    private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -18,7 +20,8 @@ public class KyTruongQuyet : ThanThong
                 countHapThu *= 2;
             }    
             caster.HapThuLinhKhi(item.Key, countHapThu);
-        }    
+        }
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

@@ -4,11 +4,12 @@
 public class TrienMocQuyet : ThanThong
 {
     [SerializeField] private int[] trienNhieu;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieu[GetIndexLevelThanThong(caster)]);
-
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

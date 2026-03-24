@@ -7,6 +7,7 @@ using LongDH.LongDHModules;
 public class LinhDangAn : ThanThong ,BaseSkill.LienKich
 {
     [SerializeField] private int[] trienNhieu;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -14,6 +15,8 @@ public class LinhDangAn : ThanThong ,BaseSkill.LienKich
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.LIEN_KICH, ObserverEffect);
 
+
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
 
     }

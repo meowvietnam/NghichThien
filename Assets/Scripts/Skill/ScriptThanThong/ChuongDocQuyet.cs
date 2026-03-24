@@ -6,6 +6,7 @@ public class ChuongDocQuyet : ThanThong , BaseSkill.TuongDong
 {
     [SerializeField] private int[] dames;
     [SerializeField] private int[] dameBuffs;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -17,7 +18,8 @@ public class ChuongDocQuyet : ThanThong , BaseSkill.TuongDong
             dame *=2;
         }    
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
-        
+        ShowSkillEffectWorld(target, delayTimeEffect);
+
 
     }
 
