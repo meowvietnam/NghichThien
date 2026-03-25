@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 namespace AllMaps
 {
-    public class Map : MonoBehaviour
+    public class Map : BaseBehaviour
     {
         [SerializeField] private MapManager mapManager;
         [field: SerializeField] public int Id { get; private set; }

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Algorithm;
 using Base;
+using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AllMaps
 {
@@ -62,6 +64,16 @@ namespace AllMaps
         private void OnMoveToMapCompleted()
         {
             current.OnPlayerEnter();
+        }
+
+        [Button]
+        private void FixVisual()
+        {
+            var listBtn = transform.GetComponentsInChildren<Button>(true);
+            foreach (var item in listBtn)
+            {
+                item.transition = Selectable.Transition.ColorTint;
+            }
         }
     }
 }
