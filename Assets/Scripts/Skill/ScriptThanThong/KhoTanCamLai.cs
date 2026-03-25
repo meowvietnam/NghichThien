@@ -9,7 +9,7 @@ public class KhoTanCamLai : ThanThong
     [SerializeField] private int[] kinhDaoReset;
     [SerializeField] private int[] healValues;
     [SerializeField] private int[] healPerChiThuyValues;
-
+    [SerializeField] private float delayTimeEffect = 1f;
 
     private void ObserverEffect(params object[] data)
     {
@@ -22,12 +22,9 @@ public class KhoTanCamLai : ThanThong
             currentTurn.Healing((int)currentTurn.characterStatsTemp.hpMax);
             currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
 
-
         }
-
-
-
     }
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -45,6 +42,7 @@ public class KhoTanCamLai : ThanThong
         caster.AddThanThongImpactAfterPlaySkill(this);
         caster.SetHp(1);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

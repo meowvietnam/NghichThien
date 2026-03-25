@@ -6,11 +6,13 @@ using UnityEngine;
 public class VuAnThuat : NeTranhTT
 {
     [SerializeField] private int requireHuyenVu = 4;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HuyenVu, requireHuyenVu);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
     private void ObserverEffect(params object[] data)

@@ -6,7 +6,7 @@ public class TinhThuyVoBa : ThanThong
     [SerializeField] private int[] kinhDaoReset;
     [SerializeField] private int[] healValues;
     [SerializeField] private int[] healPerChiThuyValues;
-
+    [SerializeField] private float delayTimeEffect = 1f;
 
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
@@ -21,7 +21,7 @@ public class TinhThuyVoBa : ThanThong
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KinhDao, kinhDao);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChiThuy, chiThuy);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KinhDao, kinhDaoReset[GetIndexLevelThanThong(caster)]);
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public override string GetDesc(int level)

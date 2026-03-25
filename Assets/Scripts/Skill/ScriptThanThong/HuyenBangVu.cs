@@ -10,15 +10,15 @@ public class HuyenBangVu : ThanThong
 
     [SerializeField] private int[] dames;
     [SerializeField] private int[] suongGias;
-    [SerializeField] private int thuyHapThu = 5; 
-
+    [SerializeField] private int thuyHapThu = 5;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddThanThongImpactAfterPlaySkill(this);
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new List<int> { dame }, eTypeSkill);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
     private void ObserverEffect(params object[] data)

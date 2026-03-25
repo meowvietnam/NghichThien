@@ -5,6 +5,7 @@ using UnityEngine;
 public class ThuyLieuThuat : ThanThong
 {
     [SerializeField] private int[] healValues;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int heal = healValues[GetIndexLevelThanThong(caster)];
@@ -14,7 +15,8 @@ public class ThuyLieuThuat : ThanThong
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao,remainHeal);
         }
         caster.Healing(heal);
-       
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
     }
     public override string GetDesc(int level)
     {

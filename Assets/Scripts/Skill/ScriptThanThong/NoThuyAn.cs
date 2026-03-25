@@ -6,15 +6,13 @@ using UnityEngine;
 public class NoThuyAn : ThanThong , BaseSkill.LienKich
 {
     [SerializeField] private int[] triLieus;
-
+    [SerializeField] private float delayTimeEffect = 0.5f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.LIEN_KICH, ObserverEffect);
-
-
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     private void ObserverEffect(params object[] data)

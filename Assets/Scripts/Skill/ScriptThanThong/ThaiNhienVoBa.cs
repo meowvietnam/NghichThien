@@ -5,9 +5,9 @@ public class ThaiNhienVoBa : ThanThong
 {
     
     [SerializeField] private int[] chanKiemPerKiemKhiValues;
+    [SerializeField] private float delayTimeEffect = 1f;
 
 
-   
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -17,8 +17,8 @@ public class ThaiNhienVoBa : ThanThong
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKiem, chanKiemPerKiemKhiValues[GetIndexLevelThanThong(caster)] * kiemKhi);
 
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, kiemKhi);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
-       
     }
 
     public override string GetDesc(int level)

@@ -9,7 +9,7 @@ public class SongKich : ThanThong , BaseSkill.LienKich
     [SerializeField] protected int[] damePerCountAttack;
     [SerializeField] protected int[] countAttack;
     [SerializeField] protected int[] sucLucs;
-
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         
@@ -20,7 +20,7 @@ public class SongKich : ThanThong , BaseSkill.LienKich
         }
         target.CaculateDameByThanThong(caster, dames, eTypeSkill, false);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

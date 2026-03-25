@@ -6,13 +6,14 @@ using UnityEngine;
 public class VuTuongHoaThan : NeTranhTT
 {
     [SerializeField] private int requireHuyenVu = 2;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddThanThongImpactAfterPlaySkill(this);
 
         Observer.AddObserver(EventList.Combat.CHECK_NE_TRANH, ObserverEffectNeTranh, 0);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HuyenVu, requireHuyenVu);
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
    
     public override string GetDesc(int level)

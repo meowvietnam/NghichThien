@@ -7,7 +7,7 @@ using UnityEngine;
 public class CuongThuyAn : ThanThong
 {
     [SerializeField] private int[] dames;
- 
+    [SerializeField] private float delayTimeEffect = 0.5f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -15,7 +15,7 @@ public class CuongThuyAn : ThanThong
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect2);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
 
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
     private void ObserverEffect(params object[] data)
     {

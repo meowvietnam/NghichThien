@@ -5,13 +5,15 @@ public class ThuNguyetHoThien : ThanThong
 {
     [SerializeField] private int[] dames;
     [SerializeField] private int[] dameBuffs;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dameFinal = dames[GetIndexLevelThanThong(caster)];
         int dameBuff = dameBuffs[GetIndexLevelThanThong(caster)];
         dameFinal += (dameBuff * caster.CurrentLinhKhi);
         target.CaculateDameByThanThong(caster,new System.Collections.Generic.List<int> {dameFinal }, eTypeSkill);
-       
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
     }
 
     public override string GetDesc(int level)

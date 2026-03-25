@@ -6,10 +6,12 @@ using UnityEngine;
 public class BangVuThuat : ThanThong
 {
     [SerializeField] private int[] suongGias;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
     private void ObserverEffect(params object[] data)

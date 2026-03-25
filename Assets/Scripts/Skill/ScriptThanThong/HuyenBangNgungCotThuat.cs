@@ -1,14 +1,16 @@
-﻿using System.Linq;
+﻿ using System.Linq;
 using UnityEngine;
 [CreateAssetMenu(fileName = nameof(HuyenBangNgungCotThuat), menuName = "Skill/Thần Thông/" + nameof(HuyenBangNgungCotThuat))]
 
 public class HuyenBangNgungCotThuat : ThanThong
 {
     [SerializeField] private int requireSuongGia = 10;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.RemoveBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, requireSuongGia);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.DongKet, 1);
+        ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
     public override string GetDesc(int level)

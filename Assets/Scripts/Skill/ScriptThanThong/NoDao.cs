@@ -7,6 +7,7 @@ public class NoDao : ThanThong , BaseSkill.LienKich
 {
     [SerializeField] protected int countAttack = 3;
     [SerializeField] protected int countAttackLienKich = 2;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     [SerializeField] protected int[] damePerCountAttack;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
@@ -17,8 +18,7 @@ public class NoDao : ThanThong , BaseSkill.LienKich
             dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
         }
         target.CaculateDameByThanThong(caster, dames, eTypeSkill);
-
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
     public override string GetDesc(int level)
     {
