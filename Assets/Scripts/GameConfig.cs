@@ -1,12 +1,37 @@
 ﻿using Base;
 using LongDH.LongDHModules;
 using Sirenix.OdinInspector;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameConfig : BaseBehaviour
 {
+    [SerializeField] private List<string> listSceneLoaded = new List<string>
+    {
+        "AllMaps",
+    };
+    public void OnBackScene()
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+        int index = listSceneLoaded.IndexOf(currentScene);
+        if (index == 0) return;
+        SceneManager.LoadScene(listSceneLoaded[index-1]);
+
+
+
+    }
+    public void OnLoadScene(params object[] data)
+    {
+        string nameScene = (string)data[0];
+        listSceneLoaded.Add(nameScene);
+        SceneManager.LoadScene(nameScene);
+
+
+
+    }
     private void Awake()
     {
         // Kiểm tra nếu trong Pool đã có một Manager loại này rồi
@@ -22,6 +47,8 @@ public class GameConfig : BaseBehaviour
         // Nếu chưa có, mình là "trùm", đăng ký vào Pool và giữ lại
         Pool.Set(this);
         DontDestroyOnLoad(gameObject);
+        Observer.AddObserver(EventList.GamePlay.LOAD_SCENE,OnLoadScene);
+        Observer.AddObserver(EventList.GamePlay.BACK_SCENE, OnBackScene);
 
     }
     public ThanThong[] thanThongs;

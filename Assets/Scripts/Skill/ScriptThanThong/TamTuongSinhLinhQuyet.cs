@@ -5,12 +5,15 @@ public class TamTuongSinhLinhQuyet : ThanThong
 {
     [SerializeField] private int[] buffs;
     [SerializeField] private int tuKhi = 2;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TuKhi,tuKhi);
         float percent = (float)buffs[GetIndexLevelThanThong(caster)]/100f;
         caster.Healing((int)(percent*(caster.characterStatsTemp.hpMax - caster.characterStatsTemp.hp)));
+
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public override string GetDesc(int level)

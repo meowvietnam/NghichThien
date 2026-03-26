@@ -4,6 +4,7 @@
 public class KySinhDanHuyetThuat : ThanThong
 {
     [SerializeField] private int[]dames;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -14,7 +15,8 @@ public class KySinhDanHuyetThuat : ThanThong
         if(trienNhieu> 0)
         {
             caster.Healing(dame);
-        }    
+        }
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

@@ -6,6 +6,7 @@ public class KinhDaoKiemQuyet : ThanThong
     [SerializeField] private int[] kinhDaoReset;
     [SerializeField] private int[] chiThuyReset;
     [SerializeField] private int kiemKhi = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -19,6 +20,7 @@ public class KinhDaoKiemQuyet : ThanThong
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChiThuy, chiThuy);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KinhDao, kinhDaoReset[GetIndexLevelThanThong(caster)]);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChiThuy, chiThuyReset[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

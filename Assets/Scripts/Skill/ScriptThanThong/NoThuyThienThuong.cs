@@ -5,6 +5,7 @@ public class NoThuyThienThuong : ThanThong
 {
     [SerializeField] private int[] chiThuyReset;
     [SerializeField] private int chanKiem = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -17,6 +18,7 @@ public class NoThuyThienThuong : ThanThong
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KinhDao, kinhDao);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChiThuy, chiThuy);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChiThuy, chiThuyReset[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

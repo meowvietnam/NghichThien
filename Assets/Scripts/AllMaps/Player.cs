@@ -82,6 +82,10 @@ namespace AllMaps
                     new CharacterStats.DataSave { id = 548, value = 2 },
 
                 },
+                thanThongEquip = new SecureInt[]
+                {1,2,3,4,5,6},
+                thanThongOwner = new SecureInt[]
+                {1,2,3,4,5,6,7,8,9,10,11},
                 donThuatUsed = 0,
                 chuTu1Used = 0,
                 chuTu2Used = 0,

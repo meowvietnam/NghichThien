@@ -4,12 +4,14 @@ public class HacUeCham : ThanThong
 {
     [SerializeField] private int[] dames;
     [SerializeField] private int cham =1;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Cham, cham);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
     public override string GetDesc(int level)

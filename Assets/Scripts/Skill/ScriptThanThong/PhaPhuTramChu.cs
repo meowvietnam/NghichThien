@@ -5,6 +5,7 @@ using UnityEngine;
 public class PhaPhuTramChu : ThanThong
 {
     [SerializeField] protected int[] dames;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -21,8 +22,9 @@ public class PhaPhuTramChu : ThanThong
             caster.Healing(dame);
         }    
         target.CaculateDameByThanThong(caster, new List<int> { dame }, eTypeSkill, false);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
-      
+
 
 
     }

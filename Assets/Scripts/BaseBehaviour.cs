@@ -7,6 +7,7 @@ public class BaseBehaviour : MonoBehaviour
    
     protected void SetEventButton(Button btn , Action action)
     {
+        btn.onClick.RemoveAllListeners();
         btn.onClick.AddListener(() =>
         {
             action?.Invoke();

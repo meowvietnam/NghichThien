@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class HoaHuyetDocChuong : ThanThong
 {
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         SecureInt trungDoc = 0;
@@ -14,10 +15,7 @@ public class HoaHuyetDocChuong : ThanThong
         CombatStatic.TrungDoc(caster, target);
 
         caster.Healing(trungDoc);
-       
-
-
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)

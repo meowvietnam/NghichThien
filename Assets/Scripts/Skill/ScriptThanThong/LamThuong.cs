@@ -3,7 +3,8 @@
 
 public class LamThuong : ThanThong
 {
- 
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -13,8 +14,9 @@ public class LamThuong : ThanThong
         foreach ( var key in dic)
         {
             caster.HapThuLinhKhi(key.Key, key.Value);
-        } 
-            
+        }
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
 
     }
 

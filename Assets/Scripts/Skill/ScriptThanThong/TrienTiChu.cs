@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class TrienTiChu : ThanThong
 {
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
       
@@ -18,6 +19,7 @@ public class TrienTiChu : ThanThong
 
 
 
+        ShowSkillEffectWorld(target, delayTimeEffect);
     }
     private void ObserverEffect(params object[] data)
     {

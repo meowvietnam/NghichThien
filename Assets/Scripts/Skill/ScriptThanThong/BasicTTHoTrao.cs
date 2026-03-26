@@ -5,10 +5,12 @@ public class BasicTTHoTrao : ThanThong, BaseSkill.LienKich
 
     [SerializeField] private int[] buff;
     [SerializeField] private ELinhKhi elinhKhi;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, buff[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

@@ -69,6 +69,21 @@ public enum EBuffAndDeBuff
 
 public abstract class BaseSkill : BaseItemData
 {
+    public enum ETierSkill
+    {
+
+        None,
+        NhanGiaiHa,
+        NhanGiaiTrung,
+        NhanGiaiThuong,
+        DiaGiaiHa,
+        DiaGiaiTrung,
+        DiaGiaiThuong,
+        ThienGiaiHa,
+        ThienGiaiTrung,
+        ThienGiaiThuong,
+
+    }
     public static List<EBuffAndDeBuff> eDebuffs = new List<EBuffAndDeBuff>
     {
         EBuffAndDeBuff.DeTonThuong,
@@ -703,7 +718,54 @@ public abstract class BaseSkill : BaseItemData
         }
        
         return GetColoredText($"{text}", "#ffb143");
-    }    
+    }
+    public string GetTextTierSkill()
+    {
+        string text = string.Empty;
+        switch (eTierSkill)
+        {
+            case ETierSkill.None:
+                break;
+            case ETierSkill.NhanGiaiHa:
+                text = "Nhân Giai Hạ";
+                break;
+            case ETierSkill.NhanGiaiTrung:
+                text = "Nhân Giai Trung";
+
+                break;
+            case ETierSkill.NhanGiaiThuong:
+                text = "Nhân Giai Thượng";
+
+                break;
+            case ETierSkill.DiaGiaiHa:
+                text = "Địa Giai Hạ";
+
+                break;
+            case ETierSkill.DiaGiaiTrung:
+                text = "Địa Giai Trung";
+
+                break;
+            case ETierSkill.DiaGiaiThuong:
+                text = "Địa Giai Thượng";
+
+                break;
+            case ETierSkill.ThienGiaiHa:
+                text = "Thiên Giai Hạ";
+
+                break;
+            case ETierSkill.ThienGiaiTrung:
+                text = "Thiên Giai Trung";
+
+                break;
+            case ETierSkill.ThienGiaiThuong:
+                text = "Thiên Giai Thượng";
+
+                break;
+            default:
+                break;
+        }
+        return text;
+    }
     public static string GetTextTypeSkill(ETypeSkill typeSkill)
     {
         string text = string.Empty;

@@ -11,7 +11,7 @@ public class ItemSelect : MonoBehaviour
     [SerializeField] private Image img;
     // Thay đổi Action để nhận vào RectTransform (đối tượng được thả vào)
     private Action<RectTransform> actionPointerUp;
-    private List<RectTransform> overlays;
+    [SerializeField]private List<RectTransform> overlays;
     [SerializeField]private RectTransform rectTransform;
     [SerializeField]private Canvas canvas;
     private bool isDragging = false; // Biến cờ kiểm soát
@@ -63,13 +63,12 @@ public class ItemSelect : MonoBehaviour
                 }
             }
         }
-
+        StartCoroutine(DelayFrameHide());
         actionPointerUp?.Invoke(hitOverlay);
         if (actionPointerUp== null)
         {
             Debug.Log("action up null");
         }    
-        StartCoroutine(DelayFrameHide());
     }
     public void Show(BaseItemData data, List<RectTransform> targetOverlay, Action<RectTransform> actionPointerUpOverlay)
     {
@@ -82,7 +81,30 @@ public class ItemSelect : MonoBehaviour
         this.img.enabled = false;
         StartCoroutine(DelayFrame());
         isDragging = true; // Kích hoạt trạng thái kéo ngay lập tức
+        SetAnimHighlightTarget(true);
     }
+    private void SetAnimHighlightTarget(bool active)
+    {
+        foreach (var item in overlays)
+        {
+            if (item == null) continue;
+
+            // Thêm tham số 'true' ở đây là chìa khóa!
+            HighlightAnim anim = item.GetComponentInChildren<HighlightAnim>(true);
+
+            if (anim != null)
+            {
+                anim.gameObject.SetActive(active);
+
+                // Nếu bạn muốn dùng cái shader "con rắn" hồi nãy để bật bằng code:
+                // anim.EnableBorder(true); 
+            }
+            else
+            {
+                Debug.LogWarning($"Không tìm thấy HighlightAnim trong {item.name}");
+            }
+        }
+    }    
     private IEnumerator DelayFrame()
     {
         yield return null;
@@ -90,8 +112,11 @@ public class ItemSelect : MonoBehaviour
     }
     private IEnumerator DelayFrameHide()
     {
+        SetAnimHighlightTarget(false);
         yield return null;
+
         Hide();
+        
     }
     private void Hide() => gameObject.SetActive(false);
 }

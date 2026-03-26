@@ -12,7 +12,8 @@ public class ThuyLongDan : ThanThong , BaseSkill.LienKich
     {
 
         target.CaculateDameByThanThong(caster, new List<int> { dame[GetIndexLevelThanThong(caster)] }, eTypeSkill);
-        //ShowSkillEffect(target, delayTimeEffect);
+       // ShowSkillEffectNoTarget(delayTimeEffect);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 
