@@ -17,6 +17,18 @@ namespace LuyenDan
         [field: SerializeField, ReadOnly] public List<LinhDan> LinhDans { get; private set; }
         [field: SerializeField, ReadOnly] public List<RecipeData> Recipes { get; private set; }
         public const string EmptyDetail = "Không";
+        private static LuyenDanResources instance;
+        public static LuyenDanResources Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = Resources.Load<LuyenDanResources>("LuyenDan/LuyenDanResources");
+                }
+                return instance;
+            }
+        }
         public IItemData FindItem(ItemRef itemRef)
         {
             if (itemRef.Type == ItemType.Furnace)
