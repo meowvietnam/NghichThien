@@ -23,5 +23,7 @@ namespace LuyenDan.Inventory
         [field: SerializeField] public int ProfitDanThanh { get; private set; }
         [field: SerializeField] public int ProfitDanThanhPerDay { get; private set; }
         [field: SerializeField] public float IncomeDanThanh { get; private set; }
+        [field: SerializeField] public ETypeDan ETypeDan { get; private set; }
+
     }
 }
