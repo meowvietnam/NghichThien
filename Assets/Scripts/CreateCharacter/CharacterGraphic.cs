@@ -3,6 +3,7 @@ using Spine;
 using Spine.Unity;
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace CreateCharacter
@@ -53,6 +54,32 @@ namespace CreateCharacter
                 }
                 currentColors[skinId] = color;
             }
+        }
+
+        public (Dictionary<string, string> skins, Dictionary<string, Color> colors) RandomSkin(Gender gender, bool useDefaultColors)
+        {
+            var skins = new Dictionary<string, string>();
+            var colors = new Dictionary<string, Color>();
+            var palette = skinResources.Colors;
+            var group = skinResources.GenderSkinGroups.First(x => x.Gender == gender);
+            foreach (var groupSkinGroup in group.SkinGroups)
+            {
+                foreach (var skinCategory in groupSkinGroup.Categories)
+                {
+                    var skin = skinCategory.Skins[Random.Range(0, skinCategory.Skins.Count)];
+                    skins[skinCategory.Id] = skin.Name;
+                }
+
+                foreach (var colorGroup in groupSkinGroup.ColorGroups)
+                {
+                    foreach (var colorGroupCategoryId in colorGroup.CategoryIds)
+                    {
+                        var color = useDefaultColors ? colorGroup.DefaultColor : palette[Random.Range(0, palette.Count)];
+                        colors[colorGroupCategoryId] = color;
+                    }
+                }
+            }
+            return (skins,colors);
         }
     }
 }

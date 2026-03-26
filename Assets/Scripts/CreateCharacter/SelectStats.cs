@@ -159,7 +159,6 @@ namespace CreateCharacter
             currentStep = steps[currentStepIndex];
             currentStep.OnEnter();
         }
-        [Button]
         private void Final()
         {
             CreateCharacterSystem.Instance.Final(selectionModels);
