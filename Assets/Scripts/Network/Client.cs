@@ -10,6 +10,7 @@ namespace Network
         public static Client Instance {get; private set;}
         private MessageStateHandler<MessageTag,MessageState> stateModule;
         public UserData UserData { get; private set;}
+        public CharacterData CharacterData {get; private set;}
         public Client(UnauthenticatedClient client)
         {
             var tcpClient = client.TcpClient;
