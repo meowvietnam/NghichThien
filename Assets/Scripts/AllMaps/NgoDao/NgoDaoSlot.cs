@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NgoDaoSlot : BaseBehaviour
+public class NgoDaoSlot : BaseBehaviour , INetworkEvent.ILearnNgoDao
 {
     [SerializeField] public NgoDao ngoDaoSO;
     [SerializeField] private Button btn;
@@ -34,13 +34,11 @@ public class NgoDaoSlot : BaseBehaviour
     }
     public void LearnAndUpdateData()
     {
-        var TabPanel = Pool.Get<TabPanel>();
-
-        TabPanel.SetNgoDaoDiem();
-        TabPanel.InitNgoDaoSlotCanLearn(TabPanel.dictBtnWithNgoDaos.ElementAt(TabPanel.indexThisPage).Value);
-        ngoDaoSO.Learn(Pool.Get<Player>().characterStatsBase);
+        Observer.Notify(EventList.Network.LEARN_NGODAO, ngoDaoSO.Id, this);
+        //ngoDaoSO.Learn(this);
 
     }
+    
     [Button]
     public void LearnedVisual()
     {
@@ -73,4 +71,17 @@ public class NgoDaoSlot : BaseBehaviour
 
     }
 
+   
+
+    public void SuccessLearnNgoDao()
+    {
+        var TabPanel = Pool.Get<TabPanel>();
+        TabPanel.SetNgoDaoDiem();
+        LearnedVisual();
+    }
+
+    public void FailLearnNgoDao(string message)
+    {
+        Debug.Log(message);
+    }
 }

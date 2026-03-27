@@ -12,23 +12,7 @@ public class NgoDaoBuffStats : NgoDao
         HP,
         DonToc,
     }
-    public override void Learn(CharacterStats charStats)
-    {
-        base.Learn(charStats);
-        switch (currentEBuffStat)
-        {
-            case EBuffStats.None:
-                break;
-            case EBuffStats.ThanThuc:
-                break;
-            case EBuffStats.HP:
-                break;
-            case EBuffStats.DonToc:
-                break;
-            default:
-                break;
-        }
-    }
+  
     public override string GetDes()
     {
         return $"{GetTextBuff(currentEBuffStat)} {BaseSkill.GetColoredText($"+{buff}", "red")}";
