@@ -4,6 +4,7 @@ namespace Network.ClientState
     {
         AuthState,
         SelectCharacter,
-        CreateCharacter
+        CreateCharacter,
+        AllMaps
     }
 }

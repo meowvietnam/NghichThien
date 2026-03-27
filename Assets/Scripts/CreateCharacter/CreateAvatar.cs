@@ -65,7 +65,7 @@ namespace CreateCharacter
         }
         private void SelectCharacter()
         {
-            
+            CreateCharacterSystem.Instance.SelectCharacter(characterData.Id);
         }
         [Button]
         private void CreateCharacter()

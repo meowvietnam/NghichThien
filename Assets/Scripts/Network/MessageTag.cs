@@ -22,5 +22,7 @@ namespace Network
         SetSkinsResult = 68,
         ApplyStats = 89,
         ApplyStatsResult = 90,
+        SelectCharacter = 91,
+        SelectCharacterResult = 92,
     }
 }

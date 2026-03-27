@@ -33,6 +33,11 @@ namespace Network.ClientState
                 var result = reader.Read<CanCreateChar>();
                 callback.OnCanCreateCharacter(result);
             }
+            else if (tag == MessageTag.SelectCharacterResult)
+            {
+                var result = reader.Read<SelectCharacterResult>();
+                callback.OnSelectCharacter(result);
+            }
         }
         public void OnLeave()
         {

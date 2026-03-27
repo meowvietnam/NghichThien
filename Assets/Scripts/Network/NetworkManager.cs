@@ -21,6 +21,19 @@ namespace Network
         private Client client;
         [ShowInInspector, ReadOnly] public int Id { get; private set; }
         [ShowInInspector, ReadOnly] public string Key { get; private set; }
+
+        [ShowInInspector, ReadOnly]
+        public CharacterData CharacterData
+        {
+            get
+            {
+                if (client == null)
+                {
+                    return null;
+                }
+                return client.CharacterData;
+            }
+        }
         private void Awake()
         {
             Instance = this;
