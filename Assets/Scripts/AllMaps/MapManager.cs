@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Algorithm;
 using Base;
 using LongDH.LongDHModules;
+using Network;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
@@ -63,6 +64,7 @@ namespace AllMaps
                 start = m;
                 listNodes.Add(node);
             }
+            if (Client.Instance.CharacterData.CurrentEnergy < listNodes.Count) return;
             Observer.Notify(EventList.Network.MOVE_ON_MAP,map.Id,this);
 #if UNITY_EDITOR
             player.DoMove(listNodes, OnMoveToMapCompleted);
@@ -72,6 +74,7 @@ namespace AllMaps
         private void OnMoveToMapCompleted()
         {
             current.OnPlayerEnter();
+
         }
 
         [Button]
@@ -86,13 +89,25 @@ namespace AllMaps
 
         public void SuccessMoveOnMap()
         {
-            player.DoMove(listNodes, OnMoveToMapCompleted);
+            player.DoMove(listNodes, () =>
+            {
+                OnMoveToMapCompleted();
+                SetPos();
+
+            });
             listNodes.Clear();
+
         }
 
+        private void SetPos()
+        {
+            // reset lại pos đúng data trên server
+            var map = FindMap(Client.Instance.CharacterData.IdCurrentNode);
+            player.transform.position = map.PlayerPosition;
+        }   
         public void FailMoveOnMap(string message)
         {
-            Debug.LogError(message);
+            SetPos();
         }
     }
 }
