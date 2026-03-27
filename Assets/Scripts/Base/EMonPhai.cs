@@ -1,5 +1,4 @@
 using UnityEngine;
-
 namespace Base
 {
     public enum EMonPhai
@@ -11,7 +10,5 @@ namespace Base
         TinhHaKiemPhai,
         LyHoaMon,
         HoaTranGiao,
-
     }
-
 }

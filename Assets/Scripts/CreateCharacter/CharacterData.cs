@@ -17,14 +17,14 @@ namespace CreateCharacter
         [field: SerializeField] public int Level { get; set; } = 1;
         [field: SerializeField] public int CurrentExp { get; set; }
         [field: SerializeField] public CharStats.CharacterStats Stats { get; set; } = new();
-        public Dictionary<string, string> Skins { get; set; }
-        public Dictionary<string, Color> Colors { get; set; }
+        public Dictionary<string, string> Skins { get; set; } = new();
+        public Dictionary<string, Color> Colors { get; set; } = new();
         public EMonPhai MonPhai { get; set; }
-        public List<int> NgoDaoSaves { get; set; }
+        public List<int> NgoDaoSaves { get; set; } = new();
         public Dictionary<int, int> CamNgoSaves { get; set; } = new();
         public int NgoDaoDiem { get; set; }
-        public List<int> ThanThongOwner { get; set; }
-        public List<int> ThanThongEquip { get; set; }
+        public List<int> ThanThongOwner { get; set; } = new();
+        public List<int> ThanThongEquip { get; set; } = new();
         public Dictionary<int, int> CongPhapOwner { get; set; } = new();
         public int DonThuatUsed { get; set; }
         public int PhuTu1Used { get; set; }
