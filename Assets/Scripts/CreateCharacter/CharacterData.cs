@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Network;
 using Network.Extensions;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using EMonPhai = Base.EMonPhai;
 namespace CreateCharacter
@@ -17,23 +18,23 @@ namespace CreateCharacter
         [field: SerializeField] public int Level { get; set; } = 1;
         [field: SerializeField] public int CurrentExp { get; set; }
         [field: SerializeField] public CharStats.CharacterStats Stats { get; set; } = new();
-        public Dictionary<string, string> Skins { get; set; } = new();
-        public Dictionary<string, Color> Colors { get; set; } = new();
-        public EMonPhai MonPhai { get; set; }
-        public List<int> NgoDaoSaves { get; set; } = new();
-        public Dictionary<int, int> CamNgoSaves { get; set; } = new();
-        public int NgoDaoDiem { get; set; }
-        public List<int> ThanThongOwner { get; set; } = new();
-        public List<int> ThanThongEquip { get; set; } = new();
-        public Dictionary<int, int> CongPhapOwner { get; set; } = new();
-        public int DonThuatUsed { get; set; }
-        public int PhuTu1Used { get; set; }
-        public int PhuTu2Used { get; set; }
-        public int PhuTu3Used { get; set; }
-        public int PhuTu4Used { get; set; }
-        public int ChuTu1Used { get; set; }
-        public int ChuTu2Used { get; set; }
-        public List<int> DanCombatUsed { get; set; } = new();
+        [field: ShowInInspector] public Dictionary<string, string> Skins { get; set; } = new();
+        [field: ShowInInspector] public Dictionary<string, Color> Colors { get; set; } = new();
+        [field: SerializeField] public EMonPhai MonPhai { get; set; }
+        [field: SerializeField] public List<int> NgoDaoSaves { get; set; } = new();
+        [field: ShowInInspector] public Dictionary<int, int> CamNgoSaves { get; set; } = new();
+        [field: SerializeField] public int NgoDaoDiem { get; set; }
+        [field: SerializeField] public List<int> ThanThongOwner { get; set; } = new();
+        [field: SerializeField] public List<int> ThanThongEquip { get; set; } = new();
+        [field: ShowInInspector] public Dictionary<int, int> CongPhapOwner { get; set; } = new();
+        [field: SerializeField] public int DonThuatUsed { get; set; }
+        [field: SerializeField] public int PhuTu1Used { get; set; }
+        [field: SerializeField] public int PhuTu2Used { get; set; }
+        [field: SerializeField] public int PhuTu3Used { get; set; }
+        [field: SerializeField] public int PhuTu4Used { get; set; }
+        [field: SerializeField] public int ChuTu1Used { get; set; }
+        [field: SerializeField] public int ChuTu2Used { get; set; }
+        [field: SerializeField] public List<int> DanCombatUsed { get; set; } = new();
 
         public CharacterData()
         {
