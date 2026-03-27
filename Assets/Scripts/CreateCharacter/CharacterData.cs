@@ -18,6 +18,28 @@ namespace CreateCharacter
         [field: SerializeField] public CharStats.CharacterStats Stats { get; set; } = new CharStats.CharacterStats();
         public Dictionary<string, string> Skins { get; set; }
         public Dictionary<string, Color> Colors { get; set; }
+        // ngoo dao
+        public List<int> ngoDaoSaves { get; set; }// id
+        public Dictionary<int, int> camNgoSaves { get; set; } // id va diem
+        public int ngoDaoDiem { get; set; }
+
+        // skill
+        public List<int> thanThongOwner { get; set; } // id
+        public List<int> thanThongEquip { get; set; }// id
+        public Dictionary<int, int> congPhapOwner { get; set; } // id va level
+        public int donThuatUsed { get; set; }
+        public int phuTu1Used { get; set; }
+        public int phuTu2Used { get; set; }
+        public int phuTu3Used { get; set; }
+        public int phuTu4Used { get; set; }
+        public int chuTu1Used { get; set; }
+        public int chuTu2Used { get; set; }
+        // toong mon
+        public EMonPhai monPhai;
+        // DanDuoc
+        public List<int> danCombatUsed { get; set; }// id
+
+
 
         public CharacterData()
         {

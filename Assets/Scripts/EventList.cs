@@ -35,4 +35,14 @@ public static partial class EventList
         public const string BACK_SCENE = "GamePlay.BACK_SCENE";
 
     }
+    public static class Network
+    {
+        public const string USE_DAN = "GamePlay.USE_DAN";
+        public const string LEARN_NGODAO = "GamePlay.LEARN_NGODAO";
+        public const string LEARN_SKILL = "GamePlay.LEARN_SKILL";
+        public const string EQUIP_THANTHONG = "GamePlay.EQUIP_THANTHONG";
+        public const string EQUIP_CONGPHAP = "GamePlay.EQUIP_CONGPHAP";
+        public const string UPDATE_CONGPHAP = "GamePlay.UPDATE_CONGPHAP";
+
+    }
 }
