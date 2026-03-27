@@ -14,6 +14,7 @@ namespace CreateCharacter.CharStats
         ThanThuc = 8,
         TocDoBay = 9,
         LinhThach = 10,
+        Hp = 110,
         SinhMenh = 11,
         ThoNguyen = 12,
         TamCanh = 13,

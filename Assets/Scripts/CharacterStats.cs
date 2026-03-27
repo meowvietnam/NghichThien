@@ -83,13 +83,12 @@ public class CharacterStats
         percentHoa = stats.Hoa;
         percentTho = stats.Tho;
         percentMa = stats.Ma;
-
         tuChat = stats.TuChat;
         ngoTinh = stats.NgoTinh;
         thanThuc = stats.ThanThuc;
         tocDoBay = stats.TocDoBay;
         money = stats.LinhThach;
-        hp = stats.SinhMenh;
+        hp = stats.Hp;
         hpMax = stats.SinhMenh;
         thoNguyen = stats.ThoNguyen;
         tamCanh = stats.TamCanh;
