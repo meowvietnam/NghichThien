@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Algorithm;
 using Base;
+using LongDH.LongDHModules;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace AllMaps
 {
-    public class MapManager : MonoBehaviour
+    public class MapManager : MonoBehaviour , INetworkEvent.IMoveOnMap
     {
         [SerializeField] private Map[] maps;
         [SerializeField] private Player player;
@@ -38,8 +39,11 @@ namespace AllMaps
             player.SetPosition(map.PlayerPosition);
             player.Init(Gender.Male,true);
         }
+        List<Node> listNodes = new List<Node>();
+
         public void PlayerMoveTo(Map map)
         {
+            if (listNodes.Count > 0) return;
             if(map == current) return;
             if(player.IsMoving) return;
             var listMapPath = BFSPath.FindPath(graph,current, map);
@@ -47,7 +51,7 @@ namespace AllMaps
             var start = current;
             current.OnPlayerExit();
             current = map;
-            var listNodes = new List<Node>();
+            listNodes.Clear();
             for (var i = 1; i < listMapPath.Count; i++)
             {
                 var m = listMapPath[i];
@@ -59,7 +63,11 @@ namespace AllMaps
                 start = m;
                 listNodes.Add(node);
             }
-            player.DoMove(listNodes,OnMoveToMapCompleted);
+            Observer.Notify(EventList.Network.MOVE_ON_MAP,map.Id,this);
+#if UNITY_EDITOR
+            player.DoMove(listNodes, OnMoveToMapCompleted);
+#endif
+
         }
         private void OnMoveToMapCompleted()
         {
@@ -74,6 +82,17 @@ namespace AllMaps
             {
                 item.transition = Selectable.Transition.ColorTint;
             }
+        }
+
+        public void SuccessMoveOnMap()
+        {
+            player.DoMove(listNodes, OnMoveToMapCompleted);
+            listNodes.Clear();
+        }
+
+        public void FailMoveOnMap(string message)
+        {
+            Debug.LogError(message);
         }
     }
 }

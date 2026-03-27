@@ -42,5 +42,9 @@ public class INetworkEvent
         void SuccessUpdateCongPhap();
         void FailUpdateCongPhap(string message);
     }
-
+    public interface IMoveOnMap // Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessMoveOnMap();
+        void FailMoveOnMap(string message);
+    }
 }
