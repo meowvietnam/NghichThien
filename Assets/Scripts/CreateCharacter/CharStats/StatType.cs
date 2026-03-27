@@ -20,7 +20,6 @@ namespace CreateCharacter.CharStats
         TamCanh = 13,
         LinhCan = 14,
         Ability = 15,
-        NgoDao = 107,
         DanDoc = 108,
         TuoiTac = 109
     }

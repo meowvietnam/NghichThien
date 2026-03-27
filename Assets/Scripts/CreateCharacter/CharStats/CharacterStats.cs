@@ -26,7 +26,6 @@ namespace CreateCharacter.CharStats
         [field: SerializeField] public int TamCanh { get; private set; }
         [field: SerializeField] public LinhCan LinhCan { get; private set; }
         [field: SerializeField] public Ability Ability { get; private set; }
-        [field: SerializeField] public int NgoDao { get; private set; }
         [field: SerializeField] public int DanDoc { get; private set; }
         [field: SerializeField] public int TuoiTac { get; private set; }
 #if !SERVER
@@ -61,7 +60,6 @@ namespace CreateCharacter.CharStats
             TamCanh = stats.TamCanh;
             LinhCan = stats.LinhCan;
             Ability = stats.Ability;
-            NgoDao = stats.NgoDao;
             DanDoc = stats.DanDoc;
             TuoiTac = stats.TuoiTac;
 #if !SERVER
@@ -137,7 +135,6 @@ namespace CreateCharacter.CharStats
                 case StatType.TamCanh: return TamCanh;
                 case StatType.LinhCan: return LinhCan;
                 case StatType.Ability: return Ability;
-                case StatType.NgoDao: return NgoDao;
                 case StatType.DanDoc: return DanDoc;
                 case StatType.TuoiTac: return TuoiTac;
                 default: return null;
@@ -173,7 +170,6 @@ namespace CreateCharacter.CharStats
                 case StatType.SinhMenh: SinhMenh = value; break;
                 case StatType.ThoNguyen: ThoNguyen = value; break;
                 case StatType.TamCanh: TamCanh = value; break;
-                case StatType.NgoDao: NgoDao = value; break;
                 case StatType.DanDoc: DanDoc = value; break;
                 case StatType.TuoiTac: TuoiTac = value; break;
             }
@@ -203,7 +199,6 @@ namespace CreateCharacter.CharStats
                 case StatType.SinhMenh:
                 case StatType.ThoNguyen:
                 case StatType.TamCanh:
-                case StatType.NgoDao:
                 case StatType.DanDoc:
                 case StatType.TuoiTac:
                     SetInt(type, (int)value);
@@ -231,7 +226,7 @@ namespace CreateCharacter.CharStats
                    + Hp.ByteSize()
                    + SinhMenh.ByteSize()
                    + ThoNguyen.ByteSize() + TamCanh.ByteSize() + LinhCan.ByteSize() + Ability.ByteSize()
-                   + NgoDao.ByteSize() + DanDoc.ByteSize() + TuoiTac.ByteSize();
+                   + DanDoc.ByteSize() + TuoiTac.ByteSize();
         }
 
         public void Serialize(IWriter writer)
@@ -253,7 +248,6 @@ namespace CreateCharacter.CharStats
             writer.Write(TamCanh);
             writer.Write(LinhCan);
             writer.Write(Ability);
-            writer.Write(NgoDao);
             writer.Write(DanDoc);
             writer.Write(TuoiTac);
         }
@@ -277,7 +271,6 @@ namespace CreateCharacter.CharStats
             value.TamCanh = reader.Read<int>();
             value.LinhCan = reader.Read<LinhCan>();
             value.Ability = reader.Read<Ability>();
-            value.NgoDao = reader.Read<int>();
             value.DanDoc = reader.Read<int>();
             value.TuoiTac = reader.Read<int>();
         }

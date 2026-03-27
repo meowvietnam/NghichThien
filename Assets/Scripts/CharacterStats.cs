@@ -71,7 +71,8 @@ public class CharacterStats
         nameUser = data.Name;
         level = data.Level;
         currentExp = data.CurrentExp;
-
+        ngoDaoDiem = data.NgoDaoDiem;
+        
         Clone(data.Stats);
     }
 
@@ -94,7 +95,6 @@ public class CharacterStats
         tamCanh = stats.TamCanh;
         idLinhCan = (int)stats.LinhCan;
         ability = stats.Ability;
-        ngoDaoDiem = stats.NgoDao;
         danDoc = stats.DanDoc;
         tuoiTac = stats.TuoiTac;
     }
