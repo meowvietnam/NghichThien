@@ -7,6 +7,7 @@ using Network.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using EMonPhai = Base.EMonPhai;
+
 namespace CreateCharacter
 {
     [Serializable]
@@ -67,7 +68,10 @@ namespace CreateCharacter
             ChuTu1Used = clone.ChuTu1Used;
             ChuTu2Used = clone.ChuTu2Used;
             DanCombatUsed = new(clone.DanCombatUsed);
+            IdCurrentNode = clone.IdCurrentNode;
+            CurrentEnergy = clone.CurrentEnergy;
         }
+
 
         public int ByteSize()
         {
@@ -86,7 +90,9 @@ namespace CreateCharacter
                    + PhuTu1Used.ByteSize() + PhuTu2Used.ByteSize()
                    + PhuTu3Used.ByteSize() + PhuTu4Used.ByteSize()
                    + ChuTu1Used.ByteSize() + ChuTu2Used.ByteSize()
-                   + DanCombatUsed.ByteSize();
+                   + DanCombatUsed.ByteSize()
+                   + IdCurrentNode.ByteSize()
+                   + CurrentEnergy.ByteSize();
         }
 
         public void Serialize(IWriter writer)
@@ -118,6 +124,8 @@ namespace CreateCharacter
             writer.Write(ChuTu1Used);
             writer.Write(ChuTu2Used);
             writer.WriteArray(DanCombatUsed);
+            writer.Write(IdCurrentNode);
+            writer.Write(CurrentEnergy);
         }
 
         public void Deserialize(IReader reader, ref CharacterData value)
@@ -127,7 +135,7 @@ namespace CreateCharacter
             value.Name = reader.Read();
             value.Level = reader.Read<int>();
             value.CurrentExp = reader.Read<int>();
-            value.Stats = reader.Read<CharStats.CharacterStats>();
+            value.Stats = reader.Read<CreateCharacter.CharStats.CharacterStats>();
             value.Skins = DictionaryUtils.CreateDictionary(reader.ReadArray(), reader.ReadArray());
             value.Colors = DictionaryUtils.CreateDictionary(reader.ReadArray(), reader.ReadArray<Color>());
             value.MonPhai = reader.Read<EMonPhai>();
@@ -145,6 +153,8 @@ namespace CreateCharacter
             value.ChuTu1Used = reader.Read<int>();
             value.ChuTu2Used = reader.Read<int>();
             value.DanCombatUsed = reader.ReadArray<int>().ToList();
+            value.IdCurrentNode = reader.Read<int>();
+            value.CurrentEnergy = reader.Read<int>();
         }
     }
 }

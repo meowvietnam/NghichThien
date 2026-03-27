@@ -24,5 +24,8 @@ namespace Network
         ApplyStatsResult = 90,
         SelectCharacter = 91,
         SelectCharacterResult = 92,
+        
+        MoveToMap = 93,
+        MoveToMapResult = 94,
     }
 }
