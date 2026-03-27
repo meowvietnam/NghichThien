@@ -20,6 +20,7 @@ namespace CreateCharacter.CharStats
         [field: SerializeField] public int ThanThuc { get; private set; }
         [field: SerializeField] public int TocDoBay { get; private set; }
         [field: SerializeField] public int LinhThach { get; private set; }
+        [field: SerializeField] public int Hp { get; private set; }
         [field: SerializeField] public int SinhMenh { get; private set; }
         [field: SerializeField] public int ThoNguyen { get; private set; }
         [field: SerializeField] public int TamCanh { get; private set; }
@@ -28,15 +29,19 @@ namespace CreateCharacter.CharStats
         [field: SerializeField] public int NgoDao { get; private set; }
         [field: SerializeField] public int DanDoc { get; private set; }
         [field: SerializeField] public int TuoiTac { get; private set; }
+#if !SERVER
         private readonly Dictionary<StatType, Action<object>> onStatChanges = new();
+#endif
+
         public CharacterStats()
         {
-        
         }
+
         public CharacterStats(CharacterStats stats)
         {
             CopyFrom(stats);
         }
+
         public void CopyFrom(CharacterStats stats)
         {
             Kim = stats.Kim;
@@ -50,6 +55,7 @@ namespace CreateCharacter.CharStats
             ThanThuc = stats.ThanThuc;
             TocDoBay = stats.TocDoBay;
             LinhThach = stats.LinhThach;
+            Hp = stats.Hp;
             SinhMenh = stats.SinhMenh;
             ThoNguyen = stats.ThoNguyen;
             TamCanh = stats.TamCanh;
@@ -58,13 +64,15 @@ namespace CreateCharacter.CharStats
             NgoDao = stats.NgoDao;
             DanDoc = stats.DanDoc;
             TuoiTac = stats.TuoiTac;
+#if !SERVER
             foreach (var onStatChange in onStatChanges)
             {
                 var value = GetValue(onStatChange.Key);
                 onStatChange.Value(value);
             }
+#endif
         }
-
+#if !SERVER
         public void RegisterEvent(StatType stat, Action<object> action)
         {
             if (!onStatChanges.TryAdd(stat, action))
@@ -80,7 +88,7 @@ namespace CreateCharacter.CharStats
                 action(data);
             }
         }
-
+#endif
 
         public void Apply(StatModifier modifier)
         {
@@ -123,6 +131,7 @@ namespace CreateCharacter.CharStats
                 case StatType.ThanThuc: return ThanThuc;
                 case StatType.TocDoBay: return TocDoBay;
                 case StatType.LinhThach: return LinhThach;
+                case StatType.Hp: return Hp;
                 case StatType.SinhMenh: return SinhMenh;
                 case StatType.ThoNguyen: return ThoNguyen;
                 case StatType.TamCanh: return TamCanh;
@@ -146,8 +155,9 @@ namespace CreateCharacter.CharStats
                 case StatType.Tho: Tho = value; break;
                 case StatType.Ma: Ma = value; break;
             }
-
+#if !SERVER
             Emit(type, value);
+#endif
         }
 
         private void SetInt(StatType type, int value)
@@ -159,6 +169,7 @@ namespace CreateCharacter.CharStats
                 case StatType.ThanThuc: ThanThuc = value; break;
                 case StatType.TocDoBay: TocDoBay = value; break;
                 case StatType.LinhThach: LinhThach = value; break;
+                case StatType.Hp: Hp = value; break;
                 case StatType.SinhMenh: SinhMenh = value; break;
                 case StatType.ThoNguyen: ThoNguyen = value; break;
                 case StatType.TamCanh: TamCanh = value; break;
@@ -166,8 +177,9 @@ namespace CreateCharacter.CharStats
                 case StatType.DanDoc: DanDoc = value; break;
                 case StatType.TuoiTac: TuoiTac = value; break;
             }
-
+#if !SERVER
             Emit(type, value);
+#endif
         }
 
         public void SetValue(StatType type, float value)
@@ -187,6 +199,7 @@ namespace CreateCharacter.CharStats
                 case StatType.ThanThuc:
                 case StatType.TocDoBay:
                 case StatType.LinhThach:
+                case StatType.Hp:
                 case StatType.SinhMenh:
                 case StatType.ThoNguyen:
                 case StatType.TamCanh:
@@ -197,11 +210,15 @@ namespace CreateCharacter.CharStats
                     break;
                 case StatType.LinhCan:
                     LinhCan = (LinhCan)(int)value;
+#if !SERVER
                     Emit(type, LinhCan);
+#endif
                     break;
                 case StatType.Ability:
                     Ability = (Ability)(int)value;
+#if !SERVER
                     Emit(type, Ability);
+#endif
                     break;
             }
         }
@@ -210,7 +227,9 @@ namespace CreateCharacter.CharStats
         {
             return Kim.ByteSize() + Moc.ByteSize() + Thuy.ByteSize() + Hoa.ByteSize()
                    + Tho.ByteSize() + Ma.ByteSize() + TuChat.ByteSize() + NgoTinh.ByteSize()
-                   + ThanThuc.ByteSize() + TocDoBay.ByteSize() + LinhThach.ByteSize() + SinhMenh.ByteSize()
+                   + ThanThuc.ByteSize() + TocDoBay.ByteSize() + LinhThach.ByteSize()
+                   + Hp.ByteSize()
+                   + SinhMenh.ByteSize()
                    + ThoNguyen.ByteSize() + TamCanh.ByteSize() + LinhCan.ByteSize() + Ability.ByteSize()
                    + NgoDao.ByteSize() + DanDoc.ByteSize() + TuoiTac.ByteSize();
         }
@@ -228,6 +247,7 @@ namespace CreateCharacter.CharStats
             writer.Write(ThanThuc);
             writer.Write(TocDoBay);
             writer.Write(LinhThach);
+            writer.Write(Hp);
             writer.Write(SinhMenh);
             writer.Write(ThoNguyen);
             writer.Write(TamCanh);
@@ -251,6 +271,7 @@ namespace CreateCharacter.CharStats
             value.ThanThuc = reader.Read<int>();
             value.TocDoBay = reader.Read<int>();
             value.LinhThach = reader.Read<int>();
+            value.Hp = reader.Read<int>();
             value.SinhMenh = reader.Read<int>();
             value.ThoNguyen = reader.Read<int>();
             value.TamCanh = reader.Read<int>();
