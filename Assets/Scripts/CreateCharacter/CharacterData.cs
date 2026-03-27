@@ -35,6 +35,7 @@ namespace CreateCharacter
         [field: SerializeField] public int ChuTu1Used { get; set; }
         [field: SerializeField] public int ChuTu2Used { get; set; }
         [field: SerializeField] public List<int> DanCombatUsed { get; set; } = new();
+        [field: SerializeField] public int IdCurrentNode { get; set; }
 
         public CharacterData()
         {
