@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class TabPanel : PanelGroup
+public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEvent.IUnEquipCongPhap,INetworkEvent.IEquipThanThong, INetworkEvent.IUnEquipThanThong
 {
     public enum ETypePanel { 
         
@@ -516,21 +516,20 @@ public class TabPanel : PanelGroup
   
     public void InitCongPhap()
     {
-        void UpdatePlayerStatsCongPhap(RectTransform hitRect, int itemId)
+        ETypeSlotCP GetTypeSlotCP(RectTransform hitRect)
         {
             var stats = Pool.Get<Player>().characterStatsBase;
 
-            if (hitRect == donThuat.GetComponent<RectTransform>()) stats.donThuatUsed.Value = itemId;
-            else if (hitRect == phuTu1.GetComponent<RectTransform>()) stats.phuTu1Used.Value = itemId;
-            else if (hitRect == phuTu2.GetComponent<RectTransform>()) stats.phuTu2Used.Value = itemId;
-            else if (hitRect == phuTu3.GetComponent<RectTransform>()) stats.phuTu3Used.Value = itemId;
-            else if (hitRect == phuTu4.GetComponent<RectTransform>()) stats.phuTu4Used.Value = itemId;
-            else if (hitRect == chuTu.GetComponent<RectTransform>()) stats.chuTu1Used.Value = itemId;
-            else if (hitRect == nguyenAnh.GetComponent<RectTransform>()) stats.chuTu2Used.Value = itemId;
+            if (hitRect == donThuat.GetComponent<RectTransform>()) return ETypeSlotCP.DonThuat;
+            else if (hitRect == phuTu1.GetComponent<RectTransform>()) return ETypeSlotCP.PhuTu1;
+            else if (hitRect == phuTu2.GetComponent<RectTransform>()) return ETypeSlotCP.PhuTu2;
+            else if (hitRect == phuTu3.GetComponent<RectTransform>()) return ETypeSlotCP.PhuTu3;
+            else if (hitRect == phuTu4.GetComponent<RectTransform>()) return ETypeSlotCP.PhuTu4;
+            else if (hitRect == chuTu.GetComponent<RectTransform>()) return ETypeSlotCP.ChuTu1;
+            else if (hitRect == nguyenAnh.GetComponent<RectTransform>()) return ETypeSlotCP.ChuTu2;
 
             // ... thêm các ô khác tương tự
-
-            Debug.Log($"Đã lưu Item ID {itemId} vào dữ liệu Player.");
+            return ETypeSlotCP.None;
         }
 
         bag.gameObject.SetActive(true);
@@ -572,7 +571,8 @@ public class TabPanel : PanelGroup
                     if (resultRect != null)
                     {
 
-                        UpdatePlayerStatsCongPhap(currentItem.GetComponent<RectTransform>(), -1);
+                        Observer.Notify(EventList.Network.UNEQUIP_CONGPHAP, currentItem.itemData.Id ,this, GetTypeSlotCP(currentItem.GetComponent<RectTransform>()));
+
                         // Cách viết chuẩn
 
 
@@ -636,7 +636,7 @@ public class TabPanel : PanelGroup
                                 //equip
                                 //congPhap.EquipCongPhap();
                                 //save player cong phap equip id
-                                UpdatePlayerStatsCongPhap(resultRect, congPhap.Id);
+                                Observer.Notify(EventList.Network.EQUIP_CONGPHAP, congPhap.Id , this,GetTypeSlotCP(resultRect));
                                 // Cách viết chuẩn
                                 
 
@@ -682,27 +682,7 @@ public class TabPanel : PanelGroup
     [SerializeField] private List<ItemInventory> listItemSlotThanThongs;
     public void InitThanThong()
     {
-        void UpdatePlayerStatsThanThong(int index,int itemId)
-        {
-            var stats = Pool.Get<Player>().characterStatsBase;
-
-            if (index < stats.thanThongEquip.Length)
-            {
-
-                stats.thanThongEquip[index] = itemId; // Gán ngược lại để trigger việc lưu
-            }
-            else
-            {
-                // Logic Add New của bạn giữ nguyên
-                var newArray = new SecureInt[stats.thanThongEquip.Length + 1];
-                stats.thanThongEquip.CopyTo(newArray, 0);
-                newArray[newArray.Length - 1] = itemId;
-                stats.thanThongEquip = newArray;
-            }
-            // ... thêm các ô khác tương tự
-
-            Debug.Log($"Đã lưu Item ID {itemId} vào dữ liệu Player.");
-        }
+        
         bag.gameObject.SetActive(true);
         var Player = Pool.Get<Player>();
         var GameConfig = Pool.Get<GameConfig>();
@@ -743,8 +723,7 @@ public class TabPanel : PanelGroup
                 {
                     if (resultRect != null)
                     {
-
-                        UpdatePlayerStatsThanThong(listItemSlotThanThongs.IndexOf(currentItem), -1);
+                        Observer.Notify(EventList.Network.UNEQUIP_THANTHONG, listItemSlotThanThongs.IndexOf(currentItem), this);
                         Debug.Log("updaet thần thông id unequip");
                         // Cách viết chuẩn
 
@@ -804,7 +783,7 @@ public class TabPanel : PanelGroup
                                 //equip
                                 //congPhap.EquipCongPhap();
                                 //save player thần thông equip id
-                                UpdatePlayerStatsThanThong(listItemSlotThanThongs.IndexOf(itemSlot), thanThong.Id);
+                                Observer.Notify(EventList.Network.EQUIP_THANTHONG, listItemSlotThanThongs.IndexOf(currentItem), this , thanThong.Id);
                                 // Cách viết chuẩn
 
 
@@ -830,6 +809,46 @@ public class TabPanel : PanelGroup
 
 
         }
-    }    
+    }
 
+    public void SuccessEquipCongPhap()
+    {
+       // reload lại tab congphap
+    }
+
+    public void FailEquipCongPhap(string message)
+    {
+        Debug.LogError(message);
+    }
+
+    public void SuccessUnEquipCongPhap()
+    {
+        // reload lại tab congphap
+
+    }
+
+    public void FailUnEquipCongPhap(string message)
+    {
+        Debug.LogError(message);
+    }
+
+    public void SuccessUnEquipThanThong()
+    {       // reload lại tab thanThong
+
+    }
+
+    public void FailUnEquipThanThong(string message)
+    {
+        Debug.LogError(message);
+    }
+
+    public void SuccessEquipThanThong()
+    {
+        // reload lại tab thanThong
+    }
+
+    public void FailEquipThanThong(string message)
+    {
+        Debug.LogError(message);
+    }
 }

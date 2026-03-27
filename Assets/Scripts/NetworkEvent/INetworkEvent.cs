@@ -22,10 +22,20 @@ public class INetworkEvent
         void SuccessEquipThanThong();
         void FailEquipThanThong(string message);
     }
+    public interface IUnEquipThanThong // Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessUnEquipThanThong();
+        void FailUnEquipThanThong(string message);
+    }
     public interface IEquipCongPhap // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessEquipCongPhap();
         void FailEquipCongPhap(string message);
+    }
+    public interface IUnEquipCongPhap // Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessUnEquipCongPhap();
+        void FailUnEquipCongPhap(string message);
     }
     public interface IUpdateCongPhap // Check đủ ngộ đạo điểm mới learn được
     {

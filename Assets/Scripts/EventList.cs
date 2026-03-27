@@ -42,6 +42,9 @@ public static partial class EventList
         public const string LEARN_SKILL = "GamePlay.LEARN_SKILL";
         public const string EQUIP_THANTHONG = "GamePlay.EQUIP_THANTHONG";
         public const string EQUIP_CONGPHAP = "GamePlay.EQUIP_CONGPHAP";
+        public const string UNEQUIP_CONGPHAP = "GamePlay.UNEQUIP_CONGPHAP";
+        public const string UNEQUIP_THANTHONG = "GamePlay.UNEQUIP_THANTHONG";
+
         public const string UPDATE_CONGPHAP = "GamePlay.UPDATE_CONGPHAP";
 
     }
