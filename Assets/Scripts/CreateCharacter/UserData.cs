@@ -12,6 +12,8 @@ namespace CreateCharacter
     {
         [field: SerializeField] public int Id { get; set; }
         [field: SerializeField] public List<CharacterData> CharacterDatas { get; set; }
+        [field: SerializeField] public int CurrentEnergy { get; set; }
+        [field: SerializeField] public bool IsInfiniteEnergy { get; set; }
         public UserData()
         {
             CharacterDatas = new List<CharacterData>();
