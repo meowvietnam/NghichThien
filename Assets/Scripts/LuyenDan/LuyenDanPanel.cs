@@ -54,7 +54,15 @@ namespace LuyenDan
         {
             FurnaceInventory.Init(myFurnaces);
             HerbInventory.Init(myHerbs);
-            var datas = myRecipes.Select(x => Resources.FindRecipe(x)).ToList();
+            var datas = myRecipes.Select(x =>
+            {
+                var recipe = Resources.FindRecipe(x);
+                if (recipe == null)
+                {
+                    Debug.Log($"Recipe {x} not found");
+                }
+                return recipe;
+            }).ToList();
             RecipeListUI.Init(datas);
         }
         public void SelectDanLu(FurnaceInventoryItemUI furnace)
