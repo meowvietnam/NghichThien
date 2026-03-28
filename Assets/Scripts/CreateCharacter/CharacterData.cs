@@ -43,6 +43,7 @@ namespace CreateCharacter
         [field: SerializeField] public int IdVuKhi { get; set; }
         [field: SerializeField] public int IdPhongCu { get; set; }
         [field: SerializeField] public int IdTrangSuc { get; set; }
+        [field: ShowInInspector] public Dictionary<int, int> RelationShip { get; set; } = new(); // id npc + value relation
 
         public CharacterData()
         {
