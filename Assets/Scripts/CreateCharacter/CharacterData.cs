@@ -51,15 +51,14 @@ namespace CreateCharacter
             Name = clone.Name;
             Level = clone.Level;
             CurrentExp = clone.CurrentExp;
-            Stats.CopyFrom(clone.Stats);
             Skins = new(clone.Skins);
             Colors = new(clone.Colors);
             MonPhai = clone.MonPhai;
-            NgoDaoSaves = clone.NgoDaoSaves;
-            CamNgoSaves = clone.CamNgoSaves;
+            NgoDaoSaves = new (clone.NgoDaoSaves);
+            CamNgoSaves = new(clone.CamNgoSaves);
             NgoDaoDiem = clone.NgoDaoDiem;
-            ThanThongOwner = clone.ThanThongOwner;
-            ThanThongEquip = clone.ThanThongEquip;
+            ThanThongOwner = new (clone.ThanThongOwner);
+            ThanThongEquip = new (clone.ThanThongEquip);
             CongPhapOwner = new(clone.CongPhapOwner);
             DonThuatUsed = clone.DonThuatUsed;
             PhuTu1Used = clone.PhuTu1Used;
@@ -71,7 +70,6 @@ namespace CreateCharacter
             DanCombatUsed = new(clone.DanCombatUsed);
             IdCurrentNode = clone.IdCurrentNode;
             CurrentEnergy = clone.CurrentEnergy;
-            InventoryManager.Clone(clone.InventoryManager);
         }
         public int ByteSize()
         {
