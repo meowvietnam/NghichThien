@@ -40,6 +40,10 @@ namespace CreateCharacter
         [field: SerializeField] public int IdCurrentNode { get; set; }
         [field: SerializeField] public int CurrentEnergy { get; set; }
         [field: SerializeField] public InventoryManager InventoryManager { get; set; } = new();
+        [field: SerializeField] public int IdVuKhi { get; set; }
+        [field: SerializeField] public int IdPhongCu { get; set; }
+        [field: SerializeField] public int IdTrangSuc { get; set; }
+
         public CharacterData()
         {
         }
