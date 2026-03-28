@@ -2,6 +2,7 @@ using Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LuyenDan;
 using Network;
 using Network.Extensions;
 using Sirenix.OdinInspector;
@@ -38,7 +39,7 @@ namespace CreateCharacter
         [field: SerializeField] public List<int> DanCombatUsed { get; set; } = new();
         [field: SerializeField] public int IdCurrentNode { get; set; }
         [field: SerializeField] public int CurrentEnergy { get; set; }
-
+        [field: SerializeField] public InventoryManager InventoryManager { get; set; } = new();
         public CharacterData()
         {
         }
@@ -70,9 +71,8 @@ namespace CreateCharacter
             DanCombatUsed = new(clone.DanCombatUsed);
             IdCurrentNode = clone.IdCurrentNode;
             CurrentEnergy = clone.CurrentEnergy;
+            InventoryManager.Clone(clone.InventoryManager);
         }
-
-
         public int ByteSize()
         {
             return Id.ByteSize()
@@ -92,7 +92,8 @@ namespace CreateCharacter
                    + ChuTu1Used.ByteSize() + ChuTu2Used.ByteSize()
                    + DanCombatUsed.ByteSize()
                    + IdCurrentNode.ByteSize()
-                   + CurrentEnergy.ByteSize();
+                   + CurrentEnergy.ByteSize()
+                   + InventoryManager.ByteSize();
         }
 
         public void Serialize(IWriter writer)
@@ -126,6 +127,7 @@ namespace CreateCharacter
             writer.WriteArray(DanCombatUsed);
             writer.Write(IdCurrentNode);
             writer.Write(CurrentEnergy);
+            writer.Write(InventoryManager);
         }
 
         public void Deserialize(IReader reader, ref CharacterData value)
@@ -155,6 +157,7 @@ namespace CreateCharacter
             value.DanCombatUsed = reader.ReadArray<int>().ToList();
             value.IdCurrentNode = reader.Read<int>();
             value.CurrentEnergy = reader.Read<int>();
+            value.InventoryManager = reader.Read<InventoryManager>();
         }
     }
 }

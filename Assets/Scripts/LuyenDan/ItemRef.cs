@@ -9,11 +9,10 @@ namespace LuyenDan
     [Serializable]
     public class ItemRef : IMemorySerializable<ItemRef>
     {
-        [field: SerializeField] public int Id { get; private set; }
-        [field: SerializeField] public ItemType Type { get; private set; }
-        [field: SerializeField] public int Count { get; private set; }
-        
-        [field: SerializeField, ShowIf(nameof(IsFurnace))] public int Durability { get; private set; }
+        [field: SerializeField] public int Id { get; set; }
+        [field: SerializeField] public ItemType Type { get; set; }
+        [field: SerializeField] public int Count { get; set; }
+        [field: SerializeField, ShowIf(nameof(IsFurnace))] public int Durability { get; set; }
         public Action<int> OnCountChanged { get; set; }
         public ItemRef() {}
         public ItemRef(int id, ItemType type, int count)
@@ -59,6 +58,11 @@ namespace LuyenDan
             value.Type = reader.Read<ItemType>();
             value.Count = reader.Read<int>();
             value.Durability = reader.Read<int>();
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Type);
         }
     }
 }

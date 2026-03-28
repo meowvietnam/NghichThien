@@ -27,5 +27,8 @@ namespace Network
         
         MoveToMap = 93,
         MoveToMapResult = 94,
+        
+        GetInventory = 95,
+        GetInventoryResult = 96,
     }
 }
