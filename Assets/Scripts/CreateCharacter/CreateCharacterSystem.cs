@@ -114,7 +114,6 @@ namespace CreateCharacter
                 {
                     var characterData = result.CharacterData;
                     Client.Instance.SetChar(characterData);
-                    Client.Instance.ChangeState(new Network.ClientState.AllMaps());
                     progressBar.DoKill(() => {  });
                     SceneManager.LoadSceneAsync("AllMaps");
                 }

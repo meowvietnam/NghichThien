@@ -2,11 +2,13 @@ using Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LuyenDan;
 using Network;
 using Network.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using EMonPhai = Base.EMonPhai;
+
 namespace CreateCharacter
 {
     [Serializable]
@@ -37,7 +39,7 @@ namespace CreateCharacter
         [field: SerializeField] public List<int> DanCombatUsed { get; set; } = new();
         [field: SerializeField] public int IdCurrentNode { get; set; }
         [field: SerializeField] public int CurrentEnergy { get; set; }
-
+        [field: SerializeField] public InventoryManager InventoryManager { get; set; } = new();
         public CharacterData()
         {
         }
@@ -49,15 +51,14 @@ namespace CreateCharacter
             Name = clone.Name;
             Level = clone.Level;
             CurrentExp = clone.CurrentExp;
-            Stats.CopyFrom(clone.Stats);
             Skins = new(clone.Skins);
             Colors = new(clone.Colors);
             MonPhai = clone.MonPhai;
-            NgoDaoSaves = clone.NgoDaoSaves;
-            CamNgoSaves = clone.CamNgoSaves;
+            NgoDaoSaves = new (clone.NgoDaoSaves);
+            CamNgoSaves = new(clone.CamNgoSaves);
             NgoDaoDiem = clone.NgoDaoDiem;
-            ThanThongOwner = clone.ThanThongOwner;
-            ThanThongEquip = clone.ThanThongEquip;
+            ThanThongOwner = new (clone.ThanThongOwner);
+            ThanThongEquip = new (clone.ThanThongEquip);
             CongPhapOwner = new(clone.CongPhapOwner);
             DonThuatUsed = clone.DonThuatUsed;
             PhuTu1Used = clone.PhuTu1Used;
@@ -67,8 +68,9 @@ namespace CreateCharacter
             ChuTu1Used = clone.ChuTu1Used;
             ChuTu2Used = clone.ChuTu2Used;
             DanCombatUsed = new(clone.DanCombatUsed);
+            IdCurrentNode = clone.IdCurrentNode;
+            CurrentEnergy = clone.CurrentEnergy;
         }
-
         public int ByteSize()
         {
             return Id.ByteSize()
@@ -86,7 +88,10 @@ namespace CreateCharacter
                    + PhuTu1Used.ByteSize() + PhuTu2Used.ByteSize()
                    + PhuTu3Used.ByteSize() + PhuTu4Used.ByteSize()
                    + ChuTu1Used.ByteSize() + ChuTu2Used.ByteSize()
-                   + DanCombatUsed.ByteSize();
+                   + DanCombatUsed.ByteSize()
+                   + IdCurrentNode.ByteSize()
+                   + CurrentEnergy.ByteSize()
+                   + InventoryManager.ByteSize();
         }
 
         public void Serialize(IWriter writer)
@@ -118,6 +123,9 @@ namespace CreateCharacter
             writer.Write(ChuTu1Used);
             writer.Write(ChuTu2Used);
             writer.WriteArray(DanCombatUsed);
+            writer.Write(IdCurrentNode);
+            writer.Write(CurrentEnergy);
+            writer.Write(InventoryManager);
         }
 
         public void Deserialize(IReader reader, ref CharacterData value)
@@ -127,7 +135,7 @@ namespace CreateCharacter
             value.Name = reader.Read();
             value.Level = reader.Read<int>();
             value.CurrentExp = reader.Read<int>();
-            value.Stats = reader.Read<CharStats.CharacterStats>();
+            value.Stats = reader.Read<CreateCharacter.CharStats.CharacterStats>();
             value.Skins = DictionaryUtils.CreateDictionary(reader.ReadArray(), reader.ReadArray());
             value.Colors = DictionaryUtils.CreateDictionary(reader.ReadArray(), reader.ReadArray<Color>());
             value.MonPhai = reader.Read<EMonPhai>();
@@ -145,6 +153,9 @@ namespace CreateCharacter
             value.ChuTu1Used = reader.Read<int>();
             value.ChuTu2Used = reader.Read<int>();
             value.DanCombatUsed = reader.ReadArray<int>().ToList();
+            value.IdCurrentNode = reader.Read<int>();
+            value.CurrentEnergy = reader.Read<int>();
+            value.InventoryManager = reader.Read<InventoryManager>();
         }
     }
 }

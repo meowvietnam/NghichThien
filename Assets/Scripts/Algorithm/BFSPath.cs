@@ -29,10 +29,8 @@ namespace Algorithm
                     }
                 }
             }
-
             if (!visited.Contains(goal))
                 return null;
-
             var path = new List<T>();
             var cur = goal;
 
