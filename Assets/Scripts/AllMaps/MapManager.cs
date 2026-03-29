@@ -46,12 +46,11 @@ namespace AllMaps
             current = map;
             player.SetPosition(map.PlayerPosition);
             player.Init(characterData.Gender, false);
-           
         }
+
         private void Start()
         {
             Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
-
         }
 
         public void PlayerMoveTo(Map map)
@@ -111,11 +110,11 @@ namespace AllMaps
                 else
                 {
                     Move(result.Path);
-                   
                     OnGetCharacterOnlineThisNode(result.CharactersOnline);
                 }
             });
         }
+
         public void OnGetCharacterOnlineThisNode(GetCharacterOnlineThisNodeResult result)
         {
             NetworkManager.Instance.Invoke(() =>
@@ -149,14 +148,32 @@ namespace AllMaps
 
         private void OnGetCharacterOnlineThisNode(CharacterSnapshot[] characters)
         {
-             //Test Data
-                    Pool.Get<UINPCJiaoHu>().ShowNPCList(new List<CharacterStatsSecure>
-                    {
-                        new CharacterStatsSecure {tuoiTac = 15, hpMax = 200,level = 9,thoNguyen = 200,tuChat = 120,ngoTinh = 50,tocDoBay=20,thanThuc=30,nameUser = "Viêm Đế",monPhai = Base.EMonPhai.BachDeLau,thanThongEquip = new List<SecureInt> {6,15,20,56}, chuTu1Used =1 , chuTu2Used = 2 , phuTu1Used = 3, phuTu2Used =4,phuTu3Used=5,phuTu4Used=6},
-                        new CharacterStatsSecure {tuoiTac = 15, hpMax = 500,level = 4,thoNguyen = 200,tuChat = 120,ngoTinh = 50,tocDoBay=20,thanThuc=30,nameUser = "Hàn Lão Ma",monPhai = Base.EMonPhai.None,thanThongEquip = new List<SecureInt> {7,8,45,53}, chuTu1Used =2 , chuTu2Used = 4, phuTu1Used = 7, phuTu2Used =9,phuTu3Used=10,phuTu4Used=12 },
-                        new CharacterStatsSecure {tuoiTac = 15, hpMax = 700,level = 2,thoNguyen = 200,tuChat = 120,ngoTinh = 50,tocDoBay=20,thanThuc=30,nameUser = "Lệ Phi Vũ",monPhai = Base.EMonPhai.KimHongKiemPhai,thanThongEquip = new List<SecureInt> {6,15,20,56}, chuTu1Used =1 , chuTu2Used = 2 , phuTu1Used = 3, phuTu2Used =4,phuTu3Used=5,phuTu4Used=6},
-
-                    });
+            //Test Data
+            Debug.Log($"Có {characters.Length} players online trong node");
+            Pool.Get<UINPCJiaoHu>().ShowNPCList(new List<CharacterStatsSecure>
+            {
+                new CharacterStatsSecure
+                {
+                    tuoiTac = 15, hpMax = 200, level = 9, thoNguyen = 200, tuChat = 120, ngoTinh = 50, tocDoBay = 20,
+                    thanThuc = 30, nameUser = "Viêm Đế", monPhai = Base.EMonPhai.BachDeLau,
+                    thanThongEquip = new List<SecureInt> { 6, 15, 20, 56 }, chuTu1Used = 1, chuTu2Used = 2,
+                    phuTu1Used = 3, phuTu2Used = 4, phuTu3Used = 5, phuTu4Used = 6
+                },
+                new CharacterStatsSecure
+                {
+                    tuoiTac = 15, hpMax = 500, level = 4, thoNguyen = 200, tuChat = 120, ngoTinh = 50, tocDoBay = 20,
+                    thanThuc = 30, nameUser = "Hàn Lão Ma", monPhai = Base.EMonPhai.None,
+                    thanThongEquip = new List<SecureInt> { 7, 8, 45, 53 }, chuTu1Used = 2, chuTu2Used = 4,
+                    phuTu1Used = 7, phuTu2Used = 9, phuTu3Used = 10, phuTu4Used = 12
+                },
+                new CharacterStatsSecure
+                {
+                    tuoiTac = 15, hpMax = 700, level = 2, thoNguyen = 200, tuChat = 120, ngoTinh = 50, tocDoBay = 20,
+                    thanThuc = 30, nameUser = "Lệ Phi Vũ", monPhai = Base.EMonPhai.KimHongKiemPhai,
+                    thanThongEquip = new List<SecureInt> { 6, 15, 20, 56 }, chuTu1Used = 1, chuTu2Used = 2,
+                    phuTu1Used = 3, phuTu2Used = 4, phuTu3Used = 5, phuTu4Used = 6
+                },
+            });
         }
     }
 }

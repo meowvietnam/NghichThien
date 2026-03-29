@@ -15,12 +15,12 @@ namespace Network.Models
             if (!value.Success)
             {
                 value.Message = reader.Read();
-                value.CharactersOnline = reader.ReadArray<CharacterSnapshot>();
             }
             else
             {
                 value.Energy = reader.Read<int>();
                 value.Path = reader.ReadArray<int>();
+                value.CharactersOnline = reader.ReadArray<CharacterSnapshot>();
             }
         }
         public int ByteSize()
