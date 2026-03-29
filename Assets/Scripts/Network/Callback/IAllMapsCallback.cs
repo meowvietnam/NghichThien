@@ -1,3 +1,4 @@
+using Network.ClientState;
 using Network.Models;
 
 namespace Network.Callback
@@ -6,5 +7,6 @@ namespace Network.Callback
     {
         void OnMoveToMapResult(MoveToMapResult result);
         void OnGetCharacterOnlineThisNode(GetCharacterOnlineThisNodeResult result);
+        void OnGetMails(GetMailsResult result);
     }
 }

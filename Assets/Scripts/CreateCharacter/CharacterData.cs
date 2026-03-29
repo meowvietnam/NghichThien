@@ -2,6 +2,7 @@ using Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AllMaps;
 using LuyenDan;
 using Network;
 using Network.Extensions;
@@ -43,9 +44,9 @@ namespace CreateCharacter
         [field: SerializeField] public int IdVuKhi { get; set; }
         [field: SerializeField] public int IdPhongCu { get; set; }
         [field: SerializeField] public int IdTrangSuc { get; set; }
-
-        [field: ShowInInspector]
-        public Dictionary<int, int> RelationShip { get; set; } = new(); // id npc + value relation
+        [field: ShowInInspector] public Dictionary<int, int> RelationShip { get; set; } = new();
+        [field: ShowInInspector] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        [field: SerializeField] public List<Mail> Mails { get; set; } = new List<Mail>();
 
         public CharacterData()
         {
@@ -81,6 +82,8 @@ namespace CreateCharacter
             IdPhongCu = clone.IdPhongCu;
             IdTrangSuc = clone.IdTrangSuc;
             RelationShip = new(clone.RelationShip);
+            CreatedAt = clone.CreatedAt;
+            Mails = new(clone.Mails);
         }
 
         public int ByteSize()
@@ -107,7 +110,9 @@ namespace CreateCharacter
                    + IdVuKhi.ByteSize()
                    + IdPhongCu.ByteSize()
                    + IdTrangSuc.ByteSize()
-                   + RelationShip.ByteSize();
+                   + RelationShip.ByteSize()
+                   + CreatedAt.ByteSize()
+                   + Mails.ByteSize();
         }
 
         public void Serialize(IWriter writer)
@@ -144,6 +149,8 @@ namespace CreateCharacter
             writer.Write(IdPhongCu);
             writer.Write(IdTrangSuc);
             writer.WriteArray(RelationShip);
+            writer.Write(CreatedAt);
+            writer.WriteArray(Mails);
         }
 
         public void Deserialize(IReader reader, ref CharacterData value)
@@ -178,6 +185,8 @@ namespace CreateCharacter
             value.IdPhongCu = reader.Read<int>();
             value.IdTrangSuc = reader.Read<int>();
             value.RelationShip = reader.ReadArray<KeyValuePair<int, int>>().ToDictionary(x => x.Key, x => x.Value);
+            value.CreatedAt = reader.Read<DateTime>();
+            value.Mails = reader.ReadArray<Mail>().ToList();
         }
     }
 }

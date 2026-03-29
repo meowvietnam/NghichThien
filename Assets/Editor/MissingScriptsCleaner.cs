@@ -1,35 +1,35 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-public class MissingScriptsCleaner : Editor
+namespace Editor
 {
-    [MenuItem("Tools/Dọn Dẹp Missing Scripts (Toàn Bộ Con)")]
-    static void CleanAllChildren()
+    public class MissingScriptsCleaner : UnityEditor.Editor
     {
-        // Lấy tất cả GameObject đang được chọn ở Hierarchy hoặc Project
-        GameObject[] selectedObjects = Selection.gameObjects;
-        int totalRemoved = 0;
-
-        foreach (GameObject go in selectedObjects)
+        [MenuItem("Tools/Dọn Dẹp Missing Scripts (Toàn Bộ Con)")]
+        static void CleanAllChildren()
         {
-            // Lấy tất cả Transform con (bao gồm cả chính nó)
-            Transform[] allChildren = go.GetComponentsInChildren<Transform>(true);
+            // Lấy tất cả GameObject đang được chọn ở Hierarchy hoặc Project
+            GameObject[] selectedObjects = Selection.gameObjects;
+            int totalRemoved = 0;
 
-            foreach (Transform child in allChildren)
+            foreach (GameObject go in selectedObjects)
             {
-                // Hàm này của Unity cực mạnh: Xóa toàn bộ script missing trong 1 GameObject
-                int count = GameObjectUtility.RemoveMonoBehavioursWithMissingScript(child.gameObject);
-                if (count > 0)
+                // Lấy tất cả Transform con (bao gồm cả chính nó)
+                Transform[] allChildren = go.GetComponentsInChildren<Transform>(true);
+                foreach (Transform child in allChildren)
                 {
-                    totalRemoved += count;
-                    Debug.Log($"<color=yellow>Đã xóa {count} script lỗi tại: {child.name}</color>");
+                    // Hàm này của Unity cực mạnh: Xóa toàn bộ script missing trong 1 GameObject
+                    int count = GameObjectUtility.RemoveMonoBehavioursWithMissingScript(child.gameObject);
+                    if (count > 0)
+                    {
+                        totalRemoved += count;
+                        Debug.Log($"<color=yellow>Đã xóa {count} script lỗi tại: {child.name}</color>");
+                    }
                 }
+                // Đánh dấu Object đã thay đổi để Unity lưu lại (tránh bị mất sau khi Ctrl+S)
+                EditorUtility.SetDirty(go);
             }
-
-            // Đánh dấu Object đã thay đổi để Unity lưu lại (tránh bị mất sau khi Ctrl+S)
-            EditorUtility.SetDirty(go);
+            Debug.Log($"<color=green><b>Xong!</b> Tổng cộng đã dọn dẹp {totalRemoved} missing scripts.</color>");
         }
-
-        Debug.Log($"<color=green><b>Xong!</b> Tổng cộng đã dọn dẹp {totalRemoved} missing scripts.</color>");
     }
 }

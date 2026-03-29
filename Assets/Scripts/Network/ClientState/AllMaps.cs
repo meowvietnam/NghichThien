@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Network.Callback;
 using Network.Extensions;
 using Network.Models;
@@ -12,8 +13,12 @@ namespace Network.ClientState
         {
             this.callback = callback;
         }
-        public void OnEnter()
+        public async void OnEnter()
         {
+            var client = Client.Instance;
+            client.Send(MessageTag.GetPlayerOnlineThisNode);
+            await Task.Delay(200);
+            client.Send(MessageTag.GetMails);
         }
         public void Handle(Message<MessageTag> message)
         {
@@ -34,6 +39,16 @@ namespace Network.ClientState
             {
                 var result = reader.Read<GetCharacterOnlineThisNodeResult>();
                 callback.OnGetCharacterOnlineThisNode(result);
+            }
+            else if (tag == MessageTag.GetMailsResult)
+            {
+                var result = reader.Read<GetMailsResult>();
+                if (result.Success)
+                {
+                    var charData = Client.Instance.CharacterData;
+                    charData.Mails = result.Mails;
+                }
+                callback.OnGetMails(result);
             }
         }
         public void OnLeave()
