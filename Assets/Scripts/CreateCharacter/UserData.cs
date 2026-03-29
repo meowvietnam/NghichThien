@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Network;
 using Network.Extensions;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace CreateCharacter
@@ -13,6 +14,7 @@ namespace CreateCharacter
         [field: SerializeField] public int Id { get; set; }
         [field: SerializeField] public List<CharacterData> CharacterDatas { get; set; }
         [field: SerializeField] public bool IsInfiniteEnergy { get; set; }
+        [field: ShowInInspector] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public UserData()
         {
@@ -21,7 +23,7 @@ namespace CreateCharacter
 
         public int ByteSize()
         {
-            return Id.ByteSize() + CharacterDatas.ByteSize() + IsInfiniteEnergy.ByteSize();
+            return Id.ByteSize() + CharacterDatas.ByteSize() + IsInfiniteEnergy.ByteSize() + CreatedAt.ByteSize();
         }
 
         public void Serialize(IWriter writer)
@@ -29,6 +31,7 @@ namespace CreateCharacter
             writer.Write(Id);
             writer.WriteArray(CharacterDatas);
             writer.Write(IsInfiniteEnergy);
+            writer.Write(CreatedAt);
         }
 
         public void Deserialize(IReader reader, ref UserData value)
@@ -36,6 +39,7 @@ namespace CreateCharacter
             value.Id = reader.Read<int>();
             value.CharacterDatas = reader.ReadArray<CharacterData>().ToList();
             value.IsInfiniteEnergy = reader.Read<bool>();
+            value.CreatedAt = reader.Read<DateTime>();
         }
     }
 }

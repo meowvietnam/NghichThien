@@ -3,6 +3,7 @@ using System.Linq;
 using CreateCharacter;
 using Network;
 using Network.Callback;
+using Network.ClientState;
 using Network.Extensions;
 using Network.Models;
 using Sirenix.OdinInspector;
@@ -44,7 +45,7 @@ namespace AllMaps
             current = map;
             player.SetPosition(map.PlayerPosition);
             player.Init(characterData.Gender, false);
-            Client.Instance.Send(MessageTag.GetPlayerOnlineThisNode);
+           
         }
 
         public void PlayerMoveTo(Map map)
@@ -122,6 +123,23 @@ namespace AllMaps
                 }
             });
         }
+
+        public void OnGetMails(GetMailsResult result)
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (!result.Success)
+                {
+                    NotifyGroup.Instance.Show(result.Message);
+                }
+                else
+                {
+                    var mails = result.Mails;
+                    Debug.Log($"Bạn có {mails.Count} hộp thư");
+                }
+            });
+        }
+
         private void OnGetCharacterOnlineThisNode(CharacterSnapshot[] characters)
         {
             
