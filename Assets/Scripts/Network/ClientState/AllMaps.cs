@@ -26,9 +26,14 @@ namespace Network.ClientState
                 {
                     var charData = Client.Instance.CharacterData;
                     charData.IdCurrentNode = result.Path.Last();
-                    charData.CurrentEnergy -= result.Energy;
+                    charData.CurrentEnergy = result.Energy;
                 }
                 callback.OnMoveToMapResult(result);
+            }
+            else if (tag == MessageTag.GetPlayerOnlineThisNodeResult)
+            {
+                var result = reader.Read<GetCharacterOnlineThisNodeResult>();
+                callback.OnGetCharacterOnlineThisNode(result);
             }
         }
         public void OnLeave()

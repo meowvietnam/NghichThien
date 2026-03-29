@@ -43,7 +43,9 @@ namespace CreateCharacter
         [field: SerializeField] public int IdVuKhi { get; set; }
         [field: SerializeField] public int IdPhongCu { get; set; }
         [field: SerializeField] public int IdTrangSuc { get; set; }
-        [field: ShowInInspector] public Dictionary<int, int> RelationShip { get; set; } = new(); // id npc + value relation
+
+        [field: ShowInInspector]
+        public Dictionary<int, int> RelationShip { get; set; } = new(); // id npc + value relation
 
         public CharacterData()
         {
@@ -59,11 +61,11 @@ namespace CreateCharacter
             Skins = new(clone.Skins);
             Colors = new(clone.Colors);
             MonPhai = clone.MonPhai;
-            NgoDaoSaves = new (clone.NgoDaoSaves);
+            NgoDaoSaves = new(clone.NgoDaoSaves);
             CamNgoSaves = new(clone.CamNgoSaves);
             NgoDaoDiem = clone.NgoDaoDiem;
-            ThanThongOwner = new (clone.ThanThongOwner);
-            ThanThongEquip = new (clone.ThanThongEquip);
+            ThanThongOwner = new(clone.ThanThongOwner);
+            ThanThongEquip = new(clone.ThanThongEquip);
             CongPhapOwner = new(clone.CongPhapOwner);
             DonThuatUsed = clone.DonThuatUsed;
             PhuTu1Used = clone.PhuTu1Used;
@@ -75,7 +77,12 @@ namespace CreateCharacter
             DanCombatUsed = new(clone.DanCombatUsed);
             IdCurrentNode = clone.IdCurrentNode;
             CurrentEnergy = clone.CurrentEnergy;
+            IdVuKhi = clone.IdVuKhi;
+            IdPhongCu = clone.IdPhongCu;
+            IdTrangSuc = clone.IdTrangSuc;
+            RelationShip = new(clone.RelationShip);
         }
+
         public int ByteSize()
         {
             return Id.ByteSize()
@@ -86,9 +93,9 @@ namespace CreateCharacter
                    + Skins.Keys.ByteSize() + Skins.Values.ByteSize()
                    + Colors.Keys.ByteSize() + Colors.Values.ByteSize()
                    + MonPhai.ByteSize() + NgoDaoSaves.ByteSize()
-                   + CamNgoSaves.Keys.ByteSize() + CamNgoSaves.Values.ByteSize()
+                   + CamNgoSaves.ByteSize()
                    + NgoDaoDiem.ByteSize() + ThanThongOwner.ByteSize() + ThanThongEquip.ByteSize()
-                   + CongPhapOwner.Keys.ByteSize() + CongPhapOwner.Values.ByteSize()
+                   + CongPhapOwner.ByteSize()
                    + DonThuatUsed.ByteSize()
                    + PhuTu1Used.ByteSize() + PhuTu2Used.ByteSize()
                    + PhuTu3Used.ByteSize() + PhuTu4Used.ByteSize()
@@ -96,7 +103,11 @@ namespace CreateCharacter
                    + DanCombatUsed.ByteSize()
                    + IdCurrentNode.ByteSize()
                    + CurrentEnergy.ByteSize()
-                   + InventoryManager.ByteSize();
+                   + InventoryManager.ByteSize()
+                   + IdVuKhi.ByteSize()
+                   + IdPhongCu.ByteSize()
+                   + IdTrangSuc.ByteSize()
+                   + RelationShip.ByteSize();
         }
 
         public void Serialize(IWriter writer)
@@ -113,13 +124,11 @@ namespace CreateCharacter
             writer.WriteArray(Colors.Values);
             writer.Write(MonPhai);
             writer.WriteArray(NgoDaoSaves);
-            writer.WriteArray(CamNgoSaves.Keys);
-            writer.WriteArray(CamNgoSaves.Values);
+            writer.WriteArray(CamNgoSaves);
             writer.Write(NgoDaoDiem);
             writer.WriteArray(ThanThongOwner);
             writer.WriteArray(ThanThongEquip);
-            writer.WriteArray(CongPhapOwner.Keys);
-            writer.WriteArray(CongPhapOwner.Values);
+            writer.WriteArray(CongPhapOwner);
             writer.Write(DonThuatUsed);
             writer.Write(PhuTu1Used);
             writer.Write(PhuTu2Used);
@@ -131,6 +140,10 @@ namespace CreateCharacter
             writer.Write(IdCurrentNode);
             writer.Write(CurrentEnergy);
             writer.Write(InventoryManager);
+            writer.Write(IdVuKhi);
+            writer.Write(IdPhongCu);
+            writer.Write(IdTrangSuc);
+            writer.WriteArray(RelationShip);
         }
 
         public void Deserialize(IReader reader, ref CharacterData value)
@@ -140,16 +153,16 @@ namespace CreateCharacter
             value.Name = reader.Read();
             value.Level = reader.Read<int>();
             value.CurrentExp = reader.Read<int>();
-            value.Stats = reader.Read<CreateCharacter.CharStats.CharacterStats>();
+            value.Stats = reader.Read<CharStats.CharacterStats>();
             value.Skins = DictionaryUtils.CreateDictionary(reader.ReadArray(), reader.ReadArray());
             value.Colors = DictionaryUtils.CreateDictionary(reader.ReadArray(), reader.ReadArray<Color>());
             value.MonPhai = reader.Read<EMonPhai>();
             value.NgoDaoSaves = reader.ReadArray<int>().ToList();
-            value.CamNgoSaves = DictionaryUtils.CreateDictionary(reader.ReadArray<int>(), reader.ReadArray<int>());
+            value.CamNgoSaves = reader.ReadArray<KeyValuePair<int, int>>().ToDictionary(x => x.Key, x => x.Value);
             value.NgoDaoDiem = reader.Read<int>();
             value.ThanThongOwner = reader.ReadArray<int>().ToList();
             value.ThanThongEquip = reader.ReadArray<int>().ToList();
-            value.CongPhapOwner = DictionaryUtils.CreateDictionary(reader.ReadArray<int>(), reader.ReadArray<int>());
+            value.CongPhapOwner = reader.ReadArray<KeyValuePair<int, int>>().ToDictionary(x => x.Key, x => x.Value);
             value.DonThuatUsed = reader.Read<int>();
             value.PhuTu1Used = reader.Read<int>();
             value.PhuTu2Used = reader.Read<int>();
@@ -161,6 +174,10 @@ namespace CreateCharacter
             value.IdCurrentNode = reader.Read<int>();
             value.CurrentEnergy = reader.Read<int>();
             value.InventoryManager = reader.Read<InventoryManager>();
+            value.IdVuKhi = reader.Read<int>();
+            value.IdPhongCu = reader.Read<int>();
+            value.IdTrangSuc = reader.Read<int>();
+            value.RelationShip = reader.ReadArray<KeyValuePair<int, int>>().ToDictionary(x => x.Key, x => x.Value);
         }
     }
 }

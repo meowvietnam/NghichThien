@@ -17,6 +17,7 @@ namespace AllMaps
         [SerializeField] private Player player;
         private Map current;
         private Dictionary<Map, List<Map>> graph;
+
         public Map FindMap(int id)
         {
             return maps.FirstOrDefault(map => map.Id == id);
@@ -32,6 +33,7 @@ namespace AllMaps
                     .ToList();
             }
         }
+
         private void Awake()
         {
             Client.Instance.ChangeState(new Network.ClientState.AllMaps(this));
@@ -41,31 +43,15 @@ namespace AllMaps
             var map = FindMap(entryMapId);
             current = map;
             player.SetPosition(map.PlayerPosition);
-            player.Init(characterData.Gender,false);
+            player.Init(characterData.Gender, false);
+            Client.Instance.Send(MessageTag.GetPlayerOnlineThisNode);
         }
+
         public void PlayerMoveTo(Map map)
         {
-            if(map == current) return;
-            if(player.IsMoving) return;
-            Client.Instance.Send(MessageTag.MoveToMap,map.Id);
-            // var listMapPath = BFSPath.FindPath(graph,current, map);
-            // if(listMapPath == null) return;
-            // var start = current;
-            // current.OnPlayerExit();
-            // current = map;
-            // var listNodes = new List<Node>();
-            // for (var i = 1; i < listMapPath.Count; i++)
-            // {
-            //     var m = listMapPath[i];
-            //     var node = start.FindNodeByMap(m);
-            //     if (node == null)
-            //     {
-            //         continue;
-            //     }
-            //     start = m;
-            //     listNodes.Add(node);
-            // }
-            // player.DoMove(listNodes,OnMoveToMapCompleted);
+            if (map == current) return;
+            if (player.IsMoving) return;
+            Client.Instance.Send(MessageTag.MoveToMap, map.Id);
         }
 
         private void Move(int[] path)
@@ -84,11 +70,14 @@ namespace AllMaps
                 {
                     continue;
                 }
+
                 start = m;
                 listNodes.Add(node);
             }
-            player.DoMove(listNodes,OnMoveToMapCompleted);
+
+            player.DoMove(listNodes, OnMoveToMapCompleted);
         }
+
         private void OnMoveToMapCompleted()
         {
             current.OnPlayerEnter();
@@ -115,8 +104,27 @@ namespace AllMaps
                 else
                 {
                     Move(result.Path);
+                    OnGetCharacterOnlineThisNode(result.CharactersOnline);
                 }
             });
+        }
+        public void OnGetCharacterOnlineThisNode(GetCharacterOnlineThisNodeResult result)
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (!result.Success)
+                {
+                    NotifyGroup.Instance.Show(result.Message);
+                }
+                else
+                {
+                    OnGetCharacterOnlineThisNode(result.CharactersOnline);
+                }
+            });
+        }
+        private void OnGetCharacterOnlineThisNode(CharacterSnapshot[] characters)
+        {
+            
         }
     }
 }
