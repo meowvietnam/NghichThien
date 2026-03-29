@@ -1,8 +1,9 @@
 using Network;
-using UnityEngine;
-using UnityEngine.UI;
 using Network.Extensions;
 using Sirenix.OdinInspector;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace CreateCharacter
 {
@@ -41,27 +42,36 @@ namespace CreateCharacter
         {
             return skinResources.LevelIcons[level - 1];
         }
+        public static Dictionary<int, string> levelWithText = new Dictionary<int, string>
+        {
+            // Luyện Khí
+            { 1, "Luyện Khí Sơ Kì" },
+            { 2, "Luyện Khí Trung Kì" },
+            { 3, "Luyện Khí Hậu Kì" },
 
+            // Trúc Cơ
+            { 4, "Trúc Cơ Sơ Kì" },
+            { 5, "Trúc Cơ Trung Kì" },
+            { 6, "Trúc Cơ Hậu Kì" },
+
+            // Kim Đan
+            { 7, "Kim Đan Sơ Kì" },
+            { 8, "Kim Đan Trung Kì" },
+            { 9, "Kim Đan Hậu Kì" },
+
+            // Nguyên Anh
+            { 10, "Nguyên Anh Sơ Kì" },
+            { 11, "Nguyên Anh Trung Kì" },
+            { 12, "Nguyên Anh Hậu Kì" },
+
+            // Hóa Thần
+            { 13, "Hóa Thần Sơ Kì" },
+            { 14, "Hóa Thần Trung Kì" },
+            { 15, "Hóa Thần Hậu Kì" },
+        };
         private string GetLevelText(int level)
         {
-            return level switch
-            {
-                <= 0 => "Phàm Nhân",
-                1 => "Luyện Khí tầng 1 – Cảm Khí",
-                2 => "Luyện Khí tầng 2 – Dẫn Khí",
-                3 => "Luyện Khí tầng 3 – Thông Mạch",
-                4 => "Luyện Khí tầng 4 – Ổn Khí",
-                5 => "Luyện Khí tầng 5 – Khí Hải",
-                6 => "Luyện Khí tầng 6 – Tăng Linh",
-                7 => "Luyện Khí tầng 7 – Hóa Khí",
-                8 => "Luyện Khí tầng 8 – Ngưng Khí",
-                9 => "Luyện Khí tầng 9 – Đại Viên Mãn",
-                10 => "Luyện Khí tầng 10 – Hậu Kỳ",
-                11 => "Luyện Khí tầng 11 – Hậu Kỳ",
-                12 => "Luyện Khí tầng 12 – Hậu Kỳ",
-                13 => "Luyện Khí tầng 13 – Cực Cảnh",
-                _ => "Trúc Cơ"
-            };
+            return levelWithText[level];
         }
         private void SelectCharacter()
         {

@@ -15,7 +15,7 @@ public class DucHoa : NgoDaoCombat
     {
         if(charTakeDame.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot,out SecureInt thieuDot))
         {
-            int hpPer = percent * (int)charTakeDame.characterStatsBase.hpMax / 100;
+            int hpPer = percent * (int)charTakeDame.characterStatsTemp.hpMax / 100;
             if(thieuDot < hpPer)
             {
                 return true;

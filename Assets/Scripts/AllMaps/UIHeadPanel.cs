@@ -1,6 +1,8 @@
 using AllMaps;
 using Base;
+using CreateCharacter;
 using LongDH.LongDHModules;
+using Network;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +16,7 @@ public class UIHeadPanel : PanelGroup
     [SerializeField] private Text tuviText;
     [SerializeField] private Text nameText;
     [SerializeField] private Sprite[] listSpriteIconLevel;
+    [SerializeField] private CharacterGraphic characterGraphic;
 
     public override void Init()
     {
@@ -31,17 +34,18 @@ public class UIHeadPanel : PanelGroup
    
     private void UpdatePlayerStats()
     {
-        var player = Pool.Get<Player>();
-        hpText.text = $"{player.characterStatsBase.hp.Value}/{player.characterStatsBase.hpMax.Value}";
+        hpText.text = $"{Client.Instance.CharacterData.Stats.Hp}/{Client.Instance.CharacterData.Stats.SinhMenh}";
         Slider hpSlider = hpText.transform.parent.GetComponent<Slider>();
-        hpSlider.value = (float)player.characterStatsBase.hp.Value/player.characterStatsBase.hpMax.Value;
+        hpSlider.value = (float)Client.Instance.CharacterData.Stats.Hp / Client.Instance.CharacterData.Stats.SinhMenh;
 
-        tuviText.text = $"{player.characterStatsBase.currentExp.Value}/{GameConfig.GetTuviRequired(player.characterStatsBase.level)}";
+        tuviText.text = $"{Client.Instance.CharacterData.CurrentExp}/{GameConfig.GetTuviRequired(Client.Instance.CharacterData.Level)}";
         Slider expSlider = tuviText.transform.parent.GetComponent<Slider>();
-        expSlider.value = (float)player.characterStatsBase.currentExp.Value / GameConfig.GetTuviRequired(player.characterStatsBase.level);
+        expSlider.value = (float)Client.Instance.CharacterData.CurrentExp / GameConfig.GetTuviRequired(Client.Instance.CharacterData.Level);
 
-        iconLevel.sprite = listSpriteIconLevel[player.characterStatsBase.level-1];
+        iconLevel.sprite = listSpriteIconLevel[Client.Instance.CharacterData.Level-1];
         iconLevel.SetNativeSize();
-        nameText.text = player.characterStatsBase.nameUser;
+        nameText.text = Client.Instance.CharacterData.Name;
+        characterGraphic.SetGender(Client.Instance.CharacterData.Gender);
+        characterGraphic.SetSkin(Client.Instance.CharacterData.Skins);
     }
 }

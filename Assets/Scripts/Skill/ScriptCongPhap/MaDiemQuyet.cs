@@ -24,13 +24,13 @@ public class MaDiemQuyet : CongPhap
         return;
     }
 
-    public override void EquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
+    public override void EquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
 
         statsCurrent.thoNguyen -= thoNguyens[daiCanhGioiCongPhap - 1];
 
     }
-    public override void UnEquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
+    public override void UnEquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
 
         statsCurrent.thoNguyen += thoNguyens[daiCanhGioiCongPhap - 1];

@@ -699,7 +699,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         {
             var item = listItemSlotThanThongs[i];
             ThanThong thanThongData = null;
-            if(i < Player.characterStatsBase.thanThongEquip.Length)
+            if(i < Player.characterStatsBase.thanThongEquip.Count)
             {
                 thanThongData = GameConfig.GetThanThongWithId(Player.characterStatsBase.thanThongEquip[i]);
             }    

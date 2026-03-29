@@ -11,7 +11,7 @@ namespace CreateCharacter
     public class CharacterGraphic : MonoBehaviour
     {
         [SerializeField] protected SkeletonGraphic graphic;
-        protected SkinResources skinResources;
+        [SerializeField] protected SkinResources skinResources;
         private Dictionary<string, string> currentSkins = new Dictionary<string, string>();
         private Dictionary<string, Color> currentColors = new Dictionary<string, Color>();
         public void SetGender(Gender gender)
@@ -55,7 +55,7 @@ namespace CreateCharacter
                 currentColors[skinId] = color;
             }
         }
-
+        [Button]
         public (Dictionary<string, string> skins, Dictionary<string, Color> colors) RandomSkin(Gender gender, bool useDefaultColors)
         {
             var skins = new Dictionary<string, string>();
@@ -79,6 +79,8 @@ namespace CreateCharacter
                     }
                 }
             }
+            SetGender(gender);
+            SetSkin(skins, colors);
             return (skins,colors);
         }
     }

@@ -11,13 +11,13 @@ public class BangTamQuyet : CongPhap
             5, 10 , 15,20, 25
        };
 
-    public override void EquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
+    public override void EquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
 
         statsCurrent.tamCanh += buffValues[daiCanhGioiCongPhap - 1];
 
     }
-    public override void UnEquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
+    public override void UnEquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
 
         statsCurrent.tamCanh -= buffValues[daiCanhGioiCongPhap - 1];
