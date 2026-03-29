@@ -18,7 +18,7 @@ namespace AllMaps
         [SerializeField] private float speed = 2;
         public bool IsSwordRiding { get; private set; }
         public bool IsMoving { get; private set; }
-        [SerializeField] public CharacterStats characterStatsBase;
+        [SerializeField] public CharacterStatsSecure characterStatsBase;
 
         
         public void Init(Gender gender, bool isSwordRiding)
@@ -40,7 +40,7 @@ namespace AllMaps
             Pool.Set(this);
 
             // test
-            characterStatsBase = (new CharacterStats()
+            characterStatsBase = (new CharacterStatsSecure()
             {
                 level = 9,
                 percentKim = 60,
@@ -61,30 +61,30 @@ namespace AllMaps
                 ngoTinh = 100,
                 nameUser = "Viêm Đế",
                 ngoDaoDiem = 100,
-                camNgoSaves = new CharacterStats.DataSave[]
+                camNgoSaves = new List<CharacterStatsSecure.DataSave>
                 {
-                    new CharacterStats.DataSave { id = 1, value = 9000 },
-                    new CharacterStats.DataSave { id = 2, value = 0 },
+                    new CharacterStatsSecure.DataSave { id = 1, value = 9000 },
+                    new CharacterStatsSecure.DataSave { id = 2, value = 0 },
 
                 },
-                ngoDaoSaves = new SecureInt[]
+                ngoDaoSaves = new List<SecureInt>
                 {
                     101,20
 
                 },
-                congPhapOwner  = new CharacterStats.DataSave[]
+                congPhapOwner  = new List<CharacterStatsSecure.DataSave>
                 {
-                    new CharacterStats.DataSave { id = 211, value = 1 },
-                    new CharacterStats.DataSave { id = 304, value = 2 },
-                    new CharacterStats.DataSave { id = 749, value = 2 },
-                    new CharacterStats.DataSave { id = 402, value = 2 },
-                    new CharacterStats.DataSave { id = 214, value = 2 },
-                    new CharacterStats.DataSave { id = 548, value = 2 },
+                    new CharacterStatsSecure.DataSave { id = 211, value = 1 },
+                    new CharacterStatsSecure.DataSave { id = 304, value = 2 },
+                    new CharacterStatsSecure.DataSave { id = 749, value = 2 },
+                    new CharacterStatsSecure.DataSave { id = 402, value = 2 },
+                    new CharacterStatsSecure.DataSave { id = 214, value = 2 },
+                    new CharacterStatsSecure.DataSave { id = 548, value = 2 },
 
                 },
-                thanThongEquip = new SecureInt[]
+                thanThongEquip = new List<SecureInt>
                 {1,2,3,4,5,6},
-                thanThongOwner = new SecureInt[]
+                thanThongOwner = new List<SecureInt>
                 {1,2,3,4,5,6,7,8,9,10,11},
                 donThuatUsed = 0,
                 chuTu1Used = 0,
@@ -94,7 +94,7 @@ namespace AllMaps
                 phuTu3Used = 0,
                 phuTu4Used = 0,
             });
-            Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
+
         }
         public void SetPosition(Vector2 position)
         {

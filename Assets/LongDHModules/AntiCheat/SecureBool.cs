@@ -41,8 +41,11 @@ public class SecureBool
 
     private void Set(bool value)
     {
-        // Tạo key ngẫu nhiên để giá trị encValue luôn biến đổi
-        key = UnityEngine.Random.Range(10000, 999999);
+        // Sử dụng System.Random để tránh lỗi Unity Serialization
+        System.Random rand = new System.Random();
+
+        // Tạo key ngẫu nhiên từ 10000 đến 999999
+        key = rand.Next(10000, 999999);
 
         // Chuyển bool thành int (1 hoặc 0) rồi XOR với key
         int intVal = value ? 1 : 0;

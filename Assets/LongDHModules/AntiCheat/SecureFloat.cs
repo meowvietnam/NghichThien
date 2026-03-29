@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 [System.Serializable]
 public class SecureFloat
@@ -46,13 +46,21 @@ public class SecureFloat
 
     void Set(float value)
     {
-        float split = UnityEngine.Random.Range(-1000f, 1000f);
+        // Khởi tạo bộ ngẫu nhiên của hệ thống
+        System.Random rand = new System.Random();
+
+        // Tạo split ngẫu nhiên từ -1000f đến 1000f
+        // Công thức: min + (rand.NextDouble() * (max - min))
+        float split = (float)(-1000.0 + (rand.NextDouble() * 2000.0));
+
         float partA = split;
         float partB = value - split;
 
-        keyA = UnityEngine.Random.Range(10000, 99999);
-        keyB = UnityEngine.Random.Range(10000, 99999);
+        // Tạo Key ngẫu nhiên (Số nguyên)
+        keyA = rand.Next(10000, 99999);
+        keyB = rand.Next(10000, 99999);
 
+        // Mã hóa
         encA = FloatToInt(partA) ^ keyA;
         encB = FloatToInt(partB) ^ keyB;
 

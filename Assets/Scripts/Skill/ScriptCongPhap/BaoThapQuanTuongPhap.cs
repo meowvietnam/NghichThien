@@ -14,14 +14,14 @@ public class BaoThapQuanTuongPhap : CongPhap
         5,10,15,20,25
 
     };
-    public override void EquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
+    public override void EquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
 
         statsCurrent.thanThuc += buffValues[daiCanhGioiCongPhap - 1];
 
         statsCurrent.tamCanh += buffValues2[daiCanhGioiCongPhap - 1];
     }
-    public override void UnEquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
+    public override void UnEquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
 
         statsCurrent.thanThuc -= buffValues[daiCanhGioiCongPhap - 1];

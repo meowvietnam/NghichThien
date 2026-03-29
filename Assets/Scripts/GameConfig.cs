@@ -13,6 +13,57 @@ public class GameConfig : BaseBehaviour
     {
         "AllMaps",
     };
+    public static Dictionary<EMonPhai, string> monPhaiText = new Dictionary<EMonPhai, string>
+    {
+        { EMonPhai.None, "Tán Tu" }, // Use { key, value }
+        { EMonPhai.BachDeLau, "Bạch Đế Lâu" },
+        { EMonPhai.KimHongKiemPhai, "Kim Hồng Kiếm Phái" },
+        { EMonPhai.TrucSonTong, "Trúc Sơn Tông" },
+        { EMonPhai.TinhHaKiemPhai, "Tinh Hà Kiếm Phái" },
+        { EMonPhai.LyHoaMon, "Ly Hỏa Môn" },
+        { EMonPhai.HoaTranGiao, "Hóa Trần Giáo" },
+    };
+    public static Dictionary<int, string> chucVuText = new Dictionary<int, string>
+    {
+        { 1, "Ngoại Môn" }, // Use { đại cảnh giới, text }
+        { 2, "Nội Môn" },
+        { 3, "Trưởng Lão" },
+        { 4, "Đại Trưởng Lão" },
+        { 5, "Thái Thượng Trưởng Lão" },
+
+
+    };
+    public static Dictionary<int, string> levelWithText = new Dictionary<int, string>
+    {
+    // Luyện Khí
+    { 1, "Luyện Khí Sơ Kì" },
+    { 2, "Luyện Khí Trung Kì" },
+    { 3, "Luyện Khí Hậu Kì" },
+
+    // Trúc Cơ
+    { 4, "Trúc Cơ Sơ Kì" },
+    { 5, "Trúc Cơ Trung Kì" },
+    { 6, "Trúc Cơ Hậu Kì" },
+
+    // Kim Đan
+    { 7, "Kim Đan Sơ Kì" },
+    { 8, "Kim Đan Trung Kì" },
+    { 9, "Kim Đan Hậu Kì" },
+
+    // Nguyên Anh
+    { 10, "Nguyên Anh Sơ Kì" },
+    { 11, "Nguyên Anh Trung Kì" },
+    { 12, "Nguyên Anh Hậu Kì" },
+
+    // Hóa Thần
+    { 13, "Hóa Thần Sơ Kì" },
+    { 14, "Hóa Thần Trung Kì" },
+    { 15, "Hóa Thần Hậu Kì" },
+    };
+    public static string GetChucVuText(EMonPhai monPhai, int level)
+    {
+        return monPhaiText[monPhai]+" "+ chucVuText[ThanThong.GetDaiCanhGioi(level)];
+    }
     public void OnBackScene()
     {
         string currentScene = SceneManager.GetActiveScene().name;

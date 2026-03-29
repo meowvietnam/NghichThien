@@ -11,13 +11,13 @@ public class PhiVanKinh : CongPhap
             1, 2 , 3,4, 5
        };
 
-    public override void EquipCongPhap(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
+    public override void EquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
 
         statsCurrent.tocDoBay += buffValues[daiCanhGioiCongPhap - 1];
 
     }
-    public override void UnEquipCongPhap(CharacterStats statsCurrent , int daiCanhGioiCongPhap)
+    public override void UnEquipCongPhap(CharacterStatsSecure statsCurrent , int daiCanhGioiCongPhap)
     {
 
         statsCurrent.tocDoBay -= buffValues[daiCanhGioiCongPhap - 1];

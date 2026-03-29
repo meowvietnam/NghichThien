@@ -7,12 +7,12 @@ public abstract class CPTieuHaoThoNguyen : CongPhap
     {
         2,4,6,8,10
     };
-    public override void UpgradeCongPhapSuccess(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
+    public override void UpgradeCongPhapSuccess(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
         base.UpgradeCongPhapSuccess(statsCurrent, daiCanhGioiCongPhap);
         statsCurrent.thoNguyen -= tieuHao[daiCanhGioiCongPhap - 1];
     }
-    public override void LearnCongPhapSuccess(CharacterStats statsCurrent, int daiCanhGioiCongPhap)
+    public override void LearnCongPhapSuccess(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
         base.LearnCongPhapSuccess(statsCurrent, daiCanhGioiCongPhap);
         statsCurrent.thoNguyen -= tieuHao[daiCanhGioiCongPhap - 1];

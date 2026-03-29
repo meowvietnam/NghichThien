@@ -132,7 +132,7 @@ public class CombatManager : MonoBehaviour
         Observer.AddObserver(EventList.Combat.CHARACTER_ADJUST_HP, SetUIHpBar);
         if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
         if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
-        char1.Init(new CharacterStats()
+        char1.Init(new CharacterStatsSecure()
         {
             level = 9,
             percentKim = 60,
@@ -145,11 +145,11 @@ public class CombatManager : MonoBehaviour
             tocDoBay = 20,
             thoNguyen = 1000,
             thanThuc = 50,
-            thanThongEquip = new SecureInt[] { 1, 2, 4,7,10,13,14,18 , 701}
+            thanThongEquip = new List<SecureInt> { 1, 2, 4,7,10,13,14,18 , 701}
             
 
         });
-        char2.Init(new CharacterStats()
+        char2.Init(new CharacterStatsSecure()
         {
             level = 9,
             percentKim = 60,
@@ -163,7 +163,7 @@ public class CombatManager : MonoBehaviour
             tocDoBay = 10,
             thoNguyen = 1000,
             thanThuc = 30,
-            thanThongEquip = new SecureInt[] { 874, 527, 417 }
+            thanThongEquip = new List<SecureInt> { 874, 527, 417 }
 
 
         });

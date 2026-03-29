@@ -798,7 +798,7 @@ RectTransform:
   m_GameObject: {fileID: 1735621517279692}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.3999999, y: 1.3999999, z: 1.3999999}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 224851104313977588}
@@ -999,22 +999,45 @@ MonoBehaviour:
     <Gender>k__BackingField: 0
     <Name>k__BackingField: 
     <Level>k__BackingField: 1
+    <CurrentExp>k__BackingField: 0
     <Stats>k__BackingField:
       <Kim>k__BackingField: 0
       <Moc>k__BackingField: 0
       <Thuy>k__BackingField: 0
       <Hoa>k__BackingField: 0
       <Tho>k__BackingField: 0
-      <KinhMach>k__BackingField: 0
+      <Ma>k__BackingField: 0
+      <TuChat>k__BackingField: 0
       <NgoTinh>k__BackingField: 0
       <ThanThuc>k__BackingField: 0
       <TocDoBay>k__BackingField: 0
       <LinhThach>k__BackingField: 0
+      <Hp>k__BackingField: 0
       <SinhMenh>k__BackingField: 0
-      <HuyetKhi>k__BackingField: 0
+      <ThoNguyen>k__BackingField: 0
       <TamCanh>k__BackingField: 0
       <LinhCan>k__BackingField: 0
       <Ability>k__BackingField: 0
+      <DanDoc>k__BackingField: 0
+      <TuoiTac>k__BackingField: 0
+    <MonPhai>k__BackingField: 0
+    <NgoDaoSaves>k__BackingField: 
+    <NgoDaoDiem>k__BackingField: 0
+    <ThanThongOwner>k__BackingField: 
+    <ThanThongEquip>k__BackingField: 
+    <DonThuatUsed>k__BackingField: 0
+    <PhuTu1Used>k__BackingField: 0
+    <PhuTu2Used>k__BackingField: 0
+    <PhuTu3Used>k__BackingField: 0
+    <PhuTu4Used>k__BackingField: 0
+    <ChuTu1Used>k__BackingField: 0
+    <ChuTu2Used>k__BackingField: 0
+    <DanCombatUsed>k__BackingField: 
+    <IdCurrentNode>k__BackingField: 0
+    <CurrentEnergy>k__BackingField: 0
+    <IdVuKhi>k__BackingField: 0
+    <IdPhongCu>k__BackingField: 0
+    <IdTrangSuc>k__BackingField: 0
   characterGraphic: {fileID: 8484776008341788495}
   imgChar: {fileID: 114079033403853638}
   imgContent: {fileID: 5954537011986606032}
@@ -1811,6 +1834,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreateCharacter.CharacterGraphic
   graphic: {fileID: 334847736210330598}
+  skinResources: {fileID: 11400000, guid: eb63df279467d0e4a9ccdb13556e6fa9, type: 2}
 --- !u!1 &3898146922497496510
 GameObject:
   m_ObjectHideFlags: 0

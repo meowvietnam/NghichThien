@@ -46,12 +46,15 @@ public class SecureInt
     }
     void Set(int value)
     {
-        int split = Random.Range(-1000, 1000);
+        // Sử dụng System.Random thay vì UnityEngine.Random
+        System.Random rand = new System.Random();
+
+        int split = rand.Next(-1000, 1000);
         int partA = split;
         int partB = value - split;
 
-        keyA = UnityEngine.Random.Range(10000, 99999);
-        keyB = UnityEngine.Random.Range(10000, 99999);
+        keyA = rand.Next(10000, 99999);
+        keyB = rand.Next(10000, 99999);
 
         encA = partA ^ keyA;
         encB = partB ^ keyB;
