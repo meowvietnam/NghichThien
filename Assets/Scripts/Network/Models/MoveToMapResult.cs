@@ -8,12 +8,14 @@ namespace Network.Models
         public string Message { get; set; }
         public int Energy { get; set; }
         public int[] Path { get; set; }
+        public CharacterSnapshot[] CharactersOnline { get; set; }
         public void Deserialize(IReader reader, ref MoveToMapResult value)
         {
             value.Success = reader.Read<bool>();
             if (!value.Success)
             {
                 value.Message = reader.Read();
+                value.CharactersOnline = reader.ReadArray<CharacterSnapshot>();
             }
             else
             {
@@ -25,7 +27,7 @@ namespace Network.Models
         {
             if (Success)
             {
-                return Success.ByteSize() + Energy.ByteSize() + Path.ByteSize();
+                return Success.ByteSize() + Energy.ByteSize() + Path.ByteSize() + CharactersOnline.ByteSize();
             }
             else
             {
@@ -43,6 +45,7 @@ namespace Network.Models
             {
                 writer.Write(Energy);
                 writer.WriteArray(Path);
+                writer.WriteArray(CharactersOnline);
             }
         }
     }

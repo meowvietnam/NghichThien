@@ -18,6 +18,7 @@ namespace AllMaps
         [SerializeField] private Player player;
         private Map current;
         private Dictionary<Map, List<Map>> graph;
+
         public Map FindMap(int id)
         {
             return maps.FirstOrDefault(map => map.Id == id);
@@ -33,6 +34,7 @@ namespace AllMaps
                     .ToList();
             }
         }
+
         private void Awake()
         {
             Client.Instance.ChangeState(new Network.ClientState.AllMaps(this));
@@ -42,7 +44,8 @@ namespace AllMaps
             var map = FindMap(entryMapId);
             current = map;
             player.SetPosition(map.PlayerPosition);
-            player.Init(characterData.Gender,false);
+            player.Init(characterData.Gender, false);
+            Client.Instance.Send(MessageTag.GetPlayerOnlineThisNode);
         }
         private void Start()
         {
@@ -52,27 +55,9 @@ namespace AllMaps
 
         public void PlayerMoveTo(Map map)
         {
-            if(map == current) return;
-            if(player.IsMoving) return;
-            Client.Instance.Send(MessageTag.MoveToMap,map.Id);
-            // var listMapPath = BFSPath.FindPath(graph,current, map);
-            // if(listMapPath == null) return;
-            // var start = current;
-            // current.OnPlayerExit();
-            // current = map;
-            // var listNodes = new List<Node>();
-            // for (var i = 1; i < listMapPath.Count; i++)
-            // {
-            //     var m = listMapPath[i];
-            //     var node = start.FindNodeByMap(m);
-            //     if (node == null)
-            //     {
-            //         continue;
-            //     }
-            //     start = m;
-            //     listNodes.Add(node);
-            // }
-            // player.DoMove(listNodes,OnMoveToMapCompleted);
+            if (map == current) return;
+            if (player.IsMoving) return;
+            Client.Instance.Send(MessageTag.MoveToMap, map.Id);
         }
 
         private void Move(int[] path)
@@ -91,11 +76,14 @@ namespace AllMaps
                 {
                     continue;
                 }
+
                 start = m;
                 listNodes.Add(node);
             }
-            player.DoMove(listNodes,OnMoveToMapCompleted);
+
+            player.DoMove(listNodes, OnMoveToMapCompleted);
         }
+
         private void OnMoveToMapCompleted()
         {
             current.OnPlayerEnter();
@@ -122,7 +110,28 @@ namespace AllMaps
                 else
                 {
                     Move(result.Path);
-                    //Test Data
+                   
+                    OnGetCharacterOnlineThisNode(result.CharactersOnline);
+                }
+            });
+        }
+        public void OnGetCharacterOnlineThisNode(GetCharacterOnlineThisNodeResult result)
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (!result.Success)
+                {
+                    NotifyGroup.Instance.Show(result.Message);
+                }
+                else
+                {
+                    OnGetCharacterOnlineThisNode(result.CharactersOnline);
+                }
+            });
+        }
+        private void OnGetCharacterOnlineThisNode(CharacterSnapshot[] characters)
+        {
+             //Test Data
                     Pool.Get<UINPCJiaoHu>().ShowNPCList(new List<CharacterStatsSecure>
                     {
                         new CharacterStatsSecure {tuoiTac = 15, hpMax = 200,level = 9,thoNguyen = 200,tuChat = 120,ngoTinh = 50,tocDoBay=20,thanThuc=30,nameUser = "Viêm Đế",monPhai = Base.EMonPhai.BachDeLau,thanThongEquip = new List<SecureInt> {6,15,20,56}, chuTu1Used =1 , chuTu2Used = 2 , phuTu1Used = 3, phuTu2Used =4,phuTu3Used=5,phuTu4Used=6},
@@ -130,8 +139,6 @@ namespace AllMaps
                         new CharacterStatsSecure {tuoiTac = 15, hpMax = 700,level = 2,thoNguyen = 200,tuChat = 120,ngoTinh = 50,tocDoBay=20,thanThuc=30,nameUser = "Lệ Phi Vũ",monPhai = Base.EMonPhai.KimHongKiemPhai,thanThongEquip = new List<SecureInt> {6,15,20,56}, chuTu1Used =1 , chuTu2Used = 2 , phuTu1Used = 3, phuTu2Used =4,phuTu3Used=5,phuTu4Used=6},
 
                     });
-                }
-            });
         }
     }
 }
