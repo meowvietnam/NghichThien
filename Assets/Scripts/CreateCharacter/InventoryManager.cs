@@ -19,6 +19,8 @@ namespace CreateCharacter
         public HashSet<int> Recipes { get; set; } = new();
         [ShowInInspector]
         public HashSet<ItemRef> Herbs { get; set; } = new();
+
+        
         public int ByteSize()
         {
             return Furnaces.ByteSize() + Recipes.ByteSize() + Herbs.ByteSize();

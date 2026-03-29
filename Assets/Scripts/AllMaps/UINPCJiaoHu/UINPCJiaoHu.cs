@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using CreateCharacter;
+using DG.Tweening;
 using LongDH.LongDHModules;
 using Network;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ public class UINPCJiaoHu : PanelGroup
     };
     public static Dictionary<ERelationShip, int> relationShipRequireThanThong = new Dictionary<ERelationShip, int>
     {
-        { ERelationShip.None, 0 }, // Use { key, value }
+        { ERelationShip.None, 1 }, // Use { key, value }
         { ERelationShip.Quen, 100 },
         { ERelationShip.BanBe, 500 },
         { ERelationShip.ThanThiet, 1000 },
@@ -42,7 +43,7 @@ public class UINPCJiaoHu : PanelGroup
     };
     public static Dictionary<ERelationShip, int> relationShipRequireCongPhap = new Dictionary<ERelationShip, int>
     {
-        { ERelationShip.None, 0 }, // Use { key, value }
+        { ERelationShip.None, 1 }, // Use { key, value }
         { ERelationShip.Quen, 200 },
         { ERelationShip.BanBe, 1000 },
         { ERelationShip.ThanThiet, 2000 },
@@ -71,9 +72,11 @@ public class UINPCJiaoHu : PanelGroup
     public NPCLeftSVItem prefabNPCLeftItem;
     [SerializeField]
     public Text countCharText;
+    [SerializeField] private CharacterStatsSecure characterStatsTarget;
+
     [Header("--- Pop JiaoHuo ---")]
 
-    [SerializeField] private CharacterStatsSecure characterStatsTarget;
+    [SerializeField] private CharacterGraphic charVisualPopJiaoHua;
     [SerializeField]
     private Button btnTroChuyen;
     [SerializeField]
@@ -93,6 +96,7 @@ public class UINPCJiaoHu : PanelGroup
     [SerializeField] private Sprite[] spriteQualityFulls;
     [SerializeField] private Sprite[] spriteFrames;
     [SerializeField] private Color[] colorQualitys;
+    [SerializeField] private Text textName;
     [Header("--- Pop Thỉnh Giáo ---")]
 
     [SerializeField] private Text textRelationshipValue;
@@ -110,7 +114,19 @@ public class UINPCJiaoHu : PanelGroup
     [SerializeField] private Button btnTabCongPhap;
     [SerializeField] private Color colorNoneRelation => HexToColor("7A644A");
     [SerializeField] private ERelationShip currentRelationShip = ERelationShip.None;
-    private int relatetionshipValue => Client.Instance.CharacterData.RelationShip[characterStatsTarget.idChar];
+    private int relatetionshipValue => Client.Instance.CharacterData.RelationShip.GetValueOrDefault(characterStatsTarget.idChar);
+    [Header("--- Pop Dò Xét ---")]
+    [SerializeField] private CharacterGraphic charVisualPopXemXet;
+    [SerializeField] private Text textThanThuc;
+    [SerializeField] private Text textTocDoBay;
+    [SerializeField] private Text textNgoTinh;
+    [SerializeField] private Text textTuChat;
+    [SerializeField] private Text textThoNguyen;
+    [SerializeField] private Text textSinhMenh;
+    [SerializeField] private Text textTuoiTac;
+    [SerializeField] private Text textLevel;
+    [SerializeField] private Text textNamePopXemXet;
+    [SerializeField] private Text textHaoCam;
 
     public void ShowNPCList(List<CharacterStatsSecure> listCharStats)
     {
@@ -127,6 +143,7 @@ public class UINPCJiaoHu : PanelGroup
 
         }
         countCharText.text = listCharStats.Count.ToString();
+        transform.SetAsLastSibling();
 
     }    
     private void EventBtnOpenOrCloseNPCList()
@@ -140,17 +157,18 @@ public class UINPCJiaoHu : PanelGroup
         float openX = 240;
         float closeX = 0;
         float openScaleBtn = -1;
-        
+        Transform npcList = closeOrOpenListNPC.transform.parent.transform;
+
         if (!isWantOpen)
         {
             // close
-            closeOrOpenListNPC.transform.parent.transform.DOMoveX(closeX,0.5f);
-            closeOrOpenListNPC.transform.localScale = new Vector3(openScaleBtn * -1,1,1);
+            npcList.DOMove(transform.GetChild(0).transform.position,0.5f);
+            closeOrOpenListNPC.transform.localScale = new Vector3(openScaleBtn ,1,1);
         }    
         else
         {
-            closeOrOpenListNPC.transform.parent.transform.DOMoveX(openX, 0.5f);
-            closeOrOpenListNPC.transform.localScale = new Vector3(openScaleBtn, 1, 1);
+            npcList.DOMove(transform.GetChild(1).transform.position, 0.5f);
+            closeOrOpenListNPC.transform.localScale = new Vector3(openScaleBtn * -1, 1, 1);
 
 
         }
@@ -167,6 +185,7 @@ public class UINPCJiaoHu : PanelGroup
         SetEventButton(btnXemXet, () =>
         {
             xemXetPop.Show();
+            ShowPopDoXet();
         });
         SetEventButton(btnTangQua, () =>
         {
@@ -176,12 +195,13 @@ public class UINPCJiaoHu : PanelGroup
         SetEventButton(btnThinhGiao, () =>
         {
             thinhGiaoPop.Show();
+            InitPopThinhGiao();
 
         });
     }
-    private void SetSliderVisual()
+    private void SetSliderVisual(ETypeSkillRelationShip eType)
     {
-        float amount = relatetionshipValue / relationShipRequireCongPhap[currentRelationShip];
+        float amount = relatetionshipValue / (eType == ETypeSkillRelationShip.CongPhap?relationShipRequireCongPhap[currentRelationShip] : relationShipRequireThanThong[currentRelationShip]);
         float final = amount + amount * 0.25f;
         sliderRelationship.fillAmount = final;
        
@@ -193,25 +213,27 @@ public class UINPCJiaoHu : PanelGroup
                 relateText3.color = colorNoneRelation;
 
                 // Set lock
-                prefabSlotThinhGiaoSlot1.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(false);
-                prefabSlotThinhGiaoSlot2.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(false);
-                prefabSlotThinhGiaoSlot3.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(false);
+                prefabSlotThinhGiaoSlot1.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true);
+                prefabSlotThinhGiaoSlot2.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true);
+                prefabSlotThinhGiaoSlot3.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true);
                 break;
             case ERelationShip.Quen:
                 relateText1.color = Color.white;
                 relateText2.color = colorNoneRelation;
                 relateText3.color = colorNoneRelation;
                 //Set lock
-                prefabSlotThinhGiaoSlot1.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true);
-
+                prefabSlotThinhGiaoSlot1.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(false);
+                prefabSlotThinhGiaoSlot2.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true);
+                prefabSlotThinhGiaoSlot3.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true);
                 break;
             case ERelationShip.BanBe:
                 relateText1.color = Color.white;
                 relateText2.color = Color.white;
                 relateText3.color = colorNoneRelation;
                 // set lock
-                prefabSlotThinhGiaoSlot1.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true);
-                prefabSlotThinhGiaoSlot2.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true);
+                prefabSlotThinhGiaoSlot1.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(false);
+                prefabSlotThinhGiaoSlot2.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(false);
+                prefabSlotThinhGiaoSlot3.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true);
 
                 break;
             case ERelationShip.ThanThiet:
@@ -219,9 +241,9 @@ public class UINPCJiaoHu : PanelGroup
                 relateText2.color = Color.white;
                 relateText3.color = Color.white;
                 //Set lock
-                prefabSlotThinhGiaoSlot1.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true);
-                prefabSlotThinhGiaoSlot2.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true);
-                prefabSlotThinhGiaoSlot3.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true);
+                prefabSlotThinhGiaoSlot1.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(false);
+                prefabSlotThinhGiaoSlot2.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(false);
+                prefabSlotThinhGiaoSlot3.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(false);
                 break;
             default:
                 break;
@@ -232,13 +254,24 @@ public class UINPCJiaoHu : PanelGroup
     private (List<BaseSkill>,List<BaseSkill>,List<BaseSkill>) CategorizeSlot(List<BaseSkill> listThanThongData)
     {
         // Giả sử listThanThongData là danh sách các đối tượng có thuộc tính eTierSkill
-        var maxTier = listThanThongData.Max(x => x.eTierSkill);
 
         List<BaseSkill> list1 = new List<BaseSkill>();
         List<BaseSkill> list2 = new List<BaseSkill>();
         List<BaseSkill> list3 = new List<BaseSkill>();
+        // 1. Kiểm tra list có null hoặc trống không
+        if (listThanThongData == null || listThanThongData.Count == 0)
+            return (list1, list2, list3);
 
-        foreach (var item in listThanThongData)
+        // 2. Lọc bỏ các phần tử null bên trong list trước khi tìm Max
+        // và đảm bảo x không null khi truy cập eTierSkill
+        var validItems = listThanThongData.Where(x => x != null).ToList();
+
+        if (validItems.Count == 0)
+            return (list1, list2, list3);
+
+        var maxTier = validItems.Max(x => x.eTierSkill);
+
+        foreach (var item in validItems)
         {
             var tier = item.eTierSkill;
 
@@ -264,21 +297,50 @@ public class UINPCJiaoHu : PanelGroup
                 else if (tier == BaseSkill.ETierSkill.NhanGiaiHa) list1.Add(item);
             }
         }
+       
         return (list1, list2,list3);
     }
+    private void CategorizeSlotAndInitVisual(List<BaseSkill> listBaseSkillData)
+    {
+        var categorize = CategorizeSlot(listBaseSkillData);
+        foreach (var item in categorize.Item1)
+        {
+            var itemInventory = GetItemPool(prefabSlotThinhGiaoSlot1);
+            InitVisualItemSkill(itemInventory, item);
+        }
+        foreach (var item in categorize.Item2)
+        {
+            var itemInventory = GetItemPool(prefabSlotThinhGiaoSlot2);
+            InitVisualItemSkill(itemInventory, item);
+        }
+        foreach (var item in categorize.Item3)
+        {
+            var itemInventory = GetItemPool(prefabSlotThinhGiaoSlot3);
+            InitVisualItemSkill(itemInventory, item);
+        }
+    }    
     private void InitCongPhapTab()
     {
         ResetVisual(prefabSlotThinhGiaoSlot1.transform);
         ResetVisual(prefabSlotThinhGiaoSlot2.transform);
         ResetVisual(prefabSlotThinhGiaoSlot3.transform);
+        var GameConfig = Pool.Get<GameConfig>();
 
         this.currentRelationShip = GetERelationShip(relatetionshipValue, ETypeSkillRelationShip.CongPhap);
         btnTabThanThong.image.sprite = spriteNoSelectTab;
         btnTabCongPhap.image.sprite = spriteSelectTab;
-        foreach (var item in characterStatsTarget.thanThongEquip)
-        {
+        List<CongPhap> listCongPhapData = new List<CongPhap>();
+        listCongPhapData.Add(GameConfig.GetCongPhapWithId(characterStatsTarget.chuTu1Used.Value));
+        listCongPhapData.Add(GameConfig.GetCongPhapWithId(characterStatsTarget.chuTu2Used.Value));
+        listCongPhapData.Add(GameConfig.GetCongPhapWithId(characterStatsTarget.phuTu1Used.Value));
+        listCongPhapData.Add(GameConfig.GetCongPhapWithId(characterStatsTarget.phuTu2Used.Value));
+        listCongPhapData.Add(GameConfig.GetCongPhapWithId(characterStatsTarget.phuTu3Used.Value));
+        listCongPhapData.Add(GameConfig.GetCongPhapWithId(characterStatsTarget.phuTu4Used.Value));
+        CategorizeSlotAndInitVisual(listCongPhapData.Cast<BaseSkill>().ToList());
 
-        }
+
+        SetSliderVisual(ETypeSkillRelationShip.CongPhap);
+
     }
     private T GetItemPool<T>(T prefabItem) where T : Component
     {
@@ -318,24 +380,10 @@ public class UINPCJiaoHu : PanelGroup
         {
             listThanThongData.Add(GameConfig.GetThanThongWithId(item.Value));
         }
-        var categorize = CategorizeSlot(listThanThongData.Cast<BaseSkill>().ToList());
-        foreach (var item in categorize.Item1)
-        {
-            var itemInventory = GetItemPool(prefabSlotThinhGiaoSlot1);
-            InitVisualItemSkill(itemInventory,item);
-        }
-        foreach (var item in categorize.Item2)
-        {
-            var itemInventory = GetItemPool(prefabSlotThinhGiaoSlot2);
-            InitVisualItemSkill(itemInventory, item);
-        }
-        foreach (var item in categorize.Item3)
-        {
-            var itemInventory = GetItemPool(prefabSlotThinhGiaoSlot3);
-            InitVisualItemSkill(itemInventory, item);
-        }
+        CategorizeSlotAndInitVisual(listThanThongData.Cast<BaseSkill>().ToList());
+        SetSliderVisual(ETypeSkillRelationShip.ThanThong);
 
-    }    
+    }
     private void ResetVisual(Transform prefab)
     {
         for (int i = 1; i < prefab.transform.parent.childCount; i++)
@@ -346,10 +394,9 @@ public class UINPCJiaoHu : PanelGroup
     }    
     private void InitPopThinhGiao()
     {
-       
-        int relatetionshipValue = Client.Instance.CharacterData.RelationShip[characterStatsTarget.idChar];
+        Client.Instance.CharacterData.RelationShip.TryGetValue(characterStatsTarget.idChar,out int relatetionshipValue);
         textRelationshipValue.text = relatetionshipValue.ToString();
-        InitThanThongTab();
+        InitCongPhapTab();
         SetEventButton(btnTabCongPhap, () =>
         {
             InitCongPhapTab();
@@ -358,7 +405,6 @@ public class UINPCJiaoHu : PanelGroup
         {
             InitThanThongTab();
         });
-        SetSliderVisual();
 
 
 
@@ -386,10 +432,28 @@ public class UINPCJiaoHu : PanelGroup
     {
         this.characterStatsTarget = charStats;
         npcPop.Show();
+        textName.text = characterStatsTarget.nameUser;
+        charVisualPopJiaoHua.SetGender(characterStatsTarget.Gender);
+        charVisualPopJiaoHua.SetSkin(characterStatsTarget.Skins);
 
 
+    }
+    public void ShowPopDoXet()
+    {
+        textNamePopXemXet.text = characterStatsTarget.nameUser;
+        charVisualPopXemXet.SetGender(characterStatsTarget.Gender);
+        charVisualPopXemXet.SetSkin(characterStatsTarget.Skins);
+        textThanThuc.text = characterStatsTarget.thanThuc.ToString();
+        textTocDoBay.text = characterStatsTarget.tocDoBay.ToString();
+        textNgoTinh.text = characterStatsTarget.ngoTinh.ToString();
+        textTuChat.text = characterStatsTarget.tuChat.ToString();
+        textThoNguyen.text = characterStatsTarget.thoNguyen.ToString();
+        textTuoiTac.text = characterStatsTarget.tuoiTac.ToString();
+        textSinhMenh.text = characterStatsTarget.hpMax.ToString();
+        textLevel.text = GameConfig.levelWithText[ThanThong.GetDaiCanhGioi(characterStatsTarget.level)];
+        textHaoCam.text = Client.Instance.CharacterData.RelationShip.GetValueOrDefault(characterStatsTarget.idChar).ToString();
 
-    }    
+    }
     // Helper method to keep your dictionary clean
     private static Color HexToColor(string hex)
     {
