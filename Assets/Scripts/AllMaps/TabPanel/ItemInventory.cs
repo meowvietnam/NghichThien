@@ -130,7 +130,13 @@ public class ItemInventory : BaseItemUI
     private void SetUpMask()
     {
         qualityFull.transform.localScale = Vector3.one * 1.03f;
-        icon.transform.parent.gameObject.AddComponent<RectMask2D>().softness = new Vector2Int(25,25);
+        RectMask2D parent = icon.transform.parent.GetComponent<RectMask2D>();
+        if(parent == null)
+        {
+            parent = parent.gameObject.AddComponent<RectMask2D>();
+
+        }
+        parent.softness =  new Vector2Int(25, 25);
 
     }
     [Button]

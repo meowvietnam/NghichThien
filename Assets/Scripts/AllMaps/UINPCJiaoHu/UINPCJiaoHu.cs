@@ -127,7 +127,8 @@ public class UINPCJiaoHu : PanelGroup
     [SerializeField] private Text textLevel;
     [SerializeField] private Text textNamePopXemXet;
     [SerializeField] private Text textHaoCam;
-
+    [SerializeField] private List<ItemInventory> listThanThongItemSlot;
+    [SerializeField] private List<ItemInventory> listCongPhapItemSlot;
     public void ShowNPCList(List<CharacterStatsSecure> listCharStats)
     {
         OpenOrCloseNpcList(true);
@@ -443,16 +444,34 @@ public class UINPCJiaoHu : PanelGroup
         textNamePopXemXet.text = characterStatsTarget.nameUser;
         charVisualPopXemXet.SetGender(characterStatsTarget.Gender);
         charVisualPopXemXet.SetSkin(characterStatsTarget.Skins);
-        textThanThuc.text = characterStatsTarget.thanThuc.ToString();
-        textTocDoBay.text = characterStatsTarget.tocDoBay.ToString();
-        textNgoTinh.text = characterStatsTarget.ngoTinh.ToString();
-        textTuChat.text = characterStatsTarget.tuChat.ToString();
-        textThoNguyen.text = characterStatsTarget.thoNguyen.ToString();
-        textTuoiTac.text = characterStatsTarget.tuoiTac.ToString();
-        textSinhMenh.text = characterStatsTarget.hpMax.ToString();
+        textThanThuc.text = characterStatsTarget.thanThuc.Value.ToString();
+        textTocDoBay.text = characterStatsTarget.tocDoBay.Value.ToString();
+        textNgoTinh.text = characterStatsTarget.ngoTinh.Value.ToString();
+        textTuChat.text = characterStatsTarget.tuChat.Value.ToString();
+        textThoNguyen.text = characterStatsTarget.thoNguyen.Value.ToString();
+        textTuoiTac.text = characterStatsTarget.tuoiTac.Value.ToString();
+        textSinhMenh.text = characterStatsTarget.hpMax.Value.ToString();
         textLevel.text = GameConfig.levelWithText[ThanThong.GetDaiCanhGioi(characterStatsTarget.level)];
         textHaoCam.text = Client.Instance.CharacterData.RelationShip.GetValueOrDefault(characterStatsTarget.idChar).ToString();
+        List<ThanThong> listThanThongData = new List<ThanThong>();
+        var gameConfig = Pool.Get<GameConfig>();
+        foreach (var item in characterStatsTarget.thanThongEquip)
+        {
+            listThanThongData.Add(gameConfig.GetThanThongWithId(item.Value));
+        }
+        for (int i = 0; i < listThanThongItemSlot.Count; i++)
+        {
+            var item = listThanThongItemSlot[i];
+            var data = i<listThanThongData.Count?listThanThongData[i]:null;
 
+            InitVisualItemSkill(item,data);
+        }
+        InitVisualItemSkill(listCongPhapItemSlot[0],gameConfig.GetCongPhapWithId(characterStatsTarget.chuTu1Used.Value));
+        InitVisualItemSkill(listCongPhapItemSlot[1], gameConfig.GetCongPhapWithId(characterStatsTarget.chuTu2Used.Value));
+        InitVisualItemSkill(listCongPhapItemSlot[2], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu1Used.Value));
+        InitVisualItemSkill(listCongPhapItemSlot[3], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu2Used.Value));
+        InitVisualItemSkill(listCongPhapItemSlot[4], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu3Used.Value));
+        InitVisualItemSkill(listCongPhapItemSlot[5], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu4Used.Value));
     }
     // Helper method to keep your dictionary clean
     private static Color HexToColor(string hex)

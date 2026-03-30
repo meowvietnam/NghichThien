@@ -100,9 +100,11 @@ public class ToolTipItems : BaseBehaviour
         {
             for (int i = 0; i < prefabKeyword.transform.parent.childCount; i++)
             {
-                prefabKeyword.transform.parent.GetChild(0).gameObject.SetActive(false);
+                prefabKeyword.transform.parent.GetChild(i).gameObject.SetActive(false);
             }
         }
+        ResetKeyword(prefabLeftInfor);
+        ResetKeyword(prefabRightInfor);
         if (itemData is BaseSkill skill)
         {
             qualityText.text = skill.GetTextTierSkill();
@@ -110,8 +112,7 @@ public class ToolTipItems : BaseBehaviour
             descriptionText.text = skill.GetDesc(ThanThong.GetDaiCanhGioi(Pool.Get<Player>().characterStatsBase.level));
             var listEKeyword = skill.GetEKeywordSkillHave();
             var listEBuffKeyword = skill.GetEKeywordBuffSkillHave(1);
-            ResetKeyword(prefabLeftInfor);
-            ResetKeyword(prefabRightInfor);
+          
 
             for (int i = 0; i < listEKeyword.Length; i++)
             {
