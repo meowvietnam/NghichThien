@@ -24,11 +24,16 @@ public class UIHeadPanel : PanelGroup
         Observer.AddObserver(EventList.GamePlay.UPDATE_PLAYER_STATS, UpdatePlayerStats);
         SetEventButton(chatBtn, () =>
         {
-            Pool.Get<ChatPanel>().gameObject.SetActive(true);
+            var ChatPanel = Pool.Get<ChatPanel>();
+            ChatPanel.gameObject.SetActive(true);
+            ChatPanel.transform.SetAsLastSibling();
+
         });
         SetEventButton(headBtn, () =>
         {
-            Pool.Get<TabPanel>().gameObject.SetActive(true);
+            var tabPanel = Pool.Get<TabPanel>();
+            tabPanel.gameObject.SetActive(true);
+            tabPanel.transform.SetAsLastSibling();
         });
     }
    

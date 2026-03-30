@@ -19,6 +19,10 @@ public class SayDialogManager : MonoBehaviour
     private Coroutine typingCoroutine;
     private Transform panel => textContent.transform.parent;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
     void Start()
     {
             characterData = new CharacterData

@@ -27,6 +27,13 @@ public class ToolTipItems : BaseBehaviour
     private Image prefabLeftInfor;
     [SerializeField]
     private Image prefabRightInfor;
+    public static ToolTipItems Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+        gameObject.SetActive(false);
+    }
     public void InitShow(BaseItemData itemData,Sprite frameSprite, Sprite qualityFull , Color colorName , ETypeInventoryItem eTypeItemShow)
     {
         gameObject.SetActive(true);

@@ -35,7 +35,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     [SerializeField] private ButtonWithPanel[] btns;
     [SerializeField] private Button btnClose;
     [SerializeField] private ButtonWithPanel currentBtnWithPanel;
-    [SerializeField] public ToolTipItems toolTipItems;
+    [SerializeField] public ToolTipItems toolTipItems => ToolTipItems.Instance;
     public override void Init()
     {
         base.Init();
