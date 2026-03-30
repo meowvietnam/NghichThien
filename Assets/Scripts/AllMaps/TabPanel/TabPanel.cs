@@ -1,6 +1,7 @@
 ﻿using AllMaps;
 using Base;
 using LongDH.LongDHModules;
+using Network;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -122,15 +123,16 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     private void UpdatePlayerStats()
     {
         var player = Pool.Get<Player>();
+        var gameConfig = Pool.Get<GameConfig>();
         hpText.text = $"{player.characterStatsBase.hp.Value}/{player.characterStatsBase.hpMax.Value}";
 
-        tuviText.text = $"{player.characterStatsBase.currentExp.Value}/{GameConfig.GetTuviRequired(player.characterStatsBase.level)}";
+        tuviText.text = $"{player.characterStatsBase.currentExp.Value}/{gameConfig.inforLevels[Client.Instance.CharacterData.Level - 1].tuviRequireNextLevel}";
 
         iconLevel.sprite = listSpriteIconLevel[player.characterStatsBase.level - 1];
         iconLevel.SetNativeSize();
         nameText.text = player.characterStatsBase.nameUser;
 
-        levelText.text = GameConfig.tuviText[player.characterStatsBase.level-1];
+        levelText.text = GameConfig.levelWithText[Client.Instance.CharacterData.Level];
         tuoitacText.text = player.characterStatsBase.tuoiTac.Value.ToString();
         thonguyenText.text = player.characterStatsBase.thoNguyen.Value.ToString();
         tuChatText.text = player.characterStatsBase.tuChat.Value.ToString();

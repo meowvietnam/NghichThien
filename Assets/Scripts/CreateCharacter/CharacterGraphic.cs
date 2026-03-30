@@ -83,5 +83,31 @@ namespace CreateCharacter
             SetSkin(skins, colors);
             return (skins,colors);
         }
+        public static (Dictionary<string, string> skins, Dictionary<string, Color> colors) RandomSkinStatic(Gender gender, bool useDefaultColors)
+        {
+            var skins = new Dictionary<string, string>();
+            var colors = new Dictionary<string, Color>();
+            var palette = SkinResources.Instance.Colors;
+            var group = SkinResources.Instance.GenderSkinGroups.First(x => x.Gender == gender);
+            foreach (var groupSkinGroup in group.SkinGroups)
+            {
+                foreach (var skinCategory in groupSkinGroup.Categories)
+                {
+                    var skin = skinCategory.Skins[Random.Range(0, skinCategory.Skins.Count)];
+                    skins[skinCategory.Id] = skin.Name;
+                }
+
+                foreach (var colorGroup in groupSkinGroup.ColorGroups)
+                {
+                    foreach (var colorGroupCategoryId in colorGroup.CategoryIds)
+                    {
+                        var color = useDefaultColors ? colorGroup.DefaultColor : palette[Random.Range(0, palette.Count)];
+                        colors[colorGroupCategoryId] = color;
+                    }
+                }
+            }
+           
+            return (skins, colors);
+        }
     }
 }

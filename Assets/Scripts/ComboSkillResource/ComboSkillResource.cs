@@ -3,12 +3,25 @@ using UnityEngine;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using System.Linq;
+using Base;
 
 [CreateAssetMenu(fileName = nameof(ComboSkillResource), menuName = "Combo Skill Resource/" + nameof(ComboSkillResource))]
 
 public class ComboSkillResource : ScriptableObject
 {
-   
+    public enum ETypeCombo
+    {
+        TrungDoc,
+        TrienNhieu,
+        MocThuy,
+        ThieuDot,
+        KimKiem,
+        ThuyKiem,
+        Tho,
+        Kiem
+    
+    }
+
     [Serializable]
     public class Combo
     {
@@ -46,6 +59,8 @@ public class ComboSkillResource : ScriptableObject
         public string nameCombo;
         public Combo[] comboWithDaiCanhGioi;
         public BaseSkill.ETypeSkill[] eTypeSkill;
+        public ETypeCombo typeCombo;
+        public EMonPhai monPhai;
         // trang bị nữa
     }
     public ComboWithType[] comboNPC;

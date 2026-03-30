@@ -1,6 +1,7 @@
 ﻿using Base;
 using LongDH.LongDHModules;
 using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -60,6 +61,16 @@ public class GameConfig : BaseBehaviour
     { 14, "Hóa Thần Trung Kì" },
     { 15, "Hóa Thần Hậu Kì" },
     };
+    [Serializable]
+    public class InforLevel
+    {
+        public int tuviRequireNextLevel;
+        public int hpMaxBuff;
+        public int thanThucBuff;
+        public int donTocBuff;
+        public int thoNguyenBuff;
+    }
+    public InforLevel[] inforLevels;
     public static string GetChucVuText(EMonPhai monPhai, int level)
     {
         return monPhaiText[monPhai]+" "+ chucVuText[ThanThong.GetDaiCanhGioi(level)];
@@ -146,32 +157,8 @@ public class GameConfig : BaseBehaviour
         Debug.Log($"Đã cập nhật {congPhaps.Length} CongPhap vào mảng.");
 #endif
     }
-    public static int[] tuviRequires = new int[]
-    {
-        10000,
-        20000,
-        30000,
-
-    };
-    public static string[] tuviText = new string[]
-    {
-        "Luyện khí sơ kì",
-        "Luyện khí trung kì",
-        "Luyện khí hậu kì",
-        "Trúc cơ sơ kì",
-        "Trúc cơ trung kì",
-        "Trúc cơ hậu kì",
-        "Kết đan sơ kì",
-        "Kết đan trung kì",
-        "Kết đan hậu kì",
-        "Nguyên anh sơ kì",
-        "Nguyên anh trung kì",
-        "Nguyên anh hậu kì",
-        "Hóa thần sơ kì",
-        "Hóa thần trung kì",
-        "Hóa thần hậu kì",
-
-    };
+   
+  
     public static string[] tamCanh = new string[]
     {
         "Tâm phiền ý loạn",
@@ -259,12 +246,5 @@ public class GameConfig : BaseBehaviour
         // Trường hợp cuối cùng: Lớn hơn mốc cao nhất (> 1999)
         return (tamCanh[tamCanh.Length - 1], (int)currentPoint, tamCanh.Length - 1);
     }
-    public static int GetTuviRequired(int level)
-    {
-        int index = level - 1;
-        if (index < 0) return tuviRequires[0];
-        if (index >= tuviRequires.Length) return tuviRequires[tuviRequires.Length - 1]; // Trả về mốc cuối nếu max level
-
-        return tuviRequires[index];
-    }
+  
 }
