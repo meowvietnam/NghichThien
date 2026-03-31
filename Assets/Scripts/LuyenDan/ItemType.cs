@@ -10,5 +10,6 @@ namespace LuyenDan
         VuKhi,
         PhongCu,
         TrangSuc,
+        Recipe
     }
 }

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Base;
+using LongDH.LongDHModules;
 using LuyenDan.Inventory;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -29,6 +31,10 @@ namespace LuyenDan
                 return instance;
             }
         }
+        public Quality FindQuality(Tier tier)
+        {
+            return Qualities.FirstOrDefault(x=>x.Tier == tier);
+        }    
         public IItemData FindItem(ItemRef itemRef)
         {
             if (itemRef.Type == ItemType.Furnace)
@@ -39,8 +45,17 @@ namespace LuyenDan
             {
                 return HerbDatas.FirstOrDefault(x => x.Id == itemRef.Id);
             }
-            return LinhDans.FirstOrDefault(x => x.Id == itemRef.Id);
+            if (itemRef.Type == ItemType.LinhDan)
+            {
+                return LinhDans.FirstOrDefault(x => x.Id == itemRef.Id);
+            }
+            if (itemRef.Type == ItemType.Recipe)
+            {
+                return Recipes.FirstOrDefault(x => x.Id == itemRef.Id);
+            }
+            return null;
         }
+        
         public HerbData FindHerb(int id)
         {
             var herb = HerbDatas.FirstOrDefault(x => x.Id == id);
