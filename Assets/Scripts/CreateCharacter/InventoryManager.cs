@@ -30,10 +30,13 @@ namespace CreateCharacter
         public HashSet<ItemRef> PhongCus { get; set; } = new();
         [ShowInInspector]
         public HashSet<ItemRef> TrangSucs { get; set; } = new();
+        [ShowInInspector]
+        public HashSet<ItemRef> LinhDans { get; set; } = new();
+
 
         public int ByteSize()
         {
-            return Furnaces.ByteSize() + Recipes.ByteSize() + Herbs.ByteSize() + ThanThongs.ByteSize() + CongPhaps.ByteSize() + VuKhis.ByteSize() + PhongCus.ByteSize() + TrangSucs.ByteSize();
+            return Furnaces.ByteSize() + Recipes.ByteSize() + Herbs.ByteSize() + ThanThongs.ByteSize() + CongPhaps.ByteSize() + VuKhis.ByteSize() + PhongCus.ByteSize() + TrangSucs.ByteSize() + LinhDans.ByteSize();
         }
         public void Serialize(IWriter writer)
         {
@@ -45,6 +48,7 @@ namespace CreateCharacter
             writer.WriteArray(VuKhis);
             writer.WriteArray(PhongCus);
             writer.WriteArray(TrangSucs);
+            writer.WriteArray(LinhDans);
 
         }
         public void Deserialize(IReader reader, ref InventoryManager value)
@@ -57,6 +61,7 @@ namespace CreateCharacter
             value.VuKhis = reader.ReadArray<ItemRef>().ToHashSet();
             value.PhongCus = reader.ReadArray<ItemRef>().ToHashSet();
             value.TrangSucs = reader.ReadArray<ItemRef>().ToHashSet();
+            value.LinhDans = reader.ReadArray<ItemRef>().ToHashSet();
 
         }
 
@@ -70,6 +75,7 @@ namespace CreateCharacter
             VuKhis = new HashSet<ItemRef>(other.VuKhis);
             PhongCus = new HashSet<ItemRef>(other.PhongCus);
             TrangSucs = new HashSet<ItemRef>(other.TrangSucs);
+            LinhDans = new HashSet<ItemRef>(other.LinhDans);
 
         }
     }
