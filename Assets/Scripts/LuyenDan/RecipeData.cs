@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using LuyenDan.Inventory;
@@ -9,7 +9,7 @@ using UnityEngine;
 namespace LuyenDan
 {
     [Serializable]
-    public class RecipeData
+    public class RecipeData : IItemData
     {
         [Serializable]
         public class Herbs
@@ -101,5 +101,11 @@ namespace LuyenDan
         {
             get { return LuyenDanResources.Instance.LinhDans.FirstOrDefault(x => x.Id == LinhDanId); }
         }
+
+        public string Name => $"Đan phương {LinhDan.Name}" ;
+
+        public Tier Tier => LinhDan.Tier;
+
+        public string Description => $"Công thức chế tạo {LinhDan.Name}";
     }
 }
