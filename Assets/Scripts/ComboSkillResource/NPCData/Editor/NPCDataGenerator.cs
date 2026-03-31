@@ -123,9 +123,7 @@ public class NPCDataGenerator : EditorWindow
             npc.charStatsCreateRef.monPhai = comboType.monPhai;
             npc.charStatsCreateRef.Gender = (Gender)Random.Range(0, 2);
 
-            var skinResult = CharacterGraphic.RandomSkinStatic(npc.charStatsCreateRef.Gender, Random.value > 0.5f);
-            npc.charStatsCreateRef.Skins = skinResult.skins;
-            npc.charStatsCreateRef.Colors = skinResult.colors;
+       
 
             npc.charStatsCreateRef.hpMax = new SecureInt(Random.Range(30, 61));
             npc.charStatsCreateRef.hp = new SecureInt(npc.charStatsCreateRef.hpMax.Value);

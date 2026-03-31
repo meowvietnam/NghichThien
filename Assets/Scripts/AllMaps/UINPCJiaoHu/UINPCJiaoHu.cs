@@ -131,6 +131,10 @@ public class UINPCJiaoHu : PanelGroup
     [SerializeField] private List<ItemInventory> listCongPhapItemSlot;
     public void ShowNPCList(List<CharacterStatsSecure> listCharStats)
     {
+        npcPop.Hide();
+        thinhGiaoPop.Hide();
+        xemXetPop.Hide();
+        tangQuaPop.Hide();
         OpenOrCloseNpcList(true);
         ResetVisual(prefabNPCLeftItem.transform);
         SetEventButton(closeOrOpenListNPC, () =>

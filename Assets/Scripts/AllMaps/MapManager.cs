@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CreateCharacter;
+﻿using CreateCharacter;
 using LongDH.LongDHModules;
 using Network;
 using Network.Callback;
 using Network.ClientState;
 using Network.Extensions;
 using Network.Models;
+using Newtonsoft.Json;
 using Sirenix.OdinInspector;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +21,7 @@ namespace AllMaps
         [SerializeField] private Player player;
         private Map current;
         private Dictionary<Map, List<Map>> graph;
-
+        [SerializeField] private NPCData[] npcDatas;
         public Map FindMap(int id)
         {
             return maps.FirstOrDefault(map => map.Id == id);
@@ -51,6 +53,7 @@ namespace AllMaps
         private void Start()
         {
             Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
+            LoadNPCMap();
         }
 
         public void PlayerMoveTo(Map map)
@@ -150,14 +153,77 @@ namespace AllMaps
         {
             //Test Data
             Debug.Log($"Có {characters.Length} players online trong node");
-            //Test Data
-            Pool.Get<UINPCJiaoHu>().ShowNPCList(new List<CharacterStatsSecure>
+            List<CharacterStatsSecure> characterStatsSecures = new List<CharacterStatsSecure>();
+            foreach (var character in characters)
             {
-                        new CharacterStatsSecure {tuoiTac = 15, hpMax = 200,level = 9,thoNguyen = 200,tuChat = 120,ngoTinh = 50,tocDoBay=20,thanThuc=30,nameUser = "Viêm Đế",monPhai = Base.EMonPhai.BachDeLau,thanThongEquip = new List<SecureInt> {874,527,417,878}, chuTu1Used =1 , chuTu2Used = 2 , phuTu1Used = 3, phuTu2Used =4,phuTu3Used=5,phuTu4Used=6},
-                        new CharacterStatsSecure {tuoiTac = 15, hpMax = 500,level = 4,thoNguyen = 200,tuChat = 120,ngoTinh = 50,tocDoBay=20,thanThuc=30,nameUser = "Hàn Lão Ma",monPhai = Base.EMonPhai.None,thanThongEquip = new List<SecureInt> {427,309,131}, chuTu1Used =2 , chuTu2Used = 4, phuTu1Used = 7, phuTu2Used =9,phuTu3Used=10,phuTu4Used=12 },
-                        new CharacterStatsSecure {tuoiTac = 15, hpMax = 700,level = 2,thoNguyen = 200,tuChat = 120,ngoTinh = 50,tocDoBay=20,thanThuc=30,nameUser = "Lệ Phi Vũ",monPhai = Base.EMonPhai.KimHongKiemPhai,thanThongEquip = new List<SecureInt> {874,527,417,878}, chuTu1Used =1 , chuTu2Used = 2 , phuTu1Used = 3, phuTu2Used =4,phuTu3Used=5,phuTu4Used=6},
+                characterStatsSecures.Add(new CharacterStatsSecure { tuoiTac = character.TuoiTac, hpMax = character.SinhMenh, level = character.Level, thoNguyen = character.ThoNguyen, tuChat = character.TuChat, ngoTinh = character.NgoTinh, tocDoBay = character.TocDoBay, thanThuc = character.ThanThuc, nameUser = character.Name, monPhai = character.MonPhai, thanThongEquip = character.ThanThongEquip.ConvertAll<SecureInt>(id => new SecureInt(id)), chuTu1Used = character.ChuTu1Used, chuTu2Used = character.ChuTu2Used, phuTu1Used = character.PhuTu1Used, phuTu2Used = character.PhuTu2Used, phuTu3Used = character.PhuTu3Used, phuTu4Used = character.PhuTu4Used });
+            }
+            List<NPCData> npcOnCurrentMap = npcDatas.Where(x => x.charStats.idNode == current.Id).ToList();
+            foreach (var character in npcOnCurrentMap)
+            {
 
-            });
+                characterStatsSecures.Add(character.charStats);
+            }
+
+            //Test Data
+            Pool.Get<UINPCJiaoHu>().ShowNPCList(characterStatsSecures);
+           
+        }
+        private void SaveNPCMap()
+        {
+            Dictionary<int, int> dict = new Dictionary<int, int>();
+            foreach (var npc in npcDatas)
+            {
+                dict.Add(npc.charStatsCreateRef.idChar.Value,npc.charStats.idNode);
+            } 
+            string json = JsonConvert.SerializeObject(dict);
+            File.WriteAllText(Application.persistentDataPath + "/save.json", json);
+        }
+        private void NPCRandomOnMap(List<int> idNpcExcept)
+        {
+            foreach (var npc in npcDatas)
+            {
+                if(!idNpcExcept.Contains(npc.charStatsCreateRef.idChar))
+                {
+                    int randomMapId = maps[Random.Range(0, maps.Length)].Id;
+                    npc.charStats.idNode = randomMapId;
+                }    
+
+            } 
+                
+            SaveNPCMap();
+            
+        }    
+
+        private void LoadNPCMap()
+        {
+
+            string path = Application.persistentDataPath + "/save.json";
+
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+                // Tiếp tục xử lý dữ liệu (JsonUtility.FromJson...)
+                var dictLoadNPCMap = JsonConvert.DeserializeObject<Dictionary<int, int>>(json);
+
+                List<int> npcExcept = new List<int>();
+                foreach (var item in dictLoadNPCMap)
+                {
+
+                    npcDatas.FirstOrDefault(x => x.charStatsCreateRef.idChar == item.Key).charStats.idNode = item.Value;
+                    npcExcept.Add(item.Key);
+                }
+                NPCRandomOnMap(npcExcept);
+                Debug.Log("Đã load dữ liệu thành công!");
+            }
+            else
+            {
+                NPCRandomOnMap(new List<int> { });
+                Debug.LogWarning("Không tìm thấy file save. Khởi tạo dữ liệu mới.");
+                return;
+            }
+          
+
         }
     }
 }

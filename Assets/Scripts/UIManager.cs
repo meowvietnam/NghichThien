@@ -6,7 +6,7 @@ public class UIManager : BaseBehaviour
     private void Awake()
     {
         // Kiểm tra nếu trong Pool đã có một Manager loại này rồi
-        var existing = Pool.Get<GameConfig>();
+        var existing = Pool.Get<UIManager>();
 
         if (existing != null && existing != this)
         {
