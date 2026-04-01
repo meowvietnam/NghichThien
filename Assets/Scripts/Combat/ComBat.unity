@@ -309,6 +309,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8b2c7e83922404469e8743505d3367d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameConfig
+  listSceneLoaded:
+  - AllMaps
+  inforLevels: []
   thanThongs:
   - {fileID: 11400000, guid: d0efd2c705672c84290921deb53d6dec, type: 2}
   - {fileID: 11400000, guid: 9cab1ee0a1399074a9c81cc7dc0be4aa, type: 2}
@@ -1437,63 +1440,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2562181782091425649, guid: 31da1280f7ab9f848afcb9c25e97187f,
-        type: 3}
-      propertyPath: congPhapEquip.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2562181782091425649, guid: 31da1280f7ab9f848afcb9c25e97187f,
-        type: 3}
-      propertyPath: ngoDaoCombats.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2562181782091425649, guid: 31da1280f7ab9f848afcb9c25e97187f,
-        type: 3}
-      propertyPath: 'ngoDaoCombats.Array.data[0]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 7eba03c9f3fdb4c4fa566bda653b1fb9,
-        type: 2}
-    - target: {fileID: 2562181782091425649, guid: 31da1280f7ab9f848afcb9c25e97187f,
-        type: 3}
-      propertyPath: 'ngoDaoCombats.Array.data[1]'
-      value: 
-      objectReference: {fileID: 11400000, guid: daad20e04aab1b6439a868821d30b8dd,
-        type: 2}
-    - target: {fileID: 2562181782091425649, guid: 31da1280f7ab9f848afcb9c25e97187f,
-        type: 3}
-      propertyPath: 'ngoDaoCombats.Array.data[2]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 502be2c759a56f14e9cf779d8c25988a,
-        type: 2}
-    - target: {fileID: 2562181782091425649, guid: 31da1280f7ab9f848afcb9c25e97187f,
-        type: 3}
-      propertyPath: 'ngoDaoCombats.Array.data[3]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 502be2c759a56f14e9cf779d8c25988a,
-        type: 2}
-    - target: {fileID: 2562181782091425649, guid: 31da1280f7ab9f848afcb9c25e97187f,
-        type: 3}
-      propertyPath: 'ngoDaoCombats.Array.data[4]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 502be2c759a56f14e9cf779d8c25988a,
-        type: 2}
-    - target: {fileID: 2562181782091425649, guid: 31da1280f7ab9f848afcb9c25e97187f,
-        type: 3}
-      propertyPath: congPhapEquip.Array.data[0].congPhap
-      value: 
-      objectReference: {fileID: 11400000, guid: 94a59eb11b0ff524cbaf7cb33b923d96,
-        type: 2}
-    - target: {fileID: 2562181782091425649, guid: 31da1280f7ab9f848afcb9c25e97187f,
-        type: 3}
-      propertyPath: congPhapEquip.Array.data[1].congPhap
-      value: 
-      objectReference: {fileID: 11400000, guid: b8fc76f9380de8949876eddeffab7d25,
-        type: 2}
-    - target: {fileID: 2562181782091425649, guid: 31da1280f7ab9f848afcb9c25e97187f,
-        type: 3}
-      propertyPath: congPhapEquip.Array.data[0].level.fakeValue
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 3091081966747130548, guid: 31da1280f7ab9f848afcb9c25e97187f,
         type: 3}
       propertyPath: m_SizeDelta.y
@@ -1837,7 +1783,7 @@ PrefabInstance:
     - target: {fileID: 5268886767928800801, guid: 31da1280f7ab9f848afcb9c25e97187f,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -93.73913
+      value: -93.72093
       objectReference: {fileID: 0}
     - target: {fileID: 5288408347019548625, guid: 31da1280f7ab9f848afcb9c25e97187f,
         type: 3}
@@ -2094,22 +2040,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8213213679046447063, guid: 31da1280f7ab9f848afcb9c25e97187f,
-        type: 3}
-      propertyPath: congPhapEquip.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8213213679046447063, guid: 31da1280f7ab9f848afcb9c25e97187f,
-        type: 3}
-      propertyPath: congPhapEquip.Array.data[0].congPhap
-      value: 
-      objectReference: {fileID: 11400000, guid: 625797b45ddea69409cdf5a374088df2,
-        type: 2}
-    - target: {fileID: 8213213679046447063, guid: 31da1280f7ab9f848afcb9c25e97187f,
-        type: 3}
-      propertyPath: congPhapEquip.Array.data[0].level.fakeValue
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 8253467806404539423, guid: 31da1280f7ab9f848afcb9c25e97187f,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -2133,7 +2063,7 @@ PrefabInstance:
     - target: {fileID: 8253467806404539423, guid: 31da1280f7ab9f848afcb9c25e97187f,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -26.739132
+      value: -26.72093
       objectReference: {fileID: 0}
     - target: {fileID: 8370893582486557690, guid: 31da1280f7ab9f848afcb9c25e97187f,
         type: 3}
@@ -2233,7 +2163,7 @@ PrefabInstance:
     - target: {fileID: 9212666156685793823, guid: 31da1280f7ab9f848afcb9c25e97187f,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -125.21739
+      value: -125.162796
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

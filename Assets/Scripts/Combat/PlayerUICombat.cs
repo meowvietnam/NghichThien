@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -115,6 +116,8 @@ public class PlayerUICombat : BaseBehaviour
         SetEventButton(btnConfirm, () =>
         {
             if (CombatManager.IsDelayEffectSkill) return;
+            if (player.isAutoCastSkill) return;
+           
             switch (eStateControl)
             {
                 case EStateControl.None:
@@ -143,6 +146,8 @@ public class PlayerUICombat : BaseBehaviour
         SetEventButton(btnCancel, () =>
         {
             if (CombatManager.IsDelayEffectSkill) return;
+            if (player.isAutoCastSkill) return;
+
             foreach (var item in currentNodes)
             {
                 if (item == null || item.eLinhKhi == ELinhKhi.None) continue;
@@ -163,6 +168,8 @@ public class PlayerUICombat : BaseBehaviour
         SetEventButton(btnEndRound, () =>
         {
             if (CombatManager.IsDelayEffectSkill) return;
+            if (player.isAutoCastSkill) return;
+
             SetStateControl(EStateControl.DeleteLinhKhi);
             if (CurrentLinhKhi <= maxLinhKhi || player.isSkipTieuTanLinhKhi == true)
             {
@@ -182,6 +189,7 @@ public class PlayerUICombat : BaseBehaviour
 
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, NewTurn);
         Observer.AddObserver(EventList.Combat.ADJUST_LINHKHI, AdjustLinhKhi);
+        Observer.AddObserver(EventList.Combat.PLAY_SKILL, CheckFightSkillCanUseObserver);
 
         foreach (var item1 in linhKhiRemains)
         {
@@ -247,24 +255,62 @@ public class PlayerUICombat : BaseBehaviour
             });
             Action actionPointerUp = new Action(() =>
             {
+                if (player.isAutoCastSkill) return;
+                if (skill.isLock) return;
+
                 btnCancel.onClick?.Invoke();
                 SetStateControl(EStateControl.UseSkill);
                 ShowNodes(skill.ThanThongData.GetRequireActive(player).Count);
                 fightSkillSelect = skill;
 
                 var listRequire = skill.ThanThongData.GetRequireActive(player);
+                List<LinhKhiTieuTan> listSpecial = new List<LinhKhiTieuTan>();
+
+                if (skill.ThanThongData is BaseSkill.TuongDong)
+                {
+                    listSpecial = skill.ThanThongData.GetLinhKhiTieuTanTuongDong(player);
+                }    
+                else if(skill.ThanThongData is BaseSkill.TuongSinh)
+                {
+                    listSpecial = skill.ThanThongData.GetLinhKhiETuongQuan(player,ETuongQuan.TuongSinh);
+
+
+                }
+                else if(skill.ThanThongData is BaseSkill.TuongKhac)
+                {
+                    listSpecial = skill.ThanThongData.GetLinhKhiETuongQuan(player, ETuongQuan.TuongKhac);
+
+                }
+              
+                if (listSpecial == null || listSpecial.Count <= 0)
+                {
+                    listSpecial = skill.ThanThongData.GetLinhKhiTieuTanIfPossible(player);
+
+                }
                 listRequire = listRequire
                 .OrderBy(x => x.linhKhiRequire == ELinhKhi.None)
                 .ToList();
-
-                foreach (var require in listRequire)
+                for (int i = 0; i < listRequire.Count; i++)
                 {
+                    ThanThong.RequireActive require = listRequire[i];
                     bool hasSpecificType = require.linhKhiRequire != ELinhKhi.None;
 
-                    // --- Tìm đối tượng phù hợp ---
-                    var match = hasSpecificType
-                        ? linhKhiRemains.FirstOrDefault(l => l.eLinhKhi == require.linhKhiRequire && l.count >= require.count)
-                        : linhKhiRemains.FirstOrDefault(l => l.count >= require.count && !currentNodes.Any(x => x.eLinhKhi == l.eLinhKhi && x.isLock == false));
+                    SlotLinhKhi match = null;
+                    if (listSpecial != null && listSpecial.Count > 0)
+                    {
+                        var special = listSpecial[i];
+
+                        // --- Tìm đối tượng phù hợp ---
+                        match = linhKhiRemains.FirstOrDefault(l => l.eLinhKhi == special.eLinhKhi && l.count >= special.count);
+                    }
+                    else
+                    {
+                        // --- Tìm đối tượng phù hợp ---
+                        match = hasSpecificType
+                            ? linhKhiRemains.FirstOrDefault(l => l.eLinhKhi == require.linhKhiRequire && l.count >= require.count)
+                            : linhKhiRemains.FirstOrDefault(l => l.count >= require.count && !currentNodes.Any(x => x.eLinhKhi == l.eLinhKhi && x.isLock == false));
+                    }
+
 
                     // --- Nếu tìm thấy trong linhKhiRemains ---
 
@@ -291,11 +337,8 @@ public class PlayerUICombat : BaseBehaviour
 
                         continue;
                     }
-
-
-
                 }
-
+                
 
 
             });
@@ -339,6 +382,14 @@ public class PlayerUICombat : BaseBehaviour
         textTip.text = $"{CurrentLinhKhi - maxLinhKhi}";
         CheckTuongQuan();
     }
+    public void CheckFightSkillCanUseObserver(params object[] data)
+    {
+        CharacterCombat caster = (CharacterCombat) data[0];
+        if(caster == player)
+        {
+            CheckFightSkillCanUse();
+        }    
+    }    
     public void CheckFightSkillCanUse()
     {
         foreach (var item in fightSkills)
@@ -393,7 +444,31 @@ public class PlayerUICombat : BaseBehaviour
                         item.ShowRecommentHighlight(true);
 
                     }
-                }    
+                }
+                if (item.ThanThongData is BaseSkill.TuongDong)
+                {
+                    if (item.ThanThongData.GetLinhKhiTieuTanTuongDong(player) != null)
+                    {
+                        item.ShowRecommentHighlight(true);
+
+                    }
+                }
+                if (item.ThanThongData is BaseSkill.TuongKhac)
+                {
+                    if (item.ThanThongData.GetLinhKhiETuongQuan(player,ETuongQuan.TuongKhac) != null)
+                    {
+                        item.ShowRecommentHighlight(true);
+
+                    }
+                }
+                if (item.ThanThongData is BaseSkill.TuongSinh)
+                {
+                    if (item.ThanThongData.GetLinhKhiETuongQuan(player, ETuongQuan.TuongSinh) != null)
+                    {
+                        item.ShowRecommentHighlight(true);
+
+                    }
+                }
                 //else if(item.ThanThongData is BaseSkill.TuongSinh)
                 //{
                 //    if (CombatManager.GetETuongQuan(GetLinhKhiTieuTans(linhKhiRemains)) == ETuongQuan.TuongSinh)
