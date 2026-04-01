@@ -16,7 +16,7 @@ public class PhanHoaThoDiemQuyet : ThanThong
     {
         2,2,3,3,5
     };
-
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dameValues[GetIndexLevelThanThong(caster)];
@@ -26,7 +26,7 @@ public class PhanHoaThoDiemQuyet : ThanThong
     .Sum(z => z.count); // Cộng dồn tất cả giá trị của thuộc tính Count lại
         int dameBuff = dameValueBuffs[GetIndexLevelThanThong(caster)] * tongSoLuongHoa;
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame+dameBuff }, eTypeSkill);
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
 
     }

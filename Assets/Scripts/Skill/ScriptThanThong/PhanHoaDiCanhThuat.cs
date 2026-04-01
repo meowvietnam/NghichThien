@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PhanHoaDiCanhThuat : ThanThong
 {
-    
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt  myThieuDot);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, myThieuDot);
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
 
     }

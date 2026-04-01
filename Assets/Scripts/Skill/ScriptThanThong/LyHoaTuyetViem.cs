@@ -5,6 +5,7 @@ public class LyHoaTuyetViem : ThanThong
 {
     [SerializeField] protected int thieuDot = 2;
     [SerializeField] protected int hapThu = 3;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -12,6 +13,7 @@ public class LyHoaTuyetViem : ThanThong
         HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, thieuDot);
         caster.HapThuLinhKhi(ELinhKhi.Hoa,hapThu);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

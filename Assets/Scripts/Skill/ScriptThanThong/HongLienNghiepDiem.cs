@@ -5,13 +5,13 @@ using UnityEngine;
 public class HongLienNghiepDiem : ThanThong
 {
     [SerializeField] protected int[] thieuDots;
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
 
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, thieuDots[GetIndexLevelThanThong(caster)]);
-
-
+        ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
     

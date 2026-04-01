@@ -8,7 +8,7 @@ public class TamMuoiChanHoa : ThanThong , BaseSkill.TuongDong
     [SerializeField] protected int[] dames;
     [SerializeField] protected int[] thieuDots;
     [SerializeField] protected int[] dameBuffs;
-
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -16,7 +16,7 @@ public class TamMuoiChanHoa : ThanThong , BaseSkill.TuongDong
 
         target.CaculateDameByThanThong(caster, new List<int> { dames[GetIndexLevelThanThong(caster)] }, eTypeSkill);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, thieuDots[GetIndexLevelThanThong(caster)]);
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

@@ -6,6 +6,8 @@ using System.Linq;
 public class LeHoa : ThanThong
 {
 
+    [SerializeField] private float delayTimeEffect = 1f;
+
     [SerializeField] protected int[] dames = new int[]
     {
         6,10,15,22,44
@@ -21,7 +23,7 @@ public class LeHoa : ThanThong
         int count = caster.thanThongUseThisTurn.Count(x => x.thanThong is LeHoa) - 1;
         int dameBuff = dameBuffs[GetIndexLevelThanThong(caster)] * count;
         target.CaculateDameByThanThong(caster, new List<int> { dame + dameBuff }, eTypeSkill);
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 
