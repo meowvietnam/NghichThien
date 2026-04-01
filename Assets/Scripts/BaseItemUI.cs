@@ -30,6 +30,7 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
 
         InitAction(actionHolder, actionPointerUp);
     }
+
     [Button]
     public virtual void InitItemData(BaseItemData itemData , Sprite frameSprite)
     {

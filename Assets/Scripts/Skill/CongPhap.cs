@@ -37,7 +37,6 @@ public abstract class CongPhap : BaseSkill
         return CurrentLevelCongPhapInCombat(caster) * tocDoTuLuyenBase;
 
     }
-    protected override ETypeItem typeItem => ETypeItem.CongPhap;
     public virtual void ExecuteParams(params object[] data)
     {
         // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null

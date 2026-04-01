@@ -12,11 +12,16 @@ namespace CreateCharacter
         [field: SerializeField] public List<Sprite> LevelIcons { get; private set; }
         [field: SerializeField] public List<Color> Colors { get; private set; }
         [field: SerializeField] public List<GenderSkinGroup> GenderSkinGroups { get; private set; }
+        private static SkinResources instance;
         public static SkinResources Instance
         {
             get
             {
-                return Resources.FindObjectsOfTypeAll<SkinResources>().FirstOrDefault();
+                if (instance == null)
+                {
+                    instance = Resources.Load<SkinResources>("Skins/SkinResources");
+                }
+                return instance;
             }
         }
         public int ByteSize()

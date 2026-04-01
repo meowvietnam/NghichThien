@@ -1,4 +1,4 @@
-using Base;
+﻿using Base;
 using LongDH.LongDHModules;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -23,14 +23,19 @@ public class ItemInventory : BaseItemUI
     [SerializeField] public Text textName;
     [SerializeField] private GameObject leftUpMask;
     [SerializeField] private Button btnShowInfor;
+    public void InitCount(int count)
+    {
+        textCount.text = count.ToString();
 
+    }
     public void InitInventory(ETypeInventoryItem type)
     {
        
         if(itemData == null)
         {
             btnShowInfor?.gameObject.SetActive(false);
-
+            textCount.gameObject.SetActive(false);
+            textName.gameObject.SetActive(false);
             hasItem.SetActive(false);
             return;
         }
@@ -38,7 +43,7 @@ public class ItemInventory : BaseItemUI
         {
             hasItem.SetActive(true);
             btnShowInfor?.gameObject.SetActive(true);
-
+            textName.gameObject.SetActive(true);
 
         }
         if (btnShowInfor != null)
@@ -49,6 +54,7 @@ public class ItemInventory : BaseItemUI
             });
         }    
         textName.text = itemData.nameItem;
+
         switch (type)
         {
             case ETypeInventoryItem.None:
@@ -60,6 +66,7 @@ public class ItemInventory : BaseItemUI
                 break;
             case ETypeInventoryItem.Item:
                 textCount.gameObject.SetActive(true);
+                leftUpMask.gameObject.SetActive(false);
 
                 //leftUpMask.gameObject.SetActive(true);
                 break;
@@ -144,5 +151,20 @@ public class ItemInventory : BaseItemUI
     {
         btnShowInfor = transform.GetChild(3).GetComponent<Button>();
 
+    }
+    [Button]
+    private void ReplaceSpriteBGNullItem()
+    {
+        // Lưu ý: Không ghi đuôi .asset
+        Sprite loadedSprite = Resources.Load<Sprite>("newui/Sprites/MCS_TAB_wupin_st");
+
+        if (loadedSprite != null)
+        {
+            transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = loadedSprite;
+        }
+        else
+        {
+            Debug.LogError("Không tìm thấy Sprite! Hãy kiểm tra lại đường dẫn trong thư mục Resources.");
+        }
     }
 }

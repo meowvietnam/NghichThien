@@ -1,4 +1,4 @@
-﻿using AllMaps;
+﻿ using AllMaps;
 using Base;
 using DG.Tweening;
 using LongDH.LongDHModules;
@@ -57,6 +57,8 @@ public class CharacterCombat : MonoBehaviour
     public List<NgoDaoCombat> ngoDaoCombatsDynamic = new List<NgoDaoCombat>();
 
     public List<AmKinhEntry> listAmKinhTT = new List<AmKinhEntry>();
+    public SecureBool isAutoCastSkill;
+ 
     [System.Serializable]
     public class AmKinhEntry
     {

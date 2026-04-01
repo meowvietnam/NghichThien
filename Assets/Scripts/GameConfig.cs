@@ -1,5 +1,6 @@
 ﻿using Base;
 using LongDH.LongDHModules;
+using LuyenDan;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
@@ -123,6 +124,27 @@ public class GameConfig : BaseBehaviour
     {
         return congPhaps.FirstOrDefault(x => x.Id == id);
 
+    }
+    public ThanThong FindThanThongWithItemRef(ItemRef itemRef)
+    {
+
+        if (itemRef.Type == ItemType.ThanThong)
+        {
+            return GetThanThongWithId(itemRef.Id);
+        }
+        
+        return null;
+    }
+    public CongPhap FindCongPhapWithItemRef(ItemRef itemRef)
+    {
+
+        
+        if (itemRef.Type == ItemType.CongPhap)
+        {
+            return GetCongPhapWithId(itemRef.Id);
+
+        }
+        return null;
     }
     [Button]
     private void OnUpdateDataThanThong()

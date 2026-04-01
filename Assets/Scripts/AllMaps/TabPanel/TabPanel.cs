@@ -1,7 +1,11 @@
 ﻿using AllMaps;
 using Base;
+using DG.Tweening;
 using LongDH.LongDHModules;
+using LuyenDan;
+using LuyenDan.Inventory;
 using Network;
+using Sirenix.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -66,7 +70,11 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 {
                     InitThanThong();
                 }
-                
+                if (item.typePanel == ETypePanel.VatPham)
+                {
+                    InitInventory();
+                }
+
             });
         }
         Observer.AddObserver(EventList.GamePlay.UPDATE_PLAYER_STATS, UpdatePlayerStats);
@@ -429,17 +437,17 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     [SerializeField] private ItemSelect itemSelect;
     public void InitItemBag(int count, ref List<ItemInventory> listItemInventory)
     {
-       
-            
+        bag.gameObject.SetActive(true);
+        for (int i = 0; i < prefab5Item.transform.parent.childCount; i++)
+        {
+            prefab5Item.transform.parent.GetChild(i).gameObject.SetActive(false);
+        }
         if (count <= 0) return; // Không có item thì không làm gì cả
 
         // Ví dụ: 3/5 = 0.6 -> làm tròn lên 1
         // Ví dụ: 7/5 = 1.4 -> làm tròn lên 2
         int spawnCount = Mathf.CeilToInt((float)count / 5);
-        for (int i = 0; i < prefab5Item.transform.parent.childCount; i++)
-        {
-            prefab5Item.transform.parent.GetChild(i).gameObject.SetActive(false);
-        }   
+         
         for (int i = 0; i < spawnCount; i++)
         {
             GameObject item5 = null;
@@ -466,7 +474,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
 
     }
-    private void InitVisualItemSkill(ItemInventory item, BaseSkill data)
+    private void InitVisualItemSkill(ItemInventory item, BaseSkill data , ETypeInventoryItem eTypeInventoryItem= ETypeInventoryItem.Skill)
     {
         Sprite frame = null;
         if(data != null)
@@ -480,7 +488,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
         item.Init(data, frame);
 
-        item.InitInventory(ETypeInventoryItem.Skill);
+        item.InitInventory(eTypeInventoryItem);
 
        
     }
@@ -534,7 +542,6 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             return ETypeSlotCP.None;
         }
 
-        bag.gameObject.SetActive(true);
         var Player = Pool.Get<Player>();
         var GameConfig = Pool.Get<GameConfig>();
         List<ItemInventory> itemInven = new List<ItemInventory>();
@@ -685,7 +692,6 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     public void InitThanThong()
     {
         
-        bag.gameObject.SetActive(true);
         var Player = Pool.Get<Player>();
         var GameConfig = Pool.Get<GameConfig>();
         List<ItemInventory> itemInven = new List<ItemInventory>();
@@ -812,7 +818,161 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
         }
     }
+    [Header("--- Inventory ---")]
+    [SerializeField] private List<ItemInventory> listItemSlotEquipment;
+    private void InitVisualItemInventory(ItemInventory item, IItemData data)
+    {
+        Sprite frame = null;
+        if (data != null)
+        {
+            var quality = LuyenDanResources.Instance.FindQuality(data.Tier);
+            frame = quality.IconUp;
 
+            item.SetColorName(quality.Color);
+            item.SetQualityFull(quality.Background);
+            item.Init(new BaseItemData { name = data.Name, spriteItem = data.Icon }, frame);
+
+
+        }
+
+
+        item.InitInventory(ETypeInventoryItem.Item);
+
+
+    }
+    public void InitInventory()
+    {
+        var characterData = Client.Instance.CharacterData;
+        var GameConfig = Pool.Get<GameConfig>();
+        List<ItemInventory> itemInven = new List<ItemInventory>();
+        List<ItemRef> itemDatas = new List<ItemRef>();
+
+        itemDatas.AddRange(characterData.InventoryManager.Herbs.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.Recipes.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.ThanThongs.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.CongPhaps.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.VuKhis.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.PhongCus.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.LinhDans.ToList());
+        // Sử dụng LINQ để trích xuất Ref từ mỗi phần tử trong furnaceDatas
+        var furnaceRefs = characterData.InventoryManager.Furnaces.Select(f => f.Ref).ToList();
+
+        // Thêm danh sách Ref vừa lấy được vào itemDatas
+        itemDatas.AddRange(furnaceRefs);
+        int totalItem = itemDatas.Count;
+        InitItemBag(totalItem, ref itemInven);
+        // load data equipment 
+        for (int i = 0; i < listItemSlotEquipment.Count; i++)
+        {
+            //var item = listItemSlotThanThongs[i];
+            //ThanThong thanThongData = null;
+            //if (i < Player.characterStatsBase.thanThongEquip.Count)
+            //{
+            //    thanThongData = GameConfig.GetThanThongWithId(Player.characterStatsBase.thanThongEquip[i]);
+            //}
+
+           // InitVisualItemSkill(item, thanThongData);
+        }
+        // unEquip Acion
+        foreach (var currentItem in listItemSlotEquipment)
+        {
+            //currentItem.InitAction(null, null, () =>
+            //{
+            //    Debug.Log("có vào đây");
+            //    if (currentItem.itemData == null)
+            //    {
+            //        Debug.Log("data null");
+
+            //        return;
+            //    }
+
+            //    itemSelect.Show(currentItem.itemData, new List<RectTransform> { bag.GetComponent<RectTransform>() }, (resultRect) =>
+            //    {
+            //        if (resultRect != null)
+            //        {
+            //            Observer.Notify(EventList.Network.UNEQUIP_THANTHONG, listItemSlotThanThongs.IndexOf(currentItem), this);
+            //            Debug.Log("updaet thần thông id unequip");
+            //            // Cách viết chuẩn
+
+
+            //        }
+            //        else
+            //        {
+            //            Debug.Log("Thả trượt rồi!");
+
+            //            InitVisualItemSkill(currentItem, (BaseSkill)itemSelect.itemData);
+
+            //        }
+            //    });
+            //    InitVisualItemSkill(currentItem, null);
+
+            //});
+        }
+        
+        //set item inventỏy và action
+        for (int i = 0; i < itemInven.Count; i++)
+        {// TẠO BIẾN TẠM Ở ĐÂY
+            int index = i;
+            var currentItem = itemInven[i];
+            IItemData data = null;
+            ItemRef itemRef = null;
+            if (i<itemDatas.Count)
+            {
+                itemRef = itemDatas[i];
+
+                data = LuyenDanResources.Instance.FindItem(itemRef);
+
+
+
+            }
+            if(data == null) // tức là k tìm đc hoặc nó là thanThong hoặc là CongPhap
+            {
+                if (itemRef != null)
+                {
+                    if (itemRef.Type == ItemType.ThanThong)
+                    {
+                        InitVisualItemSkill(currentItem, GameConfig.FindThanThongWithItemRef(itemRef) , ETypeInventoryItem.Item);
+
+
+                    }
+                    else if (itemRef.Type == ItemType.CongPhap)
+                    {
+                        InitVisualItemSkill(currentItem, GameConfig.FindCongPhapWithItemRef(itemRef) , ETypeInventoryItem.Item);
+
+                    }
+                }
+            }
+            InitVisualItemInventory(currentItem, data);
+
+
+            if (data != null)
+            {
+
+                currentItem.InitAction(null, null, () =>
+                {
+
+
+                    itemSelect.Show(currentItem.itemData, listItemSlotThanThongs.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
+                    {
+                        
+                    });
+                    //foreach (var item in listItemSlotThanThongs)
+                    //{
+                    //    if (item.itemData != null)
+                    //    {
+                    //        DisableHighlight(item);
+                    //    }
+                    //}
+
+
+
+                });
+            }
+
+
+        }
+    }
     public void SuccessEquipCongPhap()
     {
        // reload lại tab congphap

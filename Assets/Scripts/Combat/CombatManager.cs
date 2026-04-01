@@ -3,6 +3,7 @@ using DG.Tweening;
 using LongDH.LongDHModules;
 using LongDH.Script.ObjectPool;
 using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -282,8 +283,11 @@ public class CombatManager : MonoBehaviour
         List<LinhKhiTieuTan> linhKhiTieuTan = data[3] as List<LinhKhiTieuTan>;
         if (linhKhiTieuTan != null)
         {
-            TieuTanLinhKhi(linhKhiTieuTan);
-
+            foreach (var item in linhKhiTieuTan)
+            {
+                Debug.Log(item.eLinhKhi + "cmmm" + item.count);
+                caster.TieuTanLinhKhi(item.eLinhKhi, item.count);
+            }
 
         }
         if (thanThong!= null )
@@ -365,10 +369,9 @@ public class CombatManager : MonoBehaviour
     }
     public void EndTurn(params object[] data)
     {
-        if (IsDelayEffectSkill) return;
-
         if (data[2] is List<LinhKhiTieuTan> linhKhiTieuTan)
         {
+
             TieuTanLinhKhi(linhKhiTieuTan);
         }
        
@@ -662,7 +665,72 @@ public class CombatManager : MonoBehaviour
 
 
     }
+    public void AutoPlaySkill()
+    {
+        if (currentTurn.isAutoCastSkill)
+        {
+            StartCoroutine(IEAutoCastSkill());
 
+
+        }
+    }
+    private List<CharacterCombat.PlaySkillData> ThanThongOptimize()
+    {
+        List<ThanThong> thanThongTemp = new List<ThanThong>(currentTurn.thanThongEquip);
+        List<CharacterCombat.PlaySkillData> playSkillData = new();
+
+        if (currentTurn.thanThongOldUse != null)
+        {
+            // Tìm item trong list có cùng dữ liệu với thanThongOldUse
+            var itemToMove = thanThongTemp.FirstOrDefault(x => x == currentTurn.thanThongOldUse.thanThong);
+
+            if (itemToMove != null)
+            {
+                thanThongTemp.Remove(itemToMove); // Xóa khỏi vị trí hiện tại
+                thanThongTemp.Add(itemToMove);    // Thêm lại vào cuối list
+            }
+            foreach (var item in thanThongTemp)
+            {
+                List<LinhKhiTieuTan> linhKhiTieuTan = new();
+                if( item is BaseSkill.LienKich &&CombatManager.IsLienKich(item,currentTurn.thanThongOldUse.thanThong))
+                {
+                    linhKhiTieuTan = item.GetLinhKhiTieuTanIfPossible(currentTurn);
+                   
+                }
+                if (item is BaseSkill.TuongDong)
+                {
+                    linhKhiTieuTan = item.GetLinhKhiTieuTanTuongDong(currentTurn);
+                    
+                }
+                if (item is BaseSkill.TuongSinh)
+                {
+                    linhKhiTieuTan = item.GetLinhKhiTieuTanTuongDong(currentTurn);
+
+                }
+                if (linhKhiTieuTan != null)
+                {
+                    playSkillData.Add(new CharacterCombat.PlaySkillData { thanThong = item, linhKhiTieuTan = linhKhiTieuTan });
+
+                }
+
+            }
+
+        }
+
+        return playSkillData;
+    }    
+    private IEnumerator IEAutoCastSkill()
+    {
+        // list đã tối ưu
+        List<CharacterCombat.PlaySkillData> thanThongTemp = new List<CharacterCombat.PlaySkillData>();
+
+        foreach (var item in thanThongTemp)
+        {
+            yield return 1f;
+            
+        }
+
+    }
     private void StartTurn()
     {
         currentTurn = char1.characterStatsTemp.tocDoBay >= char2.characterStatsTemp.tocDoBay ? char1 : char2;
