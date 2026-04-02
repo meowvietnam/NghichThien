@@ -9,13 +9,13 @@ public class DanDuongAn : ThanThong
     {
         2,3,4,5,6
     };
+    [SerializeField] private float delayTimeEffect = 0.5f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Diem, valueBuffs[GetIndexLevelThanThong(caster)]);
-       
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

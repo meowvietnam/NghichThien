@@ -5,6 +5,7 @@ public class PhanLinhQuyet : ThanThong
 
     [SerializeField] private int tieuTan = 2;
     [SerializeField] private int tieuTanBuff = 2;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -18,8 +19,8 @@ public class PhanLinhQuyet : ThanThong
         {
             var linhKhi = target.GetRandomLinhKhiConLai();
             target.TieuTanLinhKhi(linhKhi, 1);
-        } 
-            
+        }
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

@@ -8,13 +8,14 @@ public class ThoDiemQuyet : ThanThong , BaseSkill.LienKich
 {
     [SerializeField] protected int[] dames;
     [SerializeField] protected int[] thieuDots;
-
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
         
         target.CaculateDameByThanThong(caster, new List<int> { dames[GetIndexLevelThanThong(caster)] }, eTypeSkill, false);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
 
     }

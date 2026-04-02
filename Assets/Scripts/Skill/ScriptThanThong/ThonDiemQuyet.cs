@@ -15,13 +15,14 @@ public class ThonDiemQuyet : ThanThong
     {
         2,3,4,5,6
     };
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, require);
         caster.Healing(healValues[GetIndexLevelThanThong(caster)]);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
-
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
 
     }

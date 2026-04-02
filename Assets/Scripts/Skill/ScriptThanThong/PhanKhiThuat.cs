@@ -5,7 +5,7 @@ using UnityEngine;
 public class PhanKhiThuat : ThanThong
 {
     [SerializeField] protected int[] dames;
-
+    [SerializeField] private float delayTimeEffect = 0.5f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -23,8 +23,9 @@ public class PhanKhiThuat : ThanThong
 
             int count = 1; // hoặc random / scale theo skill
             target.TieuTanLinhKhi(linhKhi, count);
-        }    
 
+        }
+        ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
 

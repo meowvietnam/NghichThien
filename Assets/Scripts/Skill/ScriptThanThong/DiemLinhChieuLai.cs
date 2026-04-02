@@ -9,17 +9,16 @@ public class DiemLinhChieuLai : ThanThong
     {
         2,3,4,7,12
     };
-  
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Diem, require);
         int dame = dameValues[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster,new System.Collections.Generic.List<int> { dame }, eTypeSkill);
-
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
-  
+
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out SecureInt diem);
