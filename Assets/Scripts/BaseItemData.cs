@@ -17,24 +17,18 @@ public enum ETirePhapBao
     ThuongPhamPhapBao,
 
 }
-public enum ETypeItem
-{
-    None,
-    ThanThong,
-    CongPhap,
-    DanDuoc,
-    DuocLieu,
-    VatLieu
-}
-public abstract class BaseItemData : BaseData
+
+public class BaseItemData : BaseData
 {
 
-    protected abstract ETypeItem typeItem { get; }
     
     [SerializeField]
     public Sprite frameItem => null;
 
-    public abstract string GetDesc();
+    public virtual string GetDesc()
+    {
+        return "";
+    }    
     public static string GetColoredText(string text, string colorName)
     {
         return $"<color={colorName}>{text}</color>";

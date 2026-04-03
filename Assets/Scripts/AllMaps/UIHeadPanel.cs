@@ -32,13 +32,14 @@ public class UIHeadPanel : PanelGroup
    
     private void UpdatePlayerStats()
     {
+        var gameConfig = Pool.Get<GameConfig>();
         hpText.text = $"{Client.Instance.CharacterData.Stats.Hp}/{Client.Instance.CharacterData.Stats.SinhMenh}";
         Slider hpSlider = hpText.transform.parent.GetComponent<Slider>();
         hpSlider.value = (float)Client.Instance.CharacterData.Stats.Hp / Client.Instance.CharacterData.Stats.SinhMenh;
 
-        tuviText.text = $"{Client.Instance.CharacterData.CurrentExp}/{GameConfig.GetTuviRequired(Client.Instance.CharacterData.Level)}";
+        tuviText.text = $"{Client.Instance.CharacterData.CurrentExp}/{gameConfig.inforLevels[Client.Instance.CharacterData.Level-1].tuviRequireNextLevel}";
         Slider expSlider = tuviText.transform.parent.GetComponent<Slider>();
-        expSlider.value = (float)Client.Instance.CharacterData.CurrentExp / GameConfig.GetTuviRequired(Client.Instance.CharacterData.Level);
+        expSlider.value = (float)Client.Instance.CharacterData.CurrentExp / gameConfig.inforLevels[Client.Instance.CharacterData.Level-1].tuviRequireNextLevel;
 
         iconLevel.sprite = listSpriteIconLevel[Client.Instance.CharacterData.Level-1];
         iconLevel.SetNativeSize();

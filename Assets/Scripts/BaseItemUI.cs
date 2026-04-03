@@ -22,13 +22,17 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
     [SerializeField] protected Image selectHighLight;
     public void SetSelectHighlight(bool isActive)
     {
-        selectHighLight.gameObject.SetActive(isActive);
+        if(selectHighLight != null)
+        {
+            selectHighLight.gameObject.SetActive(isActive);
+        }    
     }
     public virtual void Init(BaseItemData itemData , Sprite frameSprite, Action actionHolder = null , Action actionPointerUp = null)
     {
         InitItemData(itemData, frameSprite);
         InitAction(actionHolder, actionPointerUp);
     }
+
     [Button]
     public virtual void InitItemData(BaseItemData itemData , Sprite frameSprite)
     {

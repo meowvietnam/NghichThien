@@ -1,4 +1,4 @@
-﻿using AllMaps;
+﻿ using AllMaps;
 using Base;
 using DG.Tweening;
 using LongDH.LongDHModules;
@@ -57,6 +57,8 @@ public class CharacterCombat : MonoBehaviour
     public List<NgoDaoCombat> ngoDaoCombatsDynamic = new List<NgoDaoCombat>();
 
     public List<AmKinhEntry> listAmKinhTT = new List<AmKinhEntry>();
+    public SecureBool isAutoCastSkill;
+ 
     [System.Serializable]
     public class AmKinhEntry
     {
@@ -603,6 +605,57 @@ public class CharacterCombat : MonoBehaviour
         TieuTanLinhKhi(ELinhKhi.Hoa, khiHoa);
         TieuTanLinhKhi(ELinhKhi.Tho, khiTho);
         TieuTanLinhKhi(ELinhKhi.Ma, khiMa);
+
+    }
+    public List<LinhKhiTieuTan> GetLinhKhiTieuTanForTotalLinhKhi()
+    {
+        System.Random rand = new System.Random();
+        Dictionary<ELinhKhi, int> dictLinhKhiTemp = new Dictionary<ELinhKhi, int>
+        {
+            { ELinhKhi.Kim,  khiKim },
+            { ELinhKhi.Moc,  khiMoc },
+            { ELinhKhi.Thuy, khiThuy },
+            { ELinhKhi.Hoa,  khiHoa },
+            { ELinhKhi.Tho,  khiTho },
+            { ELinhKhi.Ma,   khiMa }
+        };
+
+        List<LinhKhiTieuTan> linhKhiTieuTan = new();
+
+        while (true)
+        {
+            int currentLinhKhi = dictLinhKhiTemp.Sum(x => x.Value);
+
+            if (currentLinhKhi <= totalKhi)
+            {
+                break;
+            }
+            else
+            {
+                // 1. Lấy danh sách các hệ hiện đang có số lượng > 0
+                var availableKeys = dictLinhKhiTemp.Where(x => x.Value > 0).Select(x => x.Key).ToList();
+
+                if (availableKeys.Count > 0)
+                {
+                    // 2. Chọn ngẫu nhiên 1 hệ trong danh sách có sẵn
+                    ELinhKhi randomKey = availableKeys[rand.Next(availableKeys.Count)];
+
+                    // 3. Trừ 1 đơn vị trong Dictionary
+                    dictLinhKhiTemp[randomKey] -= 1;
+
+                    // 4. Lưu vào danh sách tiêu tán (Bạn có thể gộp các count giống nhau sau hoặc add mới)
+                    linhKhiTieuTan.Add(new LinhKhiTieuTan { eLinhKhi = randomKey, count = 1 });
+                }
+                else
+                {
+                    // Trường hợp kho đã sạch bách linh khí nhưng vẫn chưa thỏa điều kiện totalKhi
+                    break;
+                }
+            }
+        }
+        return linhKhiTieuTan;
+
+
 
     }
     public int GetLinhKhi(ELinhKhi e)

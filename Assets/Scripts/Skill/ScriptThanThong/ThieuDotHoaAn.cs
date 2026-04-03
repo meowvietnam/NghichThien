@@ -6,13 +6,14 @@ using UnityEngine;
 public class ThieuDotHoaAn : ThanThong
 {
     [SerializeField] private int[] countThieuDot;
+     [SerializeField] private float delayTimeEffect = 0.5f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect2);
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
     private void ObserverEffect(params object[] data)
     {

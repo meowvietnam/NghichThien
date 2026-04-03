@@ -7,7 +7,6 @@ public class BasicTTBuffPercentLinhKhi : ThanThong
     [SerializeField] private ELinhKhi elinhKhi;
     [SerializeField]
     private float delayTimeEffect = 1f;
-    protected override ETypeItem typeItem => throw new System.NotImplementedException();
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {

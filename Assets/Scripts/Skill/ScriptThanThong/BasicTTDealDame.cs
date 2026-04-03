@@ -14,6 +14,11 @@ public class BasicTTDealDame : ThanThong, BaseSkill.LienKich
     {
 
         target.CaculateDameByThanThong(caster, new List<int> {     dame[GetIndexLevelThanThong(caster)] },eTypeSkill);
+        if(elinhKhi == ELinhKhi.Hoa)
+        {
+            ShowSkillEffectWorld(caster, delayTimeEffect);
+            return;
+        }
         ShowSkillEffectWorld(target, delayTimeEffect);
 
     }

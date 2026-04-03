@@ -4,11 +4,26 @@ using CreateCharacter.CharStats;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+
 
 [System.Serializable]
 public class CharacterStatsSecure
 {
+    [System.Serializable]
+    public class SkinData
+    {
+        public string key;
+        public string value;
+    }
+
+    [System.Serializable]
+    public class ColorData
+    {
+        public string key;
+        public Color value;
+    }
     // Truyền 0 hoặc 0f vào constructor của SecureInt/SecureFloat
     public SecureInt idChar = new SecureInt(0);
     public SecureFloat percentKim = new SecureFloat(0f);
@@ -65,12 +80,21 @@ public class CharacterStatsSecure
     public SecureInt chuTu2Used = new SecureInt(0);
 
     public List<DataSave> relationShipNPC = new List<DataSave>();
-    public Gender Gender { get; set; }
-    public Dictionary<string, string> Skins { get; set; } = new Dictionary<string, string>();
-    public Dictionary<string, Color> Colors { get; set; } = new Dictionary<string, Color>();
+    public Gender Gender;
+    public List<SkinData> skinList = new List<SkinData>();
+    public List<ColorData> colorList = new List<ColorData>();
+    public Dictionary<string, string> Skins => skinList.ToDictionary(x => x.key, x => x.value);
+
+    public Dictionary<string, Color> Colors => colorList.ToDictionary(x => x.key, x => x.value);
+    public SecureInt idNode = new SecureInt(0);
     public CharacterStatsSecure Clone()
     {
-        return (CharacterStatsSecure)MemberwiseClone();
+        // 1. Sao chép nông các chỉ số cơ bản (HP, MP, ID...)
+        CharacterStatsSecure clone = (CharacterStatsSecure)MemberwiseClone();
+
+       
+
+        return clone;
     }
 
 

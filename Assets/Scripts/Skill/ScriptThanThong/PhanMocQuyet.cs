@@ -14,6 +14,7 @@ public class PhanMocQuyet : ThanThong
     {
         2,4,11,22,44
     };
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int mocLinhKhi = caster.khiMoc;
@@ -22,7 +23,7 @@ public class PhanMocQuyet : ThanThong
         int dame = dameValues[GetIndexLevelThanThong(caster)];
         int dameBuff = dameValueBuffs[GetIndexLevelThanThong(caster)] * mocLinhKhi;
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame + dameBuff }, eTypeSkill);
-
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
 
     }

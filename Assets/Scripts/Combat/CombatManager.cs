@@ -3,6 +3,7 @@ using DG.Tweening;
 using LongDH.LongDHModules;
 using LongDH.Script.ObjectPool;
 using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -132,20 +133,22 @@ public class CombatManager : MonoBehaviour
         Observer.AddObserver(EventList.Combat.CHARACTER_ADJUST_HP, SetUIHpBar);
         if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
         if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
+        // test 
+        //char1.isAutoCastSkill = true;
         char1.Init(new CharacterStatsSecure()
         {
-            level = 9,
-            percentKim = 60,
-            percentMoc = 10,
-            percentThuy = 10,
-            percentHoa = 10,
-            percentTho = 10,
+            level = 15,
+            percentKim = 20,
+            percentMoc = 20,
+            percentThuy = 20,
+            percentHoa = 20,
+            percentTho = 20,
             hp = 200,
             hpMax = 200,
             tocDoBay = 20,
             thoNguyen = 1000,
             thanThuc = 50,
-            thanThongEquip = new List<SecureInt> { 1, 2, 4,7,10,13,14,18 , 701}
+            thanThongEquip = new List<SecureInt> {4,1, 201, 701,720}
             
 
         });
@@ -282,8 +285,11 @@ public class CombatManager : MonoBehaviour
         List<LinhKhiTieuTan> linhKhiTieuTan = data[3] as List<LinhKhiTieuTan>;
         if (linhKhiTieuTan != null)
         {
-            TieuTanLinhKhi(linhKhiTieuTan);
-
+            foreach (var item in linhKhiTieuTan)
+            {
+                Debug.Log(item.eLinhKhi + "cmmm" + item.count);
+                caster.TieuTanLinhKhi(item.eLinhKhi, item.count);
+            }
 
         }
         if (thanThong!= null )
@@ -365,10 +371,9 @@ public class CombatManager : MonoBehaviour
     }
     public void EndTurn(params object[] data)
     {
-        if (IsDelayEffectSkill) return;
-
         if (data[2] is List<LinhKhiTieuTan> linhKhiTieuTan)
         {
+
             TieuTanLinhKhi(linhKhiTieuTan);
         }
        
@@ -659,10 +664,117 @@ public class CombatManager : MonoBehaviour
         }
         // param 0 là bool isPlayer == char1 
         Observer.Notify(EventList.Combat.NEW_TURN_COMBAT, currentTurn,targetTurn,currentTurn == char1? true: false, dictHapThuKhi);
-
+        AutoPlaySkill();
 
     }
+    public void AutoPlaySkill()
+    {
+        if (currentTurn.isAutoCastSkill)
+        {
+            StartCoroutine(IEAutoCastSkill());
 
+
+        }
+    }
+    private CharacterCombat.PlaySkillData ThanThongAutoUse()
+    {
+        List<ThanThong> thanThongTemp = new List<ThanThong>(currentTurn.thanThongEquip);
+        CharacterCombat.PlaySkillData playSkillData = new();
+
+        if (currentTurn.thanThongCurrentUse != null)
+        {
+            // Tìm item trong list có cùng dữ liệu với thanThongOldUse
+            var itemToMove = thanThongTemp.FirstOrDefault(x => x == currentTurn.thanThongCurrentUse.thanThong);
+
+            if (itemToMove != null)
+            {
+                thanThongTemp.Remove(itemToMove); // Xóa khỏi vị trí hiện tại
+                thanThongTemp.Add(itemToMove);    // Thêm lại vào cuối list
+            }
+            // check skill play ưu tiên liên kích
+            foreach (var item in thanThongTemp)
+            {
+                if( item is BaseSkill.LienKich && IsLienKich(item,currentTurn.thanThongCurrentUse.thanThong))
+                {
+                    List<LinhKhiTieuTan> linhKhiTieuTanTemp = item.GetLinhKhiTieuTanIfPossible(currentTurn);
+                    if(linhKhiTieuTanTemp != null && linhKhiTieuTanTemp.Count >0 )
+                    {
+                        return new CharacterCombat.PlaySkillData {thanThong = item,linhKhiTieuTan = linhKhiTieuTanTemp };
+                    }    
+                }
+               
+               
+
+            }
+            
+           
+
+
+        }
+        foreach (var item in thanThongTemp)
+        {
+            List<LinhKhiTieuTan> linhKhiTieuTanTemp = new();
+
+            if (item is BaseSkill.TuongDong)
+            {
+                linhKhiTieuTanTemp = item.GetLinhKhiTieuTanTuongDong(currentTurn);
+
+            }
+            else if (item is BaseSkill.TuongSinh)
+            {
+                linhKhiTieuTanTemp = item.GetLinhKhiETuongQuan(currentTurn, ETuongQuan.TuongSinh);
+
+            }
+            else if (item is BaseSkill.TuongKhac)
+            {
+                linhKhiTieuTanTemp = item.GetLinhKhiETuongQuan(currentTurn, ETuongQuan.TuongKhac);
+
+            }
+            if(linhKhiTieuTanTemp != null && linhKhiTieuTanTemp.Count<=0)
+            {
+                linhKhiTieuTanTemp = item.GetLinhKhiTieuTanIfPossible(currentTurn);
+            }
+            if (linhKhiTieuTanTemp != null&&linhKhiTieuTanTemp.Count >0)
+            {
+               return (new CharacterCombat.PlaySkillData { thanThong = item, linhKhiTieuTan = linhKhiTieuTanTemp });
+
+            }
+        }
+
+        return null;
+    }    
+    private IEnumerator IEAutoCastSkill()
+    {
+       
+        while (true)
+        {
+            if(!currentTurn.isAutoCastSkill)
+            {
+                yield break;
+            }    
+            yield return new WaitForSeconds(1);
+            var playSkillData = ThanThongAutoUse();
+            if (currentTurn.isSkipTieuTanLinhKhi)
+            {
+                Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
+                yield break;
+            }
+            if (playSkillData != null&&playSkillData.linhKhiTieuTan != null&&playSkillData.thanThong.IsCanUseLinhKhiRequire(currentTurn))
+            {
+                Observer.Notify(EventList.Combat.PLAY_SKILL, currentTurn, targetTurn, playSkillData.thanThong, playSkillData.linhKhiTieuTan);
+
+            }
+            else
+            {
+                Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, currentTurn.GetLinhKhiTieuTanForTotalLinhKhi());
+                break;
+            }  
+            
+                
+        } 
+            
+
+    }
     private void StartTurn()
     {
         currentTurn = char1.characterStatsTemp.tocDoBay >= char2.characterStatsTemp.tocDoBay ? char1 : char2;

@@ -58,7 +58,7 @@ namespace LuyenDan
             HerbInventory.Init(myHerbs);
             var datas = myRecipes.Select(x =>
             {
-                var recipe = Resources.FindRecipe(x);
+                var recipe = Resources.FindRecipe(x.Id);
                 if (recipe == null)
                 {
                     Debug.Log($"Recipe {x} not found");
