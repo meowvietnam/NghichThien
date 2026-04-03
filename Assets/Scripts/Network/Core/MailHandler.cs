@@ -103,15 +103,6 @@ namespace Network.Core
             AddToInventory(inventory, result.RewardItems);
         }
 
-        private void Add(HashSet<ItemRef> inventory, ItemRef itemRef)
-        {
-            if (!inventory.Add(itemRef))
-            {
-                var item = inventory.First(x => x.Id == itemRef.Id);
-                item.Count += itemRef.Count;
-            }
-        }
-
         private void AddToInventory(InventoryManager inventory, RewardItems rewardItems)
         {
             var items = rewardItems.OtherItems;
@@ -120,42 +111,9 @@ namespace Network.Core
             {
                 inventory.Furnaces.Add(furnaceData);
             }
-
             foreach (var itemRef in items)
             {
-                var type = itemRef.Type;
-                if (type == ItemType.Herb)
-                {
-                    Add(inventory.Herbs, itemRef);
-                }
-                else if (type == ItemType.LinhDan)
-                {
-                    Add(inventory.LinhDans, itemRef);
-                }
-                else if (type == ItemType.ThanThong)
-                {
-                    Add(inventory.ThanThongs, itemRef);
-                }
-                else if (type == ItemType.CongPhap)
-                {
-                    Add(inventory.CongPhaps, itemRef);
-                }
-                else if (type == ItemType.VuKhi)
-                {
-                    Add(inventory.VuKhis, itemRef);
-                }
-                else if (type == ItemType.PhongCu)
-                {
-                    Add(inventory.PhongCus, itemRef);
-                }
-                else if (type == ItemType.TrangSuc)
-                {
-                    Add(inventory.TrangSucs, itemRef);
-                }
-                else if (type == ItemType.Recipe)
-                {
-                    Add(inventory.Recipes, itemRef);
-                }
+                inventory.Add(itemRef);                
             }
         }
 

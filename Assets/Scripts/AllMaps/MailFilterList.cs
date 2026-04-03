@@ -36,7 +36,6 @@ namespace AllMaps
 
         private void OnFilter(MailFilter filter)
         {
-            Debug.Log(filter.Name);
             mailPanel.Filter(filter.Type);
             text.text = filter.Name;
             Close();

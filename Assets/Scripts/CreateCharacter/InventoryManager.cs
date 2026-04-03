@@ -77,5 +77,49 @@ namespace CreateCharacter
             TrangSucs = new HashSet<ItemRef>(other.TrangSucs);
             LinhDans = new HashSet<ItemRef>(other.LinhDans);
         }
+        public void Add(ItemRef itemRef)
+        {
+            var type = itemRef.Type;
+            if (type == ItemType.Herb)
+            {
+                Add(Herbs, itemRef);
+            }
+            else if (type == ItemType.LinhDan)
+            {
+                Add(LinhDans, itemRef);
+            }
+            else if (type == ItemType.ThanThong)
+            {
+                Add(ThanThongs, itemRef);
+            }
+            else if (type == ItemType.CongPhap)
+            {
+                Add(CongPhaps, itemRef);
+            }
+            else if (type == ItemType.VuKhi)
+            {
+                Add(VuKhis, itemRef);
+            }
+            else if (type == ItemType.PhongCu)
+            {
+                Add(PhongCus, itemRef);
+            }
+            else if (type == ItemType.TrangSuc)
+            {
+                Add(TrangSucs, itemRef);
+            }
+            else if (type == ItemType.Recipe)
+            {
+                Add(Recipes, itemRef);
+            }
+        }
+        private void Add(HashSet<ItemRef> inventory, ItemRef itemRef)
+        {
+            if (!inventory.Add(itemRef))
+            {
+                var item = inventory.First(x => x.Id == itemRef.Id);
+                item.Count += itemRef.Count;
+            }
+        }
     }
 }
