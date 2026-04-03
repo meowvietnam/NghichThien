@@ -45,7 +45,7 @@ namespace LuyenDan
             var result = new LuyenDanResult(true,
                 "Luyện đan thành công",
                 new List<ItemRef> { new(4010,ItemType.LinhDan,20),new(4020,ItemType.LinhDan,12) },
-                SelectedFurnace.ItemRef.Durability - 20,
+                SelectedFurnace.FData.Durability - 20,
                 20);
             var progress = LuyenDanPanel.Instance.ProgressBar;
             progress.SetText("Đang tiến hành luyện đan...");
@@ -115,7 +115,7 @@ namespace LuyenDan
             if (furnace != null)
             {
                 furnaceImage.sprite = furnace.Data.BigIcon;
-                SetDurabilityText(furnace.ItemRef.Durability);
+                SetDurabilityText(furnace.FData.Durability);
             }
             else
             {
@@ -130,9 +130,9 @@ namespace LuyenDan
         {
             if (SelectedFurnace != null)
             {
-                var itemRef = SelectedFurnace.ItemRef;
-                itemRef.SetDurability(newDurability);
-                SetDurabilityText(itemRef.Durability);
+                var data = SelectedFurnace.FData;
+                data.SetDurability(newDurability);
+                SetDurabilityText(data.Durability);
             }
 
             if (currentRequest != null)
@@ -166,7 +166,7 @@ namespace LuyenDan
             sub2.OnLuyenDanCompleted();
             primer.OnLuyenDanCompleted();
 
-            if (SelectedFurnace != null && SelectedFurnace.ItemRef.Durability <= 0)
+            if (SelectedFurnace != null && SelectedFurnace.FData.Durability <= 0)
                 SelectDanLu(null);
             refineButton.UpdateCanRefine();
         }
@@ -240,7 +240,7 @@ namespace LuyenDan
 
             if (SelectedFurnace != null)
             {
-                int durability = SelectedFurnace.ItemRef.Durability;
+                int durability = SelectedFurnace.FData.Durability;
                 if (durability < max) max = durability;
             }
             if (max == int.MaxValue || max < 1) max = 1;
