@@ -76,7 +76,6 @@ namespace CreateCharacter
             PhongCus = new HashSet<ItemRef>(other.PhongCus);
             TrangSucs = new HashSet<ItemRef>(other.TrangSucs);
             LinhDans = new HashSet<ItemRef>(other.LinhDans);
-
         }
     }
 }

@@ -74,6 +74,16 @@ namespace Network.ClientState
 
                 callback.RemoveMail(id);
             }
+            else if (tag == MessageTag.RemoveAllMailsResult)
+            {
+                var removeMails = reader.ReadArray<int>().ToList();
+                if (removeMails.Any())
+                {
+                    var mails = Client.Instance.CharacterData.Mails;
+                    mails.RemoveAll(x => removeMails.Contains(x.Id));
+                    callback.RemoveAllMail(removeMails);
+                }
+            }
         }
         public void OnLeave()
         {

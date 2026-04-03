@@ -34,6 +34,14 @@ namespace Network
         MarkMailRead = 108,
         RemoveMail = 109,
         RemoveMailId = 110,
+        
+        RemoveAllMails = 111,
+        RemoveAllMailsResult = 112,
+        ClaimAllMails = 113,
+        ClaimAllMailsResult = 114,
+        ClaimMail = 115,
+        ClaimMailResult = 116,
+        
         GetInventory = 195,
         GetInventoryResult = 196,
     }
