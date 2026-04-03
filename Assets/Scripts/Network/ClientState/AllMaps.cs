@@ -33,6 +33,7 @@ namespace Network.ClientState
                     var charData = Client.Instance.CharacterData;
                     charData.IdCurrentNode = result.Path.Last();
                     charData.CurrentEnergy = result.Energy;
+                    charData.Stats.TuoiTac = result.NewAge;
                 }
                 callback.OnMoveToMapResult(result);
             }

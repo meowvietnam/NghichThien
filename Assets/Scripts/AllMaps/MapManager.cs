@@ -170,7 +170,6 @@ namespace AllMaps
 
         public void RemoveAllMail(List<int> removeMails)
         {
-            Debug.Log(string.Join(",", removeMails));
             NetworkManager.Instance.Invoke(() => { mailPanel.RemoveAllMail(removeMails); });
         }
 

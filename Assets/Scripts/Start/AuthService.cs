@@ -1,10 +1,8 @@
-using System;
 using Network;
 using Network.Callback;
 using UnityEngine;
 using Network.Extensions;
 using Network.Models;
-using Sirenix.OdinInspector;
 using UnityEngine.SceneManagement;
 
 namespace Start
@@ -14,7 +12,6 @@ namespace Start
         [SerializeField] private string username;
         [SerializeField] private string loggedIn;
         [SerializeField] private StartScene startScene;
-        [ShowInInspector] private TimeSpan tuoi;
         public void Login()
         {
             startScene.SetStatusText(loggedIn);
@@ -31,12 +28,6 @@ namespace Start
                     SceneManager.LoadSceneAsync("CreateCharacter");
                 }
             });
-        }
-
-        [Button]
-        public void Test()
-        {
-            Debug.Log(tuoi.Hours);
         }
     }
 }

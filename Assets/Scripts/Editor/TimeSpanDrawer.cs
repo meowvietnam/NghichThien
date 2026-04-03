@@ -10,26 +10,17 @@ namespace Editor
         protected override void DrawPropertyLayout(GUIContent label)
         {
             var value = ValueEntry.SmartValue;
-
-            int hours = value.Hours + value.Days * 24;
+            int totalDays = value.Days;
+            int years = totalDays / 365;
+            int days = totalDays % 365;
+            int hours = value.Hours;
             int minutes = value.Minutes;
             int seconds = value.Seconds;
+            string display = $"{years}y {days}d {hours}h {minutes}m {seconds}s";
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel(label);
-            EditorGUI.BeginChangeCheck();
-            int newHours = EditorGUILayout.IntField(hours, GUILayout.Width(50));
-            GUILayout.Label(":", GUILayout.Width(10));
-            int newMinutes = EditorGUILayout.IntField(minutes, GUILayout.Width(30));
-            GUILayout.Label(":", GUILayout.Width(10));
-            int newSeconds = EditorGUILayout.IntField(seconds, GUILayout.Width(30));
-            if (EditorGUI.EndChangeCheck())
-            {
-                newMinutes = Mathf.Clamp(newMinutes, 0, 59);
-                newSeconds = Mathf.Clamp(newSeconds, 0, 59);
-                ValueEntry.SmartValue = new TimeSpan(newHours, newMinutes, newSeconds);
-            }
-            
+            EditorGUILayout.SelectableLabel(display, GUILayout.Height(EditorGUIUtility.singleLineHeight));
             EditorGUILayout.EndHorizontal();
         }
     }
