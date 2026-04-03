@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using LuyenDan.Inventory;
 using Network;
+using Network.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace LuyenDan
 {
     [Serializable]
-    public class RecipeData : IItemData
+    public class RecipeData : IItemData, IMemorySerializable<RecipeData>
     {
         [Serializable]
-        public class Herbs
+        public class Herbs : IMemorySerializable<Herbs>
         {
             [field: SerializeField] public int Id { get; private set; }
             [field: SerializeField] public int Count { get; private set; }
@@ -33,10 +34,29 @@ namespace LuyenDan
             {
                 return Id == 0;
             }
+
+            public void Deserialize(IReader reader, ref Herbs value)
+            {
+                value.Id = reader.Read<int>();
+                value.Count = reader.Read<int>();
+                value.BaDuoc = reader.Read<int>();
+            }
+
+            public int ByteSize()
+            {
+                return Id.ByteSize() + Count.ByteSize() + BaDuoc.ByteSize();
+            }
+
+            public void Serialize(IWriter writer)
+            {
+                writer.Write(Id);
+                writer.Write(Count);
+                writer.Write(BaDuoc);
+            }
         }
 
         [Serializable]
-        public class Recipe
+        public class Recipe : IMemorySerializable<Recipe>
         {
             [field: SerializeField] public int Id { get; private set; }
             [field: SerializeField] public Herbs ChuDuoc { get; private set; }
@@ -75,6 +95,31 @@ namespace LuyenDan
                 var baduoc = int.Parse(matrix[rowIndex, colIndex + 4]);
                 return new Herbs(id, count, baduoc);
             }
+
+            public void Deserialize(IReader reader, ref Recipe value)
+            {
+                value.Id = reader.Read<int>();
+                value.ChuDuoc = reader.Read<Herbs>();
+                value.PhuDuoc1 = reader.Read<Herbs>();
+                value.PhuDuoc2 = reader.Read<Herbs>();
+                value.DuocDan = reader.Read<Herbs>();
+            }
+
+            public int ByteSize()
+            {
+                return Id.ByteSize() + ChuDuoc.ByteSize() 
+                                     + PhuDuoc1.ByteSize() + PhuDuoc2.ByteSize()
+                                     + DuocDan.ByteSize();
+            }
+
+            public void Serialize(IWriter writer)
+            {
+                writer.Write(Id);
+                writer.Write(ChuDuoc);
+                writer.Write(PhuDuoc1);
+                writer.Write(PhuDuoc2);
+                writer.Write(DuocDan);
+            }
         }
 
         [field: SerializeField] public int Id { get; private set; }
@@ -107,5 +152,23 @@ namespace LuyenDan
         public Tier Tier => LinhDan.Tier;
 
         public string Description => $"Công thức chế tạo {LinhDan.Name}";
+        public void Deserialize(IReader reader, ref RecipeData value)
+        {
+            value.Id = reader.Read<int>();
+            value.LinhDanId = reader.Read<int>();
+            value.Recipes = reader.ReadArray<Recipe>().ToList();
+        }
+
+        public int ByteSize()
+        {
+            return Id.ByteSize() + LinhDanId.ByteSize() + Recipes.ByteSize();
+        }
+
+        public void Serialize(IWriter writer)
+        {
+            writer.Write(Id);
+            writer.Write(LinhDanId);
+            writer.WriteArray(Recipes);
+        }
     }
 }

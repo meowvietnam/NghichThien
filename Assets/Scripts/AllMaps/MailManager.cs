@@ -1,0 +1,88 @@
+using System.Collections.Generic;
+using System.Linq;
+using CreateCharacter;
+using LuyenDan;
+using Network;
+using Network.Callback;
+using Network.ClientState;
+using Network.Core;
+using UnityEngine;
+
+namespace AllMaps
+{
+    public class MailManager : BaseBehaviour, IMailCallback
+    {
+        [SerializeField] private MailPanel mailPanel;
+        [SerializeField] private MailButton mailButton;
+
+        private void Start()
+        {
+            var module = Client.Instance.CoreModule;
+            module.RemoveHandler<MailHandler>();
+            var mailHandler = new MailHandler(this);
+            module.AddHandler(mailHandler);
+        }
+        public void OnGetMails(GetMailsResult result)
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (!result.Success)
+                {
+                    NotifyGroup.Instance.Show(result.Message);
+                }
+                else
+                {
+                    var mails = result.Mails;
+                    mailPanel.Init(mails);
+                    mailButton.Init(mails);
+                }
+            });
+        }
+
+        public void MarkMailRead(int id)
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                mailPanel.MarkMailRead(id);
+                mailButton.Refresh();
+            });
+        }
+
+        public void RemoveMail(int id)
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                mailPanel.RemoveMail(id);
+                mailButton.Refresh();
+            });
+        }
+
+        public void RemoveAllMail(List<int> removeMails)
+        {
+            NetworkManager.Instance.Invoke(() => { mailPanel.RemoveAllMail(removeMails); });
+        }
+
+        public void OnClaimMails(RewardResult result)
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                mailPanel.OnClaimMails(result);
+                var listItemRef = new List<ItemRef>();
+                var rewardItems  = result.RewardItems;
+                foreach (var furnace in rewardItems.Furnaces)
+                {
+                    listItemRef.Add(furnace.Ref);
+                }
+                foreach (var item in rewardItems.OtherItems)
+                {
+                    listItemRef.Add(item);
+                }
+
+                var r = LuyenDanResources.Instance;
+                var listItem = listItemRef.Select(x => r.FindItem(x)).ToList();
+                var message = $"Bạn nhận được: {string.Join(", ", listItem.Select(x => $"<color=#{ColorUtility.ToHtmlStringRGBA(r.FindQuality(x.Tier).Color)}>{x.Name}</color>"))}";
+                NotifyGroup.Instance.Show(message);
+            });
+        }
+    }
+}

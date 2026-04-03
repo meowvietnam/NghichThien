@@ -9,6 +9,7 @@ namespace Network
     {
         public static Client Instance {get; private set;}
         private MessageStateHandler<MessageTag,MessageState> stateModule;
+        public CoreMessageHandler<MessageTag> CoreModule { get; private set; }
         public UserData UserData { get; private set;}
         public CharacterData CharacterData { get; private set;}
         public Client(UnauthenticatedClient client)
@@ -17,9 +18,9 @@ namespace Network
             client.TransferProtocol(tcpClient,this);
             TcpClient = tcpClient;
             Instance = this;
-            var coreModule = new CoreMessageHandler<MessageTag>();
+            CoreModule = new CoreMessageHandler<MessageTag>();
             stateModule = new MessageStateHandler<MessageTag,MessageState>();
-            AddModule(coreModule);
+            AddModule(CoreModule);
             AddModule(stateModule);
         }
 

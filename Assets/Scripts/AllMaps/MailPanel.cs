@@ -48,6 +48,7 @@ namespace AllMaps
 
         private void ClaimAll()
         {
+            Client.Instance.Send(MessageTag.ClaimAllMails);
         }
 
         private void FixedUpdate()
@@ -174,6 +175,19 @@ namespace AllMaps
         public void RemoveAllMail(List<int> removeMails)
         {
             removeMails.ForEach(RemoveMail);
+        }
+
+        public void OnClaimMails(RewardResult result)
+        {
+            var mailIds = result.Mails;
+            foreach (var mailId in mailIds)
+            {
+                var mailUI = mailUIs.FirstOrDefault(x => x.Mail.Id == mailId);
+                if (mailUI != null)
+                {
+                    mailUI.MarkAsClaimed();
+                }
+            }
         }
     }
 }

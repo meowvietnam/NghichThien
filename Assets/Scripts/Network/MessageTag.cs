@@ -34,7 +34,6 @@ namespace Network
         MarkMailRead = 108,
         RemoveMail = 109,
         RemoveMailId = 110,
-        
         RemoveAllMails = 111,
         RemoveAllMailsResult = 112,
         ClaimAllMails = 113,

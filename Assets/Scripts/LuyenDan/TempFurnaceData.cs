@@ -26,6 +26,7 @@ namespace LuyenDan
         public void Deserialize(IReader reader, ref TempFurnaceData value)
         {
             value.Id = reader.Read<int>();
+            value.PricePerDurability = reader.Read<int>();
             value.Name = reader.Read();
             value.Tier = reader.Read<Tier>();
             value.Description = reader.Read();
@@ -33,11 +34,17 @@ namespace LuyenDan
 
         public int ByteSize()
         {
-            return Id.ByteSize() + Name.ByteSize() + PricePerDurability.ByteSize() + Description.ByteSize();
+            return Id.ByteSize() + PricePerDurability.ByteSize() 
+                                 + Name.ByteSize() + Tier.ByteSize() + Description.ByteSize();
         }
 
         public void Serialize(IWriter writer)
         {
+            writer.Write(Id);
+            writer.Write(PricePerDurability);
+            writer.Write(Name);
+            writer.Write(Tier);
+            writer.Write(Description);
         }
     }
 }

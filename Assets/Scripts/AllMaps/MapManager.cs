@@ -17,8 +17,6 @@ namespace AllMaps
     {
         [SerializeField] private Map[] maps;
         [SerializeField] private Player player;
-        [SerializeField] private MailPanel mailPanel;
-        [SerializeField] private MailButton mailButton;
         private Map current;
         private Dictionary<Map, List<Map>> graph;
 
@@ -133,45 +131,6 @@ namespace AllMaps
             });
         }
 
-        public void OnGetMails(GetMailsResult result)
-        {
-            NetworkManager.Instance.Invoke(() =>
-            {
-                if (!result.Success)
-                {
-                    NotifyGroup.Instance.Show(result.Message);
-                }
-                else
-                {
-                    var mails = result.Mails;
-                    mailPanel.Init(mails);
-                    mailButton.Init(mails);
-                }
-            });
-        }
-
-        public void MarkMailRead(int id)
-        {
-            NetworkManager.Instance.Invoke(() =>
-            {
-                mailPanel.MarkMailRead(id);
-                mailButton.Refresh();
-            });
-        }
-
-        public void RemoveMail(int id)
-        {
-            NetworkManager.Instance.Invoke(() =>
-            {
-                mailPanel.RemoveMail(id);
-                mailButton.Refresh();
-            });
-        }
-
-        public void RemoveAllMail(List<int> removeMails)
-        {
-            NetworkManager.Instance.Invoke(() => { mailPanel.RemoveAllMail(removeMails); });
-        }
 
         private void OnGetCharacterOnlineThisNode(CharacterSnapshot[] characters)
         {

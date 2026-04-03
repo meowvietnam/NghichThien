@@ -53,5 +53,10 @@ namespace AllMaps
         {
             Client.Instance.Send(MessageTag.RemoveMail, mail.Id);
         }
+
+        public void MarkAsClaimed()
+        {
+            rewardListUI.SetClaim(true);
+        }
     }
 }

@@ -1,7 +1,5 @@
-using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace AllMaps
 {
@@ -12,18 +10,15 @@ namespace AllMaps
         [SerializeField] private float minHeight;
         [SerializeField] private float maxHeight;
 
+        private void OnEnable()
+        {
+            Clamp();
+        }
         [Button]
         public void Clamp()
         {
-            var layout = content.GetComponent<LayoutElement>();
-            float height;
-            if (layout != null && layout.preferredHeight > 0)
-                height = layout.preferredHeight;
-            else
-                height = LayoutUtility.GetPreferredHeight(content);
-
+            var height = content.rect.height;
             var newHeight = Mathf.Clamp(height, minHeight, maxHeight);
-
             myTf.sizeDelta = new Vector2(myTf.sizeDelta.x, newHeight);
         }
     }

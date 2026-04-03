@@ -9,7 +9,6 @@ using Network.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using EMonPhai = Base.EMonPhai;
-
 namespace CreateCharacter
 {
     [Serializable]
