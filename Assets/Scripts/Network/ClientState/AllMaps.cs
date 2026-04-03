@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Network.Callback;
 using Network.Extensions;
 using Network.Models;
+using UnityEngine;
 
 namespace Network.ClientState
 {
@@ -49,6 +50,29 @@ namespace Network.ClientState
                     charData.Mails = result.Mails;
                 }
                 callback.OnGetMails(result);
+            }
+            else if (tag == MessageTag.MarkMailRead)
+            {
+                var id = reader.Read<int>();
+                var mails = Client.Instance.CharacterData.Mails;
+                var mail = mails.FirstOrDefault(x => x.Id == id);
+                if (mail != null)
+                {
+                    mail.IsRead = true;
+                }
+                callback.MarkMailRead(id);
+            }
+            else if (tag == MessageTag.RemoveMailId)
+            {
+                var id = reader.Read<int>();
+                var mails = Client.Instance.CharacterData.Mails;
+                var mail = mails.FirstOrDefault(x => x.Id == id);
+                if (mail != null)
+                {
+                    mails.Remove(mail);
+                }
+
+                callback.RemoveMail(id);
             }
         }
         public void OnLeave()

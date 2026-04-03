@@ -30,6 +30,10 @@ namespace Network
         GetPlayerOnlineThisNodeResult = 102,
         GetMails = 105,
         GetMailsResult = 106,
+        ReadMail = 107,
+        MarkMailRead = 108,
+        RemoveMail = 109,
+        RemoveMailId = 110,
         GetInventory = 195,
         GetInventoryResult = 196,
     }

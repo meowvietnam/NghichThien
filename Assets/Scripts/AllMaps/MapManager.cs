@@ -17,8 +17,11 @@ namespace AllMaps
     {
         [SerializeField] private Map[] maps;
         [SerializeField] private Player player;
+        [SerializeField] private MailPanel mailPanel;
+        [SerializeField] private MailButton mailButton;
         private Map current;
         private Dictionary<Map, List<Map>> graph;
+        
 
         public Map FindMap(int id)
         {
@@ -141,8 +144,27 @@ namespace AllMaps
                 else
                 {
                     var mails = result.Mails;
-                    Debug.Log($"Bạn có {mails.Count} hộp thư");
+                    mailPanel.Init(mails);
+                    mailButton.Init(mails);
                 }
+            });
+        }
+
+        public void MarkMailRead(int id)
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                mailPanel.MarkMailRead(id);
+                mailButton.Refresh();
+            });
+        }
+
+        public void RemoveMail(int id)
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                mailPanel.RemoveMail(id);
+                mailButton.Refresh();
             });
         }
 

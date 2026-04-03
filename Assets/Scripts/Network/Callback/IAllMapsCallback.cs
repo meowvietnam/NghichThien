@@ -8,5 +8,7 @@ namespace Network.Callback
         void OnMoveToMapResult(MoveToMapResult result);
         void OnGetCharacterOnlineThisNode(GetCharacterOnlineThisNodeResult result);
         void OnGetMails(GetMailsResult result);
+        void MarkMailRead(int id);
+        void RemoveMail(int id);
     }
 }

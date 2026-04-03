@@ -27,7 +27,6 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
     public virtual void Init(BaseItemData itemData , Sprite frameSprite, Action actionHolder = null , Action actionPointerUp = null)
     {
         InitItemData(itemData, frameSprite);
-
         InitAction(actionHolder, actionPointerUp);
     }
     [Button]

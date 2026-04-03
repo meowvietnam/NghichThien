@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class UIHeadPanel : PanelGroup
 {
     [SerializeField] private Button headBtn;
-    [SerializeField] private Button chatBtn;
     [SerializeField] private Button tutorialBtn;
     [SerializeField] private Image iconLevel;
     [SerializeField] private Text hpText;
@@ -22,13 +21,7 @@ public class UIHeadPanel : PanelGroup
     {
         base.Init();
         Observer.AddObserver(EventList.GamePlay.UPDATE_PLAYER_STATS, UpdatePlayerStats);
-        SetEventButton(chatBtn, () =>
-        {
-            var ChatPanel = Pool.Get<ChatPanel>();
-            ChatPanel.gameObject.SetActive(true);
-            ChatPanel.transform.SetAsLastSibling();
 
-        });
         SetEventButton(headBtn, () =>
         {
             var tabPanel = Pool.Get<TabPanel>();
