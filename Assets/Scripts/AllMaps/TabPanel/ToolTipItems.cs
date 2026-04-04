@@ -31,15 +31,16 @@ public class ToolTipItems : BaseBehaviour
 
     private void Awake()
     {
+        this.gameObject.SetActive(true);
         Instance = this;
-        gameObject.SetActive(false);
+        this.gameObject.SetActive(false);
     }
     public void InitShow(BaseItemData itemData,Sprite frameSprite, Sprite qualityFull , Color colorName , ETypeInventoryItem eTypeItemShow)
     {
-        gameObject.SetActive(true);
+        this.gameObject.SetActive(true);
         SetEventButton(btnMask, () =>
         {
-            gameObject.SetActive(false);
+            this.gameObject.SetActive(false);
         });
         
         this.itemData = itemData;

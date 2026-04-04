@@ -50,7 +50,7 @@ public class ItemInventory : BaseItemUI
         {
             SetEventButton(btnShowInfor, () =>
             {
-                Pool.Get<TabPanel>().toolTipItems.InitShow(itemData,frame.sprite,qualityFull.sprite,textName.color,type);
+                ToolTipItems.Instance.InitShow(itemData,frame.sprite,qualityFull.sprite,textName.color,type);
             });
         }    
         textName.text = itemData.nameItem;
@@ -145,6 +145,12 @@ public class ItemInventory : BaseItemUI
         }
         parent.softness =  new Vector2Int(25, 25);
 
+    }
+    [Button]
+    private void FixVisualTextCount()
+    {
+        RectTransform rect = textCount.GetComponent<RectTransform>();
+        rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, -24f);
     }
     [Button]
     private void GetBtnShowInfor()

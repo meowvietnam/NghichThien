@@ -1,5 +1,6 @@
 ﻿using AllMaps;
 using Base;
+using CreateCharacter;
 using DG.Tweening;
 using LongDH.LongDHModules;
 using LuyenDan;
@@ -466,6 +467,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             for (int j = 0; j < item5.transform.childCount; j++)
             {
                 ItemInventory item = item5.transform.GetChild(j).GetComponent<ItemInventory>();
+                item.itemData = null;
                 listItemInventory.Add(item);
                
             }
@@ -633,9 +635,20 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                             bool isDroppingIntoDonThuat = (resultRect == donThuatRect);
                             if (itemSlot != null && congPhap != null)
                             {// ĐIỀU KIỆN: Nếu thả vào ô Độn Thuật MÀ kỹ năng KHÔNG PHẢI Độn Thuật thì BỎ QUA
-                                if (isDroppingIntoDonThuat && !congPhap.isDonThuat || itemSlot.itemData != null || listItemsCongPhapSlot.Any(x=>x.itemData == congPhap))
+                                bool isCPEquiped = listItemsCongPhapSlot.Any(x => x.itemData == congPhap);
+                                if (isDroppingIntoDonThuat && !congPhap.isDonThuat || itemSlot.itemData != null || isCPEquiped)
                                 {
-                                    Debug.Log("Không thể trang bị: Kỹ năng này không phải Độn Thuật!");
+                                    if(isCPEquiped)
+                                    {
+                                        NotifyGroup.Instance.Show("Công pháp đã được trang bị");
+
+                                    }
+                                    else
+                                    {
+                                        NotifyGroup.Instance.Show("Công pháp không đúng loại");
+
+                                    }
+
                                     return; // Thoát ra, không chạy code Init bên dưới
                                 }
                                 Debug.Log("Item slot sẵn sàng");
@@ -781,7 +794,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                             {// ĐIỀU KIỆN: Nếu thả vào ô Độn Thuật MÀ kỹ năng KHÔNG PHẢI Độn Thuật thì BỎ QUA
                                 if (itemSlot.itemData != null || listItemSlotThanThongs.Any(x => x.itemData == thanThong))
                                 {
-                                    Debug.Log("Không thể trang bị: Kỹ năng này không phải Độn Thuật!");
+                                    NotifyGroup.Instance.Show("Thần thông đã được trang bị");
                                     return; // Thoát ra, không chạy code Init bên dưới
                                 }
                                 Debug.Log("Item slot sẵn sàng");
@@ -820,7 +833,8 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     }
     [Header("--- Inventory ---")]
     [SerializeField] private List<ItemInventory> listItemSlotEquipment;
-    private void InitVisualItemInventory(ItemInventory item, IItemData data)
+    [SerializeField] private CharacterGraphic charPageInventory;
+    private void InitVisualItemInventory(ItemInventory item, IItemData data , ItemRef itemRef)
     {
         Sprite frame = null;
         if (data != null)
@@ -830,13 +844,18 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
             item.SetColorName(quality.Color);
             item.SetQualityFull(quality.Background);
-            item.Init(new BaseItemData { name = data.Name, spriteItem = data.Icon }, frame);
-
+            item.Init(new BaseItemData { nameItem = data.Name, spriteItem = data.Icon }, frame);
 
         }
-
+        if(itemRef != null)
+        {
+            item.InitCount(itemRef.Count);
+        }    
+        charPageInventory.SetGender(Client.Instance.CharacterData.Gender);
+        charPageInventory.SetSkin(Client.Instance.CharacterData.Skins);
 
         item.InitInventory(ETypeInventoryItem.Item);
+
 
 
     }
@@ -943,7 +962,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                     }
                 }
             }
-            InitVisualItemInventory(currentItem, data);
+            InitVisualItemInventory(currentItem, data,itemRef);
 
 
             if (data != null)
