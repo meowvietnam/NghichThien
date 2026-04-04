@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CreateCharacter;
+using LongDH.LongDHModules;
 using LuyenDan;
 using Network;
 using Network.Callback;
@@ -13,7 +14,7 @@ namespace AllMaps
     public class MailManager : BaseBehaviour, IMailCallback
     {
         [SerializeField] private MailPanel mailPanel;
-        [SerializeField] private MailButton mailButton;
+        [SerializeField] private MailButton mailButton => Pool.Get<UIHeadPanel>().mailBtn;
 
         private void Start()
         {

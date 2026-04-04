@@ -16,6 +16,7 @@ public class UIHeadPanel : PanelGroup
     [SerializeField] private Text nameText;
     [SerializeField] private Sprite[] listSpriteIconLevel;
     [SerializeField] private CharacterGraphic characterGraphic;
+    public MailButton mailBtn;
 
     public override void Init()
     {
