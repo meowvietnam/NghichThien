@@ -15,7 +15,7 @@ namespace AllMaps
 {
     public class MapManager : MonoBehaviour, IAllMapsCallback
     {
-        [SerializeField] private Map[] maps;
+        [SerializeField] public Map[] maps;
         [SerializeField] private Player player;
         private Map current;
         private Dictionary<Map, List<Map>> graph;
@@ -47,6 +47,7 @@ namespace AllMaps
             current = map;
             player.SetPosition(map.PlayerPosition);
             player.Init(characterData.Gender, false);
+            Pool.Set(this);
         }
 
         private void Start()
@@ -134,33 +135,20 @@ namespace AllMaps
 
         private void OnGetCharacterOnlineThisNode(CharacterSnapshot[] characters)
         {
-            //Test Data
+          
             Debug.Log($"Có {characters.Length} players online trong node");
-            //Test Data
-            Pool.Get<UINPCJiaoHu>().ShowNPCList(new List<CharacterStatsSecure>
+            List<CharacterStatsSecure> characterStatsSecures = new List<CharacterStatsSecure>();
+            foreach (var character in characters)
             {
-                new CharacterStatsSecure
-                {
-                    tuoiTac = 15, hpMax = 200, level = 9, thoNguyen = 200, tuChat = 120, ngoTinh = 50, tocDoBay = 20,
-                    thanThuc = 30, nameUser = "Viêm Đế", monPhai = Base.EMonPhai.BachDeLau,
-                    thanThongEquip = new List<SecureInt> { 874, 527, 417, 878 }, chuTu1Used = 1, chuTu2Used = 2,
-                    phuTu1Used = 3, phuTu2Used = 4, phuTu3Used = 5, phuTu4Used = 6
-                },
-                new CharacterStatsSecure
-                {
-                    tuoiTac = 15, hpMax = 500, level = 4, thoNguyen = 200, tuChat = 120, ngoTinh = 50, tocDoBay = 20,
-                    thanThuc = 30, nameUser = "Hàn Lão Ma", monPhai = Base.EMonPhai.None,
-                    thanThongEquip = new List<SecureInt> { 427, 309, 131 }, chuTu1Used = 2, chuTu2Used = 4,
-                    phuTu1Used = 7, phuTu2Used = 9, phuTu3Used = 10, phuTu4Used = 12
-                },
-                new CharacterStatsSecure
-                {
-                    tuoiTac = 15, hpMax = 700, level = 2, thoNguyen = 200, tuChat = 120, ngoTinh = 50, tocDoBay = 20,
-                    thanThuc = 30, nameUser = "Lệ Phi Vũ", monPhai = Base.EMonPhai.KimHongKiemPhai,
-                    thanThongEquip = new List<SecureInt> { 874, 527, 417, 878 }, chuTu1Used = 1, chuTu2Used = 2,
-                    phuTu1Used = 3, phuTu2Used = 4, phuTu3Used = 5, phuTu4Used = 6
-                },
-            });
+                characterStatsSecures.Add(new CharacterStatsSecure { tuoiTac = GameConfig.GetIntTuoiTac(character.TuoiTac), hpMax = character.SinhMenh, level = character.Level, thoNguyen = character.ThoNguyen, tuChat = character.TuChat, ngoTinh = character.NgoTinh, tocDoBay = character.TocDoBay, thanThuc = character.ThanThuc, nameUser = character.Name, monPhai = character.MonPhai, thanThongEquip = character.ThanThongEquip.ConvertAll<SecureInt>(id => new SecureInt(id)), chuTu1Used = character.ChuTu1Used, chuTu2Used = character.ChuTu2Used, phuTu1Used = character.PhuTu1Used, phuTu2Used = character.PhuTu2Used, phuTu3Used = character.PhuTu3Used, phuTu4Used = character.PhuTu4Used });
+            }
+            List<NPCData> npcOnCurrentMap = Pool.Get<NpcManager>().npcDatas.Where(x => x.charStats.idNode == current.Id).ToList();
+            foreach (var character in npcOnCurrentMap)
+            {
+
+                characterStatsSecures.Add(character.charStats);
+            }
+            Pool.Get<UINPCJiaoHu>().ShowNPCList(characterStatsSecures);
         }
     }
 }
