@@ -129,7 +129,7 @@ public class UIBeQuan : BaseBehaviour
         tamCanhText.text = getTamCanh.name;
         totalValueTuLuyenText.text = $"{GetTotalValueBuffWithMultiplier(new List<float> { percentTuChat,100,percentTamCanh})}";
         sliderTuLuyen.minValue = 0 ;
-        sliderTuLuyen.maxValue = (int)(Client.Instance.CharacterData.Stats.ThoNguyen - Client.Instance.CharacterData.Stats.TuoiTac) * 10 / 100;
+        sliderTuLuyen.maxValue = (int)(Client.Instance.CharacterData.Stats.ThoNguyen - GameConfig.GetIntTuoiTac(Client.Instance.CharacterData.Stats.TuoiTac)) * 10 / 100;
         sliderTuLuyen.onValueChanged.RemoveAllListeners();
         sliderTuLuyen.onValueChanged.AddListener((value) =>
         {

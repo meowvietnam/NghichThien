@@ -279,5 +279,9 @@ public class GameConfig : BaseBehaviour
         // Trường hợp cuối cùng: Lớn hơn mốc cao nhất (> 1999)
         return (tamCanh[tamCanh.Length - 1], (int)currentPoint, tamCanh.Length - 1);
     }
+    public static int GetIntTuoiTac(TimeSpan timeSpanTuoiTac)
+    {
+        return (int)(timeSpanTuoiTac.TotalDays / 365);
+    }    
   
 }
