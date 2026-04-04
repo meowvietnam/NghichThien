@@ -1,19 +1,30 @@
 ﻿using Base;
+using CreateCharacter;
 using LongDH.LongDHModules;
 using LuyenDan;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using CreateCharacter.CharStats;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 public class GameConfig : BaseBehaviour
 {
     [SerializeField] private List<string> listSceneLoaded = new List<string>
     {
         "AllMaps",
+    };
+    public static Dictionary<LinhCan, string> tuChatWithText = new Dictionary<LinhCan, string>
+    {
+        { LinhCan.NguLinhCan, "Tư chất ngu dốt" }, // Use { key, value }
+        { LinhCan.TuLinhCan, "Tư chất thông thường" },
+        { LinhCan.TamLinhCan, "Nhạy bén thông minh" },
+        { LinhCan.SongLinhCan, "Khoáng thế kỳ tài" },
+        { LinhCan.ThienLinhCan, "Tài năng ngút trời" }
     };
     public static Dictionary<EMonPhai, string> monPhaiText = new Dictionary<EMonPhai, string>
     {

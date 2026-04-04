@@ -32,9 +32,9 @@ public abstract class CongPhap : BaseSkill
     {
 
     }
-    public virtual int GetTocDoTuLuyen(CharacterCombat caster)
+    public virtual int GetTocDoTuLuyen(int levelCP)
     {
-        return CurrentLevelCongPhapInCombat(caster) * tocDoTuLuyenBase;
+        return levelCP * tocDoTuLuyenBase;
 
     }
     public virtual void ExecuteParams(params object[] data)
