@@ -1,14 +1,19 @@
 using System;
+using Network;
+using Network.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace LuyenDan.Inventory
 {
     [Serializable]
-    public class LinhDan : IItemData
+    public class LinhDan : IItemData, IMemorySerializable<LinhDan>
     {
         [field: SerializeField] public int Id { get; private set; }
-        [field: SerializeField, PreviewField(75)] public Sprite Icon { get; private set;}
+
+        [field: SerializeField, PreviewField(75)]
+        public Sprite Icon { get; private set; }
+
         [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public Tier Tier { get; private set; }
         [field: SerializeField] public string Description { get; private set; }
@@ -25,5 +30,53 @@ namespace LuyenDan.Inventory
         [field: SerializeField] public float IncomeDanThanh { get; private set; }
         [field: SerializeField] public ETypeDan ETypeDan { get; private set; }
 
+        public int ByteSize()
+        {
+            return Id.ByteSize() + Name.ByteSize() + Tier.ByteSize() + Description.ByteSize()
+                   + DanDoc.ByteSize() + NhinThuoc.ByteSize() + PriceV104.ByteSize() + PriceV130.ByteSize()
+                   + Price.ByteSize() + Profit.ByteSize() + Income.ByteSize()
+                   + ProfitPerDay.ByteSize() + ProfitDanThanh.ByteSize() + ProfitDanThanhPerDay.ByteSize()
+                   + IncomeDanThanh.ByteSize() + ETypeDan.ByteSize();
+        }
+
+        public void Serialize(IWriter writer)
+        {
+            writer.Write(Id);
+            writer.Write(Name);
+            writer.Write(Tier);
+            writer.Write(Description);
+            writer.Write(DanDoc);
+            writer.Write(NhinThuoc);
+            writer.Write(PriceV104);
+            writer.Write(PriceV130);
+            writer.Write(Price);
+            writer.Write(Profit);
+            writer.Write(Income);
+            writer.Write(ProfitPerDay);
+            writer.Write(ProfitDanThanh);
+            writer.Write(ProfitDanThanhPerDay);
+            writer.Write(IncomeDanThanh);
+            writer.Write(ETypeDan);
+        }
+
+        public void Deserialize(IReader reader, ref LinhDan value)
+        {
+            value.Id = reader.Read<int>();
+            value.Name = reader.Read();
+            value.Tier = reader.Read<Tier>();
+            value.Description = reader.Read();
+            value.DanDoc = reader.Read<int>();
+            value.NhinThuoc = reader.Read<int>();
+            value.PriceV104 = reader.Read<int>();
+            value.PriceV130 = reader.Read<int>();
+            value.Price = reader.Read<int>();
+            value.Profit = reader.Read<int>();
+            value.Income = reader.Read<float>();
+            value.ProfitPerDay = reader.Read<int>();
+            value.ProfitDanThanh = reader.Read<int>();
+            value.ProfitDanThanhPerDay = reader.Read<int>();
+            value.IncomeDanThanh = reader.Read<float>();
+            value.ETypeDan = reader.Read<ETypeDan>();
+        }
     }
 }

@@ -52,7 +52,6 @@ namespace LuyenDan.Inventory
             }
             Init(data);
         }
-
         protected virtual void OnSelected()
         {
             Debug.Log("OnSelected");

@@ -56,7 +56,7 @@ namespace LuyenDan
 
         protected virtual void SetTier(Tier tier)
         {
-            var quality = LuyenDanPanel.Instance.Resources.Qualities.First(q => q.Tier == tier);
+            var quality = LuyenDanResources.Instance.Qualities.First(q => q.Tier == tier);
             if (qualityBackground != null) qualityBackground.sprite = quality.Background;
             if (qualityIconUp != null) qualityIconUp.sprite = quality.IconUp;
             if (itemNameText != null) itemNameText.color = quality.Color;

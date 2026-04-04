@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Base;
@@ -15,7 +16,7 @@ namespace Network.Models
         public int TuChat { get; set; }
         public int ThoNguyen { get; set; }
         public int SinhMenh { get; set; }
-        public int TuoiTac { get; set; }
+        public TimeSpan TuoiTac { get; set; }
         public EMonPhai MonPhai { get; set; }
         public int Level { get; set; }
         public Dictionary<string, Color> Colors { get; set; }
@@ -72,7 +73,7 @@ namespace Network.Models
             value.Colors = DictionaryUtils.CreateDictionary(reader.ReadArray(), reader.ReadArray<Color>());
             value.Level = reader.Read<int>();
             value.MonPhai = reader.Read<EMonPhai>();
-            value.TuoiTac = reader.Read<int>();
+            value.TuoiTac = reader.Read<TimeSpan>();
             value.SinhMenh = reader.Read<int>();
             value.ThoNguyen = reader.Read<int>();
             value.TuChat = reader.Read<int>();

@@ -13,8 +13,8 @@ namespace LuyenDan.Inventory
     public abstract class ItemListUI<T> : ItemListUI where T : InventoryItemUI
     {
         public List<T> Items { get; private set;} = new List<T>();
-        [SerializeField] private T prefab;
-        [SerializeField] private RectTransform content;
+        [SerializeField] protected T prefab;
+        [SerializeField] protected RectTransform content;
         public override void Init(IEnumerable<ItemRef> datas)
         {
             foreach (var data in datas)

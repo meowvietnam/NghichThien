@@ -24,6 +24,7 @@ public class CharacterStatsSecure
         public string key;
         public Color value;
     }
+
     // Truyền 0 hoặc 0f vào constructor của SecureInt/SecureFloat
     public SecureInt idChar = new SecureInt(0);
     public SecureFloat percentKim = new SecureFloat(0f);
@@ -87,12 +88,12 @@ public class CharacterStatsSecure
 
     public Dictionary<string, Color> Colors => colorList.ToDictionary(x => x.key, x => x.value);
     public SecureInt idNode = new SecureInt(0);
+
     public CharacterStatsSecure Clone()
     {
         // 1. Sao chép nông các chỉ số cơ bản (HP, MP, ID...)
         CharacterStatsSecure clone = (CharacterStatsSecure)MemberwiseClone();
 
-       
 
         return clone;
     }
@@ -104,7 +105,7 @@ public class CharacterStatsSecure
         level = data.Level;
         currentExp = data.CurrentExp;
         ngoDaoDiem = data.NgoDaoDiem;
-        
+
         Clone(data.Stats);
     }
 
@@ -128,6 +129,6 @@ public class CharacterStatsSecure
         idLinhCan = (int)stats.LinhCan;
         ability = stats.Ability;
         danDoc = stats.DanDoc;
-        tuoiTac = stats.TuoiTac;
+        tuoiTac = stats.TuoiTac.Days / 365;
     }
 }

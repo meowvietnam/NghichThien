@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Network;
 using Network.Extensions;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace CreateCharacter.CharStats
@@ -27,7 +28,7 @@ namespace CreateCharacter.CharStats
         [field: SerializeField] public LinhCan LinhCan { get; private set; }
         [field: SerializeField] public Ability Ability { get; private set; }
         [field: SerializeField] public int DanDoc { get; private set; }
-        [field: SerializeField] public int TuoiTac { get; private set; }
+        [field: ShowInInspector] public TimeSpan TuoiTac { get; set; }
 #if !SERVER
         private readonly Dictionary<StatType, Action<object>> onStatChanges = new();
 #endif
@@ -171,7 +172,7 @@ namespace CreateCharacter.CharStats
                 case StatType.ThoNguyen: ThoNguyen = value; break;
                 case StatType.TamCanh: TamCanh = value; break;
                 case StatType.DanDoc: DanDoc = value; break;
-                case StatType.TuoiTac: TuoiTac = value; break;
+                case StatType.TuoiTac: TuoiTac = new TimeSpan(value); break;
             }
 #if !SERVER
             Emit(type, value);
@@ -272,7 +273,7 @@ namespace CreateCharacter.CharStats
             value.LinhCan = reader.Read<LinhCan>();
             value.Ability = reader.Read<Ability>();
             value.DanDoc = reader.Read<int>();
-            value.TuoiTac = reader.Read<int>();
+            value.TuoiTac = reader.Read<TimeSpan>();
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Network.Extensions;
 
 namespace Network.Models
@@ -9,6 +10,8 @@ namespace Network.Models
         public int Energy { get; set; }
         public int[] Path { get; set; }
         public CharacterSnapshot[] CharactersOnline { get; set; }
+        public TimeSpan NewAge { get; set; }
+
         public void Deserialize(IReader reader, ref MoveToMapResult value)
         {
             value.Success = reader.Read<bool>();
@@ -21,19 +24,23 @@ namespace Network.Models
                 value.Energy = reader.Read<int>();
                 value.Path = reader.ReadArray<int>();
                 value.CharactersOnline = reader.ReadArray<CharacterSnapshot>();
+                value.NewAge = reader.Read<TimeSpan>();
             }
         }
+
         public int ByteSize()
         {
             if (Success)
             {
-                return Success.ByteSize() + Energy.ByteSize() + Path.ByteSize() + CharactersOnline.ByteSize();
+                return Success.ByteSize() + Energy.ByteSize() + Path.ByteSize() + CharactersOnline.ByteSize() +
+                       NewAge.ByteSize();
             }
             else
             {
                 return Success.ByteSize() + Message.ByteSize();
             }
         }
+
         public void Serialize(IWriter writer)
         {
             writer.Write(Success);
@@ -46,6 +53,7 @@ namespace Network.Models
                 writer.Write(Energy);
                 writer.WriteArray(Path);
                 writer.WriteArray(CharactersOnline);
+                writer.Write(NewAge);
             }
         }
     }

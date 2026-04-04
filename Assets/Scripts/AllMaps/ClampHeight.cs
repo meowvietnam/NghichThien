@@ -10,6 +10,10 @@ namespace AllMaps
         [SerializeField] private float minHeight;
         [SerializeField] private float maxHeight;
 
+        private void OnEnable()
+        {
+            Clamp();
+        }
         [Button]
         public void Clamp()
         {

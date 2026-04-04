@@ -17,13 +17,7 @@ namespace Network.ClientState
 
         public void Handle(Message<MessageTag> message)
         {
-            var tag = message.Tag;
-            var reader = message.Reader;
-            if (tag == MessageTag.GetInventoryResult)
-            {
-                var result = reader.Read<GetInventoryResult>();
-                callback.GetInventoryResult(result);
-            }
+          
         }
 
         public void OnLeave()

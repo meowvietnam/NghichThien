@@ -15,7 +15,7 @@ namespace AllMaps
         [SerializeField] private RectTransform direct;
         private void Start()
         {
-            this.SetEventButton(filterButton, Open);
+            SetEventButton(filterButton, Open);
             foreach (var mailFilter in mailFilters)
             {
                 mailFilter.OnFilter += OnFilter;
@@ -36,7 +36,6 @@ namespace AllMaps
 
         private void OnFilter(MailFilter filter)
         {
-            Debug.Log(filter.Name);
             mailPanel.Filter(filter.Type);
             text.text = filter.Name;
             Close();

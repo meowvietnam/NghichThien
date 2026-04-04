@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AllMaps;
-using LuyenDan;
 using Network;
 using Network.Extensions;
 using Sirenix.OdinInspector;
@@ -13,40 +12,123 @@ using EMonPhai = Base.EMonPhai;
 namespace CreateCharacter
 {
     [Serializable]
-    public class CharacterData : IMemorySerializable<CharacterData>
+    public sealed class CharacterData : IMemorySerializable<CharacterData>
     {
-        [field: SerializeField] public int Id { get; set; }
-        [field: SerializeField] public Gender Gender { get; set; }
-        [field: SerializeField] public string Name { get; set; }
-        [field: SerializeField] public int Level { get; set; } = 1;
-        [field: SerializeField] public int CurrentExp { get; set; }
-        [field: SerializeField] public CharStats.CharacterStats Stats { get; set; } = new();
-        [field: ShowInInspector] public Dictionary<string, string> Skins { get; set; } = new();
-        [field: ShowInInspector] public Dictionary<string, Color> Colors { get; set; } = new();
-        [field: SerializeField] public EMonPhai MonPhai { get; set; }
-        [field: SerializeField] public List<int> NgoDaoSaves { get; set; } = new();
-        [field: ShowInInspector] public Dictionary<int, int> CamNgoSaves { get; set; } = new();
-        [field: SerializeField] public int NgoDaoDiem { get; set; }
-        [field: SerializeField] public List<int> ThanThongOwner { get; set; } = new();
-        [field: SerializeField] public List<int> ThanThongEquip { get; set; } = new();
-        [field: ShowInInspector] public Dictionary<int, int> CongPhapOwner { get; set; } = new();
-        [field: SerializeField] public int DonThuatUsed { get; set; }
-        [field: SerializeField] public int PhuTu1Used { get; set; }
-        [field: SerializeField] public int PhuTu2Used { get; set; }
-        [field: SerializeField] public int PhuTu3Used { get; set; }
-        [field: SerializeField] public int PhuTu4Used { get; set; }
-        [field: SerializeField] public int ChuTu1Used { get; set; }
-        [field: SerializeField] public int ChuTu2Used { get; set; }
-        [field: SerializeField] public List<int> DanCombatUsed { get; set; } = new();
-        [field: SerializeField] public int IdCurrentNode { get; set; }
-        [field: SerializeField] public int CurrentEnergy { get; set; }
-        [field: SerializeField] public InventoryManager InventoryManager { get; set; } = new();
-        [field: SerializeField] public int IdVuKhi { get; set; }
-        [field: SerializeField] public int IdPhongCu { get; set; }
-        [field: SerializeField] public int IdTrangSuc { get; set; }
-        [field: ShowInInspector] public Dictionary<int, int> RelationShip { get; set; } = new();
-        [field: ShowInInspector] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        [field: SerializeField] public List<Mail> Mails { get; set; } = new List<Mail>();
+// ========================= BASIC =========================
+        [field: SerializeField, TabGroup("Basic")]
+        public int Id { get; set; }
+
+        [field: SerializeField, TabGroup("Basic")]
+        public Gender Gender { get; set; }
+
+        [field: SerializeField, TabGroup("Basic")]
+        public string Name { get; set; }
+
+        [field: SerializeField, TabGroup("Basic")]
+        public EMonPhai MonPhai { get; set; }
+
+        [field: ShowInInspector, TabGroup("Basic")]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+
+// ====================== PROGRESSION ======================
+        [field: SerializeField, TabGroup("Progression")]
+        public int Level { get; set; } = 1;
+
+        [field: SerializeField, TabGroup("Progression")]
+        public int CurrentExp { get; set; }
+
+        [field: SerializeField, TabGroup("Progression")]
+        public int CurrentEnergy { get; set; }
+
+        [field: SerializeField, TabGroup("Progression")]
+        public int NgoDaoDiem { get; set; }
+
+
+// ========================= STATS =========================
+        [field: SerializeField, TabGroup("Stats")]
+        public CharStats.CharacterStats Stats { get; set; } = new();
+
+
+// ======================= APPEARANCE ======================
+        [field: ShowInInspector, TabGroup("Appearance")]
+        public Dictionary<string, string> Skins { get; set; } = new();
+
+        [field: ShowInInspector, TabGroup("Appearance")]
+        public Dictionary<string, Color> Colors { get; set; } = new();
+
+
+// ======================== INVENTORY ======================
+        [field: SerializeField, TabGroup("Inventory")]
+        public InventoryManager InventoryManager { get; set; } = new();
+
+        [field: SerializeField, TabGroup("Inventory")]
+        public int IdVuKhi { get; set; }
+
+        [field: SerializeField, TabGroup("Inventory")]
+        public int IdPhongCu { get; set; }
+
+        [field: SerializeField, TabGroup("Inventory")]
+        public int IdTrangSuc { get; set; }
+
+
+// ========================= SKILLS ========================
+        [field: SerializeField, TabGroup("Skills")]
+        public List<int> ThanThongOwner { get; set; } = new();
+
+        [field: SerializeField, TabGroup("Skills")]
+        public List<int> ThanThongEquip { get; set; } = new();
+
+        [field: ShowInInspector, TabGroup("Skills")]
+        public Dictionary<int, int> CongPhapOwner { get; set; } = new();
+
+
+// ====================== CULTIVATION ======================
+        [field: SerializeField, TabGroup("Cultivation")]
+        public List<int> NgoDaoSaves { get; set; } = new();
+
+        [field: ShowInInspector, TabGroup("Cultivation")]
+        public Dictionary<int, int> CamNgoSaves { get; set; } = new();
+
+
+// ====================== CONSUMABLES ======================
+        [field: SerializeField, TabGroup("Consumables")]
+        public int DonThuatUsed { get; set; }
+
+        [field: SerializeField, TabGroup("Consumables")]
+        public int PhuTu1Used { get; set; }
+
+        [field: SerializeField, TabGroup("Consumables")]
+        public int PhuTu2Used { get; set; }
+
+        [field: SerializeField, TabGroup("Consumables")]
+        public int PhuTu3Used { get; set; }
+
+        [field: SerializeField, TabGroup("Consumables")]
+        public int PhuTu4Used { get; set; }
+
+        [field: SerializeField, TabGroup("Consumables")]
+        public int ChuTu1Used { get; set; }
+
+        [field: SerializeField, TabGroup("Consumables")]
+        public int ChuTu2Used { get; set; }
+
+        [field: SerializeField, TabGroup("Consumables")]
+        public List<int> DanCombatUsed { get; set; } = new();
+
+
+// ========================= WORLD =========================
+        [field: SerializeField, TabGroup("World")]
+        public int IdCurrentNode { get; set; }
+
+
+// ========================= SOCIAL ========================
+        [field: ShowInInspector, TabGroup("Social")]
+        public Dictionary<int, int> RelationShip { get; set; } = new();
+
+// ========================== MAIL =========================
+        [field: SerializeField, TabGroup("Mail")]
+        public List<Mail> Mails { get; set; } = new();
 
         public CharacterData()
         {

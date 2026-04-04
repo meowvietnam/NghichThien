@@ -1,13 +1,15 @@
 using System;
 using System.Linq;
 using LuyenDan.Inventory;
+using Network;
+using Network.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace LuyenDan
 {
     [Serializable]
-    public class HerbData : IItemData
+    public class HerbData : IItemData, IMemorySerializable<HerbData>
     {
         [field: SerializeField] public int Id { get; private set; }
         [field: SerializeField] public Tier Tier { get; private set; }
@@ -17,7 +19,9 @@ namespace LuyenDan
         [field: SerializeField] public string ThuocDan { get; private set; }
         [field: SerializeField] public string Locations { get; private set; }
         [field: SerializeField] public string Description { get; private set; }
-        [field: SerializeField, PreviewField(75)] public Sprite Icon { get; private set; }
+
+        [field: SerializeField, PreviewField(75)]
+        public Sprite Icon { get; private set; }
 
         [ShowInInspector]
         public HerbType HerbType
@@ -39,9 +43,11 @@ namespace LuyenDan
                 {
                     type |= HerbType.DuocDan;
                 }
+
                 return type;
             }
         }
+
         public HerbData(int id, Tier tier, string name, string chuduoc, string phuduoc, string thuocdan,
             string locations)
         {
@@ -53,6 +59,11 @@ namespace LuyenDan
             ThuocDan = thuocdan;
             Locations = locations;
         }
+
+        public HerbData()
+        {
+        }
+
         public void Modify()
         {
             Name = Normalize1(Name);
@@ -61,11 +72,13 @@ namespace LuyenDan
             ThuocDan = Normalize2(ThuocDan);
             Locations = Locations.Trim();
         }
+
         private string Normalize(string text)
         {
-            if(string.IsNullOrEmpty(text)) return string.Empty;
+            if (string.IsNullOrEmpty(text)) return string.Empty;
             return text.Substring(0, 1).ToUpper() + text.Substring(1).ToLower();
         }
+
         private string Normalize1(string text)
         {
             text = text.Trim();
@@ -83,6 +96,37 @@ namespace LuyenDan
         {
             var myType = HerbType;
             return myType.HasFlag(type);
+        }
+
+        public int ByteSize()
+        {
+            return Id.ByteSize() + Tier.ByteSize() + Name.ByteSize()
+                   + ChuDuoc.ByteSize() + PhuDuoc.ByteSize() + ThuocDan.ByteSize()
+                   + Locations.ByteSize() + Description.ByteSize();
+        }
+
+        public void Serialize(IWriter writer)
+        {
+            writer.Write(Id);
+            writer.Write(Tier);
+            writer.Write(Name);
+            writer.Write(ChuDuoc);
+            writer.Write(PhuDuoc);
+            writer.Write(ThuocDan);
+            writer.Write(Locations);
+            writer.Write(Description);
+        }
+
+        public void Deserialize(IReader reader, ref HerbData value)
+        {
+            value.Id = reader.Read<int>();
+            value.Tier = reader.Read<Tier>();
+            value.Name = reader.Read();
+            value.ChuDuoc = reader.Read();
+            value.PhuDuoc = reader.Read();
+            value.ThuocDan = reader.Read();
+            value.Locations = reader.Read();
+            value.Description = reader.Read();
         }
     }
 }

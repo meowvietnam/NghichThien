@@ -23,7 +23,7 @@ namespace LuyenDan
             if (item != null)
             {
                 SetData(item.GetData());
-                RefreshDurability(item.ItemRef.Durability);
+                RefreshDurability(item.FData.Durability);
             }
             else
             {
@@ -34,7 +34,13 @@ namespace LuyenDan
         public override void OnLuyenDanCompleted()
         {
             if (Item == null) return;
-            RefreshDurability(Item.ItemRef.Durability);
+            var item = Item as FurnaceInventoryItemUI;
+            if (item == null)
+            {
+                Debug.LogError("Không phải FurnaceInventoryItemUI !!!!!");
+                return;
+            }
+            RefreshDurability(item.FData.Durability);
         }
 
 

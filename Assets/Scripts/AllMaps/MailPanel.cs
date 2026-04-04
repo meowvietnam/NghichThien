@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Base;
 using DG.Tweening;
+using LongDH.LongDHModules;
 using Network;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,12 +23,32 @@ namespace AllMaps
         [SerializeField] private RectTransform panelTransform;
         [SerializeField] private GameObject mask;
         [SerializeField] private Button close;
+        [SerializeField] private Button claimAllBtn;
+        [SerializeField] private Button removeAllBtn;
         private float time = 0;
         private MailUI opening;
-
+        [SerializeField] private string removeAllMessage;
         private void Start()
         {
             SetEventButton(close, OnClose);
+            SetEventButton(claimAllBtn, ClaimAll);
+            SetEventButton(removeAllBtn,RemoveAll);
+        }
+
+        private void RemoveAll()
+        {
+            var popup = Pool.Get<PopupConfirmAction>();
+            popup.ShowPopConfirmAction(removeAllMessage,OnRemoveAllConfirm);
+        }
+
+        private void OnRemoveAllConfirm()
+        {
+            Client.Instance.Send(MessageTag.RemoveAllMails);
+        }
+
+        private void ClaimAll()
+        {
+            Client.Instance.Send(MessageTag.ClaimAllMails);
         }
 
         private void FixedUpdate()
@@ -35,9 +57,12 @@ namespace AllMaps
             if (time > 10)
             {
                 time = 0;
-                foreach (var mailCell in mailCells)
+                lock (mailCells)
                 {
-                    mailCell.UpdateTime();
+                    foreach (var mailCell in mailCells)
+                    {
+                        mailCell.UpdateTime();
+                    }
                 }
             }
         }
@@ -46,13 +71,7 @@ namespace AllMaps
         {
             foreach (var mail in mails)
             {
-                var mailUI = Instantiate(mailUIPrefab, mailUIParent);
-                mailUI.Init(mail);
-                mailUIs.Add(mailUI);
-                mailUI.SetActive(false);
-                var mailCell = Instantiate(mailCellPrefab, mailCellParent);
-                mailCell.Init(this, mail, toggleGroup);
-                mailCells.Add(mailCell);
+                AddMail(mail);
             }
         }
 
@@ -64,6 +83,8 @@ namespace AllMaps
         private void OnDestroy()
         {
             close.onClick.RemoveAllListeners();
+            claimAllBtn.onClick.RemoveAllListeners();
+            removeAllBtn.onClick.RemoveAllListeners();
         }
 
         public void SelectMail(Mail mail)
@@ -146,6 +167,34 @@ namespace AllMaps
                     mailCell.SetActive(active);
                 }
             }
+        }
+
+        public void RemoveAllMail(List<int> removeMails)
+        {
+            removeMails.ForEach(RemoveMail);
+        }
+
+        public void OnClaimMails(RewardResult result)
+        {
+            var mailIds = result.Mails;
+            foreach (var mailId in mailIds)
+            {
+                var mailUI = mailUIs.FirstOrDefault(x => x.Mail.Id == mailId);
+                if (mailUI != null)
+                {
+                    mailUI.MarkAsClaimed();
+                }
+            }
+        }
+        public void AddMail(Mail mail)
+        {
+            var mailUI = Instantiate(mailUIPrefab, mailUIParent);
+            mailUI.Init(mail);
+            mailUIs.Add(mailUI);
+            mailUI.SetActive(false);
+            var mailCell = Instantiate(mailCellPrefab, mailCellParent);
+            mailCell.Init(this, mail, toggleGroup);
+            mailCells.Add(mailCell);
         }
     }
 }

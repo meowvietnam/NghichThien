@@ -76,7 +76,66 @@ namespace CreateCharacter
             PhongCus = new HashSet<ItemRef>(other.PhongCus);
             TrangSucs = new HashSet<ItemRef>(other.TrangSucs);
             LinhDans = new HashSet<ItemRef>(other.LinhDans);
-
+        }
+        public void AddToInventory(RewardItems rewardItems)
+        {
+            var items = rewardItems.OtherItems;
+            var furnaces = rewardItems.Furnaces;
+            foreach (var furnaceData in furnaces)
+            {
+                Furnaces.Add(furnaceData);
+            }
+            foreach (var itemRef in items)
+            {
+                Add(itemRef);                
+            }
+        }
+        public void Add(ItemRef itemRef)
+        {
+            var type = itemRef.Type;
+            if (type == ItemType.Herb)
+            {
+                Add(Herbs, itemRef);
+            }
+            else if (type == ItemType.LinhDan)
+            {
+                Add(LinhDans, itemRef);
+            }
+            else if (type == ItemType.ThanThong)
+            {
+                Add(ThanThongs, itemRef);
+            }
+            else if (type == ItemType.CongPhap)
+            {
+                Add(CongPhaps, itemRef);
+            }
+            else if (type == ItemType.VuKhi)
+            {
+                Add(VuKhis, itemRef);
+            }
+            else if (type == ItemType.PhongCu)
+            {
+                Add(PhongCus, itemRef);
+            }
+            else if (type == ItemType.TrangSuc)
+            {
+                Add(TrangSucs, itemRef);
+            }
+            else if (type == ItemType.Recipe)
+            {
+                Add(Recipes, itemRef);
+            }
+        }
+        private void Add(HashSet<ItemRef> inventory, ItemRef itemRef)
+        {
+            if (inventory.TryGetValue(itemRef, out var item))
+            {
+                item.Count += itemRef.Count;
+            }
+            else
+            {
+                inventory.Add(itemRef);
+            }
         }
     }
 }
