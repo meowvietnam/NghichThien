@@ -57,9 +57,12 @@ namespace AllMaps
             if (time > 10)
             {
                 time = 0;
-                foreach (var mailCell in mailCells)
+                lock (mailCells)
                 {
-                    mailCell.UpdateTime();
+                    foreach (var mailCell in mailCells)
+                    {
+                        mailCell.UpdateTime();
+                    }
                 }
             }
         }
@@ -68,13 +71,7 @@ namespace AllMaps
         {
             foreach (var mail in mails)
             {
-                var mailUI = Instantiate(mailUIPrefab, mailUIParent);
-                mailUI.Init(mail);
-                mailUIs.Add(mailUI);
-                mailUI.SetActive(false);
-                var mailCell = Instantiate(mailCellPrefab, mailCellParent);
-                mailCell.Init(this, mail, toggleGroup);
-                mailCells.Add(mailCell);
+                AddMail(mail);
             }
         }
 
@@ -188,6 +185,16 @@ namespace AllMaps
                     mailUI.MarkAsClaimed();
                 }
             }
+        }
+        public void AddMail(Mail mail)
+        {
+            var mailUI = Instantiate(mailUIPrefab, mailUIParent);
+            mailUI.Init(mail);
+            mailUIs.Add(mailUI);
+            mailUI.SetActive(false);
+            var mailCell = Instantiate(mailCellPrefab, mailCellParent);
+            mailCell.Init(this, mail, toggleGroup);
+            mailCells.Add(mailCell);
         }
     }
 }

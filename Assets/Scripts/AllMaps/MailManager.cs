@@ -84,5 +84,12 @@ namespace AllMaps
                 NotifyGroup.Instance.Show(message);
             });
         }
+        public void AddMail(Mail mail)
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                mailPanel.AddMail(mail);
+            });
+        }
     }
 }

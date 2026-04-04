@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Network;
 using Network.Extensions;
 using Sirenix.OdinInspector;
@@ -7,7 +8,7 @@ using UnityEngine;
 namespace LuyenDan
 {
     [Serializable]
-    public class ItemRef : IMemorySerializable<ItemRef>
+    public class ItemRef : IMemorySerializable<ItemRef>,IEquatable<ItemRef>
     {
         [field: SerializeField] public int Id { get; set; }
         [field: SerializeField] public ItemType Type { get; set; }
@@ -50,7 +51,14 @@ namespace LuyenDan
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, Type);
+            return HashCode.Combine(Id, (int)Type);
+        }
+
+        public bool Equals(ItemRef other)
+        {
+            if (other is null) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Id == other.Id && Type == other.Type;
         }
     }
 }

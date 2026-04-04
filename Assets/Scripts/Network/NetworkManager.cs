@@ -6,7 +6,9 @@ using Network.Callback;
 using Network.ClientState;
 using Network.Models;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using UnityEngine;
+
 namespace Network
 {
     public class NetworkManager : MonoBehaviour
@@ -22,35 +24,33 @@ namespace Network
         [ShowInInspector, ReadOnly] public int Id { get; private set; }
         [ShowInInspector, ReadOnly] public string Key { get; private set; }
 
-        [ShowInInspector, ReadOnly]
+        [ShowInInspector, TabGroup("Character"), HideLabel, InlineProperty]
         public CharacterData CharacterData
         {
-            get
+            get => client?.CharacterData;
+            private set
             {
-                if (client == null)
-                {
-                    return null;
-                }
-                return client.CharacterData;
             }
         }
+
         private void Awake()
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+
         public async Task Connect(IUnauthenticatedClientCallback callback)
         {
             try
             {
                 var tcpClient = new System.Net.Sockets.TcpClient();
                 await tcpClient.ConnectAsync(host, port);
-                unauthenticatedClient = new UnauthenticatedClient(tcpClient,callback,false);
+                unauthenticatedClient = new UnauthenticatedClient(tcpClient, callback, false);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.Log(e);
-                callback.OnConnectResult(new ConnectResult() { Success = false ,Message= connectFailMessage });
+                callback.OnConnectResult(new ConnectResult() { Success = false, Message = connectFailMessage });
             }
         }
 
@@ -61,16 +61,19 @@ namespace Network
                 actionQueue.Dequeue().Invoke();
             }
         }
+
         public void SetIdentity(int id, string key)
         {
             Id = id;
             Key = key;
         }
+
         public void AuthenticatedSuccess(IAuthCallback callback)
         {
             client = new Client(unauthenticatedClient);
             client.ChangeState(new AuthState(callback));
         }
+
         public void Invoke(Action action)
         {
             lock (actionQueue)

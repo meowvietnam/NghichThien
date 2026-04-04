@@ -40,8 +40,11 @@ namespace Network
         ClaimAllMailsResult = 114,
         ClaimMail = 115,
         ClaimMailResult = 116,
-        
+        NewMail = 119,
         GetInventory = 195,
         GetInventoryResult = 196,
+        
+        AddItems = 209,
+        AddItemsResult = 210,
     }
 }

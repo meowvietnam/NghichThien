@@ -77,6 +77,19 @@ namespace CreateCharacter
             TrangSucs = new HashSet<ItemRef>(other.TrangSucs);
             LinhDans = new HashSet<ItemRef>(other.LinhDans);
         }
+        public void AddToInventory(RewardItems rewardItems)
+        {
+            var items = rewardItems.OtherItems;
+            var furnaces = rewardItems.Furnaces;
+            foreach (var furnaceData in furnaces)
+            {
+                Furnaces.Add(furnaceData);
+            }
+            foreach (var itemRef in items)
+            {
+                Add(itemRef);                
+            }
+        }
         public void Add(ItemRef itemRef)
         {
             var type = itemRef.Type;
@@ -115,10 +128,13 @@ namespace CreateCharacter
         }
         private void Add(HashSet<ItemRef> inventory, ItemRef itemRef)
         {
-            if (!inventory.Add(itemRef))
+            if (inventory.TryGetValue(itemRef, out var item))
             {
-                var item = inventory.First(x => x.Id == itemRef.Id);
                 item.Count += itemRef.Count;
+            }
+            else
+            {
+                inventory.Add(itemRef);
             }
         }
     }

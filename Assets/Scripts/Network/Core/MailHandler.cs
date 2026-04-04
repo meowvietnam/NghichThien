@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using AllMaps;
 using CreateCharacter;
 using LuyenDan;
 using Network.Callback;
@@ -85,6 +86,13 @@ namespace Network.Core
                 ApplyClaim(result);
                 callback.OnClaimMails(result);
             }
+            else if (tag == MessageTag.NewMail)
+            {
+                var mail = reader.Read<Mail>();
+                var mails = Client.CharacterData.Mails;
+                mails.Add(mail);
+                callback.AddMail(mail);
+            }
         }
 
         private void ApplyClaim(RewardResult result)
@@ -98,24 +106,11 @@ namespace Network.Core
                     mail.IsClaim = true;
                 }
             }
-
             var inventory = Client.CharacterData.InventoryManager;
-            AddToInventory(inventory, result.RewardItems);
+            inventory.AddToInventory(result.RewardItems);
         }
 
-        private void AddToInventory(InventoryManager inventory, RewardItems rewardItems)
-        {
-            var items = rewardItems.OtherItems;
-            var furnaces = rewardItems.Furnaces;
-            foreach (var furnaceData in furnaces)
-            {
-                inventory.Furnaces.Add(furnaceData);
-            }
-            foreach (var itemRef in items)
-            {
-                inventory.Add(itemRef);                
-            }
-        }
+
 
         public void OnLeave()
         {
