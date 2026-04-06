@@ -16,7 +16,7 @@ namespace LuyenDan
     public class LuyenDanResources : ScriptableObject, IMemorySerializable<LuyenDanResources>
     {
         [TabGroup("Inventory")]
-        [field: SerializeField, ReadOnly]
+        [field: SerializeField]
         public List<Quality> Qualities { get; private set; }
 
         [field: SerializeField, ReadOnly] public List<TempFurnaceData> TempFurnaceDatas { get; private set; }

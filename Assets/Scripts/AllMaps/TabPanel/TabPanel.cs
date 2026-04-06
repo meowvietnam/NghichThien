@@ -490,7 +490,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
         item.Init(data, frame);
 
-        item.InitInventory(eTypeInventoryItem);
+        item.InitInventory(eTypeInventoryItem,null,null);
 
        
     }
@@ -577,7 +577,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                     return;
                 } 
                     
-                itemSelect.Show(currentItem.itemData, new List<RectTransform> { bag.GetComponent<RectTransform>()}, (resultRect) =>
+                itemSelect.Show(currentItem, new List<RectTransform> { bag.GetComponent<RectTransform>()}, (resultRect) =>
                 {
                     if (resultRect != null)
                     {
@@ -623,7 +623,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
                         
 
-                    itemSelect.Show(currentItem.itemData, listItemsCongPhapSlot.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
+                    itemSelect.Show(currentItem, listItemsCongPhapSlot.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
                     {
                         if (resultRect != null)
                         {
@@ -740,7 +740,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                     return;
                 }
 
-                itemSelect.Show(currentItem.itemData, new List<RectTransform> { bag.GetComponent<RectTransform>() }, (resultRect) =>
+                itemSelect.Show(currentItem, new List<RectTransform> { bag.GetComponent<RectTransform>() }, (resultRect) =>
                 {
                     if (resultRect != null)
                     {
@@ -782,7 +782,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                     ThanThong thanThong = currentItem.itemData as ThanThong;
                   
 
-                    itemSelect.Show(currentItem.itemData, listItemSlotThanThongs.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
+                    itemSelect.Show(currentItem, listItemSlotThanThongs.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
                     {
                         if (resultRect != null)
                         {
@@ -834,7 +834,11 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     [Header("--- Inventory ---")]
     [SerializeField] private List<ItemInventory> listItemSlotEquipment;
     [SerializeField] private CharacterGraphic charPageInventory;
-    private void InitVisualItemInventory(ItemInventory item, IItemData data , ItemRef itemRef)
+    [SerializeField] private Sprite spriteTTInven;
+    [SerializeField] private Sprite spriteCPInven;
+
+
+    private void InitVisualItemInventory(ItemInventory item, IItemData data, ItemRef itemRef)
     {
         Sprite frame = null;
         if (data != null)
@@ -847,14 +851,22 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             item.Init(new BaseItemData { nameItem = data.Name, spriteItem = data.Icon }, frame);
 
         }
-        if(itemRef != null)
+        if (itemRef != null)
         {
             item.InitCount(itemRef.Count);
+            if (itemRef.Type == ItemType.ThanThong)
+            {
+                item.InitIcon(spriteTTInven, frame);
+            }
+            if ( itemRef.Type == ItemType.CongPhap)
+            {
+                item.InitIcon(spriteCPInven, frame);
+            }
         }    
         charPageInventory.SetGender(Client.Instance.CharacterData.Gender);
         charPageInventory.SetSkin(Client.Instance.CharacterData.Skins);
 
-        item.InitInventory(ETypeInventoryItem.Item);
+        item.InitInventory(ETypeInventoryItem.Item,itemRef,data);
 
 
 
@@ -972,7 +984,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 {
 
 
-                    itemSelect.Show(currentItem.itemData, listItemSlotThanThongs.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
+                    itemSelect.Show(currentItem, listItemSlotThanThongs.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
                     {
                         
                     });

@@ -429,7 +429,7 @@ public class UINPCJiaoHu : PanelGroup
 
         item.Init(data, frame);
 
-        item.InitInventory(ETypeInventoryItem.Skill);
+        item.InitInventory(ETypeInventoryItem.Skill,null,null);
 
 
     }

@@ -9,6 +9,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using CreateCharacter.CharStats;
+using LuyenDan.Inventory;
+using Network;
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -157,6 +161,120 @@ public class GameConfig : BaseBehaviour
         }
         return null;
     }
+    public static Dictionary<Tier, string> TextWithTier = new Dictionary<Tier, string>
+    {
+        {Tier.NhatPham, "Nhất Phẩm"},
+        {Tier.NhiPham, "Nhị Phẩm"},
+        {Tier.TamPham, "Tam Phẩm"},
+        {Tier.TuPham, "Tứ Phẩm"},
+        {Tier.NguPham, "Ngũ Phẩm"},
+        {Tier.LucPham, "Lục Phẩm"},
+    };
+    public static Dictionary<Tier, int> PriceVatLieuWithTier = new Dictionary<Tier, int>
+    {
+        {Tier.NhatPham, 4},
+        {Tier.NhiPham, 36},
+        {Tier.TamPham, 265},
+        {Tier.TuPham, 2285},
+        {Tier.NguPham, 22912},
+        {Tier.LucPham, 256608},
+    };
+    public static Dictionary<Tier, int> PriceHerbWithTier = new Dictionary<Tier, int>
+    {
+        {Tier.NhatPham, 3},
+        {Tier.NhiPham, 12},
+        {Tier.TamPham, 135},
+        {Tier.TuPham, 1440},
+        {Tier.NguPham, 13500},
+        {Tier.LucPham, 81000},
+    };
+    public static Dictionary<Tier, int> PriceFurnaceWithTier = new Dictionary<Tier, int>
+    {
+        {Tier.NhatPham, 200},
+        {Tier.NhiPham, 600},
+        {Tier.TamPham, 2000},
+        {Tier.TuPham, 5000},
+        {Tier.NguPham, 7500},
+        {Tier.LucPham, 10000},
+    };
+    public static Dictionary<BaseSkill.ETierSkill, int> PriceTTWithTier = new Dictionary<BaseSkill.ETierSkill, int>
+    {
+        {BaseSkill.ETierSkill.NhanGiaiHa, 25},
+        {BaseSkill.ETierSkill.NhanGiaiTrung, 50},
+        {BaseSkill.ETierSkill.NhanGiaiThuong, 75},
+        {BaseSkill.ETierSkill.DiaGiaiHa, 600},
+        {BaseSkill.ETierSkill.DiaGiaiTrung, 800},
+        {BaseSkill.ETierSkill.DiaGiaiThuong, 1000},
+        {BaseSkill.ETierSkill.ThienGiaiHa, 18000},
+        {BaseSkill.ETierSkill.ThienGiaiTrung, 30000},
+        {BaseSkill.ETierSkill.ThienGiaiThuong, 50000},
+
+    };
+    public static Dictionary<BaseSkill.ETierSkill, int> PriceCPWithTier = new Dictionary<BaseSkill.ETierSkill, int>
+     {
+        {BaseSkill.ETierSkill.NhanGiaiHa, 50},
+        {BaseSkill.ETierSkill.NhanGiaiTrung, 75},
+        {BaseSkill.ETierSkill.NhanGiaiThuong, 100},
+        {BaseSkill.ETierSkill.DiaGiaiHa, 2000},
+        {BaseSkill.ETierSkill.DiaGiaiTrung, 3000},
+        {BaseSkill.ETierSkill.DiaGiaiThuong, 4000},
+        {BaseSkill.ETierSkill.ThienGiaiHa, 240000},
+        {BaseSkill.ETierSkill.ThienGiaiTrung, 400000},
+        {BaseSkill.ETierSkill.ThienGiaiThuong, 600000},
+
+    };
+    public static int GetPriceItemSell(ItemRef itemRef , IItemData data)
+    {
+        int price = 0;
+        switch (itemRef.Type)
+        {
+            case ItemType.Herb:
+                price = PriceHerbWithTier[data.Tier];
+                break;
+            case ItemType.Furnace:
+                int basePrice = PriceFurnaceWithTier[data.Tier];
+                int currentDoBen = Client.Instance.CharacterData.InventoryManager.Furnaces.FirstOrDefault(x => x.Ref.Id == itemRef.Id).Durability;
+                price = basePrice * currentDoBen / 100;
+
+                break;
+            case ItemType.LinhDan:
+                if(data != null && data is LinhDan linhDan)
+                {
+                    price = linhDan.PriceV130;
+                }    
+
+                break;
+            case ItemType.ThanThong:
+                price = PriceTTWithTier[Pool.Get<GameConfig>().GetCongPhapWithId(itemRef.Id).eTierSkill];
+
+                break;
+            case ItemType.CongPhap:
+                price = PriceCPWithTier[Pool.Get<GameConfig>().GetThanThongWithId(itemRef.Id).eTierSkill];
+
+                break;
+            case ItemType.VuKhi:
+                break;
+            case ItemType.PhongCu:
+                break;
+            case ItemType.TrangSuc:
+                break;
+            case ItemType.Recipe:
+                if (data != null && data is RecipeData recipe)
+                {
+                    price = recipe.LinhDan.PriceV130 * 5;
+                }
+
+                break;
+            default:
+                break;
+        }
+        return price;
+    }
+    public static int GetPriceItemBuy(ItemRef itemRef, IItemData data)
+    {
+        return GetPriceItemSell(itemRef, data) * 3;
+    }
+
     [Button]
     private void OnUpdateDataThanThong()
     {

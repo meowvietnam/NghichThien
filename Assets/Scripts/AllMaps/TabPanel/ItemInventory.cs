@@ -1,5 +1,7 @@
 ﻿using Base;
 using LongDH.LongDHModules;
+using LuyenDan;
+using LuyenDan.Inventory;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -28,7 +30,7 @@ public class ItemInventory : BaseItemUI
         textCount.text = count.ToString();
 
     }
-    public void InitInventory(ETypeInventoryItem type)
+    public void InitInventory(ETypeInventoryItem type,ItemRef itemRefInven,IItemData iItemData , EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
     {
        
         if(itemData == null)
@@ -50,7 +52,7 @@ public class ItemInventory : BaseItemUI
         {
             SetEventButton(btnShowInfor, () =>
             {
-                ToolTipItems.Instance.InitShow(itemData,frame.sprite,qualityFull.sprite,textName.color,type);
+                ToolTipItems.Instance.InitShow(itemData,frame.sprite,qualityFull.sprite,textName.color,type, itemRefInven, iItemData , eActionShowItemInfor);
             });
         }    
         textName.text = itemData.nameItem;

@@ -70,10 +70,9 @@ public class ItemSelect : MonoBehaviour
             Debug.Log("action up null");
         }    
     }
-    public void Show(BaseItemData data, List<RectTransform> targetOverlay, Action<RectTransform> actionPointerUpOverlay)
+    public void Show(ItemInventory itemInventory, List<RectTransform> targetOverlay, Action<RectTransform> actionPointerUpOverlay)
     {
-        this.itemData = data;
-        this.img.sprite = data.spriteItem;
+        this.img.sprite = itemInventory.icon.sprite;
         this.img.SetNativeSize();
         this.overlays = targetOverlay;
         this.actionPointerUp = actionPointerUpOverlay;
