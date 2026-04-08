@@ -34,7 +34,7 @@ public class NgoDaoSlot : BaseBehaviour , INetworkEvent.ILearnNgoDao
     }
     public void LearnAndUpdateData()
     {
-        Observer.Notify(EventList.Network.LEARN_NGODAO, ngoDaoSO.Id, this);
+        Observer.Notify(EventList.Network.LEARN_NGODAO, this, ngoDaoSO.Id);
         //ngoDaoSO.Learn(this);
 
     }

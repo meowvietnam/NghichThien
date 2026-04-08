@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using LongDH.LongDHModules;
 using LuyenDan;
 using Network.Core;
 using Network.Extensions;
@@ -43,7 +44,58 @@ namespace Network
             }
             Client.Send(MessageTag.AddItems, items);
         }
-
+        [Button]
+        public void AddFullItem()
+        {
+            var gameConfig = Pool.Get<GameConfig>();
+            List<ItemRef> items = new List<ItemRef>();
+            foreach (var item in gameConfig.thanThongs)
+            {
+                items.Add(new ItemRef
+                {
+                    Id = item.Id,
+                    Count = 1,
+                    Type = ItemType.ThanThong
+                });
+            }
+            foreach (var item in gameConfig.congPhaps)
+            {
+                items.Add(new ItemRef
+                {
+                    Id = item.Id,
+                    Count = 1,
+                    Type = ItemType.CongPhap
+                });
+            }
+            foreach (var item in LuyenDanResources.Instance.Recipes)
+            {
+                items.Add(new ItemRef
+                {
+                    Id = item.Id,
+                    Count = 1,
+                    Type = ItemType.Recipe
+                });
+            }
+            foreach (var item in LuyenDanResources.Instance.HerbDatas)
+            {
+                items.Add(new ItemRef
+                {
+                    Id = item.Id,
+                    Count = 1,
+                    Type = ItemType.Herb
+                });
+            }
+            foreach (var item in LuyenDanResources.Instance.TempFurnaceDatas)
+            {
+                items.Add(new ItemRef
+                {
+                    Id = item.Id,
+                    Count = 1,
+                    Type = ItemType.Furnace
+                });
+            }
+            AddItems(items);
+        }
         public void StartListen()
         {
             var module = Client.CoreModule;

@@ -52,9 +52,9 @@ public class ToolTipItems : BaseBehaviour
         Instance = this;
         this.gameObject.SetActive(false);
     }
-    public void InitShow(BaseItemData itemData,Sprite frameSprite, Sprite qualityFull , Color colorName , ETypeInventoryItem eTypeItemShow , ItemRef itemRef, IItemData iItemData , EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)
+    public void InitShow(ItemInventory itemInventory,Sprite frameSprite, Sprite qualityFull , Color colorName , ETypeInventoryItem eTypeItemShow , ItemRef itemRef, IItemData iItemData , EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)
     {
-
+        if (itemInventory.itemData == null) return;
         this.gameObject.SetActive(true);
         SetEventButton(btnMask, () =>
         {
@@ -63,12 +63,12 @@ public class ToolTipItems : BaseBehaviour
         priceText.transform.parent.gameObject.SetActive(false);
         prefabIconRequire.transform.parent.parent.gameObject.SetActive(false);
         descTextItem.transform.parent.gameObject.SetActive(false);
-        this.itemData = itemData;
+        this.itemData = itemInventory.itemData;
         this.itemRef = itemRef;
         this.iItemData = iItemData;
         this.nameText.text = itemData.nameItem;
         this.eActionShowItem = eTypeActionShow;
-        InitIcon(this.itemData.spriteItem, frameSprite);
+        InitIcon(itemInventory.icon.sprite, frameSprite);
         SetQualityFull(qualityFull);
         SetColorName(colorName);
         ResetKeyword(prefabLeftInfor);

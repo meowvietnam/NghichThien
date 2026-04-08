@@ -185,24 +185,36 @@ public class UINPCJiaoHu : PanelGroup
 
         SetEventButton(btnBack, () =>
         {
+            HideAllPop();
             npcPop.Hide();
         });
         SetEventButton(btnXemXet, () =>
         {
+            HideAllPop();
             xemXetPop.Show();
             ShowPopDoXet();
         });
         SetEventButton(btnTangQua, () =>
         {
+            HideAllPop();
             tangQuaPop.Show();
 
         });
         SetEventButton(btnThinhGiao, () =>
         {
+            HideAllPop();
             thinhGiaoPop.Show();
             InitPopThinhGiao();
 
         });
+    }
+    private void HideAllPop()
+    {
+        npcPop.Hide();
+        xemXetPop.Hide();
+        tangQuaPop.Hide();
+        thinhGiaoPop.Hide();
+
     }
     private void SetSliderVisual(ETypeSkillRelationShip eType)
     {

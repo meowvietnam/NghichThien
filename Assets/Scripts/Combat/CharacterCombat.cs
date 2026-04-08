@@ -267,35 +267,105 @@ public class CharacterCombat : MonoBehaviour
         currentCharGender.AnimationState.SetAnimation(0, ANIM_DIE, false);
         
     }
-    private int activeTextCount = 0; // Đếm số text đang bay
-    public void SetTextDameAnim(string content,Color color)
+    // Khai báo struct để lưu trữ thông tin text chờ hiển thị
+    public struct DamageQueueData
+    {
+        public string content;
+        public Color color;
+    }
+
+    private Queue<DamageQueueData> damageQueue = new Queue<DamageQueueData>();
+    private bool isProcessingQueue = false;
+    private int activeTextCount = 0;
+
+    public void SetTextDameAnim(string content, Color color)
+    {
+        // Thêm dữ liệu vào hàng đợi
+        damageQueue.Enqueue(new DamageQueueData { content = content, color = color });
+
+        // Nếu chưa có tiến trình nào chạy thì bắt đầu xử lý hàng đợi
+        if (!isProcessingQueue)
+        {
+            StartCoroutine(ProcessDamageQueue());
+        }
+    }
+    private IEnumerator ProcessDamageQueue()
+    {
+        isProcessingQueue = true;
+
+        while (damageQueue.Count > 0)
+        {
+            DamageQueueData data = damageQueue.Dequeue();
+            SpawnDamageText(data.content, data.color);
+
+            // Chờ 0.35 giây trước khi cho phép text tiếp theo xuất hiện
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        isProcessingQueue = false;
+    }
+
+    private void SpawnDamageText(string content, Color color)
     {
         var textDame = CombatManager.GetTextDame();
         textDame.transform.SetParent(CombatManager.parentUIFight);
-        textDame.transform.localScale = Vector3.one * 0.75f ;
+
+        // 1. Reset scale về 1 trước khi bắt đầu hiệu ứng (theo yêu cầu của bạn)
+        textDame.transform.localScale = Vector3.one * 0.65f;
+
         textDame.transform.position = this.transform.position;
-        // 1. Tính toán vị trí dựa trên số lượng text đang hiện có
-        // Mỗi text mới sẽ cao hơn text trước đó khoảng 50 đơn vị (tùy chỉnh số này)
-        float offset = activeTextCount * 75f;
-        Vector3 startPos = new Vector3(0, 350 + offset, 0);
-        textDame.transform.localPosition += startPos;
 
-        activeTextCount++; // Tăng biến đếm khi hiện text mới
+        // 1. Định nghĩa biên độ ngẫu nhiên cơ bản (khi chỉ có 1-2 text)
+        int baseRandomRange = 50;
 
-        // 2. Thiết lập nội dung và màu sắc
-        Color targetColor = color;
+        // 2. Tính toán biên độ dựa trên activeTextCount
+        // Ví dụ: Mỗi text đang hiện hữu sẽ cộng thêm 40 đơn vị vào khoảng random
+        int currentRange = baseRandomRange + (activeTextCount * 35);
+
+        // Giới hạn max để tránh text bay quá xa khỏi màn hình (ví dụ max là 350)
+        currentRange = Mathf.Min(currentRange, 150);
+
+        // 3. Thực hiện Random trong khoảng đã tính
+        int randomX = UnityEngine.Random.Range(-currentRange, currentRange);
+
+        // Áp dụng vào vị trí
+        Vector3 startOffset = new Vector3(randomX, 300 + (activeTextCount * 30f), 0);
+        textDame.transform.localPosition += startOffset;
+
+        activeTextCount++;
+
+        // Thiết lập nội dung
         textDame.text = content;
-        targetColor.a = 1;
-        textDame.color = targetColor;
+        color.a = 1;
+        textDame.color = color;
 
-        float time = 1f;
-        float flyHeight = 200;
+        // 2. TÍNH TOÁN THỜI GIAN (Càng đông càng nhanh)
+        // 1.5f là thời gian gốc khi chỉ có 1 text.
+        // Mỗi text tiếp theo sẽ giảm thời gian đi 0.1s (hoặc theo tỉ lệ bạn muốn)
+        float time = 1.5f - (activeTextCount * 0.1f);
 
-        // 3. Hiệu ứng
-        textDame.transform.DOLocalMoveY(textDame.transform.localPosition.y + flyHeight, time);
+        // Khống chế thời gian tối thiểu (ví dụ không nhanh hơn 0.6s) để người chơi kịp nhìn
+        time = Mathf.Max(time, 0.6f);
+        float flyHeight = 150f;
+
+        // --- HIỆU ỨNG TỔNG HỢP ---
+        DOVirtual.DelayedCall(time / 4, () =>
+        {
+            activeTextCount--;
+            if (activeTextCount < 0) activeTextCount = 0;
+        });
+            
+        // Di chuyển lên trên
+        textDame.transform.DOLocalMoveY(textDame.transform.localPosition.y + flyHeight, time/4)
+            .SetEase(Ease.OutQuad);
+
+        // 2. Co nhỏ scale về 0
+        textDame.transform.DOScale(Vector3.zero, time/2)
+            .SetEase(Ease.InBack); // InBack tạo cảm giác thu nhỏ hơi nhanh dần
+
+        // 3. Mờ dần và thu hồi
         textDame.DOFade(0, time).OnComplete(() => {
-            activeTextCount--; // Giảm biến đếm khi text biến mất
-            if (activeTextCount < 0) activeTextCount = 0; // Safety check
+         
             textDame.gameObject.Recycle();
         });
     }
@@ -1135,6 +1205,12 @@ public class CharacterCombat : MonoBehaviour
             int hotraoMax = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.HoTrao, 0);
             hotraoMax = Mathf.Clamp(hotraoMax, 0, int.MaxValue);
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, dame);
+            int textDameHoTrao = hotraoMax > dame ? dame : hotraoMax;
+            if(hotraoMax > 0 )
+            {
+                SetTextDameAnim($"-{textDameHoTrao}", Color.cyan);
+            }    
+
             dame -= hotraoMax;
         }    
         dame = Mathf.Clamp(dame, 0, int.MaxValue);
@@ -1146,7 +1222,7 @@ public class CharacterCombat : MonoBehaviour
         characterStatsTemp.hp -= dame;
         characterStatsTemp.hp = Mathf.Clamp(characterStatsTemp.hp, 0, characterStatsTemp.hpMax);
 
-        if (dame >= 0)
+        if (dame > 0)
         {
             StartAnimHit();
             SetTextDameAnim($"-{dame}", isDef ? Color.red : Color.purple);

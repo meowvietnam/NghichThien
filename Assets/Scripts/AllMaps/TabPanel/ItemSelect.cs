@@ -72,6 +72,8 @@ public class ItemSelect : MonoBehaviour
     }
     public void Show(ItemInventory itemInventory, List<RectTransform> targetOverlay, Action<RectTransform> actionPointerUpOverlay)
     {
+        if (itemInventory.itemData == null) return; 
+        this.itemData = itemInventory.itemData;
         this.img.sprite = itemInventory.icon.sprite;
         this.img.SetNativeSize();
         this.overlays = targetOverlay;

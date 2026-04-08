@@ -25,6 +25,9 @@ public class ItemInventory : BaseItemUI
     [SerializeField] public Text textName;
     [SerializeField] private GameObject leftUpMask;
     [SerializeField] private Button btnShowInfor;
+    private void OnEnable()
+    {
+    }
     public void InitCount(int count)
     {
         textCount.text = count.ToString();
@@ -52,7 +55,7 @@ public class ItemInventory : BaseItemUI
         {
             SetEventButton(btnShowInfor, () =>
             {
-                ToolTipItems.Instance.InitShow(itemData,frame.sprite,qualityFull.sprite,textName.color,type, itemRefInven, iItemData , eActionShowItemInfor);
+                ToolTipItems.Instance.InitShow(this,frame.sprite,qualityFull.sprite,textName.color,type, itemRefInven, iItemData , eActionShowItemInfor);
             });
         }    
         textName.text = itemData.nameItem;
@@ -158,6 +161,12 @@ public class ItemInventory : BaseItemUI
     private void GetBtnShowInfor()
     {
         btnShowInfor = transform.GetChild(3).GetComponent<Button>();
+
+    }
+    [Button]
+    private void SetHasItemFalse()
+    {
+       hasItem.gameObject.SetActive(false);
 
     }
     [Button]

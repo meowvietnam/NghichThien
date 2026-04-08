@@ -46,6 +46,7 @@ public static partial class EventList
         public const string UNEQUIP_THANTHONG = "GamePlay.UNEQUIP_THANTHONG";
 
         public const string UPDATE_CONGPHAP = "GamePlay.UPDATE_CONGPHAP";
+        public const string TU_LUYEN = "GamePlay.TU_LUYEN";
 
     }
 }

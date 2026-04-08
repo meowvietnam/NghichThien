@@ -1,12 +1,11 @@
 ﻿using AllMaps;
 using Base;
 using CreateCharacter;
-using DG.Tweening;
 using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using Network;
-using Sirenix.Utilities;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -65,15 +64,32 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 item.panel.SetActive(true);
                 if(item.typePanel == ETypePanel.CongPhap)
                 {
-                    InitCongPhap();
+                    if (coroutineInitCongPhap != null)
+                    {
+                        StopCoroutine(coroutineInitCongPhap);
+                        coroutineInitCongPhap = null;
+                    }
+                    coroutineInitCongPhap = StartCoroutine(InitCongPhap());
+
                 }
                 if (item.typePanel == ETypePanel.ThanThong)
                 {
-                    InitThanThong();
+                    if(coroutineInitThanThong != null)
+                    {
+                        StopCoroutine(coroutineInitThanThong);
+                        coroutineInitThanThong = null;
+                    }
+                    coroutineInitThanThong = StartCoroutine(InitThanThong());
                 }
                 if (item.typePanel == ETypePanel.VatPham)
                 {
-                    InitInventory();
+                    if (coroutineInitVatPham != null)
+                    {
+                        StopCoroutine(coroutineInitVatPham);
+                        coroutineInitVatPham = null;
+                    }
+                    coroutineInitVatPham = StartCoroutine(InitInventory(3));
+
                 }
 
             });
@@ -525,8 +541,8 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         phuTu3,
         phuTu4,
     };
-  
-    public void InitCongPhap()
+    private Coroutine coroutineInitCongPhap;
+    public IEnumerator InitCongPhap(int countDelay = 10)
     {
         ETypeSlotCP GetTypeSlotCP(RectTransform hitRect)
         {
@@ -582,8 +598,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                     if (resultRect != null)
                     {
 
-                        Observer.Notify(EventList.Network.UNEQUIP_CONGPHAP, currentItem.itemData.Id ,this, GetTypeSlotCP(currentItem.GetComponent<RectTransform>()));
-
+                        Observer.Notify(EventList.Network.UNEQUIP_CONGPHAP,this, GetTypeSlotCP(currentItem.GetComponent<RectTransform>()));
                         // Cách viết chuẩn
 
 
@@ -605,6 +620,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         for (int i = 0; i < itemInven.Count; i++)
         {// TẠO BIẾN TẠM Ở ĐÂY
             int index = i;
+            if (i % countDelay == 0) yield return null;
             var currentItem = itemInven[i];
             BaseSkill data = null;
             if(i<= listCongPhapData.Count-1)
@@ -658,7 +674,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                                 //equip
                                 //congPhap.EquipCongPhap();
                                 //save player cong phap equip id
-                                Observer.Notify(EventList.Network.EQUIP_CONGPHAP, congPhap.Id , this,GetTypeSlotCP(resultRect));
+                                Observer.Notify(EventList.Network.EQUIP_CONGPHAP, this, GetTypeSlotCP(resultRect), congPhap.Id);
                                 // Cách viết chuẩn
                                 
 
@@ -702,19 +718,18 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     }
     [Header("--- Thần Thông ---")]
     [SerializeField] private List<ItemInventory> listItemSlotThanThongs;
-    public void InitThanThong()
+    private Coroutine coroutineInitThanThong = null;
+    public IEnumerator InitThanThong(int countDelay = 10)
     {
         
         var Player = Pool.Get<Player>();
         var GameConfig = Pool.Get<GameConfig>();
-        List<ItemInventory> itemInven = new List<ItemInventory>();
         List<ThanThong> listThanThongData = new List<ThanThong>();
 
         foreach (var item in Player.characterStatsBase.thanThongOwner)
         {
             listThanThongData.Add(GameConfig.GetThanThongWithId(item.Value));
         }
-        InitItemBag(listThanThongData.Count, ref itemInven);
         // load data 
         for (int i = 0; i < listItemSlotThanThongs.Count; i++)
         {
@@ -744,7 +759,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 {
                     if (resultRect != null)
                     {
-                        Observer.Notify(EventList.Network.UNEQUIP_THANTHONG, listItemSlotThanThongs.IndexOf(currentItem), this);
+                        Observer.Notify(EventList.Network.UNEQUIP_THANTHONG,this, listItemSlotThanThongs.IndexOf(currentItem));
                         Debug.Log("updaet thần thông id unequip");
                         // Cách viết chuẩn
 
@@ -762,11 +777,14 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
             });
         }
-
+        List<ItemInventory> itemInven = new List<ItemInventory>();
+        InitItemBag(listThanThongData.Count, ref itemInven);
         //equip
         for (int i = 0; i < itemInven.Count; i++)
         {// TẠO BIẾN TẠM Ở ĐÂY
             int index = i;
+            // Cứ mỗi 10 item data thì nghỉ 1 frame
+            if (i % countDelay == 0) yield return null;
             var currentItem = itemInven[i];
             BaseSkill data = null;
             if (i <= listThanThongData.Count - 1)
@@ -804,7 +822,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                                 //equip
                                 //congPhap.EquipCongPhap();
                                 //save player thần thông equip id
-                                Observer.Notify(EventList.Network.EQUIP_THANTHONG, listItemSlotThanThongs.IndexOf(currentItem), this , thanThong.Id);
+                                Observer.Notify(EventList.Network.EQUIP_THANTHONG, this, listItemSlotThanThongs.IndexOf(currentItem) , thanThong.Id);
                                 // Cách viết chuẩn
 
 
@@ -836,7 +854,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     [SerializeField] private CharacterGraphic charPageInventory;
     [SerializeField] private Sprite spriteTTInven;
     [SerializeField] private Sprite spriteCPInven;
-
+    private Coroutine coroutineInitVatPham;
 
     private void InitVisualItemInventory(ItemInventory item, IItemData data, ItemRef itemRef)
     {
@@ -871,7 +889,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
 
     }
-    public void InitInventory()
+    public IEnumerator InitInventory(int countDelay = 10)
     {
         var characterData = Client.Instance.CharacterData;
         var GameConfig = Pool.Get<GameConfig>();
@@ -945,6 +963,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         for (int i = 0; i < itemInven.Count; i++)
         {// TẠO BIẾN TẠM Ở ĐÂY
             int index = i;
+            if (i % countDelay == 0) yield return null;
             var currentItem = itemInven[i];
             IItemData data = null;
             ItemRef itemRef = null;

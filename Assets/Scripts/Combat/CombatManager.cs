@@ -64,7 +64,7 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private Text textHpChar2;
     [SerializeField] private ScrollRect statusChar2;
 
-    [SerializeField] private Text prefabTextDame;
+    [SerializeField] public Text prefabTextDame;
     [SerializeField] private Tooltip buffInfor;
     [SerializeField] public Transform parentUIFight => buffInfor.transform.parent;
 

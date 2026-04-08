@@ -245,11 +245,11 @@ public class GameConfig : BaseBehaviour
 
                 break;
             case ItemType.ThanThong:
-                price = PriceTTWithTier[Pool.Get<GameConfig>().GetCongPhapWithId(itemRef.Id).eTierSkill];
+                price = PriceTTWithTier[Pool.Get<GameConfig>().GetThanThongWithId(itemRef.Id).eTierSkill];
 
                 break;
             case ItemType.CongPhap:
-                price = PriceCPWithTier[Pool.Get<GameConfig>().GetThanThongWithId(itemRef.Id).eTierSkill];
+                price = PriceCPWithTier[Pool.Get<GameConfig>().GetCongPhapWithId(itemRef.Id).eTierSkill];
 
                 break;
             case ItemType.VuKhi:
@@ -400,6 +400,10 @@ public class GameConfig : BaseBehaviour
     public static int GetIntTuoiTac(TimeSpan timeSpanTuoiTac)
     {
         return (int)(timeSpanTuoiTac.TotalDays / 365);
-    }    
-  
+    }
+    public static TimeSpan ConvertMonthToTimeSpan(int months)
+    {
+        // Quy ước 1 tháng = 30 ngày
+        return TimeSpan.FromDays(months * 30);
+    }
 }
