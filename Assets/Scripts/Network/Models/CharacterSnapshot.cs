@@ -23,9 +23,6 @@ namespace Network.Models
         public Dictionary<string, string> Skins { get; set; }
         public Gender Gender { get; set; }
         public string Name { get; set; }
-        public int IdTrangSuc { get; set; }
-        public int IdPhongCu { get; set; }
-        public int IdVuKhi { get; set; }
         public List<int> ThanThongEquip { get; set; }
         public int PhuTu4Used { get; set; }
         public int PhuTu3Used { get; set; }
@@ -60,9 +57,6 @@ namespace Network.Models
             this.PhuTu3Used = c.PhuTu3Used;
             this.PhuTu4Used = c.PhuTu4Used;
             this.ThanThongEquip = c.ThanThongEquip;
-            this.IdVuKhi = c.IdVuKhi;
-            this.IdPhongCu = c.IdPhongCu;
-            this.IdTrangSuc = c.IdTrangSuc;
         }
 
         public void Deserialize(IReader reader, ref CharacterSnapshot value)
@@ -87,9 +81,6 @@ namespace Network.Models
             value.PhuTu3Used = reader.Read<int>();
             value.PhuTu4Used = reader.Read<int>();
             value.ThanThongEquip = reader.ReadArray<int>().ToList();
-            value.IdVuKhi = reader.Read<int>();
-            value.IdPhongCu = reader.Read<int>();
-            value.IdTrangSuc = reader.Read<int>();
         }
 
         public int ByteSize()
@@ -102,9 +93,7 @@ namespace Network.Models
                                    + TocDoBay.ByteSize() + ThanThuc.ByteSize()
                                    + ChuTu1Used.ByteSize() + ChuTu2Used.ByteSize()
                                    + PhuTu1Used.ByteSize() + PhuTu2Used.ByteSize() + PhuTu3Used.ByteSize()
-                                   + PhuTu4Used.ByteSize() + ThanThongEquip.ByteSize() + IdVuKhi.ByteSize()
-                                   + IdPhongCu.ByteSize()
-                                   + IdTrangSuc.ByteSize();
+                                   + PhuTu4Used.ByteSize() + ThanThongEquip.ByteSize();
         }
         public void Serialize(IWriter writer)
         {
@@ -130,9 +119,6 @@ namespace Network.Models
             writer.Write(PhuTu3Used);
             writer.Write(PhuTu4Used);
             writer.WriteArray(ThanThongEquip);
-            writer.Write(IdVuKhi);
-            writer.Write(IdPhongCu);
-            writer.Write(IdTrangSuc);
         }
     }
 }

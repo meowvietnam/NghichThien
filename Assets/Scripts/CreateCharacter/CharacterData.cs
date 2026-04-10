@@ -62,16 +62,6 @@ namespace CreateCharacter
         [field: SerializeField, TabGroup("Inventory")]
         public InventoryManager InventoryManager { get; set; } = new();
 
-        [field: SerializeField, TabGroup("Inventory")]
-        public int IdVuKhi { get; set; }
-
-        [field: SerializeField, TabGroup("Inventory")]
-        public int IdPhongCu { get; set; }
-
-        [field: SerializeField, TabGroup("Inventory")]
-        public int IdTrangSuc { get; set; }
-
-
 // ========================= SKILLS ========================
         [field: SerializeField, TabGroup("Skills")]
         public List<int> ThanThongOwner { get; set; } = new();
@@ -160,9 +150,6 @@ namespace CreateCharacter
             DanCombatUsed = new(clone.DanCombatUsed);
             IdCurrentNode = clone.IdCurrentNode;
             CurrentEnergy = clone.CurrentEnergy;
-            IdVuKhi = clone.IdVuKhi;
-            IdPhongCu = clone.IdPhongCu;
-            IdTrangSuc = clone.IdTrangSuc;
             RelationShip = new(clone.RelationShip);
             CreatedAt = clone.CreatedAt;
             Mails = new(clone.Mails);
@@ -189,9 +176,6 @@ namespace CreateCharacter
                    + IdCurrentNode.ByteSize()
                    + CurrentEnergy.ByteSize()
                    + InventoryManager.ByteSize()
-                   + IdVuKhi.ByteSize()
-                   + IdPhongCu.ByteSize()
-                   + IdTrangSuc.ByteSize()
                    + RelationShip.ByteSize()
                    + CreatedAt.ByteSize()
                    + Mails.ByteSize();
@@ -227,9 +211,6 @@ namespace CreateCharacter
             writer.Write(IdCurrentNode);
             writer.Write(CurrentEnergy);
             writer.Write(InventoryManager);
-            writer.Write(IdVuKhi);
-            writer.Write(IdPhongCu);
-            writer.Write(IdTrangSuc);
             writer.WriteArray(RelationShip);
             writer.Write(CreatedAt);
             writer.WriteArray(Mails);
@@ -263,9 +244,6 @@ namespace CreateCharacter
             value.IdCurrentNode = reader.Read<int>();
             value.CurrentEnergy = reader.Read<int>();
             value.InventoryManager = reader.Read<InventoryManager>();
-            value.IdVuKhi = reader.Read<int>();
-            value.IdPhongCu = reader.Read<int>();
-            value.IdTrangSuc = reader.Read<int>();
             value.RelationShip = reader.ReadArray<KeyValuePair<int, int>>().ToDictionary(x => x.Key, x => x.Value);
             value.CreatedAt = reader.Read<DateTime>();
             value.Mails = reader.ReadArray<Mail>().ToList();
