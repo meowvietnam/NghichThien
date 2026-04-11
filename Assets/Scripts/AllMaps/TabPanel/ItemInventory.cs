@@ -20,7 +20,7 @@ public class ItemInventory : BaseItemUI
 
     
     [SerializeField] private GameObject hasItem;
-    [SerializeField] private Image qualityFull;
+    [SerializeField] public Image qualityFull;
     [SerializeField] private Text textCount;
     [SerializeField] public Text textName;
     [SerializeField] private GameObject leftUpMask;

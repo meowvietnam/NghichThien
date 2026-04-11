@@ -52,4 +52,9 @@ public class INetworkEvent
         void SuccessLinhNgo();
         void FailLinhNgo(string message);
     }
+    public interface IDotPhaCongPhap // Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessDotPhaCongPhap();
+        void FailDotPhaCongPhap(string message);
+    }
 }

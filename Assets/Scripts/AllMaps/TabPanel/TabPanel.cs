@@ -145,42 +145,43 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
     private void UpdatePlayerStats()
     {
-        var player = Pool.Get<Player>();
+        var CharacterDatas = Client.Instance.CharacterData;
+
+        var CharacterStats = Client.Instance.CharacterData.Stats;
         var gameConfig = Pool.Get<GameConfig>();
-        hpText.text = $"{player.characterStatsBase.hp.Value}/{player.characterStatsBase.hpMax.Value}";
+        hpText.text = $"{CharacterStats.Hp}/{CharacterStats.SinhMenh}";
 
-        tuviText.text = $"{player.characterStatsBase.currentExp.Value}/{gameConfig.inforLevels[Client.Instance.CharacterData.Level - 1].tuviRequireNextLevel}";
-
-        iconLevel.sprite = listSpriteIconLevel[player.characterStatsBase.level - 1];
+        tuviText.text = $"{CharacterDatas.CurrentExp}/{gameConfig.inforLevels[Client.Instance.CharacterData.Level - 1].tuviRequireNextLevel}";
+        iconLevel.sprite = listSpriteIconLevel[CharacterDatas.Level - 1];
         iconLevel.SetNativeSize();
-        nameText.text = player.characterStatsBase.nameUser;
+        nameText.text = CharacterDatas.Name;
 
         levelText.text = GameConfig.levelWithText[Client.Instance.CharacterData.Level];
-        tuoitacText.text = player.characterStatsBase.tuoiTac.Value.ToString();
-        thonguyenText.text = player.characterStatsBase.thoNguyen.Value.ToString();
-        tuChatText.text = player.characterStatsBase.tuChat.Value.ToString();
-        thanThucText.text = player.characterStatsBase.thanThuc.Value.ToString();
-        ngoTinhText.text = player.characterStatsBase.ngoTinh.Value.ToString();
-        donTocText.text = player.characterStatsBase.tocDoBay.Value.ToString();
+        tuoitacText.text = CharacterDatas.Stats.TuoiTac.ToString();
+        thonguyenText.text = CharacterDatas.Stats.ThoNguyen.ToString();
+        tuChatText.text = CharacterDatas.Stats.TuChat.ToString();
+        thanThucText.text = CharacterDatas.Stats.ThanThuc.ToString();
+        ngoTinhText.text = CharacterDatas.Stats.NgoTinh.ToString();
+        donTocText.text = CharacterDatas.Stats.TocDoBay.ToString();
         //tocDoTuLuyenText.text = player.characterStatsBase.tocDoBay.Value.ToString();
-        var getTamCanh = GameConfig.GetTamCanhValue(player.characterStatsBase.tamCanh);
-        var getDanDoc = GameConfig.GetDanDocValue(player.characterStatsBase.danDoc);
+        var getTamCanh = GameConfig.GetTamCanhValue(CharacterDatas.Stats.TamCanh);
+        var getDanDoc = GameConfig.GetDanDocValue(CharacterDatas.Stats.DanDoc);
 
         tamCanhText.text = getTamCanh.name;
         tamCanhText.color = listColorTamCanh[getTamCanh.index];
-        tamCanhValue.text = $"{player.characterStatsBase.tamCanh.Value}/{getTamCanh.nextMilestone}";
+        tamCanhValue.text = $"{CharacterDatas.Stats.TamCanh}/{getTamCanh.nextMilestone}";
         tamCanhIcon.sprite = listSpriteIconTamCanh[getTamCanh.index];
 
         danDocText.text = getDanDoc.text;
         danDocText.color = listColorDanDoc[getDanDoc.index];
-        danDocValue.text = $"{player.characterStatsBase.danDoc.Value}/{getDanDoc.nextMilestone}";
+        danDocValue.text = $"{CharacterDatas.Stats.DanDoc}/{getDanDoc.nextMilestone}";
         danDocIcon.sprite = listSpriteIconDanDoc[getDanDoc.index];
 
-        kimText.text = player.characterStatsBase.percentKim.Value.ToString();
-        mocText.text = player.characterStatsBase.percentMoc.Value.ToString();
-        thuyText.text = player.characterStatsBase.percentThuy.Value.ToString();
-        hoaText.text = player.characterStatsBase.percentHoa.Value.ToString();
-        thoText.text = player.characterStatsBase.percentTho.Value.ToString();
+        kimText.text = CharacterDatas.Stats.Kim.ToString();
+        mocText.text = CharacterDatas.Stats.Moc.ToString();
+        thuyText.text = CharacterDatas.Stats.Thuy.ToString();
+        hoaText.text = CharacterDatas.Stats.Hoa.ToString();
+        thoText.text = CharacterDatas.Stats.Tho.ToString();
 
     }
     [Header("--- NGỘ ĐẠO ---")]
@@ -279,13 +280,12 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     }
     public void SetNgoDaoDiem()
     {
-        ngoDaoDiemText.text = Pool.Get<Player>().characterStatsBase.ngoDaoDiem.Value.ToString();
+        ngoDaoDiemText.text = Client.Instance.CharacterData.NgoDaoDiem.ToString();
 
     }
     public void InitNgoDaoSlotCanLearn(List<RectTransform> listSkill)
     {
-        var player = Pool.Get<Player>();
-
+        var CharacterDatas = Client.Instance.CharacterData;
         // reset
         foreach (var item in listSkill)
         {
@@ -304,15 +304,15 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             for (int i = 0; i < item.transform.childCount; i++)
             {
                 NgoDaoSlot ngoDaoSlot = item.transform.GetChild(i).GetComponent<NgoDaoSlot>();
-                if (player.characterStatsBase.ngoDaoSaves.Any(x => x == ngoDaoSlot.ngoDaoSO.Id))
+                if (CharacterDatas.NgoDaoSaves.Any(x => x == ngoDaoSlot.ngoDaoSO.Id))
                 {
                     ngoDaoSlot.LearnedVisual();
                 }
             }
         }
 
-        var camNgoThisPage = player.characterStatsBase.camNgoSaves.FirstOrDefault(x => x.id == listNgoDaoResources[indexThisPage].Id);
-        for (int i = 0; i < NgoDaoResource.GetLevelCamNgo(camNgoThisPage.value.Value); i++)
+        var camNgoThisPage = CharacterDatas.CamNgoSaves.FirstOrDefault(x => x.Key == listNgoDaoResources[indexThisPage].Id);
+        for (int i = 0; i < NgoDaoResource.GetLevelCamNgo(camNgoThisPage.Value); i++)
         {
             var item = listSkill[i];
             bool isAllUnLearn = true;
@@ -324,13 +324,13 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 {
                     isAllUnLearn = false;
                 }
-                if (player.characterStatsBase.ngoDaoDiem >= ngoDaoSlot.ngoDaoSO.require)
+                if (CharacterDatas.NgoDaoDiem >= ngoDaoSlot.ngoDaoSO.require)
                 {
                     bool allDone = true;
                     foreach (var eRequire in ngoDaoSlot.ngoDaoSO.eTypeRequire)
                     {
-                        var camNgo = player.characterStatsBase.camNgoSaves.FirstOrDefault(x => x.id == listNgoDaoResources[(int)eRequire-1].Id);
-                        int levelCamNgo = NgoDaoResource.GetLevelCamNgo(camNgo.value.Value);
+                        var camNgo = CharacterDatas.CamNgoSaves.FirstOrDefault(x => x.Key == listNgoDaoResources[(int)eRequire-1].Id);
+                        int levelCamNgo = NgoDaoResource.GetLevelCamNgo(camNgo.Value);
                         if (levelCamNgo < i + 1) // i là level index hàng hiện tại
                         {
                             allDone = false;
@@ -361,12 +361,12 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
 
         }
-        var player = Pool.Get<Player>();
-        foreach (var item in player.characterStatsBase.camNgoSaves)
+        var CharacterDatas = Client.Instance.CharacterData;
+        foreach (var item in CharacterDatas.CamNgoSaves)
         {
-            if(item.id == ngoDaoResource.Id)
+            if(item.Key == ngoDaoResource.Id)
             {
-                int levelIndex = NgoDaoResource.GetLevelCamNgo(item.value.Value) -1;
+                int levelIndex = NgoDaoResource.GetLevelCamNgo(item.Value) -1;
                
                 int totalStages = NgoDaoResource.CamNgoRequire.Length; // 5 mốc: 1k, 8k, 30k, 70k, 150k
 
@@ -383,7 +383,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 else
                 {
                     int currentLevel = levelIndex + 1;
-                    float currentExp = (float)item.value.Value;
+                    float currentExp = (float)item.Value;
 
                     // Mốc hiện tại và mốc kế tiếp
                     float minExpOfLevel = NgoDaoResource.CamNgoRequire[levelIndex];
@@ -398,7 +398,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 }
 
 
-                camNgoText.text = item.value.Value.ToString();
+                camNgoText.text = item.Value.ToString();
                 if(levelIndex != -1)
                 {
 
@@ -590,7 +590,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     private Coroutine coroutineInitCongPhap;
     ETypeSlotCP GetTypeSlotCP(RectTransform hitRect)
     {
-        var stats = Pool.Get<Player>().characterStatsBase;
+        var CharacterDatas = Client.Instance.CharacterData;
 
         if (hitRect == donThuat.GetComponent<RectTransform>()) return ETypeSlotCP.DonThuat;
         else if (hitRect == phuTu1.GetComponent<RectTransform>()) return ETypeSlotCP.PhuTu1;
@@ -605,21 +605,21 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     }
     public void InitCongPhap(int countDelay = 10)
     {
-        
 
-        var Player = Pool.Get<Player>();
+
+        var CharacterDatas = Client.Instance.CharacterData;
         var GameConfig = Pool.Get<GameConfig>();
 
       
 
         // load data 
-        InitVisualItemSkill(donThuat, GameConfig.GetCongPhapWithId(Player.characterStatsBase.donThuatUsed));
-        InitVisualItemSkill(chuTu, GameConfig.GetCongPhapWithId(Player.characterStatsBase.chuTu1Used));
-        InitVisualItemSkill(nguyenAnh, GameConfig.GetCongPhapWithId(Player.characterStatsBase.chuTu2Used));
-        InitVisualItemSkill(phuTu1, GameConfig.GetCongPhapWithId(Player.characterStatsBase.phuTu1Used));
-        InitVisualItemSkill(phuTu2, GameConfig.GetCongPhapWithId(Player.characterStatsBase.phuTu2Used));
-        InitVisualItemSkill(phuTu3, GameConfig.GetCongPhapWithId(Player.characterStatsBase.phuTu3Used));
-        InitVisualItemSkill(phuTu4, GameConfig.GetCongPhapWithId(Player.characterStatsBase.phuTu4Used));
+        InitVisualItemSkill(donThuat, GameConfig.GetCongPhapWithId(CharacterDatas.DonThuatUsed));
+        InitVisualItemSkill(chuTu, GameConfig.GetCongPhapWithId(CharacterDatas.ChuTu1Used));
+        InitVisualItemSkill(nguyenAnh, GameConfig.GetCongPhapWithId(CharacterDatas.ChuTu2Used));
+        InitVisualItemSkill(phuTu1, GameConfig.GetCongPhapWithId(CharacterDatas.PhuTu1Used));
+        InitVisualItemSkill(phuTu2, GameConfig.GetCongPhapWithId(CharacterDatas.PhuTu2Used));
+        InitVisualItemSkill(phuTu3, GameConfig.GetCongPhapWithId(CharacterDatas.PhuTu3Used));
+        InitVisualItemSkill(phuTu4, GameConfig.GetCongPhapWithId(CharacterDatas.PhuTu4Used));
 
         // unEquip
         foreach (var currentItem in listItemsCongPhapSlot)
@@ -667,15 +667,15 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     private IEnumerator LoadBagCongPhap(int countDelay = 10,bool isAdd = false)
     {
 
-        var Player = Pool.Get<Player>();
+        var CharacterDatas = Client.Instance.CharacterData;
         var GameConfig = Pool.Get<GameConfig>();
         List<ItemInventory> itemInven = new List<ItemInventory>();
         List<CongPhap> listCongPhapData = new List<CongPhap>();
         int startIndex = 0;
        
-        foreach (var item in Player.characterStatsBase.congPhapOwner)
+        foreach (var item in CharacterDatas.CongPhapOwner)
         {
-            listCongPhapData.Add(GameConfig.GetCongPhapWithId(item.id));
+            listCongPhapData.Add(GameConfig.GetCongPhapWithId(item.Key));
         }
         if (isAdd)
         {
@@ -801,8 +801,8 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     private Coroutine coroutineInitThanThong = null;
     public void InitThanThong(int countDelay = 10)
     {
-        
-        var Player = Pool.Get<Player>();
+
+        var CharacterDatas = Client.Instance.CharacterData;
         var GameConfig = Pool.Get<GameConfig>();
         
         // load data 
@@ -810,9 +810,9 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         {
             var item = listItemSlotThanThongs[i];
             ThanThong thanThongData = null;
-            if(i < Player.characterStatsBase.thanThongEquip.Count)
+            if(i < CharacterDatas.ThanThongEquip.Count)
             {
-                thanThongData = GameConfig.GetThanThongWithId(Player.characterStatsBase.thanThongEquip[i]);
+                thanThongData = GameConfig.GetThanThongWithId(CharacterDatas.ThanThongEquip[i]);
             }    
 
             InitVisualItemSkill(item, thanThongData);
@@ -869,9 +869,9 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
         List<ThanThong> listThanThongData = new List<ThanThong>();
 
-        foreach (var item in Player.characterStatsBase.thanThongOwner)
+        foreach (var item in Client.Instance.CharacterData.ThanThongOwner)
         {
-            listThanThongData.Add(GameConfig.GetThanThongWithId(item.Value));
+            listThanThongData.Add(GameConfig.GetThanThongWithId(item));
         }
         List<ItemInventory> itemInven = new List<ItemInventory>();
         if (isAdd)

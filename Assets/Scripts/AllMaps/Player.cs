@@ -18,9 +18,8 @@ namespace AllMaps
         [SerializeField] private float speed = 2;
         public bool IsSwordRiding { get; private set; }
         public bool IsMoving { get; private set; }
-        [SerializeField] public CharacterStatsSecure characterStatsBase;
 
-        
+
         public void Init(Gender gender, bool isSwordRiding)
         {
             this.IsSwordRiding = isSwordRiding;
@@ -40,62 +39,8 @@ namespace AllMaps
             Pool.Set(this);
 
             // test
-            characterStatsBase = (new CharacterStatsSecure()
-            {
-                level = 9,
-                percentKim = 60,
-                percentMoc = 10,
-                percentThuy = 10,
-                percentHoa = 10,
-                percentTho = 10,
-                hp = 200,
-                hpMax = 300,
-                currentExp = 200,
-                tocDoBay = 10,
-                thoNguyen = 1000,
-                thanThuc = 30,
-                tamCanh = 50,
-                danDoc = 50,
-                tuoiTac = 18,
-                tuChat = 100,
-                ngoTinh = 100,
-                nameUser = "Viêm Đế",
-                ngoDaoDiem = 100,
-                camNgoSaves = new List<CharacterStatsSecure.DataSave>
-                {
-                    new CharacterStatsSecure.DataSave { id = 1, value = 9000 },
-                    new CharacterStatsSecure.DataSave { id = 2, value = 0 },
-
-                },
-                ngoDaoSaves = new List<SecureInt>
-                {
-                    101,20
-
-                },
-                congPhapOwner  = new List<CharacterStatsSecure.DataSave>
-                {
-                    new CharacterStatsSecure.DataSave { id = 211, value = 1 },
-                    new CharacterStatsSecure.DataSave { id = 304, value = 2 },
-                    new CharacterStatsSecure.DataSave { id = 749, value = 2 },
-                    new CharacterStatsSecure.DataSave { id = 402, value = 2 },
-                    new CharacterStatsSecure.DataSave { id = 214, value = 2 },
-                    new CharacterStatsSecure.DataSave { id = 548, value = 2 },
-
-                },
-                thanThongEquip = new List<SecureInt>
-                {1,2,3,4,5,6},
-                thanThongOwner = new List<SecureInt>
-                {1,2,3,4,5,6,7,8,9,10,11},
-                donThuatUsed = 0,
-                chuTu1Used = 0,
-                chuTu2Used = 0,
-                phuTu1Used = 0,
-                phuTu2Used = 0,
-                phuTu3Used = 0,
-                phuTu4Used = 0,
-            });
-
         }
+          
         public void SetPosition(Vector2 position)
         {
             tf.position = position;
