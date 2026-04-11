@@ -116,7 +116,7 @@ namespace CreateCharacter
                     Client.Instance.SetChar(characterData);
                     AdminPanel.Instance.StartListen();
                     progressBar.DoKill(() => {  });
-                    SceneManager.LoadSceneAsync("AllMaps");
+                    StartCoroutine(GameConfig.LoadSceneWithDelay("AllMaps",5));
                 }
                 else
                 {

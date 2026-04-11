@@ -5,6 +5,7 @@ using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using Network;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,32 +65,29 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 item.panel.SetActive(true);
                 if(item.typePanel == ETypePanel.CongPhap)
                 {
-                    if (coroutineInitCongPhap != null)
-                    {
-                        StopCoroutine(coroutineInitCongPhap);
-                        coroutineInitCongPhap = null;
-                    }
-                    coroutineInitCongPhap = StartCoroutine(InitCongPhap());
+                    InitCongPhap();
+                    scrollRectBag.onValueChanged.RemoveAllListeners();
+                    scrollRectBag.onValueChanged.AddListener((vec) => {
+                        OnScrollChanged(vec, LoadBagCongPhap);
+                    });
 
                 }
                 if (item.typePanel == ETypePanel.ThanThong)
                 {
-                    if(coroutineInitThanThong != null)
-                    {
-                        StopCoroutine(coroutineInitThanThong);
-                        coroutineInitThanThong = null;
-                    }
-                    coroutineInitThanThong = StartCoroutine(InitThanThong());
+                    InitThanThong();
+                    scrollRectBag.onValueChanged.RemoveAllListeners();
+                    scrollRectBag.onValueChanged.AddListener((vec) => {
+                        OnScrollChanged(vec, LoadBagThanThong);
+                    });
                 }
                 if (item.typePanel == ETypePanel.VatPham)
                 {
-                    if (coroutineInitVatPham != null)
-                    {
-                        StopCoroutine(coroutineInitVatPham);
-                        coroutineInitVatPham = null;
-                    }
-                    coroutineInitVatPham = StartCoroutine(InitInventory(3));
-
+                  
+                    InitInventory(3);
+                    scrollRectBag.onValueChanged.RemoveAllListeners();
+                    scrollRectBag.onValueChanged.AddListener((vec) => {
+                        OnScrollChanged(vec, LoadBagVatPham);
+                    });
                 }
 
             });
@@ -452,13 +450,72 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     [SerializeField] private Sprite[] spriteFrames;
     [SerializeField] private Color[] colorQualitys;
     [SerializeField] private ItemSelect itemSelect;
-    public void InitItemBag(int count, ref List<ItemInventory> listItemInventory)
+    public bool isLoadingMore = false;
+    public ScrollRect scrollRectBag => prefab5Item.GetComponentInParent<ScrollRect>();
+
+
+    // Hàm OnScrollChanged sửa lại tham số truyền vào
+    void OnScrollChanged(Vector2 value, Func<int, bool, IEnumerator> loadBagFunc)
     {
-        bag.gameObject.SetActive(true);
-        for (int i = 0; i < prefab5Item.transform.parent.childCount; i++)
+        Debug.Log("co vao onscrooll change");
+
+        if (value.y < 0.05f && !isLoadingMore)
         {
-            prefab5Item.transform.parent.GetChild(i).gameObject.SetActive(false);
+            // Kiểm tra xem dữ liệu còn để load không trước khi gọi
+            // (Ví dụ: compare số lượng UI hiện có với tổng số data thật)
+            StartCoroutine(TriggerLoadMore(loadBagFunc));
         }
+    }
+    // Sử dụng delegate trả về IEnumerator thay vì Action để có thể yield return
+    IEnumerator TriggerLoadMore(Func<int, bool, IEnumerator> loadBagFunc)
+    {
+        isLoadingMore = true;
+        Debug.Log("co vao trigger load more");
+
+        // Gọi trực tiếp hàm Coroutine và chờ nó chạy xong
+        yield return StartCoroutine(loadBagFunc(10, true));
+
+        // Đợi một chút để tránh việc gọi liên tục khi user giữ chuột ở đáy
+        yield return new WaitForSeconds(0.5f);
+        isLoadingMore = false;
+    }
+    private ItemInventory GetItemCurrentActiveFromBag()
+    {
+        for (int i = prefab5Item.transform.parent.childCount - 1; i >0; i--)
+        {
+            var item5 = prefab5Item.transform.parent.GetChild(i);
+            if(!item5.gameObject.activeSelf)
+            {
+                continue;
+            }
+            for (int j = item5.transform.childCount - 1; j>0; j--)
+            {
+                var currentItem = item5.transform.GetChild(j).GetComponent<ItemInventory>();
+                if (currentItem.itemData != null)
+                {
+                    Debug.Log("GetItemCurrentActiveFromBag: " + currentItem.itemData.nameItem);
+                    return currentItem;
+                }    
+            }    
+        }
+        return null;
+    }    
+    public void InitItemBag(int count, ref List<ItemInventory> listItemInventory,bool isAdd = false)
+    {
+        int totalMax = 30;
+        if(count >= totalMax)
+        {
+            count = totalMax;
+        }    
+        bag.gameObject.SetActive(true);
+        if(!isAdd)
+        {
+            for (int i = 0; i < prefab5Item.transform.parent.childCount; i++)
+            {
+                prefab5Item.transform.parent.GetChild(i).gameObject.SetActive(false);
+            }
+
+        }    
         if (count <= 0) return; // Không có item thì không làm gì cả
 
         // Ví dụ: 3/5 = 0.6 -> làm tròn lên 1
@@ -467,23 +524,12 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
          
         for (int i = 0; i < spawnCount; i++)
         {
-            GameObject item5 = null;
-              
-            if (prefab5Item.transform.parent.childCount > 1 && i + 1 < prefab5Item.transform.parent.childCount) // vì cái đầu tiên là prefab
-            {
-                item5 = prefab5Item.transform.parent.GetChild(i+1).gameObject;
-            }
-            if(item5 == null)
-            {
-                item5 = Instantiate(prefab5Item, prefab5Item.transform.parent); // Spawn prefab vào vị trí mong muốn
-
-            }
-
-            item5.gameObject.SetActive(true);
+            Transform item5 = GameConfig.GetItemPool(prefab5Item.transform);
             for (int j = 0; j < item5.transform.childCount; j++)
             {
                 ItemInventory item = item5.transform.GetChild(j).GetComponent<ItemInventory>();
                 item.itemData = null;
+                item.itemRef = null;
                 listItemInventory.Add(item);
                
             }
@@ -542,34 +588,29 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         phuTu4,
     };
     private Coroutine coroutineInitCongPhap;
-    public IEnumerator InitCongPhap(int countDelay = 10)
+    ETypeSlotCP GetTypeSlotCP(RectTransform hitRect)
     {
-        ETypeSlotCP GetTypeSlotCP(RectTransform hitRect)
-        {
-            var stats = Pool.Get<Player>().characterStatsBase;
+        var stats = Pool.Get<Player>().characterStatsBase;
 
-            if (hitRect == donThuat.GetComponent<RectTransform>()) return ETypeSlotCP.DonThuat;
-            else if (hitRect == phuTu1.GetComponent<RectTransform>()) return ETypeSlotCP.PhuTu1;
-            else if (hitRect == phuTu2.GetComponent<RectTransform>()) return ETypeSlotCP.PhuTu2;
-            else if (hitRect == phuTu3.GetComponent<RectTransform>()) return ETypeSlotCP.PhuTu3;
-            else if (hitRect == phuTu4.GetComponent<RectTransform>()) return ETypeSlotCP.PhuTu4;
-            else if (hitRect == chuTu.GetComponent<RectTransform>()) return ETypeSlotCP.ChuTu1;
-            else if (hitRect == nguyenAnh.GetComponent<RectTransform>()) return ETypeSlotCP.ChuTu2;
+        if (hitRect == donThuat.GetComponent<RectTransform>()) return ETypeSlotCP.DonThuat;
+        else if (hitRect == phuTu1.GetComponent<RectTransform>()) return ETypeSlotCP.PhuTu1;
+        else if (hitRect == phuTu2.GetComponent<RectTransform>()) return ETypeSlotCP.PhuTu2;
+        else if (hitRect == phuTu3.GetComponent<RectTransform>()) return ETypeSlotCP.PhuTu3;
+        else if (hitRect == phuTu4.GetComponent<RectTransform>()) return ETypeSlotCP.PhuTu4;
+        else if (hitRect == chuTu.GetComponent<RectTransform>()) return ETypeSlotCP.ChuTu1;
+        else if (hitRect == nguyenAnh.GetComponent<RectTransform>()) return ETypeSlotCP.ChuTu2;
 
-            // ... thêm các ô khác tương tự
-            return ETypeSlotCP.None;
-        }
+        // ... thêm các ô khác tương tự
+        return ETypeSlotCP.None;
+    }
+    public void InitCongPhap(int countDelay = 10)
+    {
+        
 
         var Player = Pool.Get<Player>();
         var GameConfig = Pool.Get<GameConfig>();
-        List<ItemInventory> itemInven = new List<ItemInventory>();
-        List<CongPhap> listCongPhapData = new List<CongPhap>();
 
-        foreach (var item in Player.characterStatsBase.congPhapOwner)
-        {
-            listCongPhapData.Add(GameConfig.GetCongPhapWithId(item.id));
-        }
-        InitItemBag(listCongPhapData.Count, ref itemInven);
+      
 
         // load data 
         InitVisualItemSkill(donThuat, GameConfig.GetCongPhapWithId(Player.characterStatsBase.donThuatUsed));
@@ -615,29 +656,68 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
             });
         }
+        if (coroutineInitCongPhap != null)
+        {
+            StopCoroutine(coroutineInitCongPhap);
+            coroutineInitCongPhap = null;
+        }
+        coroutineInitCongPhap = StartCoroutine(LoadBagCongPhap(countDelay));
 
+    }
+    private IEnumerator LoadBagCongPhap(int countDelay = 10,bool isAdd = false)
+    {
+
+        var Player = Pool.Get<Player>();
+        var GameConfig = Pool.Get<GameConfig>();
+        List<ItemInventory> itemInven = new List<ItemInventory>();
+        List<CongPhap> listCongPhapData = new List<CongPhap>();
+        int startIndex = 0;
+       
+        foreach (var item in Player.characterStatsBase.congPhapOwner)
+        {
+            listCongPhapData.Add(GameConfig.GetCongPhapWithId(item.id));
+        }
+        if (isAdd)
+        {
+
+            CongPhap cp = (CongPhap)GetItemCurrentActiveFromBag().itemData;
+            if (cp == null) yield break;
+         
+            startIndex = listCongPhapData.IndexOf(cp) + 1;
+            if(startIndex < listCongPhapData.Count-1)
+            {
+                InitItemBag(5, ref itemInven, isAdd);
+            }    
+
+
+        }
+        else
+        {
+            InitItemBag(listCongPhapData.Count, ref itemInven, isAdd);
+
+        }
         //equip
         for (int i = 0; i < itemInven.Count; i++)
         {// TẠO BIẾN TẠM Ở ĐÂY
-            int index = i;
+            int index = i+startIndex;
             if (i % countDelay == 0) yield return null;
             var currentItem = itemInven[i];
             BaseSkill data = null;
-            if(i<= listCongPhapData.Count-1)
+            if (index <= listCongPhapData.Count - 1)
             {
-                data = listCongPhapData[i];
+                data = listCongPhapData[index];
             }
             InitVisualItemSkill(currentItem, data);
             if (data != null)
             {
 
-                currentItem.InitAction(null,null, () =>
+                currentItem.InitAction(null, null, () =>
                 {
                     CongPhap congPhap = currentItem.itemData as CongPhap;
                     // 1. Lấy RectTransform của ô Độn Thuật để so sánh chính xác
                     RectTransform donThuatRect = donThuat.GetComponent<RectTransform>();
 
-                        
+
 
                     itemSelect.Show(currentItem, listItemsCongPhapSlot.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
                     {
@@ -645,7 +725,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                         {
 
                             var itemSlot = resultRect.GetComponent<ItemInventory>();
-                            
+
 
                             // 2. Kiểm tra điều kiện chặn
                             bool isDroppingIntoDonThuat = (resultRect == donThuatRect);
@@ -654,7 +734,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                                 bool isCPEquiped = listItemsCongPhapSlot.Any(x => x.itemData == congPhap);
                                 if (isDroppingIntoDonThuat && !congPhap.isDonThuat || itemSlot.itemData != null || isCPEquiped)
                                 {
-                                    if(isCPEquiped)
+                                    if (isCPEquiped)
                                     {
                                         NotifyGroup.Instance.Show("Công pháp đã được trang bị");
 
@@ -676,7 +756,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                                 //save player cong phap equip id
                                 Observer.Notify(EventList.Network.EQUIP_CONGPHAP, this, GetTypeSlotCP(resultRect), congPhap.Id);
                                 // Cách viết chuẩn
-                                
+
 
                             }
                         }
@@ -711,7 +791,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
                 });
             }
-            
+
 
         }
 
@@ -719,17 +799,12 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     [Header("--- Thần Thông ---")]
     [SerializeField] private List<ItemInventory> listItemSlotThanThongs;
     private Coroutine coroutineInitThanThong = null;
-    public IEnumerator InitThanThong(int countDelay = 10)
+    public void InitThanThong(int countDelay = 10)
     {
         
         var Player = Pool.Get<Player>();
         var GameConfig = Pool.Get<GameConfig>();
-        List<ThanThong> listThanThongData = new List<ThanThong>();
-
-        foreach (var item in Player.characterStatsBase.thanThongOwner)
-        {
-            listThanThongData.Add(GameConfig.GetThanThongWithId(item.Value));
-        }
+        
         // load data 
         for (int i = 0; i < listItemSlotThanThongs.Count; i++)
         {
@@ -777,12 +852,51 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
             });
         }
+        if (coroutineInitThanThong != null)
+        {
+            StopCoroutine(coroutineInitThanThong);
+            coroutineInitThanThong = null;
+        }
+        coroutineInitThanThong = StartCoroutine(LoadBagThanThong(countDelay));
+       
+    }
+    private IEnumerator LoadBagThanThong(int countDelay = 10, bool isAdd = false)
+    {
+
+        var Player = Pool.Get<Player>();
+        var GameConfig = Pool.Get<GameConfig>();
+        int startIndex = 0;
+
+        List<ThanThong> listThanThongData = new List<ThanThong>();
+
+        foreach (var item in Player.characterStatsBase.thanThongOwner)
+        {
+            listThanThongData.Add(GameConfig.GetThanThongWithId(item.Value));
+        }
         List<ItemInventory> itemInven = new List<ItemInventory>();
-        InitItemBag(listThanThongData.Count, ref itemInven);
+        if (isAdd)
+        {
+
+            ThanThong tt = (ThanThong)GetItemCurrentActiveFromBag().itemData;
+            if (tt == null) yield break;
+
+            startIndex = listThanThongData.IndexOf(tt) + 1;
+            if (startIndex < listThanThongData.Count - 1)
+            {
+                InitItemBag(5, ref itemInven, isAdd);
+            }
+
+
+        }
+        else
+        {
+            InitItemBag(listThanThongData.Count, ref itemInven, isAdd);
+
+        }
         //equip
         for (int i = 0; i < itemInven.Count; i++)
         {// TẠO BIẾN TẠM Ở ĐÂY
-            int index = i;
+            int index = i+startIndex;
             // Cứ mỗi 10 item data thì nghỉ 1 frame
             if (i % countDelay == 0) yield return null;
             var currentItem = itemInven[i];
@@ -798,7 +912,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 currentItem.InitAction(null, null, () =>
                 {
                     ThanThong thanThong = currentItem.itemData as ThanThong;
-                  
+
 
                     itemSelect.Show(currentItem, listItemSlotThanThongs.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
                     {
@@ -822,7 +936,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                                 //equip
                                 //congPhap.EquipCongPhap();
                                 //save player thần thông equip id
-                                Observer.Notify(EventList.Network.EQUIP_THANTHONG, this, listItemSlotThanThongs.IndexOf(currentItem) , thanThong.Id);
+                                Observer.Notify(EventList.Network.EQUIP_THANTHONG, this, listItemSlotThanThongs.IndexOf(currentItem), thanThong.Id);
                                 // Cách viết chuẩn
 
 
@@ -848,6 +962,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
 
         }
+
     }
     [Header("--- Inventory ---")]
     [SerializeField] private List<ItemInventory> listItemSlotEquipment;
@@ -867,7 +982,6 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             item.SetColorName(quality.Color);
             item.SetQualityFull(quality.Background);
             item.Init(new BaseItemData { nameItem = data.Name, spriteItem = data.Icon }, frame);
-
         }
         if (itemRef != null)
         {
@@ -881,36 +995,17 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 item.InitIcon(spriteCPInven, frame);
             }
         }    
-        charPageInventory.SetGender(Client.Instance.CharacterData.Gender);
-        charPageInventory.SetSkin(Client.Instance.CharacterData.Skins);
+       
 
         item.InitInventory(ETypeInventoryItem.Item,itemRef,data);
 
 
 
     }
-    public IEnumerator InitInventory(int countDelay = 10)
+    public void InitInventory(int countDelay = 10)
     {
-        var characterData = Client.Instance.CharacterData;
         var GameConfig = Pool.Get<GameConfig>();
-        List<ItemInventory> itemInven = new List<ItemInventory>();
-        List<ItemRef> itemDatas = new List<ItemRef>();
-
-        itemDatas.AddRange(characterData.InventoryManager.Herbs.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.Recipes.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.ThanThongs.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.CongPhaps.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.VuKhis.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.PhongCus.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.LinhDans.ToList());
-        // Sử dụng LINQ để trích xuất Ref từ mỗi phần tử trong furnaceDatas
-        var furnaceRefs = characterData.InventoryManager.Furnaces.Select(f => f.Ref).ToList();
-
-        // Thêm danh sách Ref vừa lấy được vào itemDatas
-        itemDatas.AddRange(furnaceRefs);
-        int totalItem = itemDatas.Count;
-        InitItemBag(totalItem, ref itemInven);
+      
         // load data equipment 
         for (int i = 0; i < listItemSlotEquipment.Count; i++)
         {
@@ -958,42 +1053,102 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
             //});
         }
-        
+        if (coroutineInitVatPham != null)
+        {
+            StopCoroutine(coroutineInitVatPham);
+            coroutineInitVatPham = null;
+        }
+        coroutineInitVatPham = StartCoroutine(LoadBagVatPham(countDelay));
+
+        charPageInventory.SetGender(Client.Instance.CharacterData.Gender);
+        charPageInventory.SetSkin(Client.Instance.CharacterData.Skins);
+
+    }
+    private IEnumerator LoadBagVatPham(int countDelay = 10, bool isAdd = false)
+    {
+        var characterData = Client.Instance.CharacterData;
+
+        var GameConfig = Pool.Get<GameConfig>();
+        int startIndex = 0;
+
+        List<ItemInventory> itemInven = new List<ItemInventory>();
+        List<ItemRef> itemDatas = new List<ItemRef>();
+
+        itemDatas.AddRange(characterData.InventoryManager.Herbs.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.Recipes.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.ThanThongs.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.CongPhaps.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.VuKhis.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.PhongCus.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.LinhDans.ToList());
+        // Sử dụng LINQ để trích xuất Ref từ mỗi phần tử trong furnaceDatas
+        var furnaceRefs = characterData.InventoryManager.Furnaces.Select(f => f.Ref).ToList();
+
+        // Thêm danh sách Ref vừa lấy được vào itemDatas
+        itemDatas.AddRange(furnaceRefs);
+        int totalItem = itemDatas.Count;
+
+        if (isAdd)
+        {
+
+            ItemRef refItem = GetItemCurrentActiveFromBag().itemRef;
+            if (refItem == null)
+            {
+                Debug.Log("ref item null");
+                yield break;
+            }
+
+            startIndex = itemDatas.IndexOf(refItem) + 1;
+            if (startIndex < itemDatas.Count - 1)
+            {
+                InitItemBag(5, ref itemInven,isAdd);
+            }
+
+
+        }
+        else
+        {
+            InitItemBag(totalItem, ref itemInven,isAdd);
+
+        }
+        Debug.Log("co vao load bag vat pham " + $"{itemInven.Count}" + "start index: " + startIndex);
+
         //set item inventỏy và action
         for (int i = 0; i < itemInven.Count; i++)
         {// TẠO BIẾN TẠM Ở ĐÂY
-            int index = i;
+            int index = i + startIndex;
             if (i % countDelay == 0) yield return null;
             var currentItem = itemInven[i];
             IItemData data = null;
             ItemRef itemRef = null;
-            if (i<itemDatas.Count)
+            if (i < itemDatas.Count)
             {
-                itemRef = itemDatas[i];
+                itemRef = itemDatas[index];
 
                 data = LuyenDanResources.Instance.FindItem(itemRef);
 
 
 
             }
-            if(data == null) // tức là k tìm đc hoặc nó là thanThong hoặc là CongPhap
+            if (data == null) // tức là k tìm đc hoặc nó là thanThong hoặc là CongPhap
             {
                 if (itemRef != null)
                 {
                     if (itemRef.Type == ItemType.ThanThong)
                     {
-                        InitVisualItemSkill(currentItem, GameConfig.FindThanThongWithItemRef(itemRef) , ETypeInventoryItem.Item);
+                        InitVisualItemSkill(currentItem, GameConfig.FindThanThongWithItemRef(itemRef), ETypeInventoryItem.Item);
 
 
                     }
                     else if (itemRef.Type == ItemType.CongPhap)
                     {
-                        InitVisualItemSkill(currentItem, GameConfig.FindCongPhapWithItemRef(itemRef) , ETypeInventoryItem.Item);
+                        InitVisualItemSkill(currentItem, GameConfig.FindCongPhapWithItemRef(itemRef), ETypeInventoryItem.Item);
 
                     }
                 }
             }
-            InitVisualItemInventory(currentItem, data,itemRef);
+            InitVisualItemInventory(currentItem, data, itemRef);
 
 
             if (data != null)
@@ -1005,7 +1160,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
                     itemSelect.Show(currentItem, listItemSlotThanThongs.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
                     {
-                        
+
                     });
                     //foreach (var item in listItemSlotThanThongs)
                     //{
@@ -1019,9 +1174,10 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
                 });
             }
-
+         
 
         }
+
     }
     public void SuccessEquipCongPhap()
     {

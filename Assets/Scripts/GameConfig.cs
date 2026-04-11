@@ -11,6 +11,8 @@ using UnityEngine.SceneManagement;
 using CreateCharacter.CharStats;
 using LuyenDan.Inventory;
 using Network;
+using System.Collections;
+
 
 
 #if UNITY_EDITOR
@@ -405,5 +407,48 @@ public class GameConfig : BaseBehaviour
     {
         // Quy ước 1 tháng = 30 ngày
         return TimeSpan.FromDays(months * 30);
+    }
+    // Hàm bổ trợ
+    public static IEnumerator LoadSceneWithDelay(string sceneName, float delay)
+    {
+        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
+
+        // Ngăn không cho scene tự động kích hoạt khi load xong
+        op.allowSceneActivation = false;
+
+        // Chờ đợi theo thời gian bạn muốn
+        yield return new WaitForSeconds(delay);
+
+        // Đợi thêm cho đến khi scene thực sự load xong trong background (progress đạt 0.9)
+        while (op.progress < 0.9f)
+        {
+            yield return null;
+        }
+
+        // Cuối cùng mới cho phép chuyển scene
+        op.allowSceneActivation = true;
+    }
+    public static T GetItemPool<T>(T prefabItem) where T : Component
+    {
+        // Lấy Transform của cha để duyệt qua các con
+        Transform parent = prefabItem.transform.parent;
+        T item = null;
+        // Duyệt từ index 1 (bỏ qua index 0 thường là chính cái prefab/template)
+        for (int i = 1; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+
+            // Nếu object con đang không hoạt động (đang rảnh trong pool)
+            if (!child.gameObject.activeSelf)
+            {
+                item = child.GetComponent<T>();
+                item.gameObject.SetActive(true);
+                return item;
+            }
+        }
+        item = Instantiate(prefabItem, parent);
+        item.gameObject.SetActive(true);
+        // Nếu không tìm thấy cái nào rảnh, khởi tạo cái mới
+        return item;
     }
 }

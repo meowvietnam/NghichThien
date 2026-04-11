@@ -35,7 +35,8 @@ public class ItemInventory : BaseItemUI
     }
     public void InitInventory(ETypeInventoryItem type,ItemRef itemRefInven,IItemData iItemData , EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
     {
-       
+
+        this.itemRef = itemRefInven;
         if(itemData == null)
         {
             btnShowInfor?.gameObject.SetActive(false);
