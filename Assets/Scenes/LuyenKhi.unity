@@ -3389,6 +3389,7 @@ GameObject:
   - component: {fileID: 113528691}
   - component: {fileID: 113528694}
   - component: {fileID: 113528693}
+  - component: {fileID: 113528695}
   m_Layer: 0
   m_Name: Item (1)
   m_TagString: Untagged
@@ -3412,9 +3413,9 @@ RectTransform:
   - {fileID: 1289418596}
   m_Father: {fileID: 1320708775}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 734.75995, y: -120.350006}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 186.74, y: 186.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &113528693
@@ -3455,6 +3456,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 113528690}
   m_CullTransparentMesh: 0
+--- !u!114 &113528695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113528690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3bf87e55ac24d17ad8c7405d849bb7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.SubEquipment
+  <Type>k__BackingField: 1
+  selectTypePage: {fileID: 5375901735016271965}
+  button: {fileID: 1778110745}
 --- !u!1 &114013373
 GameObject:
   m_ObjectHideFlags: 0
@@ -12083,7 +12099,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Khi\u1EBFn"
+  m_Text: "B\u1EA3o l\u1EC7nh"
 --- !u!222 &474268103
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12480,7 +12496,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Tr\u1EE5"
+  m_Text: "Gi\xE1p tr\u1EE5"
 --- !u!222 &486428105
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13009,6 +13025,7 @@ GameObject:
   - component: {fileID: 520213687}
   - component: {fileID: 520213689}
   - component: {fileID: 520213688}
+  - component: {fileID: 520213690}
   m_Layer: 0
   m_Name: Item (1)
   m_TagString: Untagged
@@ -13075,6 +13092,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 520213686}
   m_CullTransparentMesh: 0
+--- !u!114 &520213690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520213686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3bf87e55ac24d17ad8c7405d849bb7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.SubEquipment
+  <Type>k__BackingField: 8
+  selectTypePage: {fileID: 5375901735016271965}
+  button: {fileID: 1899002084}
 --- !u!1 &520713337
 GameObject:
   m_ObjectHideFlags: 0
@@ -13719,6 +13751,7 @@ GameObject:
   - component: {fileID: 533774884}
   - component: {fileID: 533774886}
   - component: {fileID: 533774885}
+  - component: {fileID: 533774887}
   m_Layer: 0
   m_Name: Item
   m_TagString: Untagged
@@ -13785,6 +13818,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 533774883}
   m_CullTransparentMesh: 0
+--- !u!114 &533774887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533774883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3bf87e55ac24d17ad8c7405d849bb7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.SubEquipment
+  <Type>k__BackingField: 5
+  selectTypePage: {fileID: 5375901735016271965}
+  button: {fileID: 284443483}
 --- !u!1 &535303807
 GameObject:
   m_ObjectHideFlags: 0
@@ -16965,7 +17013,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Ch\xE2u"
+  m_Text: Linh
 --- !u!222 &655932306
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17354,7 +17402,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Ch\xE2m"
+  m_Text: "Phi ch\xE2m"
 --- !u!222 &675140586
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -22177,6 +22225,7 @@ GameObject:
   - component: {fileID: 938553205}
   - component: {fileID: 938553208}
   - component: {fileID: 938553207}
+  - component: {fileID: 938553209}
   m_Layer: 0
   m_Name: Item (2)
   m_TagString: Untagged
@@ -22200,9 +22249,9 @@ RectTransform:
   - {fileID: 1910152149}
   m_Father: {fileID: 1320708775}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 951.49994, y: -120.350006}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 186.74, y: 186.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &938553207
@@ -22243,6 +22292,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 938553204}
   m_CullTransparentMesh: 0
+--- !u!114 &938553209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938553204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3bf87e55ac24d17ad8c7405d849bb7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.SubEquipment
+  <Type>k__BackingField: 2
+  selectTypePage: {fileID: 5375901735016271965}
+  button: {fileID: 193764235}
 --- !u!1 &954226784
 GameObject:
   m_ObjectHideFlags: 0
@@ -26263,6 +26327,7 @@ GameObject:
   - component: {fileID: 1120142952}
   - component: {fileID: 1120142954}
   - component: {fileID: 1120142953}
+  - component: {fileID: 1120142955}
   m_Layer: 0
   m_Name: Item (1)
   m_TagString: Untagged
@@ -26329,6 +26394,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1120142951}
   m_CullTransparentMesh: 0
+--- !u!114 &1120142955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1120142951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3bf87e55ac24d17ad8c7405d849bb7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.SubEquipment
+  <Type>k__BackingField: 6
+  selectTypePage: {fileID: 5375901735016271965}
+  button: {fileID: 1097455710}
 --- !u!1 &1134963630
 GameObject:
   m_ObjectHideFlags: 0
@@ -29989,7 +30069,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Chung
+  m_Text: "B\u1EA3o chung"
 --- !u!222 &1289418598
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -30642,13 +30722,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1320708775}
   - component: {fileID: 1320708776}
+  - component: {fileID: 1320708777}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1320708775
 RectTransform:
   m_ObjectHideFlags: 0
@@ -30699,6 +30780,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1320708777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320708774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e47afcadfd434bac8017964bc1537e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.Equipment
+  <Type>k__BackingField: 0
+  selectTypePage: {fileID: 5375901735016271965}
+  selfObject: {fileID: 1320708774}
 --- !u!1 &1321960873
 GameObject:
   m_ObjectHideFlags: 0
@@ -32636,6 +32732,7 @@ GameObject:
   - component: {fileID: 1405975941}
   - component: {fileID: 1405975943}
   - component: {fileID: 1405975942}
+  - component: {fileID: 1405975944}
   m_Layer: 0
   m_Name: Item (2)
   m_TagString: Untagged
@@ -32702,6 +32799,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1405975940}
   m_CullTransparentMesh: 0
+--- !u!114 &1405975944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1405975940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3bf87e55ac24d17ad8c7405d849bb7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.SubEquipment
+  <Type>k__BackingField: 9
+  selectTypePage: {fileID: 5375901735016271965}
+  button: {fileID: 1995642273}
 --- !u!1 &1414423400
 GameObject:
   m_ObjectHideFlags: 0
@@ -33748,7 +33860,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "H\u1EA1p"
+  m_Text: "B\u1EA3o h\u1EA1p"
 --- !u!222 &1458388405
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -41154,7 +41266,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u1EA4n"
+  m_Text: "B\u1EA3o \u1EA5n"
 --- !u!222 &1740725024
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -43441,6 +43553,7 @@ GameObject:
   - component: {fileID: 1869453439}
   - component: {fileID: 1869453441}
   - component: {fileID: 1869453440}
+  - component: {fileID: 1869453442}
   m_Layer: 0
   m_Name: Item
   m_TagString: Untagged
@@ -43507,6 +43620,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1869453438}
   m_CullTransparentMesh: 0
+--- !u!114 &1869453442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869453438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3bf87e55ac24d17ad8c7405d849bb7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.SubEquipment
+  <Type>k__BackingField: 7
+  selectTypePage: {fileID: 5375901735016271965}
+  button: {fileID: 501744715}
 --- !u!1 &1873199815
 GameObject:
   m_ObjectHideFlags: 0
@@ -44733,7 +44861,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "V\xF2ng"
+  m_Text: "Ch\u1EC9 ho\xE0n"
 --- !u!222 &1910152151
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -47985,6 +48113,7 @@ GameObject:
   - component: {fileID: 2034788121}
   - component: {fileID: 2034788123}
   - component: {fileID: 2034788122}
+  - component: {fileID: 2034788124}
   m_Layer: 0
   m_Name: Item (3)
   m_TagString: Untagged
@@ -48008,9 +48137,9 @@ RectTransform:
   - {fileID: 675140584}
   m_Father: {fileID: 1320708775}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1168.24, y: -120.350006}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 186.74, y: 186.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2034788122
@@ -48051,6 +48180,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2034788120}
   m_CullTransparentMesh: 0
+--- !u!114 &2034788124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034788120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3bf87e55ac24d17ad8c7405d849bb7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.SubEquipment
+  <Type>k__BackingField: 3
+  selectTypePage: {fileID: 5375901735016271965}
+  button: {fileID: 386038785}
 --- !u!1 &2044243772
 GameObject:
   m_ObjectHideFlags: 0
@@ -49139,6 +49283,7 @@ GameObject:
   - component: {fileID: 2104051139}
   - component: {fileID: 2104051141}
   - component: {fileID: 2104051140}
+  - component: {fileID: 2104051142}
   m_Layer: 0
   m_Name: Item (4)
   m_TagString: Untagged
@@ -49162,9 +49307,9 @@ RectTransform:
   - {fileID: 1458388403}
   m_Father: {fileID: 1320708775}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1384.98, y: -120.350006}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 186.74, y: 186.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2104051140
@@ -49205,6 +49350,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2104051138}
   m_CullTransparentMesh: 0
+--- !u!114 &2104051142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104051138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3bf87e55ac24d17ad8c7405d849bb7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.SubEquipment
+  <Type>k__BackingField: 4
+  selectTypePage: {fileID: 5375901735016271965}
+  button: {fileID: 1680954047}
 --- !u!1 &2107756255
 GameObject:
   m_ObjectHideFlags: 0
@@ -49290,6 +49450,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2110064769}
   - component: {fileID: 2110064770}
+  - component: {fileID: 2110064771}
   m_Layer: 0
   m_Name: Armor
   m_TagString: Untagged
@@ -49344,6 +49505,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &2110064771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110064768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e47afcadfd434bac8017964bc1537e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.Equipment
+  <Type>k__BackingField: 1
+  selectTypePage: {fileID: 5375901735016271965}
+  selfObject: {fileID: 2110064768}
 --- !u!1 &2114401686
 GameObject:
   m_ObjectHideFlags: 0
@@ -49489,7 +49665,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "B\xE0o"
+  m_Text: "Tr\u01B0\u1EDDng b\xE0o"
 --- !u!222 &2114629926
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -49603,13 +49779,14 @@ GameObject:
   m_Component:
   - component: {fileID: 2119718210}
   - component: {fileID: 2119718211}
+  - component: {fileID: 2119718212}
   m_Layer: 0
   m_Name: Jewelry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2119718210
 RectTransform:
   m_ObjectHideFlags: 0
@@ -49658,6 +49835,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &2119718212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119718209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e47afcadfd434bac8017964bc1537e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.Equipment
+  <Type>k__BackingField: 2
+  selectTypePage: {fileID: 5375901735016271965}
+  selfObject: {fileID: 2119718209}
 --- !u!1 &2121215890
 GameObject:
   m_ObjectHideFlags: 0
@@ -52418,36 +52610,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &5192862514731383322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5297100108332361726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0afa69ca66e9023468ea292f3a5d4cbb, type: 2}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &5192862894884767187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55780,7 +55942,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Ki\u1EBFm"
+  m_Text: "Phi ki\u1EBFm"
 --- !u!114 &5193159893346883485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56775,36 +56937,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 2e5adbc1ca0485040923984652867832, type: 2}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!114 &5193313569366566906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5297029921839753851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0afa69ca66e9023468ea292f3a5d4cbb, type: 2}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -58472,18 +58604,6 @@ MonoBehaviour:
   m_EffectColor: {r: 0.10980392, g: 0.050980393, b: 0.003921569, a: 1}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
---- !u!114 &5197017161423812877
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5296441990088220666}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5197019872120059469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59831,7 +59951,7 @@ GameObject:
   - component: {fileID: 5375915560141622828}
   - component: {fileID: 5373564884190874889}
   - component: {fileID: 5193311738221735095}
-  - component: {fileID: 5197017161423812877}
+  - component: {fileID: 5375915560141622829}
   m_Layer: 0
   m_Name: LianQiPanel
   m_TagString: Untagged
@@ -61966,13 +62086,14 @@ GameObject:
   - component: {fileID: 5373254544483183636}
   - component: {fileID: 5192706918229168650}
   - component: {fileID: 5192971586333258989}
+  - component: {fileID: 5375901735016271965}
   m_Layer: 0
   m_Name: SelectTypePage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &5296895466046629458
 GameObject:
   m_ObjectHideFlags: 0
@@ -62233,13 +62354,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5376130076940155447}
+  - component: {fileID: 5376130076940155448}
   m_Layer: 0
-  m_Name: Materials
+  m_Name: LuyenKhiPage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &5296939932834690596
 GameObject:
   m_ObjectHideFlags: 0
@@ -62250,6 +62372,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5375350960699107953}
   - component: {fileID: 5192991748389411556}
+  - component: {fileID: 5375350960699107954}
   m_Layer: 0
   m_Name: Toggle_Armor
   m_TagString: Untagged
@@ -62592,24 +62715,6 @@ GameObject:
   - component: {fileID: 5375445982895042928}
   m_Layer: 0
   m_Name: Items
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &5297029921839753851
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5375900706817020362}
-  - component: {fileID: 5372892819583935884}
-  - component: {fileID: 5193313569366566906}
-  m_Layer: 0
-  m_Name: Img_JianTou2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63011,24 +63116,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &5297100108332361726
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5375593950095738243}
-  - component: {fileID: 5373540691165424114}
-  - component: {fileID: 5192862514731383322}
-  m_Layer: 0
-  m_Name: Img_JianTou1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &5297101978391994230
 GameObject:
   m_ObjectHideFlags: 0
@@ -63039,6 +63126,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5375524631308722377}
   - component: {fileID: 5193343984245269486}
+  - component: {fileID: 5375524631308722378}
   m_Layer: 0
   m_Name: Toggle_Weapon
   m_TagString: Untagged
@@ -63510,6 +63598,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5375950664042813150}
   - component: {fileID: 5197132180114961238}
+  - component: {fileID: 5375950664042813151}
   m_Layer: 0
   m_Name: Toggle_Jewelry
   m_TagString: Untagged
@@ -63710,6 +63799,7 @@ GameObject:
   - component: {fileID: 5375347371863703081}
   - component: {fileID: 5373650936428168036}
   - component: {fileID: 5192864945086844358}
+  - component: {fileID: 5375347371863703082}
   m_Layer: 0
   m_Name: Item
   m_TagString: Untagged
@@ -65273,14 +65363,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5297327695971273808}
   m_CullTransparentMesh: 0
---- !u!222 &5372892819583935884
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5297029921839753851}
-  m_CullTransparentMesh: 0
 --- !u!222 &5372899941002173550
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -66489,14 +66571,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5296534411001088093}
   m_CullTransparentMesh: 0
---- !u!222 &5373540691165424114
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5297100108332361726}
-  m_CullTransparentMesh: 0
 --- !u!222 &5373540839704673626
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -67559,11 +67633,26 @@ RectTransform:
   - {fileID: 5375728071495493811}
   m_Father: {fileID: 1320708775}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 518.01996, y: -120.350006}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 186.74, y: 186.74}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5375347371863703082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5297220283758817370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3bf87e55ac24d17ad8c7405d849bb7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.SubEquipment
+  <Type>k__BackingField: 0
+  selectTypePage: {fileID: 5375901735016271965}
+  button: {fileID: 5193453389329137774}
 --- !u!224 &5375350960699107953
 RectTransform:
   m_ObjectHideFlags: 0
@@ -67580,11 +67669,26 @@ RectTransform:
   - {fileID: 5375849785320086443}
   m_Father: {fileID: 99888616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960.00006, y: -43.102665}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 217.16, y: 86.2}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5375350960699107954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5296939932834690596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ba89280b1bb48d99e70e23145274b6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.EquipmentToggle
+  type: 1
+  toggle: {fileID: 5192991748389411556}
+  selectTypePage: {fileID: 5375901735016271965}
 --- !u!224 &5375352355371576673
 RectTransform:
   m_ObjectHideFlags: 0
@@ -67852,10 +67956,10 @@ RectTransform:
   - {fileID: 5375795907404147411}
   m_Father: {fileID: 5375633995212169368}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 248.45, y: 0}
+  m_SizeDelta: {x: 496.9, y: 57.3}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &5375402078936904524
 RectTransform:
@@ -68550,11 +68654,26 @@ RectTransform:
   - {fileID: 5375755901676686655}
   m_Father: {fileID: 99888616}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 642.84, y: -43.102665}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 217.16, y: 86.2}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5375524631308722378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5297101978391994230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ba89280b1bb48d99e70e23145274b6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.EquipmentToggle
+  type: 0
+  toggle: {fileID: 5193343984245269486}
+  selectTypePage: {fileID: 5375901735016271965}
 --- !u!224 &5375525035294989217
 RectTransform:
   m_ObjectHideFlags: 0
@@ -69079,25 +69198,6 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 23.5, y: -24}
   m_SizeDelta: {x: 45, y: 46}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!224 &5375593950095738243
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5297100108332361726}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5376139142883949106}
-  m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -70.5, y: 293.5}
-  m_SizeDelta: {x: 99, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &5375597380751171903
 RectTransform:
@@ -70370,7 +70470,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00004005432, y: 24.585373}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 450, y: 471}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &5375805196950506002
@@ -71075,25 +71175,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 132, y: 132}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!224 &5375900706817020362
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5297029921839753851}
-  m_LocalRotation: {x: 0.514664, y: -0.857392, z: 0.00000009637263, w: -0.00000016054966}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5376139142883949106}
-  m_LocalEulerAnglesHint: {x: -179.99998, y: -0.000010090299, z: 118.05}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.3, y: 143.7}
-  m_SizeDelta: {x: 99, y: 24}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &5375901735016271964
 RectTransform:
   m_ObjectHideFlags: 0
@@ -71117,6 +71198,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5375901735016271965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5296892429251980889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c34e96bf7806240699c2d99836009da3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.SelectTypePage
+  equipments:
+  - {fileID: 1320708777}
+  - {fileID: 2110064771}
+  - {fileID: 2119718212}
+  selfObject: {fileID: 5296892429251980889}
 --- !u!224 &5375905664447729270
 RectTransform:
   m_ObjectHideFlags: 0
@@ -71180,6 +71278,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5375915560141622829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5296441990088220666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cebd5d7014a71496aae7defd7d2a1e3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.LuyenKhiPanel
+  <Resources>k__BackingField: {fileID: 11400000, guid: 19a5ec4c369c7416d9a2ea4e7214e4e8,
+    type: 2}
+  <SelectTypePage>k__BackingField: {fileID: 5375901735016271965}
+  <LuyenKhiPage>k__BackingField: {fileID: 5376130076940155448}
+  changeTypeButton: {fileID: 5197137023357916258}
+  backButton: {fileID: 5375551429652639596}
 --- !u!224 &5375916772527688325
 RectTransform:
   m_ObjectHideFlags: 0
@@ -71380,11 +71496,26 @@ RectTransform:
   - {fileID: 5375227508829480144}
   m_Father: {fileID: 99888616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1277.16, y: -43.102665}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 217.16, y: 86.2}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5375950664042813151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5297185049233591337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ba89280b1bb48d99e70e23145274b6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.EquipmentToggle
+  type: 2
+  toggle: {fileID: 5197132180114961238}
+  selectTypePage: {fileID: 5375901735016271965}
 --- !u!224 &5375951019680920471
 RectTransform:
   m_ObjectHideFlags: 0
@@ -72367,6 +72498,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5376130076940155448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5296937188454675858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f3aec9f6e034d19bb03f2593b3acb7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuyenKhi.LuyenKhiPage
+  selfObject: {fileID: 5296937188454675858}
+  iconImage: {fileID: 5193206251696076424}
+  grade: {fileID: 5193450168714928700}
 --- !u!224 &5376132682718957026
 RectTransform:
   m_ObjectHideFlags: 0
@@ -72417,9 +72563,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5375593950095738243}
-  - {fileID: 5375900706817020362}
+  m_Children: []
   m_Father: {fileID: 5376130076940155447}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
   m_AnchorMin: {x: 0.5, y: 0}
