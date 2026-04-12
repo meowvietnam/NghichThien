@@ -143,7 +143,7 @@ public class UINPCJiaoHu : PanelGroup
         });
         foreach (var item in listCharStats)
         {
-            var itemNpc = GetItemPool(prefabNPCLeftItem);
+            var itemNpc = GameConfig.GetItemPool(prefabNPCLeftItem);
             itemNpc.Init(item);
 
         }
@@ -186,13 +186,12 @@ public class UINPCJiaoHu : PanelGroup
         SetEventButton(btnBack, () =>
         {
             HideAllPop();
-            npcPop.Hide();
         });
         SetEventButton(btnXemXet, () =>
         {
             HideAllPop();
             xemXetPop.Show();
-            ShowPopDoXet();
+            InitPopDoXet();
         });
         SetEventButton(btnTangQua, () =>
         {
@@ -322,17 +321,17 @@ public class UINPCJiaoHu : PanelGroup
         var categorize = CategorizeSlot(listBaseSkillData);
         foreach (var item in categorize.Item1)
         {
-            var itemInventory = GetItemPool(prefabSlotThinhGiaoSlot1);
+            var itemInventory = GameConfig.GetItemPool(prefabSlotThinhGiaoSlot1);
             InitVisualItemSkill(itemInventory, item);
         }
         foreach (var item in categorize.Item2)
         {
-            var itemInventory = GetItemPool(prefabSlotThinhGiaoSlot2);
+            var itemInventory = GameConfig.GetItemPool(prefabSlotThinhGiaoSlot2);
             InitVisualItemSkill(itemInventory, item);
         }
         foreach (var item in categorize.Item3)
         {
-            var itemInventory = GetItemPool(prefabSlotThinhGiaoSlot3);
+            var itemInventory = GameConfig.GetItemPool(prefabSlotThinhGiaoSlot3);
             InitVisualItemSkill(itemInventory, item);
         }
     }    
@@ -359,29 +358,7 @@ public class UINPCJiaoHu : PanelGroup
         SetSliderVisual(ETypeSkillRelationShip.CongPhap);
 
     }
-    private T GetItemPool<T>(T prefabItem) where T : Component
-    {
-        // Lấy Transform của cha để duyệt qua các con
-        Transform parent = prefabItem.transform.parent;
-        T item = null;
-        // Duyệt từ index 1 (bỏ qua index 0 thường là chính cái prefab/template)
-        for (int i = 1; i < parent.childCount; i++)
-        {
-            Transform child = parent.GetChild(i);
-
-            // Nếu object con đang không hoạt động (đang rảnh trong pool)
-            if (!child.gameObject.activeSelf)
-            {
-                item = child.GetComponent<T>();
-                item.gameObject.SetActive(true);
-                return item;
-            }
-        }
-        item = Instantiate(prefabItem, parent);
-        item.gameObject.SetActive(true);
-        // Nếu không tìm thấy cái nào rảnh, khởi tạo cái mới
-        return item;
-    }
+  
     private void InitThanThongTab()
     {
         ResetVisual(prefabSlotThinhGiaoSlot1.transform);
@@ -455,7 +432,7 @@ public class UINPCJiaoHu : PanelGroup
 
 
     }
-    public void ShowPopDoXet()
+    public void InitPopDoXet()
     {
         textNamePopXemXet.text = characterStatsTarget.nameUser;
         charVisualPopXemXet.SetGender(characterStatsTarget.Gender);
@@ -467,7 +444,7 @@ public class UINPCJiaoHu : PanelGroup
         textThoNguyen.text = characterStatsTarget.thoNguyen.Value.ToString();
         textTuoiTac.text = characterStatsTarget.tuoiTac.Value.ToString();
         textSinhMenh.text = characterStatsTarget.hpMax.Value.ToString();
-        textLevel.text = GameConfig.levelWithText[ThanThong.GetDaiCanhGioi(characterStatsTarget.level)];
+        textLevel.text = GameConfig.levelWithText[characterStatsTarget.level];
         textHaoCam.text = Client.Instance.CharacterData.RelationShip.GetValueOrDefault(characterStatsTarget.idChar).ToString();
         List<ThanThong> listThanThongData = new List<ThanThong>();
         var gameConfig = Pool.Get<GameConfig>();

@@ -26,7 +26,7 @@ public abstract class ThanThong : BaseSkill
         .ToArray();
    
     public float timeDelayTakeDame = 0;
-    public override abstract string GetDesc(int level);
+    public override abstract string GetDesc(int daiCanhGioi);
     public override string GetDesc()
     {
         return "";

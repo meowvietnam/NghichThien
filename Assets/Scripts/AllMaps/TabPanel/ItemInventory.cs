@@ -20,7 +20,7 @@ public class ItemInventory : BaseItemUI
 
     
     [SerializeField] private GameObject hasItem;
-    [SerializeField] private Image qualityFull;
+    [SerializeField] public Image qualityFull;
     [SerializeField] private Text textCount;
     [SerializeField] public Text textName;
     [SerializeField] private GameObject leftUpMask;
@@ -35,7 +35,8 @@ public class ItemInventory : BaseItemUI
     }
     public void InitInventory(ETypeInventoryItem type,ItemRef itemRefInven,IItemData iItemData , EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
     {
-       
+
+        this.itemRef = itemRefInven;
         if(itemData == null)
         {
             btnShowInfor?.gameObject.SetActive(false);

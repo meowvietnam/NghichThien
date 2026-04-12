@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -66,8 +67,8 @@ namespace LuyenDan
             SetProgress(1f);
             progressChanged?.Invoke(1f);
             completed?.Invoke();
-            SetActive(false);
         }
+       
         public void DoKill(Action completed)
         {
             isCompleted = true;

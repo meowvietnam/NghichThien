@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using LuyenDan;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
     [SerializeField] protected Action actionPointerDown;
 
     [SerializeField] protected Image selectHighLight;
+    [SerializeField] public ItemRef itemRef;
     public void SetSelectHighlight(bool isActive)
     {
         if(selectHighLight != null)
@@ -31,6 +33,10 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
     {
         InitItemData(itemData, frameSprite);
         InitAction(actionHolder, actionPointerUp);
+    }
+    public void InitItemRef(ItemRef itemRef)
+    {
+        this.itemRef = itemRef;
     }
 
     [Button]

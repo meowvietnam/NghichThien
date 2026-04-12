@@ -27,16 +27,14 @@ public class Popup : BaseBehaviour
     }
     public void Hide(float delay = 0, Action actionComplete = null)
     {
-        transform.DOScale(Vector3.zero, delay).OnComplete(() =>
-        {
-            actionComplete?.Invoke();
-            gameObject.SetActive(false);
 
-            if (commonMask != null)
-            {
-                commonMask?.SetActive(false);
-            }
-        });
+        actionComplete?.Invoke();
+        gameObject.SetActive(false);
+
+        if (commonMask != null)
+        {
+            commonMask?.SetActive(false);
+        }
     }
 
 }
