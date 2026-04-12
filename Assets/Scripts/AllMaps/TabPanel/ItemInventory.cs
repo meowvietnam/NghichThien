@@ -101,6 +101,44 @@ public class ItemInventory : BaseItemUI
         qualityFull.SetNativeSize();
     }
     [Button]
+    private void FixVisualItemSkill()
+    {
+        frame.transform.SetParent(qualityFull.transform.parent);
+        frame.transform.SetSiblingIndex(2);
+        frame.transform.localScale = Vector3.one;
+        qualityFull.transform.localScale = Vector3.one;
+
+        icon.transform.parent.localScale = Vector3.one * 0.98f;
+        icon.transform.localScale = Vector3.one;
+
+        // Lưu ý: Không ghi đuôi .asset
+        Sprite loadedSprite = Resources.Load<Sprite>("Sprites/MCS_icon_quality_bg");
+
+        if (loadedSprite != null)
+        {
+            Image img = icon.transform.parent.GetComponent<Image>();
+            img.sprite = loadedSprite;
+
+            // Sửa lỗi: Không thể gán trực tiếp vào 'a' (color là struct)
+            Color c = img.color;
+            c.a = 1f;
+            img.color = c;
+
+            // Sửa lỗi: Cú pháp Destroy phải có ngoặc đơn ()
+            var rectMask = icon.transform.parent.GetComponent<RectMask2D>();
+            if (rectMask != null) DestroyImmediate(rectMask);
+
+            // Chèn thêm Mask
+            icon.transform.parent.gameObject.AddComponent<Mask>();
+            icon.transform.parent.GetComponent<Mask>().showMaskGraphic = false;
+        }
+        else
+        {
+            Debug.LogError("Không tìm thấy Sprite! Hãy kiểm tra lại đường dẫn trong thư mục Resources.");
+        }
+
+    }
+    [Button]
     private void GetComponentBag()
     {
         hasItem = transform.GetChild(1).gameObject;

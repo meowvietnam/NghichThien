@@ -113,6 +113,9 @@ namespace AllMaps
                 {
                     Move(result.Path);
                     OnGetCharacterOnlineThisNode(result.CharactersOnline);
+                    Observer.Notify(EventList.GamePlay.TIME_ADJUST);
+                    Observer.Notify(EventList.GamePlay.MOVE_MAP_SUCCESS);
+
                 }
             });
         }

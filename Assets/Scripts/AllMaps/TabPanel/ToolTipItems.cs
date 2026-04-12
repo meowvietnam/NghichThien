@@ -128,16 +128,26 @@ public class ToolTipItems : BaseBehaviour
     }
     private void InitInforSkill()
     {
-       
-       
+
+
         if (itemData is BaseSkill skill)
         {
             qualityText.text = skill.GetTextTierSkill();
             typeText.text = skill.GetTextTypeSkill();
-            descriptionText.text = skill.GetDesc(ThanThong.GetDaiCanhGioi(Pool.Get<Player>().characterStatsBase.level));
+            if(skill is ThanThong)
+            {
+                descriptionText.text = skill.GetDesc(ThanThong.GetDaiCanhGioi(Client.Instance.CharacterData.Level));
+
+            }
+            else if(skill is CongPhap)
+            {
+                descriptionText.text = skill.GetDesc(5);
+
+            }
+
             var listEKeyword = skill.GetEKeywordSkillHave();
             var listEBuffKeyword = skill.GetEKeywordBuffSkillHave(1);
-          
+            
 
             for (int i = 0; i < listEKeyword.Length; i++)
             {

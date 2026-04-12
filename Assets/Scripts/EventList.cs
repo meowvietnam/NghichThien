@@ -33,6 +33,8 @@ public static partial class EventList
         public const string UPDATE_PLAYER_STATS = "GamePlay.UPDATE_PLAYER_STATS";
         public const string LOAD_SCENE = "GamePlay.LOAD_SCENE";
         public const string BACK_SCENE = "GamePlay.BACK_SCENE";
+        public const string TIME_ADJUST = "GamePlay.TIME_ADJUST";
+        public const string MOVE_MAP_SUCCESS = "GamePlay.MOVE_MAP_SUCCESS";
 
     }
     public static class Network

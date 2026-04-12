@@ -679,8 +679,9 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         }
         if (isAdd)
         {
-
-            CongPhap cp = (CongPhap)GetItemCurrentActiveFromBag().itemData;
+            ItemInventory itemInventory = GetItemCurrentActiveFromBag();
+            if (itemInventory == null) yield break;
+            CongPhap cp = (CongPhap)itemInventory.itemData;
             if (cp == null) yield break;
          
             startIndex = listCongPhapData.IndexOf(cp) + 1;
@@ -876,8 +877,9 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         List<ItemInventory> itemInven = new List<ItemInventory>();
         if (isAdd)
         {
-
-            ThanThong tt = (ThanThong)GetItemCurrentActiveFromBag().itemData;
+            ItemInventory itemInventory = GetItemCurrentActiveFromBag();
+            if (itemInventory == null) yield break;
+            ThanThong tt = (ThanThong)itemInventory.itemData;
             if (tt == null) yield break;
 
             startIndex = listThanThongData.IndexOf(tt) + 1;
@@ -1091,8 +1093,9 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
         if (isAdd)
         {
-
-            ItemRef refItem = GetItemCurrentActiveFromBag().itemRef;
+            ItemInventory itemInventory = GetItemCurrentActiveFromBag();
+            if (itemInventory == null) yield break;
+            ItemRef refItem = itemInventory.itemRef;
             if (refItem == null)
             {
                 Debug.Log("ref item null");
