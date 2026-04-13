@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LongDH.LongDHModules;
 using Network;
 using Network.Extensions;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using LongDH.Script.ObjectPool;
 namespace AllMaps
 {
     public class Map : BaseBehaviour, IMemorySerializable<Map>
@@ -17,6 +19,9 @@ namespace AllMaps
         [SerializeField] protected Node[] nodes;
         [SerializeField] protected int[] nextIndex;
         [field: SerializeField] public Vector2 PlayerPosition { get; private set; }
+        public EnemyData enemyDataCurrent;
+        public GameObject iconVisualAction;
+
         public Node[] Nodes => nodes;
         public Node FindNodeByMap(Map map)
         {
@@ -30,9 +35,30 @@ namespace AllMaps
             }
             mapManager.PlayerMoveTo(this);
         }
+        public virtual void SetData(EnemyData enemyDataCurrent, GameObject iconVisualAction)
+        {
+            this.enemyDataCurrent = enemyDataCurrent;
+            this.iconVisualAction = iconVisualAction;
+        }    
+        public virtual void ResetData()
+        {
+            enemyDataCurrent = null;
+            if(iconVisualAction != null)
+            {
+                iconVisualAction.Recycle();
+                iconVisualAction = null;
+            }    
+        }    
         public virtual void OnPlayerEnter()
         {
-
+            var currenEnemy = enemyDataCurrent;
+            if (currenEnemy != null)
+            {
+                ResetData();
+                Pool.Get<NpcManager>().OnGoToEnemy(currenEnemy);
+                Pool.Get<GameConfig>().GoToCombat(new GameConfig.CharCombatInit { eTypeVisual = currenEnemy.eTypeVisualChar, charStats = currenEnemy.charStats });
+            }
+           
         }
         public virtual void OnPlayerExit()
         {

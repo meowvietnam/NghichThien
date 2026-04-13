@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using LongDH.LongDHModules;
 using LuyenDan;
 using Network.Core;
@@ -32,6 +33,27 @@ namespace Network
             }
 
             return Client.CharacterData != null;
+        }
+        [Button]
+        private List<int> GetFullIdThanThongWithCombo(ComboSkillResource.ETypeCombo eCombo)
+        {
+            var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
+            return combo.comboWithDaiCanhGioi[ThanThong.GetDaiCanhGioi(Client.CharacterData.Level) - 1].thanThongs.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
+                .ToList();
+        }
+        [Button]
+        private List<int> GetFullIdNgoDaoWithCombo(ComboSkillResource.ETypeCombo eCombo)
+        {
+            var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
+            return combo.comboWithDaiCanhGioi[ThanThong.GetDaiCanhGioi(Client.CharacterData.Level) - 1].ngoDaos.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
+                .ToList();
+        }
+        [Button]
+        private List<int> GetFullIdCongPhapWithCombo(ComboSkillResource.ETypeCombo eCombo)
+        {
+            var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
+            return combo.comboWithDaiCanhGioi[ThanThong.GetDaiCanhGioi(Client.CharacterData.Level) - 1].congPhaps.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
+                .ToList();
         }
         [Button]
         [ShowIf(nameof(IsReady))]

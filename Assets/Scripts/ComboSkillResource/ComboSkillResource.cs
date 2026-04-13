@@ -64,5 +64,18 @@ public class ComboSkillResource : ScriptableObject
         // trang bị nữa
     }
     public ComboWithType[] comboNPC;
+    private static ComboSkillResource instance;
 
+    public static ComboSkillResource Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = Resources.Load<ComboSkillResource>("Combo Skill Resource");
+            }
+
+            return instance;
+        }
+    }
 }

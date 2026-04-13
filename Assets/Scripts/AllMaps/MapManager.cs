@@ -2,6 +2,7 @@
 using System.Linq;
 using CreateCharacter;
 using LongDH.LongDHModules;
+using LongDH.Script.ObjectPool;
 using Network;
 using Network.Callback;
 using Network.ClientState;
@@ -19,8 +20,25 @@ namespace AllMaps
         [SerializeField] private Player player;
         private Map current;
         private Dictionary<Map, List<Map>> graph;
+        [SerializeField] private GameObject prefabEnemyIcon;
+        [SerializeField] private GameObject prefabQuestIcon;
 
+        public void SetEnemyOnMap(EnemyData enemyData,int nodeId)
+        { 
+            Map map = FindMap(nodeId);
+            GameObject iconAction = null;
+            if(map is Stronghold)
+            {
+                iconAction =  prefabEnemyIcon.Spawn(map.transform.GetChild(1).transform);
 
+            }
+            else
+            {
+                iconAction = prefabEnemyIcon.Spawn(map.transform.GetChild(0).transform);
+
+            }
+            map.SetData(enemyData,iconAction);
+        }    
         public Map FindMap(int id)
         {
             return maps.FirstOrDefault(map => map.Id == id);
@@ -36,6 +54,7 @@ namespace AllMaps
                     .ToList();
             }
         }
+
 
         private void Awake()
         {

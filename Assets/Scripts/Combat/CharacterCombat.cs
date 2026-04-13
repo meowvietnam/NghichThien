@@ -21,9 +21,44 @@ using static UnityEngine.Networking.UnityWebRequest;
 public enum ETypeVisualChar
 {
     Character,
-    Enemy1,
-}
 
+    // --- Nhóm Luyện Khí ---
+    EnemyLuyenKhiSoKi,
+    EnemyLuyenKhiTrungKi ,
+    EnemyLuyenKhiHauKi ,
+
+    // --- Nhóm Trúc Cơ ---
+    EnemyTrucCoSoKi ,
+    EnemyTrucCoTrungKi,
+    EnemyTrucCoHauKi,
+
+    // --- Nhóm Kết Đan ---
+    EnemyKetDanSoKi,
+    EnemyKetDanTrungKi,
+    EnemyKetDanHauKi,
+
+    // --- Nhóm Nguyên Anh ---
+    EnemyNguyenAnhSoKi,
+    EnemyNguyenAnhTrungKi,
+    EnemyNguyenAnhHauKi,
+
+    // --- Nhóm Story (Ví dụ đại diện) ---
+    EnemyStory0_1,
+    EnemyStory0_2,
+    EnemyStory0_3,
+    EnemyStory1_1,
+    EnemyStory1_2,
+    EnemyStory2,
+    EnemyStory3_1,
+    EnemyStory3_2,
+    EnemyStory4,
+    EnemyStory5,
+    EnemyStory6,
+    EnemyStory7,
+    EnemyStory8,
+    EnemyStory9_1,
+
+}
 public class CharacterCombat : MonoBehaviour
 {
     public const string ANIM_IDLE = "Idle_0";

@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class NPCData : ScriptableObject
 {
-    private static string[] Surnames = {
+    protected virtual string[] Surnames => new[] {
         "Diệp", "Tiêu", "Lâm", "Sở", "Hàn", "Thần", "Lục", "Tô", "Tần", "Mặc",
         "Cố", "Thẩm", "Phương", "Bạch", "Long", "Phượng", "Vân", "Tống", "Khương", "Vũ",
         "Trình", "Bùi", "Liễu", "Tạ", "Viên", "Dương", "Chu", "Phó", "Trang", "Hoắc"
     };
 
-    private static string[] MiddleNames = {
+    protected virtual string[] MiddleNames => new[] {
         "Thiên", "Thanh", "Vũ", "Vân", "Nhược", "Tuyết", "Mặc", "Tử", "Minh", "Tinh",
         "Linh", "Trường", "Nhất", "Cửu", "Vô", "Thái", "Mộng", "Kiếm", "Ẩn", "Dật",
         "Tĩnh", "Thần", "Hạo", "Giai", "Trường", "Tuyên", "Đông", "Tây", "Bắc", "Nam"
     };
 
-    private static string[] LastNames = {
+    protected virtual string[] LastNames => new[] {
         "Phàm", "Phong", "Trần", "Hiên", "Tuyệt", "Dao", "Thần", "Vũ", "Nguyệt", "Kiếm",
         "Tâm", "Viêm", "Tôn", "Hoàng", "Không", "Ảnh", "Sát", "Ngạo", "Thương", "Lỗi",
         "Sương", "Yên", "Tịch", "Hùng", "Hải", "Sơn", "Lâm", "Hỏa", "Thổ", "Kim"
     };
 
-    public static string GenerateName()
+    public virtual string GenerateName()
     {
         string ho = Surnames[Random.Range(0, Surnames.Length)];
         string dem = MiddleNames[Random.Range(0, MiddleNames.Length)];
@@ -48,7 +48,7 @@ public class NPCData : ScriptableObject
     }
    
     [Button]
-    public void SetBaseStats(GameConfig gameConfig)
+    public virtual void SetBaseStats(GameConfig gameConfig)
     {
         if(charStatsCreateRef.skinList.Count <= 0)
         {

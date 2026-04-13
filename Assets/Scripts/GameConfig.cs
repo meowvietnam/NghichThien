@@ -81,6 +81,26 @@ public class GameConfig : BaseBehaviour
     { 14, "Hóa Thần Trung Kì" },
     { 15, "Hóa Thần Hậu Kì" },
     };
+    public static Dictionary<int, ETypeVisualChar> levelWithVisualChar = new Dictionary<int, ETypeVisualChar>
+    {
+        { 1, ETypeVisualChar.EnemyLuyenKhiSoKi }, // Use { đại cảnh giới, text }
+        { 2, ETypeVisualChar.EnemyLuyenKhiTrungKi },
+        { 3, ETypeVisualChar.EnemyLuyenKhiHauKi },
+        { 4, ETypeVisualChar.EnemyTrucCoSoKi },
+        { 5, ETypeVisualChar.EnemyTrucCoTrungKi },
+        { 6, ETypeVisualChar.EnemyTrucCoHauKi },
+        { 7, ETypeVisualChar.EnemyKetDanSoKi },
+        { 8, ETypeVisualChar.EnemyKetDanTrungKi },
+        { 9, ETypeVisualChar.EnemyKetDanHauKi },
+        { 10, ETypeVisualChar.EnemyNguyenAnhSoKi },
+        { 11, ETypeVisualChar.EnemyNguyenAnhTrungKi },
+        { 12, ETypeVisualChar.EnemyNguyenAnhHauKi },
+
+        { 13, ETypeVisualChar.EnemyKetDanHauKi },
+        { 14, ETypeVisualChar.EnemyNguyenAnhSoKi },
+        { 15, ETypeVisualChar.EnemyTrucCoHauKi },
+
+    };
     [Serializable]
     public class InforLevel
     {
@@ -458,6 +478,25 @@ public class GameConfig : BaseBehaviour
 
         // Trường hợp cuối cùng: Lớn hơn mốc cao nhất (> 1999)
         return (tamCanh[tamCanh.Length - 1], (int)currentPoint, tamCanh.Length - 1);
+    }
+    public static int GetTimeWorldInt()
+    {
+        // 1. Lấy giá trị TimeSpan gốc
+        TimeSpan originalTime = Client.Instance.CharacterData.Stats.TuoiTac;
+
+        // 2. Chuyển đổi tổng số ngày sang đơn vị tháng
+        // Giả sử quy ước: 1 tháng = 30 ngày
+        int totalDays = (int)originalTime.TotalDays;
+        int totalMonths = totalDays / 30;
+
+        // 3. Trừ đi 15 năm gốc (15 năm * 12 tháng = 180 tháng)
+        return totalMonths - 180;
+    }
+    public static TimeSpan GetTimeWorldTimeSpan()
+    {
+       
+        return ConvertMonthToTimeSpan(GetTimeWorldInt());
+
     }
     public static int GetIntTuoiTac(TimeSpan timeSpanTuoiTac)
     {

@@ -1,0 +1,800 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58dd3fdaf4a373c4b9dbb72d2989f342, type: 3}
+  m_Name: "Th\u1EE7y Ki\u1EBFm_Lv11"
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  charStats:
+    idChar:
+      encA: -32853
+      encB: 87633
+      keyA: 32935
+      keyB: 87835
+      fakeValue: 86
+    percentKim:
+      encA: 1124136025
+      encB: -1024648193
+      keyA: 64583
+      keyB: 68547
+      fakeValue: 10
+    percentMoc:
+      encA: -1000031889
+      encB: 1147562508
+      keyA: 53958
+      keyB: 33189
+      fakeValue: 10
+    percentThuy:
+      encA: 1148140520
+      encB: -1000257241
+      keyA: 88900
+      keyB: 43403
+      fakeValue: 50
+    percentHoa:
+      encA: -1002126034
+      encB: 1145449393
+      keyA: 58640
+      keyB: 35727
+      fakeValue: 10
+    percentTho:
+      encA: -1003894198
+      encB: 1143723474
+      keyA: 94613
+      keyB: 60941
+      fakeValue: 10
+    percentMa:
+      encA: 1133387763
+      encB: -1014022420
+      keyA: 42300
+      keyB: 99363
+      fakeValue: 0
+    tuChat:
+      encA: 22472
+      encB: -31951
+      keyA: 22167
+      keyB: 31779
+      fakeValue: 113
+    ngoTinh:
+      encA: -63952
+      encB: 98278
+      keyA: 63781
+      keyB: 97953
+      fakeValue: 92
+    thanThuc:
+      encA: 49010
+      encB: -33659
+      keyA: 48596
+      keyB: 33047
+      fakeValue: 56
+    tocDoBay:
+      encA: -41783
+      encB: 14337
+      keyA: 41557
+      keyB: 14749
+      fakeValue: 56
+    linhThach:
+      encA: -68085
+      encB: 59936
+      keyA: 68364
+      keyB: 59609
+      fakeValue: 0
+    hp:
+      encA: -69237
+      encB: 3626
+      keyA: 69497
+      keyB: 30983
+      fakeValue: 30239
+    hpMax:
+      encA: -83876
+      encB: 60077
+      keyA: 83928
+      keyB: 39990
+      fakeValue: 30239
+    thoNguyen:
+      encA: -22162
+      encB: 89186
+      keyA: 21943
+      keyB: 88941
+      fakeValue: 1000
+    tamCanh:
+      encA: 57209
+      encB: -51924
+      keyA: 56810
+      keyB: 51265
+      fakeValue: 0
+    idLinhCan:
+      encA: -31466
+      encB: 62520
+      keyA: 31722
+      keyB: 62780
+      fakeValue: 0
+    ability: 0
+    ngoDaoDiem:
+      encA: 41567
+      encB: -30330
+      keyA: 41363
+      keyB: 30130
+      fakeValue: 0
+    danDoc:
+      encA: -64519
+      encB: 57439
+      keyA: 64957
+      keyB: 57827
+      fakeValue: 0
+    nameUser: "H\u1EAFc Ma Y\xEAu"
+    level:
+      encA: 14431
+      encB: -81454
+      keyA: 14514
+      keyB: 81612
+      fakeValue: 11
+    tuoiTac:
+      encA: -30492
+      encB: 65722
+      keyA: 30387
+      keyB: 66231
+      fakeValue: 100
+    currentExp:
+      encA: 79619
+      encB: -45772
+      keyA: 79749
+      keyB: 45646
+      fakeValue: 0
+    ngoDaoSaves:
+    - encA: -81788
+      encB: 33183
+      keyA: 81433
+      keyB: 33551
+      fakeValue: 301
+    - encA: 95869
+      encB: -75380
+      keyA: 96066
+      keyB: 75380
+      fakeValue: 311
+    - encA: 52385
+      encB: -40937
+      keyA: 52725
+      keyB: 40954
+      fakeValue: 321
+    - encA: 62942
+      encB: 30840
+      keyA: 62728
+      keyB: 30733
+      fakeValue: 331
+    - encA: 24165
+      encB: 24201
+      keyA: 24550
+      keyB: 24343
+      fakeValue: 801
+    - encA: -50864
+      encB: 81808
+      keyA: 50306
+      keyB: 80587
+      fakeValue: 813
+    - encA: -41784
+      encB: 46578
+      keyA: 41104
+      keyB: 45862
+      fakeValue: 812
+    - encA: -98405
+      encB: 74142
+      keyA: 98587
+      keyB: 75051
+      fakeValue: 821
+    - encA: 13654
+      encB: 53279
+      keyA: 13892
+      keyB: 53296
+      fakeValue: 833
+    - encA: 73489
+      encB: 19711
+      keyA: 73112
+      keyB: 19529
+      fakeValue: 831
+    monPhai: 4
+    thanThongOwner:
+    - encA: -89150
+      encB: 84580
+      keyA: 89804
+      keyB: 84395
+      fakeValue: 221
+    - encA: -65662
+      encB: 99994
+      keyA: 66167
+      keyB: 99441
+      fakeValue: 224
+    - encA: 74740
+      encB: -33959
+      keyA: 73803
+      keyB: 34374
+      fakeValue: 222
+    - encA: 18872
+      encB: -59693
+      keyA: 19319
+      keyB: 59584
+      fakeValue: 226
+    - encA: -62920
+      encB: 75134
+      keyA: 62675
+      keyB: 74886
+      fakeValue: 227
+    - encA: -49418
+      encB: 71572
+      keyA: 49215
+      keyB: 71055
+      fakeValue: 228
+    - encA: -85570
+      encB: 53776
+      keyA: 85923
+      keyB: 53704
+      fakeValue: 501
+    - encA: 56212
+      encB: -33978
+      keyA: 55802
+      keyB: 33996
+      fakeValue: 504
+    - encA: 55063
+      encB: 52396
+      keyA: 54954
+      keyB: 52454
+      fakeValue: 519
+    thanThongEquip:
+    - encA: 48912
+      encB: -84297
+      keyA: 48613
+      keyB: 84831
+      fakeValue: 221
+    - encA: -99892
+      encB: 29165
+      keyA: 99935
+      keyB: 28832
+      fakeValue: 224
+    - encA: 91112
+      encB: 66462
+      keyA: 91050
+      keyB: 66306
+      fakeValue: 222
+    - encA: -20570
+      encB: 40426
+      keyA: 21224
+      keyB: 40574
+      fakeValue: 226
+    - encA: 17456
+      encB: -71439
+      keyA: 17670
+      keyB: 71516
+      fakeValue: 227
+    - encA: 52081
+      encB: -29817
+      keyA: 51412
+      keyB: 30392
+      fakeValue: 228
+    - encA: -25110
+      encB: 92234
+      keyA: 24690
+      keyB: 93207
+      fakeValue: 501
+    - encA: 23604
+      encB: 10866
+      keyA: 23797
+      keyB: 11077
+      fakeValue: 504
+    - encA: -71427
+      encB: 14866
+      keyA: 71133
+      keyB: 16117
+      fakeValue: 519
+    donThuatUsed:
+      encA: 10335
+      encB: -75860
+      keyA: 10453
+      keyB: 75994
+      fakeValue: 0
+    phuTu1Used:
+      encA: -21905
+      encB: 85384
+      keyA: 21685
+      keyB: 85114
+      fakeValue: 204
+    phuTu2Used:
+      encA: 69015
+      encB: 68261
+      keyA: 68909
+      keyB: 68280
+      fakeValue: 215
+    phuTu3Used:
+      encA: -46826
+      encB: 97076
+      keyA: 46222
+      keyB: 96371
+      fakeValue: 223
+    phuTu4Used:
+      encA: -97703
+      encB: 97304
+      keyA: 98184
+      keyB: 96343
+      fakeValue: 544
+    chuTu1Used:
+      encA: 56907
+      encB: 73771
+      keyA: 57036
+      keyB: 73850
+      fakeValue: 216
+    chuTu2Used:
+      encA: -78846
+      encB: 76986
+      keyA: 78531
+      keyB: 77809
+      fakeValue: 524
+    Gender: 1
+    skinList: []
+    colorList: []
+    idNode:
+      encA: 11180
+      encB: -23443
+      keyA: 10869
+      keyB: 23114
+      fakeValue: 0
+  charStatsCreateRef:
+    idChar:
+      encA: -32853
+      encB: 87633
+      keyA: 32935
+      keyB: 87835
+      fakeValue: 86
+    percentKim:
+      encA: 1124136025
+      encB: -1024648193
+      keyA: 64583
+      keyB: 68547
+      fakeValue: 10
+    percentMoc:
+      encA: -1000031889
+      encB: 1147562508
+      keyA: 53958
+      keyB: 33189
+      fakeValue: 10
+    percentThuy:
+      encA: 1148140520
+      encB: -1000257241
+      keyA: 88900
+      keyB: 43403
+      fakeValue: 50
+    percentHoa:
+      encA: -1002126034
+      encB: 1145449393
+      keyA: 58640
+      keyB: 35727
+      fakeValue: 10
+    percentTho:
+      encA: -1003894198
+      encB: 1143723474
+      keyA: 94613
+      keyB: 60941
+      fakeValue: 10
+    percentMa:
+      encA: 1133387763
+      encB: -1014022420
+      keyA: 42300
+      keyB: 99363
+      fakeValue: 0
+    tuChat:
+      encA: 22472
+      encB: -31951
+      keyA: 22167
+      keyB: 31779
+      fakeValue: 113
+    ngoTinh:
+      encA: -63952
+      encB: 98278
+      keyA: 63781
+      keyB: 97953
+      fakeValue: 92
+    thanThuc:
+      encA: 55442
+      encB: -41036
+      keyA: 55942
+      keyB: 41560
+      fakeValue: 0
+    tocDoBay:
+      encA: -59208
+      encB: 31433
+      keyA: 58869
+      keyB: 30842
+      fakeValue: 0
+    linhThach:
+      encA: -68085
+      encB: 59936
+      keyA: 68364
+      keyB: 59609
+      fakeValue: 0
+    hp:
+      encA: -58542
+      encB: 77059
+      keyA: 58421
+      keyB: 77571
+      fakeValue: 359
+    hpMax:
+      encA: 30041
+      encB: -27093
+      keyA: 30597
+      keyB: 26784
+      fakeValue: 359
+    thoNguyen:
+      encA: 48162
+      encB: -18291
+      keyA: 48749
+      keyB: 18072
+      fakeValue: 100
+    tamCanh:
+      encA: 57209
+      encB: -51924
+      keyA: 56810
+      keyB: 51265
+      fakeValue: 0
+    idLinhCan:
+      encA: -31466
+      encB: 62520
+      keyA: 31722
+      keyB: 62780
+      fakeValue: 0
+    ability: 0
+    ngoDaoDiem:
+      encA: 41567
+      encB: -30330
+      keyA: 41363
+      keyB: 30130
+      fakeValue: 0
+    danDoc:
+      encA: -64519
+      encB: 57439
+      keyA: 64957
+      keyB: 57827
+      fakeValue: 0
+    nameUser: "H\u1EAFc Ma Y\xEAu"
+    level:
+      encA: 14431
+      encB: -81454
+      keyA: 14514
+      keyB: 81612
+      fakeValue: 11
+    tuoiTac:
+      encA: 78028
+      encB: -26028
+      keyA: 78407
+      keyB: 26579
+      fakeValue: 18
+    currentExp:
+      encA: 79619
+      encB: -45772
+      keyA: 79749
+      keyB: 45646
+      fakeValue: 0
+    ngoDaoSaves:
+    - encA: -81788
+      encB: 33183
+      keyA: 81433
+      keyB: 33551
+      fakeValue: 301
+    - encA: 95869
+      encB: -75380
+      keyA: 96066
+      keyB: 75380
+      fakeValue: 311
+    - encA: 52385
+      encB: -40937
+      keyA: 52725
+      keyB: 40954
+      fakeValue: 321
+    - encA: 62942
+      encB: 30840
+      keyA: 62728
+      keyB: 30733
+      fakeValue: 331
+    - encA: 24165
+      encB: 24201
+      keyA: 24550
+      keyB: 24343
+      fakeValue: 801
+    - encA: -50864
+      encB: 81808
+      keyA: 50306
+      keyB: 80587
+      fakeValue: 813
+    - encA: -41784
+      encB: 46578
+      keyA: 41104
+      keyB: 45862
+      fakeValue: 812
+    - encA: -98405
+      encB: 74142
+      keyA: 98587
+      keyB: 75051
+      fakeValue: 821
+    - encA: 13654
+      encB: 53279
+      keyA: 13892
+      keyB: 53296
+      fakeValue: 833
+    - encA: 73489
+      encB: 19711
+      keyA: 73112
+      keyB: 19529
+      fakeValue: 831
+    monPhai: 4
+    thanThongOwner:
+    - encA: -89150
+      encB: 84580
+      keyA: 89804
+      keyB: 84395
+      fakeValue: 221
+    - encA: -65662
+      encB: 99994
+      keyA: 66167
+      keyB: 99441
+      fakeValue: 224
+    - encA: 74740
+      encB: -33959
+      keyA: 73803
+      keyB: 34374
+      fakeValue: 222
+    - encA: 18872
+      encB: -59693
+      keyA: 19319
+      keyB: 59584
+      fakeValue: 226
+    - encA: -62920
+      encB: 75134
+      keyA: 62675
+      keyB: 74886
+      fakeValue: 227
+    - encA: -49418
+      encB: 71572
+      keyA: 49215
+      keyB: 71055
+      fakeValue: 228
+    - encA: -85570
+      encB: 53776
+      keyA: 85923
+      keyB: 53704
+      fakeValue: 501
+    - encA: 56212
+      encB: -33978
+      keyA: 55802
+      keyB: 33996
+      fakeValue: 504
+    - encA: 55063
+      encB: 52396
+      keyA: 54954
+      keyB: 52454
+      fakeValue: 519
+    thanThongEquip:
+    - encA: 48912
+      encB: -84297
+      keyA: 48613
+      keyB: 84831
+      fakeValue: 221
+    - encA: -99892
+      encB: 29165
+      keyA: 99935
+      keyB: 28832
+      fakeValue: 224
+    - encA: 91112
+      encB: 66462
+      keyA: 91050
+      keyB: 66306
+      fakeValue: 222
+    - encA: -20570
+      encB: 40426
+      keyA: 21224
+      keyB: 40574
+      fakeValue: 226
+    - encA: 17456
+      encB: -71439
+      keyA: 17670
+      keyB: 71516
+      fakeValue: 227
+    - encA: 52081
+      encB: -29817
+      keyA: 51412
+      keyB: 30392
+      fakeValue: 228
+    - encA: -25110
+      encB: 92234
+      keyA: 24690
+      keyB: 93207
+      fakeValue: 501
+    - encA: 23604
+      encB: 10866
+      keyA: 23797
+      keyB: 11077
+      fakeValue: 504
+    - encA: -71427
+      encB: 14866
+      keyA: 71133
+      keyB: 16117
+      fakeValue: 519
+    donThuatUsed:
+      encA: 10335
+      encB: -75860
+      keyA: 10453
+      keyB: 75994
+      fakeValue: 0
+    phuTu1Used:
+      encA: 14242
+      encB: -25455
+      keyA: 14145
+      keyB: 25484
+      fakeValue: 0
+    phuTu2Used:
+      encA: -89815
+      encB: 65481
+      keyA: 89206
+      keyB: 64872
+      fakeValue: 0
+    phuTu3Used:
+      encA: 94941
+      encB: -81703
+      keyA: 94312
+      keyB: 81298
+      fakeValue: 0
+    phuTu4Used:
+      encA: -85057
+      encB: 98404
+      keyA: 85667
+      keyB: 98944
+      fakeValue: 0
+    chuTu1Used:
+      encA: 40115
+      encB: -83216
+      keyA: 40153
+      keyB: 83302
+      fakeValue: 0
+    chuTu2Used:
+      encA: -13578
+      encB: 54939
+      keyA: 13603
+      keyB: 54960
+      fakeValue: 0
+    Gender: 1
+    skinList: []
+    colorList: []
+    idNode:
+      encA: 11180
+      encB: -23443
+      keyA: 10869
+      keyB: 23114
+      fakeValue: 0
+  comboChar:
+    nameCombo: "Th\u1EE7y Ki\u1EBFm"
+    comboWithDaiCanhGioi:
+    - thanThongs:
+      - {fileID: 11400000, guid: abccdea08b8a36146a16fe0bd0d83bba, type: 2}
+      - {fileID: 11400000, guid: 3bfe72f184c3515408baa2a9010c462f, type: 2}
+      - {fileID: 11400000, guid: 91dbef0873cb6724fa51cda3473b1e04, type: 2}
+      - {fileID: 11400000, guid: c04c2b8560ec8a24bb11ca4592a5de99, type: 2}
+      - {fileID: 11400000, guid: 33d3079af8c348d41a1792bae87ec2d4, type: 2}
+      - {fileID: 11400000, guid: ec69e5fca020868499ac8533fcd8fffb, type: 2}
+      - {fileID: 11400000, guid: 8911afae64f22804fabbe103141e0117, type: 2}
+      - {fileID: 11400000, guid: 24ddf8d8845f9cf4692e83c4efc513a3, type: 2}
+      congPhaps:
+      - {fileID: 11400000, guid: 3d30ee7449de1554c96dc9dddd262fc7, type: 2}
+      - {fileID: 11400000, guid: 300ce9dd5c52c284f9a504078f4a7e11, type: 2}
+      - {fileID: 11400000, guid: 06d965c151cabe945baf4727fc100ce9, type: 2}
+      ngoDaos:
+      - {fileID: 11400000, guid: db7602527ece8a942ba5ac0a3f0d52c5, type: 2}
+      - {fileID: 11400000, guid: c5c6ffa09d0dbd04189665dd1b799674, type: 2}
+      - {fileID: 11400000, guid: 1e42b1cde284ebb4db481faba0808667, type: 2}
+    - thanThongs:
+      - {fileID: 11400000, guid: 3bfe72f184c3515408baa2a9010c462f, type: 2}
+      - {fileID: 11400000, guid: abccdea08b8a36146a16fe0bd0d83bba, type: 2}
+      - {fileID: 11400000, guid: 05f03992855594e42b5772100b59b6c4, type: 2}
+      - {fileID: 11400000, guid: c04c2b8560ec8a24bb11ca4592a5de99, type: 2}
+      - {fileID: 11400000, guid: 33d3079af8c348d41a1792bae87ec2d4, type: 2}
+      - {fileID: 11400000, guid: ec69e5fca020868499ac8533fcd8fffb, type: 2}
+      - {fileID: 11400000, guid: 8911afae64f22804fabbe103141e0117, type: 2}
+      - {fileID: 11400000, guid: 24ddf8d8845f9cf4692e83c4efc513a3, type: 2}
+      congPhaps:
+      - {fileID: 11400000, guid: 5db2c12b8532ef644a52e78e00566bff, type: 2}
+      - {fileID: 11400000, guid: 3d30ee7449de1554c96dc9dddd262fc7, type: 2}
+      - {fileID: 11400000, guid: 300ce9dd5c52c284f9a504078f4a7e11, type: 2}
+      - {fileID: 11400000, guid: afd5d40fed841024c83e5a84d0eb4235, type: 2}
+      - {fileID: 11400000, guid: 06d965c151cabe945baf4727fc100ce9, type: 2}
+      ngoDaos:
+      - {fileID: 11400000, guid: db7602527ece8a942ba5ac0a3f0d52c5, type: 2}
+      - {fileID: 11400000, guid: c5c6ffa09d0dbd04189665dd1b799674, type: 2}
+      - {fileID: 11400000, guid: 1e42b1cde284ebb4db481faba0808667, type: 2}
+      - {fileID: 11400000, guid: 82327428949b33f41a0b29971553910e, type: 2}
+    - thanThongs:
+      - {fileID: 11400000, guid: d0efd2c705672c84290921deb53d6dec, type: 2}
+      - {fileID: 11400000, guid: f0ab4a07450885a4ab2b103b2acc06fa, type: 2}
+      - {fileID: 11400000, guid: f43e1d017b5326840a4f59058d785d5e, type: 2}
+      - {fileID: 11400000, guid: 3bfe72f184c3515408baa2a9010c462f, type: 2}
+      - {fileID: 11400000, guid: abccdea08b8a36146a16fe0bd0d83bba, type: 2}
+      - {fileID: 11400000, guid: 33d3079af8c348d41a1792bae87ec2d4, type: 2}
+      - {fileID: 11400000, guid: ec69e5fca020868499ac8533fcd8fffb, type: 2}
+      - {fileID: 11400000, guid: 8911afae64f22804fabbe103141e0117, type: 2}
+      - {fileID: 11400000, guid: 24ddf8d8845f9cf4692e83c4efc513a3, type: 2}
+      congPhaps:
+      - {fileID: 11400000, guid: 5db2c12b8532ef644a52e78e00566bff, type: 2}
+      - {fileID: 11400000, guid: 75d506c649ede714e8b657fb23a5f28a, type: 2}
+      - {fileID: 11400000, guid: 300ce9dd5c52c284f9a504078f4a7e11, type: 2}
+      - {fileID: 11400000, guid: b412c45e3bbb78a4990487d0dfa4bb1d, type: 2}
+      - {fileID: 11400000, guid: 06d965c151cabe945baf4727fc100ce9, type: 2}
+      ngoDaos:
+      - {fileID: 11400000, guid: db7602527ece8a942ba5ac0a3f0d52c5, type: 2}
+      - {fileID: 11400000, guid: c5c6ffa09d0dbd04189665dd1b799674, type: 2}
+      - {fileID: 11400000, guid: 1e42b1cde284ebb4db481faba0808667, type: 2}
+      - {fileID: 11400000, guid: 82327428949b33f41a0b29971553910e, type: 2}
+      - {fileID: 11400000, guid: c2014aecfad46944abcf52d3e84b602f, type: 2}
+      - {fileID: 11400000, guid: a2fc05e9aa171784eb309a77da7aac4b, type: 2}
+      - {fileID: 11400000, guid: 9d1c4b4ca7cebd64b8b9c985dc02edca, type: 2}
+    - thanThongs:
+      - {fileID: 11400000, guid: 15a2c1dbd01d6774bb451c62bad78dc1, type: 2}
+      - {fileID: 11400000, guid: fbc2f11de14c422409586120a5e6edad, type: 2}
+      - {fileID: 11400000, guid: 74e4977515d77a941bb14a704bab9695, type: 2}
+      - {fileID: 11400000, guid: a9995876df381de4fa8d0b1ddb0cefda, type: 2}
+      - {fileID: 11400000, guid: 20cf927f45a87564ab000433773a4608, type: 2}
+      - {fileID: 11400000, guid: 33d3079af8c348d41a1792bae87ec2d4, type: 2}
+      - {fileID: 11400000, guid: ec69e5fca020868499ac8533fcd8fffb, type: 2}
+      - {fileID: 11400000, guid: 8911afae64f22804fabbe103141e0117, type: 2}
+      - {fileID: 11400000, guid: 24ddf8d8845f9cf4692e83c4efc513a3, type: 2}
+      congPhaps:
+      - {fileID: 11400000, guid: a6ec4234ff30f574bb00f63e4771d507, type: 2}
+      - {fileID: 11400000, guid: 75d506c649ede714e8b657fb23a5f28a, type: 2}
+      - {fileID: 11400000, guid: 300ce9dd5c52c284f9a504078f4a7e11, type: 2}
+      - {fileID: 11400000, guid: ca47cc02fa3d96a46862ba96b171ddc0, type: 2}
+      - {fileID: 11400000, guid: c224409833547c3449538c21ac3f8ce9, type: 2}
+      - {fileID: 11400000, guid: b8ca1523110120b4a9e7567e2ddebdf5, type: 2}
+      ngoDaos:
+      - {fileID: 11400000, guid: db7602527ece8a942ba5ac0a3f0d52c5, type: 2}
+      - {fileID: 11400000, guid: c5c6ffa09d0dbd04189665dd1b799674, type: 2}
+      - {fileID: 11400000, guid: 1e42b1cde284ebb4db481faba0808667, type: 2}
+      - {fileID: 11400000, guid: 82327428949b33f41a0b29971553910e, type: 2}
+      - {fileID: 11400000, guid: c2014aecfad46944abcf52d3e84b602f, type: 2}
+      - {fileID: 11400000, guid: a2fc05e9aa171784eb309a77da7aac4b, type: 2}
+      - {fileID: 11400000, guid: 761fc444caf277c4a9c34fd525180b13, type: 2}
+      - {fileID: 11400000, guid: ccc5de5acd9363142a2f8e9728a63873, type: 2}
+      - {fileID: 11400000, guid: 9d1c4b4ca7cebd64b8b9c985dc02edca, type: 2}
+      - {fileID: 11400000, guid: 808751cc08bf97b47bb6cb9020ce11b4, type: 2}
+    - thanThongs:
+      - {fileID: 11400000, guid: dd06bcc8dff36bc4e9f5fc2d2454df49, type: 2}
+      - {fileID: 11400000, guid: 15a2c1dbd01d6774bb451c62bad78dc1, type: 2}
+      - {fileID: 11400000, guid: fbc2f11de14c422409586120a5e6edad, type: 2}
+      - {fileID: 11400000, guid: 74e4977515d77a941bb14a704bab9695, type: 2}
+      - {fileID: 11400000, guid: a9995876df381de4fa8d0b1ddb0cefda, type: 2}
+      - {fileID: 11400000, guid: 20cf927f45a87564ab000433773a4608, type: 2}
+      - {fileID: 11400000, guid: 33d3079af8c348d41a1792bae87ec2d4, type: 2}
+      - {fileID: 11400000, guid: ec69e5fca020868499ac8533fcd8fffb, type: 2}
+      - {fileID: 11400000, guid: 8911afae64f22804fabbe103141e0117, type: 2}
+      - {fileID: 11400000, guid: 24ddf8d8845f9cf4692e83c4efc513a3, type: 2}
+      congPhaps:
+      - {fileID: 11400000, guid: a6ec4234ff30f574bb00f63e4771d507, type: 2}
+      - {fileID: 11400000, guid: 75d506c649ede714e8b657fb23a5f28a, type: 2}
+      - {fileID: 11400000, guid: 300ce9dd5c52c284f9a504078f4a7e11, type: 2}
+      - {fileID: 11400000, guid: ca47cc02fa3d96a46862ba96b171ddc0, type: 2}
+      - {fileID: 11400000, guid: c224409833547c3449538c21ac3f8ce9, type: 2}
+      - {fileID: 11400000, guid: 309d1594b929d5c47bb4dc5f8aedab8d, type: 2}
+      ngoDaos:
+      - {fileID: 11400000, guid: db7602527ece8a942ba5ac0a3f0d52c5, type: 2}
+      - {fileID: 11400000, guid: c5c6ffa09d0dbd04189665dd1b799674, type: 2}
+      - {fileID: 11400000, guid: 1e42b1cde284ebb4db481faba0808667, type: 2}
+      - {fileID: 11400000, guid: 82327428949b33f41a0b29971553910e, type: 2}
+      - {fileID: 11400000, guid: 163dc063b3a154d4ea239bd8343d1c5d, type: 2}
+      - {fileID: 11400000, guid: c2014aecfad46944abcf52d3e84b602f, type: 2}
+      - {fileID: 11400000, guid: a2fc05e9aa171784eb309a77da7aac4b, type: 2}
+      - {fileID: 11400000, guid: 761fc444caf277c4a9c34fd525180b13, type: 2}
+      - {fileID: 11400000, guid: ccc5de5acd9363142a2f8e9728a63873, type: 2}
+      - {fileID: 11400000, guid: 9d1c4b4ca7cebd64b8b9c985dc02edca, type: 2}
+      - {fileID: 11400000, guid: 808751cc08bf97b47bb6cb9020ce11b4, type: 2}
+      - {fileID: 11400000, guid: 7e686725bfdecd641b3bed2f68625b54, type: 2}
+    eTypeSkill: 0300000007000000
+    typeCombo: 5
+    monPhai: 4
