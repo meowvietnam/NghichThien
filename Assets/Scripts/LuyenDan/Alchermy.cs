@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Base;
 using DG.Tweening;
 using LuyenDan.Inventory;
 using UnityEngine;
@@ -104,7 +105,7 @@ namespace LuyenDan
 
         private string GetColorHexByTier(Tier tier)
         {
-            var quality = LuyenDanPanel.Instance.Resources.Qualities.FirstOrDefault(q => q.Tier == tier);
+            var quality = CoreConfig.Instance.Qualities.FirstOrDefault(q => q.Tier == tier);
             return quality != null ? ColorUtility.ToHtmlStringRGB(quality.Color) : "ffcc00";
         }
 

@@ -15,13 +15,10 @@ namespace LuyenDan
     [CreateAssetMenu(fileName = "LuyenDanResources", menuName = "LuyenDan/Luyen Dan Resources")]
     public class LuyenDanResources : ScriptableObject, IMemorySerializable<LuyenDanResources>
     {
-        [TabGroup("Inventory")]
-        [field: SerializeField]
-        public List<Quality> Qualities { get; private set; }
 
         [field: SerializeField, ReadOnly] public List<TempFurnaceData> TempFurnaceDatas { get; private set; }
         [field: SerializeField, ReadOnly] public List<HerbData> HerbDatas { get; private set; }
-        [field: SerializeField] public List<LinhDan> LinhDans { get; private set; }
+        [field: SerializeField, ReadOnly] public List<LinhDan> LinhDans { get; private set; }
         [field: SerializeField, ReadOnly] public List<RecipeData> Recipes { get; private set; }
         public const string EmptyDetail = "Không";
         private static LuyenDanResources instance;
@@ -39,10 +36,7 @@ namespace LuyenDan
             }
         }
 
-        public Quality FindQuality(Tier tier)
-        {
-            return Qualities.FirstOrDefault(x => x.Tier == tier);
-        }
+
 
         public IItemData FindItem(ItemRef itemRef)
         {

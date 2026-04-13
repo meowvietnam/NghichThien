@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Base;
 using CreateCharacter;
 using LongDH.LongDHModules;
 using LuyenDan;
@@ -80,8 +81,9 @@ namespace AllMaps
                 }
 
                 var r = LuyenDanResources.Instance;
+                var core = CoreConfig.Instance;
                 var listItem = listItemRef.Select(x => r.FindItem(x)).ToList();
-                var message = $"Bạn nhận được: {string.Join(", ", listItem.Select(x => $"<color=#{ColorUtility.ToHtmlStringRGBA(r.FindQuality(x.Tier).Color)}>{x.Name}</color>"))}";
+                var message = $"Bạn nhận được: {string.Join(", ", listItem.Select(x => $"<color=#{ColorUtility.ToHtmlStringRGBA(core.FindQuality(x.Tier).Color)}>{x.Name}</color>"))}";
                 NotifyGroup.Instance.Show(message);
             });
         }
