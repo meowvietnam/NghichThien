@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 [CreateAssetMenu(fileName = nameof(TungDiaKimQuang), menuName = "Skill/Thần Thông/" + nameof(TungDiaKimQuang))]
 public class TungDiaKimQuang : ThanThong
 {
@@ -7,7 +8,12 @@ public class TungDiaKimQuang : ThanThong
     {
         HauKeVoLuc(caster);
         var linhKhiHapThu = caster.DictHapThuLinhKhi(buff[GetIndexLevelThanThong(caster)]);
-        caster.HapThuLinhKhi(ELinhKhi.Kim,linhKhiHapThu[ELinhKhi.Kim]);
+        int countKhiKim = linhKhiHapThu.GetValueOrDefault(ELinhKhi.Kim);
+        if(countKhiKim>0)
+        {
+            caster.HapThuLinhKhi(ELinhKhi.Kim, countKhiKim);
+
+        }
         ShowSkillEffectWorld(caster, 1f);
 
     }

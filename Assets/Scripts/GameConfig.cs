@@ -12,6 +12,8 @@ using CreateCharacter.CharStats;
 using LuyenDan.Inventory;
 using Network;
 using System.Collections;
+using Sirenix.Utilities;
+
 
 
 
@@ -112,6 +114,64 @@ public class GameConfig : BaseBehaviour
 
 
     }
+    public class CharCombatInit
+    {
+        public ETypeVisualChar eTypeVisual;
+        public CharacterStatsSecure charStats;
+    }
+    public CharCombatInit enemyCombat = null;
+    public void GoToCombat(CharCombatInit enemyCombat)
+    {
+        this.enemyCombat = enemyCombat;
+        if (enemyCombat == null) return;
+        Pool.Get<UIManager>().gameObject.SetActive(false);
+        SceneManager.LoadScene("Combat");
+
+    }
+    public void BackAllMaps()
+    {
+       
+        Pool.Get<UIManager>().gameObject.SetActive(true);
+        SceneManager.LoadScene(listSceneLoaded[0]);
+
+    }
+    public static CharacterStatsSecure ConvertCharServerDataToCharClientData()
+    {
+        var charData = Client.Instance.CharacterData;
+        var stat = charData.Stats;
+        return new CharacterStatsSecure
+        {
+            level = charData.Level,
+            hp = stat.Hp,
+            hpMax = stat.SinhMenh,
+            ability = stat.Ability,
+            percentKim = stat.Kim,
+            percentMoc = stat.Moc,
+            percentThuy = stat.Thuy,
+            percentHoa = stat.Hoa,
+            percentTho = stat.Tho,
+            percentMa = stat.Ma,
+            tocDoBay = stat.TocDoBay,
+            thanThuc = stat.ThanThuc,
+            thoNguyen = stat.ThoNguyen,
+            thanThongEquip = charData.ThanThongEquip.Select(x => new SecureInt(x)).ToList(),
+            chuTu1Used = charData.ChuTu1Used,
+            chuTu2Used = charData.ChuTu2Used,
+            phuTu1Used = charData.PhuTu1Used,
+            phuTu2Used = charData.PhuTu2Used,
+            phuTu3Used = charData.PhuTu3Used,
+            phuTu4Used = charData.PhuTu4Used,
+            monPhai = charData.MonPhai,
+            danDoc = stat.DanDoc,
+            ngoDaoSaves= charData.NgoDaoSaves.Select(x => new SecureInt(x)).ToList(),
+            skinList = charData.Skins.Select(kvp => new CharacterStatsSecure.SkinData { key = kvp.Key, value = kvp.Value }).ToList(),
+            colorList = charData.Colors.Select(kvp => new CharacterStatsSecure.ColorData { key = kvp.Key, value = kvp.Value }).ToList(),
+
+
+        };
+
+    }    
+  
     private void Awake()
     {
         // Kiểm tra nếu trong Pool đã có một Manager loại này rồi
