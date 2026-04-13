@@ -1,5 +1,6 @@
 ﻿ using AllMaps;
 using Base;
+using CreateCharacter;
 using DG.Tweening;
 using LongDH.LongDHModules;
 using LongDH.Script.ObjectPool;
@@ -17,6 +18,11 @@ using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.Networking.UnityWebRequest;
 
+public enum ETypeVisualChar
+{
+    Character,
+    Enemy1,
+}
 
 public class CharacterCombat : MonoBehaviour
 {
@@ -26,9 +32,9 @@ public class CharacterCombat : MonoBehaviour
     public const string ANIM_DIE = "Die_0";
     public CombatManager CombatManager=>transform.GetComponentInParent<CombatManager>();
     [SerializeField] protected Text textSkillNameCall;
-    public Gender gender;
-    [SerializeField] SkeletonGraphic[] characterGender;
-    [SerializeField] public SkeletonGraphic currentCharGender => characterGender[(int)gender];
+    [SerializeField] public ETypeVisualChar eTypeVisualChar;
+    [SerializeField] SkeletonGraphic[] characterGenders;
+    [SerializeField] public SkeletonGraphic currentCharGender => characterGenders[(int)eTypeVisualChar];
     [SerializeField]
     public List<CongPhapMono> congPhapEquip = new List<CongPhapMono>();
     [SerializeField]
@@ -252,7 +258,7 @@ public class CharacterCombat : MonoBehaviour
         var anim = currentCharGender.Skeleton.Data.FindAnimation(ANIM_HIT);
         // Lấy thời gian thực tế trừ đi khoảng 0.1s hoặc 0.2s để chuyển cảnh sớm hơn
         float duration = (anim != null) ? anim.Duration : 0.1f;
-        float spacing = gender == Gender.Female ? 1.75f : 0;
+        float spacing = characterStatsBase.Gender == Gender.Female ? 1.75f : 0;
         // Giảm thời gian chờ đi một chút để bớt cảm giác "đơ"
         float actualWait = Mathf.Max(0, duration - spacing);
 
@@ -525,8 +531,10 @@ public class CharacterCombat : MonoBehaviour
         return thanThuc;
 
     }    
-    public void Init(CharacterStatsSecure characterStat)
+    public void Init(GameConfig.CharCombatInit charCombatInit )
     {
+        eTypeVisualChar = charCombatInit.eTypeVisual;
+        var characterStat = charCombatInit.charStats;
         characterStatsBase = characterStat;
         characterStatsTemp = characterStat.Clone();
         thanThongCoolDown.Clear();
@@ -552,14 +560,19 @@ public class CharacterCombat : MonoBehaviour
         foreach (var item in characterStat.thanThongEquip)
         {
             thanThongEquip.Add(Pool.Get<GameConfig>().GetThanThongWithId(item.Value));
-
+            
         }
+        if(eTypeVisualChar == ETypeVisualChar.Character)
+        {
+            var charGraphic = currentCharGender.GetComponent<CharacterGraphic>();
+            charGraphic.SetGender(characterStatsBase.Gender);
+            charGraphic.SetSkin(characterStatsBase.Skins, characterStatsBase.Colors);
+        }    
 
 
 
         //Test
-        currentCharGender.GetComponent<SpineSkinMixer>().RandomizeAndApplySkin();
-
+        
 
 
     }

@@ -206,6 +206,16 @@ public class UINPCJiaoHu : PanelGroup
             InitPopThinhGiao();
 
         });
+        SetEventButton(btnLuanBan, () =>
+        {
+            HideAllPop();
+            Pool.Get<GameConfig>().GoToCombat(new GameConfig.CharCombatInit
+            {
+                charStats = characterStatsTarget,
+                eTypeVisual = ETypeVisualChar.Character,
+            });
+
+        });
     }
     private void HideAllPop()
     {

@@ -135,41 +135,10 @@ public class CombatManager : MonoBehaviour
         if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
         // test 
         //char1.isAutoCastSkill = true;
-        char1.Init(new CharacterStatsSecure()
-        {
-            level = 15,
-            percentKim = 20,
-            percentMoc = 20,
-            percentThuy = 20,
-            percentHoa = 20,
-            percentTho = 20,
-            hp = 200,
-            hpMax = 200,
-            tocDoBay = 20,
-            thoNguyen = 1000,
-            thanThuc = 50,
-            thanThongEquip = new List<SecureInt> {4,1, 201, 701,720}
-            
-
-        });
-        char2.Init(new CharacterStatsSecure()
-        {
-            level = 9,
-            percentKim = 60,
-            percentMoc = 10,
-            percentThuy = 10,
-            percentHoa = 10,
-            percentTho = 10,
-            hp = 200,
-            hpMax = 300,
-
-            tocDoBay = 10,
-            thoNguyen = 1000,
-            thanThuc = 30,
-            thanThongEquip = new List<SecureInt> { 874, 527, 417 }
-
-
-        });
+        var gameConfig = Pool.Get<GameConfig>();
+        char1.Init(new GameConfig.CharCombatInit { charStats= GameConfig.ConvertCharServerDataToCharClientData() , eTypeVisual = ETypeVisualChar.Character});
+        char2.Init(gameConfig.enemyCombat);
+        char2.isAutoCastSkill = true;
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, NewTurn);
         SetUIHpBar();

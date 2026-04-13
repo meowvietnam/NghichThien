@@ -28,6 +28,11 @@ namespace CreateCharacter
             var combineSkin = new Skin("character");
             var skeleton = graphic.Skeleton;
             var data = skeleton.Data;
+            if(combines == null)
+            {
+                Debug.Log("data set skin null");
+                return;
+            }    
             foreach (var (skinId, skinName) in combines)
             {
                 var skin = data.FindSkin(skinName);
