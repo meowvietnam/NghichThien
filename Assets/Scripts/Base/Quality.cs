@@ -2,7 +2,7 @@ using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace LuyenDan
+namespace Base
 {
     [Serializable]
     public class Quality

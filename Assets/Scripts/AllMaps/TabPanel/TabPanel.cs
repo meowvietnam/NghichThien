@@ -978,7 +978,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         Sprite frame = null;
         if (data != null)
         {
-            var quality = LuyenDanResources.Instance.FindQuality(data.Tier);
+            var quality = CoreConfig.Instance.FindQuality(data.Tier);
             frame = quality.IconUp;
 
             item.SetColorName(quality.Color);

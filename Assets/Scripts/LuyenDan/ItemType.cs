@@ -10,6 +10,7 @@ namespace LuyenDan
         VuKhi,
         PhongCu,
         TrangSuc,
-        Recipe
+        Recipe,
+        Material
     }
 }

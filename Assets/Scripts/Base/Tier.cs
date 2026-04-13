@@ -1,4 +1,4 @@
-namespace LuyenDan
+namespace Base
 {
     public enum Tier
     {
