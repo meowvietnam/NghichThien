@@ -15,6 +15,7 @@ public class NhienHoaThuat : ThanThong, BaseSkill.LienKich
      {
         3,3,3,3,3
      };
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
@@ -22,6 +23,7 @@ public class NhienHoaThuat : ThanThong, BaseSkill.LienKich
         int dame = dameValues[GetIndexLevelThanThong(caster)];
 
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame  }, eTypeSkill);
+        ShowSkillEffectWorld(target, delayTimeEffect);
     }
    
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
