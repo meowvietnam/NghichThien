@@ -6,8 +6,8 @@ public class BaoNhien : ThanThong, BaseSkill.LienKich
 {
     [SerializeField]
     private int[] dameValues;
+    [SerializeField] private float delayTimeEffect = 1f;
 
-     
     private void ExcuteDiem(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out SecureInt diem);
@@ -24,6 +24,7 @@ public class BaoNhien : ThanThong, BaseSkill.LienKich
 
         ExcuteDiem(caster,target);
         Debug.Log("BaoNhien after" + target.allDamages[0]);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)

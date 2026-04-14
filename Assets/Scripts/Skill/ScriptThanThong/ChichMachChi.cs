@@ -15,6 +15,7 @@ public class ChichMachChi : ThanThong
      {
         24,34,55,100,200
      };
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
@@ -27,7 +28,7 @@ public class ChichMachChi : ThanThong
         target.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.ADJUST_LINHKHI, ObserverEffect);
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect2);
-
+        ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
    
