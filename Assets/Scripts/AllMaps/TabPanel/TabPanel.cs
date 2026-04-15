@@ -536,7 +536,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
         }
 
-
+        moneyText.text = Client.Instance.CharacterData.Stats.LinhThach.ToString();
     }
     private void InitVisualItemSkill(ItemInventory item, BaseSkill data , ETypeInventoryItem eTypeInventoryItem= ETypeInventoryItem.Skill)
     {

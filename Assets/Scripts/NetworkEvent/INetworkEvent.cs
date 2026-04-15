@@ -57,4 +57,14 @@ public class INetworkEvent
         void SuccessDotPhaCongPhap();
         void FailDotPhaCongPhap(string message);
     }
+    public interface ITangQuaNPC // Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessTangQuaNpc();
+        void FailTangQuaNpc(string message);
+    }
+    public interface IThinhGiaoNPC // Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessThinhGiaoNpc();
+        void FailThinhGiaoNpc(string message);
+    }
 }

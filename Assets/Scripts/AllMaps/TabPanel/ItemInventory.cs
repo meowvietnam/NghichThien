@@ -25,18 +25,34 @@ public class ItemInventory : BaseItemUI
     [SerializeField] public Text textName;
     [SerializeField] private GameObject leftUpMask;
     [SerializeField] private Button btnShowInfor;
+    [SerializeField] public ItemRef itemRef;
+    [SerializeField] public IItemData iItemData;
+    [SerializeField] public int count;
+
     private void OnEnable()
     {
     }
     public void InitCount(int count)
     {
+        this.count = count;
         textCount.text = count.ToString();
 
+    }
+    public void AddCount(int count)
+    {
+        this.count += count;
+        textCount.text = this.count.ToString();
+
+    }
+    public void InitItemRef(ItemRef itemRef)
+    {
+        this.itemRef = itemRef;
     }
     public void InitInventory(ETypeInventoryItem type,ItemRef itemRefInven,IItemData iItemData , EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
     {
 
         this.itemRef = itemRefInven;
+        this.iItemData = iItemData;
         if(itemData == null)
         {
             btnShowInfor?.gameObject.SetActive(false);

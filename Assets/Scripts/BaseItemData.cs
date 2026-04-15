@@ -2,21 +2,7 @@
 using UnityEngine;
 
 
-public enum ETirePhapBao
-{
 
-    None,
-    HaPhamPhuKhi,
-    TrungPhamPhuKhi,
-    ThuongPhamPhuKhi,
-    HaPhamPhapKhi,
-    TrungPhamPhapKhi,
-    ThuongPhamPhapKhi,
-    HaPhamPhapBao,
-    TrungPhamPhapBao,
-    ThuongPhamPhapBao,
-
-}
 
 public class BaseItemData : BaseData
 {

@@ -63,6 +63,8 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private Image progressHpChar2;
     [SerializeField] private Text textHpChar2;
     [SerializeField] private ScrollRect statusChar2;
+    [SerializeField] private Text textNameChar1;
+    [SerializeField] private Text textNameChar2;
 
     [SerializeField] public Text prefabTextDame;
     [SerializeField] private Tooltip buffInfor;
@@ -144,8 +146,11 @@ public class CombatManager : MonoBehaviour
         SetUIHpBar();
         buffInfor.DoHide();
         transform.GetComponentInChildren<PlayerUICombat>().Init();
+        textNameChar1.text = char1.characterStatsBase.nameUser;
+        textNameChar2.text = char2.characterStatsBase.nameUser;
+
     }
-    
+
     public static bool IsTuongDong(List<LinhKhiTieuTan> linhKhiTieuTan)
     {
         // Lấy danh sách các hệ có count > 0

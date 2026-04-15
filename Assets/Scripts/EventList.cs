@@ -50,6 +50,8 @@ public static partial class EventList
         public const string TU_LUYEN = "GamePlay.TU_LUYEN";
         public const string LINH_NGO = "GamePlay.LINH_NGO";
         public const string DOT_PHA_CONGPHAP = "GamePlay.DOT_PHA_CONGPHAP";
+        public const string TANG_QUA_NPC = "GamePlay.TANG_QUA_NPC";
+        public const string THINH_GIAO_NPC = "GamePlay.THINH_GIAO_NPC";
 
     }
 }

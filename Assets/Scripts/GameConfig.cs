@@ -13,6 +13,8 @@ using LuyenDan.Inventory;
 using Network;
 using System.Collections;
 using Sirenix.Utilities;
+using LuyenKhi;
+
 
 
 
@@ -81,6 +83,37 @@ public class GameConfig : BaseBehaviour
     { 14, "Hóa Thần Trung Kì" },
     { 15, "Hóa Thần Hậu Kì" },
     };
+    public static Dictionary<BaseSkill.ETierSkill, int> tierSkillWithLevel= new Dictionary<BaseSkill.ETierSkill, int>
+    {
+        {BaseSkill.ETierSkill.NhanGiaiHa, 1},
+        {BaseSkill.ETierSkill.NhanGiaiTrung, 3},
+        {BaseSkill.ETierSkill.NhanGiaiThuong, 6},
+        {BaseSkill.ETierSkill.DiaGiaiHa, 8},
+        {BaseSkill.ETierSkill.DiaGiaiTrung, 10},
+        {BaseSkill.ETierSkill.DiaGiaiThuong, 12},
+        {BaseSkill.ETierSkill.ThienGiaiHa, 13},
+        {BaseSkill.ETierSkill.ThienGiaiTrung, 14},
+        {BaseSkill.ETierSkill.ThienGiaiThuong, 15},
+
+    };
+    public static Dictionary<Tier, int> tierItemWithLevel = new Dictionary<Tier, int>
+    {
+        {Tier.NhatPham,1 },
+        {Tier.NhiPham,3},
+        {Tier.TamPham,5},
+        {Tier.TuPham,8},
+        {Tier.NguPham,11},
+        {Tier.LucPham,15},
+    };
+    public static Dictionary<EquipmentTier, int> tierEquipmentWithLevel = new Dictionary<EquipmentTier, int>
+    {
+        {EquipmentTier.PhuKhi,3 },
+        {EquipmentTier.PhapKhi,6},
+        {EquipmentTier.PhapBao,9},
+        {EquipmentTier.ThuanDuong,12},
+        {EquipmentTier.ThongThien,15},
+    };
+
     public static Dictionary<int, ETypeVisualChar> levelWithVisualChar = new Dictionary<int, ETypeVisualChar>
     {
         { 1, ETypeVisualChar.EnemyLuyenKhiSoKi }, // Use { đại cảnh giới, text }

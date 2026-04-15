@@ -21,7 +21,6 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
     [SerializeField] protected Action actionPointerDown;
 
     [SerializeField] protected Image selectHighLight;
-    [SerializeField] public ItemRef itemRef;
     public void SetSelectHighlight(bool isActive)
     {
         if(selectHighLight != null)
@@ -34,10 +33,7 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
         InitItemData(itemData, frameSprite);
         InitAction(actionHolder, actionPointerUp);
     }
-    public void InitItemRef(ItemRef itemRef)
-    {
-        this.itemRef = itemRef;
-    }
+   
 
     [Button]
     public virtual void InitItemData(BaseItemData itemData , Sprite frameSprite)
@@ -66,18 +62,19 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
     }
     public void InitAction(Action actionHolder = null, Action actionPointerUp = null ,  Action actionPointerDown = null)
     {
-        if(actionHolder != null) 
+        this.actionHolder = actionHolder;
+        this.actionPointerUp = actionPointerUp;
+        this.actionPointerDown = actionPointerDown;
+
+        if (actionHolder != null) 
         {
-            this.actionHolder = actionHolder;
         }    
         if(actionPointerUp != null)
         {
-            this.actionPointerUp = actionPointerUp;
 
         }
         if (actionPointerDown != null)
         {
-            this.actionPointerDown = actionPointerDown;
 
         }
     }

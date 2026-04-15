@@ -1,9 +1,15 @@
-﻿using CreateCharacter;
+﻿using Base;
+using CreateCharacter;
 using DG.Tweening;
 using LongDH.LongDHModules;
+using LuyenDan;
+using LuyenDan.Inventory;
 using Network;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +20,7 @@ public enum ERelationShip
     BanBe,
     ThanThiet,
 }
-public class UINPCJiaoHu : PanelGroup
+public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEvent.IThinhGiaoNPC
 {
     [SerializeField]
     public static Dictionary<ERelationShip, Color> relationShipColor = new Dictionary<ERelationShip, Color>
@@ -114,6 +120,14 @@ public class UINPCJiaoHu : PanelGroup
     [SerializeField] private Button btnTabCongPhap;
     [SerializeField] private Color colorNoneRelation => HexToColor("7A644A");
     [SerializeField] private ERelationShip currentRelationShip = ERelationShip.None;
+    [SerializeField] private Sprite spriteIconThanThongSelect;
+    [SerializeField] private Sprite spriteIconThanThongNoSelect;
+    [SerializeField] private Sprite spriteIconCongPhapSelect;
+    [SerializeField] private Sprite spriteIconCongPhapNoSelect;
+    [SerializeField] private Color colorTextSelect => HexToColor("F8D8A3");
+    [SerializeField] private Color colorTextNoSelect => HexToColor("3F8784");
+    public ETypeSkillRelationShip CurrentPageTypeRelationShip;
+
     private int relatetionshipValue => Client.Instance.CharacterData.RelationShip.GetValueOrDefault(characterStatsTarget.idChar);
     [Header("--- Pop Dò Xét ---")]
     [SerializeField] private CharacterGraphic charVisualPopXemXet;
@@ -129,6 +143,239 @@ public class UINPCJiaoHu : PanelGroup
     [SerializeField] private Text textHaoCam;
     [SerializeField] private List<ItemInventory> listThanThongItemSlot;
     [SerializeField] private List<ItemInventory> listCongPhapItemSlot;
+    [Header("--- Pop Tặng Quà ---")]
+    [SerializeField] private ItemInventory slotItemGift;
+    [SerializeField] private ItemInventory prefabItemBag;
+    [SerializeField] private Text textMoney;
+    [SerializeField] private Text textNameUser;
+    [SerializeField] private Text textHaoCamPopTangQua;
+    [SerializeField] private CharacterGraphic visualChar;
+    public bool isLoadingMore = false;
+    [SerializeField] private Sprite spriteTTInven;
+    [SerializeField] private Sprite spriteCPInven;
+    public ScrollRect scrollRectBagUpdate => prefabItemBag.GetComponentInParent<ScrollRect>();
+    [SerializeField] private Button btnConfirmTangQua;
+
+    void OnScrollChanged(Vector2 value, Action<bool> loadBagFunc)
+    {
+        Debug.Log("co vao onscrooll change");
+
+        if (value.y < 0.05f && !isLoadingMore)
+        {
+            // Kiểm tra xem dữ liệu còn để load không trước khi gọi
+            // (Ví dụ: compare số lượng UI hiện có với tổng số data thật)
+            StartCoroutine(TriggerLoadMore(loadBagFunc));
+        }
+    }
+    private ItemInventory GetItemCurrentActiveFromBag(GameObject prefab)
+    {
+        for (int j = prefab.transform.parent.childCount - 1; j > 0; j--)
+        {
+            Transform child = prefab.transform.parent.GetChild(j);
+            if (!child.gameObject.activeSelf)
+            {
+                continue;
+            }
+            var currentItem = child.GetComponent<ItemInventory>();
+            if (currentItem.itemData != null)
+            {
+                Debug.Log("GetItemCurrentActiveFromBag: " + currentItem.itemData.nameItem);
+                return currentItem;
+            }
+        }
+        return null;
+    }
+    IEnumerator TriggerLoadMore(Action<bool> loadBagFunc)
+    {
+        isLoadingMore = true;
+        Debug.Log("co vao trigger load more");
+
+        // Gọi trực tiếp hàm Coroutine và chờ nó chạy xong
+        loadBagFunc?.Invoke(true);
+
+        // Đợi một chút để tránh việc gọi liên tục khi user giữ chuột ở đáy
+        yield return new WaitForSeconds(0.5f);
+        isLoadingMore = false;
+    }
+    private void InitVisualItemInventory(ItemInventory item, IItemData data, ItemRef itemRef)
+    {
+        Sprite frame = null;
+        if (data != null)
+        {
+            var quality = CoreConfig.Instance.FindQuality(data.Tier);
+            frame = quality.IconUp;
+
+            item.SetColorName(quality.Color);
+            item.SetQualityFull(quality.Background);
+            item.Init(new BaseItemData { nameItem = data.Name, spriteItem = data.Icon }, frame);
+        }
+        if (itemRef != null)
+        {
+            item.InitCount(itemRef.Count);
+            if (itemRef.Type == ItemType.ThanThong)
+            {
+                item.InitIcon(spriteTTInven, frame);
+            }
+            if (itemRef.Type == ItemType.CongPhap)
+            {
+                item.InitIcon(spriteCPInven, frame);
+            }
+        }
+
+
+        item.InitInventory(ETypeInventoryItem.Item, itemRef, data);
+
+
+
+    }
+    public void InitPopTangQua(bool isAdd)
+    {
+        var characterData = Client.Instance.CharacterData;
+        var gameConfig = Pool.Get<GameConfig>();
+        List<ItemRef> itemDatas = new List<ItemRef>();
+        itemDatas.AddRange(characterData.InventoryManager.Herbs.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.Recipes.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.ThanThongs.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.CongPhaps.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.VuKhis.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.PhongCus.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.LinhDans.ToList());
+        // Sử dụng LINQ để trích xuất Ref từ mỗi phần tử trong furnaceDatas
+        var furnaceRefs = characterData.InventoryManager.Furnaces.Select(f => f.Ref).ToList();
+
+        // Thêm danh sách Ref vừa lấy được vào itemDatas
+        itemDatas.AddRange(furnaceRefs);
+        //reset 
+        if (!isAdd)
+        {
+            for (int i = 0; i < prefabItemBag.transform.parent.childCount; i++)
+            {
+                prefabItemBag.transform.parent.GetChild(i).gameObject.SetActive(false);
+            }
+
+            visualChar.SetGender(characterData.Gender);
+            visualChar.SetSkin(characterData.Skins, characterData.Colors);
+            textMoney.text = characterData.Stats.LinhThach.ToString();
+            textNameUser.text = characterData.Name;
+            SetEventButton(btnConfirmTangQua, () =>
+            {
+                if(slotItemGift.itemRef != null && slotItemGift.count > 0)
+                {
+                    Observer.Notify(EventList.Network.TANG_QUA_NPC, this, characterStatsTarget.idChar, slotItemGift.itemRef.Id, slotItemGift.count);
+
+                }
+            });
+            textHaoCamPopTangQua.text = Client.Instance.CharacterData.RelationShip.GetValueOrDefault(characterStatsTarget.idChar).ToString();
+        }
+        int totalLoad = 30;
+        int countAdd = 10;
+        int currentLoad = itemDatas.Count;
+        int startIndex = 0;
+
+        if (!isAdd)
+        {
+            if (currentLoad >= totalLoad)
+            {
+                currentLoad = totalLoad;
+            }
+        }
+        else
+        {
+            currentLoad = countAdd;
+            ItemRef refItem = GetItemCurrentActiveFromBag(prefabItemBag.gameObject).itemRef;
+            if (refItem == null)
+            {
+                Debug.Log("ref item null");
+                return;
+            }
+
+            startIndex = itemDatas.IndexOf(refItem) + 1;
+            if (startIndex >= itemDatas.Count)
+            {
+                return;
+            }
+
+        }
+        for (int i = 0; i < currentLoad; i++)
+        {// TẠO BIẾN TẠM Ở ĐÂY
+            int index = i + startIndex;
+            var currentItem = GameConfig.GetItemPool(prefabItemBag);
+            IItemData data = null;
+            ItemRef itemRef = null;
+            if (i < itemDatas.Count)
+            {
+                itemRef = itemDatas[index];
+
+                data = LuyenDanResources.Instance.FindItem(itemRef);
+
+
+
+            }
+            if (data == null) // tức là k tìm đc hoặc nó là thanThong hoặc là CongPhap
+            {
+                if (itemRef != null)
+                {
+                    if (itemRef.Type == ItemType.ThanThong)
+                    {
+                        InitVisualItemSkill(currentItem, gameConfig.FindThanThongWithItemRef(itemRef), ETypeInventoryItem.Item);
+
+
+                    }
+                    else if (itemRef.Type == ItemType.CongPhap)
+                    {
+                        InitVisualItemSkill(currentItem, gameConfig.FindCongPhapWithItemRef(itemRef), ETypeInventoryItem.Item);
+
+                    }
+                }
+            }
+            InitVisualItemInventory(currentItem, data, itemRef);
+
+
+            if (data != null)
+            {
+
+                currentItem.InitAction(null, null, () =>
+                {
+
+
+                    if(slotItemGift.itemRef.Id != currentItem.itemRef.Id)
+                    {
+                        if (currentItem.itemRef.Type == ItemType.ThanThong || currentItem.itemRef.Type == ItemType.CongPhap)
+                        {
+                            InitVisualItemSkill(slotItemGift, (BaseSkill)currentItem.itemData);
+
+
+                        }
+                        InitVisualItemInventory(slotItemGift, currentItem.iItemData, currentItem.itemRef);
+                        slotItemGift.InitCount(1);
+                    }
+                    else
+                    {
+                        if (slotItemGift.count < currentItem.count)
+                        {
+                            slotItemGift.AddCount(1);
+                        }
+                    }
+                   
+                    //foreach (var item in listItemSlotThanThongs)
+                    //{
+                    //    if (item.itemData != null)
+                    //    {
+                    //        DisableHighlight(item);
+                    //    }
+                    //}
+
+
+
+                });
+            }
+
+
+        }
+
+    }
+
     public void ShowNPCList(List<CharacterStatsSecure> listCharStats)
     {
         npcPop.Hide();
@@ -197,6 +444,11 @@ public class UINPCJiaoHu : PanelGroup
         {
             HideAllPop();
             tangQuaPop.Show();
+            InitPopTangQua(false);
+            scrollRectBagUpdate.onValueChanged.RemoveAllListeners();
+            scrollRectBagUpdate.onValueChanged.AddListener((vec) => {
+                OnScrollChanged(vec, InitPopTangQua);
+            });
 
         });
         SetEventButton(btnThinhGiao, () =>
@@ -326,23 +578,58 @@ public class UINPCJiaoHu : PanelGroup
        
         return (list1, list2,list3);
     }
-    private void CategorizeSlotAndInitVisual(List<BaseSkill> listBaseSkillData)
+    private void CategorizeSlotAndInitVisual(List<BaseSkill> listBaseSkillData,ERelationShip eTypeRelationShip)
     {
         var categorize = CategorizeSlot(listBaseSkillData);
         foreach (var item in categorize.Item1)
         {
             var itemInventory = GameConfig.GetItemPool(prefabSlotThinhGiaoSlot1);
+            itemInventory.InitAction(null, null, null);
+
             InitVisualItemSkill(itemInventory, item);
+            if(eTypeRelationShip  == ERelationShip.Quen)
+            {
+                CallActionThinhGiao(itemInventory);
+
+            }
         }
         foreach (var item in categorize.Item2)
         {
             var itemInventory = GameConfig.GetItemPool(prefabSlotThinhGiaoSlot2);
+            itemInventory.InitAction(null, null, null);
+
             InitVisualItemSkill(itemInventory, item);
+            if (eTypeRelationShip == ERelationShip.BanBe)
+            {
+                CallActionThinhGiao(itemInventory);
+
+            }
         }
         foreach (var item in categorize.Item3)
         {
             var itemInventory = GameConfig.GetItemPool(prefabSlotThinhGiaoSlot3);
+            itemInventory.InitAction(null, null,null);
+
             InitVisualItemSkill(itemInventory, item);
+            if (eTypeRelationShip == ERelationShip.ThanThiet)
+            {
+                CallActionThinhGiao(itemInventory);
+
+            }
+        }
+        void CallActionThinhGiao(ItemInventory item)
+        {
+            item.InitAction(null, null, () =>
+            {
+                int require = CurrentPageTypeRelationShip == ETypeSkillRelationShip.ThanThong? relationShipRequireThanThong[eTypeRelationShip] : relationShipRequireCongPhap[eTypeRelationShip];
+                if(relatetionshipValue >= require)
+                {
+                    Pool.Get<PopupConfirmAction>().ShowPopConfirmAction($"Xác nhận tiêu hao {require} điểm hảo cảm thỉnh giáo {item.itemData.nameItem}", () =>
+                    {
+                        Observer.Notify(EventList.Network.THINH_GIAO_NPC,this,characterStatsTarget.idChar,item.itemRef.Id,item.itemRef.Type);
+                    });
+                }    
+            });
         }
     }    
     private void InitCongPhapTab()
@@ -362,15 +649,19 @@ public class UINPCJiaoHu : PanelGroup
         listCongPhapData.Add(GameConfig.GetCongPhapWithId(characterStatsTarget.phuTu2Used.Value));
         listCongPhapData.Add(GameConfig.GetCongPhapWithId(characterStatsTarget.phuTu3Used.Value));
         listCongPhapData.Add(GameConfig.GetCongPhapWithId(characterStatsTarget.phuTu4Used.Value));
-        CategorizeSlotAndInitVisual(listCongPhapData.Cast<BaseSkill>().ToList());
+        CategorizeSlotAndInitVisual(listCongPhapData.Cast<BaseSkill>().ToList(), currentRelationShip);
+        ResetVisualTab();
 
 
         SetSliderVisual(ETypeSkillRelationShip.CongPhap);
+        SetVisualBtnThinhGiao(btnTabCongPhap, colorTextSelect, spriteIconCongPhapSelect);
+        CurrentPageTypeRelationShip = ETypeSkillRelationShip.CongPhap;
 
     }
-  
+
     private void InitThanThongTab()
     {
+        ResetVisualTab();
         ResetVisual(prefabSlotThinhGiaoSlot1.transform);
         ResetVisual(prefabSlotThinhGiaoSlot2.transform);
         ResetVisual(prefabSlotThinhGiaoSlot3.transform);
@@ -384,8 +675,10 @@ public class UINPCJiaoHu : PanelGroup
         {
             listThanThongData.Add(GameConfig.GetThanThongWithId(item.Value));
         }
-        CategorizeSlotAndInitVisual(listThanThongData.Cast<BaseSkill>().ToList());
+        CategorizeSlotAndInitVisual(listThanThongData.Cast<BaseSkill>().ToList(), currentRelationShip);
         SetSliderVisual(ETypeSkillRelationShip.ThanThong);
+        SetVisualBtnThinhGiao(btnTabThanThong, colorTextSelect, spriteIconThanThongSelect);
+        CurrentPageTypeRelationShip = ETypeSkillRelationShip.ThanThong;
 
     }
     private void ResetVisual(Transform prefab)
@@ -395,6 +688,17 @@ public class UINPCJiaoHu : PanelGroup
             prefab.transform.parent.GetChild(i).gameObject.SetActive(false);
         }
         
+    }
+    private void SetVisualBtnThinhGiao(Button btn, Color colorText, Sprite spriteIcon)
+    {
+        btn.transform.GetChild(0).GetComponent<Text>().color = colorText;
+        btn.transform.GetChild(1).GetComponent<Image>().sprite = spriteIcon;
+
+    }
+    private void ResetVisualTab()
+    {
+        SetVisualBtnThinhGiao(btnTabCongPhap, colorTextNoSelect, spriteIconCongPhapNoSelect);
+        SetVisualBtnThinhGiao(btnTabThanThong, colorTextNoSelect, spriteIconThanThongNoSelect);
     }    
     private void InitPopThinhGiao()
     {
@@ -414,7 +718,7 @@ public class UINPCJiaoHu : PanelGroup
 
 
     }
-    private void InitVisualItemSkill(ItemInventory item, BaseSkill data)
+    private void InitVisualItemSkill(ItemInventory item, BaseSkill data, ETypeInventoryItem eTypeInventoryItem = ETypeInventoryItem.Skill)
     {
         Sprite frame = null;
         if (data != null)
@@ -428,7 +732,7 @@ public class UINPCJiaoHu : PanelGroup
 
         item.Init(data, frame);
 
-        item.InitInventory(ETypeInventoryItem.Skill,null,null);
+        item.InitInventory(eTypeInventoryItem, null,null);
 
 
     }
@@ -484,5 +788,25 @@ public class UINPCJiaoHu : PanelGroup
             return color;
         }
         return Color.white; // Fallback
+    }
+
+    public void SuccessTangQuaNpc()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void FailTangQuaNpc(string message)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SuccessThinhGiaoNpc()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void FailThinhGiaoNpc(string message)
+    {
+        throw new NotImplementedException();
     }
 }
