@@ -1,4 +1,5 @@
 ﻿using CreateCharacter;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
@@ -60,7 +61,13 @@ public class SayDialogManager : MonoBehaviour
         {
             imgContent.gameObject.SetActive(true);
             imgContent.sprite = spriteContent;
-            imgContent.SetNativeSize();
+            // Đưa Alpha về 0 ngay lập tức trước khi chạy hiệu ứng
+            Color c = imgContent.color;
+            c.a = 0;
+            imgContent.color = c;
+
+            // Thực hiện Fade In lên 1 trong 0.75 giây
+            imgContent.DOFade(1, 1.5f);
         }
 
         // Xử lý Voice và Chữ chạy

@@ -1,6 +1,7 @@
 ﻿using AllMaps;
 using Base;
 using CreateCharacter;
+using CreateCharacter.CharStats;
 using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
@@ -141,7 +142,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
     [SerializeField] private Sprite[] listSpriteIconDanDoc;
     [SerializeField] private Color[] listColorDanDoc;
-
+    [SerializeField] public Tooltip toolTipBtnStats;
 
     private void UpdatePlayerStats()
     {
@@ -503,6 +504,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     public void InitItemBag(int count, ref List<ItemInventory> listItemInventory,bool isAdd = false)
     {
         int totalMax = 30;
+        isLoadingMore = false;
         if(count >= totalMax)
         {
             count = totalMax;
@@ -538,24 +540,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
         moneyText.text = Client.Instance.CharacterData.Stats.LinhThach.ToString();
     }
-    private void InitVisualItemSkill(ItemInventory item, BaseSkill data , ETypeInventoryItem eTypeInventoryItem= ETypeInventoryItem.Skill)
-    {
-        Sprite frame = null;
-        if(data != null)
-        {
-            frame = spriteFrames[((((int)data.eTierSkill - 1) / 3) * 2) + 1];
-
-            item.SetColorName(colorQualitys[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
-            item.SetQualityFull(spriteQualityFulls[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
-
-        }
-
-        item.Init(data, frame);
-
-        item.InitInventory(eTypeInventoryItem,null,null);
-
-       
-    }
+   
     void DisableHighlight(ItemInventory item)
     {
         HighlightAnim anim = item.GetComponentInChildren<HighlightAnim>(true);
@@ -613,13 +598,13 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
       
 
         // load data 
-        InitVisualItemSkill(donThuat, GameConfig.GetCongPhapWithId(CharacterDatas.DonThuatUsed));
-        InitVisualItemSkill(chuTu, GameConfig.GetCongPhapWithId(CharacterDatas.ChuTu1Used));
-        InitVisualItemSkill(nguyenAnh, GameConfig.GetCongPhapWithId(CharacterDatas.ChuTu2Used));
-        InitVisualItemSkill(phuTu1, GameConfig.GetCongPhapWithId(CharacterDatas.PhuTu1Used));
-        InitVisualItemSkill(phuTu2, GameConfig.GetCongPhapWithId(CharacterDatas.PhuTu2Used));
-        InitVisualItemSkill(phuTu3, GameConfig.GetCongPhapWithId(CharacterDatas.PhuTu3Used));
-        InitVisualItemSkill(phuTu4, GameConfig.GetCongPhapWithId(CharacterDatas.PhuTu4Used));
+        Pool.Get<UIManager>().InitVisualItemSkill(donThuat, GameConfig.GetCongPhapWithId(CharacterDatas.DonThuatUsed));
+        Pool.Get<UIManager>().InitVisualItemSkill(chuTu, GameConfig.GetCongPhapWithId(CharacterDatas.ChuTu1Used));
+        Pool.Get<UIManager>().InitVisualItemSkill(nguyenAnh, GameConfig.GetCongPhapWithId(CharacterDatas.ChuTu2Used));
+        Pool.Get<UIManager>().InitVisualItemSkill(phuTu1, GameConfig.GetCongPhapWithId(CharacterDatas.PhuTu1Used));
+        Pool.Get<UIManager>().InitVisualItemSkill(phuTu2, GameConfig.GetCongPhapWithId(CharacterDatas.PhuTu2Used));
+        Pool.Get<UIManager>().InitVisualItemSkill(phuTu3, GameConfig.GetCongPhapWithId(CharacterDatas.PhuTu3Used));
+        Pool.Get<UIManager>().InitVisualItemSkill(phuTu4, GameConfig.GetCongPhapWithId(CharacterDatas.PhuTu4Used));
 
         // unEquip
         foreach (var currentItem in listItemsCongPhapSlot)
@@ -648,11 +633,11 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                     {
                         Debug.Log("Thả trượt rồi!");
 
-                        InitVisualItemSkill(currentItem, (BaseSkill)itemSelect.itemData);
+                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, (BaseSkill)itemSelect.itemData);
 
                     }
                 });
-                InitVisualItemSkill(currentItem, null);
+                Pool.Get<UIManager>().InitVisualItemSkill(currentItem, null);
 
             });
         }
@@ -708,7 +693,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             {
                 data = listCongPhapData[index];
             }
-            InitVisualItemSkill(currentItem, data);
+            Pool.Get<UIManager>().InitVisualItemSkill(currentItem, data);
             if (data != null)
             {
 
@@ -751,7 +736,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                                 Debug.Log("Item slot sẵn sàng");
 
                                 // Sử dụng biến tạm 'currentItem' hoặc 'index' thay vì 'i'
-                                InitVisualItemSkill(itemSlot, congPhap);
+                                Pool.Get<UIManager>().InitVisualItemSkill(itemSlot, congPhap);
                                 //equip
                                 //congPhap.EquipCongPhap();
                                 //save player cong phap equip id
@@ -816,7 +801,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 thanThongData = GameConfig.GetThanThongWithId(CharacterDatas.ThanThongEquip[i]);
             }    
 
-            InitVisualItemSkill(item, thanThongData);
+            Pool.Get<UIManager>().InitVisualItemSkill(item, thanThongData);
         }
         // unEquip
         foreach (var currentItem in listItemSlotThanThongs)
@@ -845,11 +830,11 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                     {
                         Debug.Log("Thả trượt rồi!");
 
-                        InitVisualItemSkill(currentItem, (BaseSkill)itemSelect.itemData);
+                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, (BaseSkill)itemSelect.itemData);
 
                     }
                 });
-                InitVisualItemSkill(currentItem, null);
+                Pool.Get<UIManager>().InitVisualItemSkill(currentItem, null);
 
             });
         }
@@ -907,7 +892,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             {
                 data = listThanThongData[i];
             }
-            InitVisualItemSkill(currentItem, data);
+            Pool.Get<UIManager>().InitVisualItemSkill(currentItem, data);
             if (data != null)
             {
 
@@ -934,7 +919,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                                 Debug.Log("Item slot sẵn sàng");
 
                                 // Sử dụng biến tạm 'currentItem' hoặc 'index' thay vì 'i'
-                                InitVisualItemSkill(itemSlot, thanThong);
+                                Pool.Get<UIManager>().InitVisualItemSkill(itemSlot, thanThong);
                                 //equip
                                 //congPhap.EquipCongPhap();
                                 //save player thần thông equip id
@@ -969,41 +954,9 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     [Header("--- Inventory ---")]
     [SerializeField] private List<ItemInventory> listItemSlotEquipment;
     [SerializeField] private CharacterGraphic charPageInventory;
-    [SerializeField] private Sprite spriteTTInven;
-    [SerializeField] private Sprite spriteCPInven;
     private Coroutine coroutineInitVatPham;
 
-    private void InitVisualItemInventory(ItemInventory item, IItemData data, ItemRef itemRef)
-    {
-        Sprite frame = null;
-        if (data != null)
-        {
-            var quality = CoreConfig.Instance.FindQuality(data.Tier);
-            frame = quality.IconUp;
-
-            item.SetColorName(quality.Color);
-            item.SetQualityFull(quality.Background);
-            item.Init(new BaseItemData { nameItem = data.Name, spriteItem = data.Icon }, frame);
-        }
-        if (itemRef != null)
-        {
-            item.InitCount(itemRef.Count);
-            if (itemRef.Type == ItemType.ThanThong)
-            {
-                item.InitIcon(spriteTTInven, frame);
-            }
-            if ( itemRef.Type == ItemType.CongPhap)
-            {
-                item.InitIcon(spriteCPInven, frame);
-            }
-        }    
-       
-
-        item.InitInventory(ETypeInventoryItem.Item,itemRef,data);
-
-
-
-    }
+  
     public void InitInventory(int countDelay = 10)
     {
         var GameConfig = Pool.Get<GameConfig>();
@@ -1140,18 +1093,18 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 {
                     if (itemRef.Type == ItemType.ThanThong)
                     {
-                        InitVisualItemSkill(currentItem, GameConfig.FindThanThongWithItemRef(itemRef), ETypeInventoryItem.Item);
+                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, GameConfig.FindThanThongWithItemRef(itemRef), null,ETypeInventoryItem.Item);
 
 
                     }
                     else if (itemRef.Type == ItemType.CongPhap)
                     {
-                        InitVisualItemSkill(currentItem, GameConfig.FindCongPhapWithItemRef(itemRef), ETypeInventoryItem.Item);
+                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, GameConfig.FindCongPhapWithItemRef(itemRef),null, ETypeInventoryItem.Item);
 
                     }
                 }
             }
-            InitVisualItemInventory(currentItem, data, itemRef);
+            Pool.Get<UIManager>().InitVisualItemInventory(currentItem, data, itemRef);
 
 
             if (data != null)

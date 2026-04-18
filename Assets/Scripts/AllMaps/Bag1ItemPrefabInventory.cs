@@ -1,0 +1,164 @@
+﻿using Base;
+using LongDH.LongDHModules;
+using LuyenDan;
+using LuyenDan.Inventory;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class Bag1ItemPrefabInventory : BaseBehaviour
+{
+    public bool isLoadingMore = false;
+   
+    [SerializeField] private ItemInventory prefabItemBag;
+    [SerializeField] private Sprite[] spriteQualityFulls => Pool.Get<UIManager>().spriteQualityFulls;
+    [SerializeField] private Sprite[] spriteFrames => Pool.Get<UIManager>().spriteFrames;
+    [SerializeField] private Color[] colorQualitys => Pool.Get<UIManager>().colorQualitys;
+    public ScrollRect scrollRectBagUpdate => prefabItemBag.GetComponentInParent<ScrollRect>();
+    public List<ItemRef> itemDatas = new List<ItemRef>();
+    public Action<ItemInventory> actionItemInventory;
+    public bool isIconSkillBase = false;
+    void OnScrollChanged(Vector2 value, Action<bool> loadBagFunc)
+    {
+        Debug.Log("co vao onscrooll change");
+
+        if (value.y < 0.05f && !isLoadingMore)
+        {
+            // Ki?m tra xem d? li?u còn ?? load không tr??c khi g?i
+            // (Ví d?: compare s? l??ng UI hi?n có v?i t?ng s? data th?t)
+            StartCoroutine(TriggerLoadMore(loadBagFunc));
+        }
+    }
+    private void OnEnable()
+    {
+        scrollRectBagUpdate.onValueChanged.RemoveAllListeners();
+        scrollRectBagUpdate.onValueChanged.AddListener((vec) => {
+            OnScrollChanged(vec, InitBag);
+        });
+    }
+    private ItemInventory GetItemCurrentActiveFromBag(GameObject prefab)
+    {
+        for (int j = prefab.transform.parent.childCount - 1; j > 0; j--)
+        {
+            Transform child = prefab.transform.parent.GetChild(j);
+            if (!child.gameObject.activeSelf)
+            {
+                continue;
+            }
+            var currentItem = child.GetComponent<ItemInventory>();
+            if (currentItem.itemData != null)
+            {
+                Debug.Log("GetItemCurrentActiveFromBag: " + currentItem.itemData.nameItem);
+                return currentItem;
+            }
+        }
+        return null;
+    }
+    IEnumerator TriggerLoadMore(Action<bool> loadBagFunc)
+    {
+        isLoadingMore = true;
+        Debug.Log("co vao trigger load more");
+
+        // G?i tr?c ti?p hàm Coroutine và ch? nó ch?y xong
+        loadBagFunc?.Invoke(true);
+
+        // ??i m?t chút ?? tránh vi?c g?i liên t?c khi user gi? chu?t ? ?áy
+        yield return new WaitForSeconds(0.5f);
+        isLoadingMore = false;
+    }
+  
+    public void InitDataItem(List<ItemRef> itemDatas , Action<ItemInventory> actionItemInventory , bool isIconSkillBase = false)
+    {
+        this.itemDatas = itemDatas;
+        this.actionItemInventory = actionItemInventory;
+        this.isIconSkillBase = isIconSkillBase;
+    }
+    public void InitBag(bool isAdd=false)
+    {
+        var gameConfig = Pool.Get<GameConfig>();
+
+        if (!isAdd)
+        {
+            for (int i = 0; i < prefabItemBag.transform.parent.childCount; i++)
+            {
+                prefabItemBag.transform.parent.GetChild(i).gameObject.SetActive(false);
+            }
+
+                  
+        }
+        int totalLoad = 30;
+        int countAdd = 10;
+        int currentLoad = itemDatas.Count;
+        int startIndex = 0;
+
+        if (!isAdd)
+        {
+            if (currentLoad >= totalLoad)
+            {
+                currentLoad = totalLoad;
+            }
+        }
+        else
+        {
+            currentLoad = countAdd;
+            var currentItem = GetItemCurrentActiveFromBag(prefabItemBag.gameObject);
+            if (currentItem == null) return;
+            ItemRef refItem = currentItem.itemRef;
+            if (refItem == null)
+            {
+                Debug.Log("ref item null");
+                return;
+            }
+
+            startIndex = itemDatas.IndexOf(refItem) + 1;
+            if (startIndex >= itemDatas.Count)
+            {
+                return;
+            }
+
+        }
+        for (int i = 0; i < currentLoad; i++)
+        {// TẠO BIẾN TẠM Ở ĐÂY
+            int index = i + startIndex;
+            var currentItem = GameConfig.GetItemPool(prefabItemBag);
+            IItemData data = null;
+            ItemRef itemRef = null;
+            if (i < itemDatas.Count)
+            {
+                itemRef = itemDatas[index];
+
+                data = LuyenDanResources.Instance.FindItem(itemRef);
+
+
+
+            }
+            if (data == null) // tức là k tìm đc hoặc nó là thanThong hoặc là CongPhap
+            {
+                if (itemRef != null)
+                {
+                    if (itemRef.Type == ItemType.ThanThong)
+                    {
+                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, gameConfig.FindThanThongWithItemRef(itemRef),null, ETypeInventoryItem.Item);
+
+
+                    }
+                    else if (itemRef.Type == ItemType.CongPhap)
+                    {
+                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, gameConfig.FindCongPhapWithItemRef(itemRef),null, ETypeInventoryItem.Item);
+
+                    }
+                }
+            }
+            Pool.Get<UIManager>().InitVisualItemInventory(currentItem, data, itemRef , isIconSkillBase);
+
+
+            if (data != null)
+            {
+
+                actionItemInventory?.Invoke(currentItem);
+            }
+        }
+    }
+}

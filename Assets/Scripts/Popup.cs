@@ -1,20 +1,22 @@
 using DG.Tweening;
+using LongDH.LongDHModules;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Popup : BaseBehaviour
 {
-    [SerializeField] private GameObject commonMask;
+    [SerializeField] private Image commonMask => Pool.Get<UIManager>().commonMask;
     [SerializeField] private Button btnClose;
     [SerializeField] private float scaleBase =1f;
+  
     public void Show(float delay = 0.5f,Action actionComplete = null)
     {
         gameObject.SetActive(true);
         transform.localScale = Vector3.zero;
         if(commonMask != null)
         {
-            commonMask?.SetActive(true);
+            commonMask?.gameObject.SetActive(true);
         }
         transform.DOScale(Vector3.one * scaleBase, delay).OnComplete(() =>
         {
@@ -33,7 +35,7 @@ public class Popup : BaseBehaviour
 
         if (commonMask != null)
         {
-            commonMask?.SetActive(false);
+            commonMask?.gameObject.SetActive(false);
         }
     }
 

@@ -2423,6 +2423,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2051743739144110306}
+  - component: {fileID: 4194885517495404981}
   m_Layer: 5
   m_Name: LingWuPanel
   m_TagString: Untagged
@@ -2454,6 +2455,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4194885517495404981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847675144178352953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceacef91ad7821a47b7f1671b2ac8398, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Bag1ItemPrefabInventory
+  isLoadingMore: 0
+  prefabItemBag: {fileID: 6742678737986904359}
+  itemDatas: []
+  isIconSkillBase: 0
 --- !u!1 &867205063531974948
 GameObject:
   m_ObjectHideFlags: 0
@@ -4188,16 +4205,17 @@ MonoBehaviour:
   progressHold: {fileID: 0}
   itemData: {fileID: 0}
   selectHighLight: {fileID: 3898680129366438831}
-  itemRef:
-    <Id>k__BackingField: 0
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 0
   hasItem: {fileID: 3038337232776912396}
   qualityFull: {fileID: 52799027906968874}
   textCount: {fileID: 8902716849629930117}
   textName: {fileID: 1602926801270901379}
   leftUpMask: {fileID: 4420015207315600211}
   btnShowInfor: {fileID: 0}
+  itemRef:
+    <Id>k__BackingField: 0
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 0
+  count: 0
 --- !u!1 &1474566114220916735
 GameObject:
   m_ObjectHideFlags: 0
@@ -12576,6 +12594,7 @@ MonoBehaviour:
   btnLinhHoi: {fileID: 7840003799347090514}
   btnUnLinhHoi: {fileID: 7605811736216209339}
   textNameLinhHoi: {fileID: 3625389474329177118}
+  bagLinhHoi: {fileID: 4194885517495404981}
   prefabItemInvenPanelUpdateCongPhap: {fileID: 5468420525287070055}
   priceTextUpdateCongPhap: {fileID: 8402456083381500840}
   priceItemCongPhap: {fileID: 5802860577331770575}
@@ -12589,6 +12608,7 @@ MonoBehaviour:
   btnUpdateCongPhap: {fileID: 2700314622537107201}
   btnUnUpdateCongPhap: {fileID: 648368717685468732}
   textNameDotPha: {fileID: 8804993283328451220}
+  bagCongPhap: {fileID: 1328050720310610626}
 --- !u!1 &4062292066546602944
 GameObject:
   m_ObjectHideFlags: 0
@@ -14504,16 +14524,17 @@ MonoBehaviour:
   progressHold: {fileID: 0}
   itemData: {fileID: 0}
   selectHighLight: {fileID: 9084908551045057781}
-  itemRef:
-    <Id>k__BackingField: 0
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 0
   hasItem: {fileID: 2456445524228958984}
   qualityFull: {fileID: 5791054025829174232}
   textCount: {fileID: 964552573902897938}
   textName: {fileID: 3841182551926634107}
   leftUpMask: {fileID: 3066722189969345122}
   btnShowInfor: {fileID: 7246383093950688182}
+  itemRef:
+    <Id>k__BackingField: 0
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 0
+  count: 0
 --- !u!1 &4631610860160602680
 GameObject:
   m_ObjectHideFlags: 0
@@ -21981,7 +22002,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9496240f288ff9b4aa9849cd1d24183e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Popup
-  commonMask: {fileID: 8138124138123061791}
   btnClose: {fileID: 482718472857683131}
   scaleBase: 1
 --- !u!1 &6868736098188285382
@@ -23137,16 +23157,17 @@ MonoBehaviour:
   progressHold: {fileID: 0}
   itemData: {fileID: 0}
   selectHighLight: {fileID: 8638370505828427121}
-  itemRef:
-    <Id>k__BackingField: 0
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 0
   hasItem: {fileID: 7365209799537989049}
   qualityFull: {fileID: 5247648531160029920}
   textCount: {fileID: 2416710980763715208}
   textName: {fileID: 3356249195840286779}
   leftUpMask: {fileID: 6804053640034477714}
   btnShowInfor: {fileID: 0}
+  itemRef:
+    <Id>k__BackingField: 0
+    <Type>k__BackingField: 0
+    <Count>k__BackingField: 0
+  count: 0
 --- !u!1 &7278385938146514235
 GameObject:
   m_ObjectHideFlags: 0
@@ -23887,6 +23908,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6236287414138160795}
+  - component: {fileID: 1328050720310610626}
   m_Layer: 5
   m_Name: TuPoPanel
   m_TagString: Untagged
@@ -23918,6 +23940,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1328050720310610626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7386291560326688099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceacef91ad7821a47b7f1671b2ac8398, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Bag1ItemPrefabInventory
+  isLoadingMore: 0
+  prefabItemBag: {fileID: 5468420525287070055}
+  itemDatas: []
+  isIconSkillBase: 0
 --- !u!1 &7443030766040946744
 GameObject:
   m_ObjectHideFlags: 0

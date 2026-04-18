@@ -4,15 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using LongDH.LongDHModules;
 
-public class PopupConfirmAction : Popup
+public class PopupConfirmAction : Popup,ISingleton
 {
     [SerializeField] private Button btnConfirm;
     [SerializeField] private Text contentText;
 
     protected void Awake()
     {
-        Pool.Set(this);
-        gameObject.SetActive(false);
+       
     }
     [Button]
     public void ShowPopConfirmAction(string content,Action actionConfirm)
@@ -35,5 +34,11 @@ public class PopupConfirmAction : Popup
                 fitter.enabled = true;
             }
         }
+    }
+
+    public void Init()
+    {
+        Pool.Set(this);
+        gameObject.SetActive(false);
     }
 }

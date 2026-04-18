@@ -1,4 +1,6 @@
+using Base;
 using CreateCharacter.CharStats;
+using LongDH.LongDHModules;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,7 +15,7 @@ public class BtnInforStats : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        var tooltip = Tooltip.Instance;
+        var tooltip = Pool.Get<TabPanel>().toolTipBtnStats;
         tooltip.SetActive(true);
         tooltip.SetTextInfo(infoName, info);
         tooltip.SetScale(Vector2.one);
@@ -21,7 +23,7 @@ public class BtnInforStats : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        var tooltip = Tooltip.Instance;
+        var tooltip = Pool.Get<TabPanel>().toolTipBtnStats;
         tooltip.SetActive(false);
     }
 }

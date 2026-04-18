@@ -16,7 +16,7 @@ public enum EActionShowItemInfor
     Buy,
     Sell,
 }
-public class ToolTipItems : BaseBehaviour
+public class ToolTipItems : BaseBehaviour , ISingleton
 {
     [SerializeField] private Button btnMask;
     [SerializeField] private Image icon;
@@ -48,9 +48,7 @@ public class ToolTipItems : BaseBehaviour
 
     private void Awake()
     {
-        this.gameObject.SetActive(true);
-        Instance = this;
-        this.gameObject.SetActive(false);
+        
     }
     public void InitShow(ItemInventory itemInventory,Sprite frameSprite, Sprite qualityFull , Color colorName , ETypeInventoryItem eTypeItemShow , ItemRef itemRef, IItemData iItemData , EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)
     {
@@ -324,5 +322,12 @@ public class ToolTipItems : BaseBehaviour
     {
         qualityFull.sprite = sprite;
         qualityFull.SetNativeSize();
+    }
+
+    public void Init()
+    {
+        this.gameObject.SetActive(true);
+        Instance = this;
+        this.gameObject.SetActive(false);
     }
 }

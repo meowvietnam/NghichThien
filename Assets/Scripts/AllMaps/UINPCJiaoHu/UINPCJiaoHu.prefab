@@ -7585,27 +7585,6 @@ MonoBehaviour:
   btnChanDanh: {fileID: 114156531547044309}
   btnBack: {fileID: 114499597170529763}
   closeOrOpenListNPC: {fileID: 114335548725202883}
-  spriteQualityFulls:
-  - {fileID: 21300000, guid: 09c3f939155c13745b929ee6570fd317, type: 3}
-  - {fileID: 21300000, guid: ac918ecb3c53a3d4c9618754072e3185, type: 3}
-  - {fileID: 21300000, guid: 4136ab15a468ac2438edb568f1917424, type: 3}
-  - {fileID: 21300000, guid: de26e1f5418d2994184477570f2650d5, type: 3}
-  - {fileID: 21300000, guid: 9efed77cb85962c48b3a98a8869bfed6, type: 3}
-  - {fileID: 21300000, guid: 24304ef4355d85f44a7c9bf61713cc24, type: 3}
-  spriteFrames:
-  - {fileID: 21300000, guid: daa33891b4b2bb34e89a9ba13e63968c, type: 3}
-  - {fileID: 21300000, guid: 692ac849f27dc6b4d8ef36cbd265fce6, type: 3}
-  - {fileID: 21300000, guid: a3c6485a75f72fe4cad512fc7d4e6a3f, type: 3}
-  - {fileID: 21300000, guid: 8f2d7224df652eb45bae62c10dc1a83d, type: 3}
-  - {fileID: 21300000, guid: 2b461327f4ba28c4b9d6b3b43419ffee, type: 3}
-  - {fileID: 21300000, guid: 4585d80263d9bcc47859ba82c5b21b4c, type: 3}
-  colorQualitys:
-  - {r: 0.87169814, g: 0.80810255, b: 0.7286081, a: 1}
-  - {r: 0.4148451, g: 0.8113208, b: 0.42556068, a: 1}
-  - {r: 0.47715914, g: 0.8729576, b: 0.94716984, a: 1}
-  - {r: 0.82641506, g: 0.4225631, b: 0.82641506, a: 1}
-  - {r: 0.9924528, g: 0.5968838, b: 0.2003631, a: 1}
-  - {r: 0.93962264, g: 0.21707256, b: 0.14714837, a: 1}
   textName: {fileID: 114923588465062833}
   textRelationshipValue: {fileID: 114577316691858816}
   sliderRelationship: {fileID: 114284362294251707}
@@ -7628,6 +7607,7 @@ MonoBehaviour:
     type: 2}
   spriteIconCongPhapNoSelect: {fileID: 21300000, guid: eec5da1f421981b4aab43853f9d47ea8,
     type: 2}
+  CurrentPageTypeRelationShip: 0
   charVisualPopXemXet: {fileID: 8563034898755016456}
   textThanThuc: {fileID: 114182565040527045}
   textTocDoBay: {fileID: 114450816835542325}
@@ -7658,15 +7638,12 @@ MonoBehaviour:
   - {fileID: 98104041769325003}
   - {fileID: 3753068522490592014}
   slotItemGift: {fileID: 6500040087018356290}
-  prefabItemBag: {fileID: 6543844041588102566}
   textMoney: {fileID: 114103248050429729}
   textNameUser: {fileID: 114521870315560694}
-  textHaoCamPopTangQua: {fileID: 0}
+  textHaoCamPopTangQua: {fileID: 114852293119740010}
   visualChar: {fileID: 3162795185123500788}
-  isLoadingMore: 0
-  spriteTTInven: {fileID: 21300000, guid: 70d39e2006c2ff1468753fa81df49da9, type: 3}
-  spriteCPInven: {fileID: 21300000, guid: 70d39e2006c2ff1468753fa81df49da9, type: 3}
   btnConfirmTangQua: {fileID: 114835350483102562}
+  bag: {fileID: 8364289931351402787}
 --- !u!1 &1106866275432211
 GameObject:
   m_ObjectHideFlags: 0
@@ -28223,7 +28200,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9496240f288ff9b4aa9849cd1d24183e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Popup
-  commonMask: {fileID: 0}
   btnClose: {fileID: 114499597170529763}
   scaleBase: 1
 --- !u!1 &1413593701257223
@@ -53930,6 +53906,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224284224511067458}
   - component: {fileID: 5394040455904979337}
+  - component: {fileID: 8364289931351402787}
   m_Layer: 5
   m_Name: NPCZengLi
   m_TagString: Untagged
@@ -53970,9 +53947,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9496240f288ff9b4aa9849cd1d24183e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Popup
-  commonMask: {fileID: 1018433159467350}
   btnClose: {fileID: 114023983379027702}
   scaleBase: 1
+--- !u!114 &8364289931351402787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798791438347143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceacef91ad7821a47b7f1671b2ac8398, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Bag1ItemPrefabInventory
+  isLoadingMore: 0
+  prefabItemBag: {fileID: 6543844041588102566}
+  listItemInventory: []
+  itemDatas: []
 --- !u!1 &1800057433968221
 GameObject:
   m_ObjectHideFlags: 0
@@ -62068,7 +62060,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9496240f288ff9b4aa9849cd1d24183e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Popup
-  commonMask: {fileID: 1018433159467350}
   btnClose: {fileID: 114831688694679986}
   scaleBase: 1
 --- !u!1 &1891035518437336
@@ -68356,7 +68347,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9496240f288ff9b4aa9849cd1d24183e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Popup
-  commonMask: {fileID: 1018433159467350}
   btnClose: {fileID: 114731612531852879}
   scaleBase: 0.821
 --- !u!1 &1988049339831911

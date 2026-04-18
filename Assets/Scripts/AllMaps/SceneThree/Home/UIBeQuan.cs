@@ -7,8 +7,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Analytics.IAnalytic;
 
 public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.ILinhNgo, INetworkEvent.IDotPhaCongPhap
 {
@@ -68,11 +70,8 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 }
                 if (item.typePage == ETypePage.LinhNgo)
                 {
-                    InitPageLinhNgo(false);
-                    scrollRectBagLinhHoi.onValueChanged.RemoveAllListeners();
-                    scrollRectBagLinhHoi.onValueChanged.AddListener((vec) => {
-                        OnScrollChanged(vec, InitPageLinhNgo);
-                    });
+                    InitPageLinhNgo();
+                   
                 }
                 if (item.typePage == ETypePage.Update)
                 {
@@ -260,24 +259,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     [SerializeField] private Sprite[] spriteQualityFulls;
     [SerializeField] private Sprite[] spriteFrames;
     [SerializeField] private Color[] colorQualitys;
-    private void InitVisualItemSkill(ItemInventory item, BaseSkill data,ItemRef itemRef, ETypeInventoryItem eTypeInventoryItem = ETypeInventoryItem.Skill)
-    {
-        Sprite frame = null;
-        if (data != null)
-        {
-            frame = spriteFrames[((((int)data.eTierSkill - 1) / 3) * 2) + 1];
-
-            item.SetColorName(colorQualitys[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
-            item.SetQualityFull(spriteQualityFulls[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
-
-        }
-
-        item.Init(data, frame);
-
-        item.InitInventory(eTypeInventoryItem, itemRef, null);
-
-      
-    }
+    
     public bool isLoadingMore = false;
     void OnScrollChanged(Vector2 value, Action<bool> loadBagFunc)
     {
@@ -330,83 +312,16 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     [SerializeField] private Button btnLinhHoi;
     [SerializeField] private Button btnUnLinhHoi;
     [SerializeField] private Text textNameLinhHoi;
-
+    [SerializeField] private Bag1ItemPrefabInventory bagLinhHoi;
     public ScrollRect scrollRectBagLinhHoi => prefabItemInvenPanelLinhHoi.GetComponentInParent<ScrollRect>();
 
-    private void InitVisualItemSkillLinhHoi(ItemInventory item, BaseSkill data, ItemRef itemRef, ETypeInventoryItem eTypeInventoryItem = ETypeInventoryItem.Skill)
-    {
-        InitVisualItemSkill(item,data,itemRef,eTypeInventoryItem);
-        item.InitAction(null, null, () =>
-        {
-            textNameLinhHoi.text = data.nameItem;
-            textNameLinhHoi.transform.parent.gameObject.SetActive(true);
-
-            int cost = (int)GameConfig.GetPriceItemBuy(itemRef, null) / 2;
-            priceTextLinhHoi.text = $"{cost}";
-            if(itemRef.Type == ItemType.ThanThong)
-            {
-                ThanThong thanThong = (ThanThong)data;
-                textInfor.text = thanThong.GetDesc(ThanThong.GetDaiCanhGioi(Client.Instance.CharacterData.Level));
-            }    
-            else if (itemRef.Type == ItemType.CongPhap)
-            {
-                CongPhap cp = (CongPhap)data;
-                int daiCanhGioiCP = Client.Instance.CharacterData.CongPhapOwner.GetValueOrDefault(itemRef.Id);
-                if(daiCanhGioiCP == 0)
-                {
-                    daiCanhGioiCP = 1;
-                }    
-                textInfor.text = cp.GetDesc(daiCanhGioiCP);
-
-
-            }
-            SetEventButton(btnLinhHoi, () =>
-            {
-                if (Client.Instance.CharacterData.Stats.LinhThach >= cost)
-                {
-                    Observer.Notify(EventList.Network.LINH_NGO, this, itemRef.Id , itemRef.Type);
-                }
-            });
-            SetEventButton(btnUnLinhHoi, () =>
-            {
-                if (Client.Instance.CharacterData.Stats.LinhThach < cost)
-                {
-                    NotifyGroup.Instance.Show("Không đủ linh thạch");
-                }
-              
-            });
-            SetUpBtnLinhHoi();
-            void SetUpBtnLinhHoi()
-            {
-                if (Client.Instance.CharacterData.Stats.LinhThach < cost)
-                {
-                    btnUnLinhHoi.gameObject.SetActive(true);
-                    btnLinhHoi.gameObject.SetActive(false);
-                }
-                else
-                {
-                    btnUnLinhHoi.gameObject.SetActive(false);
-                    btnLinhHoi.gameObject.SetActive(true);
-
-                }
-            }
-        });
-       
-    }    
-    private void InitPageLinhNgo(bool isAdd)
+ 
+    private void InitPageLinhNgo()
     {
         //reset 
-        if(!isAdd)
-        {
-            for (int i = 0; i < prefabItemInvenPanelLinhHoi.transform.parent.childCount; i++)
-            {
-                prefabItemInvenPanelLinhHoi.transform.parent.GetChild(i).gameObject.SetActive(false);
-            }
-            textNameLinhHoi.transform.parent.gameObject.SetActive(false);
-
-        }
-        int totalLoad = 30;
-        int countAdd = 10;
+     
+        textNameLinhHoi.transform.parent.gameObject.SetActive(false);
+        
         // Lấy dữ liệu gốc
         var thanThongItems = Client.Instance.CharacterData.InventoryManager.ThanThongs;
         var congPhapItems = Client.Instance.CharacterData.InventoryManager.CongPhaps;
@@ -426,72 +341,75 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         var gameConfig = Pool.Get<GameConfig>();
 
         // 1. Tạo danh sách chứa cặp (SkillData và ItemRef)
-        List<(BaseSkill skill, ItemRef reference)> listSkillsWithRef = new List<(BaseSkill, ItemRef)>();
 
-        // 2. Gom ThanThong
-        foreach (var item in filteredThanThong)
-        {
-            if (item.Type == LuyenDan.ItemType.ThanThong)
+       
+        var listItemRefSkill = new List<ItemRef>();
+       listItemRefSkill.AddRange(filteredThanThong);
+       listItemRefSkill.AddRange(filteredCongPhap);
+
+        bagLinhHoi.InitDataItem(listItemRefSkill, (item) => {
+            item.InitAction(null, null, () =>
             {
-                BaseSkill skill = gameConfig.GetThanThongWithId(item.Id);
-                listSkillsWithRef.Add((skill, item)); // Lưu cả 2 vào cặp
-            }
-        }
+                var data = item.itemData;
+                var itemRef = item.itemRef;
+                textNameLinhHoi.text = data.nameItem;
+                textNameLinhHoi.transform.parent.gameObject.SetActive(true);
 
-        // 3. Gom CongPhap
-        foreach (var item in filteredCongPhap)
-        {
-            if (item.Type == LuyenDan.ItemType.CongPhap)
-            {
-                BaseSkill skill = gameConfig.GetCongPhapWithId(item.Id);
-                listSkillsWithRef.Add((skill, item)); // Lưu cả 2 vào cặp
-            }
-        }
-        int currentLoad = listSkillsWithRef.Count;
-        int startIndex = 0;
+                int cost = (int)GameConfig.GetPriceItemBuy(itemRef, null) / 2;
+                priceTextLinhHoi.text = $"{cost}";
+                if (itemRef.Type == ItemType.ThanThong)
+                {
+                    ThanThong thanThong = (ThanThong)data;
+                    textInfor.text = thanThong.GetDesc(ThanThong.GetDaiCanhGioi(Client.Instance.CharacterData.Level));
+                }
+                else if (itemRef.Type == ItemType.CongPhap)
+                {
+                    CongPhap cp = (CongPhap)data;
+                    int daiCanhGioiCP = Client.Instance.CharacterData.CongPhapOwner.GetValueOrDefault(itemRef.Id);
+                    if (daiCanhGioiCP == 0)
+                    {
+                        daiCanhGioiCP = 1;
+                    }
+                    textInfor.text = cp.GetDesc(daiCanhGioiCP);
 
-        if (!isAdd)
-        {
-            if (currentLoad >= totalLoad)
-            {
-                currentLoad = totalLoad;
-            }
-        }
-        else
-        {
-            currentLoad = countAdd;
-            ItemRef refItem = GetItemCurrentActiveFromBag(prefabItemInvenPanelLinhHoi.gameObject).itemRef;
-            if (refItem == null)
-            {
-                Debug.Log("ref item null");
-                return;
-            }
 
-            startIndex = listSkillsWithRef.FindIndex(x => x.reference == refItem) + 1;
-            if (startIndex >= listSkillsWithRef.Count)
-            {
-                return;
-            }
+                }
+                SetEventButton(btnLinhHoi, () =>
+                {
+                    if (Client.Instance.CharacterData.Stats.LinhThach >= cost)
+                    {
+                        Observer.Notify(EventList.Network.LINH_NGO, this, itemRef.Id, itemRef.Type);
+                    }
+                });
+                SetEventButton(btnUnLinhHoi, () =>
+                {
+                    if (Client.Instance.CharacterData.Stats.LinhThach < cost)
+                    {
+                        NotifyGroup.Instance.Show("Không đủ linh thạch");
+                    }
 
-        }
-        
-        // 4. Vòng lặp hiển thị giờ rất đơn giản
-        for (int i = 0; i < currentLoad; i++)
-        {
-            int index = i + startIndex;
-            if (index >= listSkillsWithRef.Count)
-            {
-                return;
-            }
-            // Lấy cặp dữ liệu ra
-            var dataPair = listSkillsWithRef[index];
+                });
+                SetUpBtnLinhHoi();
+                void SetUpBtnLinhHoi()
+                {
+                    if (Client.Instance.CharacterData.Stats.LinhThach < cost)
+                    {
+                        btnUnLinhHoi.gameObject.SetActive(true);
+                        btnLinhHoi.gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        btnUnLinhHoi.gameObject.SetActive(false);
+                        btnLinhHoi.gameObject.SetActive(true);
 
-            var itemLinhHoi = GameConfig.GetItemPool(prefabItemInvenPanelLinhHoi);
+                    }
+                }
+            });
+           
+        });
+        bagLinhHoi.InitBag(false);
+      
 
-            // dataPair.skill chính là listSkills[i] ngày trước
-            // dataPair.reference chính là itemRef tương ứng chuẩn 100%
-            InitVisualItemSkillLinhHoi(itemLinhHoi, dataPair.skill, dataPair.reference);
-        }
 
     }
     [Header("Nâng cấp Công Pháp")]
@@ -504,89 +422,10 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     [SerializeField] private Button btnUpdateCongPhap;
     [SerializeField] private Button btnUnUpdateCongPhap;
     [SerializeField] private Text textNameDotPha;
+    [SerializeField] private Bag1ItemPrefabInventory bagCongPhap;
 
     public ScrollRect scrollRectBagUpdate => prefabItemInvenPanelUpdateCongPhap.GetComponentInParent<ScrollRect>();
-    private void InitVisualItemUpdateCongPhap(ItemInventory item, BaseSkill data,ItemRef itemRef ,ETypeInventoryItem eTypeInventoryItem = ETypeInventoryItem.Skill)
-    {
-        InitVisualItemSkill(item, data, itemRef, eTypeInventoryItem);
 
-        item.InitAction(null, null, () =>
-        {
-            textNameDotPha.transform.parent.gameObject.SetActive(true);
-
-            textNameDotPha.text = data.nameItem;
-
-            InitVisualItemSkill(priceItemCongPhap, data, itemRef, eTypeInventoryItem);
-            int daiCanhGioiCP = Client.Instance.CharacterData.CongPhapOwner.GetValueOrDefault(itemRef.Id);
-            if (daiCanhGioiCP == 0)
-            {
-                daiCanhGioiCP = 1;
-            }
-            int cost = (int)GameConfig.GetPriceItemBuy(itemRef, null) * (daiCanhGioiCP + 1);
-            int cost2 = (daiCanhGioiCP + 1) * 2;
-            priceTextUpdateCongPhap.text = $"x{cost}";
-            priceItemCongPhap.Init(item.itemData,item.frame.sprite);
-            priceItemCongPhap.SetQualityFull(item.qualityFull.sprite);
-
-            priceItemCongPhap.transform.parent.GetComponent<Text>().text = $"x{cost2}";
-            if (itemRef.Type == ItemType.CongPhap)
-            {
-                CongPhap cp = (CongPhap)data;
-                for (int i = 0; i < textInforUpdateCongPhap.Length; i++)
-                {
-                    textInforUpdateCongPhap[i].text = cp.GetDesc(i+1);
-                    if(i+1 <= daiCanhGioiCP)
-                    {
-                        textInforUpdateCongPhap[i].transform.GetChild(1).gameObject.SetActive(true);
-
-                        
-                    }
-                    else
-                    {
-                        textInforUpdateCongPhap[i].transform.GetChild(1).gameObject.SetActive(false);
-
-
-                    }
-                }
-            }
-            SetEventButton(btnUpdateCongPhap, () =>
-            {
-                if (Client.Instance.CharacterData.Stats.LinhThach >= cost && Client.Instance.CharacterData.InventoryManager.CongPhaps.Count(x=>x.Id == itemRef.Id) >= cost2)
-                {
-                    Observer.Notify(EventList.Network.DOT_PHA_CONGPHAP, this, itemRef.Id, itemRef.Type);
-                }
-            });
-            SetEventButton(btnUnUpdateCongPhap, () =>
-            {
-                if (Client.Instance.CharacterData.Stats.LinhThach < cost)
-                {
-                    NotifyGroup.Instance.Show("Không đủ linh thạch");
-                }
-                else if(Client.Instance.CharacterData.InventoryManager.CongPhaps.Count(x => x.Id == itemRef.Id) < cost2)
-                {
-                    NotifyGroup.Instance.Show("Không đủ số lượng công pháp yêu cầu");
-
-                }
-
-            });
-            SetUpBtnUpdate();
-            void SetUpBtnUpdate()
-            {
-                if (Client.Instance.CharacterData.Stats.LinhThach < cost || Client.Instance.CharacterData.InventoryManager.CongPhaps.Count(x => x.Id == itemRef.Id) < cost2)
-                {
-                    btnUnUpdateCongPhap.gameObject.SetActive(true);
-                    btnUpdateCongPhap.gameObject.SetActive(false);
-                }
-                else
-                {
-                    btnUnUpdateCongPhap.gameObject.SetActive(false);
-                    btnUpdateCongPhap.gameObject.SetActive(true);
-
-                }
-            }
-        });
-
-    }
     private void InitPageUpdate(bool isAdd)
     {
         //reset 
@@ -599,69 +438,110 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
             textNameDotPha.transform.parent.gameObject.SetActive(false);
 
         }
-        int totalLoad = 30;
-        int countAdd = 10;
-   
+
+
         var dictCPOwner = Client.Instance.CharacterData.CongPhapOwner;
 
         var gameConfig = Pool.Get<GameConfig>();
 
         // 1. Tạo danh sách chứa cặp (SkillData và ItemRef)
         List<CongPhap> listSkillsWithRef = new List<CongPhap>();
+        List<ItemRef> listSkillsWithItemRef = new List<ItemRef>();
 
         foreach (var item in dictCPOwner)
         {
             CongPhap skill = gameConfig.GetCongPhapWithId(item.Key);
-           
+
             listSkillsWithRef.Add(skill); // Lưu cả 2 vào cặp
+            listSkillsWithItemRef.Add(new ItemRef { Id = skill.Id, Count = 1, Type = ItemType.CongPhap });
+        
         }
+
+        
 
       
-        int currentLoad = listSkillsWithRef.Count;
-        int startIndex = 0;
-
-        if (!isAdd)
+        bagCongPhap.InitDataItem(listSkillsWithItemRef, (item) =>
         {
-            if (currentLoad >= totalLoad)
+            item.InitAction(null, null, () =>
             {
-                currentLoad = totalLoad;
-            }
-        }
-        else
-        {
-            currentLoad = countAdd;
-            CongPhap congPhap = (CongPhap)GetItemCurrentActiveFromBag(prefabItemInvenPanelUpdateCongPhap.gameObject).itemData;
-            if (congPhap == null)
-            {
-                Debug.Log("ref item null");
-                return;
-            }
+                var data=item.itemData;
+                var itemRef = item.itemRef;
 
-            startIndex = listSkillsWithRef.IndexOf(congPhap) + 1;
-            if (startIndex >= listSkillsWithRef.Count)
-            {
-                return;
-            }
+                textNameDotPha.transform.parent.gameObject.SetActive(true);
 
-        }
+                textNameDotPha.text = data.nameItem;
 
-        // 4. Vòng lặp hiển thị giờ rất đơn giản
-        for (int i = 0; i < currentLoad; i++)
-        {
-            int index = i + startIndex;
-            if (index >= listSkillsWithRef.Count)
-            {
-                return;
-            }
-            // Lấy cặp dữ liệu ra
-            var dataPair = listSkillsWithRef[index];
+                Pool.Get<UIManager>().InitVisualItemSkill(priceItemCongPhap, (BaseSkill)data, itemRef);
+                int daiCanhGioiCP = Client.Instance.CharacterData.CongPhapOwner.GetValueOrDefault(itemRef.Id);
+                if (daiCanhGioiCP == 0)
+                {
+                    daiCanhGioiCP = 1;
+                }
+                int cost = (int)GameConfig.GetPriceItemBuy(itemRef, null) * (daiCanhGioiCP + 1);
+                int cost2 = (daiCanhGioiCP + 1) * 2;
+                priceTextUpdateCongPhap.text = $"x{cost}";
+                priceItemCongPhap.Init(item.itemData, item.frame.sprite);
+                priceItemCongPhap.SetQualityFull(item.qualityFull.sprite);
 
-            var itemLinhHoi = GameConfig.GetItemPool(prefabItemInvenPanelUpdateCongPhap);
+                priceItemCongPhap.transform.parent.GetComponent<Text>().text = $"x{cost2}";
+                if (itemRef.Type == ItemType.CongPhap)
+                {
+                    CongPhap cp = (CongPhap)data;
+                    for (int i = 0; i < textInforUpdateCongPhap.Length; i++)
+                    {
+                        textInforUpdateCongPhap[i].text = cp.GetDesc(i + 1);
+                        if (i + 1 <= daiCanhGioiCP)
+                        {
+                            textInforUpdateCongPhap[i].transform.GetChild(1).gameObject.SetActive(true);
 
-            // dataPair.skill chính là listSkills[i] ngày trước
-            // dataPair.reference chính là itemRef tương ứng chuẩn 100%
-            InitVisualItemUpdateCongPhap(itemLinhHoi ,dataPair,new ItemRef { Id = dataPair.Id, Count = 1,Type = ItemType.CongPhap});
-        }
+
+                        }
+                        else
+                        {
+                            textInforUpdateCongPhap[i].transform.GetChild(1).gameObject.SetActive(false);
+
+
+                        }
+                    }
+                }
+                SetEventButton(btnUpdateCongPhap, () =>
+                {
+                    if (Client.Instance.CharacterData.Stats.LinhThach >= cost && Client.Instance.CharacterData.InventoryManager.CongPhaps.Count(x => x.Id == itemRef.Id) >= cost2)
+                    {
+                        Observer.Notify(EventList.Network.DOT_PHA_CONGPHAP, this, itemRef.Id, itemRef.Type);
+                    }
+                });
+                SetEventButton(btnUnUpdateCongPhap, () =>
+                {
+                    if (Client.Instance.CharacterData.Stats.LinhThach < cost)
+                    {
+                        NotifyGroup.Instance.Show("Không đủ linh thạch");
+                    }
+                    else if (Client.Instance.CharacterData.InventoryManager.CongPhaps.Count(x => x.Id == itemRef.Id) < cost2)
+                    {
+                        NotifyGroup.Instance.Show("Không đủ số lượng công pháp yêu cầu");
+
+                    }
+
+                });
+                SetUpBtnUpdate();
+                void SetUpBtnUpdate()
+                {
+                    if (Client.Instance.CharacterData.Stats.LinhThach < cost || Client.Instance.CharacterData.InventoryManager.CongPhaps.Count(x => x.Id == itemRef.Id) < cost2)
+                    {
+                        btnUnUpdateCongPhap.gameObject.SetActive(true);
+                        btnUpdateCongPhap.gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        btnUnUpdateCongPhap.gameObject.SetActive(false);
+                        btnUpdateCongPhap.gameObject.SetActive(true);
+
+                    }
+                }
+            });
+        },true);
+        bagCongPhap.InitBag();
     }
 
     public void SuccessTuLuyen()

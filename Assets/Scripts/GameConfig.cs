@@ -24,6 +24,7 @@ using UnityEditor;
 #endif
 public class GameConfig : BaseBehaviour
 {
+   
     [SerializeField] private List<string> listSceneLoaded = new List<string>
     {
         "AllMaps",
