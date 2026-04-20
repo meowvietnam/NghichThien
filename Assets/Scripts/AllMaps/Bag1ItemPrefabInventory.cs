@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class Bag1ItemPrefabInventory : BaseBehaviour
 {
     public bool isLoadingMore = false;
+    
    
     [SerializeField] private ItemInventory prefabItemBag;
     [SerializeField] private Sprite[] spriteQualityFulls => Pool.Get<UIManager>().spriteQualityFulls;
@@ -33,10 +34,12 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
     }
     private void OnEnable()
     {
+        isLoadingMore = false;
         scrollRectBagUpdate.onValueChanged.RemoveAllListeners();
         scrollRectBagUpdate.onValueChanged.AddListener((vec) => {
             OnScrollChanged(vec, InitBag);
         });
+
     }
     private ItemInventory GetItemCurrentActiveFromBag(GameObject prefab)
     {
@@ -125,6 +128,10 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             var currentItem = GameConfig.GetItemPool(prefabItemBag);
             IItemData data = null;
             ItemRef itemRef = null;
+            if (index >= itemDatas.Count)
+            {
+                break;
+            }
             if (i < itemDatas.Count)
             {
                 itemRef = itemDatas[index];

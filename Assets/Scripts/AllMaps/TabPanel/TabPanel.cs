@@ -67,28 +67,19 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 if(item.typePanel == ETypePanel.CongPhap)
                 {
                     InitCongPhap();
-                    scrollRectBag.onValueChanged.RemoveAllListeners();
-                    scrollRectBag.onValueChanged.AddListener((vec) => {
-                        OnScrollChanged(vec, LoadBagCongPhap);
-                    });
+                
 
                 }
                 if (item.typePanel == ETypePanel.ThanThong)
                 {
                     InitThanThong();
-                    scrollRectBag.onValueChanged.RemoveAllListeners();
-                    scrollRectBag.onValueChanged.AddListener((vec) => {
-                        OnScrollChanged(vec, LoadBagThanThong);
-                    });
+                  
                 }
                 if (item.typePanel == ETypePanel.VatPham)
                 {
                   
-                    InitInventory(3);
-                    scrollRectBag.onValueChanged.RemoveAllListeners();
-                    scrollRectBag.onValueChanged.AddListener((vec) => {
-                        OnScrollChanged(vec, LoadBagVatPham);
-                    });
+                    InitInventory();
+                   
                 }
 
             });
@@ -444,101 +435,20 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         }
     }
     [Header("--- Bag ---")]
-    [SerializeField] private GameObject bag;
+    [SerializeField] private Bag1ItemPrefabInventory bag;
     [SerializeField] private GameObject prefab5Item;
     [SerializeField] private Text moneyText;
     [SerializeField] private Sprite[] spriteQualityFulls;
     [SerializeField] private Sprite[] spriteFrames;
     [SerializeField] private Color[] colorQualitys;
     [SerializeField] private ItemSelect itemSelect;
-    public bool isLoadingMore = false;
-    public ScrollRect scrollRectBag => prefab5Item.GetComponentInParent<ScrollRect>();
-
-
-    // Hàm OnScrollChanged sửa lại tham số truyền vào
-    void OnScrollChanged(Vector2 value, Func<int, bool, IEnumerator> loadBagFunc)
+   
+    public void InitBag()
     {
-        Debug.Log("co vao onscrooll change");
-
-        if (value.y < 0.05f && !isLoadingMore)
-        {
-            // Kiểm tra xem dữ liệu còn để load không trước khi gọi
-            // (Ví dụ: compare số lượng UI hiện có với tổng số data thật)
-            StartCoroutine(TriggerLoadMore(loadBagFunc));
-        }
-    }
-    // Sử dụng delegate trả về IEnumerator thay vì Action để có thể yield return
-    IEnumerator TriggerLoadMore(Func<int, bool, IEnumerator> loadBagFunc)
-    {
-        isLoadingMore = true;
-        Debug.Log("co vao trigger load more");
-
-        // Gọi trực tiếp hàm Coroutine và chờ nó chạy xong
-        yield return StartCoroutine(loadBagFunc(10, true));
-
-        // Đợi một chút để tránh việc gọi liên tục khi user giữ chuột ở đáy
-        yield return new WaitForSeconds(0.5f);
-        isLoadingMore = false;
-    }
-    private ItemInventory GetItemCurrentActiveFromBag()
-    {
-        for (int i = prefab5Item.transform.parent.childCount - 1; i >0; i--)
-        {
-            var item5 = prefab5Item.transform.parent.GetChild(i);
-            if(!item5.gameObject.activeSelf)
-            {
-                continue;
-            }
-            for (int j = item5.transform.childCount - 1; j>0; j--)
-            {
-                var currentItem = item5.transform.GetChild(j).GetComponent<ItemInventory>();
-                if (currentItem.itemData != null)
-                {
-                    Debug.Log("GetItemCurrentActiveFromBag: " + currentItem.itemData.nameItem);
-                    return currentItem;
-                }    
-            }    
-        }
-        return null;
-    }    
-    public void InitItemBag(int count, ref List<ItemInventory> listItemInventory,bool isAdd = false)
-    {
-        int totalMax = 30;
-        isLoadingMore = false;
-        if(count >= totalMax)
-        {
-            count = totalMax;
-        }    
+        bag.isLoadingMore = false;
         bag.gameObject.SetActive(true);
-        if(!isAdd)
-        {
-            for (int i = 0; i < prefab5Item.transform.parent.childCount; i++)
-            {
-                prefab5Item.transform.parent.GetChild(i).gameObject.SetActive(false);
-            }
-
-        }    
-        if (count <= 0) return; // Không có item thì không làm gì cả
-
-        // Ví dụ: 3/5 = 0.6 -> làm tròn lên 1
-        // Ví dụ: 7/5 = 1.4 -> làm tròn lên 2
-        int spawnCount = Mathf.CeilToInt((float)count / 5);
-         
-        for (int i = 0; i < spawnCount; i++)
-        {
-            Transform item5 = GameConfig.GetItemPool(prefab5Item.transform);
-            for (int j = 0; j < item5.transform.childCount; j++)
-            {
-                ItemInventory item = item5.transform.GetChild(j).GetComponent<ItemInventory>();
-                item.itemData = null;
-                item.itemRef = null;
-                listItemInventory.Add(item);
-               
-            }
-
-        }
-
         moneyText.text = Client.Instance.CharacterData.Stats.LinhThach.ToString();
+
     }
    
     void DisableHighlight(ItemInventory item)
@@ -591,7 +501,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     public void InitCongPhap(int countDelay = 10)
     {
 
-
+        InitBag();
         var CharacterDatas = Client.Instance.CharacterData;
         var GameConfig = Pool.Get<GameConfig>();
 
@@ -641,152 +551,108 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
             });
         }
-        if (coroutineInitCongPhap != null)
+        var characterData = Client.Instance.CharacterData;
+        var gameConfig = Pool.Get<GameConfig>();
+        List<ItemRef> itemDatas = new List<ItemRef>();
+        foreach (var item in characterData.CongPhapOwner)
         {
-            StopCoroutine(coroutineInitCongPhap);
-            coroutineInitCongPhap = null;
+            itemDatas.Add(new ItemRef { Id = item.Key, Type = ItemType.CongPhap, Count = 1 });
         }
-        coroutineInitCongPhap = StartCoroutine(LoadBagCongPhap(countDelay));
 
-    }
-    private IEnumerator LoadBagCongPhap(int countDelay = 10,bool isAdd = false)
-    {
+        bag.InitDataItem(itemDatas, (currentItem) =>
+        {
 
-        var CharacterDatas = Client.Instance.CharacterData;
-        var GameConfig = Pool.Get<GameConfig>();
-        List<ItemInventory> itemInven = new List<ItemInventory>();
-        List<CongPhap> listCongPhapData = new List<CongPhap>();
-        int startIndex = 0;
-       
-        foreach (var item in CharacterDatas.CongPhapOwner)
-        {
-            listCongPhapData.Add(GameConfig.GetCongPhapWithId(item.Key));
-        }
-        if (isAdd)
-        {
-            ItemInventory itemInventory = GetItemCurrentActiveFromBag();
-            if (itemInventory == null) yield break;
-            CongPhap cp = (CongPhap)itemInventory.itemData;
-            if (cp == null) yield break;
-         
-            startIndex = listCongPhapData.IndexOf(cp) + 1;
-            if(startIndex < listCongPhapData.Count-1)
+            currentItem.InitAction(null, null, () =>
             {
-                InitItemBag(5, ref itemInven, isAdd);
-            }    
+                CongPhap congPhap = currentItem.itemData as CongPhap;
+                // 1. Lấy RectTransform của ô Độn Thuật để so sánh chính xác
+                RectTransform donThuatRect = donThuat.GetComponent<RectTransform>();
 
 
-        }
-        else
-        {
-            InitItemBag(listCongPhapData.Count, ref itemInven, isAdd);
 
-        }
-        //equip
-        for (int i = 0; i < itemInven.Count; i++)
-        {// TẠO BIẾN TẠM Ở ĐÂY
-            int index = i+startIndex;
-            if (i % countDelay == 0) yield return null;
-            var currentItem = itemInven[i];
-            BaseSkill data = null;
-            if (index <= listCongPhapData.Count - 1)
-            {
-                data = listCongPhapData[index];
-            }
-            Pool.Get<UIManager>().InitVisualItemSkill(currentItem, data);
-            if (data != null)
-            {
-
-                currentItem.InitAction(null, null, () =>
+                itemSelect.Show(currentItem, listItemsCongPhapSlot.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
                 {
-                    CongPhap congPhap = currentItem.itemData as CongPhap;
-                    // 1. Lấy RectTransform của ô Độn Thuật để so sánh chính xác
-                    RectTransform donThuatRect = donThuat.GetComponent<RectTransform>();
-
-
-
-                    itemSelect.Show(currentItem, listItemsCongPhapSlot.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
+                    if (resultRect != null)
                     {
-                        if (resultRect != null)
-                        {
 
-                            var itemSlot = resultRect.GetComponent<ItemInventory>();
+                        var itemSlot = resultRect.GetComponent<ItemInventory>();
 
 
-                            // 2. Kiểm tra điều kiện chặn
-                            bool isDroppingIntoDonThuat = (resultRect == donThuatRect);
-                            if (itemSlot != null && congPhap != null)
-                            {// ĐIỀU KIỆN: Nếu thả vào ô Độn Thuật MÀ kỹ năng KHÔNG PHẢI Độn Thuật thì BỎ QUA
-                                bool isCPEquiped = listItemsCongPhapSlot.Any(x => x.itemData == congPhap);
-                                if (isDroppingIntoDonThuat && !congPhap.isDonThuat || itemSlot.itemData != null || isCPEquiped)
+                        // 2. Kiểm tra điều kiện chặn
+                        bool isDroppingIntoDonThuat = (resultRect == donThuatRect);
+                        if (itemSlot != null && congPhap != null)
+                        {// ĐIỀU KIỆN: Nếu thả vào ô Độn Thuật MÀ kỹ năng KHÔNG PHẢI Độn Thuật thì BỎ QUA
+                            bool isCPEquiped = listItemsCongPhapSlot.Any(x => x.itemData == congPhap);
+                            if (isDroppingIntoDonThuat && !congPhap.isDonThuat || itemSlot.itemData != null || isCPEquiped)
+                            {
+                                if (isCPEquiped)
                                 {
-                                    if (isCPEquiped)
-                                    {
-                                        NotifyGroup.Instance.Show("Công pháp đã được trang bị");
+                                    NotifyGroup.Instance.Show("Công pháp đã được trang bị");
 
-                                    }
-                                    else
-                                    {
-                                        NotifyGroup.Instance.Show("Công pháp không đúng loại");
-
-                                    }
-
-                                    return; // Thoát ra, không chạy code Init bên dưới
                                 }
-                                Debug.Log("Item slot sẵn sàng");
+                                else
+                                {
+                                    NotifyGroup.Instance.Show("Công pháp không đúng loại");
 
-                                // Sử dụng biến tạm 'currentItem' hoặc 'index' thay vì 'i'
-                                Pool.Get<UIManager>().InitVisualItemSkill(itemSlot, congPhap);
-                                //equip
-                                //congPhap.EquipCongPhap();
-                                //save player cong phap equip id
-                                Observer.Notify(EventList.Network.EQUIP_CONGPHAP, this, GetTypeSlotCP(resultRect), congPhap.Id);
-                                // Cách viết chuẩn
+                                }
 
-
+                                return; // Thoát ra, không chạy code Init bên dưới
                             }
-                        }
-                        else
-                        {
-                            Debug.Log("Thả trượt rồi!");
-                        }
-                    });
+                            Debug.Log("Item slot sẵn sàng");
 
+                            // Sử dụng biến tạm 'currentItem' hoặc 'index' thay vì 'i'
+                            Pool.Get<UIManager>().InitVisualItemSkill(itemSlot, congPhap);
+                            //equip
+                            //congPhap.EquipCongPhap();
+                            //save player cong phap equip id
+                            Observer.Notify(EventList.Network.EQUIP_CONGPHAP, this, GetTypeSlotCP(resultRect), congPhap.Id);
+                            // Cách viết chuẩn
+
+
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Thả trượt rồi!");
+                    }
+                });
+
+                foreach (var item in listItemsCongPhapSlot)
+                {
+                    if (item.itemData != null)
+                    {
+                        DisableHighlight(item);
+                    }
+                }
+                if (!congPhap.isDonThuat)
+                {
+                    DisableHighlight(donThuat);
+
+                }
+                else
+                {
                     foreach (var item in listItemsCongPhapSlot)
                     {
-                        if (item.itemData != null)
+                        if (item != donThuat)
                         {
                             DisableHighlight(item);
                         }
                     }
-                    if (!congPhap.isDonThuat)
-                    {
-                        DisableHighlight(donThuat);
+                }
 
-                    }
-                    else
-                    {
-                        foreach (var item in listItemsCongPhapSlot)
-                        {
-                            if (item != donThuat)
-                            {
-                                DisableHighlight(item);
-                            }
-                        }
-                    }
-
-                });
-            }
-
-
-        }
+            });
+        }, true);
+        bag.InitBag(false);
+      
 
     }
+ 
     [Header("--- Thần Thông ---")]
     [SerializeField] private List<ItemInventory> listItemSlotThanThongs;
     private Coroutine coroutineInitThanThong = null;
     public void InitThanThong(int countDelay = 10)
     {
+        InitBag();
 
         var CharacterDatas = Client.Instance.CharacterData;
         var GameConfig = Pool.Get<GameConfig>();
@@ -838,129 +704,82 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
             });
         }
-        if (coroutineInitThanThong != null)
+        var characterData = Client.Instance.CharacterData;
+        var gameConfig = Pool.Get<GameConfig>();
+        List<ItemRef> itemDatas = new List<ItemRef>();
+        foreach (var item in characterData.ThanThongOwner)
         {
-            StopCoroutine(coroutineInitThanThong);
-            coroutineInitThanThong = null;
-        }
-        coroutineInitThanThong = StartCoroutine(LoadBagThanThong(countDelay));
-       
-    }
-    private IEnumerator LoadBagThanThong(int countDelay = 10, bool isAdd = false)
-    {
-
-        var Player = Pool.Get<Player>();
-        var GameConfig = Pool.Get<GameConfig>();
-        int startIndex = 0;
-
-        List<ThanThong> listThanThongData = new List<ThanThong>();
-
-        foreach (var item in Client.Instance.CharacterData.ThanThongOwner)
+            itemDatas.Add(new ItemRef { Id = item,Type = ItemType.ThanThong,Count = 1});
+        } 
+            
+        bag.InitDataItem(itemDatas, (currentItem) =>
         {
-            listThanThongData.Add(GameConfig.GetThanThongWithId(item));
-        }
-        List<ItemInventory> itemInven = new List<ItemInventory>();
-        if (isAdd)
-        {
-            ItemInventory itemInventory = GetItemCurrentActiveFromBag();
-            if (itemInventory == null) yield break;
-            ThanThong tt = (ThanThong)itemInventory.itemData;
-            if (tt == null) yield break;
 
-            startIndex = listThanThongData.IndexOf(tt) + 1;
-            if (startIndex < listThanThongData.Count - 1)
-            {
-                InitItemBag(5, ref itemInven, isAdd);
-            }
-
-
-        }
-        else
-        {
-            InitItemBag(listThanThongData.Count, ref itemInven, isAdd);
-
-        }
-        //equip
-        for (int i = 0; i < itemInven.Count; i++)
-        {// TẠO BIẾN TẠM Ở ĐÂY
-            int index = i+startIndex;
-            // Cứ mỗi 10 item data thì nghỉ 1 frame
-            if (i % countDelay == 0) yield return null;
-            var currentItem = itemInven[i];
-            BaseSkill data = null;
-            if (i <= listThanThongData.Count - 1)
-            {
-                data = listThanThongData[i];
-            }
-            Pool.Get<UIManager>().InitVisualItemSkill(currentItem, data);
-            if (data != null)
+            currentItem.InitAction(null, null, () =>
             {
 
-                currentItem.InitAction(null, null, () =>
+
+                ThanThong thanThong = currentItem.itemData as ThanThong;
+
+
+                itemSelect.Show(currentItem, listItemSlotThanThongs.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
                 {
-                    ThanThong thanThong = currentItem.itemData as ThanThong;
-
-
-                    itemSelect.Show(currentItem, listItemSlotThanThongs.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
+                    if (resultRect != null)
                     {
-                        if (resultRect != null)
-                        {
 
-                            var itemSlot = resultRect.GetComponent<ItemInventory>();
+                        var itemSlot = resultRect.GetComponent<ItemInventory>();
 
 
-                            if (itemSlot != null && thanThong != null)
-                            {// ĐIỀU KIỆN: Nếu thả vào ô Độn Thuật MÀ kỹ năng KHÔNG PHẢI Độn Thuật thì BỎ QUA
-                                if (itemSlot.itemData != null || listItemSlotThanThongs.Any(x => x.itemData == thanThong))
-                                {
-                                    NotifyGroup.Instance.Show("Thần thông đã được trang bị");
-                                    return; // Thoát ra, không chạy code Init bên dưới
-                                }
-                                Debug.Log("Item slot sẵn sàng");
-
-                                // Sử dụng biến tạm 'currentItem' hoặc 'index' thay vì 'i'
-                                Pool.Get<UIManager>().InitVisualItemSkill(itemSlot, thanThong);
-                                //equip
-                                //congPhap.EquipCongPhap();
-                                //save player thần thông equip id
-                                Observer.Notify(EventList.Network.EQUIP_THANTHONG, this, listItemSlotThanThongs.IndexOf(currentItem), thanThong.Id);
-                                // Cách viết chuẩn
-
-
+                        if (itemSlot != null && thanThong != null)
+                        {// ĐIỀU KIỆN: Nếu thả vào ô Độn Thuật MÀ kỹ năng KHÔNG PHẢI Độn Thuật thì BỎ QUA
+                            if (itemSlot.itemData != null || listItemSlotThanThongs.Any(x => x.itemData == thanThong))
+                            {
+                                NotifyGroup.Instance.Show("Thần thông đã được trang bị");
+                                return; // Thoát ra, không chạy code Init bên dưới
                             }
-                        }
-                        else
-                        {
-                            Debug.Log("Thả trượt rồi!");
-                        }
-                    });
-                    foreach (var item in listItemSlotThanThongs)
-                    {
-                        if (item.itemData != null)
-                        {
-                            DisableHighlight(item);
+                            Debug.Log("Item slot sẵn sàng");
+
+                            // Sử dụng biến tạm 'currentItem' hoặc 'index' thay vì 'i'
+                            Pool.Get<UIManager>().InitVisualItemSkill(itemSlot, thanThong);
+                            //equip
+                            //congPhap.EquipCongPhap();
+                            //save player thần thông equip id
+                            Observer.Notify(EventList.Network.EQUIP_THANTHONG, this, listItemSlotThanThongs.IndexOf(currentItem), thanThong.Id);
+                            // Cách viết chuẩn
+
+
                         }
                     }
-
-
-
+                    else
+                    {
+                        Debug.Log("Thả trượt rồi!");
+                    }
                 });
-            }
+                foreach (var item in listItemSlotThanThongs)
+                {
+                    if (item.itemData != null)
+                    {
+                        DisableHighlight(item);
+                    }
+                }
 
 
-        }
 
+
+            });
+        } , true);
+        bag.InitBag(false);
+       
     }
+ 
     [Header("--- Inventory ---")]
     [SerializeField] private List<ItemInventory> listItemSlotEquipment;
     [SerializeField] private CharacterGraphic charPageInventory;
-    private Coroutine coroutineInitVatPham;
-
   
-    public void InitInventory(int countDelay = 10)
+    public void InitInventory()
     {
-        var GameConfig = Pool.Get<GameConfig>();
-      
+        InitBag();
+
         // load data equipment 
         for (int i = 0; i < listItemSlotEquipment.Count; i++)
         {
@@ -1008,27 +827,9 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
             //});
         }
-        if (coroutineInitVatPham != null)
-        {
-            StopCoroutine(coroutineInitVatPham);
-            coroutineInitVatPham = null;
-        }
-        coroutineInitVatPham = StartCoroutine(LoadBagVatPham(countDelay));
-
-        charPageInventory.SetGender(Client.Instance.CharacterData.Gender);
-        charPageInventory.SetSkin(Client.Instance.CharacterData.Skins);
-
-    }
-    private IEnumerator LoadBagVatPham(int countDelay = 10, bool isAdd = false)
-    {
         var characterData = Client.Instance.CharacterData;
-
-        var GameConfig = Pool.Get<GameConfig>();
-        int startIndex = 0;
-
-        List<ItemInventory> itemInven = new List<ItemInventory>();
+        var gameConfig = Pool.Get<GameConfig>();
         List<ItemRef> itemDatas = new List<ItemRef>();
-
         itemDatas.AddRange(characterData.InventoryManager.Herbs.ToList());
         itemDatas.AddRange(characterData.InventoryManager.Recipes.ToList());
         itemDatas.AddRange(characterData.InventoryManager.ThanThongs.ToList());
@@ -1042,99 +843,50 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
         // Thêm danh sách Ref vừa lấy được vào itemDatas
         itemDatas.AddRange(furnaceRefs);
-        int totalItem = itemDatas.Count;
-
-        if (isAdd)
+        bag.InitDataItem(itemDatas, (ItemInventory) =>
         {
-            ItemInventory itemInventory = GetItemCurrentActiveFromBag();
-            if (itemInventory == null) yield break;
-            ItemRef refItem = itemInventory.itemRef;
-            if (refItem == null)
-            {
-                Debug.Log("ref item null");
-                yield break;
-            }
-
-            startIndex = itemDatas.IndexOf(refItem) + 1;
-            if (startIndex < itemDatas.Count - 1)
-            {
-                InitItemBag(5, ref itemInven,isAdd);
-            }
-
-
-        }
-        else
-        {
-            InitItemBag(totalItem, ref itemInven,isAdd);
-
-        }
-        Debug.Log("co vao load bag vat pham " + $"{itemInven.Count}" + "start index: " + startIndex);
-
-        //set item inventỏy và action
-        for (int i = 0; i < itemInven.Count; i++)
-        {// TẠO BIẾN TẠM Ở ĐÂY
-            int index = i + startIndex;
-            if (i % countDelay == 0) yield return null;
-            var currentItem = itemInven[i];
-            IItemData data = null;
-            ItemRef itemRef = null;
-            if (i < itemDatas.Count)
-            {
-                itemRef = itemDatas[index];
-
-                data = LuyenDanResources.Instance.FindItem(itemRef);
-
-
-
-            }
-            if (data == null) // tức là k tìm đc hoặc nó là thanThong hoặc là CongPhap
-            {
-                if (itemRef != null)
-                {
-                    if (itemRef.Type == ItemType.ThanThong)
-                    {
-                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, GameConfig.FindThanThongWithItemRef(itemRef), null,ETypeInventoryItem.Item);
-
-
-                    }
-                    else if (itemRef.Type == ItemType.CongPhap)
-                    {
-                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, GameConfig.FindCongPhapWithItemRef(itemRef),null, ETypeInventoryItem.Item);
-
-                    }
-                }
-            }
-            Pool.Get<UIManager>().InitVisualItemInventory(currentItem, data, itemRef);
-
-
-            if (data != null)
+            ItemInventory.InitAction(null, null, () =>
             {
 
-                currentItem.InitAction(null, null, () =>
-                {
+
+                //if (slotItemGift.itemRef.Id != ItemInventory.itemRef.Id)
+                //{
+                //    if (ItemInventory.itemRef.Type == ItemType.ThanThong || ItemInventory.itemRef.Type == ItemType.CongPhap)
+                //    {
+                //        Pool.Get<UIManager>().InitVisualItemSkill(slotItemGift, (BaseSkill)ItemInventory.itemData);
 
 
-                    itemSelect.Show(currentItem, listItemSlotThanThongs.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
-                    {
+                //    }
+                //    Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, ItemInventory.iItemData, ItemInventory.itemRef);
+                //    slotItemGift.InitCount(1);
+                //}
+                //else
+                //{
+                //    if (slotItemGift.count < ItemInventory.count)
+                //    {
+                //        slotItemGift.AddCount(1);
+                //    }
+                //}
 
-                    });
-                    //foreach (var item in listItemSlotThanThongs)
-                    //{
-                    //    if (item.itemData != null)
-                    //    {
-                    //        DisableHighlight(item);
-                    //    }
-                    //}
+                //foreach (var item in listItemSlotThanThongs)
+                //{
+                //    if (item.itemData != null)
+                //    {
+                //        DisableHighlight(item);
+                //    }
+                //}
 
 
 
-                });
-            }
-         
+            });
+        });
+        bag.InitBag(false);
 
-        }
+        charPageInventory.SetGender(Client.Instance.CharacterData.Gender);
+        charPageInventory.SetSkin(Client.Instance.CharacterData.Skins);
 
     }
+   
     public void SuccessEquipCongPhap()
     {
        // reload lại tab congphap

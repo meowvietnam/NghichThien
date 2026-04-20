@@ -1,4 +1,5 @@
-﻿
+﻿using System.Collections.Generic;
+using LuyenDan;
 
 public class INetworkEvent 
 {
@@ -66,5 +67,20 @@ public class INetworkEvent
     {
         void SuccessThinhGiaoNpc();
         void FailThinhGiaoNpc(string message);
+    }
+    public interface ILoadShop// Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessLoadShop(List<ItemRef> itemRefs);
+        void FailLoadShop(string message);
+    }
+    public interface IReLoadShop// Check đủ ngộ đạo điểm mới learn đượcaaaa
+    {
+        void SuccessReLoadShop(List<ItemRef> itemRefs);
+        void FailReLoadShop(string message);
+    }
+    public interface IBuyAndSell // Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessBuyAndSell();
+        void FailBuyAndSell(string message);
     }
 }

@@ -2,6 +2,7 @@
 using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 public interface ISingleton
@@ -102,4 +103,9 @@ public class UIManager : BaseBehaviour
             item.Init();
         }
     }
+    [Button]
+    private void ShowShop()
+    {
+        Pool.Get<ShopUI>().Show();
+    }    
 }
