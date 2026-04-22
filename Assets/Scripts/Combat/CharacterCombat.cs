@@ -566,7 +566,7 @@ public class CharacterCombat : MonoBehaviour
         return thanThuc;
 
     }    
-    public void Init(GameConfig.CharCombatInit charCombatInit )
+    public void Init(GameManager.CharCombatInit charCombatInit )
     {
         eTypeVisualChar = charCombatInit.eTypeVisual;
         var characterStat = charCombatInit.charStats;
@@ -594,7 +594,7 @@ public class CharacterCombat : MonoBehaviour
         Debug.Log("dcmmm " + congPhapDynamic.Count);
         foreach (var item in characterStat.thanThongEquip)
         {
-            thanThongEquip.Add(Pool.Get<GameConfig>().GetThanThongWithId(item.Value));
+            thanThongEquip.Add(Pool.Get<GameManager>().GetThanThongWithId(item.Value));
             
         }
         if(eTypeVisualChar == ETypeVisualChar.Character)

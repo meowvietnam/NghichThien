@@ -31,7 +31,7 @@ public class NPCLeftSVItem : BaseBehaviour
         textName.text = charStats.nameUser;
         characterGraphic.SetGender(charStats.Gender);
         characterGraphic.SetSkin(charStats.Skins, charStats.Colors);
-        textMonPhai.text = GameConfig.GetChucVuText(charStats.monPhai, charStats.level);
+        textMonPhai.text = GameManager.GetChucVuText(charStats.monPhai, charStats.level);
         SetEventButton(btn, () =>
         {
 

@@ -137,8 +137,8 @@ public class CombatManager : MonoBehaviour
         if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
         // test 
         //char1.isAutoCastSkill = true;
-        var gameConfig = Pool.Get<GameConfig>();
-        char1.Init(new GameConfig.CharCombatInit { charStats= GameConfig.ConvertCharServerDataToCharClientData() , eTypeVisual = ETypeVisualChar.Character});
+        var gameConfig = Pool.Get<GameManager>();
+        char1.Init(new GameManager.CharCombatInit { charStats= GameManager.ConvertCharServerDataToCharClientData() , eTypeVisual = ETypeVisualChar.Character});
         char2.Init(gameConfig.enemyCombat);
         char2.isAutoCastSkill = true;
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn

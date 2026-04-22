@@ -74,6 +74,7 @@ public class UIManager : BaseBehaviour
     }
 
     public Image commonMask ;
+    public GameObject panelGroup;
     private void Awake()
     {
         // Kiểm tra nếu trong Pool đã có một Manager loại này rồi

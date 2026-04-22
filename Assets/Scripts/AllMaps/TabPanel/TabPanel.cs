@@ -140,7 +140,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         var CharacterDatas = Client.Instance.CharacterData;
 
         var CharacterStats = Client.Instance.CharacterData.Stats;
-        var gameConfig = Pool.Get<GameConfig>();
+        var gameConfig = Pool.Get<GameManager>();
         hpText.text = $"{CharacterStats.Hp}/{CharacterStats.SinhMenh}";
 
         tuviText.text = $"{CharacterDatas.CurrentExp}/{gameConfig.inforLevels[Client.Instance.CharacterData.Level - 1].tuviRequireNextLevel}";
@@ -148,7 +148,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         iconLevel.SetNativeSize();
         nameText.text = CharacterDatas.Name;
 
-        levelText.text = GameConfig.levelWithText[Client.Instance.CharacterData.Level];
+        levelText.text = GameManager.levelWithText[Client.Instance.CharacterData.Level];
         tuoitacText.text = CharacterDatas.Stats.TuoiTac.ToString();
         thonguyenText.text = CharacterDatas.Stats.ThoNguyen.ToString();
         tuChatText.text = CharacterDatas.Stats.TuChat.ToString();
@@ -156,8 +156,8 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         ngoTinhText.text = CharacterDatas.Stats.NgoTinh.ToString();
         donTocText.text = CharacterDatas.Stats.TocDoBay.ToString();
         //tocDoTuLuyenText.text = player.characterStatsBase.tocDoBay.Value.ToString();
-        var getTamCanh = GameConfig.GetTamCanhValue(CharacterDatas.Stats.TamCanh);
-        var getDanDoc = GameConfig.GetDanDocValue(CharacterDatas.Stats.DanDoc);
+        var getTamCanh = GameManager.GetTamCanhValue(CharacterDatas.Stats.TamCanh);
+        var getDanDoc = GameManager.GetDanDocValue(CharacterDatas.Stats.DanDoc);
 
         tamCanhText.text = getTamCanh.name;
         tamCanhText.color = listColorTamCanh[getTamCanh.index];
@@ -503,7 +503,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
         InitBag();
         var CharacterDatas = Client.Instance.CharacterData;
-        var GameConfig = Pool.Get<GameConfig>();
+        var GameConfig = Pool.Get<GameManager>();
 
       
 
@@ -552,7 +552,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             });
         }
         var characterData = Client.Instance.CharacterData;
-        var gameConfig = Pool.Get<GameConfig>();
+        var gameConfig = Pool.Get<GameManager>();
         List<ItemRef> itemDatas = new List<ItemRef>();
         foreach (var item in characterData.CongPhapOwner)
         {
@@ -655,7 +655,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         InitBag();
 
         var CharacterDatas = Client.Instance.CharacterData;
-        var GameConfig = Pool.Get<GameConfig>();
+        var GameConfig = Pool.Get<GameManager>();
         
         // load data 
         for (int i = 0; i < listItemSlotThanThongs.Count; i++)
@@ -705,7 +705,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             });
         }
         var characterData = Client.Instance.CharacterData;
-        var gameConfig = Pool.Get<GameConfig>();
+        var gameConfig = Pool.Get<GameManager>();
         List<ItemRef> itemDatas = new List<ItemRef>();
         foreach (var item in characterData.ThanThongOwner)
         {
@@ -828,7 +828,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             //});
         }
         var characterData = Client.Instance.CharacterData;
-        var gameConfig = Pool.Get<GameConfig>();
+        var gameConfig = Pool.Get<GameManager>();
         List<ItemRef> itemDatas = new List<ItemRef>();
         itemDatas.AddRange(characterData.InventoryManager.Herbs.ToList());
         itemDatas.AddRange(characterData.InventoryManager.Recipes.ToList());

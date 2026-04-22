@@ -195933,7 +195933,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1387}
   btnEnter: {fileID: 8050}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &25878644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195974,7 +195974,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1377}
   btnEnter: {fileID: 8027}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &41943986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196127,7 +196127,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1396}
   btnEnter: {fileID: 8041}
-  nameSceneLoad: 
+  eCurrentMapType: 1
 --- !u!114 &151111307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196152,7 +196152,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1389}
   btnEnter: {fileID: 8049}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &186461957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196251,7 +196251,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1385}
   btnEnter: {fileID: 8032}
-  nameSceneLoad: 
+  eCurrentMapType: 6
 --- !u!114 &231770505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196298,7 +196298,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1392}
   btnEnter: {fileID: 8044}
-  nameSceneLoad: 
+  eCurrentMapType: 11
 --- !u!114 &265835695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196341,7 +196341,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1382}
   btnEnter: {fileID: 8036}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &290837230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196594,7 +196594,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1403}
   btnEnter: {fileID: 8052}
-  nameSceneLoad: 
+  eCurrentMapType: 7
 --- !u!114 &414741694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196637,7 +196637,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1378}
   btnEnter: {fileID: 8039}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &453550240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196682,7 +196682,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1395}
   btnEnter: {fileID: 8040}
-  nameSceneLoad: S2
+  eCurrentMapType: 4
 --- !u!114 &459201791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196707,7 +196707,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1404}
   btnEnter: {fileID: 8051}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &459492392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197172,6 +197172,74 @@ MonoBehaviour:
   - {x: -0.37694073, y: -10.1273}
   - {x: -1.3669405, y: -9.747301}
   - {x: -2.0669403, y: -9.327301}
+--- !u!1001 &565937988
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 24.79576
+      objectReference: {fileID: 0}
+    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -14.28978
+      objectReference: {fileID: 0}
+    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6887991359616561660, guid: 9e2fd88978ac56144a9d1970ade51b48,
+        type: 3}
+      propertyPath: m_Name
+      value: GameManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9e2fd88978ac56144a9d1970ade51b48, type: 3}
 --- !u!114 &599242907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197250,7 +197318,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1383}
   btnEnter: {fileID: 8035}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &658544868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197319,7 +197387,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1376}
   btnEnter: {fileID: 8025}
-  nameSceneLoad: 
+  eCurrentMapType: 9
 --- !u!114 &675486561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197505,7 +197573,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1386}
   btnEnter: {fileID: 8046}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &748981691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197532,7 +197600,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1380}
   btnEnter: {fileID: 8034}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &753403641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197628,7 +197696,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1393}
   btnEnter: {fileID: 8042}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &816962796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197670,7 +197738,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1401}
   btnEnter: {fileID: 8054}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &823040593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197693,7 +197761,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1399}
   btnEnter: {fileID: 8056}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &826411881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197953,7 +198021,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1397}
   btnEnter: {fileID: 8058}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &972514823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197982,7 +198050,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1391}
   btnEnter: {fileID: 8045}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &974683742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198119,75 +198187,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1565}
   btnEnter: {fileID: 8324}
-  nameSceneLoad: 
---- !u!1001 &1030962312
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 227.20001
-      objectReference: {fileID: 0}
-    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1865.6001
-      objectReference: {fileID: 0}
-    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 449500050277526255, guid: 9e2fd88978ac56144a9d1970ade51b48,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6887991359616561660, guid: 9e2fd88978ac56144a9d1970ade51b48,
-        type: 3}
-      propertyPath: m_Name
-      value: GameConfig
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9e2fd88978ac56144a9d1970ade51b48, type: 3}
+  eCurrentMapType: 0
 --- !u!114 &1035790915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198619,7 +198619,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1398}
   btnEnter: {fileID: 8057}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &1207795433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198751,7 +198751,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1370}
   btnEnter: {fileID: 8031}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &1285928042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198903,7 +198903,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1400}
   btnEnter: {fileID: 8055}
-  nameSceneLoad: 
+  eCurrentMapType: 2
 --- !u!114 &1407345047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198950,7 +198950,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1390}
   btnEnter: {fileID: 8047}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &1430388370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199915,7 +199915,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1388}
   btnEnter: {fileID: 8048}
-  nameSceneLoad: 
+  eCurrentMapType: 8
 --- !u!114 &1694386049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200060,7 +200060,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1375}
   btnEnter: {fileID: 8024}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &1727107576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200085,7 +200085,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1402}
   btnEnter: {fileID: 8053}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &1731387816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200182,7 +200182,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1384}
   btnEnter: {fileID: 8033}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &1833486337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200393,7 +200393,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1371}
   btnEnter: {fileID: 8030}
-  nameSceneLoad: 
+  eCurrentMapType: 10
 --- !u!114 &1896691049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200737,7 +200737,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1379}
   btnEnter: {fileID: 8038}
-  nameSceneLoad: 
+  eCurrentMapType: 3
 --- !u!114 &1960085006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201486,7 +201486,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1381}
   btnEnter: {fileID: 8037}
-  nameSceneLoad: 
+  eCurrentMapType: 5
 --- !u!114 &2010584998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201529,7 +201529,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1374}
   btnEnter: {fileID: 8026}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &2019303631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201679,7 +201679,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1373}
   btnEnter: {fileID: 8028}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &2041694006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201792,7 +201792,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1394}
   btnEnter: {fileID: 8043}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!114 &2092741870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201905,7 +201905,7 @@ MonoBehaviour:
   iconVisualAction: {fileID: 0}
   enter: {fileID: 1372}
   btnEnter: {fileID: 8029}
-  nameSceneLoad: 
+  eCurrentMapType: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -201919,5 +201919,5 @@ SceneRoots:
   - {fileID: 1906225552}
   - {fileID: 552180467}
   - {fileID: 556082747}
-  - {fileID: 1030962312}
   - {fileID: 2019866827}
+  - {fileID: 565937988}

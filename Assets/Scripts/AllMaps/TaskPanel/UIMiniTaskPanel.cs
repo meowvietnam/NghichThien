@@ -28,7 +28,7 @@ public class UIMiniTaskPanel : PanelGroup
     private void InitTimer()
     {
         // 1. Lấy giá trị TimeSpan gốc
-        TimeSpan originalAge = GameConfig.GetTimeWorldTimeSpan();
+        TimeSpan originalAge = GameManager.GetTimeWorldTimeSpan();
 
         // 2. Tạo một mốc thời gian cơ sở (Base) và cộng tuổi vào, sau đó trừ đi 15 năm
         // Giả sử tính từ mốc 01/01/0001

@@ -225,7 +225,7 @@ public class ToolTipItems : BaseBehaviour , ISingleton
                         descTextItem.text = "<color=#ffb143>【Chủ Dược】 </color>"+$"{duocLieu.ChuDuoc} " + "<color=#ffb143>【Phụ Dược】 </color>" + $"{duocLieu.PhuDuoc} " + "<color=#ffb143>【Dược Dẫn】 </color>" + $"{duocLieu.ThuocDan}";
 
                     }
-                    qualityText.text = GameConfig.TextWithTier[iItemData.Tier];
+                    qualityText.text = GameManager.TextWithTier[iItemData.Tier];
 
 
                     break;
@@ -234,7 +234,7 @@ public class ToolTipItems : BaseBehaviour , ISingleton
                     descriptionText.text = "Đan lô vật phẩm bắt buộc để có thể luyện chế đan dược";
                     descTextItem.transform.parent.gameObject.SetActive(true);
                     descTextItem.text = $"<color=#ffb143>【Bền Bỉ】</color> " +$"{Client.Instance.CharacterData.InventoryManager.Furnaces.FirstOrDefault(x => x.Ref.Id == itemRef.Id).Durability + "/" + 100}";
-                    qualityText.text = GameConfig.TextWithTier[iItemData.Tier];
+                    qualityText.text = GameManager.TextWithTier[iItemData.Tier];
 
                     break;
                 case ItemType.LinhDan:
@@ -264,7 +264,7 @@ public class ToolTipItems : BaseBehaviour , ISingleton
 
                     }
                     typeText.text = text;
-                    qualityText.text = GameConfig.TextWithTier[iItemData.Tier];
+                    qualityText.text = GameManager.TextWithTier[iItemData.Tier];
 
                     break;
                 case ItemType.ThanThong:
@@ -282,7 +282,7 @@ public class ToolTipItems : BaseBehaviour , ISingleton
                 case ItemType.Recipe:
                     typeText.text = "Đan Phương";
                     descriptionText.text = $"Công thức luyện chế {iItemData.Name}";
-                    qualityText.text = GameConfig.TextWithTier[iItemData.Tier];
+                    qualityText.text = GameManager.TextWithTier[iItemData.Tier];
 
                     break;
                 default:
@@ -291,11 +291,11 @@ public class ToolTipItems : BaseBehaviour , ISingleton
         }
         if (eActionShowItem == EActionShowItemInfor.None || eActionShowItem == EActionShowItemInfor.Sell)
         {
-            SetPriceText(GameConfig.GetPriceItemSell(itemRef, iItemData));
+            SetPriceText(GameManager.GetPriceItemSell(itemRef, iItemData));
         }
         else
         {
-            SetPriceText(GameConfig.GetPriceItemBuy(itemRef, iItemData));
+            SetPriceText(GameManager.GetPriceItemBuy(itemRef, iItemData));
 
         }
 

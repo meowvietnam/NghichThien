@@ -155,7 +155,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
      public void InitPopTangQua()
     {
         var characterData = Client.Instance.CharacterData;
-        var gameConfig = Pool.Get<GameConfig>();
+        var gameConfig = Pool.Get<GameManager>();
         List<ItemRef> itemDatas = new List<ItemRef>();
         itemDatas.AddRange(characterData.InventoryManager.Herbs.ToList());
         itemDatas.AddRange(characterData.InventoryManager.Recipes.ToList());
@@ -241,7 +241,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         });
         foreach (var item in listCharStats)
         {
-            var itemNpc = GameConfig.GetItemPool(prefabNPCLeftItem);
+            var itemNpc = GameManager.GetItemPool(prefabNPCLeftItem);
             itemNpc.Init(item);
 
         }
@@ -309,7 +309,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         SetEventButton(btnLuanBan, () =>
         {
             HideAllPop();
-            Pool.Get<GameConfig>().GoToCombat(new GameConfig.CharCombatInit
+            Pool.Get<GameManager>().GoToCombat(new GameManager.CharCombatInit
             {
                 charStats = characterStatsTarget,
                 eTypeVisual = ETypeVisualChar.Character,
@@ -431,7 +431,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         var categorize = CategorizeSlot(listBaseSkillData);
         foreach (var item in categorize.Item1)
         {
-            var itemInventory = GameConfig.GetItemPool(prefabSlotThinhGiaoSlot1);
+            var itemInventory = GameManager.GetItemPool(prefabSlotThinhGiaoSlot1);
             itemInventory.InitAction(null, null, null);
 
             Pool.Get<UIManager>().InitVisualItemSkill(itemInventory, item);
@@ -443,7 +443,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         }
         foreach (var item in categorize.Item2)
         {
-            var itemInventory = GameConfig.GetItemPool(prefabSlotThinhGiaoSlot2);
+            var itemInventory = GameManager.GetItemPool(prefabSlotThinhGiaoSlot2);
             itemInventory.InitAction(null, null, null);
 
             Pool.Get<UIManager>().InitVisualItemSkill(itemInventory, item);
@@ -455,7 +455,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         }
         foreach (var item in categorize.Item3)
         {
-            var itemInventory = GameConfig.GetItemPool(prefabSlotThinhGiaoSlot3);
+            var itemInventory = GameManager.GetItemPool(prefabSlotThinhGiaoSlot3);
             itemInventory.InitAction(null, null,null);
 
             Pool.Get<UIManager>().InitVisualItemSkill(itemInventory, item);
@@ -485,7 +485,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         ResetVisual(prefabSlotThinhGiaoSlot1.transform);
         ResetVisual(prefabSlotThinhGiaoSlot2.transform);
         ResetVisual(prefabSlotThinhGiaoSlot3.transform);
-        var GameConfig = Pool.Get<GameConfig>();
+        var GameConfig = Pool.Get<GameManager>();
 
         this.currentRelationShip = GetERelationShip(relatetionshipValue, ETypeSkillRelationShip.CongPhap);
         btnTabThanThong.image.sprite = spriteNoSelectTab;
@@ -517,7 +517,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         btnTabThanThong.image.sprite = spriteSelectTab;
         btnTabCongPhap.image.sprite = spriteNoSelectTab;
         List<ThanThong> listThanThongData = new List<ThanThong>();
-        var GameConfig = Pool.Get<GameConfig>();
+        var GameConfig = Pool.Get<GameManager>();
 
         foreach (var item in characterStatsTarget.thanThongEquip)
         {
@@ -589,10 +589,10 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         textThoNguyen.text = characterStatsTarget.thoNguyen.Value.ToString();
         textTuoiTac.text = characterStatsTarget.tuoiTac.Value.ToString();
         textSinhMenh.text = characterStatsTarget.hpMax.Value.ToString();
-        textLevel.text = GameConfig.levelWithText[characterStatsTarget.level];
+        textLevel.text = GameManager.levelWithText[characterStatsTarget.level];
         textHaoCam.text = Client.Instance.CharacterData.RelationShip.GetValueOrDefault(characterStatsTarget.idChar).ToString();
         List<ThanThong> listThanThongData = new List<ThanThong>();
-        var gameConfig = Pool.Get<GameConfig>();
+        var gameConfig = Pool.Get<GameManager>();
         foreach (var item in characterStatsTarget.thanThongEquip)
         {
             listThanThongData.Add(gameConfig.GetThanThongWithId(item.Value));

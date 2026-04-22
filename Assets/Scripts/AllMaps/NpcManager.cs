@@ -36,7 +36,7 @@ public class NpcManager : MonoBehaviour
     public void OnTimeAdjust()
     {
         // 1. Lấy tổng số tháng hiện tại của thế giới
-        int timeWordCurrent = GameConfig.GetTimeWorldInt();
+        int timeWordCurrent = GameManager.GetTimeWorldInt();
 
         // 2. Lấy thời điểm thực hiện random lần cuối từ PlayerPrefs
         // Nếu là lần đầu tiên (giá trị -1), ta coi như cần random ngay lập tức
@@ -150,7 +150,7 @@ public class NpcManager : MonoBehaviour
         currentMap.Clear();
         SetEnemyOnMap();
         SaveEnemyMap(listEnemy);
-        PlayerPrefs.SetInt(SaveOldTimeRandomEnemy, GameConfig.GetTimeWorldInt());
+        PlayerPrefs.SetInt(SaveOldTimeRandomEnemy, GameManager.GetTimeWorldInt());
         PlayerPrefs.Save();
 
         return listEnemy;
@@ -184,7 +184,7 @@ public class NpcManager : MonoBehaviour
         }
 
         SaveNPCMap();
-        PlayerPrefs.SetInt(SaveOldTimeRandomNPC, GameConfig.GetTimeWorldInt());
+        PlayerPrefs.SetInt(SaveOldTimeRandomNPC, GameManager.GetTimeWorldInt());
         PlayerPrefs.Save();
 
     }

@@ -2,7 +2,7 @@
 
 public class EnemyData : NPCData
 {
-    public ETypeVisualChar eTypeVisualChar => GameConfig.levelWithVisualChar[charStats.level];
+    public ETypeVisualChar eTypeVisualChar => GameManager.levelWithVisualChar[charStats.level];
     // Tiền tố: Chỉ thuộc tính/màu sắc (Hệ)
     protected override string[] Surnames => new[] {
         "Hắc", "Bạch", "Xích", "Thanh", "Kim", "Tử", "U", "Huyết", "Ma", "Lôi",
@@ -20,7 +20,7 @@ public class EnemyData : NPCData
         "Thú", "Vật", "Giả", "Thể", "Hồn", "Tinh", "Quái", "Ma", "Yêu", "Xác",
         "Binh", "Tướng", "Vương", "Hoàng", "Đế", "Nghiệt", "Ma", "Biến", "Sư", "Tử"
     };
-    public override void SetBaseStats(GameConfig gameConfig)
+    public override void SetBaseStats(GameManager gameConfig)
     {
       
         if (string.IsNullOrEmpty(charStatsCreateRef.nameUser))

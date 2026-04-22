@@ -102,7 +102,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     [SerializeField] private Text textNam;
     [SerializeField] private Text textThang;
     [SerializeField]
-    private TimeSpan currentTuLuyenTimeSpan => GameConfig.ConvertMonthToTimeSpan(currentTuLuyenTimeInt);
+    private TimeSpan currentTuLuyenTimeSpan => GameManager.ConvertMonthToTimeSpan(currentTuLuyenTimeInt);
     private SecureInt currentTuLuyenTimeInt; // month
     [SerializeField] private Text textPriceTieuHao;
     [SerializeField] private Button btnUnTuLuyen;
@@ -115,7 +115,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     private void InitPageTuLuyen()
     {
         
-        var cpChuTu = Pool.Get<GameConfig>().GetCongPhapWithId(Client.Instance.CharacterData.ChuTu1Used);
+        var cpChuTu = Pool.Get<GameManager>().GetCongPhapWithId(Client.Instance.CharacterData.ChuTu1Used);
         string nameCPstr = "Không";
       
         int tocDoTuLuyenCP = 0;
@@ -128,7 +128,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         valueTuLuyenForCPText.text = tocDoTuLuyenCP.ToString();
         int percentTuChat = Client.Instance.CharacterData.Stats.TuChat;
         percentTuChatText.text = $"{percentTuChat}%";
-        var getTamCanh = GameConfig.GetTamCanhValue(Client.Instance.CharacterData.Stats.TamCanh);
+        var getTamCanh = GameManager.GetTamCanhValue(Client.Instance.CharacterData.Stats.TamCanh);
 
         int percentTamCanh =  0;
         tamCanhValueText.text = "Tăng lên";
@@ -154,11 +154,11 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
             return (int)total;
                 
         }
-        tuChatText.text = GameConfig.tuChatWithText[Client.Instance.CharacterData.Stats.LinhCan];
+        tuChatText.text = GameManager.tuChatWithText[Client.Instance.CharacterData.Stats.LinhCan];
         tamCanhText.text = getTamCanh.name;
         totalValueTuLuyenText.text = $"{GetTotalValueBuffWithMultiplier(new List<float> { percentTuChat,100,percentTamCanh})}";
         sliderTuLuyen.minValue = 0 ;
-        sliderTuLuyen.maxValue = (int)(Client.Instance.CharacterData.Stats.ThoNguyen - GameConfig.GetIntTuoiTac(Client.Instance.CharacterData.Stats.TuoiTac)) * 10 * 12 / 100;
+        sliderTuLuyen.maxValue = (int)(Client.Instance.CharacterData.Stats.ThoNguyen - GameManager.GetIntTuoiTac(Client.Instance.CharacterData.Stats.TuoiTac)) * 10 * 12 / 100;
         sliderTuLuyen.onValueChanged.RemoveAllListeners();
         sliderTuLuyen.onValueChanged.AddListener((value) =>
         {
@@ -338,7 +338,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         // Lọc Công Pháp: Chỉ lấy những cái ID chưa nằm trong Dictionary key
         var filteredCongPhap = congPhapItems.Where(x => !dictCPOwner.ContainsKey(x.Id)).ToList();
 
-        var gameConfig = Pool.Get<GameConfig>();
+        var gameConfig = Pool.Get<GameManager>();
 
         // 1. Tạo danh sách chứa cặp (SkillData và ItemRef)
 
@@ -355,7 +355,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 textNameLinhHoi.text = data.nameItem;
                 textNameLinhHoi.transform.parent.gameObject.SetActive(true);
 
-                int cost = (int)GameConfig.GetPriceItemBuy(itemRef, null) / 2;
+                int cost = (int)GameManager.GetPriceItemBuy(itemRef, null) / 2;
                 priceTextLinhHoi.text = $"{cost}";
                 if (itemRef.Type == ItemType.ThanThong)
                 {
@@ -442,7 +442,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
 
         var dictCPOwner = Client.Instance.CharacterData.CongPhapOwner;
 
-        var gameConfig = Pool.Get<GameConfig>();
+        var gameConfig = Pool.Get<GameManager>();
 
         // 1. Tạo danh sách chứa cặp (SkillData và ItemRef)
         List<CongPhap> listSkillsWithRef = new List<CongPhap>();
@@ -477,7 +477,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 {
                     daiCanhGioiCP = 1;
                 }
-                int cost = (int)GameConfig.GetPriceItemBuy(itemRef, null) * (daiCanhGioiCP + 1);
+                int cost = (int)GameManager.GetPriceItemBuy(itemRef, null) * (daiCanhGioiCP + 1);
                 int cost2 = (daiCanhGioiCP + 1) * 2;
                 priceTextUpdateCongPhap.text = $"x{cost}";
                 priceItemCongPhap.Init(item.itemData, item.frame.sprite);

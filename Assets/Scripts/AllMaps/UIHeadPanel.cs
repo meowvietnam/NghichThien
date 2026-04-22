@@ -33,7 +33,7 @@ public class UIHeadPanel : PanelGroup
    
     private void UpdatePlayerStats()
     {
-        var gameConfig = Pool.Get<GameConfig>();
+        var gameConfig = Pool.Get<GameManager>();
         hpText.text = $"{Client.Instance.CharacterData.Stats.Hp}/{Client.Instance.CharacterData.Stats.SinhMenh}";
         Slider hpSlider = hpText.transform.parent.GetComponent<Slider>();
         hpSlider.value = (float)Client.Instance.CharacterData.Stats.Hp / Client.Instance.CharacterData.Stats.SinhMenh;

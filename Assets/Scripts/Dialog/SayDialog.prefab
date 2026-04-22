@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 222443309231064837}
   - component: {fileID: 114159159306192013}
   - component: {fileID: 225983977165935279}
-  - component: {fileID: 114788494324103643}
+  - component: {fileID: 6553916597850913254}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -383,7 +383,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &114788494324103643
+--- !u!114 &6553916597850913254
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -392,26 +392,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 1318689145584017}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: SetDialogClickedFlag
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 0
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 114159159306192013}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1349914855145495
 GameObject:
   m_ObjectHideFlags: 0
@@ -994,52 +1009,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64fb582e085e07647a3940d17077c6e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SayDialogManager
-  characterData:
-    <Id>k__BackingField: 0
-    <Gender>k__BackingField: 0
-    <Name>k__BackingField: 
-    <MonPhai>k__BackingField: 0
-    <Level>k__BackingField: 1
-    <CurrentExp>k__BackingField: 0
-    <CurrentEnergy>k__BackingField: 0
-    <NgoDaoDiem>k__BackingField: 0
-    <Stats>k__BackingField:
-      <Kim>k__BackingField: 0
-      <Moc>k__BackingField: 0
-      <Thuy>k__BackingField: 0
-      <Hoa>k__BackingField: 0
-      <Tho>k__BackingField: 0
-      <Ma>k__BackingField: 0
-      <TuChat>k__BackingField: 0
-      <NgoTinh>k__BackingField: 0
-      <ThanThuc>k__BackingField: 0
-      <TocDoBay>k__BackingField: 0
-      <LinhThach>k__BackingField: 0
-      <Hp>k__BackingField: 0
-      <SinhMenh>k__BackingField: 0
-      <ThoNguyen>k__BackingField: 0
-      <TamCanh>k__BackingField: 0
-      <LinhCan>k__BackingField: 0
-      <Ability>k__BackingField: 0
-      <DanDoc>k__BackingField: 0
-    <ThanThongOwner>k__BackingField: 
-    <ThanThongEquip>k__BackingField: 
-    <NgoDaoSaves>k__BackingField: 
-    <DonThuatUsed>k__BackingField: 0
-    <PhuTu1Used>k__BackingField: 0
-    <PhuTu2Used>k__BackingField: 0
-    <PhuTu3Used>k__BackingField: 0
-    <PhuTu4Used>k__BackingField: 0
-    <ChuTu1Used>k__BackingField: 0
-    <ChuTu2Used>k__BackingField: 0
-    <DanCombatUsed>k__BackingField: 
-    <IdCurrentNode>k__BackingField: 0
-    <Mails>k__BackingField: []
   characterGraphic: {fileID: 8484776008341788495}
   imgChar: {fileID: 114079033403853638}
   imgContent: {fileID: 5954537011986606032}
   audioSource: {fileID: 82044696500454348}
   textContent: {fileID: 114964023999406862}
+  btnPanel: {fileID: 6553916597850913254}
 --- !u!1 &1765146768137015
 GameObject:
   m_ObjectHideFlags: 0
@@ -1152,7 +1127,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -850, y: -450}
+  m_AnchoredPosition: {x: -935, y: -450}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &203243590514862221

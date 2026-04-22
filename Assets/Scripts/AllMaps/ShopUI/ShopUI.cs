@@ -100,7 +100,7 @@ public class ShopUI : Popup, ISingleton , INetworkEvent.IBuyAndSell , INetworkEv
             {
                 break;
             }
-            totalMoney += GameConfig.GetPriceItemSell(item.itemRef,item.iItemData) * item.count;
+            totalMoney += GameManager.GetPriceItemSell(item.itemRef,item.iItemData) * item.count;
         }
         foreach (ItemInventory item in listItemUserBuy)
         {
@@ -108,7 +108,7 @@ public class ShopUI : Popup, ISingleton , INetworkEvent.IBuyAndSell , INetworkEv
             {
                 break;
             }
-            totalMoney -= GameConfig.GetPriceItemBuy(item.itemRef, item.iItemData) * item.count;
+            totalMoney -= GameManager.GetPriceItemBuy(item.itemRef, item.iItemData) * item.count;
         }
         if(totalMoney >= 0)
         {
@@ -123,7 +123,7 @@ public class ShopUI : Popup, ISingleton , INetworkEvent.IBuyAndSell , INetworkEv
     private void InitBagUser()
     {
         var characterData = Client.Instance.CharacterData;
-        var gameConfig = Pool.Get<GameConfig>();
+        var gameConfig = Pool.Get<GameManager>();
         List<ItemRef> itemDatas = new List<ItemRef>();
         itemDatas.AddRange(characterData.InventoryManager.Herbs.ToList());
         itemDatas.AddRange(characterData.InventoryManager.Recipes.ToList());
@@ -234,7 +234,7 @@ public class ShopUI : Popup, ISingleton , INetworkEvent.IBuyAndSell , INetworkEv
     private void InitBagNPC(List<ItemRef> itemDatas)
     {
         var characterData = Client.Instance.CharacterData;
-        var gameConfig = Pool.Get<GameConfig>();
+        var gameConfig = Pool.Get<GameManager>();
 
         InitBagLogic(bagNpcList, listItemUserBuy, itemDatas);
 

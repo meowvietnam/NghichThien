@@ -80,7 +80,7 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
     }
     public void InitBag(bool isAdd=false)
     {
-        var gameConfig = Pool.Get<GameConfig>();
+        var gameConfig = Pool.Get<GameManager>();
 
         if (!isAdd)
         {
@@ -125,7 +125,7 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
         for (int i = 0; i < currentLoad; i++)
         {// TẠO BIẾN TẠM Ở ĐÂY
             int index = i + startIndex;
-            var currentItem = GameConfig.GetItemPool(prefabItemBag);
+            var currentItem = GameManager.GetItemPool(prefabItemBag);
             IItemData data = null;
             ItemRef itemRef = null;
             if (index >= itemDatas.Count)

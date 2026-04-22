@@ -69,7 +69,7 @@ namespace Network
         [Button]
         public void AddFullItem()
         {
-            var gameConfig = Pool.Get<GameConfig>();
+            var gameConfig = Pool.Get<GameManager>();
             List<ItemRef> items = new List<ItemRef>();
             foreach (var item in gameConfig.thanThongs)
             {

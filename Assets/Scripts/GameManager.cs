@@ -14,6 +14,10 @@ using Network;
 using System.Collections;
 using Sirenix.Utilities;
 using LuyenKhi;
+using AllMaps;
+using Newtonsoft.Json.Linq;
+
+
 
 
 
@@ -22,13 +26,77 @@ using LuyenKhi;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-public class GameConfig : BaseBehaviour
+public class GameManager : BaseBehaviour
 {
    
     [SerializeField] private List<string> listSceneLoaded = new List<string>
     {
         "AllMaps",
     };
+    [SerializeField]
+    public EMapType currentEMapType = EMapType.None;
+    public EMonPhai CurrentEMonPhai => ConvertEMapToEMonPhai(currentEMapType);
+    public static Dictionary<EMapType, string> dictMapTypeWithSceneName = new Dictionary<EMapType, string>()
+    {
+        {EMapType.None , "" },
+        {EMapType.KimHongKiemPhai , "S3" },
+        {EMapType.TrucSonTong , "S1" },
+        {EMapType.TinhHaKiemPhai , "S4" },  
+        {EMapType.LyHoaMon , "S2" },  
+        {EMapType.HoaTranGiao , "S5" },
+        {EMapType.BachDeThanh , "S2" },
+        {EMapType.VanTichThanh , "S2" },
+        {EMapType.ThienTinhThanh , "S2" },
+        {EMapType.DatPhongThanh , "S2" },
+        {EMapType.QuangLangThanh , "S2" },
+        {EMapType.ThienCoCac , "S2" },
+    };
+    public static (string mySelf, string myCallTarget, string targetCallMe) XungHoText(int targetLevel, Gender targetGender)
+    {
+        Gender myGender = Client.Instance.CharacterData.Gender;
+        int myLevel = Client.Instance.CharacterData.Level;
+        int levelDiff = myLevel - targetLevel;
+
+        // --- CASE 0: Bằng vai phải lứa ---
+        if (levelDiff == 0)
+            return ("Ta", "Đạo hữu", "Đạo hữu");
+
+        // --- CASE 1: Chênh lệch trong vòng 1-2 đại cảnh giới (1 đến 6 lv) ---
+        if (Math.Abs(levelDiff) <= 6)
+        {
+            if (levelDiff > 0) // Mình là bề trên (Huynh/Tỷ)
+            {
+                string mySelf = (myGender == Gender.Female) ? "Sư tỷ" : "Sư huynh";
+                string myCallTarget = (targetGender == Gender.Female) ? "Sư muội" : "Sư đệ";
+                string targetCallMe = mySelf; // Đối phương phải gọi mình là Sư huynh/tỷ
+                return (mySelf, myCallTarget, targetCallMe);
+            }
+            else // Mình là bề dưới (Đệ/Muội)
+            {
+                string mySelf = (myGender == Gender.Female) ? "Sư muội" : "Sư đệ";
+                string myCallTarget = (targetGender == Gender.Female) ? "Sư tỷ" : "Sư huynh";
+                string targetCallMe = mySelf; // Đối phương gọi mình là Sư đệ/muội
+                return (mySelf, myCallTarget, targetCallMe);
+            }
+        }
+
+        // --- CASE 2: Chênh lệch lớn (>= 7 lv) ---
+        if (levelDiff >= 7) // Mình là Tiền bối
+        {
+            string mySelf = "Bổn tọa"; // Hoặc "Lão phu/Bổn tọa" nếu muốn ngầu
+            string myCallTarget = (targetGender == Gender.Female) ? "Tiểu cô nương" : "Tiểu tử";
+            string targetCallMe = "Tiền bối";
+            return (mySelf, myCallTarget, targetCallMe);
+        }
+        else // Mình là Hậu bối (levelDiff <= -7)
+        {
+            string mySelf = "Vãn bối";
+            string myCallTarget = "Tiền bối";
+            string targetCallMe = (myGender == Gender.Female) ? "Tiểu cô nương" : "Tiểu tử";
+            return (mySelf, myCallTarget, targetCallMe);
+        }
+    }
+
     public static Dictionary<LinhCan, string> tuChatWithText = new Dictionary<LinhCan, string>
     {
         { LinhCan.NguLinhCan, "Tư chất ngu dốt" }, // Use { key, value }
@@ -84,6 +152,28 @@ public class GameConfig : BaseBehaviour
     { 14, "Hóa Thần Trung Kì" },
     { 15, "Hóa Thần Hậu Kì" },
     };
+    public static EMonPhai ConvertEMapToEMonPhai(EMapType eMap)
+    {
+        switch (eMap)
+        {
+            case EMapType.None:
+                return EMonPhai.None;
+            case EMapType.KimHongKiemPhai:
+                return EMonPhai.KimHongKiemPhai;
+            case EMapType.TrucSonTong:
+                return EMonPhai.TrucSonTong;
+            case EMapType.TinhHaKiemPhai:
+                return EMonPhai.TinhHaKiemPhai;
+            case EMapType.LyHoaMon:
+                return EMonPhai.LyHoaMon;
+            case EMapType.HoaTranGiao:
+                return EMonPhai.HoaTranGiao;
+            case EMapType.BachDeThanh:
+                return EMonPhai.BachDeLau;
+            
+        }
+        return EMonPhai.None;
+    }    
     public static Dictionary<BaseSkill.ETierSkill, int> tierSkillWithLevel= new Dictionary<BaseSkill.ETierSkill, int>
     {
         {BaseSkill.ETierSkill.NhanGiaiHa, 1},
@@ -144,7 +234,24 @@ public class GameConfig : BaseBehaviour
         public int donTocBuff;
         public int thoNguyenBuff;
     }
-    public InforLevel[] inforLevels;
+    public InforLevel[] inforLevels = new InforLevel[]
+    {
+        new InforLevel { tuviRequireNextLevel = 20000, hpMaxBuff = 15, thanThucBuff = 1, donTocBuff = 1, thoNguyenBuff = 0 },
+        new InforLevel { tuviRequireNextLevel = 50000, hpMaxBuff = 15, thanThucBuff = 1, donTocBuff = 1, thoNguyenBuff = 0 },
+        new InforLevel { tuviRequireNextLevel = 144000, hpMaxBuff = 80, thanThucBuff = 2, donTocBuff = 2, thoNguyenBuff = 100 },
+        new InforLevel { tuviRequireNextLevel = 400000, hpMaxBuff = 40, thanThucBuff = 2, donTocBuff = 2, thoNguyenBuff = 0 },
+        new InforLevel { tuviRequireNextLevel = 800000, hpMaxBuff = 40, thanThucBuff = 2, donTocBuff = 2, thoNguyenBuff = 0 },
+        new InforLevel { tuviRequireNextLevel = 1200000, hpMaxBuff = 300, thanThucBuff = 8, donTocBuff = 8, thoNguyenBuff = 300 },
+        new InforLevel { tuviRequireNextLevel = 1577000, hpMaxBuff = 150, thanThucBuff = 4, donTocBuff = 4, thoNguyenBuff = 0 },
+        new InforLevel { tuviRequireNextLevel = 3211000, hpMaxBuff = 150, thanThucBuff = 4, donTocBuff = 4, thoNguyenBuff = 0 },
+        new InforLevel { tuviRequireNextLevel = 6480000, hpMaxBuff = 800, thanThucBuff = 16, donTocBuff = 16, thoNguyenBuff = 500 },
+        new InforLevel { tuviRequireNextLevel = 19440000, hpMaxBuff = 400, thanThucBuff = 8, donTocBuff = 8, thoNguyenBuff = 0 },
+        new InforLevel { tuviRequireNextLevel = 38880000, hpMaxBuff = 400, thanThucBuff = 8, donTocBuff = 8, thoNguyenBuff = 0 },
+        new InforLevel { tuviRequireNextLevel = 77760000, hpMaxBuff = 8000, thanThucBuff = 32, donTocBuff = 32, thoNguyenBuff = 1000 },
+        new InforLevel { tuviRequireNextLevel = 94422000, hpMaxBuff = 4000, thanThucBuff = 16, donTocBuff = 16, thoNguyenBuff = 0 },
+        new InforLevel { tuviRequireNextLevel = 144411000, hpMaxBuff = 4000, thanThucBuff = 16, donTocBuff = 16, thoNguyenBuff = 0 },
+        new InforLevel { tuviRequireNextLevel = 200000000, hpMaxBuff = 0, thanThucBuff = 0, donTocBuff = 0, thoNguyenBuff = 0 }
+    };
     public static string GetChucVuText(EMonPhai monPhai, int level)
     {
         return monPhaiText[monPhai]+" "+ chucVuText[ThanThong.GetDaiCanhGioi(level)];
@@ -153,8 +260,15 @@ public class GameConfig : BaseBehaviour
     {
         string currentScene = SceneManager.GetActiveScene().name;
         int index = listSceneLoaded.IndexOf(currentScene);
-        if (index == 0) return;
-        SceneManager.LoadScene(listSceneLoaded[index-1]);
+        if (index == 0)
+        {
+            currentEMapType = EMapType.None;
+            return;
+        }
+        string backScene = listSceneLoaded[index - 1];
+        listSceneLoaded.Remove(currentScene);
+
+        SceneManager.LoadScene(backScene);
 
 
 
@@ -162,7 +276,22 @@ public class GameConfig : BaseBehaviour
     public void OnLoadScene(params object[] data)
     {
         string nameScene = (string)data[0];
+        if(string.IsNullOrEmpty(nameScene))
+        {
+            System.Random _random = new System.Random();
+            Array values = Enum.GetValues(typeof(Gender));
+            Gender randomGender = (Gender)values.GetValue(_random.Next(values.Length));
+
+            var xungHo = XungHoText(6, randomGender);
+            Pool.Get<SayDialogManager>().ShowDialogRandomSkin("Người Gác Cổng",randomGender,$"{xungHo.targetCallMe} xin dừng bước hiện tại nơi này chưa thể vào hãy kiên nhẫn chờ bản cập nhật tiếp theo !");
+            return;
+        }    
         listSceneLoaded.Add(nameScene);
+        if(data.Length > 1)
+        {
+            EMapType eMap = (EMapType)data[1];
+            currentEMapType = eMap;
+        }    
         SceneManager.LoadScene(nameScene);
 
 
@@ -178,14 +307,14 @@ public class GameConfig : BaseBehaviour
     {
         this.enemyCombat = enemyCombat;
         if (enemyCombat == null) return;
-        Pool.Get<UIManager>().gameObject.SetActive(false);
+        Pool.Get<UIManager>().panelGroup.SetActive(false);
         SceneManager.LoadScene("Combat");
 
     }
     public void BackAllMaps()
     {
        
-        Pool.Get<UIManager>().gameObject.SetActive(true);
+        Pool.Get<UIManager>().panelGroup.SetActive(true);
         SceneManager.LoadScene(listSceneLoaded[0]);
 
     }
@@ -229,7 +358,7 @@ public class GameConfig : BaseBehaviour
     private void Awake()
     {
         // Kiểm tra nếu trong Pool đã có một Manager loại này rồi
-        var existing = Pool.Get<GameConfig>();
+        var existing = Pool.Get<GameManager>();
 
         if (existing != null && existing != this)
         {
@@ -361,11 +490,11 @@ public class GameConfig : BaseBehaviour
 
                 break;
             case ItemType.ThanThong:
-                price = PriceTTWithTier[Pool.Get<GameConfig>().GetThanThongWithId(itemRef.Id).eTierSkill];
+                price = PriceTTWithTier[Pool.Get<GameManager>().GetThanThongWithId(itemRef.Id).eTierSkill];
 
                 break;
             case ItemType.CongPhap:
-                price = PriceCPWithTier[Pool.Get<GameConfig>().GetCongPhapWithId(itemRef.Id).eTierSkill];
+                price = PriceCPWithTier[Pool.Get<GameManager>().GetCongPhapWithId(itemRef.Id).eTierSkill];
 
                 break;
             case ItemType.VuKhi:

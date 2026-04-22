@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 449500050277526255}
-  - component: {fileID: 6972178624772969009}
+  - component: {fileID: 4239291191812253755}
   m_Layer: 0
-  m_Name: GameConfig
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6972178624772969009
+--- !u!114 &4239291191812253755
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,11 +41,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6887991359616561660}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8b2c7e83922404469e8743505d3367d, type: 3}
+  m_Script: {fileID: 11500000, guid: 6fa2f27080aeb82469ab5469caaacd50, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameConfig
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
   listSceneLoaded:
   - AllMaps
+  currentEMapType: 0
   inforLevels:
   - tuviRequireNextLevel: 20000
     hpMaxBuff: 15
@@ -159,6 +160,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a718db0f7bad1274da10b3dcabf585d5, type: 2}
   - {fileID: 11400000, guid: 30c4d41510cefa0488bd6d9b5ff2a64c, type: 2}
   - {fileID: 11400000, guid: b6db3d5eb55b41749b88481716d173cf, type: 2}
+  - {fileID: 11400000, guid: 06b9bb5a444a2e04d9755410fc90305b, type: 2}
   - {fileID: 11400000, guid: 8bfc6d5e954dda14eaea8a20b6c96d8a, type: 2}
   - {fileID: 11400000, guid: ef58e0e27679e7948998667dafa84136, type: 2}
   - {fileID: 11400000, guid: d98660d6f39e8e246be0060ce50369fe, type: 2}
@@ -182,7 +184,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f3ce36d7ceafd714aa5ad628548dea92, type: 2}
   - {fileID: 11400000, guid: 235a6ebc373b2ac498c272c78bf5b10d, type: 2}
   - {fileID: 11400000, guid: 5cf89f234d55434458a573f9d6410cd4, type: 2}
-  - {fileID: 11400000, guid: 06b9bb5a444a2e04d9755410fc90305b, type: 2}
   - {fileID: 11400000, guid: f07e08c558af821448e04ca487fcf1d9, type: 2}
   - {fileID: 11400000, guid: 47fc47257b175d94c9df0c87c4a4f42c, type: 2}
   - {fileID: 11400000, guid: c8e0452fa2d78ce4bbec69dcb56c3a39, type: 2}

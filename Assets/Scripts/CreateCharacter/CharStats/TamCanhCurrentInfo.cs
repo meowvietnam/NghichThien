@@ -7,7 +7,7 @@ namespace CreateCharacter.CharStats
         public override string GetValue(object value)
         {
             var val = Convert.ToInt32(value);
-            var tamCanh = GameConfig.tamCanh;
+            var tamCanh = GameManager.tamCanh;
             if (val < 0)
             {
                 return $"{tamCanh[0]} ({value})";

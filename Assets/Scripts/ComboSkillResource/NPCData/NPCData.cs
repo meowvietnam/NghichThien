@@ -48,7 +48,7 @@ public class NPCData : ScriptableObject
     }
    
     [Button]
-    public virtual void SetBaseStats(GameConfig gameConfig)
+    public virtual void SetBaseStats(GameManager gameConfig)
     {
         if(charStatsCreateRef.skinList.Count <= 0)
         {

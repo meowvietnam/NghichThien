@@ -4,17 +4,35 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace AllMaps
 {
+    public enum EMapType
+    {
+        None,
+        KimHongKiemPhai,
+        TrucSonTong,
+        TinhHaKiemPhai,
+        LyHoaMon,
+        HoaTranGiao,
+        BachDeThanh,
+        VanTichThanh,
+        ThienTinhThanh,
+        DatPhongThanh,
+        QuangLangThanh,
+        ThienCoCac,
+        
+
+    }
     public class Stronghold : Map
     {
         [SerializeField] private GameObject enter;
         [SerializeField] private Button btnEnter;
-        [SerializeField] private string nameSceneLoad;
+        [SerializeField] private EMapType eCurrentMapType;
+        [SerializeField] public string nameSceneLoad => GameManager.dictMapTypeWithSceneName[eCurrentMapType];
 
         private void Awake()
         {
             SetEventButton(btnEnter, () =>
             {
-                Observer.Notify(EventList.GamePlay.LOAD_SCENE, nameSceneLoad);
+                Observer.Notify(EventList.GamePlay.LOAD_SCENE, nameSceneLoad , eCurrentMapType);
             });
         }
         public override void OnPlayerEnter()

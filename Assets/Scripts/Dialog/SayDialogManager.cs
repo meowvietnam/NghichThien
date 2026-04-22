@@ -1,14 +1,17 @@
-﻿using CreateCharacter;
+﻿using Base;
+using CreateCharacter;
 using DG.Tweening;
+using LongDH.LongDHModules;
+using Network;
 using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SayDialogManager : MonoBehaviour
+public class SayDialogManager : BaseBehaviour
 {
-    [SerializeField] private CharacterData characterData;
     [SerializeField]
     private CharacterGraphic characterGraphic;
     [SerializeField]
@@ -19,74 +22,105 @@ public class SayDialogManager : MonoBehaviour
     [SerializeField] private Text textContent;
     private Coroutine typingCoroutine;
     private Transform panel => textContent.transform.parent;
+    public Button btnPanel;
+    private bool isTyping = false; // Đang chạy chữ
+    private bool isDone = false;   // Đã hiện full chữ
+    private string fullContent; // Lưu lại nội dung đầy đủ để hiện nhanh khi cần
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private Text textName;
     private void Awake()
     {
-        DontDestroyOnLoad(this);
+        Init();
     }
-    void Start()
+    public void ShowDialogRandomSkin(string name,Gender gender, string content, Sprite spriteContent = null, AudioClip voice = null, Action actionEndThisDialog = null)
     {
-            characterData = new CharacterData
-            {
-                Skins = new Dictionary<string, string>
-        {
-            { "face_shape", "head_0" },
-            { "eyes", "eyes_0" },
-            { "mouth", "mouth_0" },
-            { "nose", "nose_0" },
-            { "eyebrows", "eyebrow_0" },
-            { "hair", "hair_5" },
-            { "face_tattoo", "feature_0" },
-            { "eyes_decor", "yanying_0" },
-            { "suit", "a_suit_87" }
-        }, // Dùng dấu phẩy ở đây thay vì chấm phẩy
-
-                Colors = new Dictionary<string, Color>
-        {
-            { "eyes", new Color(0.949f, 0.957f, 0.980f, 1.000f) },
-            { "eyebrows", new Color(0.439f, 0.439f, 0.439f, 1.000f) },
-            { "hair", new Color(0.392f, 0.361f, 0.361f, 1.000f) },
-            { "face_tattoo", new Color(0.439f, 0.439f, 0.439f, 1.000f) }
-        }
-            };
-
+        var skinRandom = characterGraphic.RandomSkin(gender,false);
+        ShowDialog(name, gender,skinRandom.skins,skinRandom.colors, content, spriteContent, voice, actionEndThisDialog);
     }
+    public void ShowDialogForUser(string content, Sprite spriteContent = null, AudioClip voice = null, Action actionEndThisDialog = null)
+    {
+        ShowDialog(Client.Instance.CharacterData.Name,Client.Instance.CharacterData.Gender,Client.Instance.CharacterData.Skins,Client.Instance.CharacterData.Colors,content,spriteContent,voice,actionEndThisDialog);
+    }    
     [Button]
-    public void ShowDialog(string content, Sprite spriteContent = null, AudioClip voice = null)
+    public void ShowDialog(string name,Gender gender,Dictionary<string,string>skins,Dictionary<string,Color>colors,string content, Sprite spriteContent = null, AudioClip voice = null, Action actionEndThisDialog = null)
     {
-        characterGraphic.SetSkin(characterData.Skins, characterData.Colors);
+        textName.text = name;
+        characterGraphic.SetGender(gender);
+        characterGraphic.SetSkin(skins, colors);
+        fullContent = content; // Lưu trữ text đầy đủ
+        isDone = false;
+        isTyping = false;
+
         imgContent.gameObject.SetActive(false);
         panel.gameObject.SetActive(true);
+
         if (spriteContent != null)
         {
             imgContent.gameObject.SetActive(true);
             imgContent.sprite = spriteContent;
-            // Đưa Alpha về 0 ngay lập tức trước khi chạy hiệu ứng
             Color c = imgContent.color;
             c.a = 0;
             imgContent.color = c;
-
-            // Thực hiện Fade In lên 1 trong 0.75 giây
             imgContent.DOFade(1, 1.5f);
         }
 
-        // Xử lý Voice và Chữ chạy
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
 
-        float duration = 1f; // Mặc định 1 giây nếu không có voice
+        float duration = (voice != null) ? voice.length : 1.5f; // Không voice thì mặc định 1.5s cho dễ đọc
         if (voice != null)
         {
-            duration = voice.length; // Chạy theo độ dài của clip
             audioSource.clip = voice;
             audioSource.Play();
         }
 
         typingCoroutine = StartCoroutine(TypeText(content, duration));
+
+        // Xử lý sự kiện click
+        SetEventButton(btnPanel, () =>
+        {
+            // 1. Nếu đang có voice: Bắt buộc phải chờ xong (theo yêu cầu của bạn)
+            if (voice != null)
+            {
+                if (isDone)
+                {
+                    DoneAction();
+
+                }
+                return;
+            }
+
+            // 2. Nếu KHÔNG có voice: Cho phép skip text
+            if (isTyping)
+            {
+                // Bấm lần 1: Ngắt chạy chữ, hiện full ngay
+                StopCoroutine(typingCoroutine);
+                textContent.text = fullContent;
+                isTyping = false;
+                isDone = true;
+            }
+            else if (isDone)
+            {
+                // Bấm lần 2: Đã xong rồi thì kết thúc
+                DoneAction();
+            }
+        });
+
+        void DoneAction()
+        {
+            panel.gameObject.SetActive(false);
+            imgContent.gameObject.SetActive(false);
+            actionEndThisDialog?.Invoke();
+        }
     }
+
     private IEnumerator TypeText(string content, float duration)
     {
+        isTyping = true;
+        isDone = false;
         textContent.text = "";
-        float timePerChar = duration / content.Length;
+
+        // Tránh chia cho 0 nếu chuỗi rỗng
+        float timePerChar = content.Length > 0 ? duration / content.Length : 0.05f;
 
         foreach (char c in content)
         {
@@ -94,7 +128,14 @@ public class SayDialogManager : MonoBehaviour
             yield return new WaitForSeconds(timePerChar);
         }
 
+        isTyping = false;
+        isDone = true;
         typingCoroutine = null;
     }
 
+    public void Init()
+    {
+        DontDestroyOnLoad(this);
+        Pool.Set(this);
+    }
 }
