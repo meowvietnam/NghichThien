@@ -14927,6 +14927,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUI
   btnClose: {fileID: 6479521288729223522}
   scaleBase: 1
+  eShopType: 0
   btnConfirm: {fileID: 2201837686808875980}
   textMoneyUser: {fileID: 114925469209021717}
   textMoneyCurrent: {fileID: 114642728239330678}
@@ -14959,7 +14960,7 @@ MonoBehaviour:
   - {fileID: 7267675887349816452}
   - {fileID: 4859049593641861936}
   - {fileID: 2801583386725624731}
-  btnWatchAds: {fileID: 2476724287784483128}
+  btnWatchAds: {fileID: 4517503887404016412}
   bagUserList: {fileID: 8605991695381545461}
   bagNpcList: {fileID: 2922753648745240027}
 --- !u!1 &1913572587953358
@@ -18994,6 +18995,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &496048598026226577
 GameObject:
   m_ObjectHideFlags: 0
@@ -21207,6 +21209,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &1291225503055057900
 GameObject:
   m_ObjectHideFlags: 0
@@ -23825,6 +23828,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &2178546476627434849
 GameObject:
   m_ObjectHideFlags: 0
@@ -25089,6 +25093,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &2583126301869038941
 GameObject:
   m_ObjectHideFlags: 0
@@ -27770,6 +27775,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &3245161170473262828
 GameObject:
   m_ObjectHideFlags: 0
@@ -28704,6 +28710,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &3488187228827447112
 GameObject:
   m_ObjectHideFlags: 0
@@ -28814,6 +28821,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &3493734715098886181
 GameObject:
   m_ObjectHideFlags: 0
@@ -29000,6 +29008,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &3616261834721187237
 GameObject:
   m_ObjectHideFlags: 0
@@ -31467,6 +31476,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &4384916849146891361
 GameObject:
   m_ObjectHideFlags: 0
@@ -33516,6 +33526,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &4819598834894678733
 GameObject:
   m_ObjectHideFlags: 0
@@ -35070,6 +35081,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &5180125344820892752
 GameObject:
   m_ObjectHideFlags: 0
@@ -35908,6 +35920,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &5564895974653038206
 GameObject:
   m_ObjectHideFlags: 0
@@ -36439,6 +36452,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &5709584929911511519
 GameObject:
   m_ObjectHideFlags: 0
@@ -36860,6 +36874,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &5789882725271355908
 GameObject:
   m_ObjectHideFlags: 0
@@ -36907,6 +36922,7 @@ GameObject:
   - component: {fileID: 7008577031495642596}
   - component: {fileID: 6100128980458498688}
   - component: {fileID: 2184131175225160923}
+  - component: {fileID: 4517503887404016412}
   m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
@@ -36973,6 +36989,50 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4517503887404016412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5803570351260430808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 2184131175225160923}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5853372266061858997
 GameObject:
   m_ObjectHideFlags: 0
@@ -38795,6 +38855,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &6368070396922560987
 GameObject:
   m_ObjectHideFlags: 0
@@ -40675,6 +40736,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &6811112095681190911
 GameObject:
   m_ObjectHideFlags: 0
@@ -40860,6 +40922,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &6816552098648567589
 GameObject:
   m_ObjectHideFlags: 0
@@ -43282,6 +43345,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &7520087243372954731
 GameObject:
   m_ObjectHideFlags: 0
@@ -43788,6 +43852,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &7646709268773286956
 GameObject:
   m_ObjectHideFlags: 0
@@ -45402,6 +45467,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &8129666285369438585
 GameObject:
   m_ObjectHideFlags: 0
@@ -46643,6 +46709,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &8442529279998026043
 GameObject:
   m_ObjectHideFlags: 0
@@ -47089,6 +47156,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &8504478063442507432
 GameObject:
   m_ObjectHideFlags: 0
@@ -48151,6 +48219,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &8685906135955252292
 GameObject:
   m_ObjectHideFlags: 0
@@ -48381,6 +48450,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &8748621542503164441
 GameObject:
   m_ObjectHideFlags: 0
@@ -48491,6 +48561,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &8766179739873977827
 GameObject:
   m_ObjectHideFlags: 0
@@ -49374,6 +49445,7 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
   count: 0
+  countRequire: 0
 --- !u!1 &8965656832146883072
 GameObject:
   m_ObjectHideFlags: 0
@@ -49937,7 +50009,6 @@ GameObject:
   - component: {fileID: 3477950085634933876}
   - component: {fileID: 3192346591179611841}
   - component: {fileID: 480970690526365710}
-  - component: {fileID: 2476724287784483128}
   m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
@@ -50002,50 +50073,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2476724287784483128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9190551336731476772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 480970690526365710}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &9211302482541611245
 GameObject:
   m_ObjectHideFlags: 0

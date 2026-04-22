@@ -71,7 +71,7 @@ public class ShopUI : Popup, ISingleton , INetworkEvent.IBuyAndSell , INetworkEv
         {
             Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Xác nhận xem quảng cáo để làm mới cửa hàng này!", () =>
             {
-                Observer.Notify(EventList.Network.RE_LOAD_SHOP, this, eShopType, eMonPhai);
+                Observer.Notify(EventList.Network.RELOAD_SHOP, this, eShopType, eMonPhai);
 
             });
         });

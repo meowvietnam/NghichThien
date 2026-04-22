@@ -36,6 +36,7 @@ public class GameManager : BaseBehaviour
     [SerializeField]
     public EMapType currentEMapType = EMapType.None;
     public EMonPhai CurrentEMonPhai => ConvertEMapToEMonPhai(currentEMapType);
+
     public static Dictionary<EMapType, string> dictMapTypeWithSceneName = new Dictionary<EMapType, string>()
     {
         {EMapType.None , "" },
@@ -44,12 +45,27 @@ public class GameManager : BaseBehaviour
         {EMapType.TinhHaKiemPhai , "S4" },  
         {EMapType.LyHoaMon , "S2" },  
         {EMapType.HoaTranGiao , "S5" },
-        {EMapType.BachDeThanh , "S19" },
+        {EMapType.BachDeLau , "S19" },
         {EMapType.VanTichThanh , "S22" },
         {EMapType.ThienTinhThanh , "S23" },
         {EMapType.DatPhongThanh , "S20" },
         {EMapType.QuangLangThanh , "S29" },
         {EMapType.ThienCoCac , "S21" },
+    };
+    public static Dictionary<EMapType, string> dictMapTypeWithName = new Dictionary<EMapType, string>()
+    {
+        {EMapType.None , "" },
+        {EMapType.KimHongKiemPhai , "Kim Hồng Kiếm Phái" },
+        {EMapType.TrucSonTong , "Trúc Sơn Tông" },
+        {EMapType.TinhHaKiemPhai , "Tinh Hà Kiếm Phái" },
+        {EMapType.LyHoaMon , "Ly Hỏa Môn" },
+        {EMapType.HoaTranGiao , "Hóa Trần Giáo" },
+        {EMapType.BachDeLau , "Bạch Đế Lâu" },
+        {EMapType.VanTichThanh , "Vân Tịch Thành" },
+        {EMapType.ThienTinhThanh , "Thiên Tinh Thành" },
+        {EMapType.DatPhongThanh , "Dật Phong Thành" },
+        {EMapType.QuangLangThanh , "Quảng Lăng Thành" },
+        {EMapType.ThienCoCac , "Thiên Cơ Các" },
     };
     public static (string mySelf, string myCallTarget, string targetCallMe) XungHoText(int targetLevel, Gender targetGender)
     {
@@ -168,7 +184,7 @@ public class GameManager : BaseBehaviour
                 return EMonPhai.LyHoaMon;
             case EMapType.HoaTranGiao:
                 return EMonPhai.HoaTranGiao;
-            case EMapType.BachDeThanh:
+            case EMapType.BachDeLau:
                 return EMonPhai.BachDeLau;
             
         }
@@ -415,6 +431,16 @@ public class GameManager : BaseBehaviour
         {Tier.NguPham, "Ngũ Phẩm"},
         {Tier.LucPham, "Lục Phẩm"},
     };
+    public static Dictionary<Tier, int> PriceTienNgocVatLieuAndHerbWithTier = new Dictionary<Tier, int>
+    {
+        {Tier.NhatPham, 70},
+        {Tier.NhiPham, 60},
+        {Tier.TamPham, 50},
+        {Tier.TuPham, 40},
+        {Tier.NguPham, 30},
+        {Tier.LucPham, 20},
+    };
+   
     public static Dictionary<Tier, int> PriceVatLieuWithTier = new Dictionary<Tier, int>
     {
         {Tier.NhatPham, 4},

@@ -83,4 +83,19 @@ public class INetworkEvent
         void SuccessBuyAndSell();
         void FailBuyAndSell(string message);
     }
+    public interface ILoadTask// Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessLoadTask(List<TaskDailySnapshot> listTask);
+        void FailLoadTask(string message);
+    }
+    public interface IReLoadTask// Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessReLoadTask(List<TaskDailySnapshot> listTask);
+        void FailReLoadTask(string message);
+    }
+    public interface IDoneTask// Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessDoneTask();
+        void FailDoneTask(string message);
+    }
 }

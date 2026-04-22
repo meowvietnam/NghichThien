@@ -28,6 +28,7 @@ public class ItemInventory : BaseItemUI
     [SerializeField] public ItemRef itemRef;
     [SerializeField] public IItemData iItemData;
     [SerializeField] public int count;
+    [SerializeField] public int countRequire;
 
     private void OnEnable()
     {
@@ -44,6 +45,11 @@ public class ItemInventory : BaseItemUI
         this.count += count;
         textCount.text = this.count.ToString();
 
+    }
+    public void InitCountRequire(int countRequire)
+    {
+        this.countRequire = countRequire;
+        textCount.text = $"{this.count}/{this.countRequire}";
     }
     public void InitItemRef(ItemRef itemRef)
     {

@@ -54,7 +54,10 @@ public static partial class EventList
         public const string THINH_GIAO_NPC = "GamePlay.THINH_GIAO_NPC";
         public const string BUY_AND_SELL = "GamePlay.BUY_AND_SELL";
         public const string LOAD_SHOP = "GamePlay.LOAD_SHOP";
-        public const string RE_LOAD_SHOP = "GamePlay.RE_LOAD_SHOP";
+        public const string RELOAD_SHOP = "GamePlay.RELOAD_SHOP";
 
+        public const string LOAD_TASK = "GamePlay.LOAD_TASK";
+        public const string RELOAD_TASK = "GamePlay.RELOAD_TASK";
+        public const string DONE_TASK = "GamePlay.DONE_TASK";
     }
 }

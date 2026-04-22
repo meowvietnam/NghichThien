@@ -12,7 +12,7 @@ namespace AllMaps
         TinhHaKiemPhai,
         LyHoaMon,
         HoaTranGiao,
-        BachDeThanh,
+        BachDeLau,
         VanTichThanh,
         ThienTinhThanh,
         DatPhongThanh,
