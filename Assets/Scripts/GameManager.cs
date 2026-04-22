@@ -44,12 +44,12 @@ public class GameManager : BaseBehaviour
         {EMapType.TinhHaKiemPhai , "S4" },  
         {EMapType.LyHoaMon , "S2" },  
         {EMapType.HoaTranGiao , "S5" },
-        {EMapType.BachDeThanh , "S2" },
-        {EMapType.VanTichThanh , "S2" },
-        {EMapType.ThienTinhThanh , "S2" },
-        {EMapType.DatPhongThanh , "S2" },
-        {EMapType.QuangLangThanh , "S2" },
-        {EMapType.ThienCoCac , "S2" },
+        {EMapType.BachDeThanh , "S19" },
+        {EMapType.VanTichThanh , "S22" },
+        {EMapType.ThienTinhThanh , "S23" },
+        {EMapType.DatPhongThanh , "S20" },
+        {EMapType.QuangLangThanh , "S29" },
+        {EMapType.ThienCoCac , "S21" },
     };
     public static (string mySelf, string myCallTarget, string targetCallMe) XungHoText(int targetLevel, Gender targetGender)
     {

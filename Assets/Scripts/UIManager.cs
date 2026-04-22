@@ -107,6 +107,5 @@ public class UIManager : BaseBehaviour
     [Button]
     private void ShowShop()
     {
-        Pool.Get<ShopUI>().Show();
     }    
 }

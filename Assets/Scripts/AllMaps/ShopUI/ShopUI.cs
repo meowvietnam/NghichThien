@@ -18,7 +18,7 @@ public enum EShopType
 public class ShopUI : Popup, ISingleton , INetworkEvent.IBuyAndSell , INetworkEvent.ILoadShop, INetworkEvent.IReLoadShop
 {
     public EShopType eShopType;
-    public EMonPhai eMonPhai = EMonPhai.None;
+    public EMonPhai eMonPhai => Pool.Get<GameManager>().CurrentEMonPhai;
 
     public void Init()
     {
@@ -26,9 +26,10 @@ public class ShopUI : Popup, ISingleton , INetworkEvent.IBuyAndSell , INetworkEv
         gameObject.SetActive(false);
         
     }
-    public override void Show(float delay = 0.5F, Action actionComplete = null)
+    public void ShowInitShop(EShopType eShopType)
     {
-        base.Show(delay, actionComplete);
+        this.eShopType = eShopType;
+        Show();
         foreach (var item in listItemUserSell)
         {
             item.gameObject.SetActive(false);
@@ -41,12 +42,12 @@ public class ShopUI : Popup, ISingleton , INetworkEvent.IBuyAndSell , INetworkEv
         textNameUser.text = Client.Instance.CharacterData.Name;
         visualUserChar.SetGender(Client.Instance.CharacterData.Gender);
         visualUserChar.SetSkin(Client.Instance.CharacterData.Skins);
-        visualNpcChar.RandomSkin(Base.Gender.Male,false);
+        visualNpcChar.RandomSkin(Base.Gender.Male, false);
         textMoneyUser.text = Client.Instance.CharacterData.Stats.LinhThach.ToString();
         SetTextMoneyCurrent();
         SetEventButton(btnConfirm, () =>
         {
-            if(listItemUserBuy.Any(x=>x.gameObject.activeSelf) || listItemUserSell.Any(x => x.gameObject.activeSelf))
+            if (listItemUserBuy.Any(x => x.gameObject.activeSelf) || listItemUserSell.Any(x => x.gameObject.activeSelf))
             {
                 // Lấy ra danh sách các itemRef (có thể chứa các phần tử trùng nhau)
                 foreach (var item in listItemUserBuy)
@@ -62,9 +63,9 @@ public class ShopUI : Popup, ISingleton , INetworkEvent.IBuyAndSell , INetworkEv
                 }
                 List<ItemRef> listItemBuy = listItemUserBuy.Select(x => x.itemRef).ToList();
                 List<ItemRef> listItemSell = listItemUserSell.Select(x => x.itemRef).ToList();
-                Observer.Notify(EventList.Network.BUY_AND_SELL,this, listItemBuy, listItemSell , eShopType , eMonPhai);
+                Observer.Notify(EventList.Network.BUY_AND_SELL, this, listItemBuy, listItemSell, eShopType, eMonPhai);
             }
-           
+
         });
         SetEventButton(btnWatchAds, () =>
         {
@@ -75,9 +76,9 @@ public class ShopUI : Popup, ISingleton , INetworkEvent.IBuyAndSell , INetworkEv
             });
         });
         InitBagUser();
-        Observer.Notify(EventList.Network.LOAD_SHOP,this,eShopType, eMonPhai);
-
-    }
+        Observer.Notify(EventList.Network.LOAD_SHOP, this, eShopType, eMonPhai);
+    }    
+   
     [SerializeField] private Button btnConfirm;
     [SerializeField] private Text textMoneyUser;
     [SerializeField] private Text textMoneyCurrent;
