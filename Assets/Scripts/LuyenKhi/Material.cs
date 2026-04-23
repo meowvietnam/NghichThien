@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Base;
 using Sirenix.OdinInspector;
@@ -17,6 +18,10 @@ namespace LuyenKhi
         public Tier Tier { get; set; }
         [field: SerializeField, PreviewField(75),TabGroup("Info")]
         public Sprite Icon { get; set; }
+        [field: SerializeField,TabGroup("Info")]
+        public CultivationElement CultivationElement { get; set; }
+        [field: SerializeField,TabGroup("Info")]
+        public YinYangType YinYangType { get; set; }
         [field: SerializeField,TabGroup("Ref")]
         public int TypeRef { get; set; }
         [field: SerializeField,TabGroup("Ref")]
@@ -37,5 +42,41 @@ namespace LuyenKhi
         [TabGroup("Preview"), ShowInInspector] public string[] Origin => OriginRef.Select(o => Dict[o]).ToArray();
         [TabGroup("Preview"), ShowInInspector] public string Desc1 => Dict[Desc1Ref];
         [TabGroup("Preview"), ShowInInspector] public string Desc2 => Dict[Desc2Ref];
+
+        private static Dictionary<string, YinYangType> yinYangTypeDict = new()
+        {
+            {"Thiên Dương", YinYangType.ThienDuong},
+            {"Địa Âm",YinYangType.DiaAm},
+        };
+        private static Dictionary<string, CultivationElement> cultivationElementsDict = new()
+        {
+            {"Hỗn Nguyên", CultivationElement.HonNguyen},
+            {"Thổ", CultivationElement.Tho},
+            {"Hỏa", CultivationElement.Hoa},
+            {"Kim", CultivationElement.Kim},
+            {"Thần Thức", CultivationElement.ThanThuc},
+            {"Kiếm", CultivationElement.Kiem},
+            {"Thủy", CultivationElement.Thuy},
+            {"Mộc", CultivationElement.Moc},
+            {"Thần Niệm", CultivationElement.ThanNiem},
+        };
+
+        public void Load()
+        {
+            var type = Type;
+            var parts = type.Split("·");
+            var cultivationElement = parts[1].Trim();
+            var yinYangType = parts[0].Trim();
+            try
+            {
+                this.CultivationElement = cultivationElementsDict[cultivationElement];
+                this.YinYangType = yinYangTypeDict[yinYangType];
+            }
+            catch (KeyNotFoundException)
+            {
+                Debug.Log(cultivationElement);
+                Debug.Log(yinYangType);
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 namespace LuyenKhi
 {
-    public enum EquipmentTier
+    public enum EquipmentTier : byte
     {
         PhuKhi,
         PhapKhi,

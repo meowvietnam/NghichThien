@@ -649,7 +649,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
  
     [Header("--- Thần Thông ---")]
     [SerializeField] private List<ItemInventory> listItemSlotThanThongs;
-    private Coroutine coroutineInitThanThong = null;
+    // private Coroutine coroutineInitThanThong = null;
     public void InitThanThong(int countDelay = 10)
     {
         InitBag();
