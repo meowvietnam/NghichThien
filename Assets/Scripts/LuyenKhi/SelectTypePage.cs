@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace LuyenKhi
 {
-    public class SelectTypePage : MonoBehaviour
+    public class SelectTypePage : MonoBehaviour, IBackContext
     {
         [field: SerializeField] private Equipment[] equipments;
         [SerializeField] private GameObject selfObject;
@@ -24,6 +24,13 @@ namespace LuyenKhi
         public void SetActive(bool active)
         {
             selfObject.SetActive(active);
+        }
+        public void Back()
+        {
+            var panel = LuyenKhiPanel.Instance;
+            SetActive(false);
+            panel.LuyenKhiPage.SetActive(true);
+            panel.SetBackContext(panel);
         }
     }
 }

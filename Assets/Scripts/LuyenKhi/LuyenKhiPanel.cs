@@ -47,6 +47,7 @@ namespace LuyenKhi
         {
             LuyenKhiPage.SetActive(false);
             SelectTypePage.SetActive(true);
+            SetBackContext(SelectTypePage);
         }
         private void OnBack()
         {
