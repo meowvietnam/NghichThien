@@ -11,7 +11,7 @@ namespace LuyenKhi
         [SerializeField] public Button selectButton;
         [SerializeField] private RectTransform direct;
         [SerializeField] public ItemListUI itemListUI;
-        private MaterialFilter currentFilter;
+        private ItemBagFilter currentFilter;
         private bool isOpen;
         private void Start()
         {
@@ -43,14 +43,14 @@ namespace LuyenKhi
             direct.eulerAngles = Vector3.zero;
         }
 
-        public void OnFilter(MaterialFilter materialFilter)
+        public void OnFilter(ItemBagFilter itemBagFilter)
         {
             if (currentFilter != null)
             {
                 itemListUI.RemoveFilter(currentFilter);
             }
-            currentFilter = materialFilter;
-            currentSelect.text = materialFilter.FilterName;
+            currentFilter = itemBagFilter;
+            currentSelect.text = itemBagFilter.FilterName;
             itemListUI.AddFilter(currentFilter);
             itemListUI.Refresh();
             Close();

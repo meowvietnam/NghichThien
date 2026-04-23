@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace LuyenKhi
 {
-    public abstract class MaterialFilter : BaseBehaviour, IItemFilter<Material>
+    public abstract class ItemBagFilter : BaseBehaviour, IItemFilter<ItemBag>
     {
         [SerializeField] private Button button;
         [SerializeField] private FilterBase filterBase;
@@ -21,6 +21,6 @@ namespace LuyenKhi
         {
             button.onClick.RemoveAllListeners();
         }
-        public abstract bool Filter(Material item);
+        public abstract bool Filter(ItemBag item);
     }
 }

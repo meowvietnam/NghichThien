@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace LuyenKhi
 {
-    public class ItemListUI : MonoBehaviour
+    public class ItemListUI : MonoBehaviour, IItemFilter<ItemBag>
     {
         public List<ItemBag> Items { get; private set; } = new();
         [SerializeField] protected ItemBag prefab;
         [SerializeField] protected RectTransform content;
-        private List<IItemFilter<Material>> filters = new ();
+        private List<IItemFilter<ItemBag>> filters = new ();
         public void Init(IEnumerable<ItemRef> datas)
         {
             foreach (var data in datas)
@@ -19,14 +19,16 @@ namespace LuyenKhi
                 instance.Init(data);
                 Items.Add(instance);
             }
+            AddFilter(this);
+            Refresh();
         }
 
-        public void AddFilter(IItemFilter<Material> filter)
+        public void AddFilter(IItemFilter<ItemBag> filter)
         {
             filters.Add(filter);
         }
 
-        public void RemoveFilter(IItemFilter<Material> filter)
+        public void RemoveFilter(IItemFilter<ItemBag> filter)
         {
             filters.Remove(filter);
         }
@@ -35,10 +37,13 @@ namespace LuyenKhi
         {
             foreach (var itemBag in Items)
             {
-                var mat = itemBag.Material;
-                var active = filters.All(x => x.Filter(mat));
+                var active = filters.All(x => x.Filter(itemBag));
                 itemBag.SetActive(active);
             }
+        }
+        public bool Filter(ItemBag item)
+        {
+            return item.ItemRef.Count > 0;
         }
     }
 }

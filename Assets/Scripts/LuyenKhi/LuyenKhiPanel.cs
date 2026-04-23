@@ -25,10 +25,10 @@ namespace LuyenKhi
         [field: SerializeField] public LuyenKhiResources Resources { get; private set; }
         [field: SerializeField] public SelectTypePage SelectTypePage { get; private set; }
         [field: SerializeField] public LuyenKhiPage LuyenKhiPage { get; private set; }
+        [field: SerializeField] public Bag Bag { get; private set; }
         [SerializeField] private Button changeTypeButton;
         [SerializeField] private Button backButton;
         private IBackContext backContext;
-        [SerializeField] private Bag bag;
         [SerializeField] private List<ItemRef> items;
 
         private void Start()
@@ -36,7 +36,7 @@ namespace LuyenKhi
             SetBackContext(this);
             SetEventButton(changeTypeButton,OnChangeType);
             SetEventButton(backButton,OnBack);
-            bag.Init(items);
+            Bag.Init(items);
         }
 
         public void SetBackContext(IBackContext backContext)

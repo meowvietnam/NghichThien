@@ -805,7 +805,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             //        return;
             //    }
 
-            //    itemSelect.Show(currentItem.itemData, new List<RectTransform> { bag.GetComponent<RectTransform>() }, (resultRect) =>
+            //    itemSelect.Show(currentItem.itemData, new List<RectTransform> { Bag.GetComponent<RectTransform>() }, (resultRect) =>
             //    {
             //        if (resultRect != null)
             //        {

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace LuyenDan
 {
-    public abstract class BaseItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public abstract class BaseItemUI : BaseBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] protected GameObject selfObject;
 

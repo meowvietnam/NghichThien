@@ -9,7 +9,7 @@ namespace LuyenKhi
     public class ItemBag : LuyenDan.BaseItemUI
     {
         [SerializeField,TabGroup("Has Item")] private Button selectButton;
-        private ItemRef itemRef;
+        public ItemRef ItemRef { get; private set; }
         public Material Material { get; private set; }
         private bool IsHasItem { get; set; }
         protected virtual void Init(IItemData data)
@@ -24,11 +24,11 @@ namespace LuyenKhi
         }
         private void OnSelected()
         {
-            Debug.Log("OnSelected");
+            LuyenKhiPanel.Instance.Bag.OnSelect(this);
         }
         public virtual void Init(ItemRef itemRef)
         {
-            this.itemRef = itemRef;
+            this.ItemRef = itemRef;
             SetCount(itemRef.Count);
             var data = LuyenKhiResources.Instance.FindItem(itemRef);
             if (data != null)
@@ -44,9 +44,9 @@ namespace LuyenKhi
         }
         private void OnDestroy()
         {
-            if (IsHasItem && itemRef != null)
+            if (IsHasItem && ItemRef != null)
             {
-                itemRef.OnCountChanged -= OnCountChanged;
+                ItemRef.OnCountChanged -= OnCountChanged;
                 selectButton.onClick.RemoveListener(OnSelected);
             }
         }
