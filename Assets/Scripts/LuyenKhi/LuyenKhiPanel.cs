@@ -1,4 +1,7 @@
+using System.Collections.Generic;
 using System.Linq;
+using LuyenDan;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,13 +27,16 @@ namespace LuyenKhi
         [field: SerializeField] public LuyenKhiPage LuyenKhiPage { get; private set; }
         [SerializeField] private Button changeTypeButton;
         [SerializeField] private Button backButton;
-        
         private IBackContext backContext;
+        [SerializeField] private Bag bag;
+        [SerializeField] private List<ItemRef> items;
+
         private void Start()
         {
             SetBackContext(this);
             SetEventButton(changeTypeButton,OnChangeType);
             SetEventButton(backButton,OnBack);
+            bag.Init(items);
         }
 
         public void SetBackContext(IBackContext backContext)
@@ -55,6 +61,20 @@ namespace LuyenKhi
 
         public void Back()
         {
+        }
+
+        [Button]
+        public void RandomItem()
+        {
+            items = Resources.Materials.OrderBy(x => Random.value)
+                .Select(x => new ItemRef()
+                {
+                    Count = Random.Range(1,10),
+                    Id = x.Id,
+                    Type = ItemType.Material
+                })
+                .Take(100)
+                .ToList();
         }
     }
 }

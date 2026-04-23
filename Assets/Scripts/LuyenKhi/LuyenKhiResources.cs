@@ -2,6 +2,8 @@
 using System;
 using System.Linq;
 using Base;
+using LuyenDan;
+using LuyenDan.Inventory;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -28,6 +30,15 @@ namespace LuyenKhi
 
                 return instance;
             }
+        }
+        public IItemData FindItem(ItemRef itemRef)
+        {
+            var type = itemRef.Type;
+            if (type == ItemType.Material)
+            {
+                return Materials.First(x => x.Id == itemRef.Id);
+            }
+            return null;
         }
     }
 }

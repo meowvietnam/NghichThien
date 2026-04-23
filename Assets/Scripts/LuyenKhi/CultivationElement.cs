@@ -10,6 +10,5 @@ namespace LuyenKhi
         Kiem,
         Thuy,
         Moc,
-        ThanNiem
     }
 }
