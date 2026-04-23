@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,48 +6,49 @@ namespace LuyenKhi
 {
     public class ItemSlot : LuyenDan.BaseItemUI, ISelectItemBagCallback
     {
-        private ItemBag currentSelect;
-        // private void OnValidate()
-        // {
-        //     selfObject = gameObject;
-        //     emptySlot = transform.Find("Null").gameObject;
-        //     filledSlot = transform.Find("HasItem").gameObject;
-        //     itemIcon = filledSlot.transform.Find("IconMask/Icon").GetComponent<Image>();
-        //     qualityBackground = filledSlot.transform.Find("Quality").GetComponent<Image>();
-        //     qualityIconUp = qualityBackground.transform.Find("QualityUp").GetComponent<Image>();
-        //     countText = filledSlot.transform.Find("CountText").GetComponent<Text>();
-        //     itemNameText = filledSlot.transform.Find("NameMask/NameText").GetComponent<Text>();
-        //     hoverHighlight = transform.Find("Selected").gameObject;
-        // }
+        public ItemBag CurrentSelect { get;private set; }
         [SerializeField]
         private Button button;
+        [SerializeField]
+        private PutMaterials putMaterials;
+        [SerializeField,TabGroup("Has Item")]
+        private Button clearButton;
 
         private void OnValidate()
         {
-            button = GetComponent<Button>();
+            clearButton = transform.Find("Clear").GetComponent<Button>();
+            clearButton.gameObject.SetActive(false);
         }
         private void Start()
         {
             SetEventButton(button,OnClick);
+            SetEventButton(clearButton,OnClear);
         }
+
+        private void OnClear()
+        {
+            Select(null);
+        }
+
         private void OnClick()
         {
             LuyenKhiPanel.Instance.Bag.OpenWithCallback(this);
         }
         public void Select(ItemBag item)
         {
-            bool isOtherItem = currentSelect != item;
+            bool isOtherItem = CurrentSelect != item;
             if (!isOtherItem)
             {
                 return;
             }
-            if (currentSelect != null)
+            if (CurrentSelect != null)
             {
-                var itemRef = currentSelect.ItemRef;
+                var itemRef = CurrentSelect.ItemRef;
                 itemRef.SetCount(itemRef.Count + 1);
             }
-            currentSelect = item;
-            if (item != null)
+            CurrentSelect = item;
+            var isItemNull = item == null;
+            if (!isItemNull)
             {
                 SetData(item.Material);
                 SetCount(1);
@@ -57,6 +59,8 @@ namespace LuyenKhi
             {
                 SetData(null);
             }
+            putMaterials.Recalculate();
+            clearButton.gameObject.SetActive(!isItemNull);
         }
 
         private void OnDestroy()

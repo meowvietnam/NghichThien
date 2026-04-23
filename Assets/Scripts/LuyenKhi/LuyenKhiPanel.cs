@@ -30,12 +30,12 @@ namespace LuyenKhi
         [SerializeField] private Button backButton;
         private IBackContext backContext;
         [SerializeField] private List<ItemRef> items;
-
         private void Start()
         {
             SetBackContext(this);
             SetEventButton(changeTypeButton,OnChangeType);
             SetEventButton(backButton,OnBack);
+            LuyenKhiPage.Init();
             Bag.Init(items);
         }
 
@@ -59,11 +59,9 @@ namespace LuyenKhi
             LuyenKhiPage.SetActive(true);
             LuyenKhiPage.SelectSubEquipment(type);
         }
-
         public void Back()
         {
         }
-
         [Button]
         public void RandomItem()
         {
