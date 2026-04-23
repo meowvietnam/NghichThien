@@ -7,23 +7,6 @@ using UnityEngine;
 
 namespace LuyenKhi
 {
-    [Serializable]
-    public class C
-    {
-        [field: SerializeField]
-        public string Key { get; set; }
-        [field: SerializeField]
-        public CultivationElement Value { get; set; }
-    }
-
-    [Serializable]
-    public class T
-    {
-        [field: SerializeField]
-        public string Key { get; set; }
-        [field: SerializeField]
-        public YinYangType Value { get; set; }
-    }
     [CreateAssetMenu]
     public class LuyenKhiResources : ScriptableObject
     {
@@ -44,15 +27,6 @@ namespace LuyenKhi
                 }
 
                 return instance;
-            }
-        }
-
-        [Button]
-        public void Load()
-        {
-            foreach (var item in RewardItems)
-            {
-                item.Load();
             }
         }
     }
