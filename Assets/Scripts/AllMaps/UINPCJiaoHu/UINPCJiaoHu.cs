@@ -203,9 +203,6 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
                 //        DisableHighlight(item);
                 //    }
                 //}
-
-
-
             });
         });
         bag.InitBag(false);
@@ -219,13 +216,9 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
             if (slotItemGift.itemRef != null && slotItemGift.count > 0)
             {
                 Observer.Notify(EventList.Network.TANG_QUA_NPC, this, characterStatsTarget.idChar, slotItemGift.itemRef.Id, slotItemGift.count);
-
             }
         });
         textHaoCamPopTangQua.text = Client.Instance.CharacterData.RelationShip.GetValueOrDefault(characterStatsTarget.idChar).ToString();
-
-
-
     }
 
     public void ShowNPCList(List<CharacterStatsSecure> listCharStats)
@@ -258,8 +251,8 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
     }
     public void OpenOrCloseNpcList(bool isWantOpen)
     {
-        float openX = 240;
-        float closeX = 0;
+        //float openX = 240;
+        //float closeX = 0;
         float openScaleBtn = -1;
         Transform npcList = closeOrOpenListNPC.transform.parent.transform;
 

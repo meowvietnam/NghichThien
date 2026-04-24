@@ -22,7 +22,7 @@ namespace Network
             {
                 this.client = client;
             }
-            public async void OnEnter()
+            public void OnEnter()
             {
                 client.TcpClient.Send(MessageTag.CheckVersion,NetworkManager.Instance.Version);
             }
@@ -52,7 +52,7 @@ namespace Network
             }
             public MessageState State => MessageState.ConnectState;
 
-            public async void OnEnter()
+            public void OnEnter()
             {
                 if (!client.isReconnect)
                 {

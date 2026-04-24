@@ -1,6 +1,6 @@
 namespace LuyenKhi
 {
-    public enum SubEquipmentType
+    public enum SubEquipmentType : byte
     {
         PhiKiem,
         BaoChung,

@@ -346,7 +346,7 @@ namespace LongDH.Script.ObjectPool
 				if (_instance != null)
 					return _instance;
 
-				_instance = FindObjectOfType<ObjectPool>();
+				_instance = FindAnyObjectByType<ObjectPool>();
 				if (_instance != null)
 					return _instance;
 

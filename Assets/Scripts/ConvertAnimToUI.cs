@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 public class ConvertAnimToUI : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer renderer;
+    [SerializeField] private new SpriteRenderer renderer;
     [SerializeField] private Image img;
 
     private void Awake()

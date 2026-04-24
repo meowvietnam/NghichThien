@@ -672,7 +672,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
  
     [Header("--- Thần Thông ---")]
     [SerializeField] private List<ItemInventory> listItemSlotThanThongs;
-    private Coroutine coroutineInitThanThong = null;
+    // private Coroutine coroutineInitThanThong = null;
     public void InitThanThong(int countDelay = 10)
     {
         Observer.RemoveObserver(FilterControl.SELECT_FILTER, SelectFilter);
@@ -830,7 +830,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             //        return;
             //    }
 
-            //    itemSelect.Show(currentItem.itemData, new List<RectTransform> { bag.GetComponent<RectTransform>() }, (resultRect) =>
+            //    itemSelect.Show(currentItem.itemData, new List<RectTransform> { Bag.GetComponent<RectTransform>() }, (resultRect) =>
             //    {
             //        if (resultRect != null)
             //        {

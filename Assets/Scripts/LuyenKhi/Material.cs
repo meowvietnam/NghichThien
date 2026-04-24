@@ -1,13 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Base;
+using LuyenDan.Inventory;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace LuyenKhi
 {
     [Serializable]
-    public class Material
+    public class Material : IItemData
     {
         [field: SerializeField,TabGroup("Info")]
         public int Id { get; set; }
@@ -17,6 +19,11 @@ namespace LuyenKhi
         public Tier Tier { get; set; }
         [field: SerializeField, PreviewField(75),TabGroup("Info")]
         public Sprite Icon { get; set; }
+        [field: SerializeField,TabGroup("Info")]
+        public CultivationElement CultivationElement { get; set; }
+        [field: SerializeField,TabGroup("Info")]
+        public YinYangType YinYangType { get; set; }
+        public string Description => Desc2;
         [field: SerializeField,TabGroup("Ref")]
         public int TypeRef { get; set; }
         [field: SerializeField,TabGroup("Ref")]

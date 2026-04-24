@@ -13,7 +13,7 @@ public class ThongUMinhDo : HoanAnhDien
             1, 2 , 3,4, 5
          };
 
-    public virtual void ExecuteParams(params object[] data)
+    public override void ExecuteParams(params object[] data)
     {
         // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
         CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;

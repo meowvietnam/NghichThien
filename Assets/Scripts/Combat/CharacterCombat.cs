@@ -115,7 +115,10 @@ public class CharacterCombat : MonoBehaviour
     public SecureBool isSkipTieuTanLinhKhi;
     public void AddAmKinhTT(AmKinhTT thanThong , SecureInt countHiep)
     {
-        if (thanThong != null && thanThong is AmKinhTT);
+        if (thanThong != null && thanThong != null)
+        {
+            
+        }
         AmKinhEntry amKinh = new AmKinhEntry(thanThong, countHiep);
         listAmKinhTT.Add(amKinh);
         Observer.Notify(EventList.Combat.UPDATE_AMKINH_THANTHONG,this, amKinh);

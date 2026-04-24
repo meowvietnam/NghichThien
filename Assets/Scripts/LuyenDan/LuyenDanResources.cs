@@ -35,9 +35,6 @@ namespace LuyenDan
                 return instance;
             }
         }
-
-
-
         public IItemData FindItem(ItemRef itemRef)
         {
             if (itemRef.Type == ItemType.Furnace)
