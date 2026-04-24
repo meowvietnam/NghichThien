@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +8,7 @@ public class MidnightResetTimer : MonoBehaviour
     private double totalSecondsRemaining;
 
     private void OnEnable()
-    {        // 1. TÌnh to·n t?ng s? gi‚y cÚn l?i ngay khi m? Shop
+    {        // 1. T√≠nh to√°n t?ng s? gi√¢y c√≤n l?i ngay khi m? Shop
 
         DateTime now = DateTime.Now;
         DateTime midnight = now.Date.AddDays(1);
@@ -23,7 +23,7 @@ public class MidnightResetTimer : MonoBehaviour
             // 2. Tr? th?i gian theo th?c t? (DeltaTime)
             totalSecondsRemaining -= Time.deltaTime;
 
-            // 3. Chuy?n ??i s? gi‚y th‡nh ??nh d?ng H:M:S
+            // 3. Chuy?n ??i s? gi√¢y th√†nh ??nh d?ng H:M:S
             TimeSpan t = TimeSpan.FromSeconds(totalSecondsRemaining);
             string timeStr = string.Format("{0:D2}:{1:D2}:{2:D2}",
                 t.Hours,
@@ -31,13 +31,13 @@ public class MidnightResetTimer : MonoBehaviour
                 t.Seconds);
 
             // 4. C?p nh?t Text
-            textTimeReloadShop.text = "L‡m m?i sau: " + timeStr;
+            textTimeReloadShop.text = "L√†m m·ªõi sau: " + timeStr;
         }
         else
         {
-            // 5. X? l˝ khi h?t th?i gian (Reset Shop)
-            textTimeReloadShop.text = "?ang l‡m m?i...";
-            // G?i h‡m RefreshShop() c?a b?n ? ?‚y
+            // 5. X? l√Ω khi h?t th?i gian (Reset Shop)
+            textTimeReloadShop.text = "ƒêang l√†m m·ªõi...";
+            // G?i h√†m RefreshShop() c?a b?n ? ?√¢y
         }
     }
 }

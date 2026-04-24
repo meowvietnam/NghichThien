@@ -43,14 +43,27 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     [SerializeField] private Button btnClose;
     [SerializeField] private ButtonWithPanel currentBtnWithPanel;
     [SerializeField] public ToolTipItems toolTipItems => ToolTipItems.Instance;
+    void SelectFilter()
+    {
+        lianziAnim.SetTrigger("Hide");
+
+    }
+    void DoneFilter()
+    {
+        lianziAnim.SetTrigger("Show");
+
+    }
     public override void Init()
     {
         base.Init();
+     
         foreach (var item in btns)
         {
             SetEventButton(item.btn, () =>
             {
-                if(currentBtnWithPanel.typePanel == item.typePanel)
+                StartCoroutine(DelayFrame());
+
+                if (currentBtnWithPanel.typePanel == item.typePanel)
                 {
                     return;
                 }
@@ -99,7 +112,14 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             dictBtnWithNgoDaos?.ElementAt(0).Key?.onClick.Invoke();
         }    
     }
+    IEnumerator DelayFrame()
+    {
+        yield return null;
+        yield return null;
 
+        Observer.AddObserver(FilterControl.SELECT_FILTER, SelectFilter);
+        Observer.AddObserver(FilterControl.DONE_FILTER, DoneFilter);
+    }
 
     [Header("--- THUỘC TÍNH ---")]
     [SerializeField] private Image iconLevel;
@@ -442,15 +462,17 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     [SerializeField] private Sprite[] spriteFrames;
     [SerializeField] private Color[] colorQualitys;
     [SerializeField] private ItemSelect itemSelect;
-   
-    public void InitBag()
-    {
+     [SerializeField]
+     private Animator lianziAnim;
+     public void InitBag()
+     {
         bag.isLoadingMore = false;
         bag.gameObject.SetActive(true);
         moneyText.text = Client.Instance.CharacterData.Stats.LinhThach.ToString();
+        lianziAnim.SetTrigger("Show");
 
     }
-   
+
     void DisableHighlight(ItemInventory item)
     {
         HighlightAnim anim = item.GetComponentInChildren<HighlightAnim>(true);
@@ -500,12 +522,13 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     }
     public void InitCongPhap(int countDelay = 10)
     {
-
-        InitBag();
+        Observer.RemoveObserver(FilterControl.SELECT_FILTER,SelectFilter);
         var CharacterDatas = Client.Instance.CharacterData;
         var GameConfig = Pool.Get<GameManager>();
+        InitBag();
+        bag.filterControl.InitFilterType(new List<ItemType> { ItemType.CongPhap });
 
-      
+
 
         // load data 
         Pool.Get<UIManager>().InitVisualItemSkill(donThuat, GameConfig.GetCongPhapWithId(CharacterDatas.DonThuatUsed));
@@ -652,11 +675,12 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     private Coroutine coroutineInitThanThong = null;
     public void InitThanThong(int countDelay = 10)
     {
+        Observer.RemoveObserver(FilterControl.SELECT_FILTER, SelectFilter);
         InitBag();
-
+        bag.filterControl.InitFilterType(new List<ItemType> { ItemType.ThanThong });
         var CharacterDatas = Client.Instance.CharacterData;
         var GameConfig = Pool.Get<GameManager>();
-        
+
         // load data 
         for (int i = 0; i < listItemSlotThanThongs.Count; i++)
         {
@@ -769,7 +793,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             });
         } , true);
         bag.InitBag(false);
-       
+        
     }
  
     [Header("--- Inventory ---")]
@@ -779,6 +803,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     public void InitInventory()
     {
         InitBag();
+        bag.filterControl.InitAllFilterType();
 
         // load data equipment 
         for (int i = 0; i < listItemSlotEquipment.Count; i++)

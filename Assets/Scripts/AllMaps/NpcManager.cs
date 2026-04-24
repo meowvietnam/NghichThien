@@ -199,15 +199,24 @@ public class NpcManager : MonoBehaviour
             string json = File.ReadAllText(path);
             // Tiếp tục xử lý dữ liệu (JsonUtility.FromJson...)
             var dictLoadNPCMap = JsonConvert.DeserializeObject<Dictionary<int, int>>(json);
-
-            List<int> npcExcept = new List<int>();
-            foreach (var item in dictLoadNPCMap)
+            if(dictLoadNPCMap != null)
             {
 
-                npcDatas.FirstOrDefault(x => x.charStatsCreateRef.idChar == item.Key).charStats.idNode = item.Value;
-                npcExcept.Add(item.Key);
+                List<int> npcExcept = new List<int>();
+                foreach (var item in dictLoadNPCMap)
+                {
+
+                    npcDatas.FirstOrDefault(x => x.charStatsCreateRef.idChar == item.Key).charStats.idNode = item.Value;
+                    npcExcept.Add(item.Key);
+                }
+                NPCRandomOnMap(npcExcept);
+
             }
-            NPCRandomOnMap(npcExcept);
+            else
+            {
+                NPCRandomOnMap(new List<int> { });
+                Debug.LogWarning("Không tìm thấy file save. Khởi tạo dữ liệu mới.");
+            }
             Debug.Log("Đã load dữ liệu thành công!");
         }
         else

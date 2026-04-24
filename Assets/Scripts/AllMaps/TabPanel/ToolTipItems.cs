@@ -130,7 +130,7 @@ public class ToolTipItems : BaseBehaviour , ISingleton
 
         if (itemData is BaseSkill skill)
         {
-            qualityText.text = skill.GetTextTierSkill();
+            qualityText.text = BaseSkill.GetTextTierSkill(skill.eTierSkill);
             typeText.text = skill.GetTextTypeSkill();
             if(skill is ThanThong)
             {

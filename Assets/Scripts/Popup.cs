@@ -6,12 +6,16 @@ using UnityEngine.UI;
 
 public class Popup : BaseBehaviour
 {
-    [SerializeField] private Image commonMask => Pool.Get<UIManager>().commonMask;
+    [SerializeField] private Image commonMask ;
     [SerializeField] private Button btnClose;
     [SerializeField] private float scaleBase =1f;
   
     public virtual void Show(float delay = 0.5f,Action actionComplete = null)
     {
+        if(commonMask == null)
+        {
+            commonMask =  Pool.Get<UIManager>().commonMask;
+        }
         gameObject.SetActive(true);
         transform.localScale = Vector3.zero;
         if(commonMask != null)

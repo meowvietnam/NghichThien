@@ -18,9 +18,11 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
     [SerializeField] private Sprite[] spriteFrames => Pool.Get<UIManager>().spriteFrames;
     [SerializeField] private Color[] colorQualitys => Pool.Get<UIManager>().colorQualitys;
     public ScrollRect scrollRectBagUpdate => prefabItemBag.GetComponentInParent<ScrollRect>();
-    public List<ItemRef> itemDatas = new List<ItemRef>();
+    public List<ItemRef> itemFullDatas = new List<ItemRef>();
+    public List<ItemRef> itemDataShows= new List<ItemRef>();
     public Action<ItemInventory> actionItemInventory;
     public bool isIconSkillBase = false;
+    public FilterControl filterControl;
     void OnScrollChanged(Vector2 value, Action<bool> loadBagFunc)
     {
         Debug.Log("co vao onscrooll change");
@@ -74,7 +76,8 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
   
     public void InitDataItem(List<ItemRef> itemDatas , Action<ItemInventory> actionItemInventory , bool isIconSkillBase = false)
     {
-        this.itemDatas = itemDatas;
+        this.itemFullDatas = itemDatas;
+        this.itemDataShows = itemDatas;
         this.actionItemInventory = actionItemInventory;
         this.isIconSkillBase = isIconSkillBase;
     }
@@ -93,7 +96,7 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
         }
         int totalLoad = 30;
         int countAdd = 10;
-        int currentLoad = itemDatas.Count;
+        int currentLoad = itemDataShows.Count;
         int startIndex = 0;
 
         if (!isAdd)
@@ -115,8 +118,8 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
                 return;
             }
 
-            startIndex = itemDatas.IndexOf(refItem) + 1;
-            if (startIndex >= itemDatas.Count)
+            startIndex = itemDataShows.IndexOf(refItem) + 1;
+            if (startIndex >= itemDataShows.Count)
             {
                 return;
             }
@@ -128,13 +131,13 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             var currentItem = GameManager.GetItemPool(prefabItemBag);
             IItemData data = null;
             ItemRef itemRef = null;
-            if (index >= itemDatas.Count)
+            if (index >= itemDataShows.Count)
             {
                 break;
             }
-            if (i < itemDatas.Count)
+            if (i < itemDataShows.Count)
             {
-                itemRef = itemDatas[index];
+                itemRef = itemDataShows[index];
 
                 data = LuyenDanResources.Instance.FindItem(itemRef);
 
@@ -159,13 +162,9 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
                 }
             }
             Pool.Get<UIManager>().InitVisualItemInventory(currentItem, data, itemRef , isIconSkillBase);
+            actionItemInventory?.Invoke(currentItem);
 
 
-            if (data != null)
-            {
-
-                actionItemInventory?.Invoke(currentItem);
-            }
         }
     }
 }

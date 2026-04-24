@@ -719,7 +719,7 @@ public abstract class BaseSkill : BaseItemData
        
         return GetColoredText($"{text}", "#ffb143");
     }
-    public string GetTextTierSkill()
+    public static string GetTextTierSkill(ETierSkill eTierSkill)
     {
         string text = string.Empty;
         switch (eTierSkill)

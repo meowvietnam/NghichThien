@@ -170,6 +170,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
 
         // Thêm danh sách Ref vừa lấy được vào itemDatas
         itemDatas.AddRange(furnaceRefs);
+        bag.filterControl.InitAllFilterType();
         bag.InitDataItem(itemDatas, (ItemInventory) =>
         {
             ItemInventory.InitAction(null, null, () =>

@@ -75,11 +75,8 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 }
                 if (item.typePage == ETypePage.Update)
                 {
-                    InitPageUpdate(false);
-                    scrollRectBagUpdate.onValueChanged.RemoveAllListeners();
-                    scrollRectBagUpdate.onValueChanged.AddListener((vec) => {
-                        OnScrollChanged(vec, InitPageUpdate);
-                    });
+                    InitPageUpdate();
+                  
                 }
 
             });
@@ -261,50 +258,10 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     [SerializeField] private Color[] colorQualitys;
     
     public bool isLoadingMore = false;
-    void OnScrollChanged(Vector2 value, Action<bool> loadBagFunc)
-    {
-        Debug.Log("co vao onscrooll change");
-
-        if (value.y < 0.05f && !isLoadingMore)
-        {
-            // Kiểm tra xem dữ liệu còn để load không trước khi gọi
-            // (Ví dụ: compare số lượng UI hiện có với tổng số data thật)
-            StartCoroutine(TriggerLoadMore(loadBagFunc));
-        }
-    }
-    // Sử dụng delegate trả về IEnumerator thay vì Action để có thể yield return
-    IEnumerator TriggerLoadMore(Action<bool> loadBagFunc)
-    {
-        isLoadingMore = true;
-        Debug.Log("co vao trigger load more");
-
-        // Gọi trực tiếp hàm Coroutine và chờ nó chạy xong
-        loadBagFunc?.Invoke(true);
-
-        // Đợi một chút để tránh việc gọi liên tục khi user giữ chuột ở đáy
-        yield return new WaitForSeconds(0.5f);
-        isLoadingMore = false;
-    }
-    private ItemInventory GetItemCurrentActiveFromBag(GameObject prefab)
-    {
-        for (int j = prefab.transform.parent.childCount - 1; j > 0; j--)
-        {
-            Transform child = prefab.transform.parent.GetChild(j);
-            if(!child.gameObject.activeSelf)
-            {
-                continue;
-            }    
-            var currentItem = child.GetComponent<ItemInventory>();
-            if (currentItem.itemData != null)
-            {
-                Debug.Log("GetItemCurrentActiveFromBag: " + currentItem.itemData.nameItem);
-                return currentItem;
-            }
-        }
-        return null;
-    }
+  
+    
+   
     [Header("Lĩnh Hội")]
-    [SerializeField] private ItemInventory prefabItemInvenPanelLinhHoi;
 
     [SerializeField] private Text priceTextLinhHoi;
     [SerializeField] private Text textTimer;
@@ -313,7 +270,6 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     [SerializeField] private Button btnUnLinhHoi;
     [SerializeField] private Text textNameLinhHoi;
     [SerializeField] private Bag1ItemPrefabInventory bagLinhHoi;
-    public ScrollRect scrollRectBagLinhHoi => prefabItemInvenPanelLinhHoi.GetComponentInParent<ScrollRect>();
 
  
     private void InitPageLinhNgo()
@@ -346,14 +302,17 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         var listItemRefSkill = new List<ItemRef>();
        listItemRefSkill.AddRange(filteredThanThong);
        listItemRefSkill.AddRange(filteredCongPhap);
+        bagLinhHoi.filterControl.InitFilterType(new List<ItemType> { ItemType.ThanThong, ItemType.CongPhap });
 
         bagLinhHoi.InitDataItem(listItemRefSkill, (item) => {
             item.InitAction(null, null, () =>
             {
+                Debug.Log("co event linh hoi");
                 var data = item.itemData;
                 var itemRef = item.itemRef;
                 textNameLinhHoi.text = data.nameItem;
                 textNameLinhHoi.transform.parent.gameObject.SetActive(true);
+                Debug.Log("co event linh hoi2");
 
                 int cost = (int)GameManager.GetPriceItemBuy(itemRef, null) / 2;
                 priceTextLinhHoi.text = $"{cost}";
@@ -413,7 +372,6 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
 
     }
     [Header("Nâng cấp Công Pháp")]
-    [SerializeField] private ItemInventory prefabItemInvenPanelUpdateCongPhap;
 
     [SerializeField] private Text priceTextUpdateCongPhap;
     [SerializeField] private ItemInventory priceItemCongPhap;
@@ -424,20 +382,11 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     [SerializeField] private Text textNameDotPha;
     [SerializeField] private Bag1ItemPrefabInventory bagCongPhap;
 
-    public ScrollRect scrollRectBagUpdate => prefabItemInvenPanelUpdateCongPhap.GetComponentInParent<ScrollRect>();
 
-    private void InitPageUpdate(bool isAdd)
+    private void InitPageUpdate()
     {
-        //reset 
-        if (!isAdd)
-        {
-            for (int i = 0; i < prefabItemInvenPanelUpdateCongPhap.transform.parent.childCount; i++)
-            {
-                prefabItemInvenPanelUpdateCongPhap.transform.parent.GetChild(i).gameObject.SetActive(false);
-            }
-            textNameDotPha.transform.parent.gameObject.SetActive(false);
-
-        }
+      
+        textNameDotPha.transform.parent.gameObject.SetActive(false);
 
 
         var dictCPOwner = Client.Instance.CharacterData.CongPhapOwner;
@@ -457,9 +406,10 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         
         }
 
-        
 
-      
+
+        bagCongPhap.filterControl.InitFilterType(new List<ItemType> { ItemType.CongPhap });
+
         bagCongPhap.InitDataItem(listSkillsWithItemRef, (item) =>
         {
             item.InitAction(null, null, () =>
