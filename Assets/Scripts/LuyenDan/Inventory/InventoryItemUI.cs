@@ -78,7 +78,10 @@ namespace LuyenDan.Inventory
                 selectButton.onClick.RemoveListener(OnSelected);
             }
         }
-
+        public void Destroy()
+        {
+            Destroy(selfObject);
+        }
         public virtual IItemData GetData()
         {
             return null;

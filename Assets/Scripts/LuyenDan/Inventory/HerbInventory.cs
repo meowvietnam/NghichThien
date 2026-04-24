@@ -14,7 +14,7 @@ namespace LuyenDan.Inventory
             InitFilterGroup();
         }
 
-        private List<HerbInventoryItemUI> HerbInventoryItemUIs => (ItemListUI as HerbItemListUI).Items;
+        private List<HerbInventoryItemUI> HerbInventoryItemUIs => (ItemListUI as HerbItemListUI)?.Items;
         public void Refresh()
         {
             var items = HerbInventoryItemUIs;
@@ -23,7 +23,8 @@ namespace LuyenDan.Inventory
                 {
                     var itemRef = x.ItemRef;
                     return new ItemSnapshot(itemRef.Id,itemRef.Count);
-                }).ToList();
+                })
+                .ToList();
         }
 
         public HerbInventoryItemUI GetItem(int id)

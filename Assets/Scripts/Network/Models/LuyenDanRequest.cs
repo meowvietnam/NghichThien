@@ -1,7 +1,7 @@
-using Network;
+using LuyenDan;
 using Network.Extensions;
 
-namespace LuyenDan
+namespace Network.Models
 {
     public class LuyenDanRequest : IMemorySerializable<LuyenDanRequest>
     {
@@ -9,12 +9,10 @@ namespace LuyenDan
         {
             public int Id { get; private set; }
             public int Count { get; private set; }
-
             public Herbs()
             {
                 
             }
-
             public Herbs(Ingredient ingredient)
             {
                 var item = ingredient.Item;
@@ -23,7 +21,7 @@ namespace LuyenDan
                 if (itemRef != null)
                 {
                     Id = itemRef.Id;
-                    Count = itemRef.Count;
+                    Count = ingredient.Count;
                 }
             }
             public Herbs(int id, int count)
@@ -52,7 +50,6 @@ namespace LuyenDan
                 value.Count = reader.Read<int>();
             }
         }
-
         public LuyenDanRequest()
         {
             
@@ -92,6 +89,7 @@ namespace LuyenDan
             value.PhuDuoc1 = reader.Read<Herbs>();
             value.PhuDuoc2 = reader.Read<Herbs>();
             value.DuocDan = reader.Read<Herbs>();
+            value.FurnaceId = reader.Read<int>();
             value.Count = reader.Read<int>();
         }
     }

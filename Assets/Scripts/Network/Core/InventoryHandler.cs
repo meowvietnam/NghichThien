@@ -1,4 +1,5 @@
 using System;
+using CreateCharacter;
 using Network.Callback;
 using Network.Extensions;
 using Network.Models;
@@ -8,12 +9,13 @@ namespace Network.Core
 {
     public class InventoryHandler : IClientHandler
     {
-        private IInventoryCallback callback;
         private Action<GetInventoryResult> getInventoryCallback;
-        public InventoryHandler(IInventoryCallback callback)
+        public event Action<InventoryManager> OnInventoryUpdated;
+
+        public InventoryHandler()
         {
-            this.callback = callback;
         }
+
         public void OnEnter()
         {
             Client.Instance.Send(MessageTag.GetInventory);
@@ -26,14 +28,17 @@ namespace Network.Core
             if (tag == MessageTag.GetInventoryResult)
             {
                 var result = reader.Read<GetInventoryResult>();
-                Client.Instance.CharacterData.InventoryManager = result.InventoryManager;
-                callback.GetInventoryResult(result);
-                if (getInventoryCallback != null)
+                if (result.Success)
                 {
-                    getInventoryCallback(result);
-                    getInventoryCallback = null;
+                    SetInventory(result.InventoryManager);
                 }
             }
+        }
+
+        public void SetInventory(InventoryManager inventoryManager)
+        {
+            Client.Instance.CharacterData.InventoryManager = inventoryManager;
+            OnInventoryUpdated?.Invoke(inventoryManager);
         }
 
         public void OnLeave()
@@ -47,9 +52,8 @@ namespace Network.Core
         private static readonly MessageTag[] handlerTag = { MessageTag.GetInventoryResult };
         public MessageTag[] HandleTag => handlerTag;
 
-        public void GetInventory(Action<GetInventoryResult> resultCallback)
+        public void GetInventory()
         {
-            getInventoryCallback = resultCallback;
             Client.Instance.Send(MessageTag.GetInventory);
         }
     }

@@ -53,6 +53,11 @@ namespace LuyenDan
                 }
             }
         }
+
+        public void Destroy()
+        {
+            Destroy(thisObject);
+        }
         public void SetCraftable(bool active)
         {
             IsCraftable = active;

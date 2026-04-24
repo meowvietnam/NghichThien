@@ -18,6 +18,11 @@ namespace LuyenDan.Inventory
         [SerializeField] protected RectTransform content;
         public override void Init(IEnumerable<ItemRef> datas)
         {
+            foreach (var inventoryItemUI in Items)
+            {
+                inventoryItemUI.Destroy();
+            }
+            Items.Clear();
             foreach (var data in datas)
             {
                 var instance = Instantiate(prefab, content);

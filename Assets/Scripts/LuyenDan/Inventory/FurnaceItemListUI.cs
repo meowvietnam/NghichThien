@@ -9,6 +9,11 @@ namespace LuyenDan.Inventory
     {
         public void InitAsFurnace(IEnumerable<FurnaceData> furnaceDatas)
         {
+            foreach (var furnaceInventoryItemUI in Items)
+            {
+                furnaceInventoryItemUI.Destroy();
+            }
+            Items.Clear();
             foreach (var data in furnaceDatas)
             {
                 var instance = Instantiate(prefab, content);

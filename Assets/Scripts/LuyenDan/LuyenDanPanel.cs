@@ -7,11 +7,7 @@ using Network;
 using Network.Callback;
 using Network.Core;
 using Network.Models;
-using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.UI;
-using Random = UnityEngine.Random;
-
 namespace LuyenDan
 {
     public class LuyenDanPanel : BaseBehaviour, ILuyenDanCallback
@@ -26,9 +22,11 @@ namespace LuyenDan
                 {
                     instance = FindAnyObjectByType<LuyenDanPanel>();
                 }
+
                 return instance;
             }
         }
+
         [field: SerializeField] public LuyenDanResources Resources { get; private set; }
         [field: SerializeField] public FurnaceInventory FurnaceInventory { get; private set; }
         [field: SerializeField] public HerbInventory HerbInventory { get; private set; }
@@ -38,28 +36,39 @@ namespace LuyenDan
         [field: SerializeField] public AlchermyResult AlchermyResult { get; private set; }
         [field: SerializeField] public ProgressBar ProgressBar { get; private set; }
         [field: SerializeField] public ToolTipItems ToolTipItems { get; private set; }
+
+        private InventoryHandler inventoryHandler;
+
         private void Start()
         {
             var client = Client.Instance;
             client.ChangeState(new Network.ClientState.LuyenDan(this));
-            var inventoryHandler = client.CoreModule.GetHandler<InventoryHandler>();
-            inventoryHandler.GetInventory(OnGetInventoryResult);
+            inventoryHandler = client.CoreModule.GetHandler<InventoryHandler>();
+            inventoryHandler.OnInventoryUpdated += OnInventoryUpdated;
+            ToolTipItems.Init();
+            inventoryHandler.GetInventory();
         }
 
-        private void OnGetInventoryResult(GetInventoryResult result)
+        private void OnDestroy()
         {
-            if (!result.Success)
+            if (inventoryHandler != null)
+                inventoryHandler.OnInventoryUpdated -= OnInventoryUpdated;
+        }
+        private void OnInventoryUpdated(InventoryManager inventoryManager)
+        {
+            NetworkManager.Instance.Invoke(() =>
             {
-                NotifyGroup.Instance.Show(result.Message);
-                return;
-            }
-            var inventoryManager = result.InventoryManager.DeepClone();
-            var myFurnaces = inventoryManager.Furnaces;
-            var myHerbs = inventoryManager.Herbs;
-            var myRecipes = inventoryManager.Recipes;
-            FurnaceInventory.Init(myFurnaces);
-            HerbInventory.Init(myHerbs);
-            var datas = myRecipes.Select(x =>
+                Alchermy.ClearAllSlot();
+                InitInventory(inventoryManager);
+            });
+        }
+
+        private void InitInventory(InventoryManager inventoryManager)
+        {
+            var cloned = inventoryManager.DeepClone();
+            FurnaceInventory.Init(cloned.Furnaces);
+            HerbInventory.Init(cloned.Herbs);
+            var datas = cloned.Recipes.Select(x =>
             {
                 var recipe = Resources.FindRecipe(x.Id);
                 if (recipe == null)
@@ -69,7 +78,6 @@ namespace LuyenDan
                 return recipe;
             }).ToList();
             RecipeListUI.Init(datas);
-            ToolTipItems.Init();
         }
 
         public void SelectDanLu(FurnaceInventoryItemUI furnace)
@@ -78,21 +86,29 @@ namespace LuyenDan
             FurnaceInventory.Close();
             Alchermy.SelectDanLu(furnace);
         }
-        public void OnLuyenDanCompleted(LuyenDanResult result)
+        private void OnLuyenDanCompleted(LuyenDanResult result)
         {
             if (result.Success)
             {
-                Alchermy.OnLuyenDanCompleted(result.NewDurability);
-                HerbInventory.Refresh();
-                RecipeListUI.Refresh();
-                AlchermyResult.SetData(result.ItemRefs);
-                AlchermyResult.SetDescription(result.Message);
-                AlchermyResult.SetActive(true);
+                ProgressBar.DoKill(() =>
+                {
+                    AlchermyResult.SetData(result.ItemRefs);
+                    AlchermyResult.SetDescription(result.Message);
+                    AlchermyResult.SetActive(true);
+                });
             }
             else
             {
-                NotifyGroup.Instance.Show(result.Message);
+                ProgressBar.DoKill(() =>
+                {
+                    NotifyGroup.Instance.Show(result.Message);
+                });
+                
             }
+        }
+        public void LuyenDanResult(LuyenDanResult result)
+        {
+            NetworkManager.Instance.Invoke(() => { OnLuyenDanCompleted(result); });
         }
     }
 }

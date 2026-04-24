@@ -21,8 +21,18 @@ namespace AllMaps.TabPanel.ToolTipDisplayers
         private int GetPrice(ToolTipContext ctx)
         {
             return ctx.ActionShowItem == EActionShowItemInfor.None || ctx.ActionShowItem == EActionShowItemInfor.Sell
-                ? GameManager.GetPriceItemSell(ctx.ItemRef, ctx.IItemData)
-                : GameManager.GetPriceItemBuy(ctx.ItemRef, ctx.IItemData);
+                ? GetPriceItemSell(ctx)
+                : GetPriceItemBuy(ctx);
+        }
+
+        private int GetPriceItemSell(ToolTipContext ctx)
+        {
+            return ctx.FurnaceData.Durability * GameManager.PriceFurnaceWithTier[ctx.IItemData.Tier];
+        }
+
+        private int GetPriceItemBuy(ToolTipContext ctx)
+        {
+            return GetPriceItemSell(ctx) * 3;
         }
     }
 }

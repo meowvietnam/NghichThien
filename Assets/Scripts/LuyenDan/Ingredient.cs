@@ -5,10 +5,8 @@ using UnityEngine.UI;
 
 namespace LuyenDan
 {
-
     public class Ingredient : AlchemyEntity
     {
-
         [TabGroup("Has Item")]
         [SerializeField] private Text propertyText;
         [SerializeField] private HerbType herbType;

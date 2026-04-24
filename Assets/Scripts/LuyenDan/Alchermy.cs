@@ -4,8 +4,11 @@ using System.Text;
 using Base;
 using DG.Tweening;
 using LuyenDan.Inventory;
+using Network;
 using UnityEngine;
 using UnityEngine.UI;
+using Network.Extensions;
+using Network.Models;
 
 namespace LuyenDan
 {
@@ -29,32 +32,26 @@ namespace LuyenDan
         private InventoryItemUI pendingSelectionItem;
         private LuyenDanRequest currentRequest;
         private string phedan = "Phế Đan";
+
         public void SetCurrentSelected(AlchemyEntity target)
         {
             pendingSelectionTarget = target;
         }
+
         public void ConfirmHerbSelected()
         {
             pendingSelectionTarget?.Select(pendingSelectionItem);
             refineButton.UpdateCanRefine();
         }
+
         public void ConfirmLinhDanSelected()
         {
             var request = CreateRequest();
             currentRequest = request;
-            //Send to server
-            var result = new LuyenDanResult(true,
-                "Luyện đan thành công",
-                new List<ItemRef> { new(4010,ItemType.LinhDan,20),new(4020,ItemType.LinhDan,12) },
-                SelectedFurnace.FData.Durability - 20,
-                20);
+            Client.Instance.Send(MessageTag.LuyenDan, request);
             var progress = LuyenDanPanel.Instance.ProgressBar;
             progress.SetText("Đang tiến hành luyện đan...");
-            progress.DoShow(1.75f,0.2f,null);
-            DOVirtual.DelayedCall(3, () =>
-            {
-                progress.DoKill(() => LuyenDanPanel.Instance.OnLuyenDanCompleted(result));
-            });
+            progress.DoShow(0.25f, 0f, null);
         }
 
         private LuyenDanRequest CreateRequest()
@@ -65,9 +62,10 @@ namespace LuyenDan
             var duocdan = new LuyenDanRequest.Herbs(primer);
             var furnaceId = ((FurnaceInventoryItemUI)furnaceSlot.Item).FurnaceId;
             var count = SelectLinhDanNum.GetValue();
-            var request = new LuyenDanRequest(chuduoc, phuduoc1, phuduoc2, duocdan, furnaceId,count);
+            var request = new LuyenDanRequest(chuduoc, phuduoc1, phuduoc2, duocdan, furnaceId, count);
             return request;
         }
+
         public void Select(InventoryItemUI item)
         {
             pendingSelectionItem = item;
@@ -84,6 +82,7 @@ namespace LuyenDan
                     SelectHerbNum.SetValue(1);
                 }
             }
+
             SelectHerbNum.SetMax(count);
             var herb = LuyenDanPanel.Instance.Resources.FindHerb(item.ItemRef.Id);
 
@@ -95,10 +94,8 @@ namespace LuyenDan
                 var text = $"<b><color=#{colorStr}>{herb.Name}</color></b> <color=#00ff00>x{value}</color>";
                 SelectHerbNum.SetText(text);
             }
-            SelectHerbNum.ValueChanged += (value) =>
-            {
-                UpdateText();
-            };
+
+            SelectHerbNum.ValueChanged += (value) => { UpdateText(); };
             UpdateText();
             SelectHerbNum.SetActive(true);
         }
@@ -112,9 +109,9 @@ namespace LuyenDan
         public void SelectDanLu(FurnaceInventoryItemUI furnace)
         {
             SelectedFurnace = furnace;
-            selfObject.SetActive(true);
             if (furnace != null)
             {
+                selfObject.SetActive(true);
                 furnaceImage.sprite = furnace.Data.BigIcon;
                 SetDurabilityText(furnace.FData.Durability);
             }
@@ -123,6 +120,7 @@ namespace LuyenDan
                 furnaceImage.sprite = defaultFurnaceSprite;
                 SetDurabilityText(0);
             }
+
             furnaceSlot.Select(furnace);
             refineButton.UpdateCanRefine();
         }
@@ -155,6 +153,7 @@ namespace LuyenDan
                         itemRefObj.SetCount(Mathf.Max(0, remaining));
                     }
                 }
+
                 Deduct(main1);
                 Deduct(sub1);
                 Deduct(sub2);
@@ -202,12 +201,14 @@ namespace LuyenDan
                 ingredient.Select(inventory.GetItem(herb.Id), herb.Count);
             }
         }
+
         public void ClearAllSlot()
         {
             main1.Select(null);
             sub1.Select(null);
             sub2.Select(null);
             primer.Select(null);
+            SelectDanLu(null);
             refineButton.UpdateCanRefine();
         }
 
@@ -217,7 +218,8 @@ namespace LuyenDan
             {
                 return false;
             }
-            Ingredient[] v = {main1, sub1, sub2, primer};
+
+            Ingredient[] v = { main1, sub1, sub2, primer };
             return v.Any(x => !x.IsEmpty);
         }
 
@@ -226,6 +228,7 @@ namespace LuyenDan
             var items = LuyenDanPanel.Instance.HerbInventory.ItemsSnapshot;
             SelectLinhDanNum.SetMin(1);
             int max = int.MaxValue;
+
             void UpdateMax(Ingredient ingredient)
             {
                 if (ingredient == null || ingredient.IsEmpty || ingredient.Count == 0) return;
@@ -234,6 +237,7 @@ namespace LuyenDan
                 int possible = inventoryCount / ingredient.Count;
                 if (possible < max) max = possible;
             }
+
             UpdateMax(main1);
             UpdateMax(sub1);
             UpdateMax(sub2);
@@ -244,9 +248,10 @@ namespace LuyenDan
                 int durability = SelectedFurnace.FData.Durability;
                 if (durability < max) max = durability;
             }
+
             if (max == int.MaxValue || max < 1) max = 1;
 
-            var (data,recipe) = LuyenDanPanel.Instance.RecipeListUI.FindBestRecipe(main1, sub1, sub2, primer);
+            var (data, recipe) = LuyenDanPanel.Instance.RecipeListUI.FindBestRecipe(main1, sub1, sub2, primer);
             var hasData = data != null;
             string linhdanName = string.Empty;
             int baseDaysRequired = 0;
@@ -263,15 +268,30 @@ namespace LuyenDan
                 linhdanName = phedan;
                 baseDaysRequired = 3;
             }
+
             void UpdateText()
             {
                 var value = SelectLinhDanNum.GetValue();
                 var colorStr = hasData ? GetColorHexByTier(linhdanTier) : "aaaaaa";
-                var builder = new StringBuilder($"<b><color=#{colorStr}>{linhdanName}</color></b> <color=#00ff00>x{value}</color>");
+                var builder = new StringBuilder();
+                if (hasData)
+                {
+                    builder.Append($"<b><color=#{colorStr}>{linhdanName}</color></b> <color=#00ff00>x{value}</color>");
+                }
+                else
+                {
+                    builder.Append($"<b><color=#{colorStr}>Chưa đúng công thức</color></b>");
+                    builder.AppendLine();
+                    builder.Append("<color=#ff8800>Nếu chưa có, tỉ lệ thành công: <b>50%</b></color>");
+                    builder.AppendLine();
+                    builder.Append("<color=#ff4444><i>Thất bại sẽ mất toàn bộ dược liệu!</i></color>");
+                }
                 builder.AppendLine();
-                builder.Append($"<i><color=#aaaaaa>Tiêu hao</color> <color=#ff4444>{baseDaysRequired * value}</color> <color=#aaaaaa>ngày</color></i>");
+                builder.Append(
+                    $"<i><color=#aaaaaa>Tiêu hao</color> <color=#ff4444>{baseDaysRequired * value}</color> <color=#aaaaaa>ngày</color></i>");
                 SelectLinhDanNum.SetText(builder.ToString());
             }
+
             SelectLinhDanNum.SetMax(max);
             SelectLinhDanNum.SetValue(1);
             UpdateText();

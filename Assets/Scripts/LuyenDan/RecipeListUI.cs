@@ -24,8 +24,13 @@ namespace LuyenDan
             {Tier.LucPham, "Lục phẩm"}
         };
         private const string allFilter = "Tất cả phẩm giai";
-        public void Init(List<RecipeData> datas) 
+        public void Init(List<RecipeData> datas)
         {
+            foreach (var recipeUI in recipes)
+            {
+                recipeUI.Destroy();
+            }
+            recipes.Clear();
             foreach (var recipe in datas)
             {
                 var instance = Instantiate(prefab, content);

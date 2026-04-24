@@ -11,7 +11,7 @@ namespace LuyenDan
         [SerializeField] private Transform content;
         [SerializeField] private Text descriptionText;
         [SerializeField] private Button okBtn;
-        private List<ItemResult> items = new List<ItemResult>();
+        private List<ItemResult> items = new();
 
         private void Start()
         {

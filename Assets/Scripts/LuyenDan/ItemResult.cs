@@ -9,17 +9,29 @@ namespace LuyenDan
 {
     public class ItemResult : BaseItemUI
     {
+        [SerializeField] private Button showInfoButton;
+        private IItemData itemData;
+        private ItemRef itemRef;
         protected virtual void Init(IItemData data)
         {
+            SetEventButton(showInfoButton,ShowInfo);
+            itemData = data;
             SetData(data);
         }
+
+        private void ShowInfo()
+        {
+            LuyenDanPanel.Instance.ToolTipItems.ShowInfoItem(itemData,itemRef);
+        }
+
         public virtual void Init(ItemRef itemRef)
         {
             SetCount(itemRef.Count);
             var data = LuyenDanPanel.Instance.Resources.FindItem(itemRef);
+            this.itemRef = itemRef;
             Init(data);
         }
-
+        
         public void DestroySelf()
         {
             Destroy(selfObject);

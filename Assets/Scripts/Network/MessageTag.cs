@@ -43,7 +43,8 @@ namespace Network
         NewMail = 119,
         GetInventory = 195,
         GetInventoryResult = 196,
-        
+        LuyenDan = 201,
+        LuyenDanResult = 202, 
         AddItems = 209,
         AddItemsResult = 210,
         ChangeScene = 256,
