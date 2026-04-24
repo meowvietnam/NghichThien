@@ -7,7 +7,7 @@ namespace LuyenDan.Inventory
 {
     public class FurnaceItemListUI : ItemListUI<FurnaceInventoryItemUI>
     {
-        public void Init(IEnumerable<FurnaceData> furnaceDatas)
+        public void InitAsFurnace(IEnumerable<FurnaceData> furnaceDatas)
         {
             foreach (var data in furnaceDatas)
             {

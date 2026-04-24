@@ -619,7 +619,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
                                 }
 
-                                return; // Thoát ra, không chạy code Init bên dưới
+                                return; // Thoát ra, không chạy code InitAsFurnace bên dưới
                             }
                             Debug.Log("Item slot sẵn sàng");
 
@@ -759,7 +759,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                             if (itemSlot.itemData != null || listItemSlotThanThongs.Any(x => x.itemData == thanThong))
                             {
                                 NotifyGroup.Instance.Show("Thần thông đã được trang bị");
-                                return; // Thoát ra, không chạy code Init bên dưới
+                                return; // Thoát ra, không chạy code InitAsFurnace bên dưới
                             }
                             Debug.Log("Item slot sẵn sàng");
 

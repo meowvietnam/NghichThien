@@ -9,6 +9,7 @@ namespace LuyenKhi
     public class ItemBag : LuyenDan.BaseItemUI
     {
         [SerializeField,TabGroup("Has Item")] private Button selectButton;
+        [SerializeField,TabGroup("Has Item")] private Button infoButton;
         public ItemRef ItemRef { get; private set; }
         public Material Material { get; private set; }
         private bool IsHasItem { get; set; }
@@ -19,8 +20,17 @@ namespace LuyenKhi
             SetData(data);
             if (IsHasItem)
             {
-                selectButton.onClick.AddListener(OnSelected);
+                SetEventButton(selectButton,OnSelected);
+                SetEventButton(infoButton, ShowInfo);
             }
+            else
+            {
+                infoButton.gameObject.SetActive(false);
+            }
+        }
+        private void ShowInfo()
+        {
+            LuyenKhiPanel.Instance.ToolTipItems.ShowInfoItem(Material,ItemRef);
         }
         private void OnSelected()
         {
@@ -47,7 +57,7 @@ namespace LuyenKhi
             if (IsHasItem && ItemRef != null)
             {
                 ItemRef.OnCountChanged -= OnCountChanged;
-                selectButton.onClick.RemoveListener(OnSelected);
+                selectButton.onClick.RemoveAllListeners();
             }
         }
     }

@@ -26,6 +26,7 @@ namespace LuyenKhi
         [field: SerializeField] public SelectTypePage SelectTypePage { get; private set; }
         [field: SerializeField] public LuyenKhiPage LuyenKhiPage { get; private set; }
         [field: SerializeField] public Bag Bag { get; private set; }
+        [field: SerializeField] public ToolTipItems ToolTipItems { get; private set; }
         [SerializeField] private Button changeTypeButton;
         [SerializeField] private Button backButton;
         private IBackContext backContext;
@@ -35,6 +36,7 @@ namespace LuyenKhi
             SetBackContext(this);
             SetEventButton(changeTypeButton,OnChangeType);
             SetEventButton(backButton,OnBack);
+            ToolTipItems.Init();
             LuyenKhiPage.Init();
             Bag.Init(items);
         }

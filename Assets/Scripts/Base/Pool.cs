@@ -12,7 +12,6 @@ namespace Base
         public void Init()
         {
             pool.Clear();
-
             for (int i = 0; i < PoolSize; i++)
             {
                 var obj = Instantiate(Prefab, transform);

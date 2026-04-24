@@ -12,7 +12,6 @@ public class BaseBehaviour : MonoBehaviour
         {
             action?.Invoke();
             //sound btn
-
         });
     }    
 }

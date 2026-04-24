@@ -14,12 +14,10 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
     [SerializeField] public Image icon;
     [SerializeField] public Image frame;
     [SerializeField] protected Image progressHold;
-
     [SerializeField] public BaseItemData itemData;
     [SerializeField] protected Action actionHolder;
     [SerializeField] protected Action actionPointerUp;
     [SerializeField] protected Action actionPointerDown;
-
     [SerializeField] protected Image selectHighLight;
     public void SetSelectHighlight(bool isActive)
     {
@@ -33,8 +31,6 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
         InitItemData(itemData, frameSprite);
         InitAction(actionHolder, actionPointerUp);
     }
-   
-
     [Button]
     public virtual void InitItemData(BaseItemData itemData , Sprite frameSprite)
     {
@@ -45,7 +41,6 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
             return;
         }    
         InitIcon(this.itemData.spriteItem, frameSprite);
-
     }
     public  void InitIcon(Sprite spriteIcon, Sprite frameSprite)
     {
@@ -56,9 +51,7 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
         if(frameSprite != null)
         {
             frame.sprite = frameSprite;
-
         }
-
     }
     public void InitAction(Action actionHolder = null, Action actionPointerUp = null ,  Action actionPointerDown = null)
     {

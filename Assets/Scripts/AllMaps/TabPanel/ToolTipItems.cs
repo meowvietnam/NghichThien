@@ -1,4 +1,5 @@
 ﻿using AllMaps;
+using AllMaps.TabPanel.ToolTipDisplayers;
 using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
@@ -8,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Base;
 using UnityEngine;
 using UnityEngine.UI;
 public enum EActionShowItemInfor
@@ -25,7 +27,6 @@ public class ToolTipItems : BaseBehaviour , ISingleton
     [SerializeField] private Text nameText;
     [SerializeField] private Text typeText;
     [SerializeField] private Text qualityText;
-
     [SerializeField] private Text descriptionText;
     [SerializeField] private Sprite[] spriteLinhKhis;
     [SerializeField] private Image prefabIconRequire;
@@ -39,39 +40,72 @@ public class ToolTipItems : BaseBehaviour , ISingleton
     private Image prefabRightInfor;
     [SerializeField]
     private ItemRef itemRef;
-    [SerializeField]
     private IItemData iItemData;
+    private FurnaceData furnaceData;
     [SerializeField] private Text descTextItem;
     [SerializeField] private EActionShowItemInfor eActionShowItem;
     public static ToolTipItems Instance { get; private set; }
-
-
-    private void Awake()
+    private readonly Dictionary<ItemType, IToolTipDisplayer> displayerRegistry = new();
+    private void RegisterDisplayers()
     {
-        
+        Register(new HerbDisplayer());
+        Register(new FurnaceDisplayer());
+        Register(new LinhDanDisplayer());
+        Register(new RecipeDisplayer());
+        Register(new MaterialDisplayer());
+        Register(new ThanThongBookDisplayer());
+        Register(new CongPhapBookDisplayer());
+    }
+
+    private void Register(IToolTipDisplayer displayer)
+    {
+        displayerRegistry[displayer.SupportedType] = displayer;
+    }
+    public void ShowInfoItem(IItemData itemData,ItemRef itemRef, FurnaceData furnaceData = null)
+    {
+        iItemData = itemData;
+        this.itemRef = itemRef;
+        this.furnaceData = furnaceData;
+        var tier = itemData.Tier;
+        var quality = CoreConfig.Instance.FindQuality(tier);
+        var frame = quality.IconUp;
+        var background = quality.Background;
+        var icon = itemData.Icon;
+        var color = quality.Color;
+        var name = itemData.Name;
+        nameText.text = name;
+        eActionShowItem = EActionShowItemInfor.None;
+        gameObject.SetActive(true);
+        InitIcon(icon, frame);
+        SetQualityFull(background);
+        SetColorName(color);
+        SetQualityText(quality);
+        ResetKeyword(prefabLeftInfor);
+        ResetKeyword(prefabRightInfor);
+        InitInforItem();
+        RefreshTooltipLayout();
     }
     public void InitShow(ItemInventory itemInventory,Sprite frameSprite, Sprite qualityFull , Color colorName , ETypeInventoryItem eTypeItemShow , ItemRef itemRef, IItemData iItemData , EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)
     {
         if (itemInventory.itemData == null) return;
-        this.gameObject.SetActive(true);
-        SetEventButton(btnMask, () =>
-        {
-            this.gameObject.SetActive(false);
-        });
+        gameObject.SetActive(true);
         priceText.transform.parent.gameObject.SetActive(false);
         prefabIconRequire.transform.parent.parent.gameObject.SetActive(false);
         descTextItem.transform.parent.gameObject.SetActive(false);
-        this.itemData = itemInventory.itemData;
+        itemData = itemInventory.itemData;
         this.itemRef = itemRef;
         this.iItemData = iItemData;
-        this.nameText.text = itemData.nameItem;
-        this.eActionShowItem = eTypeActionShow;
+        nameText.text = itemData.nameItem;
+        eActionShowItem = eTypeActionShow;
         InitIcon(itemInventory.icon.sprite, frameSprite);
         SetQualityFull(qualityFull);
         SetColorName(colorName);
         ResetKeyword(prefabLeftInfor);
         ResetKeyword(prefabRightInfor);
-        // Gán dữ liệu TRƯỚC
+        if (iItemData != null)
+        {
+            SetQualityText(iItemData.Tier);
+        }
         if (eTypeItemShow == ETypeInventoryItem.Skill)
         {
             InitInforSkill();
@@ -80,10 +114,21 @@ public class ToolTipItems : BaseBehaviour , ISingleton
         {
             InitInforItem();
         }
+        RefreshTooltipLayout();        
+    }
 
-        // cụm này force rebuild trc mới dãn đúng
-        // và for 3 lần tắt đi bật lại contentsize cũng mới dãn đúng 
-       
+    private void SetQualityText(Tier tier)
+    {
+        var quality = CoreConfig.Instance.FindQuality(tier);
+        SetQualityText(quality);
+    }
+    private void SetQualityText(Quality quality)
+    {
+        qualityText.text = quality.Name;
+        qualityText.color = quality.Color;
+    }
+    private void RefreshTooltipLayout()
+    {
         var fitter = tipObj.GetComponent<ContentSizeFitter>();
         if (fitter != null)
         {
@@ -95,12 +140,10 @@ public class ToolTipItems : BaseBehaviour , ISingleton
                 fitter.enabled = true;
             }
         }
-      
     }
     private IEnumerator DelayFrame()
     {
-        yield return null; // Đợi thêm 1 frame nữa để các Layout con kịp co dãn theo Layout cha
-
+        yield return null;
     }
     void SetTextKeyword(Image prefabKeyword, int i, string content)
     {
@@ -126,8 +169,6 @@ public class ToolTipItems : BaseBehaviour , ISingleton
     }
     private void InitInforSkill()
     {
-
-
         if (itemData is BaseSkill skill)
         {
             qualityText.text = BaseSkill.GetTextTierSkill(skill.eTierSkill);
@@ -135,27 +176,20 @@ public class ToolTipItems : BaseBehaviour , ISingleton
             if(skill is ThanThong)
             {
                 descriptionText.text = skill.GetDesc(ThanThong.GetDaiCanhGioi(Client.Instance.CharacterData.Level));
-
             }
             else if(skill is CongPhap)
             {
                 descriptionText.text = skill.GetDesc(5);
-
             }
-
             var listEKeyword = skill.GetEKeywordSkillHave();
             var listEBuffKeyword = skill.GetEKeywordBuffSkillHave(1);
-            
-
             for (int i = 0; i < listEKeyword.Length; i++)
             {
                 SetTextKeyword(prefabLeftInfor, i, BaseSkill.GetDescKeyWord(listEKeyword[i]));
-
             }
             for (int i = 0; i < listEBuffKeyword.Length; i++)
             {
                 SetTextKeyword(prefabRightInfor, i, BaseSkill.GetDescBuffOrDeBuff(listEBuffKeyword[i]));
-
             }
         }
         if (itemData is ThanThong thanThong)
@@ -171,19 +205,16 @@ public class ToolTipItems : BaseBehaviour , ISingleton
                 else
                 {
                     itemRequire = Instantiate(prefabIconRequire, prefabIconRequire.transform.parent);
-
                 }
                 itemRequire.gameObject.SetActive(true);
                 itemRequire.sprite = spriteLinhKhis[(int)thanThong.BaseRequireActive[i].linhKhiRequire];
                 itemRequire.SetNativeSize();
                 itemRequire.transform.GetChild(0).GetComponent<Text>().text = $"x{thanThong.BaseRequireActive[i].count}";
-
             }
         }
         else
         {
             prefabIconRequire.transform.parent.parent.gameObject.SetActive(false);
-
         }
     }
     public void SetPriceText(int price)
@@ -192,113 +223,53 @@ public class ToolTipItems : BaseBehaviour , ISingleton
         priceText.text = price.ToString();
         if (descTextItem.transform.parent.gameObject.activeSelf)
         {
-            // Cộng thêm nội dung vào chính nó và xuống dòng
             descTextItem.text += "\n";
         }
         else
         {
-            // Tương tự cho descriptionText
             descriptionText.text += "\n";
         }
     }    
     private void InitInforItem()
     {
-        //<color=#ffb143>【Yêu cầu điểm số】</color>
-     
         if (itemData is BaseSkill)
         {
             InitInforSkill();
-
         }
-        if (itemRef!= null)
+
+        if (itemRef == null) return;
+
+        if (displayerRegistry.TryGetValue(itemRef.Type, out var displayer))
         {
-            switch (itemRef.Type)
-            {
-                case ItemType.Herb:
-                    typeText.text = "Dược Liệu";
-
-                    descriptionText.text = "Thảo dược có thể dùng luyện chế đan dược";
-                    if (iItemData != null && iItemData is HerbData duocLieu)
-                    {
-                        descTextItem.transform.parent.gameObject.SetActive(true);
-
-                        descTextItem.text = "<color=#ffb143>【Chủ Dược】 </color>"+$"{duocLieu.ChuDuoc} " + "<color=#ffb143>【Phụ Dược】 </color>" + $"{duocLieu.PhuDuoc} " + "<color=#ffb143>【Dược Dẫn】 </color>" + $"{duocLieu.ThuocDan}";
-
-                    }
-                    qualityText.text = GameManager.TextWithTier[iItemData.Tier];
-
-
-                    break;
-                case ItemType.Furnace:
-                    typeText.text = "Lò Luyện Đan";
-                    descriptionText.text = "Đan lô vật phẩm bắt buộc để có thể luyện chế đan dược";
-                    descTextItem.transform.parent.gameObject.SetActive(true);
-                    descTextItem.text = $"<color=#ffb143>【Bền Bỉ】</color> " +$"{Client.Instance.CharacterData.InventoryManager.Furnaces.FirstOrDefault(x => x.Ref.Id == itemRef.Id).Durability + "/" + 100}";
-                    qualityText.text = GameManager.TextWithTier[iItemData.Tier];
-
-                    break;
-                case ItemType.LinhDan:
-                    string text = "Đan Dược";
-                    if (iItemData != null &&iItemData is LinhDan linhDan)
-                    {
-                        descTextItem.transform.parent.gameObject.SetActive(true);
-                        switch (linhDan.ETypeDan)
-                        {
-                            case ETypeDan.DanCombat:
-                                text += " - Chiến Đấu";
-                                break;
-                            case ETypeDan.DanBuff:
-                                text += " - Tăng Chỉ Số"; 
-                                break;
-                            case ETypeDan.DanDotPha:
-                                text += " - Đột Phá";
-                                break;
-                            case ETypeDan.DanOther:
-                                text += " - Khác";
-                                break;
-                            default:
-                                break;
-                        }
-                        descTextItem.text = $"{BaseSkill.GetColoredText("【Đan Độc】", "#d36cd3")} {linhDan.DanDoc}";
-                        descriptionText.text = linhDan.Description;
-
-                    }
-                    typeText.text = text;
-                    qualityText.text = GameManager.TextWithTier[iItemData.Tier];
-
-                    break;
-                case ItemType.ThanThong:
-                    typeText.text = "Sách Thần Thông";
-                    break;
-                case ItemType.CongPhap:
-                    typeText.text = "Sách Công Pháp";
-                    break;
-                case ItemType.VuKhi:
-                    break;
-                case ItemType.PhongCu:
-                    break;
-                case ItemType.TrangSuc:
-                    break;
-                case ItemType.Recipe:
-                    typeText.text = "Đan Phương";
-                    descriptionText.text = $"Công thức luyện chế {iItemData.Name}";
-                    qualityText.text = GameManager.TextWithTier[iItemData.Tier];
-
-                    break;
-                default:
-                    break;
-            }
-        }
-        if (eActionShowItem == EActionShowItemInfor.None || eActionShowItem == EActionShowItemInfor.Sell)
-        {
-            SetPriceText(GameManager.GetPriceItemSell(itemRef, iItemData));
+            var ctx = BuildContext();
+            displayer.Display(ctx);
         }
         else
         {
-            SetPriceText(GameManager.GetPriceItemBuy(itemRef, iItemData));
-
+            if (eActionShowItem == EActionShowItemInfor.None || eActionShowItem == EActionShowItemInfor.Sell)
+                SetPriceText(GameManager.GetPriceItemSell(itemRef, iItemData));
+            else
+                SetPriceText(GameManager.GetPriceItemBuy(itemRef, iItemData));
         }
-
+    }
+    private ToolTipContext BuildContext()
+    {
+        return new ToolTipContext
+        {
+            TypeText        = typeText,
+            QualityText     = qualityText,
+            DescriptionText = descriptionText,
+            DescTextItem    = descTextItem,
+            PrefabIconRequire = prefabIconRequire,
+            PrefabLeftInfor   = prefabLeftInfor,
+            PrefabRightInfor  = prefabRightInfor,
+            SpriteLinhKhis  = spriteLinhKhis,
+            ItemRef         = itemRef,
+            FurnaceData      = furnaceData,
+            IItemData       = iItemData,
+            ActionShowItem  = eActionShowItem,
+            SetPriceText    = SetPriceText,
+        };
     }
     private void InitIcon(Sprite spriteIcon, Sprite frameSprite)
     {
@@ -309,9 +280,7 @@ public class ToolTipItems : BaseBehaviour , ISingleton
         if (frameSprite != null)
         {
             frame.sprite = frameSprite;
-
         }
-
     }
     public void SetColorName(Color color)
     {
@@ -323,11 +292,15 @@ public class ToolTipItems : BaseBehaviour , ISingleton
         qualityFull.sprite = sprite;
         qualityFull.SetNativeSize();
     }
-
     public void Init()
     {
-        this.gameObject.SetActive(true);
+        RegisterDisplayers();
+        gameObject.SetActive(true);
         Instance = this;
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
+        SetEventButton(btnMask, () =>
+        {
+            gameObject.SetActive(false);
+        });
     }
 }

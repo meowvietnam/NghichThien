@@ -37,8 +37,17 @@ namespace LuyenDan.Inventory
             SetData(data);
             if (IsHasItem)
             {
-                selectButton.onClick.AddListener(OnSelected);
+                SetEventButton(selectButton,OnSelected);
+                SetEventButton(infoButton,ShowInfo);
             }
+            else
+            {
+                infoButton.gameObject.SetActive(false);
+            }
+        }
+
+        protected virtual void ShowInfo()
+        {
         }
 
         public virtual void Init(ItemRef itemRef)

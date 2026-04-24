@@ -33,7 +33,7 @@ namespace LuyenDan
         [field: SerializeField] public RecipeListUI RecipeListUI { get; private set; }
         [field: SerializeField] public AlchermyResult AlchermyResult { get; private set; }
         [field: SerializeField] public ProgressBar ProgressBar { get; private set; }
-        
+        [field: SerializeField] public ToolTipItems ToolTipItems { get; private set; }
         // [Button]
         // private void GenMyHerbs()
         // {
@@ -66,6 +66,7 @@ namespace LuyenDan
                 return recipe;
             }).ToList();
             RecipeListUI.Init(datas);
+            ToolTipItems.Init();
         }
         public void SelectDanLu(FurnaceInventoryItemUI furnace)
         {

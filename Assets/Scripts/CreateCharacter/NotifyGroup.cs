@@ -9,10 +9,20 @@ namespace CreateCharacter
     public class NotifyGroup : Pool<NotifySlot>
     {
         private List<NotifySlot> showings = new List<NotifySlot>();
-        public static NotifyGroup Instance { get; private set; }
-        private void Start()
+        private static NotifyGroup instance;
+        public static NotifyGroup Instance
         {
-            Instance = this;
+            get
+            {
+                if (instance == null)
+                {
+                    instance = FindAnyObjectByType<NotifyGroup>();
+                }
+                return instance;
+            }
+        }
+        private void Awake()
+        {
             Init();
         }
         public void Show(string text)
@@ -30,11 +40,6 @@ namespace CreateCharacter
                 Release(slot);
             });
             showings.Add(slot);
-        }
-
-        private void OnDestroy()
-        {
-            Instance = null;
         }
     }
 }

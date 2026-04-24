@@ -16,9 +16,6 @@ public enum ETypeInventoryItem
 }
 public class ItemInventory : BaseItemUI
 {
-
-
-    
     [SerializeField] private GameObject hasItem;
     [SerializeField] public Image qualityFull;
     [SerializeField] private Text textCount;

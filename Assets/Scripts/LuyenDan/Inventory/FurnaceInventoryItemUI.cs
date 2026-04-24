@@ -25,6 +25,11 @@ namespace LuyenDan.Inventory
             LuyenDanPanel.Instance.SelectDanLu(this);
         }
 
+        protected override void ShowInfo()
+        {
+            LuyenDanPanel.Instance.ToolTipItems.ShowInfoItem(Data,ItemRef,FData);
+        }
+
         public override IItemData GetData()
         {
             return Data;

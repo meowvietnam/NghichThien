@@ -7,9 +7,8 @@ namespace LuyenDan.Inventory
     {
         public void Init(HashSet<FurnaceData> furnaceDatas)
         {
-            var datas = furnaceDatas.Select(x => x.Ref);
             var itemList = ItemListUI as FurnaceItemListUI;
-            itemList.Init(datas);
+            itemList?.InitAsFurnace(furnaceDatas);
             InitFilterGroup();
         }
     }

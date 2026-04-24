@@ -66,6 +66,7 @@ namespace AllMaps
             current = map;
             player.SetPosition(map.PlayerPosition);
             player.Init(characterData.Gender, false);
+            current.OnPlayerEnter();
             Pool.Set(this);
         }
 
