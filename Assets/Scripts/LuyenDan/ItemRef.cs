@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Base;
 using Network;
 using Network.Extensions;
 using Sirenix.OdinInspector;
@@ -8,7 +9,7 @@ using UnityEngine;
 namespace LuyenDan
 {
     [Serializable]
-    public class ItemRef : IMemorySerializable<ItemRef>,IEquatable<ItemRef>
+    public class ItemRef : IMemorySerializable<ItemRef>,IEquatable<ItemRef>, IDeepClone<ItemRef>
     {
         [field: SerializeField] public int Id { get; set; }
         [field: SerializeField] public ItemType Type { get; set; }
@@ -59,6 +60,11 @@ namespace LuyenDan
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
             return Id == other.Id && Type == other.Type;
+        }
+
+        public ItemRef DeepClone()
+        {
+            return new ItemRef(Id, Type, Count);
         }
     }
 }

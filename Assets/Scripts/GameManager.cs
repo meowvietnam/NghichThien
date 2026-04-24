@@ -15,6 +15,7 @@ using System.Collections;
 using Sirenix.Utilities;
 using LuyenKhi;
 using AllMaps;
+using Network.Models;
 using Newtonsoft.Json.Linq;
 
 
@@ -283,11 +284,7 @@ public class GameManager : BaseBehaviour
         }
         string backScene = listSceneLoaded[index - 1];
         listSceneLoaded.Remove(currentScene);
-
         SceneManager.LoadScene(backScene);
-
-
-
     }
     public void OnLoadScene(params object[] data)
     {
@@ -297,21 +294,40 @@ public class GameManager : BaseBehaviour
             System.Random _random = new System.Random();
             Array values = Enum.GetValues(typeof(Gender));
             Gender randomGender = (Gender)values.GetValue(_random.Next(values.Length));
-
             var xungHo = XungHoText(6, randomGender);
             Pool.Get<SayDialogManager>().ShowDialogRandomSkin("Người Gác Cổng",randomGender,$"{xungHo.targetCallMe} xin dừng bước hiện tại nơi này chưa thể vào hãy kiên nhẫn chờ bản cập nhật tiếp theo !");
             return;
         }    
-        listSceneLoaded.Add(nameScene);
         if(data.Length > 1)
         {
             EMapType eMap = (EMapType)data[1];
             currentEMapType = eMap;
-        }    
+        }
+        var sceneManger = Client.Instance.CoreModule.GetHandler<Network.Core.SceneManager>();
+        sceneManger.ChangeScene(nameScene,OnChangeSceneResult);
+    }
+    private void OnChangeSceneResult(ChangeSceneResult result)
+    {
+        NetworkManager.Instance.Invoke(() =>
+        {
+            if (result.Success)
+            {
+                ChangeSceneSuccess(result.SceneName);
+            }
+            else
+            {
+                var notify = NotifyGroup.Instance;
+                if (notify != null)
+                {
+                    notify.Show(result.Message);
+                }
+            }
+        });
+    }
+    private void ChangeSceneSuccess(string nameScene)
+    {
+        listSceneLoaded.Add(nameScene);
         SceneManager.LoadScene(nameScene);
-
-
-
     }
     public class CharCombatInit
     {

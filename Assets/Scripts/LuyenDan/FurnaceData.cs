@@ -1,4 +1,5 @@
 using System;
+using Base;
 using Network;
 using Network.Extensions;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 namespace LuyenDan
 {
     [Serializable]
-    public class FurnaceData : IMemorySerializable<FurnaceData>, IEquatable<FurnaceData>
+    public class FurnaceData : IMemorySerializable<FurnaceData>, IEquatable<FurnaceData>, IDeepClone<FurnaceData>
     {
         [field: SerializeField]
         public int SelfId { get; set; }
@@ -54,6 +55,17 @@ namespace LuyenDan
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
             return Equals((FurnaceData)obj);
+        }
+
+        public FurnaceData DeepClone()
+        {
+            return new FurnaceData()
+            {
+                SelfId = SelfId,
+                Durability = Durability,
+                OnDurabilityChanged = null,
+                Ref = Ref.DeepClone(),
+            };
         }
     }
 }

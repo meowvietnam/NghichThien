@@ -32,7 +32,6 @@ namespace Network
             {
             }
         }
-
         private void Awake()
         {
             Instance = this;

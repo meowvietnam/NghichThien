@@ -13,7 +13,6 @@ public class LoadSceneBtn : BaseBehaviour
         SetEventButton(btn, () =>
         {
             Observer.Notify(EventList.GamePlay.LOAD_SCENE, nameScene);
-
         });
     }
 }

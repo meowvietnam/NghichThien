@@ -46,5 +46,7 @@ namespace Network
         
         AddItems = 209,
         AddItemsResult = 210,
+        ChangeScene = 256,
+        ChangeSceneResult = 257,
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Base;
 using LuyenDan;
 using Network;
 using Network.Extensions;
@@ -13,31 +14,25 @@ namespace CreateCharacter
     [Serializable]
     public class InventoryManager : IMemorySerializable<InventoryManager>
     {
-        [ShowInInspector]
-        public HashSet<FurnaceData> Furnaces { get; set; } = new();
-        [ShowInInspector]
-        public HashSet<ItemRef> Recipes { get; set; } = new();
-        [ShowInInspector]
-        public HashSet<ItemRef> Herbs { get; set; } = new();
+        [ShowInInspector] public HashSet<FurnaceData> Furnaces { get; set; } = new();
+        [ShowInInspector] public HashSet<ItemRef> Recipes { get; set; } = new();
+        [ShowInInspector] public HashSet<ItemRef> Herbs { get; set; } = new();
 
-        [ShowInInspector]
-        public HashSet<ItemRef> ThanThongs { get; set; } = new();
-        [ShowInInspector]
-        public HashSet<ItemRef> CongPhaps { get; set; } = new();
-        [ShowInInspector]
-        public HashSet<ItemRef> VuKhis { get; set; } = new();
-        [ShowInInspector]
-        public HashSet<ItemRef> PhongCus { get; set; } = new();
-        [ShowInInspector]
-        public HashSet<ItemRef> TrangSucs { get; set; } = new();
-        [ShowInInspector]
-        public HashSet<ItemRef> LinhDans { get; set; } = new();
+        [ShowInInspector] public HashSet<ItemRef> ThanThongs { get; set; } = new();
+        [ShowInInspector] public HashSet<ItemRef> CongPhaps { get; set; } = new();
+        [ShowInInspector] public HashSet<ItemRef> VuKhis { get; set; } = new();
+        [ShowInInspector] public HashSet<ItemRef> PhongCus { get; set; } = new();
+        [ShowInInspector] public HashSet<ItemRef> TrangSucs { get; set; } = new();
+        [ShowInInspector] public HashSet<ItemRef> LinhDans { get; set; } = new();
 
 
         public int ByteSize()
         {
-            return Furnaces.ByteSize() + Recipes.ByteSize() + Herbs.ByteSize() + ThanThongs.ByteSize() + CongPhaps.ByteSize() + VuKhis.ByteSize() + PhongCus.ByteSize() + TrangSucs.ByteSize() + LinhDans.ByteSize();
+            return Furnaces.ByteSize() + Recipes.ByteSize() + Herbs.ByteSize() + ThanThongs.ByteSize() +
+                   CongPhaps.ByteSize() + VuKhis.ByteSize() + PhongCus.ByteSize() + TrangSucs.ByteSize() +
+                   LinhDans.ByteSize();
         }
+
         public void Serialize(IWriter writer)
         {
             writer.WriteArray(Furnaces);
@@ -49,8 +44,8 @@ namespace CreateCharacter
             writer.WriteArray(PhongCus);
             writer.WriteArray(TrangSucs);
             writer.WriteArray(LinhDans);
-
         }
+
         public void Deserialize(IReader reader, ref InventoryManager value)
         {
             value.Furnaces = reader.ReadArray<FurnaceData>().ToHashSet();
@@ -62,7 +57,6 @@ namespace CreateCharacter
             value.PhongCus = reader.ReadArray<ItemRef>().ToHashSet();
             value.TrangSucs = reader.ReadArray<ItemRef>().ToHashSet();
             value.LinhDans = reader.ReadArray<ItemRef>().ToHashSet();
-
         }
 
         public void Clone(InventoryManager other)
@@ -77,6 +71,25 @@ namespace CreateCharacter
             TrangSucs = new HashSet<ItemRef>(other.TrangSucs);
             LinhDans = new HashSet<ItemRef>(other.LinhDans);
         }
+        public InventoryManager DeepClone()
+        {
+            var other = new InventoryManager();
+            other.Furnaces = DeepClone(Furnaces);
+            other.Recipes = DeepClone(Recipes);
+            other.Herbs = DeepClone(Herbs);
+            other.ThanThongs = DeepClone(ThanThongs);
+            other.CongPhaps = DeepClone(CongPhaps);
+            other.VuKhis = DeepClone(VuKhis);
+            other.PhongCus = DeepClone(PhongCus);
+            other.TrangSucs = DeepClone(TrangSucs);
+            other.LinhDans = DeepClone(LinhDans);
+            return other;
+        }
+        private HashSet<T> DeepClone<T>(IEnumerable<T> collection) where T : IDeepClone<T>
+        {
+            return new HashSet<T>(collection.Select(x => x.DeepClone()));
+        }
+
         public void AddToInventory(RewardItems rewardItems)
         {
             var items = rewardItems.OtherItems;
@@ -85,11 +98,13 @@ namespace CreateCharacter
             {
                 Furnaces.Add(furnaceData);
             }
+
             foreach (var itemRef in items)
             {
-                Add(itemRef);                
+                Add(itemRef);
             }
         }
+
         public void Add(ItemRef itemRef)
         {
             var type = itemRef.Type;
@@ -126,6 +141,7 @@ namespace CreateCharacter
                 Add(Recipes, itemRef);
             }
         }
+
         private void Add(HashSet<ItemRef> inventory, ItemRef itemRef)
         {
             if (inventory.TryGetValue(itemRef, out var item))

@@ -1,3 +1,4 @@
+using System;
 using Network.Callback;
 using Network.Extensions;
 using Network.Models;
@@ -8,6 +9,7 @@ namespace Network.Core
     public class InventoryHandler : IClientHandler
     {
         private IInventoryCallback callback;
+        private Action<GetInventoryResult> getInventoryCallback;
         public InventoryHandler(IInventoryCallback callback)
         {
             this.callback = callback;
@@ -26,6 +28,11 @@ namespace Network.Core
                 var result = reader.Read<GetInventoryResult>();
                 Client.Instance.CharacterData.InventoryManager = result.InventoryManager;
                 callback.GetInventoryResult(result);
+                if (getInventoryCallback != null)
+                {
+                    getInventoryCallback(result);
+                    getInventoryCallback = null;
+                }
             }
         }
 
@@ -39,5 +46,11 @@ namespace Network.Core
 
         private static readonly MessageTag[] handlerTag = { MessageTag.GetInventoryResult };
         public MessageTag[] HandleTag => handlerTag;
+
+        public void GetInventory(Action<GetInventoryResult> resultCallback)
+        {
+            getInventoryCallback = resultCallback;
+            Client.Instance.Send(MessageTag.GetInventory);
+        }
     }
 }

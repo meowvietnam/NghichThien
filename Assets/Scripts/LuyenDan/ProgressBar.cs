@@ -67,6 +67,7 @@ namespace LuyenDan
             SetProgress(1f);
             progressChanged?.Invoke(1f);
             completed?.Invoke();
+            SetActive(false);
         }
        
         public void DoKill(Action completed)

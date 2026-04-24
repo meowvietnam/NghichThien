@@ -114,9 +114,13 @@ namespace CreateCharacter
                 {
                     var characterData = result.CharacterData;
                     Client.Instance.SetChar(characterData);
+                    var module = Client.Instance.CoreModule;
+                    var sceneManager = new Network.Core.SceneManager();
+                    module.RemoveHandler<Network.Core.SceneManager>();
+                    module.AddHandler(sceneManager);
                     AdminPanel.Instance.StartListen();
                     progressBar.DoKill(() => {  });
-                    StartCoroutine(GameManager.LoadSceneWithDelay("AllMaps",5));
+                    StartCoroutine(GameManager.LoadSceneWithDelay("AllMaps",0));
                 }
                 else
                 {

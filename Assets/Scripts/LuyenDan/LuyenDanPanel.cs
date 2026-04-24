@@ -4,13 +4,17 @@ using System.Linq;
 using CreateCharacter;
 using LuyenDan.Inventory;
 using Network;
+using Network.Callback;
+using Network.Core;
+using Network.Models;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace LuyenDan
 {
-    public class LuyenDanPanel : MonoBehaviour
+    public class LuyenDanPanel : BaseBehaviour, ILuyenDanCallback
     {
         private static LuyenDanPanel instance;
 
@@ -34,23 +38,22 @@ namespace LuyenDan
         [field: SerializeField] public AlchermyResult AlchermyResult { get; private set; }
         [field: SerializeField] public ProgressBar ProgressBar { get; private set; }
         [field: SerializeField] public ToolTipItems ToolTipItems { get; private set; }
-        // [Button]
-        // private void GenMyHerbs()
-        // {
-        //     var myHerbs = Resources.HerbDatas
-        //         .Where(x => Random.value > 0.2f)
-        //         .Select(x =>
-        //         {
-        //             var id = x.Id;
-        //             var count = Random.Range(1, 20);
-        //             var type = ItemType.Herb;
-        //             var @ref = new ItemRef(id, type, count);
-        //             return @ref;
-        //         }).ToList();
-        // }
         private void Start()
         {
-            var inventoryManager = Client.Instance.CharacterData.InventoryManager;
+            var client = Client.Instance;
+            client.ChangeState(new Network.ClientState.LuyenDan(this));
+            var inventoryHandler = client.CoreModule.GetHandler<InventoryHandler>();
+            inventoryHandler.GetInventory(OnGetInventoryResult);
+        }
+
+        private void OnGetInventoryResult(GetInventoryResult result)
+        {
+            if (!result.Success)
+            {
+                NotifyGroup.Instance.Show(result.Message);
+                return;
+            }
+            var inventoryManager = result.InventoryManager.DeepClone();
             var myFurnaces = inventoryManager.Furnaces;
             var myHerbs = inventoryManager.Herbs;
             var myRecipes = inventoryManager.Recipes;
@@ -68,6 +71,7 @@ namespace LuyenDan
             RecipeListUI.Init(datas);
             ToolTipItems.Init();
         }
+
         public void SelectDanLu(FurnaceInventoryItemUI furnace)
         {
             AddFurnace.SetActive(false);
