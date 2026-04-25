@@ -32,12 +32,11 @@ namespace LuyenKhi
             }
         }
         [field: SerializeField] public ArtifactType ArtifactType { get; set; }
-
         private EffectTypeConfig Config
         {
             get
             {
-                return LuyenKhiResources.Instance.EffectTypeNameConfigs.First(x => x.Type == EffectType);
+                return LuyenKhiResources.Instance.EffectTypeConfigs.First(x => x.Type == EffectType);
             }
         }
         [field: SerializeField] public EffectType EffectType { get; set; }

@@ -10,7 +10,7 @@ namespace LuyenKhi
     [Serializable]
     public class BaseEffect : IMemorySerializable<BaseEffect>
     {
-        [ShowInInspector] public string Name => LuyenKhiResources.Instance.EffectTypeNameConfigs.First(x => x.Type == Type).Name;
+        [ShowInInspector] public string Name => LuyenKhiResources.Instance.EffectTypeConfigs.First(x => x.Type == Type).Name;
         [field: SerializeField] public int Value { get; set; }
         [field: SerializeField] public EffectType Type { get; set; }
 

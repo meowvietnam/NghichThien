@@ -1,6 +1,6 @@
 namespace LuyenKhi
 {
-    public enum EquipmentGrade
+    public enum EquipmentGrade : byte
     {
         HaPhamPhuKhi,
         TrungPhamPhuKhi,

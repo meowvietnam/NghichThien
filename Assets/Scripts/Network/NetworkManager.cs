@@ -60,7 +60,6 @@ namespace Network
                 actionQueue.Dequeue().Invoke();
             }
         }
-
         public void SetIdentity(int id, string key)
         {
             Id = id;

@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Network;
+using Network.Extensions;
 using UnityEngine;
 
 namespace Base
 {
     [Serializable]
-    public class StringDict
+    public class StringDict : IMemorySerializable<StringDict>
     {
         [field: SerializeField] public List<string> Dict { get; private set; }
 
@@ -21,10 +24,19 @@ namespace Base
             return result;
         }
         public string this[int key] => Dict[key];
-        // [Button]
-        // public void Clear()
-        // {
-        //     Dict = new();
-        // }
+
+        public void Deserialize(IReader reader, ref StringDict value)
+        {
+            value.Dict = reader.ReadArray().ToList();
+        }
+
+        public int ByteSize()
+        {
+            return Dict.ByteSize();
+        }
+        public void Serialize(IWriter writer)
+        {
+            writer.WriteArray(Dict);
+        }
     }
 }
