@@ -15,10 +15,10 @@ namespace LuyenKhi
             }
         }
 
-        public void SelectSubEquipment(SubEquipment subEquipment)
+        public void SelectArtifactType(ArtifactEquipment artifactEquipment)
         {
-            var type = subEquipment.Type;
-            LuyenKhiPanel.Instance.SelectSubEquipment(type);
+            var type = artifactEquipment.Type;
+            LuyenKhiPanel.Instance.SelectArtifactType(type);
         }
 
         public void SetActive(bool active)

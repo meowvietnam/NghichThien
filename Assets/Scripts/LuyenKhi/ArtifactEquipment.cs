@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 namespace LuyenKhi
 {
-    public class SubEquipment : BaseBehaviour
+    public class ArtifactEquipment : BaseBehaviour
     {
-        [field: SerializeField] public SubEquipmentType Type { get; private set; }
+        [field: SerializeField] public ArtifactType Type { get; private set; }
         [SerializeField] private SelectTypePage selectTypePage;
         [SerializeField] private Button button;
         private void Start()
@@ -15,7 +15,7 @@ namespace LuyenKhi
         }
         private void OnClick()
         {
-            selectTypePage.SelectSubEquipment(this);
+            selectTypePage.SelectArtifactType(this);
         }
 
         private void OnDestroy()

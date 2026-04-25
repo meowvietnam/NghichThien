@@ -55,11 +55,11 @@ namespace LuyenKhi
         {
             backContext.Back();
         }
-        public void SelectSubEquipment(SubEquipmentType type)
+        public void SelectArtifactType(ArtifactType type)
         {
             SelectTypePage.SetActive(false);
             LuyenKhiPage.SetActive(true);
-            LuyenKhiPage.SelectSubEquipment(type);
+            LuyenKhiPage.SelectArtifactType(type);
         }
         public void Back()
         {

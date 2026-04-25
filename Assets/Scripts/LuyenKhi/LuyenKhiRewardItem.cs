@@ -12,7 +12,7 @@ namespace LuyenKhi
     {
         [field: SerializeField] public int Id { get; set; }
         [field: SerializeField] public EquipmentTier Tier { get; set; }
-        [field: SerializeField] public SubEquipmentType Type { get; set; }
+        [field: SerializeField] public ArtifactType Type { get; set; }
         [field: SerializeField, PreviewField(75)] public Sprite Icon { get; set; }
     }
 }

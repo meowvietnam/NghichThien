@@ -1,6 +1,9 @@
 
 using System;
+using System.Globalization;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using Base;
 using LuyenDan;
 using LuyenDan.Inventory;
@@ -9,6 +12,7 @@ using UnityEngine;
 
 namespace LuyenKhi
 {
+
     [CreateAssetMenu]
     public class LuyenKhiResources : ScriptableObject
     {
@@ -18,6 +22,8 @@ namespace LuyenKhi
         [field: SerializeField] public EquipmentGradeConfig[] EquipmentGrades { get; private set; }
         [field: SerializeField] public Material[] Materials { get; private set; }
         [field: SerializeField] public LuyenKhiRewardItem[] RewardItems { get; private set; }
+        [field: SerializeField] public LianQiEffect[] LianQiEffects { get; private set; }
+        [field: SerializeField] public EffectTypeNameConfig[] EffectTypeNameConfigs { get; private set; }
         [field: SerializeField] public StringDict Strings { get; private set; } = new();
         private static LuyenKhiResources instance;
         public static LuyenKhiResources Instance
@@ -28,7 +34,6 @@ namespace LuyenKhi
                 {
                     instance = Resources.Load<LuyenKhiResources>("LuyenKhi/LuyenKhiResources");
                 }
-
                 return instance;
             }
         }
@@ -41,5 +46,6 @@ namespace LuyenKhi
             }
             return null;
         }
+        
     }
 }

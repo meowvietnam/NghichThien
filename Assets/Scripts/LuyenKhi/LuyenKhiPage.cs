@@ -12,6 +12,7 @@ namespace LuyenKhi
         [SerializeField] private Text grade;
         [SerializeField] private Text gradeDetail;
         [SerializeField] private ButtonLuyenKhi buttonLuyenKhi;
+        [field: SerializeField, ReadOnly] public ArtifactType CurrentSelectedType { get; private set; } 
         public void Init()
         {
             SetGrade(0);
@@ -20,8 +21,9 @@ namespace LuyenKhi
         {
             selfObject.SetActive(active);
         }
-        public void SelectSubEquipment(SubEquipmentType type)
+        public void SelectArtifactType(ArtifactType type)
         {
+            CurrentSelectedType = type;
             var icon = LuyenKhiPanel.Instance.Resources.EquipmentIcons.First(x => x.Type == type);
             iconImage.sprite = icon.Icon;
             iconImage.SetNativeSize();
