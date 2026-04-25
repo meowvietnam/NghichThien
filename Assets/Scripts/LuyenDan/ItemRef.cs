@@ -11,21 +11,21 @@ namespace LuyenDan
     [Serializable]
     public class ItemRef : IMemorySerializable<ItemRef>,IEquatable<ItemRef>, IDeepClone<ItemRef>
     {
-        [field: SerializeField] public int Id { get; set; }
+        [field: SerializeField] public ushort Id { get; set; }
         [field: SerializeField] public ItemType Type { get; set; }
-        [field: SerializeField] public int Count { get; set; }
+        [field: SerializeField] public ushort Count { get; set; }
         public Action<int> OnCountChanged { get; set; }
         public ItemRef() {}
-        public ItemRef(int id, ItemType type, int count)
+        public ItemRef(ushort id, ItemType type, int count)
         {
             Id = id;
             Type = type;
-            Count = count;
+            Count = (ushort)count;
         }
 
         public void SetCount(int count)
         {
-            Count = count;
+            Count = (ushort)count;
             OnCountChanged?.Invoke(count);
         }
    
@@ -45,9 +45,9 @@ namespace LuyenDan
         }
         public void Deserialize(IReader reader, ref ItemRef value)
         {
-            value.Id = reader.Read<int>();
+            value.Id = reader.Read<ushort>();
             value.Type = reader.Read<ItemType>();
-            value.Count = reader.Read<int>();
+            value.Count = reader.Read<ushort>();
         }
 
         public override int GetHashCode()

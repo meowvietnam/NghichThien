@@ -75,7 +75,7 @@ namespace Network
             {
                 items.Add(new ItemRef
                 {
-                    Id = item.Id,
+                    Id = (ushort)item.Id,
                     Count = 1,
                     Type = ItemType.ThanThong
                 });
@@ -84,7 +84,7 @@ namespace Network
             {
                 items.Add(new ItemRef
                 {
-                    Id = item.Id,
+                    Id = (ushort)item.Id,
                     Count = 1,
                     Type = ItemType.CongPhap
                 });
@@ -93,7 +93,7 @@ namespace Network
             {
                 items.Add(new ItemRef
                 {
-                    Id = item.Id,
+                    Id = (ushort)item.Id,
                     Count = 1,
                     Type = ItemType.Recipe
                 });
@@ -102,7 +102,7 @@ namespace Network
             {
                 items.Add(new ItemRef
                 {
-                    Id = item.Id,
+                    Id = (ushort)item.Id,
                     Count = 1,
                     Type = ItemType.Herb
                 });
@@ -111,7 +111,7 @@ namespace Network
             {
                 items.Add(new ItemRef
                 {
-                    Id = item.Id,
+                    Id = (ushort)item.Id,
                     Count = 1,
                     Type = ItemType.Furnace
                 });

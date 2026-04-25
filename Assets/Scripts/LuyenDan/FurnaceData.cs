@@ -10,9 +10,9 @@ namespace LuyenDan
     public class FurnaceData : IMemorySerializable<FurnaceData>, IEquatable<FurnaceData>, IDeepClone<FurnaceData>
     {
         [field: SerializeField]
-        public int SelfId { get; set; }
+        public ushort SelfId { get; set; }
         [field: SerializeField]
-        public int Durability { get; set; }
+        public sbyte Durability { get; set; }
         [field: SerializeField]
         public ItemRef Ref { get; set; }
 
@@ -30,14 +30,14 @@ namespace LuyenDan
 
         public void SetDurability(int durability)
         {
-            Durability = durability;
+            Durability = (sbyte)durability;
             OnDurabilityChanged?.Invoke(durability);
         }
         public void Deserialize(IReader reader, ref FurnaceData value)
         {
-            value.SelfId = reader.Read<int>();
+            value.SelfId = reader.Read<ushort>();
             value.Ref = reader.Read<ItemRef>();
-            value.Durability = reader.Read<int>();
+            value.Durability = reader.Read<sbyte>();
         }
         public override int GetHashCode()
         {

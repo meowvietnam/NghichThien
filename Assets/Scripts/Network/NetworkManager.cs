@@ -52,7 +52,6 @@ namespace Network
                 callback.OnConnectResult(new ConnectResult() { Success = false, Message = connectFailMessage });
             }
         }
-
         private void Update()
         {
             while (actionQueue.Count > 0)

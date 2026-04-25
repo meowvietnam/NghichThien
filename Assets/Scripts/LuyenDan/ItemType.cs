@@ -1,6 +1,6 @@
 namespace LuyenDan
 {
-    public enum ItemType
+    public enum ItemType : byte
     {
         Herb,
         Furnace,

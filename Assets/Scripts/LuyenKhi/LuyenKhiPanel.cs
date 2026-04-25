@@ -70,8 +70,8 @@ namespace LuyenKhi
             items = Resources.Materials.OrderBy(x => Random.value)
                 .Select(x => new ItemRef()
                 {
-                    Count = Random.Range(1,10),
-                    Id = x.Id,
+                    Count = (ushort)Random.Range(1,10),
+                    Id = (ushort)x.Id,
                     Type = ItemType.Material
                 })
                 .Take(100)

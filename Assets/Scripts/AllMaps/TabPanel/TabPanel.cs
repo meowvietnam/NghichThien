@@ -579,7 +579,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         List<ItemRef> itemDatas = new List<ItemRef>();
         foreach (var item in characterData.CongPhapOwner)
         {
-            itemDatas.Add(new ItemRef { Id = item.Key, Type = ItemType.CongPhap, Count = 1 });
+            itemDatas.Add(new ItemRef { Id = (ushort)item.Key, Type = ItemType.CongPhap, Count = 1 });
         }
 
         bag.InitDataItem(itemDatas, (currentItem) =>
@@ -733,7 +733,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         List<ItemRef> itemDatas = new List<ItemRef>();
         foreach (var item in characterData.ThanThongOwner)
         {
-            itemDatas.Add(new ItemRef { Id = item,Type = ItemType.ThanThong,Count = 1});
+            itemDatas.Add(new ItemRef { Id = (ushort)item,Type = ItemType.ThanThong,Count = 1});
         } 
             
         bag.InitDataItem(itemDatas, (currentItem) =>

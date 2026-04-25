@@ -400,10 +400,8 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         foreach (var item in dictCPOwner)
         {
             CongPhap skill = gameConfig.GetCongPhapWithId(item.Key);
-
-            listSkillsWithRef.Add(skill); // Lưu cả 2 vào cặp
-            listSkillsWithItemRef.Add(new ItemRef { Id = skill.Id, Count = 1, Type = ItemType.CongPhap });
-        
+            listSkillsWithRef.Add(skill);
+            listSkillsWithItemRef.Add(new ItemRef { Id = (ushort)skill.Id, Count = 1, Type = ItemType.CongPhap });
         }
 
 
