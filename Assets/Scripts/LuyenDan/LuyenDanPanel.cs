@@ -94,7 +94,7 @@ namespace LuyenDan
                 {
                     AlchermyResult.SetData(result.ItemRefs);
                     AlchermyResult.SetDescription(result.Message);
-                    AlchermyResult.SetActive(true);
+                    AlchermyResult.Show(0.15f);
                 });
             }
             else

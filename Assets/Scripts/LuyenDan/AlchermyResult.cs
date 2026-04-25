@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ namespace LuyenDan
         [SerializeField] private Transform content;
         [SerializeField] private Text descriptionText;
         [SerializeField] private Button okBtn;
+        [SerializeField] private RectTransform result;
         private List<ItemResult> items = new();
 
         private void Start()
@@ -20,7 +22,7 @@ namespace LuyenDan
 
         private void OnOk()
         {
-            SetActive(false);
+            Hide(0.15f);
         }
         private void OnDestroy()
         {
@@ -48,6 +50,22 @@ namespace LuyenDan
         public void SetActive(bool active)
         {
             selfObject.SetActive(active);
+        }
+
+        public void Show(float time)
+        {
+            transform.DOKill();
+            SetActive(true);
+            result.localScale = Vector3.zero;
+            result.DOScale(Vector3.one, time);
+        }
+        public void Hide(float time)
+        {
+            transform.DOKill();
+            result.DOScale(Vector3.zero, time).OnComplete(() =>
+            {
+                SetActive(false);
+            });
         }
     }
 }

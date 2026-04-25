@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -15,6 +16,7 @@ namespace LuyenDan
         [SerializeField] private Button confirm;
         [SerializeField] private Button back;
         [SerializeField] private UnityEvent confirmAction;
+        [SerializeField] private RectTransform selectNumTransform;
         public event Action<int> ValueChanged;
         private void Start()
         {
@@ -41,12 +43,12 @@ namespace LuyenDan
 
         private void Back()
         {
-            SetActive(false);
+            Hide(0.15f);
         }
 
         private void Confirm()
         {
-            SetActive(false);
+            Hide(0.15f);
             confirmAction?.Invoke();
         }
         public void SetActive(bool active)
@@ -93,6 +95,26 @@ namespace LuyenDan
         public void SetValue(int value)
         {
             slider.value = value;
+        }
+
+        public void Show(float time)
+        {
+            SetActive(true);
+            selectNumTransform.DOKill();
+            selectNumTransform.localScale = Vector3.zero;
+            selectNumTransform.DOScale(Vector3.one, time).OnComplete(() =>
+            {
+                Canvas.ForceUpdateCanvases();
+                LayoutRebuilder.ForceRebuildLayoutImmediate(selectNumTransform);
+            });
+        }
+        public void Hide(float time)
+        {
+            selectNumTransform.DOKill();
+            selectNumTransform.DOScale(Vector3.zero, time).OnComplete(() =>
+            {
+                SetActive(false);
+            });
         }
     }
 }

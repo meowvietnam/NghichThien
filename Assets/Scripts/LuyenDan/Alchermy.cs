@@ -4,6 +4,7 @@ using System.Text;
 using Base;
 using DG.Tweening;
 using LuyenDan.Inventory;
+using LuyenKhi;
 using Network;
 using UnityEngine;
 using UnityEngine.UI;
@@ -97,7 +98,7 @@ namespace LuyenDan
 
             SelectHerbNum.ValueChanged += (value) => { UpdateText(); };
             UpdateText();
-            SelectHerbNum.SetActive(true);
+            SelectHerbNum.Show(0.15f);
         }
 
         private string GetColorHexByTier(Tier tier)
@@ -250,12 +251,15 @@ namespace LuyenDan
             }
 
             if (max == int.MaxValue || max < 1) max = 1;
-
-            var (data, recipe) = LuyenDanPanel.Instance.RecipeListUI.FindBestRecipe(main1, sub1, sub2, primer);
+            var recipeListUI = LuyenDanPanel.Instance.RecipeListUI;
+            var (data, recipe) = recipeListUI.FindResourcesRecipe(main1, sub1, sub2, primer);
+            var hasRecipe = recipeListUI.HasRecipe(data);
             var hasData = data != null;
             string linhdanName = string.Empty;
             int baseDaysRequired = 0;
-            Tier linhdanTier = Tier.NhatPham;
+            int baseDaysRequiredIfNotOwner = 3;
+            var linhdanTier = Tier.NhatPham;
+
             if (hasData)
             {
                 var linhdan = data.LinhDan;
@@ -265,38 +269,76 @@ namespace LuyenDan
             }
             else
             {
-                linhdanName = phedan;
-                baseDaysRequired = 3;
+                baseDaysRequired = baseDaysRequiredIfNotOwner;
             }
-
+            var selectedDanluTier = SelectedFurnace.Tier;
+            var currentDurability = SelectedFurnace.FData.Durability;
+            var tierDiff = linhdanTier - selectedDanluTier;
+            Debug.Log(tierDiff);
+            var baseLossDurability = tierDiff > 0 ? tierDiff * 50 : 2;
             void UpdateText()
             {
                 var value = SelectLinhDanNum.GetValue();
-                var colorStr = hasData ? GetColorHexByTier(linhdanTier) : "aaaaaa";
+                var colorStr = !hasData ? "EF4444" : GetColorHexByTier(linhdanTier);
                 var builder = new StringBuilder();
                 if (hasData)
                 {
+                    var loss = baseLossDurability * value;
                     builder.Append($"<b><color=#{colorStr}>{linhdanName}</color></b> <color=#00ff00>x{value}</color>");
+                    if (!hasRecipe)
+                    {
+                        var textColor = "9CA3AF";
+                        builder.AppendLine();
+                        builder.Append($"<b><color=#{textColor}>Chưa sở hữu công thức này</color></b>");
+                        builder.AppendLine();
+                        builder.Append("<color=#ff8800>Tỉ lệ thành công: <b>50%</b></color>");
+                        builder.AppendLine();
+                        builder.Append(
+                            $"<i><color=#aaaaaa>Tiêu hao</color> <color=#ff4444>{baseDaysRequired * value}</color> <color=#aaaaaa>ngày</color> nếu thành công," +
+                            $" <color=#ff4444>{baseDaysRequiredIfNotOwner * value} </color> <color=#aaaaaa>ngày</color> nếu thất bại</i>");
+                    }
+                    else
+                    {
+                        builder.AppendLine();
+                        builder.Append(
+                            $"<i><color=#aaaaaa>Tiêu hao</color> <color=#ff4444>{baseDaysRequired * value}</color> <color=#aaaaaa>ngày</color></i>");
+                    }
+                    builder.AppendLine();
+                    var colorDanLu = GetColorHexByTier(selectedDanluTier);
+                    var furnaceName = SelectedFurnace.Data.Name;
+                    var durabilityAfter = currentDurability - loss;
+                    builder.Append($"Thành công <color=#{colorDanLu}><b>{furnaceName}</b></color> sẽ mất <color=#F59E0B><b>{loss}</b></color> độ bền");
+                    if (durabilityAfter <= 0)
+                    {
+                        builder.AppendLine();
+                        builder.AppendLine(
+                            $"Sau khi luyện độ bền có thể chỉ còn <color=#EF4444><b>{durabilityAfter}</b></color> <color=#DC2626><b>gây nổ lò!</b></color>"
+                        );
+                    }
+                    else
+                    {
+                        builder.AppendLine();
+                        builder.AppendLine(
+                            $"Sau khi luyện còn lại <color=#22C55E><b>{durabilityAfter}</b></color> độ bền"
+                        );
+                    }
                 }
                 else
                 {
                     builder.Append($"<b><color=#{colorStr}>Chưa đúng công thức</color></b>");
                     builder.AppendLine();
-                    builder.Append("<color=#ff8800>Nếu chưa có, tỉ lệ thành công: <b>50%</b></color>");
-                    builder.AppendLine();
                     builder.Append("<color=#ff4444><i>Thất bại sẽ mất toàn bộ dược liệu!</i></color>");
+                    builder.AppendLine();
+                    builder.Append(
+                        $"<i><color=#aaaaaa>Tiêu hao</color> <color=#ff4444>{baseDaysRequired * value}</color> <color=#aaaaaa>ngày</color></i>");
                 }
-                builder.AppendLine();
-                builder.Append(
-                    $"<i><color=#aaaaaa>Tiêu hao</color> <color=#ff4444>{baseDaysRequired * value}</color> <color=#aaaaaa>ngày</color></i>");
                 SelectLinhDanNum.SetText(builder.ToString());
             }
-
             SelectLinhDanNum.SetMax(max);
             SelectLinhDanNum.SetValue(1);
             UpdateText();
             SelectLinhDanNum.ValueChanged += (value) => UpdateText();
-            SelectLinhDanNum.SetActive(true);
+            SelectLinhDanNum.Show(0.15f);
         }
     }
 }

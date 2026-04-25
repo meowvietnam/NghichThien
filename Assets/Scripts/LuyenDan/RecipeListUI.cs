@@ -14,31 +14,37 @@ namespace LuyenDan
         private List<RecipeUI> recipes = new List<RecipeUI>();
         [SerializeField] private GameObject tierSelection;
         [SerializeField] private Text filterText;
+
         private Dictionary<Tier, string> map = new()
         {
-            {Tier.NhatPham, "Nhất phẩm"},
-            {Tier.NhiPham, "Nhị phẩm"},
-            {Tier.TamPham, "Tam phẩm"},
-            {Tier.TuPham, "Tứ phẩm"},
-            {Tier.NguPham, "Ngũ phẩm"},
-            {Tier.LucPham, "Lục phẩm"}
+            { Tier.NhatPham, "Nhất phẩm" },
+            { Tier.NhiPham, "Nhị phẩm" },
+            { Tier.TamPham, "Tam phẩm" },
+            { Tier.TuPham, "Tứ phẩm" },
+            { Tier.NguPham, "Ngũ phẩm" },
+            { Tier.LucPham, "Lục phẩm" }
         };
+
         private const string allFilter = "Tất cả phẩm giai";
+
         public void Init(List<RecipeData> datas)
         {
             foreach (var recipeUI in recipes)
             {
                 recipeUI.Destroy();
             }
+
             recipes.Clear();
             foreach (var recipe in datas)
             {
                 var instance = Instantiate(prefab, content);
-                instance.Init(recipe,toggleGroup);
+                instance.Init(recipe, toggleGroup);
                 recipes.Add(instance);
             }
+
             Refresh();
         }
+
         public void ShowAll()
         {
             filterText.text = allFilter;
@@ -47,6 +53,7 @@ namespace LuyenDan
                 recipeUI.SetActive(true);
             }
         }
+
         public void Filter(Tier tier)
         {
             filterText.text = map[tier];
@@ -56,13 +63,45 @@ namespace LuyenDan
                 recipeUI.SetActive(active);
             }
         }
-        public (RecipeData data, RecipeData.Recipe recipe) FindBestRecipe(Ingredient main1, Ingredient sub1, Ingredient sub2, Ingredient primer)
+
+        public (RecipeData data, RecipeData.Recipe recipe) FindRecipe(Ingredient main1, Ingredient sub1,
+            Ingredient sub2, Ingredient primer)
         {
             foreach (var recipeUI in recipes)
             {
                 var data = recipeUI.Data;
                 if (data == null || data.Recipes == null) continue;
 
+                foreach (var recipe in data.Recipes)
+                {
+                    if (recipe == null) continue;
+
+                    if (!IsMatch(recipe.ChuDuoc, main1)) continue;
+                    if (!IsMatch(recipe.DuocDan, primer)) continue;
+
+                    bool matchSub1 = IsMatch(recipe.PhuDuoc1, sub1) && IsMatch(recipe.PhuDuoc2, sub2);
+                    bool matchSub2 = IsMatch(recipe.PhuDuoc1, sub2) && IsMatch(recipe.PhuDuoc2, sub1);
+
+                    if (matchSub1 || matchSub2)
+                    {
+                        return (data, recipe);
+                    }
+                }
+            }
+
+            return (null, null);
+        }
+        public bool HasRecipe(RecipeData recipeData)
+        {
+            if(recipeData == null) return false;
+            return recipes.Any(r => r.Data == recipeData);
+        }
+        public (RecipeData data, RecipeData.Recipe recipe) FindResourcesRecipe(Ingredient main1, Ingredient sub1,
+            Ingredient sub2, Ingredient primer)
+        {
+            var recipes = LuyenDanPanel.Instance.Resources.Recipes;
+            foreach (var data in recipes)
+            {
                 foreach (var recipe in data.Recipes)
                 {
                     if (recipe == null) continue;
@@ -92,6 +131,7 @@ namespace LuyenDan
 
             return herb.Id == ingredient.Item.ItemRef.Id && herb.Count == ingredient.Count;
         }
+
         public void OpenTierSelection()
         {
             tierSelection.SetActive(true);
@@ -101,6 +141,7 @@ namespace LuyenDan
         {
             tierSelection.SetActive(false);
         }
+
         public void Refresh()
         {
             foreach (var recipeUI in recipes)
