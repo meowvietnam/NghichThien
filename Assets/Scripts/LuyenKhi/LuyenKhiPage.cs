@@ -12,6 +12,7 @@ namespace LuyenKhi
         [SerializeField] private Text grade;
         [SerializeField] private Text gradeDetail;
         [SerializeField] private ButtonLuyenKhi buttonLuyenKhi;
+        [SerializeField] private PutMaterials putMaterials;
         [field: SerializeField, ReadOnly] public ArtifactType CurrentSelectedType { get; private set; } 
         public void Init()
         {
@@ -27,6 +28,7 @@ namespace LuyenKhi
             var icon = LuyenKhiPanel.Instance.Resources.EquipmentIcons.First(x => x.Type == type);
             iconImage.sprite = icon.Icon;
             iconImage.SetNativeSize();
+            putMaterials.Recalculate();
         }
 
         public void SetGrade(int grade)

@@ -36,27 +36,31 @@ namespace LuyenKhi
                     x.CultivationElement,
                     x.YinYangType,
                 })
+                .Select(k => new
+                {
+                    Materials = k.ToList(),
+                    Effect = lianQiEffects.First(i =>
+                        i.CultivationElement == k.Key.CultivationElement && i.YinYangType == k.Key.YinYangType)
+                        .Effects.First(i => i.ArtifactType == currentSelectedType),
+                })
+                .GroupBy(x => x.Effect.EffectType)
                 .Select(group => new
                 {
-                    Key = group.Key,
-                    Sum = group.Sum(x => matConfigs.First(i => i.Tier == x.Tier).Grade),
+                    Sum = group.SelectMany(x => x.Materials).Sum(x => matConfigs.First(i => i.Tier == x.Tier).Grade),
+                    group.First().Effect,
                 })
                 .ToArray();
             var effectGroups = sumGroup
                 .Select(x =>
                 {
-                    var k = x.Key;
                     var sum = x.Sum;
-                    var effect = lianQiEffects.First(i =>
-                            i.CultivationElement == k.CultivationElement && i.YinYangType == k.YinYangType)
-                        .Effects
-                        .First(i => i.ArtifactType == currentSelectedType);
-                    var max = Mathf.RoundToInt(1.0f * sum / effect.Effect.Value);
+                    var effect = x.Effect;
+                    var max = Mathf.RoundToInt(1.0f * sum / effect.Value);
                     var min = Mathf.RoundToInt(0.5f * max);
                     return new EffectDetail
                     {
-                        Name = effect.Effect.Name,
-                        Value = effect.Effect.Value,
+                        Name = effect.Name,
+                        Value = effect.Value,
                         Sum = sum,
                         Max = max,
                         Min = min,

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Base
@@ -23,20 +21,10 @@ namespace Base
             return result;
         }
         public string this[int key] => Dict[key];
-        [Button]
-        public void Replace(string oldValue, string newValue)
-        {
-            for (var i = 0; i < Dict.Count; i++)
-            {
-                var item = Dict[i];
-                item.Replace(oldValue, newValue);
-                Dict[i] = item;
-            }
-        }
-        [Button]
-        public void Clear()
-        {
-            Dict = new();
-        }
+        // [Button]
+        // public void Clear()
+        // {
+        //     Dict = new();
+        // }
     }
 }

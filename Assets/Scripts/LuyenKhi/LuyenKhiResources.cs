@@ -23,7 +23,7 @@ namespace LuyenKhi
         [field: SerializeField] public Material[] Materials { get; private set; }
         [field: SerializeField] public LuyenKhiRewardItem[] RewardItems { get; private set; }
         [field: SerializeField] public LianQiEffect[] LianQiEffects { get; private set; }
-        [field: SerializeField] public EffectTypeNameConfig[] EffectTypeNameConfigs { get; private set; }
+        [field: SerializeField] public EffectTypeConfig[] EffectTypeNameConfigs { get; private set; }
         [field: SerializeField] public StringDict Strings { get; private set; } = new();
         private static LuyenKhiResources instance;
         public static LuyenKhiResources Instance
@@ -46,6 +46,11 @@ namespace LuyenKhi
             }
             return null;
         }
-        
+
+        [Button]
+        public void Load()
+        {
+ 
+        }
     }
 }

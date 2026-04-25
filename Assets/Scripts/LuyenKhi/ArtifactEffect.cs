@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Network;
 using Network.Extensions;
 using Sirenix.OdinInspector;
@@ -31,22 +32,30 @@ namespace LuyenKhi
             }
         }
         [field: SerializeField] public ArtifactType ArtifactType { get; set; }
-        [field: SerializeField] public BaseEffect Effect { get; set; }
+
+        private EffectTypeConfig Config
+        {
+            get
+            {
+                return LuyenKhiResources.Instance.EffectTypeNameConfigs.First(x => x.Type == EffectType);
+            }
+        }
+        [field: SerializeField] public EffectType EffectType { get; set; }
+        [ShowInInspector] public string Name => Config.Name;
+        [ShowInInspector] public int Value => Config.Value;
         public void Deserialize(IReader reader, ref ArtifactEffect value)
         {
            value.ArtifactType = reader.Read<ArtifactType>();
-           value.Effect = reader.Read<BaseEffect>();
+           value.EffectType = reader.Read<EffectType>();
         }
-
         public int ByteSize()
         {
-            return ArtifactType.ByteSize() + Effect.ByteSize();
+            return ArtifactType.ByteSize() + EffectType.ByteSize();
         }
-
         public void Serialize(IWriter writer)
         {
             writer.Write(ArtifactType);
-            writer.Write(Effect);
+            writer.Write(EffectType);
         }
     }
 }
