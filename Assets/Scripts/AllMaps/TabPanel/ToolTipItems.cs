@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Base;
+using CreateCharacter;
 using UnityEngine;
 using UnityEngine.UI;
 public enum EActionShowItemInfor
@@ -46,6 +47,7 @@ public class ToolTipItems : BaseBehaviour , ISingleton
     [SerializeField] private EActionShowItemInfor eActionShowItem;
     public static ToolTipItems Instance { get; private set; }
     private readonly Dictionary<ItemType, IToolTipDisplayer> displayerRegistry = new();
+    private CharacterData CharData => Client.Instance.CharacterData;
     private void RegisterDisplayers()
     {
         Register(new HerbDisplayer());
@@ -175,7 +177,7 @@ public class ToolTipItems : BaseBehaviour , ISingleton
             typeText.text = skill.GetTextTypeSkill();
             if(skill is ThanThong)
             {
-                descriptionText.text = skill.GetDesc(ThanThong.GetDaiCanhGioi(Client.Instance.CharacterData.Level));
+                descriptionText.text = skill.GetDesc(ThanThong.GetDaiCanhGioi(CharData.Progression.Level));
             }
             else if(skill is CongPhap)
             {

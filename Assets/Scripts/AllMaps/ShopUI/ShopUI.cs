@@ -41,11 +41,11 @@ public class ShopUI : Popup, ISingleton, INetworkEvent.IBuyAndSell, INetworkEven
         {
             item.gameObject.SetActive(false);
         }
-
-        textNameUser.text = Client.Instance.CharacterData.Name;
-        visualUserChar.SetGender(Client.Instance.CharacterData.Gender);
-        visualUserChar.SetSkin(Client.Instance.CharacterData.Skins);
-        visualNpcChar.RandomSkin(Base.Gender.Male, false);
+        var charData = Client.Instance.CharacterData;
+        textNameUser.text = charData.Name;
+        visualUserChar.SetGender(charData.Gender);
+        visualUserChar.SetSkin(charData.Appearance.Skins);
+        visualNpcChar.RandomSkin(Gender.Male, false);
         textMoneyUser.text = Client.Instance.CharacterData.Stats.LinhThach.ToString();
         SetTextMoneyCurrent();
         SetEventButton(btnConfirm, () =>

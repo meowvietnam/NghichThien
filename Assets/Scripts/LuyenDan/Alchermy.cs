@@ -274,7 +274,6 @@ namespace LuyenDan
             var selectedDanluTier = SelectedFurnace.Tier;
             var currentDurability = SelectedFurnace.FData.Durability;
             var tierDiff = linhdanTier - selectedDanluTier;
-            Debug.Log(tierDiff);
             var baseLossDurability = tierDiff > 0 ? tierDiff * 50 : 2;
             void UpdateText()
             {

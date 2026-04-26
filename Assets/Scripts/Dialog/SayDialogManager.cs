@@ -39,7 +39,8 @@ public class SayDialogManager : BaseBehaviour
     }
     public void ShowDialogForUser(string content, Sprite spriteContent = null, AudioClip voice = null, Action actionEndThisDialog = null)
     {
-        ShowDialog(Client.Instance.CharacterData.Name,Client.Instance.CharacterData.Gender,Client.Instance.CharacterData.Skins,Client.Instance.CharacterData.Colors,content,spriteContent,voice,actionEndThisDialog);
+        var charData = Client.Instance.CharacterData;
+        ShowDialog(charData.Name,charData.Gender,charData.Appearance.Skins,charData.Appearance.Colors,content,spriteContent,voice,actionEndThisDialog);
     }    
     [Button]
     public void ShowDialog(string name,Gender gender,Dictionary<string,string>skins,Dictionary<string,Color>colors,string content, Sprite spriteContent = null, AudioClip voice = null, Action actionEndThisDialog = null)

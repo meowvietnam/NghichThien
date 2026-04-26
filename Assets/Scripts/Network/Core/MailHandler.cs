@@ -35,7 +35,7 @@ namespace Network.Core
                 if (result.Success)
                 {
                     var charData = Client.CharacterData;
-                    charData.Mails = result.Mails;
+                    charData.Social.Mails = result.Mails;
                 }
 
                 callback.OnGetMails(result);
@@ -43,7 +43,7 @@ namespace Network.Core
             else if (tag == MessageTag.MarkMailRead)
             {
                 var id = reader.Read<int>();
-                var mails = Client.CharacterData.Mails;
+                var mails = Client.CharacterData.Social.Mails;
                 var mail = mails.FirstOrDefault(x => x.Id == id);
                 if (mail != null)
                 {
@@ -55,7 +55,7 @@ namespace Network.Core
             else if (tag == MessageTag.RemoveMailId)
             {
                 var id = reader.Read<int>();
-                var mails = Client.CharacterData.Mails;
+                var mails = Client.CharacterData.Social.Mails;
                 var mail = mails.FirstOrDefault(x => x.Id == id);
                 if (mail != null)
                 {
@@ -69,7 +69,7 @@ namespace Network.Core
                 var removeMails = reader.ReadArray<int>().ToList();
                 if (removeMails.Any())
                 {
-                    var mails = Client.CharacterData.Mails;
+                    var mails = Client.CharacterData.Social.Mails;
                     mails.RemoveAll(x => removeMails.Contains(x.Id));
                     callback.RemoveAllMail(removeMails);
                 }
@@ -89,7 +89,7 @@ namespace Network.Core
             else if (tag == MessageTag.NewMail)
             {
                 var mail = reader.Read<Mail>();
-                var mails = Client.CharacterData.Mails;
+                var mails = Client.CharacterData.Social.Mails;
                 mails.Add(mail);
                 callback.AddMail(mail);
             }
@@ -97,7 +97,7 @@ namespace Network.Core
 
         private void ApplyClaim(RewardResult result)
         {
-            var mails = Client.CharacterData.Mails;
+            var mails = Client.CharacterData.Social.Mails;
             foreach (var resultMail in result.Mails)
             {
                 var mail = mails.FirstOrDefault(x => x.Id == resultMail);

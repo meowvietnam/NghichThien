@@ -6,7 +6,6 @@ using Base;
 using LuyenDan;
 using Network;
 using Network.Extensions;
-using Newtonsoft.Json;
 using Sirenix.OdinInspector;
 
 namespace CreateCharacter
@@ -25,12 +24,16 @@ namespace CreateCharacter
         [ShowInInspector] public HashSet<ItemRef> TrangSucs { get; set; } = new();
         [ShowInInspector] public HashSet<ItemRef> LinhDans { get; set; } = new();
 
-
+        [ShowInInspector] public HashSet<NgoDao> NgoDaos { get; set; } = new();
+        [ShowInInspector] public HashSet<CamNgo> CamNgos { get; set; } = new();
+        [ShowInInspector] public HashSet<CongPhap> CongPhapOwners { get; set; } = new();
+        [ShowInInspector] public HashSet<ThanThong> ThanThongOwners { get; set; } = new();
         public int ByteSize()
         {
             return Furnaces.ByteSize() + Recipes.ByteSize() + Herbs.ByteSize() + ThanThongs.ByteSize() +
                    CongPhaps.ByteSize() + VuKhis.ByteSize() + PhongCus.ByteSize() + TrangSucs.ByteSize() +
-                   LinhDans.ByteSize();
+                   LinhDans.ByteSize() + NgoDaos.ByteSize() +  CamNgos.ByteSize() +  CongPhapOwners.ByteSize()
+                   + ThanThongOwners.ByteSize();
         }
 
         public void Serialize(IWriter writer)
@@ -44,6 +47,10 @@ namespace CreateCharacter
             writer.WriteArray(PhongCus);
             writer.WriteArray(TrangSucs);
             writer.WriteArray(LinhDans);
+            writer.WriteArray(NgoDaos);
+            writer.WriteArray(CamNgos);
+            writer.WriteArray(CongPhapOwners);
+            writer.WriteArray(ThanThongOwners);
         }
 
         public void Deserialize(IReader reader, ref InventoryManager value)
@@ -57,6 +64,10 @@ namespace CreateCharacter
             value.PhongCus = reader.ReadArray<ItemRef>().ToHashSet();
             value.TrangSucs = reader.ReadArray<ItemRef>().ToHashSet();
             value.LinhDans = reader.ReadArray<ItemRef>().ToHashSet();
+            value.NgoDaos = reader.ReadArray<NgoDao>().ToHashSet();
+            value.CamNgos = reader.ReadArray<CamNgo>().ToHashSet();
+            value.CongPhapOwners = reader.ReadArray<CongPhap>().ToHashSet();
+            value.ThanThongOwners = reader.ReadArray<ThanThong>().ToHashSet();
         }
 
         public void Clone(InventoryManager other)
@@ -70,6 +81,10 @@ namespace CreateCharacter
             PhongCus = new HashSet<ItemRef>(other.PhongCus);
             TrangSucs = new HashSet<ItemRef>(other.TrangSucs);
             LinhDans = new HashSet<ItemRef>(other.LinhDans);
+            NgoDaos = new HashSet<NgoDao>(other.NgoDaos);
+            CamNgos = new HashSet<CamNgo>(other.CamNgos);
+            CongPhapOwners = new HashSet<CongPhap>(other.CongPhapOwners);
+            ThanThongOwners = new HashSet<ThanThong>(other.ThanThongOwners);
         }
         public InventoryManager DeepClone()
         {
@@ -83,6 +98,10 @@ namespace CreateCharacter
             other.PhongCus = DeepClone(PhongCus);
             other.TrangSucs = DeepClone(TrangSucs);
             other.LinhDans = DeepClone(LinhDans);
+            other.NgoDaos = DeepClone(NgoDaos);
+            other.CamNgos = DeepClone(CamNgos);
+            other.CongPhapOwners = DeepClone(CongPhapOwners);
+            other.ThanThongOwners = DeepClone(ThanThongOwners);
             return other;
         }
         private HashSet<T> DeepClone<T>(IEnumerable<T> collection) where T : IDeepClone<T>
@@ -141,6 +160,7 @@ namespace CreateCharacter
                 Add(Recipes, itemRef);
             }
         }
+
 
         private void Add(HashSet<ItemRef> inventory, ItemRef itemRef)
         {

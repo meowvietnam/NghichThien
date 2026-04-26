@@ -11,6 +11,10 @@ namespace LuyenDan
         PhongCu,
         TrangSuc,
         Recipe,
-        Material
+        Material,
+        NgoDao,
+        CamNgo,
+        CongPhapOwner,
+        ThanThongOwner,
     }
 }

@@ -61,7 +61,7 @@ namespace AllMaps
             Client.Instance.ChangeState(new Network.ClientState.AllMaps(this));
             SetUpGraph();
             var characterData = Client.Instance.CharacterData;
-            var entryMapId = characterData.IdCurrentNode;
+            var entryMapId = characterData.Progression.IdCurrentNode;
             var map = FindMap(entryMapId);
             current = map;
             player.SetPosition(map.PlayerPosition);

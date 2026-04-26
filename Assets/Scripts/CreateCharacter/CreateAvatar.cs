@@ -26,10 +26,12 @@ namespace CreateCharacter
             if (hasChar)
             {
                 SetGender(characterData.Gender);
-                SetSkin(characterData.Skins,characterData.Colors);
+                var appearance = characterData.Appearance;
+                SetSkin(appearance.Skins,appearance.Colors);
+                var progression = characterData.Progression;
                 nameText.text = characterData.Name;
-                levelText.text = GetLevelText(characterData.Level);
-                levelImage.sprite = GetIconLevel(characterData.Level);
+                levelText.text = GetLevelText(progression.Level);
+                levelImage.sprite = GetIconLevel(progression.Level);
                 button.onClick.AddListener(SelectCharacter);
             }
             else

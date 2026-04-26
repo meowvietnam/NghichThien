@@ -126,7 +126,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
     [SerializeField] private Color colorTextNoSelect => HexToColor("3F8784");
     public ETypeSkillRelationShip CurrentPageTypeRelationShip;
 
-    private int relatetionshipValue => Client.Instance.CharacterData.RelationShip.GetValueOrDefault(characterStatsTarget.idChar);
+    private int relatetionshipValue => Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar);
     [Header("--- Pop Dò Xét ---")]
     [SerializeField] private CharacterGraphic charVisualPopXemXet;
     [SerializeField] private Text textThanThuc;
@@ -208,7 +208,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         bag.InitBag(false);
         //reset 
         visualChar.SetGender(characterData.Gender);
-        visualChar.SetSkin(characterData.Skins, characterData.Colors);
+        visualChar.SetSkin(characterData.Appearance.Skins, characterData.Appearance.Colors);
         textMoney.text = characterData.Stats.LinhThach.ToString();
         textNameUser.text = characterData.Name;
         SetEventButton(btnConfirmTangQua, () =>
@@ -218,7 +218,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
                 Observer.Notify(EventList.Network.TANG_QUA_NPC, this, characterStatsTarget.idChar, slotItemGift.itemRef.Id, slotItemGift.count);
             }
         });
-        textHaoCamPopTangQua.text = Client.Instance.CharacterData.RelationShip.GetValueOrDefault(characterStatsTarget.idChar).ToString();
+        textHaoCamPopTangQua.text = Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar).ToString();
     }
 
     public void ShowNPCList(List<CharacterStatsSecure> listCharStats)
@@ -544,7 +544,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
     }    
     private void InitPopThinhGiao()
     {
-        Client.Instance.CharacterData.RelationShip.TryGetValue(characterStatsTarget.idChar,out int relatetionshipValue);
+        var relatetionshipValue = Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar);
         textRelationshipValue.text = relatetionshipValue.ToString();
         InitCongPhapTab();
         SetEventButton(btnTabCongPhap, () =>
@@ -584,7 +584,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         textTuoiTac.text = characterStatsTarget.tuoiTac.Value.ToString();
         textSinhMenh.text = characterStatsTarget.hpMax.Value.ToString();
         textLevel.text = GameManager.levelWithText[characterStatsTarget.level];
-        textHaoCam.text = Client.Instance.CharacterData.RelationShip.GetValueOrDefault(characterStatsTarget.idChar).ToString();
+        textHaoCam.text = Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar).ToString();
         List<ThanThong> listThanThongData = new List<ThanThong>();
         var gameConfig = Pool.Get<GameManager>();
         foreach (var item in characterStatsTarget.thanThongEquip)

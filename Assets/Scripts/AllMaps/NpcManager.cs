@@ -88,7 +88,7 @@ public class NpcManager : MonoBehaviour
     private List<EnemyData> EnemyRandomOnMap(int maxCount)
     {
         // 1. Lấy level hiện tại của người chơi
-        int playerLevel = Client.Instance.CharacterData.Level;
+        int playerLevel = Client.Instance.CharacterData.Progression.Level;
 
         // 2. Tính toán Target Level của Enemy dựa trên tỉ lệ: 50% bằng, 40% dưới 1, 10% trên 1
         int targetLevel = playerLevel;

@@ -101,15 +101,15 @@ public class CharacterStatsSecure
 
     public void Clone(CharacterData data)
     {
+        var progression = data.Progression;
         nameUser = data.Name;
-        level = data.Level;
-        currentExp = data.CurrentExp;
-        ngoDaoDiem = data.NgoDaoDiem;
-
+        level = progression.Level;
+        currentExp = progression.CurrentExp;
+        ngoDaoDiem = progression.NgoDaoDiem;
         Clone(data.Stats);
     }
 
-    private void Clone(CreateCharacter.CharStats.CharacterStats stats)
+    private void Clone(CharacterStats stats)
     {
         percentKim = stats.Kim;
         percentMoc = stats.Moc;

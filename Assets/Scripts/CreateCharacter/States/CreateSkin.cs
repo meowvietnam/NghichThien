@@ -31,8 +31,8 @@ namespace CreateCharacter.States
             };
             var newCharacter = CreateCharacterSystem.Instance.NewCharacter;
             newCharacter.Gender = gender;
-            newCharacter.Skins = skin;
-            newCharacter.Colors = color;
+            newCharacter.Appearance.Skins = skin;
+            newCharacter.Appearance.Colors = color;
             Client.Instance.Send(MessageTag.SetSkins, request);            
         }
         public void Back()

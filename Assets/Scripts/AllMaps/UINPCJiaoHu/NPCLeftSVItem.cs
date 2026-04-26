@@ -1,4 +1,5 @@
-﻿using CreateCharacter;
+﻿using System.Linq;
+using CreateCharacter;
 using LongDH.LongDHModules;
 using Network;
 using UnityEngine;
@@ -16,16 +17,10 @@ public class NPCLeftSVItem : BaseBehaviour
 
    public void Init(CharacterStatsSecure charStats)
    {
-        // 1. Lấy giá trị thân mật ra trước, nếu không có thì mặc định là 0
-        if (!Client.Instance.CharacterData.RelationShip.TryGetValue(charStats.idChar, out var relationshipValue))
-        {
-            relationshipValue = 0; // Hoặc một giá trị mặc định bất kỳ
-        }
-
-        // 2. Tính toán Enum quan hệ một lần duy nhất để tránh gọi hàm lặp lại
+        var social = Client.Instance.CharacterData.Social;
+        var npcId = charStats.idChar;
+        var relationshipValue = social.GetRelationshipWithNPC(npcId);
         var currentERelation = UINPCJiaoHu.GetERelationShip(relationshipValue, UINPCJiaoHu.ETypeSkillRelationShip.ThanThong);
-
-        // 3. Gán dữ liệu lên UI
         this.textRelationship.text = UINPCJiaoHu.relationShipText[currentERelation];
         this.imageHeart.color = UINPCJiaoHu.relationShipColor[currentERelation];
         textName.text = charStats.nameUser;

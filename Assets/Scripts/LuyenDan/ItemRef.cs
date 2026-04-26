@@ -52,7 +52,7 @@ namespace LuyenDan
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, (int)Type);
+            return HashCode.Combine(Id, (byte)Type);
         }
 
         public bool Equals(ItemRef other)

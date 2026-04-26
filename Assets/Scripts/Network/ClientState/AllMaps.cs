@@ -29,8 +29,8 @@ namespace Network.ClientState
                 if (result.Success)
                 {
                     var charData = Client.Instance.CharacterData;
-                    charData.IdCurrentNode = result.Path.Last();
-                    charData.CurrentEnergy = result.Energy;
+                    charData.Progression.IdCurrentNode = result.Path.Last();
+                    charData.Progression.CurrentEnergy = result.Energy;
                     charData.Stats.TuoiTac = result.NewAge;
                 }
                 callback.OnMoveToMapResult(result);

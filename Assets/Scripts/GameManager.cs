@@ -68,8 +68,9 @@ public class GameManager : BaseBehaviour
     public static (string mySelf, string myCallTarget, string targetCallMe) XungHoText(int targetLevel,
         Gender targetGender)
     {
-        Gender myGender = Client.Instance.CharacterData.Gender;
-        int myLevel = Client.Instance.CharacterData.Level;
+        var charData = Client.Instance.CharacterData;
+        var myGender = charData.Gender;
+        int myLevel = charData.Progression.Level;
         int levelDiff = myLevel - targetLevel;
 
         // --- CASE 0: Bằng vai phải lứa ---
@@ -393,7 +394,7 @@ public class GameManager : BaseBehaviour
         var stat = charData.Stats;
         return new CharacterStatsSecure
         {
-            level = charData.Level,
+            level = charData.Progression.Level,
             hp = stat.Hp,
             hpMax = stat.SinhMenh,
             ability = stat.Ability,
@@ -406,19 +407,19 @@ public class GameManager : BaseBehaviour
             tocDoBay = stat.TocDoBay,
             thanThuc = stat.ThanThuc,
             thoNguyen = stat.ThoNguyen,
-            thanThongEquip = charData.ThanThongEquip.Select(x => new SecureInt(x)).ToList(),
-            chuTu1Used = charData.ChuTu1Used,
-            chuTu2Used = charData.ChuTu2Used,
-            phuTu1Used = charData.PhuTu1Used,
-            phuTu2Used = charData.PhuTu2Used,
-            phuTu3Used = charData.PhuTu3Used,
-            phuTu4Used = charData.PhuTu4Used,
+            thanThongEquip = charData.Equipment.ThanThongEquips.Select(x => new SecureInt(x.Id)).ToList(),
+            chuTu1Used = charData.Equipment.ChuTu1Used,
+            chuTu2Used = charData.Equipment.ChuTu2Used,
+            phuTu1Used = charData.Equipment.PhuTu1Used,
+            phuTu2Used = charData.Equipment.PhuTu2Used,
+            phuTu3Used = charData.Equipment.PhuTu3Used,
+            phuTu4Used = charData.Equipment.PhuTu4Used,
             monPhai = charData.MonPhai,
             danDoc = stat.DanDoc,
-            ngoDaoSaves = charData.NgoDaoSaves.Select(x => new SecureInt(x)).ToList(),
-            skinList = charData.Skins.Select(kvp => new CharacterStatsSecure.SkinData
+            ngoDaoSaves = charData.InventoryManager.NgoDaos.Select(x => new SecureInt(x.Id)).ToList(),
+            skinList = charData.Appearance.Skins.Select(kvp => new CharacterStatsSecure.SkinData
                 { key = kvp.Key, value = kvp.Value }).ToList(),
-            colorList = charData.Colors.Select(kvp => new CharacterStatsSecure.ColorData
+            colorList = charData.Appearance.Colors.Select(kvp => new CharacterStatsSecure.ColorData
                 { key = kvp.Key, value = kvp.Value }).ToList(),
         };
     }

@@ -33,19 +33,22 @@ public class UIHeadPanel : PanelGroup
    
     private void UpdatePlayerStats()
     {
+        var charData = Client.Instance.CharacterData;
+        var progression = charData.Progression;
+        var stats = charData.Stats;
         var gameConfig = Pool.Get<GameManager>();
-        hpText.text = $"{Client.Instance.CharacterData.Stats.Hp}/{Client.Instance.CharacterData.Stats.SinhMenh}";
+        hpText.text = $"{stats.Hp}/{stats.SinhMenh}";
         Slider hpSlider = hpText.transform.parent.GetComponent<Slider>();
-        hpSlider.value = (float)Client.Instance.CharacterData.Stats.Hp / Client.Instance.CharacterData.Stats.SinhMenh;
+        hpSlider.value = (float)stats.Hp / stats.SinhMenh;
 
-        tuviText.text = $"{Client.Instance.CharacterData.CurrentExp}/{gameConfig.inforLevels[Client.Instance.CharacterData.Level-1].tuviRequireNextLevel}";
+        tuviText.text = $"{progression.CurrentExp}/{gameConfig.inforLevels[progression.Level-1].tuviRequireNextLevel}";
         Slider expSlider = tuviText.transform.parent.GetComponent<Slider>();
-        expSlider.value = (float)Client.Instance.CharacterData.CurrentExp / gameConfig.inforLevels[Client.Instance.CharacterData.Level-1].tuviRequireNextLevel;
+        expSlider.value = (float)progression.CurrentExp / gameConfig.inforLevels[progression.Level-1].tuviRequireNextLevel;
 
-        iconLevel.sprite = listSpriteIconLevel[Client.Instance.CharacterData.Level-1];
+        iconLevel.sprite = listSpriteIconLevel[progression.Level-1];
         iconLevel.SetNativeSize();
-        nameText.text = Client.Instance.CharacterData.Name;
-        characterGraphic.SetGender(Client.Instance.CharacterData.Gender);
-        characterGraphic.SetSkin(Client.Instance.CharacterData.Skins);
+        nameText.text = charData.Name;
+        characterGraphic.SetGender(charData.Gender);
+        characterGraphic.SetSkin(charData.Appearance.Skins);
     }
 }

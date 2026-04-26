@@ -47,7 +47,9 @@ namespace Network
         LuyenDanResult = 202, 
         AddItems = 209,
         AddItemsResult = 210,
+        SetInfinityEnergy = 220,
         ChangeScene = 256,
         ChangeSceneResult = 257,
+        
     }
 }

@@ -37,22 +37,23 @@ namespace Network
         [Button]
         private List<int> GetFullIdThanThongWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
+            
             var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
-            return combo.comboWithDaiCanhGioi[ThanThong.GetDaiCanhGioi(Client.CharacterData.Level) - 1].thanThongs.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
+            return combo.comboWithDaiCanhGioi[ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1].thanThongs.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
                 .ToList();
         }
         [Button]
         private List<int> GetFullIdNgoDaoWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
             var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
-            return combo.comboWithDaiCanhGioi[ThanThong.GetDaiCanhGioi(Client.CharacterData.Level) - 1].ngoDaos.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
+            return combo.comboWithDaiCanhGioi[ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1].ngoDaos.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
                 .ToList();
         }
         [Button]
         private List<int> GetFullIdCongPhapWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
             var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
-            return combo.comboWithDaiCanhGioi[ThanThong.GetDaiCanhGioi(Client.CharacterData.Level) - 1].congPhaps.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
+            return combo.comboWithDaiCanhGioi[ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1].congPhaps.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
                 .ToList();
         }
         [Button]
@@ -67,6 +68,7 @@ namespace Network
             Client.Send(MessageTag.AddItems, items);
         }
         [Button]
+        [ShowIf(nameof(IsReady))]
         public void AddFullItem()
         {
             var gameConfig = Pool.Get<GameManager>();
@@ -117,6 +119,13 @@ namespace Network
                 });
             }
             AddItems(items);
+        }
+
+        [Button]
+        [ShowIf(nameof(IsReady))]
+        public void SetInfinityEnergy(bool isInfinityEnergy)
+        {
+            Client.Send(MessageTag.SetInfinityEnergy, isInfinityEnergy);
         }
         public void StartListen()
         {

@@ -35,7 +35,7 @@ namespace AllMaps
 
         public void Refresh()
         {
-            var mails = Client.Instance.CharacterData.Mails;
+            var mails = Client.Instance.CharacterData.Social.Mails;
             var isNeverRead = mails.Any(x => !x.IsRead);
             redPoint.SetActive(isNeverRead);
         }
