@@ -562,7 +562,7 @@ public class GameManager : BaseBehaviour
             case ItemType.Furnace:
                 int basePrice = PriceFurnaceWithTier[data.Tier];
                 int currentDoBen = Client.Instance.CharacterData.InventoryManager.Furnaces
-                    .FirstOrDefault(x => x.Ref.Id == itemRef.Id).Durability;
+                    .FirstOrDefault(x => x.Id == itemRef.Id)!.Durability;
                 price = basePrice * currentDoBen / 100;
 
                 break;

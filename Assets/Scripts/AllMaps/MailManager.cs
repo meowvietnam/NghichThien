@@ -69,20 +69,13 @@ namespace AllMaps
             NetworkManager.Instance.Invoke(() =>
             {
                 mailPanel.OnClaimMails(result);
-                var listItemRef = new List<ItemRef>();
                 var rewardItems  = result.RewardItems;
-                foreach (var furnace in rewardItems.Furnaces)
-                {
-                    listItemRef.Add(furnace.Ref);
-                }
-                foreach (var item in rewardItems.OtherItems)
-                {
-                    listItemRef.Add(item);
-                }
-
+                var listItemRef = rewardItems.OtherItems;
+                var furnaceList = rewardItems.Furnaces;
                 var r = LuyenDanResources.Instance;
                 var core = CoreConfig.Instance;
                 var listItem = listItemRef.Select(x => r.FindItem(x)).ToList();
+                listItem.AddRange(furnaceList.Select(x => r.FindItem(x)));
                 var message = $"Bạn nhận được: {string.Join(", ", listItem.Select(x => $"<color=#{ColorUtility.ToHtmlStringRGBA(core.FindQuality(x.Tier).Color)}>{x.Name}</color>"))}";
                 NotifyGroup.Instance.Show(message);
             });

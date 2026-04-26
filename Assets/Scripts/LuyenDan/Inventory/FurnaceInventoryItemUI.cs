@@ -18,7 +18,7 @@ namespace LuyenDan.Inventory
         public void Init(FurnaceData data)
         {
             FData = data;
-            Init(data.Ref);
+            Init(data.CreateRef());
         }
         protected override void OnSelected()
         {

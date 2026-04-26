@@ -91,8 +91,6 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             {
                 prefabItemBag.transform.parent.GetChild(i).gameObject.SetActive(false);
             }
-
-                  
         }
         int totalLoad = 30;
         int countAdd = 10;

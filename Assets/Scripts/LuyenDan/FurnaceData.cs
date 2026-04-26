@@ -9,22 +9,31 @@ namespace LuyenDan
     [Serializable]
     public class FurnaceData : IMemorySerializable<FurnaceData>, IEquatable<FurnaceData>, IDeepClone<FurnaceData>
     {
-        [field: SerializeField]
-        public ushort SelfId { get; set; }
-        [field: SerializeField]
-        public sbyte Durability { get; set; }
-        [field: SerializeField]
-        public ItemRef Ref { get; set; }
+        [field: SerializeField] public ushort SelfId { get; set; }
+        [field: SerializeField] public ushort Id { get; set; }
+        [field: SerializeField] public sbyte Durability { get; set; }
 
         public event Action<int> OnDurabilityChanged;
+
         public int ByteSize()
         {
-            return SelfId.ByteSize() + Ref.ByteSize()  + Durability.ByteSize();
+            return SelfId.ByteSize() + Id.ByteSize() + Durability.ByteSize();
         }
+
+        public ItemRef CreateRef()
+        {
+            return new ItemRef()
+            {
+                Id = Id,
+                Type = ItemType.Furnace,
+                Count = 1
+            };
+        }
+
         public void Serialize(IWriter writer)
         {
             writer.Write(SelfId);
-            writer.Write(Ref);
+            writer.Write(Id);
             writer.Write(Durability);
         }
 
@@ -33,22 +42,26 @@ namespace LuyenDan
             Durability = (sbyte)durability;
             OnDurabilityChanged?.Invoke(durability);
         }
+
         public void Deserialize(IReader reader, ref FurnaceData value)
         {
             value.SelfId = reader.Read<ushort>();
-            value.Ref = reader.Read<ItemRef>();
+            value.Id = reader.Read<ushort>();
             value.Durability = reader.Read<sbyte>();
         }
+
         public override int GetHashCode()
         {
-            return HashCode.Combine(SelfId, Durability, Ref);
+            return HashCode.Combine(SelfId, Id, Durability);
         }
+
         public bool Equals(FurnaceData other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
-            return SelfId == other.SelfId && Durability == other.Durability && Equals(Ref, other.Ref);
+            return SelfId == other.SelfId && Id == other.Id && Durability == other.Durability;
         }
+
         public override bool Equals(object obj)
         {
             if (obj is null) return false;
@@ -63,8 +76,8 @@ namespace LuyenDan
             {
                 SelfId = SelfId,
                 Durability = Durability,
+                Id = Id,
                 OnDurabilityChanged = null,
-                Ref = Ref.DeepClone(),
             };
         }
     }
