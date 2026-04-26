@@ -13,6 +13,8 @@ public class ThucCotDocHoa : ThanThong
       {
         1,1,1,1,1
       };
+    [SerializeField] private float delayEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
@@ -23,7 +25,7 @@ public class ThucCotDocHoa : ThanThong
 
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, deBuffs[GetIndexLevelThanThong(caster)]);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, deBuffs[GetIndexLevelThanThong(caster)]);
-
+        ShowSkillEffectParticle(caster,delayEffect,3.5f);
 
 
     }

@@ -14,6 +14,8 @@ public class DucHoaChu : ThanThong
      {
         1,2,4,5,7
      };
+    [SerializeField] private float delayEffect = 0.5f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
@@ -22,7 +24,7 @@ public class DucHoaChu : ThanThong
         int thieuDot = thieuDotBuffs[GetIndexLevelThanThong(caster)];
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoaDiem, hoaDiem);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, thieuDot);
-
+        ShowSkillEffectWorld(caster, delayEffect);
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
