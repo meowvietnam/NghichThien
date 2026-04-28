@@ -30,7 +30,7 @@ namespace LuyenKhi
         }
         private void ShowInfo()
         {
-            LuyenKhiPanel.Instance.ToolTipItems.ShowInfoItem(Material,ItemRef);
+            ToolTipItems.Instance.ShowInfoItem(Material,ItemRef);
         }
         private void OnSelected()
         {

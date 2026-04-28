@@ -325,6 +325,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         }
 
         var camNgoThisPage = CharacterDatas.InventoryManager.CamNgos.FirstOrDefault(x => x.Id == listNgoDaoResources[indexThisPage].Id);
+        if(camNgoThisPage == null) return;
         for (int i = 0; i < NgoDaoResource.GetLevelCamNgo(camNgoThisPage.Value); i++)
         {
             var item = listSkill[i];
@@ -699,6 +700,8 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         // unEquip
         foreach (var currentItem in listItemSlotThanThongs)
         {
+            ThanThong thanThong = currentItem.itemData as ThanThong;
+
             currentItem.InitAction(null, null, () =>
             {
                 Debug.Log("có vào đây");
@@ -713,7 +716,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 {
                     if (resultRect != null)
                     {
-                        Observer.Notify(EventList.Network.UNEQUIP_THANTHONG,this, listItemSlotThanThongs.IndexOf(currentItem));
+                        Observer.Notify(EventList.Network.UNEQUIP_THANTHONG,this, thanThong.Id);
                         Debug.Log("updaet thần thông id unequip");
                         // Cách viết chuẩn
 
@@ -770,7 +773,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                             //equip
                             //congPhap.EquipCongPhap();
                             //save player thần thông equip id
-                            Observer.Notify(EventList.Network.EQUIP_THANTHONG, this, listItemSlotThanThongs.IndexOf(currentItem), thanThong.Id);
+                            Observer.Notify(EventList.Network.EQUIP_THANTHONG, this, thanThong.Id);
                             // Cách viết chuẩn
 
 

@@ -19,7 +19,7 @@ namespace LuyenDan.Inventory
         }
         protected override void ShowInfo()
         {
-            LuyenDanPanel.Instance.ToolTipItems.ShowInfoItem(Data, ItemRef);
+            ToolTipItems.Instance.ShowInfoItem(Data, ItemRef);
         }
         public bool Is(HerbType type)
         {

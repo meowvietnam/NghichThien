@@ -27,7 +27,7 @@ namespace LuyenDan.Inventory
 
         protected override void ShowInfo()
         {
-            LuyenDanPanel.Instance.ToolTipItems.ShowInfoItem(Data,ItemRef,FData);
+            ToolTipItems.Instance.ShowInfoItem(Data,ItemRef,FData);
         }
 
         public override IItemData GetData()

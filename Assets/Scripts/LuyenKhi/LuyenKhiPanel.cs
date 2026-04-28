@@ -32,7 +32,6 @@ namespace LuyenKhi
         [field: SerializeField] public SelectTypePage SelectTypePage { get; private set; }
         [field: SerializeField] public LuyenKhiPage LuyenKhiPage { get; private set; }
         [field: SerializeField] public Bag Bag { get; private set; }
-        [field: SerializeField] public ToolTipItems ToolTipItems { get; private set; }
         [field: SerializeField] public ResultPage ResultPage { get; private set; }
         [field: SerializeField] public ProgressBar ProgressBar { get; private set; }
         [SerializeField] private Button changeTypeButton;
@@ -49,7 +48,6 @@ namespace LuyenKhi
             var charData = client.CharacterData;
             charData.OnInventoryUpdated += OnInventoryUpdated;
             charData.GetInventory();
-            ToolTipItems.Init();
         }
 
         private void OnInventoryUpdated(InventoryManager inventory)

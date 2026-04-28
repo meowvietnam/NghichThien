@@ -21,7 +21,7 @@ namespace LuyenDan
 
         private void ShowInfo()
         {
-            LuyenDanPanel.Instance.ToolTipItems.ShowInfoItem(itemData,itemRef);
+            ToolTipItems.Instance.ShowInfoItem(itemData,itemRef);
         }
 
         public virtual void Init(ItemRef itemRef)
