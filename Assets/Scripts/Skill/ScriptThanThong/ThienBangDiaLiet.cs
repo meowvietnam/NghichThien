@@ -8,6 +8,8 @@ public class ThienBangDiaLiet : ThanThong
   {
         24,34,54,96,192
   };
+    [SerializeField] protected float delayTimeEffect = 0.65f;
+
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -16,6 +18,7 @@ public class ThienBangDiaLiet : ThanThong
         dame += tran;
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, tran);
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

@@ -17,16 +17,19 @@ public class SaTang : ThanThong , BaseSkill.LienKich
     {
         1,2,4,8,16
     };
+    [SerializeField] protected float delayTimeEffect = 0.85f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
-        
+
 
     }
 
-   
+
     public override string GetDesc(int level)
     {
         return $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} Nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Hoa)} hệ thần thông thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)}. Đồng thời, kích hoạt thần thông {GetColoredText($"[Hóa Cát]", "red")}";

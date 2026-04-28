@@ -5,10 +5,14 @@ public class DiaSatNgungKet : ThanThong
 {
     [SerializeField]
     private int max = 10;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         HapThuVoiGioiHan(caster);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
     }
     void HapThuVoiGioiHan(CharacterCombat caster)
     {

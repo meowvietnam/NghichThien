@@ -10,6 +10,8 @@ public class TranY : ThanThong
     {
         1,2,3,4,6
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int giamTonThuong = buffValues[GetIndexLevelThanThong(caster)];
@@ -22,6 +24,8 @@ public class TranY : ThanThong
 
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, tran);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, tran);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
     }
 
 

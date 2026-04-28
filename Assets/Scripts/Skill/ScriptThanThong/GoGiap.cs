@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class GoGiap : ThanThong
 {
-   
+    [SerializeField] protected float delayTimeEffect = 1f;
+
     [SerializeField]
     private int[] buffValues = new int[]
     {
@@ -16,6 +17,7 @@ public class GoGiap : ThanThong
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt hoTrao);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, hoTrao);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao,hoTrao);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
 
 

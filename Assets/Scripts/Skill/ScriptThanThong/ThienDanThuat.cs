@@ -10,12 +10,14 @@ public class ThienDanThuat : ThanThong
         12,18,28,50,100
       };
 
-   
+    [SerializeField] protected float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
+        ShowSkillEffectParticle(caster, delayTimeEffect,5);
 
     }
     private void ObserverEffect(params object[] data)

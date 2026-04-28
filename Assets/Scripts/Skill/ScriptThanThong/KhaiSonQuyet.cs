@@ -18,11 +18,14 @@ public class KhaiSonQuyet : ThanThong , BaseSkill.TuongDong
     {
         1,2,3,4,5
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)] + (dameBuffPerLinhKhi[GetIndexLevelThanThong(caster)] * caster.CurrentLinhKhi);
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
-        
+        ShowSkillEffectWorld(target, delayTimeEffect);
+
 
     }
 

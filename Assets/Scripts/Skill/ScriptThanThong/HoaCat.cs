@@ -3,6 +3,7 @@
 
 public class HoaCat : ThanThong
 {
+    [SerializeField] protected float delayTimeEffect = 0.85f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -10,6 +11,7 @@ public class HoaCat : ThanThong
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt tran);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.Cat, tran);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, tran);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

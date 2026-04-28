@@ -18,6 +18,8 @@ public class ThienTinhNhuocVu : ThanThong
     {
         30,55,80,105,130
     };
+    [SerializeField] protected float delayTimeEffect = 0.85f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
@@ -31,6 +33,7 @@ public class ThienTinhNhuocVu : ThanThong
         
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, tran);
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectNoTarget(delayTimeEffect);
 
     }
 

@@ -12,11 +12,15 @@ public class DanLucThuat : ThanThong
    {
         1,1,1,1,1
    };
+    [SerializeField] protected float delayTimeEffect = 0.5f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, buffValues[GetIndexLevelThanThong(caster)]);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.DanLuc, danLucs[GetIndexLevelThanThong(caster)]);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.DanLuc, danLucs[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

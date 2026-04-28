@@ -13,12 +13,15 @@ public class TuTranThuat : ThanThong, BaseSkill.LienKich
    {
         2,3,4,6,9
    };
+    [SerializeField] protected float delayTimeEffect = 0.5f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int tran = buffValues[GetIndexLevelThanThong(caster)];
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, tran);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
-       
+
     }
 
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)

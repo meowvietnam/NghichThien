@@ -8,11 +8,14 @@ public class LienNhac : ThanThong
     
     [SerializeField]
     private int require = 5;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, require);
         caster.isSkipTieuTanLinhKhi = true;
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)

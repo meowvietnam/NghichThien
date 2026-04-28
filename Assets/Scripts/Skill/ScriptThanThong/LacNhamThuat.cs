@@ -14,16 +14,19 @@ public class LacNhamThuat : ThanThong
     {
         3,6,12,24,48
     };
+    [SerializeField] protected float delayTimeEffect = 0.85f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out SecureInt  danLuc);
         int dame = dames[GetIndexLevelThanThong(caster)] + (dameBuffPerDanLuc[GetIndexLevelThanThong(caster)] * danLuc);
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
 
     }
 
-   
+
 
     public override string GetDesc(int level)
     {

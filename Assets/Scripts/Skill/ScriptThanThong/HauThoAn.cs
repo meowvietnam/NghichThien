@@ -15,11 +15,15 @@ public class HauThoAn : ThanThong , BaseSkill.LienKich
         4,6,8,12,22
     };
 
+    [SerializeField] private float delayTimeEffect = 0.65f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.LIEN_KICH, ObserverEffect);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
 
     }
     private void ObserverEffect(params object[] data)

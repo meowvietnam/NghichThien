@@ -7,7 +7,7 @@ public class ThienNhanThuat : ThanThong
     [SerializeField] protected int[] countAttack;
     [SerializeField] protected int[] damePerCountAttack;
     [SerializeField]
-    private float delayTimeEffect = 1f;
+    protected float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, requireKiemKhi);

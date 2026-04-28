@@ -5,6 +5,8 @@ using static CharacterCombat;
 public class ThienQuanTram : ThanThong
 {
     [SerializeField] private int[] dames;
+    [SerializeField]
+    protected float delayTimeEffect = 0.35f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         SecureInt hoTrao = 0;
@@ -19,6 +21,8 @@ public class ThienQuanTram : ThanThong
         {
             target.CaculateDameByThanThong(caster, new List<int> { dame }, eTypeSkill);
         }
+        ShowSkillEffectWorld(target, delayTimeEffect);
+
     }
 
     public override string GetDesc(int level)

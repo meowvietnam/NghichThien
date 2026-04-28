@@ -12,6 +12,7 @@ public class SaPhuoc : ThanThong
     {
         4,5,9,16,32
     };
+    [SerializeField] protected float delayTimeEffect = 0.85f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -19,7 +20,8 @@ public class SaPhuoc : ThanThong
         caster.AddThanThongCoolDown(hoanTran, -1);
         Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, hoanTran, new List<LinhKhiTieuTan>());
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
-        
+        ShowSkillEffectWorld(target, delayTimeEffect);
+
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
