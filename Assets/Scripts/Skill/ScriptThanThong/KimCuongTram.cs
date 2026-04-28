@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Skill;
 using UnityEngine;
 [CreateAssetMenu(fileName = nameof(KimCuongTram), menuName = "Skill/Thần Thông/" + nameof(KimCuongTram))]
 public class KimCuongTram : ThanThong , BaseSkill.LienKich

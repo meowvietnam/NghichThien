@@ -6,6 +6,7 @@ namespace Network.ClientState
         SelectCharacter,
         CreateCharacter,
         AllMaps,
-        LuyenDan
+        LuyenDan,
+        LuyenKhi
     }
 }

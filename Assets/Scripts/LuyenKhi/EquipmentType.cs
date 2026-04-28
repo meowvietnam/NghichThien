@@ -1,6 +1,6 @@
 namespace LuyenKhi
 {
-    public enum EquipmentType
+    public enum EquipmentType : byte
     {
         Weapon,
         Armor,

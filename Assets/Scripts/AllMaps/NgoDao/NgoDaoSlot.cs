@@ -2,6 +2,7 @@ using AllMaps;
 using LongDH.LongDHModules;
 using Sirenix.OdinInspector;
 using System.Linq;
+using AllMaps.NgoDao;
 using UnityEngine;
 using UnityEngine.UI;
 

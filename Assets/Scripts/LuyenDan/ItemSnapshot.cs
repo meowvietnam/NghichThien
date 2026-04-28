@@ -14,6 +14,6 @@ namespace LuyenDan
             Count = count;
         }
         public bool IsEmpty => Count <= 0;
-        public override string ToString() => $"[Id={Id}, Count={Count}]";
+        public override string ToString() => $"[SelfId={Id}, Count={Count}]";
     }
 }

@@ -22,14 +22,12 @@ namespace LuyenKhi
         private void Start()
         {
             SetEventButton(button,OnClick);
-            SetEventButton(clearButton,OnClear);
+            SetEventButton(clearButton,Clear);
         }
-
-        private void OnClear()
+        public void Clear()
         {
             Select(null);
         }
-
         private void OnClick()
         {
             LuyenKhiPanel.Instance.Bag.OpenWithCallback(this);

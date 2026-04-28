@@ -1,13 +1,16 @@
-﻿using LongDH.LongDHModules;
-using UnityEngine;
-public abstract class NgoDao : BaseData
-{
-    [SerializeField] public int require;
-    [SerializeField] public BaseSkill.ETypeSkill[] eTypeRequire;
+﻿using UnityEngine;
 
-    public virtual void Learn(INetworkEvent.ILearnNgoDao data)
+namespace AllMaps.NgoDao
+{
+    public abstract class NgoDao : BaseData
     {
-    }    
-    public abstract string GetDes();
+        [SerializeField] public int require;
+        [SerializeField] public BaseSkill.ETypeSkill[] eTypeRequire;
+
+        public virtual void Learn(INetworkEvent.ILearnNgoDao data)
+        {
+        }    
+        public abstract string GetDes();
    
+    }
 }

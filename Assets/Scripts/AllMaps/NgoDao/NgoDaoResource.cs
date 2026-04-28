@@ -1,5 +1,6 @@
 ﻿using Sirenix.OdinInspector;
 using System.Collections.Generic;
+using AllMaps.NgoDao;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = nameof(NgoDaoResource), menuName = "Ngộ Đạo/" + nameof(NgoDaoResource))]

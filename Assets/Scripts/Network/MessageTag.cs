@@ -50,6 +50,9 @@ namespace Network
         SetInfinityEnergy = 220,
         ChangeScene = 256,
         ChangeSceneResult = 257,
-        
+        LuyenKhi = 310,
+        LuyenKhiResult = 311,
+        SetEquipmentName = 320,
+        SetEquipmentNameResult = 321,
     }
 }

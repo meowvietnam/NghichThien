@@ -1,5 +1,6 @@
 using LongDH.LongDHModules;
 using System.Linq;
+using Skill;
 using UnityEngine;
 
 public abstract class NeTranhTT : ThanThong

@@ -14,7 +14,7 @@ namespace AllMaps
             var module = Client.Instance.CoreModule;
             module.RemoveHandler<InventoryHandler>();
             var inventoryHandler = new InventoryHandler();
-            inventoryHandler.OnInventoryUpdated += OnInventoryUpdated;
+            Client.Instance.CharacterData.OnInventoryUpdated += OnInventoryUpdated;
             module.AddHandler(inventoryHandler);
         }
 
@@ -27,7 +27,7 @@ namespace AllMaps
         {
             var module = Client.Instance.CoreModule;
             var inventoryHandler = module.GetHandler<InventoryHandler>();
-            inventoryHandler.OnInventoryUpdated -= OnInventoryUpdated;
+            Client.Instance.CharacterData.OnInventoryUpdated -= OnInventoryUpdated;
         }
     }
 }

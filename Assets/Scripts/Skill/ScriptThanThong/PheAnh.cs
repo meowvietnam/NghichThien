@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Skill;
+using UnityEngine;
 [CreateAssetMenu(fileName = nameof(PheAnh), menuName = "Skill/Thần Thông/" + nameof(PheAnh))]
 
 public class PheAnh : ThanThong , BaseSkill.TuongKhac

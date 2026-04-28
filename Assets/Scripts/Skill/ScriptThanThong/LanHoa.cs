@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Skill;
 using UnityEngine;
 using static CharacterCombat;
 [CreateAssetMenu(fileName = nameof(LanHoa), menuName = "Skill/Thần Thông/" + nameof(LanHoa))]

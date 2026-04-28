@@ -11,6 +11,8 @@ using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Analytics.IAnalytic;
+using CongPhap = Skill.CongPhap;
+using ThanThong = Skill.ThanThong;
 
 public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.ILinhNgo, INetworkEvent.IDotPhaCongPhap
 {
@@ -114,7 +116,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     {
         var charData = CharData;
         
-        var cpChuTu = Pool.Get<GameManager>().GetCongPhapWithId(charData.Equipment.ChuTu1Used);
+        var cpChuTu = Pool.Get<GameManager>().GetCongPhapWithId(charData.EquipmentManager.ChuTu1Used);
         string nameCPstr = "Không";
       
         int tocDoTuLuyenCP = 0;
@@ -125,7 +127,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
             var level = 0;
             if (congPhapOwners.TryGetValue(new CreateCharacter.CongPhap()
                 {
-                    Id = charData.Equipment.ChuTu1Used
+                    Id = charData.EquipmentManager.ChuTu1Used
                 }, out var congPhap))
             {
                 level = congPhap.Level;

@@ -1,6 +1,6 @@
 namespace LuyenKhi
 {
-    public enum EffectType
+    public enum EffectType : byte
     {
         Bui,
         Cat,

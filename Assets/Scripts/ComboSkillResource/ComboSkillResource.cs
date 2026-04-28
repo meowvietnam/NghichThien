@@ -3,7 +3,9 @@ using UnityEngine;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using System.Linq;
+using AllMaps.NgoDao;
 using Base;
+using Skill;
 
 [CreateAssetMenu(fileName = nameof(ComboSkillResource), menuName = "Combo Skill Resource/" + nameof(ComboSkillResource))]
 

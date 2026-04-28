@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Skill;
 
 [CreateAssetMenu(fileName = nameof(LyHoaKiemPhap), menuName = "Skill/Thần Thông/" + nameof(LyHoaKiemPhap))]
 

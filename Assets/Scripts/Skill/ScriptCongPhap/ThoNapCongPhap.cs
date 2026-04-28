@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Skill;
+using UnityEngine;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThoNapCongPhap))]
 
 public class ThoNapCongPhap : CongPhap

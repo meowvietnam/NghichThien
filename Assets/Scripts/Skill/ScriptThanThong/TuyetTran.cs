@@ -1,6 +1,7 @@
 ﻿using LongDH.LongDHModules;
 using Newtonsoft.Json;
 using System.Linq;
+using Skill;
 using UnityEngine;
 [CreateAssetMenu(fileName = nameof(TuyetTran), menuName = "Skill/Thần Thông/" + nameof(TuyetTran))]
 public class TuyetTran : ThanThong , BaseSkill.LienKich

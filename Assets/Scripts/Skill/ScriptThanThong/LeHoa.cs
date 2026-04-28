@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Skill;
+
 [CreateAssetMenu(fileName = nameof(LeHoa), menuName = "Skill/Thần Thông/" + nameof(LeHoa))]
 
 public class LeHoa : ThanThong

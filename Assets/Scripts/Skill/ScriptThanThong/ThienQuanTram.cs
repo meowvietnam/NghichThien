@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Skill;
 using UnityEngine;
 using static CharacterCombat;
 [CreateAssetMenu(fileName = nameof(ThienQuanTram), menuName = "Skill/Thần Thông/" + nameof(ThienQuanTram))]

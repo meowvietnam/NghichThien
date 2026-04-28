@@ -60,5 +60,9 @@ namespace LuyenKhi
                 selectButton.onClick.RemoveAllListeners();
             }
         }
+        public void Destroy()
+        {
+            Destroy(selfObject);
+        }
     }
 }

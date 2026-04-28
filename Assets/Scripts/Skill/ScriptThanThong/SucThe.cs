@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Skill;
 using UnityEngine;
 [CreateAssetMenu(fileName = nameof(SucThe), menuName = "Skill/Thần Thông/" + nameof(SucThe))]
 public class SucThe : ThanThong

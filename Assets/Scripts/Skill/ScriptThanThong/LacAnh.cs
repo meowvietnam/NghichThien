@@ -1,4 +1,5 @@
 ﻿
+using Skill;
 using UnityEngine;
 [CreateAssetMenu(fileName = nameof(LacAnh), menuName = "Skill/Thần Thông/" + nameof(LacAnh))]
 

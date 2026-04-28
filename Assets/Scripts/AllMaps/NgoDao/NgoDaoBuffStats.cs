@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using AllMaps.NgoDao;
+using UnityEngine;
 [CreateAssetMenu(fileName = nameof(NgoDaoBuffStats), menuName = "Ngộ Đạo/Ngộ Đạo Buff Stats/" + nameof(NgoDaoBuffStats))]
 public class NgoDaoBuffStats : NgoDao
 {

@@ -6,6 +6,7 @@ namespace LuyenKhi
     public class EffectDetail
     {
         public string Name { get; set; }
+        public EffectType EffectType { get; set; }
         public int Sum { get; set; }
         public int Value { get; set; }
         public int Min { get; set; }
@@ -42,6 +43,28 @@ namespace LuyenKhi
 
                 effectDetailUI.gameObject.SetActive(true);
                 effectDetailUI.SetText(text);
+            }
+        }
+
+        public void SetDetails(string[] texts)
+        {
+            foreach (var effectDetailUI in effectDetails)
+            {
+                effectDetailUI.gameObject.SetActive(false);
+            }
+
+            for (var i = 0; i < texts.Length; i++)
+            {
+                var text = texts[i];
+                effectDetails[i].SetText(text);
+                effectDetails[i].gameObject.SetActive(true);
+            }
+        }
+        public void Init()
+        {
+            foreach (var effectDetailUI in effectDetails)
+            {
+                effectDetailUI.gameObject.SetActive(false);
             }
         }
     }

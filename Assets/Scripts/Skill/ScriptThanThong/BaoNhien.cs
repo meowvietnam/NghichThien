@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Skill;
+using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 [CreateAssetMenu(fileName = nameof(BaoNhien), menuName = "Skill/Thần Thông/" + nameof(BaoNhien))]
 

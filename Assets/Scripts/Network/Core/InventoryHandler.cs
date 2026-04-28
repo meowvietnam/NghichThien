@@ -10,8 +10,7 @@ namespace Network.Core
     public class InventoryHandler : IClientHandler
     {
         private Action<GetInventoryResult> getInventoryCallback;
-        public event Action<InventoryManager> OnInventoryUpdated;
-
+        private InventoryManager Inventory => Client.Instance.CharacterData.InventoryManager;
         public InventoryHandler()
         {
         }
@@ -30,15 +29,10 @@ namespace Network.Core
                 var result = reader.Read<GetInventoryResult>();
                 if (result.Success)
                 {
-                    SetInventory(result.InventoryManager);
+                    var charData = Client.Instance.CharacterData;
+                    charData.SetInventory(result.InventoryManager);
                 }
             }
-        }
-
-        public void SetInventory(InventoryManager inventoryManager)
-        {
-            Client.Instance.CharacterData.InventoryManager = inventoryManager;
-            OnInventoryUpdated?.Invoke(inventoryManager);
         }
 
         public void OnLeave()
@@ -51,10 +45,5 @@ namespace Network.Core
 
         private static readonly MessageTag[] handlerTag = { MessageTag.GetInventoryResult };
         public MessageTag[] HandleTag => handlerTag;
-
-        public void GetInventory()
-        {
-            Client.Instance.Send(MessageTag.GetInventory);
-        }
     }
 }

@@ -19,7 +19,7 @@ namespace LuyenKhi
         }
         private void OnClick()
         {
-            Debug.Log("click");
+            LuyenKhiPanel.Instance.LuyenKhiPage.LuyenKhi();
         }
         public void SetInteractable(bool interactable)
         {

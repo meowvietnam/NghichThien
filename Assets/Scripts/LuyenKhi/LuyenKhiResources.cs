@@ -1,8 +1,5 @@
-using System;
-using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using Base;
 using LuyenDan;
 using LuyenDan.Inventory;
@@ -58,6 +55,7 @@ namespace LuyenKhi
             value.EquipmentTiers = reader.ReadArray<EquipmentTierConfig>();
             value.EquipmentGrades = reader.ReadArray<EquipmentGradeConfig>();
             value.Materials = reader.ReadArray<Material>();
+            value.RewardItems = reader.ReadArray<LuyenKhiRewardItem>();
             value.LianQiEffects = reader.ReadArray<LianQiEffect>();
             value.EffectTypeConfigs = reader.ReadArray<EffectTypeConfig>();
             value.Strings = reader.Read<StringDict>();
@@ -66,6 +64,7 @@ namespace LuyenKhi
         {
             return MaterialGradeConfigs.ByteSize() + EquipmentTiers.ByteSize()
                                                    + EquipmentGrades.ByteSize() + Materials.ByteSize()
+                                                   + RewardItems.ByteSize()
                                                    + LianQiEffects.ByteSize()
                                                    + EffectTypeConfigs.ByteSize() + Strings.ByteSize();
         }
@@ -76,9 +75,20 @@ namespace LuyenKhi
             writer.WriteArray(EquipmentTiers);
             writer.WriteArray(EquipmentGrades);
             writer.WriteArray(Materials);
+            writer.WriteArray(RewardItems);
             writer.WriteArray(LianQiEffects);
             writer.WriteArray(EffectTypeConfigs);
             writer.Write(Strings);
+        }
+
+        [Button]
+        public void Export()
+        {
+            var writer = new Writer(ByteSize());
+            writer.Write(this);
+            var path = $"{Application.dataPath}/Exports/LuyenKhiResources.bin";
+            File.WriteAllBytes(path, writer.Buffer);
+            Debug.Log(path);
         }
     }
 }

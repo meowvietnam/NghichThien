@@ -13,6 +13,9 @@ using Base;
 using CreateCharacter;
 using UnityEngine;
 using UnityEngine.UI;
+using CongPhap = Skill.CongPhap;
+using ThanThong = Skill.ThanThong;
+
 public enum EActionShowItemInfor
 {
     None,

@@ -12,6 +12,8 @@ using System.Linq;
 using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.UI;
+using CongPhap = Skill.CongPhap;
+using ThanThong = Skill.ThanThong;
 
 public enum ERelationShip
 {
@@ -161,9 +163,9 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         itemDatas.AddRange(characterData.InventoryManager.Recipes.ToList());
         itemDatas.AddRange(characterData.InventoryManager.ThanThongs.ToList());
         itemDatas.AddRange(characterData.InventoryManager.CongPhaps.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.VuKhis.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.PhongCus.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
+        // itemDatas.AddRange(characterData.InventoryManager.VuKhis.ToList());
+        // itemDatas.AddRange(characterData.InventoryManager.PhongCus.ToList());
+        // itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
         itemDatas.AddRange(characterData.InventoryManager.LinhDans.ToList());
         // Sử dụng LINQ để trích xuất Ref từ mỗi phần tử trong furnaceDatas
         var furnaceRefs = characterData.InventoryManager.Furnaces.Select(f => f.CreateRef()).ToList();

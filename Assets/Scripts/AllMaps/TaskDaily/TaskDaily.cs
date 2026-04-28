@@ -45,9 +45,9 @@ public class TaskDaily : BaseBehaviour
         itemDatas.AddRange(characterData.InventoryManager.Recipes.ToList());
         itemDatas.AddRange(characterData.InventoryManager.ThanThongs.ToList());
         itemDatas.AddRange(characterData.InventoryManager.CongPhaps.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.VuKhis.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.PhongCus.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
+        // itemDatas.AddRange(characterData.InventoryManager.VuKhis.ToList());
+        // itemDatas.AddRange(characterData.InventoryManager.PhongCus.ToList());
+        // itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
         itemDatas.AddRange(characterData.InventoryManager.LinhDans.ToList());
 
         var itemUserHave = itemDatas.FirstOrDefault(x => x == itemRef);

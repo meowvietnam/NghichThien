@@ -10,16 +10,24 @@ namespace LuyenKhi
         public List<ItemBag> Items { get; private set; } = new();
         [SerializeField] protected ItemBag prefab;
         [SerializeField] protected RectTransform content;
-        private List<IItemFilter<ItemBag>> filters = new ();
+        private List<IItemFilter<ItemBag>> filters = new();
         public void Init(IEnumerable<ItemRef> datas)
         {
+            foreach (var itemBag in Items)
+            {
+                itemBag.Destroy();
+            }
+            Items.Clear();
             foreach (var data in datas)
             {
                 var instance = Instantiate(prefab, content);
                 instance.Init(data);
                 Items.Add(instance);
             }
-            AddFilter(this);
+            if (!filters.Contains(this))
+            {
+                AddFilter(this);
+            }
             Refresh();
         }
 

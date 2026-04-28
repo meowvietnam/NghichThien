@@ -1,5 +1,6 @@
 ﻿using LongDH.LongDHModules;
 using System.Collections.Generic;
+using Skill;
 using UnityEngine;
 [CreateAssetMenu(fileName = nameof(QuyTran), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(QuyTran))]
 public class QuyTran : NgoDaoCombat

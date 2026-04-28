@@ -17,6 +17,8 @@ using LuyenKhi;
 using AllMaps;
 using Network.Models;
 using Newtonsoft.Json.Linq;
+using CongPhap = Skill.CongPhap;
+using ThanThong = Skill.ThanThong;
 
 
 #if UNITY_EDITOR
@@ -407,13 +409,13 @@ public class GameManager : BaseBehaviour
             tocDoBay = stat.TocDoBay,
             thanThuc = stat.ThanThuc,
             thoNguyen = stat.ThoNguyen,
-            thanThongEquip = charData.Equipment.ThanThongEquips.Select(x => new SecureInt(x.Id)).ToList(),
-            chuTu1Used = charData.Equipment.ChuTu1Used,
-            chuTu2Used = charData.Equipment.ChuTu2Used,
-            phuTu1Used = charData.Equipment.PhuTu1Used,
-            phuTu2Used = charData.Equipment.PhuTu2Used,
-            phuTu3Used = charData.Equipment.PhuTu3Used,
-            phuTu4Used = charData.Equipment.PhuTu4Used,
+            thanThongEquip = charData.EquipmentManager.ThanThongEquips.Select(x => new SecureInt(x.Id)).ToList(),
+            chuTu1Used = charData.EquipmentManager.ChuTu1Used,
+            chuTu2Used = charData.EquipmentManager.ChuTu2Used,
+            phuTu1Used = charData.EquipmentManager.PhuTu1Used,
+            phuTu2Used = charData.EquipmentManager.PhuTu2Used,
+            phuTu3Used = charData.EquipmentManager.PhuTu3Used,
+            phuTu4Used = charData.EquipmentManager.PhuTu4Used,
             monPhai = charData.MonPhai,
             danDoc = stat.DanDoc,
             ngoDaoSaves = charData.InventoryManager.NgoDaos.Select(x => new SecureInt(x.Id)).ToList(),

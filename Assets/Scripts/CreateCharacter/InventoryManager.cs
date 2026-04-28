@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading;
 using Base;
 using LuyenDan;
+using LuyenKhi;
 using Network;
 using Network.Extensions;
+using Network.Models;
 using Sirenix.OdinInspector;
 
 namespace CreateCharacter
@@ -16,24 +18,25 @@ namespace CreateCharacter
         [ShowInInspector] public HashSet<FurnaceData> Furnaces { get; set; } = new();
         [ShowInInspector] public HashSet<ItemRef> Recipes { get; set; } = new();
         [ShowInInspector] public HashSet<ItemRef> Herbs { get; set; } = new();
-
         [ShowInInspector] public HashSet<ItemRef> ThanThongs { get; set; } = new();
         [ShowInInspector] public HashSet<ItemRef> CongPhaps { get; set; } = new();
-        [ShowInInspector] public HashSet<ItemRef> VuKhis { get; set; } = new();
-        [ShowInInspector] public HashSet<ItemRef> PhongCus { get; set; } = new();
-        [ShowInInspector] public HashSet<ItemRef> TrangSucs { get; set; } = new();
+   
         [ShowInInspector] public HashSet<ItemRef> LinhDans { get; set; } = new();
 
         [ShowInInspector] public HashSet<NgoDao> NgoDaos { get; set; } = new();
         [ShowInInspector] public HashSet<CamNgo> CamNgos { get; set; } = new();
         [ShowInInspector] public HashSet<CongPhap> CongPhapOwners { get; set; } = new();
         [ShowInInspector] public HashSet<ThanThong> ThanThongOwners { get; set; } = new();
+        [ShowInInspector] public HashSet<ItemRef> Materials { get; set; } = new();
+        [ShowInInspector] public HashSet<Equipment> VuKhis { get; set; } = new();
+        [ShowInInspector] public HashSet<Equipment> PhongCus { get; set; } = new();
+        [ShowInInspector] public HashSet<Equipment> TrangSucs { get; set; } = new();
         public int ByteSize()
         {
             return Furnaces.ByteSize() + Recipes.ByteSize() + Herbs.ByteSize() + ThanThongs.ByteSize() +
                    CongPhaps.ByteSize() + VuKhis.ByteSize() + PhongCus.ByteSize() + TrangSucs.ByteSize() +
-                   LinhDans.ByteSize() + NgoDaos.ByteSize() +  CamNgos.ByteSize() +  CongPhapOwners.ByteSize()
-                   + ThanThongOwners.ByteSize();
+                   LinhDans.ByteSize() + NgoDaos.ByteSize() + CamNgos.ByteSize() + CongPhapOwners.ByteSize()
+                   + ThanThongOwners.ByteSize() + Materials.ByteSize();
         }
 
         public void Serialize(IWriter writer)
@@ -51,6 +54,7 @@ namespace CreateCharacter
             writer.WriteArray(CamNgos);
             writer.WriteArray(CongPhapOwners);
             writer.WriteArray(ThanThongOwners);
+            writer.WriteArray(Materials);
         }
 
         public void Deserialize(IReader reader, ref InventoryManager value)
@@ -60,14 +64,15 @@ namespace CreateCharacter
             value.Herbs = reader.ReadArray<ItemRef>().ToHashSet();
             value.ThanThongs = reader.ReadArray<ItemRef>().ToHashSet();
             value.CongPhaps = reader.ReadArray<ItemRef>().ToHashSet();
-            value.VuKhis = reader.ReadArray<ItemRef>().ToHashSet();
-            value.PhongCus = reader.ReadArray<ItemRef>().ToHashSet();
-            value.TrangSucs = reader.ReadArray<ItemRef>().ToHashSet();
+            value.VuKhis = reader.ReadArray<Equipment>().ToHashSet();
+            value.PhongCus = reader.ReadArray<Equipment>().ToHashSet();
+            value.TrangSucs = reader.ReadArray<Equipment>().ToHashSet();
             value.LinhDans = reader.ReadArray<ItemRef>().ToHashSet();
             value.NgoDaos = reader.ReadArray<NgoDao>().ToHashSet();
             value.CamNgos = reader.ReadArray<CamNgo>().ToHashSet();
             value.CongPhapOwners = reader.ReadArray<CongPhap>().ToHashSet();
             value.ThanThongOwners = reader.ReadArray<ThanThong>().ToHashSet();
+            value.Materials = reader.ReadArray<ItemRef>().ToHashSet();
         }
 
         public void Clone(InventoryManager other)
@@ -77,15 +82,16 @@ namespace CreateCharacter
             Herbs = new HashSet<ItemRef>(other.Herbs);
             ThanThongs = new HashSet<ItemRef>(other.ThanThongs);
             CongPhaps = new HashSet<ItemRef>(other.CongPhaps);
-            VuKhis = new HashSet<ItemRef>(other.VuKhis);
-            PhongCus = new HashSet<ItemRef>(other.PhongCus);
-            TrangSucs = new HashSet<ItemRef>(other.TrangSucs);
+            VuKhis = new HashSet<Equipment>(other.VuKhis);
+            PhongCus = new HashSet<Equipment>(other.PhongCus);
+            TrangSucs = new HashSet<Equipment>(other.TrangSucs);
             LinhDans = new HashSet<ItemRef>(other.LinhDans);
             NgoDaos = new HashSet<NgoDao>(other.NgoDaos);
             CamNgos = new HashSet<CamNgo>(other.CamNgos);
             CongPhapOwners = new HashSet<CongPhap>(other.CongPhapOwners);
             ThanThongOwners = new HashSet<ThanThong>(other.ThanThongOwners);
         }
+
         public InventoryManager DeepClone()
         {
             var other = new InventoryManager();
@@ -104,6 +110,7 @@ namespace CreateCharacter
             other.ThanThongOwners = DeepClone(ThanThongOwners);
             return other;
         }
+
         private HashSet<T> DeepClone<T>(IEnumerable<T> collection) where T : IDeepClone<T>
         {
             return new HashSet<T>(collection.Select(x => x.DeepClone()));
@@ -117,7 +124,6 @@ namespace CreateCharacter
             {
                 Furnaces.Add(furnaceData);
             }
-
             foreach (var itemRef in items)
             {
                 Add(itemRef);
@@ -143,24 +149,15 @@ namespace CreateCharacter
             {
                 Add(CongPhaps, itemRef);
             }
-            else if (type == ItemType.VuKhi)
-            {
-                Add(VuKhis, itemRef);
-            }
-            else if (type == ItemType.PhongCu)
-            {
-                Add(PhongCus, itemRef);
-            }
-            else if (type == ItemType.TrangSuc)
-            {
-                Add(TrangSucs, itemRef);
-            }
             else if (type == ItemType.Recipe)
             {
                 Add(Recipes, itemRef);
             }
+            else if (type == ItemType.Material)
+            {
+                Add(Materials, itemRef);
+            }
         }
-
 
         private void Add(HashSet<ItemRef> inventory, ItemRef itemRef)
         {
@@ -172,6 +169,86 @@ namespace CreateCharacter
             {
                 inventory.Add(itemRef);
             }
+        }
+        public bool Update(ItemRef itemRef)
+        {
+            var array = new[]
+                { Herbs, LinhDans, ThanThongs, CongPhaps, Recipes, Materials };
+            return array.Any(x =>
+            {
+                if (x.TryGetValue(itemRef, out var item))
+                {
+                    item.Count = itemRef.Count;
+                    return true;
+                }
+
+                return false;
+            });
+        }
+        public bool Remove(ItemRef itemRef)
+        {
+            var array = new[]
+                { Herbs, LinhDans, ThanThongs, CongPhaps, Recipes, Materials };
+            return array.Any(x =>
+            {
+                if (x.Remove(itemRef))
+                {
+                    return true;
+                }
+
+                return false;
+            });
+        }
+        private void Add(HashSet<Equipment> inventory, Equipment equipment)
+        {
+            inventory.Add(equipment);
+        }
+        public bool Update(Equipment equipment)
+        {
+            var array = new[] { VuKhis,PhongCus,TrangSucs };
+            return array.Any(x =>
+            {
+                if (x.TryGetValue(equipment, out var e))
+                {
+                    e.Name = equipment.Name;
+                    return true;
+                }
+                return false;
+            });
+        }
+        public bool Remove(Equipment equipment)
+        {
+            var array = new[] { VuKhis,PhongCus,TrangSucs };
+            return array.Any(x =>
+            {
+                if (x.Remove(equipment))
+                {
+                    return true;
+                }
+                return false;
+            });
+        }
+        public void Add(Equipment equipment)
+        {
+            var type = equipment.GetEquipmentType();
+            switch (type)
+            {
+                case EquipmentType.Weapon:
+                    Add(VuKhis, equipment);
+                    break;
+                case EquipmentType.Armor:
+                    Add(PhongCus, equipment);
+                    break;
+                case EquipmentType.Jewelry:
+                    Add(TrangSucs, equipment);
+                    break;
+            }
+        }
+
+   
+        public void ApplyModify(InventoryModify m)
+        {
+            m.Apply(this);
         }
     }
 }

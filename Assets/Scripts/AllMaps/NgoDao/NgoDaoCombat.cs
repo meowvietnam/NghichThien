@@ -1,4 +1,5 @@
 using System.Linq;
+using AllMaps.NgoDao;
 using UnityEngine;
 
 public abstract class NgoDaoCombat : NgoDao

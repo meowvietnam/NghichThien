@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using LuyenKhi;
 using Network;
 using Network.Extensions;
 using Sirenix.OdinInspector;
@@ -30,7 +27,7 @@ namespace LuyenKhi
         {
             writer.Write(Id);
             writer.Write(Tier);
-            writer.Write(Tier);
+            writer.Write(Type);
         }
     }
 }

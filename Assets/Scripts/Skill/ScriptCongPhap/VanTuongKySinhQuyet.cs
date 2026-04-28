@@ -1,6 +1,7 @@
 ﻿using LongDH.LongDHModules;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using Skill;
 using UnityEngine;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(VanTuongKySinhQuyet))]
 

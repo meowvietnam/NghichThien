@@ -8,6 +8,7 @@ using Network.Callback;
 using Network.Core;
 using Network.Models;
 using UnityEngine;
+
 namespace LuyenDan
 {
     public class LuyenDanPanel : BaseBehaviour, ILuyenDanCallback
@@ -36,24 +37,23 @@ namespace LuyenDan
         [field: SerializeField] public AlchermyResult AlchermyResult { get; private set; }
         [field: SerializeField] public ProgressBar ProgressBar { get; private set; }
         [field: SerializeField] public ToolTipItems ToolTipItems { get; private set; }
-
-        private InventoryHandler inventoryHandler;
+        private CharacterData CharacterData => Client.Instance.CharacterData;
 
         private void Start()
         {
+            ToolTipItems.Init();
             var client = Client.Instance;
             client.ChangeState(new Network.ClientState.LuyenDan(this));
-            inventoryHandler = client.CoreModule.GetHandler<InventoryHandler>();
-            inventoryHandler.OnInventoryUpdated += OnInventoryUpdated;
-            ToolTipItems.Init();
-            inventoryHandler.GetInventory();
+            var charData = CharacterData;
+            charData.OnInventoryUpdated += OnInventoryUpdated;
+            charData.GetInventory();
         }
 
         private void OnDestroy()
         {
-            if (inventoryHandler != null)
-                inventoryHandler.OnInventoryUpdated -= OnInventoryUpdated;
+            CharacterData.OnInventoryUpdated -= OnInventoryUpdated;
         }
+
         private void OnInventoryUpdated(InventoryManager inventoryManager)
         {
             NetworkManager.Instance.Invoke(() =>
@@ -75,6 +75,7 @@ namespace LuyenDan
                 {
                     Debug.Log($"Recipe {x} not found");
                 }
+
                 return recipe;
             }).ToList();
             RecipeListUI.Init(datas);
@@ -86,6 +87,7 @@ namespace LuyenDan
             FurnaceInventory.Close();
             Alchermy.SelectDanLu(furnace);
         }
+
         private void OnLuyenDanCompleted(LuyenDanResult result)
         {
             if (result.Success)
@@ -99,13 +101,10 @@ namespace LuyenDan
             }
             else
             {
-                ProgressBar.DoKill(() =>
-                {
-                    NotifyGroup.Instance.Show(result.Message);
-                });
-                
+                ProgressBar.DoKill(() => { NotifyGroup.Instance.Show(result.Message); });
             }
         }
+
         public void LuyenDanResult(LuyenDanResult result)
         {
             NetworkManager.Instance.Invoke(() => { OnLuyenDanCompleted(result); });

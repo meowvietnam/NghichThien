@@ -10,24 +10,10 @@ namespace Network.Models
     public class LuyenDanResult : IMemorySerializable<LuyenDanResult>
     {
         public bool Success { get; set; }
-        public string Message { get; set; }
+        public string Message { get;  set; }
         public List<ItemRef> ItemRefs { get; set; }
         public TimeSpan NewTuoiTac { get; set; }
-        public InventoryManager Inventory { get; set; }
-
-        public LuyenDanResult(bool success, string message, List<ItemRef> itemRefs, TimeSpan newTuoiTac,
-            InventoryManager inventory)
-        {
-            Success = success;
-            Message = message;
-            ItemRefs = itemRefs;
-            NewTuoiTac = newTuoiTac;
-            Inventory = inventory;
-        }
-
-        public LuyenDanResult()
-        {
-        }
+        public InventoryModify Modify { get; set; }
 
 
         public int ByteSize()
@@ -37,10 +23,8 @@ namespace Network.Models
             {
                 return baseSize;
             }
-
-            return baseSize + ItemRefs.ByteSize() + NewTuoiTac.ByteSize() + Inventory.ByteSize();
+            return baseSize + ItemRefs.ByteSize() + NewTuoiTac.ByteSize() + Modify.ByteSize();
         }
-
         public void Serialize(IWriter writer)
         {
             writer.Write(Success);
@@ -49,10 +33,9 @@ namespace Network.Models
             {
                 writer.WriteArray(ItemRefs);
                 writer.Write(NewTuoiTac);
-                writer.Write(Inventory);
+                writer.Write(Modify);
             }
         }
-
         public void Deserialize(IReader reader, ref LuyenDanResult value)
         {
             value.Success = reader.Read<bool>();
@@ -61,7 +44,7 @@ namespace Network.Models
             {
                 value.ItemRefs = reader.ReadArray<ItemRef>().ToList();
                 value.NewTuoiTac = reader.Read<TimeSpan>();
-                value.Inventory = reader.Read<InventoryManager>();
+                value.Modify = reader.Read<InventoryModify>();
             }
         }
     }

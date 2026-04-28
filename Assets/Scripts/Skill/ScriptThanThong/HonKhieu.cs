@@ -1,5 +1,6 @@
 ﻿using Sirenix.Utilities;
 using System.Collections.Generic;
+using Skill;
 using UnityEngine;
 [CreateAssetMenu(fileName = nameof(HonKhieu), menuName = "Skill/Thần Thông/" + nameof(HonKhieu))]
 

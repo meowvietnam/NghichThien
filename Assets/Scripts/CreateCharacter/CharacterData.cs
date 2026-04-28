@@ -3,6 +3,7 @@ using System;
 using CreateCharacter.CharStats;
 using Network;
 using Network.Extensions;
+using Network.Models;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using EMonPhai = Base.EMonPhai;
@@ -38,12 +39,15 @@ namespace CreateCharacter
         public Appearance Appearance { get; set; } = new();
 
         [field: SerializeField, TabGroup("Inventory")]
-        public InventoryManager InventoryManager { get; set; } = new();
-        [field: SerializeField, TabGroup("Equipment")]
-        public Equipment Equipment { get; set; } = new();
+        public InventoryManager InventoryManager { get; private set; } = new();
+
+        [field: SerializeField, TabGroup("EquipmentManager")]
+        public EquipmentManager EquipmentManager { get; set; } = new();
 
         [field: SerializeField, TabGroup("Social")]
         public Social Social { get; set; } = new();
+
+        public event Action<InventoryManager> OnInventoryUpdated;
 
         public CharacterData()
         {
@@ -65,7 +69,7 @@ namespace CreateCharacter
                    + Stats.ByteSize()
                    + Progression.ByteSize()
                    + Appearance.ByteSize()
-                   + Equipment.ByteSize()
+                   + EquipmentManager.ByteSize()
                    + MonPhai.ByteSize()
                    + InventoryManager.ByteSize()
                    + CreatedAt.ByteSize()
@@ -80,7 +84,7 @@ namespace CreateCharacter
             writer.Write(Stats);
             writer.Write(Progression);
             writer.Write(Appearance);
-            writer.Write(Equipment);
+            writer.Write(EquipmentManager);
             writer.Write(MonPhai);
             writer.Write(InventoryManager);
             writer.Write(CreatedAt);
@@ -95,11 +99,31 @@ namespace CreateCharacter
             value.Stats = reader.Read<CharacterStats>();
             value.Progression = reader.Read<Progression>();
             value.Appearance = reader.Read<Appearance>();
-            value.Equipment = reader.Read<Equipment>();
+            value.EquipmentManager = reader.Read<EquipmentManager>();
             value.MonPhai = reader.Read<EMonPhai>();
             value.InventoryManager = reader.Read<InventoryManager>();
             value.CreatedAt = reader.Read<DateTime>();
             value.Social = reader.Read<Social>();
+        }
+
+        public void SetInventory(InventoryManager inventory)
+        {
+            InventoryManager = inventory;
+            InventoryChanged();
+        }
+        public void InventoryChanged()
+        {
+            OnInventoryUpdated?.Invoke(InventoryManager);
+        }
+        public void GetInventory()
+        {
+            Client.Instance.Send(MessageTag.GetInventory);
+        }
+
+        public void ApplyInventoryModify(InventoryModify modify)
+        {
+            InventoryManager.ApplyModify(modify);
+            InventoryChanged();
         }
     }
 }

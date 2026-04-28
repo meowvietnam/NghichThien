@@ -1,4 +1,5 @@
 ﻿using LongDH.Script.ObjectPool;
+using Skill;
 using UnityEngine;
 [CreateAssetMenu(fileName = nameof(BasicTTBuffPercentLinhKhi), menuName = "Skill/Thần Thông/" + nameof(BasicTTBuffPercentLinhKhi))]
 public class BasicTTBuffPercentLinhKhi : ThanThong

@@ -1,6 +1,7 @@
 ﻿using LongDH.LongDHModules;
 using System.Collections.Generic;
 using System.Linq;
+using Skill;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(PhanDuongQuyet))]

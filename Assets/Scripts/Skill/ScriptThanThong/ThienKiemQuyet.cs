@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Skill;
+using UnityEngine;
 using static BaseSkill;
 [CreateAssetMenu(fileName = nameof(ThienKiemQuyet), menuName = "Skill/Thần Thông/" + nameof(ThienKiemQuyet))]
 

@@ -2,6 +2,8 @@
 using LongDH.LongDHModules;
 using Newtonsoft.Json;
 using System.Linq;
+using Skill;
+
 [CreateAssetMenu(fileName = nameof(PhanHoaThoDiemQuyet), menuName = "Skill/Thần Thông/" + nameof(PhanHoaThoDiemQuyet))]
 
 public class PhanHoaThoDiemQuyet : ThanThong

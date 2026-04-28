@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using CongPhap = Skill.CongPhap;
+using ThanThong = Skill.ThanThong;
 
 
 public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEvent.IUnEquipCongPhap,INetworkEvent.IEquipThanThong, INetworkEvent.IUnEquipThanThong
@@ -530,7 +532,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
 
         // load data 
-        var equipment = CharacterDatas.Equipment;
+        var equipment = CharacterDatas.EquipmentManager;
         Pool.Get<UIManager>().InitVisualItemSkill(donThuat, GameConfig.GetCongPhapWithId(equipment.DonThuatUsed));
         Pool.Get<UIManager>().InitVisualItemSkill(chuTu, GameConfig.GetCongPhapWithId(equipment.ChuTu1Used));
         Pool.Get<UIManager>().InitVisualItemSkill(nguyenAnh, GameConfig.GetCongPhapWithId(equipment.ChuTu2Used));
@@ -681,7 +683,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         var GameConfig = Pool.Get<GameManager>();
 
         // load data 
-        var thanThongEquips = CharacterDatas.Equipment.ThanThongEquips.Select(x => x.Id).ToList();
+        var thanThongEquips = CharacterDatas.EquipmentManager.ThanThongEquips.Select(x => x.Id).ToList();
         for (int i = 0; i < listItemSlotThanThongs.Count; i++)
         {
             var item = listItemSlotThanThongs[i];
@@ -859,9 +861,9 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         itemDatas.AddRange(characterData.InventoryManager.Recipes.ToList());
         itemDatas.AddRange(characterData.InventoryManager.ThanThongs.ToList());
         itemDatas.AddRange(characterData.InventoryManager.CongPhaps.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.VuKhis.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.PhongCus.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
+        // itemDatas.AddRange(characterData.InventoryManager.VuKhis.ToList());
+        // itemDatas.AddRange(characterData.InventoryManager.PhongCus.ToList());
+        // itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
         itemDatas.AddRange(characterData.InventoryManager.LinhDans.ToList());
         // Sử dụng LINQ để trích xuất Ref từ mỗi phần tử trong furnaceDatas
         var furnaceRefs = characterData.InventoryManager.Furnaces.Select(f => f.CreateRef()).ToList();
@@ -874,7 +876,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             {
 
 
-                //if (slotItemGift.itemRef.Id != ItemInventory.itemRef.Id)
+                //if (slotItemGift.itemRef.SelfId != ItemInventory.itemRef.SelfId)
                 //{
                 //    if (ItemInventory.itemRef.Type == ItemType.ThanThong || ItemInventory.itemRef.Type == ItemType.CongPhap)
                 //    {

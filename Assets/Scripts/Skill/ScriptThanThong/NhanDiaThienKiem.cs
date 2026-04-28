@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Skill;
 using UnityEngine;
 using static BaseSkill;
 [CreateAssetMenu(fileName = nameof(NhanDiaThienKiem), menuName = "Skill/Thần Thông/" + nameof(NhanDiaThienKiem))]

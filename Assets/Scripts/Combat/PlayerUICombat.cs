@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
+using ThanThong = Skill.ThanThong;
 
 public class PlayerUICombat : BaseBehaviour
 {

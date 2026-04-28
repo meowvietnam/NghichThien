@@ -2,9 +2,11 @@
 using System.Linq;
 using LongDH.LongDHModules;
 using LuyenDan;
+using LuyenKhi;
 using Network.Core;
 using Network.Extensions;
 using Sirenix.OdinInspector;
+using Skill;
 using UnityEngine;
 
 namespace Network
@@ -22,9 +24,11 @@ namespace Network
                 {
                     instance = FindAnyObjectByType<AdminPanel>();
                 }
+
                 return instance;
             }
         }
+
         private bool IsReady()
         {
             if (Client == null)
@@ -34,39 +38,47 @@ namespace Network
 
             return Client.CharacterData != null;
         }
+
         [Button]
         private List<int> GetFullIdThanThongWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
-            
             var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
-            return combo.comboWithDaiCanhGioi[ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1].thanThongs.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
+            return combo.comboWithDaiCanhGioi[ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1]
+                .thanThongs.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
                 .ToList();
         }
+
         [Button]
         private List<int> GetFullIdNgoDaoWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
             var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
-            return combo.comboWithDaiCanhGioi[ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1].ngoDaos.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
+            return combo.comboWithDaiCanhGioi[ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1]
+                .ngoDaos.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
                 .ToList();
         }
+
         [Button]
         private List<int> GetFullIdCongPhapWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
             var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
-            return combo.comboWithDaiCanhGioi[ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1].congPhaps.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
+            return combo.comboWithDaiCanhGioi[ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1]
+                .congPhaps.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
                 .ToList();
         }
+
         [Button]
         [ShowIf(nameof(IsReady))]
-        public void AddItems(List<ItemRef> items) 
+        public void AddItems(List<ItemRef> items)
         {
             if (items == null || items.Count == 0)
             {
                 Debug.LogWarning("AddItems called with no items");
                 return;
             }
+
             Client.Send(MessageTag.AddItems, items);
         }
+
         [Button]
         [ShowIf(nameof(IsReady))]
         public void AddFullItem()
@@ -82,6 +94,7 @@ namespace Network
                     Type = ItemType.ThanThong
                 });
             }
+
             foreach (var item in gameConfig.congPhaps)
             {
                 items.Add(new ItemRef
@@ -91,6 +104,7 @@ namespace Network
                     Type = ItemType.CongPhap
                 });
             }
+
             foreach (var item in LuyenDanResources.Instance.Recipes)
             {
                 items.Add(new ItemRef
@@ -100,6 +114,7 @@ namespace Network
                     Type = ItemType.Recipe
                 });
             }
+
             foreach (var item in LuyenDanResources.Instance.HerbDatas)
             {
                 items.Add(new ItemRef
@@ -109,6 +124,7 @@ namespace Network
                     Type = ItemType.Herb
                 });
             }
+
             foreach (var item in LuyenDanResources.Instance.TempFurnaceDatas)
             {
                 items.Add(new ItemRef
@@ -118,6 +134,15 @@ namespace Network
                     Type = ItemType.Furnace
                 });
             }
+
+            var luyenKhiRes = LuyenKhiResources.Instance;
+            var mats = luyenKhiRes.Materials.Select(x => new ItemRef()
+            {
+                Id = (ushort)x.Id,
+                Count = 1,
+                Type = ItemType.Material
+            });
+            items.AddRange(mats);
             AddItems(items);
         }
 
@@ -127,11 +152,19 @@ namespace Network
         {
             Client.Send(MessageTag.SetInfinityEnergy, isInfinityEnergy);
         }
+
         public void StartListen()
         {
             var module = Client.CoreModule;
             module.RemoveHandler<AdminPanel>();
             module.AddHandler(this);
+        }
+
+        [Button]
+        [ShowIf(nameof(IsReady))]
+        public void ToLuyenKhi()
+        {
+            Observer.Notify(EventList.GamePlay.LOAD_SCENE, "LuyenKhi");
         }
 
         public void OnEnter()

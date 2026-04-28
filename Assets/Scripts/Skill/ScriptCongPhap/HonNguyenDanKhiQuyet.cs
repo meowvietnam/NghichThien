@@ -1,4 +1,5 @@
 ﻿using LongDH.LongDHModules;
+using Skill;
 using UnityEngine;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(HonNguyenDanKhiQuyet))]
 

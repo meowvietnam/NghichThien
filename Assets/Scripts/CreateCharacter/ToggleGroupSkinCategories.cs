@@ -40,7 +40,7 @@ namespace CreateCharacter
         public void ActiveFirst()
         {
             //toggleSkinCategories[0].ToggleOn();
-            //Debug.Log(toggleSkinCategories[0].Id);
+            //Debug.Log(toggleSkinCategories[0].SelfId);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CreateCharacter;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using ThanThong = Skill.ThanThong;
 
 public class NPCData : ScriptableObject
 {

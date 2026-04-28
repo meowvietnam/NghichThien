@@ -3,6 +3,8 @@ using LongDH.LongDHModules;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using Skill;
+
 [CreateAssetMenu(fileName = nameof(ThuLaoThuat), menuName = "Skill/Thần Thông/" + nameof(ThuLaoThuat))]
 public class ThuLaoThuat : ThanThong , BaseSkill.LienKich
 {

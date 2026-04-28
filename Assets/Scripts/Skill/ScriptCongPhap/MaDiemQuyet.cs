@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Skill;
 using UnityEngine;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(MaDiemQuyet))]
 

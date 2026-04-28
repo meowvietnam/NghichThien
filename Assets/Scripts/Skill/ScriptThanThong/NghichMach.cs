@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using Skill;
 using UnityEngine;
 [CreateAssetMenu(fileName = nameof(NghichMach), menuName = "Skill/Thần Thông/" + nameof(NghichMach))]
 public class NghichMach : ThanThong

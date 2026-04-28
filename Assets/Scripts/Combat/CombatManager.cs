@@ -6,6 +6,7 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Skill;
 using UnityEngine;
 using UnityEngine.UI;
 public class LinhKhiTieuTan

@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.IO;
 using System.Linq;
+using Skill;
 
 public class SkillOrganizer : EditorWindow
 {

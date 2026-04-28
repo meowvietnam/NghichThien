@@ -2,6 +2,7 @@ using Network.Callback;
 using Network.Core;
 using Network.Extensions;
 using Network.Models;
+using UnityEngine;
 
 namespace Network.ClientState
 {
@@ -15,7 +16,6 @@ namespace Network.ClientState
         public void OnEnter()
         {
         }
-
         public void Handle(Message<MessageTag> message)
         {
             var tag = message.Tag;
@@ -26,9 +26,10 @@ namespace Network.ClientState
                 if (result.Success)
                 {
                     var client = Client.Instance;
-                    client.CharacterData.Stats.TuoiTac = result.NewTuoiTac;
-                    var inventoryHandler = client.CoreModule.GetHandler<InventoryHandler>();
-                    inventoryHandler.SetInventory(result.Inventory);
+                    var charData = client.CharacterData;
+                    charData.Stats.TuoiTac = result.NewTuoiTac;
+                    charData.ApplyInventoryModify(result.Modify);
+                    Debug.Log($"Modify byte size: {result.Modify.ByteSize()}");
                 }
                 callback.LuyenDanResult(result);
             }

@@ -37,7 +37,7 @@ namespace Network.Models
 
         public CharacterSnapshot(CharacterData c)
         {
-            var equipment = c.Equipment;
+            var equipment = c.EquipmentManager;
             this.Name = c.Name;
             this.Gender = c.Gender;
             this.Skins = c.Appearance.Skins;
