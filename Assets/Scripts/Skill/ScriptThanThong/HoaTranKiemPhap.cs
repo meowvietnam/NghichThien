@@ -30,12 +30,12 @@ public class HoaTranKiemPhap : ThanThong , BaseSkill.LienKich
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
     {
 
-        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKiem, buffValues[GetIndexLevelThanThong(caster)]);
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKiemHiep, buffValues[GetIndexLevelThanThong(caster)]);
     }
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.KiemY)} Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} Nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Hoa)} hệ thần thông thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiem)}";
+        return $"{GetKeyWord(EKeyWord.KiemY)} Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} Nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Hoa)} hệ thần thông thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiemHiep)}";
 
     }
 }

@@ -12,7 +12,7 @@ public class MeTungBo : LaYenBo
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
        base.Execute(caster, target, data);
-        caster.characterStatsTemp.tocDoBay += buffValues[GetIndexLevelThanThong(caster)];
+       caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TangToc, buffValues[GetIndexLevelThanThong(caster)]);
     }
 
 

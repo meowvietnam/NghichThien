@@ -6,6 +6,7 @@ using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using Network;
+using Sirenix.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -171,7 +172,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         nameText.text = CharacterDatas.Name;
 
         levelText.text = GameManager.levelWithText[CharacterDatas.Progression.Level];
-        tuoitacText.text = CharacterDatas.Stats.TuoiTac.ToString();
+        tuoitacText.text = GameManager.GetIntTuoiTac(CharacterDatas.Stats.TuoiTac).ToString();
         thonguyenText.text = CharacterDatas.Stats.ThoNguyen.ToString();
         tuChatText.text = CharacterDatas.Stats.TuChat.ToString();
         thanThucText.text = CharacterDatas.Stats.ThanThuc.ToString();
@@ -294,7 +295,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     }
     public void SetNgoDaoDiem()
     {
-        ngoDaoDiemText.text = CharData.Progression.ToString();
+        ngoDaoDiemText.text = CharData.Progression.NgoDaoDiem.ToString();
     }
     public void InitNgoDaoSlotCanLearn(List<RectTransform> listSkill)
     {
@@ -325,8 +326,13 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         }
 
         var camNgoThisPage = CharacterDatas.InventoryManager.CamNgos.FirstOrDefault(x => x.Id == listNgoDaoResources[indexThisPage].Id);
-        if(camNgoThisPage == null) return;
-        for (int i = 0; i < NgoDaoResource.GetLevelCamNgo(camNgoThisPage.Value); i++)
+        int camNgoValue = 0;
+        if (camNgoThisPage != null)
+        {
+            camNgoValue = camNgoThisPage.Value;
+        }
+        camNgoText.text = camNgoValue.ToString();
+        for (int i = 0; i < NgoDaoResource.GetLevelCamNgo(camNgoValue); i++)
         {
             var item = listSkill[i];
             bool isAllUnLearn = true;
@@ -412,7 +418,6 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 }
 
 
-                camNgoText.text = item.Value.ToString();
                 if(levelIndex != -1)
                 {
 
@@ -864,6 +869,9 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         itemDatas.AddRange(characterData.InventoryManager.Recipes.ToList());
         itemDatas.AddRange(characterData.InventoryManager.ThanThongs.ToList());
         itemDatas.AddRange(characterData.InventoryManager.CongPhaps.ToList());
+        itemDatas.AddRange(characterData.InventoryManager.Materials.ToList());
+      
+
         // itemDatas.AddRange(characterData.InventoryManager.VuKhis.ToList());
         // itemDatas.AddRange(characterData.InventoryManager.PhongCus.ToList());
         // itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
@@ -871,8 +879,12 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         // Sử dụng LINQ để trích xuất Ref từ mỗi phần tử trong furnaceDatas
         var furnaceRefs = characterData.InventoryManager.Furnaces.Select(f => f.CreateRef()).ToList();
 
+
         // Thêm danh sách Ref vừa lấy được vào itemDatas
         itemDatas.AddRange(furnaceRefs);
+        itemDatas.AddRange(characterData.InventoryManager.VuKhis.Select(f => f.CreateRef()).ToList());
+        itemDatas.AddRange(characterData.InventoryManager.PhongCus.Select(f => f.CreateRef()).ToList());
+        itemDatas.AddRange(characterData.InventoryManager.TrangSucs.Select(f => f.CreateRef()).ToList());
         bag.InitDataItem(itemDatas, (ItemInventory) =>
         {
             ItemInventory.InitAction(null, null, () =>

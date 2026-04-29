@@ -18,12 +18,12 @@ public class DiaSatKiemTran : TranPhapTT
     }
     public override void ExecuteTranPhap(CharacterCombat caster, CharacterCombat target)
     {
-        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKiem, buffValues[GetIndexLevelThanThong(caster)]);
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKiemHiep, buffValues[GetIndexLevelThanThong(caster)]);
     }
 
     public override string GetDescTranPhapTT(int level)
     {
-        return $"Bắt đầu hiệp, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiem)}";
+        return $"Bắt đầu hiệp, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiemHiep)}";
     }
 
 }

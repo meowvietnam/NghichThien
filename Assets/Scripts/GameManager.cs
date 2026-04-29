@@ -487,7 +487,14 @@ public class GameManager : BaseBehaviour
         { Tier.NguPham, "Ngũ Phẩm" },
         { Tier.LucPham, "Lục Phẩm" },
     };
-
+    public static Dictionary<EquipmentTier, string> TextWithTierEquirement = new Dictionary<EquipmentTier, string>
+    {
+        { EquipmentTier.PhuKhi, "Phù Khí" },
+        { EquipmentTier.PhapKhi, "Pháp Khí" },
+        { EquipmentTier.PhapBao, "Pháp Bảo" },
+        { EquipmentTier.ThuanDuong, "Thuần Dương" },
+        { EquipmentTier.ThongThien, "Thông Thiên" },
+    };
     public static Dictionary<Tier, int> PriceTienNgocVatLieuAndHerbWithTier = new Dictionary<Tier, int>
     {
         { Tier.NhatPham, 70 },

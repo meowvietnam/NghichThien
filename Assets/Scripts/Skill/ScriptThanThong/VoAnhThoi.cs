@@ -13,8 +13,8 @@ public class VoAnhThoi : ThanThong
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         
-        int dame = dames[GetIndexLevelThanThong(caster)] + caster.characterStatsTemp.tocDoBay;
-        if(caster.characterStatsTemp.tocDoBay > target.characterStatsTemp.tocDoBay)
+        int dame = dames[GetIndexLevelThanThong(caster)] + caster.GetToDoBay();
+        if(caster.GetToDoBay() > target.GetToDoBay())
         {
             dame *= 2;
         }    

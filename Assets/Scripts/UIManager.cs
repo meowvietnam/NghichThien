@@ -1,8 +1,11 @@
 ﻿using Base;
+using CreateCharacter;
 using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
+using Network;
 using Sirenix.OdinInspector;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 public interface ISingleton
@@ -32,6 +35,50 @@ public class UIManager : BaseBehaviour
 
         item.Init(data, frame);
 
+        item.InitInventory(eTypeInventoryItem, itemRef, null);
+
+
+    }
+    public void InitVisualEquipment(ItemInventory item, BaseItemData data, ItemRef itemRef = null, ETypeInventoryItem eTypeInventoryItem = ETypeInventoryItem.Skill)
+    {
+        Sprite frame = null;
+        Equipment equipment = null;
+        var typeCurrent = itemRef.Type;
+        if (typeCurrent == ItemType.VuKhi)
+        {
+            equipment = Client.Instance.CharacterData.InventoryManager.VuKhis.FirstOrDefault(x => x.SelfId == itemRef.Id);
+           
+
+        }
+        else if (typeCurrent == ItemType.PhongCu)
+        {
+            equipment = Client.Instance.CharacterData.InventoryManager.PhongCus.FirstOrDefault(x => x.SelfId == itemRef.Id);
+        }
+        else if (typeCurrent == ItemType.TrangSuc)
+        {
+            equipment = Client.Instance.CharacterData.InventoryManager.TrangSucs.FirstOrDefault(x => x.SelfId == itemRef.Id);
+        }
+      
+        if(data == null)
+        {
+            data = new BaseItemData
+            {
+                nameItem = equipment.Name,
+                spriteItem = equipment.Item.Icon,
+                
+
+
+            };
+        }    
+        if (data != null)
+        {
+            frame = spriteFrames[(int)equipment.Item.Tier + 1];
+            item.SetColorName(colorQualitys[(int)equipment.Item.Tier + 1]);
+            item.SetQualityFull(spriteQualityFulls[(int)equipment.Item.Tier + 1]);
+
+        }
+
+        item.Init(data, frame);
         item.InitInventory(eTypeInventoryItem, itemRef, null);
 
 

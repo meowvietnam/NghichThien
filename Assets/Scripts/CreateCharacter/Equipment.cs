@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Linq;
 using Base;
+using LuyenDan;
 using LuyenKhi;
 using Network;
 using Network.Extensions;
@@ -16,7 +17,37 @@ namespace CreateCharacter
         [field: SerializeField] public string Name { get; set; }
         [field: SerializeField] public Effect[] Effects { get; set; }
         public LuyenKhiRewardItem Item => LuyenKhiResources.Instance.RewardItems.FirstOrDefault(x => x.Id == Id);
+        public ItemRef CreateRef()
+        {
+            var itemType = GetItemType();
+            Debug.Log($"[ItemRef] Created: ID={SelfId}, Type={itemType}");
+            return new ItemRef()
+            {
+                Id = SelfId,
+                Type = itemType,
+                Count = 1
+            };
+        }
+        public ItemType GetItemType()
+        {
+            return Item.Type switch
+            {
+                ArtifactType.PhiKiem or
+                ArtifactType.BaoChung or
+                ArtifactType.ChiHoan or
+                ArtifactType.PhiCham or
+                ArtifactType.BaoHap => ItemType.VuKhi,
 
+                ArtifactType.TruongBao or
+                ArtifactType.GiapTru => ItemType.PhongCu,
+
+                ArtifactType.Linh or
+                ArtifactType.BaoLenh or
+                ArtifactType.BaoAn => ItemType.TrangSuc,
+
+                _ => ItemType.VuKhi // Giá trị mặc định nếu cần
+            };
+        }
         public void Deserialize(IReader reader, ref Equipment value)
         {
             value.SelfId = reader.Read<ushort>();

@@ -7,6 +7,9 @@ using System.Linq;
 using LongDH.LongDHModules;
 using DG.Tweening;
 using System.Collections;
+using LuyenKhi;
+using LuyenDan.Inventory;
+using Network;
 
 public class FilterControl : BaseBehaviour
 {
@@ -33,6 +36,12 @@ public class FilterControl : BaseBehaviour
                 return "Đan Phương";
             case ItemType.Material:
                 return "Vật Liệu";
+            case ItemType.VuKhi:
+                return "Vũ Khí";
+            case ItemType.PhongCu:
+                return "Phòng Cụ";
+            case ItemType.TrangSuc:
+                return "Trang Sức";
             default:
                 break;
         }
@@ -52,12 +61,23 @@ public class FilterControl : BaseBehaviour
     [SerializeField] private Tier tierCurrent;
     [SerializeField] private BaseSkill.ETierSkill eTierSkillCurrent;
     [SerializeField] private List<ItemType> listFilterType = new List<ItemType>();
+    [SerializeField] private EquipmentTier eTierEquipmentCurrent;
 
     private void OnEnable()
     {
         Init();
-    }
+        Observer.AddObserver(DONE_FILTER, OnDoneFilter);
 
+    }
+    private void OnDisable()
+    {
+        Observer.RemoveObserver(DONE_FILTER, OnDoneFilter);
+    }
+    private void OnDoneFilter()
+    {
+        filterRightAnim.gameObject.SetActive(false);
+
+    }
     public void InitFilterType(List<ItemType> listFilterType)
     {
         this.listFilterType = listFilterType;
@@ -75,6 +95,11 @@ public class FilterControl : BaseBehaviour
             ItemType.CongPhap,
             ItemType.Recipe,
             ItemType.Material,
+            ItemType.VuKhi,
+            ItemType.PhongCu,
+            ItemType.TrangSuc,
+
+
         });
     }
 
@@ -92,17 +117,26 @@ public class FilterControl : BaseBehaviour
                 filtersRight[index].gameObject.SetActive(false);
                 SetEventButton(filtersRight[index], () =>
                 {
-                    filterLeftB.gameObject.SetActive(true);
                     int indexType = index - 1;
-                    isAllFilterA = false;
                     if (indexType <= listFilterType.Count - 1)
                     {
+                        if (typeCurrent == listFilterType[indexType] && !isAllFilterA)
+                        {
+                            Observer.Notify(DONE_FILTER);
+                            return;
+                        }
                         typeCurrent = listFilterType[indexType];
                     }
+                       
+                    filterLeftB.gameObject.SetActive(true);
+                    isAllFilterA = false;
+                   
 
                     filterLeftA.transform.GetChild(0).GetComponent<Text>().text =
                         filtersRight[index].transform.GetChild(0).GetComponent<Text>().text;
                     filterRightAnim.gameObject.SetActive(false);
+                    isAllFilterB = true;
+                    filterLeftB.transform.GetChild(0).GetComponent<Text>().text = filtersRight[0].transform.GetChild(0).GetComponent<Text>().text;
                     Filter();
                 });
             }
@@ -144,6 +178,15 @@ public class FilterControl : BaseBehaviour
             BaseSkill.ETierSkill.ThienGiaiTrung,
             BaseSkill.ETierSkill.ThienGiaiThuong
         };
+        List<EquipmentTier> listTierEquipment = new List<EquipmentTier>
+        {
+           EquipmentTier.PhuKhi,
+           EquipmentTier.PhapKhi,
+           EquipmentTier.PhapBao,
+           EquipmentTier.ThuanDuong,
+           EquipmentTier.ThongThien,
+
+        };
         SetEventButton(filterLeftB, () =>
         {
             Observer.Notify(SELECT_FILTER);
@@ -156,21 +199,44 @@ public class FilterControl : BaseBehaviour
                 {
                     int indexType = index - 1;
 
-                    isAllFilterB = false;
                     if (typeCurrent == ItemType.ThanThong || typeCurrent == ItemType.CongPhap)
+                    {
+                        
+                        if (indexType <= listTierSkill.Count - 1)
+                        {
+                            if (eTierSkillCurrent == listTierSkill[indexType] && !isAllFilterB)
+                            {
+                                Observer.Notify(DONE_FILTER);
+                                return;
+                            }
+                            eTierSkillCurrent = listTierSkill[indexType];
+                        }
+                    }
+                    else if (typeCurrent == ItemType.VuKhi || typeCurrent == ItemType.PhongCu || typeCurrent == ItemType.TrangSuc)
                     {
                         if (indexType <= listTierSkill.Count - 1)
                         {
-                            eTierSkillCurrent = listTierSkill[indexType];
+                            if (eTierEquipmentCurrent == listTierEquipment[indexType] && !isAllFilterB)
+                            {
+                                Observer.Notify(DONE_FILTER);
+                                return;
+                            }
+                            eTierEquipmentCurrent = listTierEquipment[indexType];
                         }
                     }
                     else
                     {
                         if (indexType <= listTier.Count - 1)
                         {
+                            if (tierCurrent == listTier[indexType] && !isAllFilterB)
+                            {
+                                Observer.Notify(DONE_FILTER);
+                                return;
+                            }
                             tierCurrent = listTier[indexType];
                         }
                     }
+                    isAllFilterB = false;
 
                     filterLeftB.transform.GetChild(0).GetComponent<Text>().text =
                         filtersRight[index].transform.GetChild(0).GetComponent<Text>().text;
@@ -178,18 +244,43 @@ public class FilterControl : BaseBehaviour
                     Filter();
                 });
             }
+            int countFilter = 0;
+            if (typeCurrent == ItemType.ThanThong || typeCurrent == ItemType.CongPhap)
+            {
+                countFilter = listTierSkill.Count;
 
-            int countFilter = typeCurrent == ItemType.ThanThong || typeCurrent == ItemType.CongPhap
-                ? listTierSkill.Count
-                : listTier.Count;
+            }
+            else if (typeCurrent == ItemType.VuKhi || typeCurrent == ItemType.PhongCu || typeCurrent == ItemType.TrangSuc)
+            {
+                countFilter = listTierEquipment.Count;
+
+            }
+            else
+            {
+                countFilter = listTier.Count;
+
+            }
+            
 
             for (int i = 0; i < countFilter; i++)
             {
                 filtersRight[i + 1].gameObject.SetActive(true);
-                filtersRight[i + 1].transform.GetChild(0).GetComponent<Text>().text =
-                    typeCurrent == ItemType.ThanThong || typeCurrent == ItemType.CongPhap
-                        ? BaseSkill.GetTextTierSkill(listTierSkill[i])
-                        : GameManager.TextWithTier.GetValueOrDefault(listTier[i]);
+                if(typeCurrent == ItemType.ThanThong || typeCurrent == ItemType.CongPhap)
+                {
+                    filtersRight[i + 1].transform.GetChild(0).GetComponent<Text>().text = BaseSkill.GetTextTierSkill(listTierSkill[i]);
+
+                }
+                else if (typeCurrent == ItemType.VuKhi || typeCurrent == ItemType.PhongCu || typeCurrent == ItemType.TrangSuc)
+                {
+                    filtersRight[i + 1].transform.GetChild(0).GetComponent<Text>().text = GameManager.TextWithTierEquirement.GetValueOrDefault(listTierEquipment[i]);
+
+                }
+                else
+                {
+                    filtersRight[i + 1].transform.GetChild(0).GetComponent<Text>().text = GameManager.TextWithTier.GetValueOrDefault(listTier[i]);
+
+                }
+               
             }
 
             filterRightAnim.gameObject.SetActive(false);
@@ -202,13 +293,26 @@ public class FilterControl : BaseBehaviour
 
         SetEventButton(filtersRight[0], () =>
         {
+            
             if (currentFilterLeftSelect == filterLeftA)
             {
+                if(isAllFilterA)
+                {
+                    Observer.Notify(DONE_FILTER);
+
+                    return;
+                }    
                 isAllFilterA = true;
                 filterLeftB.gameObject.SetActive(false);
             }
             else if (currentFilterLeftSelect == filterLeftB)
             {
+                if (isAllFilterB)
+                {
+                    Observer.Notify(DONE_FILTER);
+
+                    return;
+                }
                 isAllFilterB = true;
             }
 
@@ -275,9 +379,35 @@ public class FilterControl : BaseBehaviour
                             var skill = Pool.Get<GameManager>().FindCongPhapWithItemRef(item);
                             return skill != null && skill.eTierSkill == eTierSkillCurrent;
                         }
+                        else if(typeCurrent == ItemType.VuKhi )
+                        {
+                            var vuKhi = Client.Instance.CharacterData.InventoryManager.VuKhis.FirstOrDefault(x => x.SelfId == item.Id);
+                            return vuKhi != null && vuKhi.Item.Tier == eTierEquipmentCurrent;
+
+                        }   
+                        else if (typeCurrent == ItemType.PhongCu)
+                        {
+                            var phongCu = Client.Instance.CharacterData.InventoryManager.PhongCus.FirstOrDefault(x => x.SelfId == item.Id);
+                            return phongCu != null && phongCu.Item.Tier == eTierEquipmentCurrent;
+                        }   
+                        else if (typeCurrent == ItemType.TrangSuc)
+                        {
+                            var trangSuc = Client.Instance.CharacterData.InventoryManager.TrangSucs.FirstOrDefault(x => x.SelfId == item.Id);
+                            return trangSuc != null && trangSuc.Item.Tier == eTierEquipmentCurrent;
+                        }    
                         else
                         {
-                            var itemData = LuyenDanResources.Instance.FindItem(item);
+                            IItemData itemData = null;
+
+                            if (item.Type == ItemType.Material)
+                            {
+                                itemData = LuyenKhiResources.Instance.FindItem(item);
+                            }    
+                            else
+                            {
+                                itemData = LuyenDanResources.Instance.FindItem(item);
+                            }    
+                              
                             // Giả sử itemData có biến .tier kiểu Tier
                             return itemData != null && itemData.Tier == tierCurrent;
                         }

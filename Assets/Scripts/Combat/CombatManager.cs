@@ -752,9 +752,10 @@ public class CombatManager : MonoBehaviour
     }
     private void StartTurn()
     {
-        currentTurn = char1.characterStatsTemp.tocDoBay >= char2.characterStatsTemp.tocDoBay ? char1 : char2;
+        currentTurn = char1.GetToDoBay() >= char2.GetToDoBay() ? char1 : char2;
 
     }    
+
     void Start()
     {
         StartTurn();

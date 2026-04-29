@@ -52,7 +52,7 @@ public enum EBuffAndDeBuff
     QuyCuu,
     QuyTon,
     HonLuc,
-    NguKiem,
+    NguKiemHiep,
     NhanKiem,
     DiaKiem,
     ThienKiem,
@@ -64,6 +64,27 @@ public enum EBuffAndDeBuff
     ChanThan,
     NhieuHon,
     TinhHonChiLuc,
+    NguKhiHiep,
+    NguKimHiep,
+    NguMocHiep,
+    NguThuyHiep,
+    NguHoaHiep,
+    NguThoHiep,
+    NguThanThucHiep,
+    ChanKhi,
+    TangToc,
+    TroiChan,
+    TichHoa,
+    TichKim,
+    TichMoc,
+    TichThuy,
+    TichDoc,
+    NguKim,
+    NguMoc,
+    NguThuy,
+    NguHoa,
+    NguTho,
+    PhanTonThuong,
 
 }
 
@@ -345,8 +366,8 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.HonLuc:
                 text = "Hồn Lực";
                 break;
-            case EBuffAndDeBuff.NguKiem:
-                text = "Ngự Kiếm";
+            case EBuffAndDeBuff.NguKiemHiep:
+                text = "Ngự Kiếm (Công)";
                 break;
             case EBuffAndDeBuff.NhanKiem:
                 text = "Nhân Kiếm";
@@ -380,6 +401,89 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.TinhHonChiLuc:
                 text = "Tinh Hồn Chi Lực";
+                break;
+            case EBuffAndDeBuff.ChanKhi:
+                text = "Chấn Khí";
+                break;
+            case EBuffAndDeBuff.NguKhiHiep:
+                text = "Ngự Khí (Công)";
+
+                break;
+            case EBuffAndDeBuff.NguKimHiep:
+                text = "Ngự Kim (Công)";
+
+                break;
+            case EBuffAndDeBuff.NguMocHiep:
+                text = "Ngự Mộc (Công)";
+
+                break;
+            case EBuffAndDeBuff.NguThuyHiep:
+                text = "Ngự Thủy (Công)";
+
+                break;
+            case EBuffAndDeBuff.NguHoaHiep:
+                text = "Ngự Hỏa (Công)";
+
+                break;
+            case EBuffAndDeBuff.NguThoHiep:
+                text = "Ngự Thổ (Công)";
+
+                break;
+            case EBuffAndDeBuff.NguThanThucHiep:
+                text = "Ngự Thần Thức (Công)";
+
+                break;
+            case EBuffAndDeBuff.TangToc:
+                text = "Tăng Tốc";
+
+                break;
+            case EBuffAndDeBuff.TroiChan:
+                text = "Trói Chân";
+
+                break;
+            case EBuffAndDeBuff.TichHoa:
+                text = "Tích Hỏa";
+
+                break;
+            case EBuffAndDeBuff.TichKim:
+                text = "Tích Kim";
+
+                break;
+            case EBuffAndDeBuff.TichMoc:
+                text = "Tích Mộc";
+
+                break;
+            case EBuffAndDeBuff.TichThuy:
+                text = "Tích Thủy";
+
+                break;
+            case EBuffAndDeBuff.TichDoc:
+                text = "Tích Độc";
+
+                break;
+            case EBuffAndDeBuff.NguKim:
+                text = "Ngự Kim (Thủ)";
+
+                break;
+            case EBuffAndDeBuff.NguMoc:
+                text = "Ngự Mộc (Thủ)";
+
+                break;
+            case EBuffAndDeBuff.NguThuy:
+                text = "Ngự Thủy (Thủ)";
+
+                break;
+            case EBuffAndDeBuff.NguHoa:
+                text = "Ngự Hỏa (Thủ)";
+
+                break;
+            case EBuffAndDeBuff.NguTho:
+                text = "Ngự Thổ (Thủ)";
+
+                break;
+            case EBuffAndDeBuff.PhanTonThuong:
+                text = "Phản Tổn Thương";
+
                 break;
             default:
                 break;
@@ -527,7 +631,7 @@ public abstract class BaseSkill : BaseItemData
             case EBuffAndDeBuff.HonLuc:
                 text = $"Mỗi tổn thương 1 điểm sẽ giải trừ 1 tầng, tiêu hao hết Quỷ Hồn tiêu tan";
                 break;
-            case EBuffAndDeBuff.NguKiem:
+            case EBuffAndDeBuff.NguKiemHiep:
                 text = $"Trong hiệp này, mỗi tầng tăng lên một điểm sát thương đối với thần thông hệ kiếm";
                 break;
             case EBuffAndDeBuff.NhanKiem:
@@ -552,7 +656,7 @@ public abstract class BaseSkill : BaseItemData
                 text = $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 5 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 5000";
                 break;
             case EBuffAndDeBuff.KiemTam:
-                text = $"Mỗi khi sử dụng {GetTextTypeSkill(ETypeSkill.Kiem)} hệ thần thông thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiem)}, sau đó giải trừ một tầng. Kết thúc hiệp giải trừ toàn bộ";
+                text = $"Mỗi khi sử dụng {GetTextTypeSkill(ETypeSkill.Kiem)} hệ thần thông thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiemHiep)}, sau đó giải trừ một tầng. Kết thúc hiệp giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.ChanThan:
                 text = $"Thần thức thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ toàn bộ";
@@ -562,6 +666,69 @@ public abstract class BaseSkill : BaseItemData
                 break;
             case EBuffAndDeBuff.TinhHonChiLuc:
                 text = $"Mỗi tầng thần thức +1. Kết thúc hiệp giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.ChanKhi:
+                text = $"Khí hệ thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.NguKhiHiep:
+                text = $"Trong hiệp này, mỗi tầng tăng lên một điểm sát thương đối với thần thông hệ Khí";
+                break;
+            case EBuffAndDeBuff.NguKimHiep:
+                text = $"Trong hiệp này, mỗi tầng tăng lên một điểm sát thương đối với thần thông hệ Kim";
+                break;
+            case EBuffAndDeBuff.NguMocHiep:
+                text = $"Trong hiệp này, mỗi tầng tăng lên một điểm sát thương đối với thần thông hệ Mộc";
+                break;
+            case EBuffAndDeBuff.NguThuyHiep:
+                text = $"Trong hiệp này, mỗi tầng tăng lên một điểm sát thương đối với thần thông hệ Thủy";
+                break;
+            case EBuffAndDeBuff.NguHoaHiep:
+                text = $"Trong hiệp này, mỗi tầng tăng lên một điểm sát thương đối với thần thông hệ Hỏa";
+                break;
+            case EBuffAndDeBuff.NguThoHiep:
+                text = $"Trong hiệp này, mỗi tầng tăng lên một điểm sát thương đối với thần thông hệ Thổ";
+                break;
+            case EBuffAndDeBuff.NguThanThucHiep:
+                text = $"Trong hiệp này, mỗi tầng tăng lên một điểm sát thương đối với thần thông hệ Thần Thức";
+                break;
+            case EBuffAndDeBuff.TangToc:
+                text = $"Mỗi tầng độn tốc +1";
+                break;
+            case EBuffAndDeBuff.TroiChan:
+                text = $"Mỗi tầng độn tốc -1";
+                break;
+            case EBuffAndDeBuff.NguKim:
+                text = $"Trong hiệp này, mỗi tầng giảm một điểm sát thương đối với thần thông hệ Kim";
+                break;
+            case EBuffAndDeBuff.NguMoc:
+                text = $"Trong hiệp này, mỗi tầng giảm một điểm sát thương đối với thần thông hệ Mộc";
+                break;
+            case EBuffAndDeBuff.NguThuy:
+                text = $"Trong hiệp này, mỗi tầng giảm một điểm sát thương đối với thần thông hệ Thủy";
+                break;
+            case EBuffAndDeBuff.NguHoa:
+                text = $"Trong hiệp này, mỗi tầng giảm một điểm sát thương đối với thần thông hệ Hỏa";
+                break;
+            case EBuffAndDeBuff.NguTho:
+                text = $"Trong hiệp này, mỗi tầng giảm một điểm sát thương đối với thần thông hệ Thổ";
+                break;
+            case EBuffAndDeBuff.PhanTonThuong:
+                text = $"Mỗi lần nhận tổn thương, mỗi tầng phản lại một điểm sát thương cho đối thủ. Kết thúc hiệp, giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.TichHoa:
+                text = $"Kết thúc hiệp, mỗi tầng giải trừ một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}. Sau đó, giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.TichKim:
+                text = $"Mỗi lần nhận tổn thương, mỗi tầng giải trừ một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}. Kết thúc hiệp, giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.TichMoc:
+                text = $"Mỗi lần sử dụng thần thông, mỗi tầng giải trừ một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}. Kết thúc hiệp, giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.TichThuy:
+                text = $"Mỗi lần sử dụng thần thông, mỗi tầng giải trừ một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SuongGia)}. Kết thúc hiệp, giải trừ toàn bộ";
+                break;
+            case EBuffAndDeBuff.TichDoc:
+                text = $"Bắt đầu hiệp, mỗi tầng giải trừ một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}. Kết thúc hiệp, giải trừ toàn bộ";
                 break;
             default:
                 break;
