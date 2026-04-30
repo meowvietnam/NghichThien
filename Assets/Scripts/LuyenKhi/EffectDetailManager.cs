@@ -1,3 +1,4 @@
+﻿using CreateCharacter.CharStats;
 using TMPro;
 using UnityEngine;
 
@@ -39,10 +40,27 @@ namespace LuyenKhi
                     $"(<color={progressColor}>{detail.Sum}</color>/" +
                     $"<color={progressColor}>{detail.Value}</color>)" +
                     ": "+
-                    $"<color={rangeColor}>[{detail.Min}-{detail.Max}]</color>";
+                    $"<color={rangeColor}>[{detail.Min}~{detail.Max}]</color>";
 
                 effectDetailUI.gameObject.SetActive(true);
                 effectDetailUI.SetText(text);
+                effectDetailUI.actionPointerDown = (eventData) =>
+                {
+                    var tooltip = Tooltip.Instance;
+                    tooltip.SetActive(true);
+                    Debug.Log("effect text luyện khí hoạt động");
+
+                    // Lấy tên hiệu ứng (detail.Name) và mô tả từ hàm public static đã viết
+                    // Lưu ý: detail.EffectType là loại hiệu ứng, ta truyền vào hàm xử lý chuỗi "X"
+                    string effectName = detail.Name;
+                    string effectDesc = GameManager.GetEffectDescription(detail.EffectType);
+
+                    tooltip.SetTextInfo(effectName, effectDesc);
+                    tooltip.SetScale(Vector2.one);
+
+                    // Đặt vị trí Tooltip lệch một chút so với ngón tay/chuột để không bị che
+                    tooltip.SetPosition(eventData.position - new Vector2(100, -40));
+                };
             }
         }
 

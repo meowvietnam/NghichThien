@@ -30,23 +30,15 @@ namespace CreateCharacter
         }
         public ItemType GetItemType()
         {
-            return Item.Type switch
+            return GetEquipmentType() switch
             {
-                ArtifactType.PhiKiem or
-                ArtifactType.BaoChung or
-                ArtifactType.ChiHoan or
-                ArtifactType.PhiCham or
-                ArtifactType.BaoHap => ItemType.VuKhi,
-
-                ArtifactType.TruongBao or
-                ArtifactType.GiapTru => ItemType.PhongCu,
-
-                ArtifactType.Linh or
-                ArtifactType.BaoLenh or
-                ArtifactType.BaoAn => ItemType.TrangSuc,
-
+                EquipmentType.Weapon => ItemType.VuKhi,
+                EquipmentType.Armor => ItemType.PhongCu,
+                EquipmentType.Jewelry => ItemType.TrangSuc,
                 _ => ItemType.VuKhi // Giá trị mặc định nếu cần
+
             };
+         
         }
         public void Deserialize(IReader reader, ref Equipment value)
         {

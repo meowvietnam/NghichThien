@@ -57,7 +57,9 @@ public class CharacterStatsSecure
 
     public List<SecureInt> ngoDaoSaves = new List<SecureInt>();
     public List<DataSave> camNgoSaves = new List<DataSave>();
-
+    public EquipmentClient vuKhi = new EquipmentClient();
+    public EquipmentClient phongCu = new EquipmentClient();
+    public EquipmentClient trangSuc = new EquipmentClient();
     public class DataSave
     {
         // Trong class con cũng phải truyền giá trị
@@ -99,36 +101,6 @@ public class CharacterStatsSecure
     }
 
 
-    public void Clone(CharacterData data)
-    {
-        var progression = data.Progression;
-        nameUser = data.Name;
-        level = progression.Level;
-        currentExp = progression.CurrentExp;
-        ngoDaoDiem = progression.NgoDaoDiem;
-        Clone(data.Stats);
-    }
-
-    private void Clone(CharacterStats stats)
-    {
-        percentKim = stats.Kim;
-        percentMoc = stats.Moc;
-        percentThuy = stats.Thuy;
-        percentHoa = stats.Hoa;
-        percentTho = stats.Tho;
-        percentMa = stats.Ma;
-        tuChat = stats.TuChat;
-        ngoTinh = stats.NgoTinh;
-        thanThuc = stats.ThanThuc;
-        tocDoBay = stats.TocDoBay;
-        linhThach = stats.LinhThach;
-        hp = stats.Hp;
-        hpMax = stats.SinhMenh;
-        thoNguyen = stats.ThoNguyen;
-        tamCanh = stats.TamCanh;
-        idLinhCan = (int)stats.LinhCan;
-        ability = stats.Ability;
-        danDoc = stats.DanDoc;
-        tuoiTac = stats.TuoiTac.Days / 365;
-    }
+   
+ 
 }

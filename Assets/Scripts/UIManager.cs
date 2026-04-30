@@ -3,6 +3,7 @@ using CreateCharacter;
 using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
+using LuyenKhi;
 using Network;
 using Sirenix.OdinInspector;
 using System.Linq;
@@ -21,15 +22,27 @@ public class UIManager : BaseBehaviour
     [SerializeField] private Sprite spriteCPInven;
     [SerializeField] private Sprite spriteRecipeInven;
 
+    public (Sprite,Sprite,Color) GetFrameAndQualityFullAndColorNameSkill(BaseSkill data)
+    {
+        if (data == null) return (default, default, default);
+        int index = ((((int)data.eTierSkill - 1) / 3) * 2) + 1;
+        return (spriteFrames[index], spriteQualityFulls[index], colorQualitys[index]);
+    }
+    public (Sprite, Sprite, Color) GetFrameAndQualityFullAndColorNameEquipment(EquipmentTier tierEquipment)
+    {
+        int index = (int)tierEquipment + 1;
+        return (spriteFrames[index], spriteQualityFulls[index], colorQualitys[index]);
+    }
     public void InitVisualItemSkill(ItemInventory item, BaseSkill data,ItemRef itemRef = null, ETypeInventoryItem eTypeInventoryItem = ETypeInventoryItem.Skill)
     {
         Sprite frame = null;
         if (data != null)
         {
-            frame = spriteFrames[((((int)data.eTierSkill - 1) / 3) * 2) + 1];
+            var inforVisualSkill = GetFrameAndQualityFullAndColorNameSkill(data);
+            frame = inforVisualSkill.Item1;
 
-            item.SetColorName(colorQualitys[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
-            item.SetQualityFull(spriteQualityFulls[((((int)data.eTierSkill - 1) / 3) * 2) + 1]);
+            item.SetColorName(inforVisualSkill.Item3);
+            item.SetQualityFull(inforVisualSkill.Item2);
 
         }
 
@@ -42,7 +55,7 @@ public class UIManager : BaseBehaviour
     public void InitVisualEquipment(ItemInventory item, BaseItemData data, ItemRef itemRef = null, ETypeInventoryItem eTypeInventoryItem = ETypeInventoryItem.Skill)
     {
         Sprite frame = null;
-        Equipment equipment = null;
+        CreateCharacter.Equipment equipment = null;
         var typeCurrent = itemRef.Type;
         if (typeCurrent == ItemType.VuKhi)
         {
@@ -72,9 +85,11 @@ public class UIManager : BaseBehaviour
         }    
         if (data != null)
         {
-            frame = spriteFrames[(int)equipment.Item.Tier + 1];
-            item.SetColorName(colorQualitys[(int)equipment.Item.Tier + 1]);
-            item.SetQualityFull(spriteQualityFulls[(int)equipment.Item.Tier + 1]);
+            var inforVisualEquipment = GetFrameAndQualityFullAndColorNameEquipment(equipment.Item.Tier);
+
+            frame = inforVisualEquipment.Item1;
+            item.SetColorName(inforVisualEquipment.Item3);
+            item.SetQualityFull(inforVisualEquipment.Item2);
 
         }
 

@@ -64,10 +64,23 @@ public enum ETypeVisualChar
 }
 public class CharacterCombat : MonoBehaviour
 {
-    public const string ANIM_IDLE = "Idle_0";
-    public const string ANIM_PUNCH = "Punch_0";
-    public const string ANIM_HIT = "Hit_0";
-    public const string ANIM_DIE = "Die_0";
+    public string ANIM_IDLE
+    {
+        get
+        {
+            // Truy cập vào SkeletonData để tìm Animation
+            var skeletonData = currentCharGender.SkeletonDataAsset.GetSkeletonData(true);
+
+            if (skeletonData.FindAnimation("Idle_0") != null)
+            {
+                return "Idle_0";
+            }
+            return "stand_0";
+        }
+    }
+    public string ANIM_PUNCH => "Punch_0";
+    public string ANIM_HIT => "Hit_0";
+    public string ANIM_DIE => "Die_0";
     public CombatManager CombatManager=>transform.GetComponentInParent<CombatManager>();
     [SerializeField] protected Text textSkillNameCall;
     [SerializeField] public ETypeVisualChar eTypeVisualChar;
@@ -102,7 +115,10 @@ public class CharacterCombat : MonoBehaviour
 
     public List<AmKinhEntry> listAmKinhTT = new List<AmKinhEntry>();
     public SecureBool isAutoCastSkill;
- 
+    public SecureBool isCooldownWeapon;
+
+
+
     [System.Serializable]
     public class AmKinhEntry
     {
@@ -986,6 +1002,11 @@ public class CharacterCombat : MonoBehaviour
         }
 
         thanThongUseThisComBat.Add(new List<PlaySkillData>());
+        if(isCooldownWeapon)
+        {
+            isCooldownWeapon = false;
+        }    
+
     }
     public bool IsKietSuc()
     {

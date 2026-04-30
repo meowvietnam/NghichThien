@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using LongDH.LongDHModules;
@@ -29,11 +29,19 @@ namespace AllMaps
         }
         private void OnMouseDown()
         {
-            if (EventSystem.current.IsPointerOverGameObject())
-            {
-                return;
-            }
+            if (IsPointerOverUIElement()) return;
             mapManager.PlayerMoveTo(this);
+        }
+        public bool IsPointerOverUIElement()
+        {
+            var eventData = new PointerEventData(EventSystem.current);
+            eventData.position = Input.mousePosition; // Hoặc dùng Input.GetTouch(0).position nếu là Mobile
+
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventData, results);
+
+            // Nếu results.Count > 0 nghĩa là có UI đang nằm tại vị trí chuột/touch
+            return results.Count > 0;
         }
         public virtual void SetData(EnemyData enemyDataCurrent, GameObject iconVisualAction)
         {

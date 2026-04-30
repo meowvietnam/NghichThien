@@ -156,7 +156,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
     [SerializeField] private Sprite[] listSpriteIconDanDoc;
     [SerializeField] private Color[] listColorDanDoc;
-    [SerializeField] public Tooltip toolTipBtnStats;
+    [SerializeField] public Tooltip toolTipBtnStats => Tooltip.Instance;
     private CharacterData CharData => Client.Instance.CharacterData;
     private void UpdatePlayerStats()
     {

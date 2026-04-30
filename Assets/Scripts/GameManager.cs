@@ -328,7 +328,7 @@ public class GameManager : BaseBehaviour
             Array values = Enum.GetValues(typeof(Gender));
             Gender randomGender = (Gender)values.GetValue(_random.Next(values.Length));
             var xungHo = XungHoText(6, randomGender);
-            Pool.Get<SayDialogManager>().ShowDialogRandomSkin("Người Gác Cổng", randomGender,
+            SayDialogManager.Instance.ShowDialogRandomSkin("Người Gác Cổng", randomGender,
                 $"{xungHo.targetCallMe} xin dừng bước hiện tại nơi này chưa thể vào hãy kiên nhẫn chờ bản cập nhật tiếp theo !");
             return;
         }
@@ -394,13 +394,18 @@ public class GameManager : BaseBehaviour
     {
         var charData = Client.Instance.CharacterData;
         var stat = charData.Stats;
+        CreateCharacter.Equipment vuKhi = charData.InventoryManager.VuKhis.FirstOrDefault();
+        CreateCharacter.Equipment phongCu = charData.InventoryManager.PhongCus.FirstOrDefault();
+        CreateCharacter.Equipment trangSuc = charData.InventoryManager.TrangSucs.Any() ? charData.InventoryManager.TrangSucs.Last() : null;
+
         return new CharacterStatsSecure
         {
+            nameUser = charData.Name,
             level = charData.Progression.Level,
             hp = stat.Hp,
             hpMax = stat.SinhMenh,
             ability = stat.Ability,
-            percentKim = stat.Kim,
+            percentKim = stat.Kim,  
             percentMoc = stat.Moc,
             percentThuy = stat.Thuy,
             percentHoa = stat.Hoa,
@@ -423,6 +428,38 @@ public class GameManager : BaseBehaviour
                 { key = kvp.Key, value = kvp.Value }).ToList(),
             colorList = charData.Appearance.Colors.Select(kvp => new CharacterStatsSecure.ColorData
                 { key = kvp.Key, value = kvp.Value }).ToList(),
+
+            vuKhi = new EquipmentClient
+            {
+                id = vuKhi.Id,
+                nameEquip = vuKhi.Name,
+                listEffectEquip = vuKhi.Effects.Select(effect => new EquipmentClient.EffectClient
+                {
+                    Type = effect.Type,
+                    Value = new SecureInt(effect.Value)
+                }).ToList(),
+            },
+            phongCu = new EquipmentClient
+            {
+                id = phongCu.Id,
+                nameEquip = phongCu.Name,
+                listEffectEquip = phongCu.Effects.Select(effect => new EquipmentClient.EffectClient
+                {
+                    Type = effect.Type,
+                    Value = new SecureInt(effect.Value)
+                }).ToList(),
+            },
+            trangSuc = new EquipmentClient
+            {
+                id = trangSuc.Id,
+                nameEquip = trangSuc.Name,
+                listEffectEquip = trangSuc.Effects.Select(effect => new EquipmentClient.EffectClient
+                {
+                    Type = effect.Type,
+                    Value = new SecureInt(effect.Value)
+                }).ToList(),
+            }
+
         };
     }
 
@@ -799,5 +836,339 @@ public class GameManager : BaseBehaviour
         item.gameObject.SetActive(true);
         // Nếu không tìm thấy cái nào rảnh, khởi tạo cái mới
         return item;
+    }
+    public static string GetDescEquipment(IEnumerable<dynamic> effects, EquipmentType equipmentType)
+    {
+        // 1. Dòng đầu tiên: [Chủ động] hoặc [Bị động]
+        string textDesc = GetDescEquipment(equipmentType);
+
+        var listEffectTypeStartCombat = new HashSet<EffectType>
+    {
+        EffectType.KimTrong, EffectType.MocTrong, EffectType.ThuyTrong,
+        EffectType.HoaTrong, EffectType.ThoTrong,
+    };
+
+        // Nhóm các effect dựa trên việc nó là Special hay không
+        // Sau đó duyệt qua từng nhóm để thêm SubHeader một lần duy nhất cho nhóm đó
+        var groupedEffects = effects
+            .GroupBy(e => listEffectTypeStartCombat.Contains((EffectType)e.Type)) // Lưu ý ép kiểu nếu cần
+            .OrderByDescending(g => g.Key); // Ưu tiên hiện "Bắt đầu chiến đấu" trước (tùy chọn)
+
+        foreach (var group in groupedEffects)
+        {
+            bool isSpecial = group.Key;
+
+            // 2. Lấy dòng tiền tố (Chỉ lấy 1 lần cho cả nhóm)
+            string subHeader = GetDescEquipment(equipmentType, isSpecial);
+            if (!string.IsNullOrEmpty(subHeader))
+            {
+                textDesc += "\n" + subHeader;
+            }
+
+            // 3. Duyệt qua các effect trong nhóm để nối nội dung chi tiết
+            foreach (var effect in group)
+            {
+                string effectDetail = GetEffectDescription(effect);
+                if (!string.IsNullOrEmpty(effectDetail))
+                {
+                    // Thêm một khoảng thụt đầu dòng (tùy chọn) để dễ nhìn hơn
+                    textDesc += "\n - " + effectDetail;
+                }
+            }
+        }
+
+        return textDesc;
+    }
+  
+    private static string GetEffectDescription(dynamic effect)
+    {
+
+        switch (effect.Type)
+        {
+            // --- NHÓM CASTER THU HOẠCH (BUFF/DEBUFF) ---
+            case EffectType.Bui:
+                return $"Thu hoạch được {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)}.";
+            case EffectType.ChanHoa:
+            case EffectType.ChanKhi:
+            case EffectType.ChanKiem:
+            case EffectType.ChanKim:
+            case EffectType.ChanMoc:
+            case EffectType.ChanThan:
+            case EffectType.ChanTho:
+            case EffectType.ChanThuy:
+            case EffectType.Diem:
+            case EffectType.GiamTonThuong:
+            case EffectType.HoaDiem:
+            case EffectType.HoTrao:
+            case EffectType.KiemKhi:
+            case EffectType.NguHoa:
+            case EffectType.NguHoaHiep:
+            case EffectType.NguKhiHiep:
+            case EffectType.NguKiemHiep:
+            case EffectType.NguKim:
+            case EffectType.NguKimHiep:
+            case EffectType.NguMoc:
+            case EffectType.NguMocHiep:
+            case EffectType.NgungThan:
+            case EffectType.NguTho:
+            case EffectType.NguThoHiep:
+            case EffectType.NguThuy:
+            case EffectType.NguThuyHiep:
+            case EffectType.PhanTonThuong:
+            case EffectType.SucThe:
+            case EffectType.TichDoc:
+            case EffectType.TichHoa:
+            case EffectType.TichKim:
+            case EffectType.TichMoc:
+            case EffectType.TichThuy:
+                // Map ngược từ EffectType sang EBuffAndDeBuff để lấy Keyword
+                EBuffAndDeBuff buffEnum = (EBuffAndDeBuff)System.Enum.Parse(typeof(EBuffAndDeBuff), effect.Type.ToString());
+                return $"Thu hoạch được {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(buffEnum)}.";
+
+            case EffectType.Nhanh:
+                return $"Thu hoạch được {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TangToc)}.";
+            case EffectType.TriLieuLieu:
+                return $"Thu hoạch được {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)}.";
+            case EffectType.NguThanHiep:
+                return $"Thu hoạch được {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguThanThucHiep)}.";
+
+            // --- NHÓM ĐỐI THỦ NHẬN PHẢI (DEBUFF) ---
+            case EffectType.Cat:
+                return $"Đối thủ nhận phải {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cat)}.";
+            case EffectType.ChayMau:
+            case EffectType.DeTonThuong:
+            case EffectType.PhaThe:
+            case EffectType.SuongGia:
+            case EffectType.ThanThuong:
+            case EffectType.ThieuDot:
+            case EffectType.TrungDoc:
+                EBuffAndDeBuff debuffEnum = (EBuffAndDeBuff)System.Enum.Parse(typeof(EBuffAndDeBuff), effect.Type.ToString());
+                return $"Đối thủ nhận phải {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(debuffEnum)}.";
+
+            case EffectType.QuanQuanh:
+                return $"Đối thủ nhận phải {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}.";
+            case EffectType.TroiDu:
+                return $"Đối thủ nhận phải {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TroiChan)}.";
+
+            // --- NHÓM HẤP THỤ LINH KHÍ ---
+            case EffectType.HapThuLinhKhi:
+                return $"Hấp thụ ngẫu nhiên {effect.Value} Linh Khí.";
+            case EffectType.HapThuHoaLinhKhi:
+                return $"Hấp thụ {effect.Value} điểm Hỏa Linh Khí.";
+            case EffectType.HapThuKimLinhKhi:
+                return $"Hấp thụ {effect.Value} điểm Kim Linh Khí.";
+            case EffectType.HapThuMocLinhKhi:
+                return $"Hấp thụ {effect.Value} điểm Mộc Linh Khí.";
+            case EffectType.HapThuThoLinhKhi:
+                return $"Hấp thụ {effect.Value} điểm Thổ Linh Khí.";
+            case EffectType.HapThuThuyLinhKhi:
+                return $"Hấp thụ {effect.Value} điểm Thủy Linh Khí.";
+
+            // --- NHÓM HỒI PHỤC ---
+            case EffectType.KhoiPhucGiaTriSinhMenh:
+            case EffectType.KhoiPhucGiaTriSinhMenhDauLuot:
+                return $"Khôi phục {effect.Value} điểm HP.";
+
+            // --- NHÓM SÁT THƯƠNG ---
+            case EffectType.TaoThanhTonThuong:
+                return $"Tạo thành {effect.Value} điểm tổn thương.";
+            case EffectType.TaoThanhXLanXDiemThuongTon:
+                return $"Tạo thành {effect.Value} lần {effect.Value} điểm tổn thương.";
+
+            // --- NHÓM "TRONG" (START COMBAT) ---
+            case EffectType.KimTrong:
+                return $"Tăng {effect.Value}% tỉ lệ hấp thụ Kim linh khí.";
+
+            case EffectType.MocTrong:
+                return $"Tăng {effect.Value}% tỉ lệ hấp thụ Mộc linh khí.";
+
+            case EffectType.ThuyTrong:
+                return $"Tăng {effect.Value}% tỉ lệ hấp thụ Thủy linh khí.";
+
+            case EffectType.HoaTrong:
+                return $"Tăng {effect.Value}% tỉ lệ hấp thụ Hỏa linh khí.";
+
+            case EffectType.ThoTrong:
+                return $"Tăng {effect.Value}% tỉ lệ hấp thụ Thổ linh khí.";
+
+            default:
+                return "";
+        }
+    }
+    public static string GetEffectDescription(EffectType type)
+    {
+        string suffix = " (X là giá trị ngẫu nhiên được luyện thành)";
+        string description = "";
+
+        switch (type)
+        {
+            // --- NHÓM CASTER THU HOẠCH (BUFF/DEBUFF) ---
+            case EffectType.Bui:
+                description = $"Thu hoạch được X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)}.";
+                break;
+
+            case EffectType.ChanHoa:
+            case EffectType.ChanKhi:
+            case EffectType.ChanKiem:
+            case EffectType.ChanKim:
+            case EffectType.ChanMoc:
+            case EffectType.ChanThan:
+            case EffectType.ChanTho:
+            case EffectType.ChanThuy:
+            case EffectType.Diem:
+            case EffectType.GiamTonThuong:
+            case EffectType.HoaDiem:
+            case EffectType.HoTrao:
+            case EffectType.KiemKhi:
+            case EffectType.NguHoa:
+            case EffectType.NguHoaHiep:
+            case EffectType.NguKhiHiep:
+            case EffectType.NguKiemHiep:
+            case EffectType.NguKim:
+            case EffectType.NguKimHiep:
+            case EffectType.NguMoc:
+            case EffectType.NguMocHiep:
+            case EffectType.NgungThan:
+            case EffectType.NguTho:
+            case EffectType.NguThoHiep:
+            case EffectType.NguThuy:
+            case EffectType.NguThuyHiep:
+            case EffectType.PhanTonThuong:
+            case EffectType.SucThe:
+            case EffectType.TichDoc:
+            case EffectType.TichHoa:
+            case EffectType.TichKim:
+            case EffectType.TichMoc:
+            case EffectType.TichThuy:
+                EBuffAndDeBuff buffEnum = (EBuffAndDeBuff)System.Enum.Parse(typeof(EBuffAndDeBuff), type.ToString());
+                description = $"Thu hoạch được X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(buffEnum)}.";
+                break;
+
+            case EffectType.Nhanh:
+                description = $"Thu hoạch được X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TangToc)}.";
+                break;
+            case EffectType.TriLieuLieu:
+                description = $"Thu hoạch được X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)}.";
+                break;
+            case EffectType.NguThanHiep:
+                description = $"Thu hoạch được X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguThanThucHiep)}.";
+                break;
+
+            // --- NHÓM ĐỐI THỦ NHẬN PHẢI (DEBUFF) ---
+            case EffectType.Cat:
+                description = $"Đối thủ nhận phải X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cat)}.";
+                break;
+
+            case EffectType.ChayMau:
+            case EffectType.DeTonThuong:
+            case EffectType.PhaThe:
+            case EffectType.SuongGia:
+            case EffectType.ThanThuong:
+            case EffectType.ThieuDot:
+            case EffectType.TrungDoc:
+                EBuffAndDeBuff debuffEnum = (EBuffAndDeBuff)System.Enum.Parse(typeof(EBuffAndDeBuff), type.ToString());
+                description = $"Đối thủ nhận phải X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(debuffEnum)}.";
+                break;
+
+            case EffectType.QuanQuanh:
+                description = $"Đối thủ nhận phải X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}.";
+                break;
+            case EffectType.TroiDu:
+                description = $"Đối thủ nhận phải X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TroiChan)}.";
+                break;
+
+            // --- NHÓM HẤP THỤ LINH KHÍ ---
+            case EffectType.HapThuLinhKhi:
+                description = "Hấp thụ ngẫu nhiên X Linh Khí.";
+                break;
+            case EffectType.HapThuHoaLinhKhi:
+                description = "Hấp thụ X điểm Hỏa Linh Khí.";
+                break;
+            case EffectType.HapThuKimLinhKhi:
+                description = "Hấp thụ X điểm Kim Linh Khí.";
+                break;
+            case EffectType.HapThuMocLinhKhi:
+                description = "Hấp thụ X điểm Mộc Linh Khí.";
+                break;
+            case EffectType.HapThuThoLinhKhi:
+                description = "Hấp thụ X điểm Thổ Linh Khí.";
+                break;
+            case EffectType.HapThuThuyLinhKhi:
+                description = "Hấp thụ X điểm Thủy Linh Khí.";
+                break;
+
+            // --- NHÓM HỒI PHỤC ---
+            case EffectType.KhoiPhucGiaTriSinhMenh:
+            case EffectType.KhoiPhucGiaTriSinhMenhDauLuot:
+                description = "Khôi phục X điểm HP.";
+                break;
+
+            // --- NHÓM SÁT THƯƠNG ---
+            case EffectType.TaoThanhTonThuong:
+                description = "Tạo thành X điểm tổn thương.";
+                break;
+            case EffectType.TaoThanhXLanXDiemThuongTon:
+                description = "Tạo thành X lần X điểm tổn thương.";
+                break;
+
+            // --- NHÓM "TRONG" (START COMBAT) ---
+            case EffectType.KimTrong:
+                description = "Tăng X% tỉ lệ hấp thụ Kim linh khí.";
+                break;
+            case EffectType.MocTrong:
+                description = "Tăng X% tỉ lệ hấp thụ Mộc linh khí.";
+                break;
+            case EffectType.ThuyTrong:
+                description = "Tăng X% tỉ lệ hấp thụ Thủy linh khí.";
+                break;
+            case EffectType.HoaTrong:
+                description = "Tăng X% tỉ lệ hấp thụ Hỏa linh khí.";
+                break;
+            case EffectType.ThoTrong:
+                description = "Tăng X% tỉ lệ hấp thụ Thổ linh khí.";
+                break;
+
+            default:
+                return "";
+        }
+
+        return description + suffix;
+    }
+    private static string GetDescEquipment(EquipmentType equipmentType)
+    {
+        switch (equipmentType)
+        {
+            case EquipmentType.Weapon:
+                return "<color=#ffb143>[Chủ động] </color>";
+            case EquipmentType.Armor:
+                return "<color=#6495ED>[Bị động] </color>";
+            case EquipmentType.Jewelry:
+                return "<color=#6495ED>[Bị động] </color>";
+            default:
+                break;
+        }
+        return "";
+    }
+    private static string GetDescEquipment(EquipmentType equipmentType,bool isSpecial)
+    {
+        if(!isSpecial)
+        {
+            switch (equipmentType)
+            {
+                case EquipmentType.Weapon:
+                    return "";
+                case EquipmentType.Armor:
+                    return "<color=#6495ED>[Bắt đầu hiệp] </color>";
+                case EquipmentType.Jewelry:
+                    return "<color=#6495ED>[Kết thúc hiệp] </color>";
+                default:
+                    break;
+            }
+        }    
+        else
+        {
+            return "<color=#6495ED>[Bắt đầu chiến đấu] </color>";
+        }
+        return "";
     }
 }

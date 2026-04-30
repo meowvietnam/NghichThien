@@ -2,11 +2,13 @@
 using DG.Tweening;
 using LongDH.LongDHModules;
 using LongDH.Script.ObjectPool;
+using LuyenKhi;
 using Sirenix.OdinInspector;
+using Skill;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Skill;
 using UnityEngine;
 using UnityEngine.UI;
 public class LinhKhiTieuTan
@@ -149,7 +151,25 @@ public class CombatManager : MonoBehaviour
         transform.GetComponentInChildren<PlayerUICombat>().Init();
         textNameChar1.text = char1.characterStatsBase.nameUser;
         textNameChar2.text = char2.characterStatsBase.nameUser;
-
+       
+        if (char1.characterStatsBase.phongCu.Item != null)
+        {
+            SetUIBuffEquipment(char1, char1.characterStatsBase.phongCu, EquipmentType.Armor);
+          
+        }
+        if (char2.characterStatsBase.phongCu.Item != null)
+        {
+            SetUIBuffEquipment(char2, char2.characterStatsBase.phongCu, EquipmentType.Armor);
+           
+        }
+        if (char1.characterStatsBase.trangSuc.Item != null)
+        {
+            SetUIBuffEquipment(char1, char1.characterStatsBase.trangSuc, EquipmentType.Jewelry);
+        }
+        if (char2.characterStatsBase.trangSuc.Item != null)
+        {
+            SetUIBuffEquipment(char2, char2.characterStatsBase.trangSuc, EquipmentType.Jewelry);
+        }
     }
 
     public static bool IsTuongDong(List<LinhKhiTieuTan> linhKhiTieuTan)
@@ -358,6 +378,7 @@ public class CombatManager : MonoBehaviour
         CombatStatic.ThienKiem(currentTurn, targetTurn);
         CombatStatic.ChayMau(targetTurn, currentTurn);
         currentTurn.EndTurn();
+        ExcuteEquipment(currentTurn, targetTurn, EquipmentType.Jewelry);
 
         // swap turn
         if (currentTurn == char1)
@@ -419,19 +440,9 @@ public class CombatManager : MonoBehaviour
                     buffIcon.InitAction(null, () =>
                     {
                         Debug.Log("cos goi pointer up buff icon show tip");
-                        
-                        buffInfor.SetText($"{BaseSkill.GetColoredText($"[{entry.ThanThong.nameItem}]", "#ffb143")}: {entry.ThanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level))}");
                         buffInfor.transform.SetParent(buffIcon.transform);
-                        if (signX > 0)
-                        {
-                            buffInfor.thisTransform.pivot = new Vector2(0, 0.5f);
-                        }
-                        else
-                        {
-                            buffInfor.thisTransform.pivot = new Vector2(1, 0.5f);
-
-                        }
-                        buffInfor.transform.localPosition = new Vector3(0, -80, 0);
+                        buffInfor.SetText($"{BaseSkill.GetColoredText($"[{entry.ThanThong.nameItem}]", "#ffb143")}: {entry.ThanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level))}");
+                        
 
 
                         buffInfor.DoShow();
@@ -500,19 +511,10 @@ public class CombatManager : MonoBehaviour
                     buffIcon.InitAction(null, () =>
                     {
                         Debug.Log("cos goi pointer up buff icon show tip");
+                        buffInfor.transform.SetParent(buffIcon.transform);
 
                         buffInfor.SetText($"{BaseSkill.GetColoredText($"[{thanThong.nameItem}]", "#ffb143")}: {thanThong.GetDesc(level)}");
-                        buffInfor.transform.SetParent(buffIcon.transform);
-                        if (signX > 0)
-                        {
-                            buffInfor.thisTransform.pivot = new Vector2(0, 0.5f);
-                        }
-                        else
-                        {
-                            buffInfor.thisTransform.pivot = new Vector2(1, 0.5f);
-
-                        }
-                        buffInfor.transform.localPosition = new Vector3(0, -80, 0);
+                      
 
 
                         buffInfor.DoShow();
@@ -526,7 +528,53 @@ public class CombatManager : MonoBehaviour
         }
 
     }
+    private void SetUIBuffEquipment(CharacterCombat characterCombat ,EquipmentClient equipment , EquipmentType equipmentType)
+    {
+        if (characterCombat)
+        {
+          
+            ItemUI buffIcon = null;
+            ScrollRect scrollRect = null;
+            if (characterCombat == char1)
+            {
+                scrollRect = statusChar1;
 
+            }
+            else
+            {
+                scrollRect = statusChar2;
+
+
+            }
+            bool isHave = false;
+            int scaleX = (int)scrollRect.transform.parent.localScale.x;
+            int signX = scaleX / Mathf.Abs(scaleX);
+           
+
+            if (!isHave)
+            {
+                buffIcon = prefabBuffIcon.Spawn(scrollRect.content.transform);
+                buffIcon.transform.localScale = new Vector3(1 * signX, 1, 1);
+                buffIcon.InitIcon(equipment.Item.Icon, null);
+                buffIcon.AddCount(1);
+                buffIcon.InitAction(null, () =>
+                {
+                    Debug.Log("cos goi pointer up buff icon show tip");
+                    buffInfor.transform.SetParent(buffIcon.transform);
+                    buffInfor.SetText(GameManager.GetDescEquipment(equipment.listEffectEquip, equipmentType));
+                   
+
+
+                    buffInfor.DoShow();
+
+                });
+                isHave = true;
+
+            }
+
+
+        }
+    }
     public void SetUIBuff(params object[] data)
     {
         if (data[0] is CharacterCombat characterCombat)
@@ -578,19 +626,9 @@ public class CombatManager : MonoBehaviour
                     buffIcon.InitAction(null, () =>
                     {
                         Debug.Log("cos goi pointer up buff icon show tip");
-
-                        buffInfor.SetText(BaseSkill.GetDescBuffOrDeBuff(buffType));
                         buffInfor.transform.SetParent(buffIcon.transform);
-                        if(signX>0)
-                        {
-                            buffInfor.thisTransform.pivot = new Vector2(0,0.5f);
-                        }    
-                        else
-                        {
-                            buffInfor.thisTransform.pivot = new Vector2(1, 0.5f);
-
-                        }
-                        buffInfor.transform.localPosition = new Vector3(0, -80, 0);
+                        buffInfor.SetText(BaseSkill.GetDescBuffOrDeBuff(buffType));
+                        
 
 
                         buffInfor.DoShow();
@@ -614,9 +652,8 @@ public class CombatManager : MonoBehaviour
         CombatStatic.SucThe(currentTurn, targetTurn);
         CombatStatic.ThieuDot(targetTurn, currentTurn);
 
-
+        ExcuteEquipment(currentTurn, targetTurn, EquipmentType.Armor);
         currentTurn.NewTurn();
-
         CombatStatic.AmKinhTTNewTurn(currentTurn, targetTurn);
 
         Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();
@@ -728,6 +765,7 @@ public class CombatManager : MonoBehaviour
                 yield break;
             }    
             yield return new WaitForSeconds(1);
+            ExcuteWeapon();
             var playSkillData = ThanThongAutoUse();
             if (currentTurn.isSkipTieuTanLinhKhi)
             {
@@ -753,18 +791,399 @@ public class CombatManager : MonoBehaviour
     private void StartTurn()
     {
         currentTurn = char1.GetToDoBay() >= char2.GetToDoBay() ? char1 : char2;
+        StartEquipment(currentTurn);
+        StartEquipment(targetTurn);
 
-    }    
+    }
 
     void Start()
     {
         StartTurn();
         NewTurn();
     }
-
-    // Update is called once per frame
-    void Update()
+    public void ExcuteWeapon()
     {
-        
+        if(!currentTurn.isCooldownWeapon)
+        {
+            ExcuteEquipment(currentTurn,targetTurn,EquipmentType.Weapon);
+            currentTurn.isCooldownWeapon = true;
+        }
+
+    }    
+    public virtual void StartEquipment(CharacterCombat caster)
+    {
+        List<EffectType> listEffectTypeStartCombat = new List<EffectType>
+        {
+            EffectType.KimTrong,
+            EffectType.MocTrong,
+            EffectType.ThuyTrong,
+            EffectType.HoaTrong,
+            EffectType.ThoTrong,
+        };
+        // 1. Gom tất cả hiệu ứng từ 3 loại trang bị vào 1 danh sách duy nhất
+        var allEquipEffects = caster.characterStatsBase.vuKhi.listEffectEquip
+            .Concat(caster.characterStatsBase.phongCu.listEffectEquip)
+            .Concat(caster.characterStatsBase.trangSuc.listEffectEquip)
+            .Where(e => listEffectTypeStartCombat.Contains(e.Type)); // Chỉ lấy các loại trong list "StartCombat"
+
+        // 2. Duyệt qua danh sách đã lọc và cộng chỉ số
+        foreach (var effect in allEquipEffects)
+        {
+            switch (effect.Type)
+            {
+                case EffectType.KimTrong:
+                    caster.characterStatsTemp.percentKim += effect.Value.Value; // Giả sử SecureInt có thuộc tính .Value
+                    break;
+                case EffectType.MocTrong:
+                    caster.characterStatsTemp.percentMoc += effect.Value.Value;
+                    break;
+                case EffectType.ThuyTrong:
+                    caster.characterStatsTemp.percentThuy += effect.Value.Value;
+                    break;
+                case EffectType.HoaTrong:
+                    caster.characterStatsTemp.percentHoa += effect.Value.Value;
+                    break;
+                case EffectType.ThoTrong:
+                    caster.characterStatsTemp.percentTho += effect.Value.Value;
+                    break;
+            }
+        }
+    }
+    public void ExcuteEquipment(CharacterCombat caster, CharacterCombat target, EquipmentType equipmentType)
+    {
+        EquipmentClient equipment = null;
+        switch (equipmentType)
+        {
+            case EquipmentType.Weapon:
+                equipment = caster.characterStatsBase.vuKhi;
+                break;
+            case EquipmentType.Armor:
+                equipment = caster.characterStatsBase.phongCu;
+                break;
+            case EquipmentType.Jewelry:
+                equipment = caster.characterStatsBase.trangSuc;
+
+                break;
+            default:
+                break;
+        }
+        foreach (var item in equipment.listEffectEquip)
+        {
+            ConvertEffectEquipmentToBuffAction(item)?.Invoke(caster, target);
+
+        }
+    }
+    // Update is called once per frame
+    public static Action<CharacterCombat, CharacterCombat> ConvertEffectEquipmentToBuffAction(EquipmentClient.EffectClient effect)
+    {
+        switch (effect.Type)
+        {
+            case EffectType.Bui:
+
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, effect.Value);
+                };
+            case EffectType.Cat:
+                return (caster, target) =>
+                {
+                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.Cat, effect.Value);
+                };
+            case EffectType.ChanHoa:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanHoa, effect.Value);
+                };
+            case EffectType.ChanKhi:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKhi, effect.Value);
+                };
+            case EffectType.ChanKiem:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKiem, effect.Value);
+                };
+            case EffectType.ChanKim:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKim, effect.Value);
+                };
+            case EffectType.ChanMoc:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanMoc, effect.Value);
+                };
+            case EffectType.ChanThan:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanThan, effect.Value);
+                };
+            case EffectType.ChanTho:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanTho, effect.Value);
+                };
+            case EffectType.ChanThuy:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanThuy, effect.Value);
+                };
+            case EffectType.ChayMau:
+                return (caster, target) =>
+                {
+                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.ChayMau, effect.Value);
+                };
+            case EffectType.DeTonThuong:
+                return (caster, target) =>
+                {
+                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, effect.Value);
+                };
+            case EffectType.Diem:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Diem, effect.Value);
+                };
+            case EffectType.GiamTonThuong:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, effect.Value);
+                };
+            case EffectType.HapThuHoaLinhKhi:
+                return (caster, target) =>
+                {
+                    caster.HapThuLinhKhi(ELinhKhi.Hoa, effect.Value);
+                };
+            case EffectType.HapThuKimLinhKhi:
+                return (caster, target) =>
+                {
+                    caster.HapThuLinhKhi(ELinhKhi.Kim, effect.Value);
+                };
+            case EffectType.HapThuLinhKhi:
+                return (caster, target) =>
+                {
+                    caster.HapThuLinhKhi(effect.Value);
+
+                };
+            case EffectType.HapThuMocLinhKhi:
+                return (caster, target) =>
+                {
+                    caster.HapThuLinhKhi(ELinhKhi.Moc, effect.Value);
+                };
+            case EffectType.HapThuThoLinhKhi:
+                return (caster, target) =>
+                {
+                    caster.HapThuLinhKhi(ELinhKhi.Tho, effect.Value);
+                };
+            case EffectType.HapThuThuyLinhKhi:
+                return (caster, target) =>
+                {
+                    caster.HapThuLinhKhi(ELinhKhi.Thuy, effect.Value);
+                };
+            case EffectType.HoaDiem:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoaDiem, effect.Value);
+                };
+            case EffectType.HoaTrong:
+                break;
+            case EffectType.HoTrao:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, effect.Value);
+                };
+            case EffectType.KhoiPhucGiaTriSinhMenh:
+                return (caster, target) =>
+                {
+                    caster.Healing(effect.Value);
+                };
+            case EffectType.KhoiPhucGiaTriSinhMenhDauLuot:
+                return (caster, target) =>
+                {
+                    caster.Healing(effect.Value);
+                };
+            case EffectType.KiemKhi:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, effect.Value);
+                };
+            case EffectType.KimTrong:
+                break;
+            case EffectType.MocTrong:
+                break;
+            case EffectType.NguHoa:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguHoa, effect.Value);
+                };
+            case EffectType.NguHoaHiep:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguHoaHiep, effect.Value);
+                };
+            case EffectType.NguKhiHiep:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKhiHiep, effect.Value);
+                };
+            case EffectType.NguKiemHiep:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKiemHiep, effect.Value);
+                };
+            case EffectType.NguKim:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKim, effect.Value);
+                };
+            case EffectType.NguKimHiep:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKimHiep, effect.Value);
+                };
+            case EffectType.NguMoc:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguMoc, effect.Value);
+                };
+            case EffectType.NguMocHiep:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguMocHiep, effect.Value);
+                };
+            case EffectType.NgungThan:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NgungThan, effect.Value);
+                };
+            case EffectType.NguThanHiep:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguThanThucHiep, effect.Value);
+                };
+            case EffectType.NguTho:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguTho, effect.Value);
+                };
+            case EffectType.NguThoHiep:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguThoHiep, effect.Value);
+                };
+            case EffectType.NguThuy:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguThuy, effect.Value);
+                };
+            case EffectType.NguThuyHiep:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguThuyHiep, effect.Value);
+                };
+            case EffectType.Nhanh:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TangToc, effect.Value);
+                };
+            case EffectType.PhanTonThuong:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.PhanTonThuong, effect.Value);
+                };
+            case EffectType.PhaThe:
+                return (caster, target) =>
+                {
+                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.PhaThe, effect.Value);
+                };
+            case EffectType.QuanQuanh:
+                return (caster, target) =>
+                {
+                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, effect.Value);
+                };
+            case EffectType.SucThe:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SucThe, effect.Value);
+                };
+            case EffectType.SuongGia:
+                return (caster, target) =>
+                {
+                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, effect.Value);
+                };
+            case EffectType.TaoThanhTonThuong:
+                return (caster, target) =>
+                {
+                    target.TakeDameByStatic(caster, new List<int> { effect.Value }, false);
+                };
+            case EffectType.TaoThanhXLanXDiemThuongTon:
+                return (caster, target) =>
+                {
+
+                    for (int i = 0; i < effect.Value; i++)
+                    {
+                        target.TakeDameByStatic(caster, new List<int> { effect.Value }, false);
+
+                    }
+                };
+            case EffectType.ThanThuong:
+
+                return (caster, target) =>
+                {
+                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThanThuong, effect.Value);
+                };
+            case EffectType.ThieuDot:
+                return (caster, target) =>
+                {
+                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, effect.Value);
+                };
+            case EffectType.ThoTrong:
+                break;
+            case EffectType.ThuyTrong:
+                break;
+            case EffectType.TichDoc:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TichDoc, effect.Value);
+                };
+            case EffectType.TichHoa:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TichHoa, effect.Value);
+                };
+            case EffectType.TichKim:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TichKim, effect.Value);
+                };
+            case EffectType.TichMoc:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TichMoc, effect.Value);
+                };
+            case EffectType.TichThuy:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TichThuy, effect.Value);
+                };
+            case EffectType.TriLieuLieu:
+                return (caster, target) =>
+                {
+                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TriLieu, effect.Value);
+                };
+            case EffectType.TroiDu:
+                return (caster, target) =>
+                {
+                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.TroiChan, effect.Value);
+                };
+            case EffectType.TrungDoc:
+                return (caster, target) =>
+                {
+                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, effect.Value);
+                };
+            default:
+                break;
+        }
+        return null;
     }
 }
