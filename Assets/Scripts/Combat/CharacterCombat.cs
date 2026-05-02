@@ -116,8 +116,22 @@ public class CharacterCombat : MonoBehaviour
     public List<AmKinhEntry> listAmKinhTT = new List<AmKinhEntry>();
     public SecureBool isAutoCastSkill;
     public SecureBool isCooldownWeapon;
+    public List<PhapBaoVisual> vuKhiVisuals;
+    public PhapBaoVisual currentVuKhiVisual
+    {
+        get
+        {
+            // 1. Kiểm tra các biến gốc có tồn tại không
+            if (vuKhiVisuals == null || characterStatsBase?.vuKhi?.Item == null)
+                return null;
 
+            // 2. Lấy Type cần tìm
+            var targetType = characterStatsBase.vuKhi.Item.Type;
 
+            // 3. Tìm kiếm và lọc bỏ những phần tử null trong list (nếu có)
+            return vuKhiVisuals.FirstOrDefault(x => x != null && x.artifactType == targetType);
+        }
+    }
 
     [System.Serializable]
     public class AmKinhEntry
@@ -639,9 +653,12 @@ public class CharacterCombat : MonoBehaviour
             var charGraphic = currentCharGender.GetComponent<CharacterGraphic>();
             charGraphic.SetGender(characterStatsBase.Gender);
             charGraphic.SetSkin(characterStatsBase.Skins, characterStatsBase.Colors);
-        }    
+        }
 
-
+        if(currentVuKhiVisual != null)
+        {
+            currentVuKhiVisual.Init(characterStatsBase.vuKhi.Item.IconFight);
+        }
 
         //Test
         

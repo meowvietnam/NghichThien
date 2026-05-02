@@ -807,6 +807,11 @@ public class CombatManager : MonoBehaviour
         {
             ExcuteEquipment(currentTurn,targetTurn,EquipmentType.Weapon);
             currentTurn.isCooldownWeapon = true;
+            if(currentTurn.currentVuKhiVisual!=null)
+            {
+                currentTurn.currentVuKhiVisual.ActiveAttack();
+
+            }
         }
 
     }    
