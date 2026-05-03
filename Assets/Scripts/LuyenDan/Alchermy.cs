@@ -32,7 +32,6 @@ namespace LuyenDan
         private AlchemyEntity pendingSelectionTarget;
         private InventoryItemUI pendingSelectionItem;
         private LuyenDanRequest currentRequest;
-        private string phedan = "Phế Đan";
 
         public void SetCurrentSelected(AlchemyEntity target)
         {
@@ -288,7 +287,8 @@ namespace LuyenDan
                     {
                         var textColor = "9CA3AF";
                         builder.AppendLine();
-                        builder.Append($"<b><color=#{textColor}>Chưa sở hữu công thức này</color></b>");
+                        var tierColor = GetColorHexByTier(data.Tier);
+                        builder.Append($"<color=#{textColor}>Chưa sở hữu công thức này</color> (<b><color=#{tierColor}>{data.Name}</color></b>)");
                         builder.AppendLine();
                         builder.Append("<color=#ff8800>Tỉ lệ thành công: <b>50%</b></color>");
                         builder.AppendLine();
@@ -324,7 +324,7 @@ namespace LuyenDan
                 }
                 else
                 {
-                    builder.Append($"<b><color=#{colorStr}>Chưa đúng công thức</color></b>");
+                    builder.Append($"<b><color=#{colorStr}>???</color></b>");
                     builder.AppendLine();
                     builder.Append("<color=#ff4444><i>Thất bại sẽ mất toàn bộ dược liệu!</i></color>");
                     builder.AppendLine();

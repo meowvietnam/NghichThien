@@ -39,7 +39,7 @@ namespace LuyenKhi
                     $"(<color={progressColor}>{detail.Sum}</color>/" +
                     $"<color={progressColor}>{detail.Value}</color>)" +
                     ": "+
-                    $"<color={rangeColor}>[{detail.Min}-{detail.Max}]</color>";
+                    $"<color={rangeColor}>[{detail.Min}~{detail.Max}]</color>";
 
                 effectDetailUI.gameObject.SetActive(true);
                 effectDetailUI.SetText(text);

@@ -5,6 +5,7 @@ using LuyenKhi;
 using Network;
 using Network.Extensions;
 using UnityEngine;
+using Material = LuyenKhi.Material;
 
 namespace CreateCharacter
 {
@@ -16,18 +17,20 @@ namespace CreateCharacter
         [field: SerializeField] public string Name { get; set; }
         [field: SerializeField] public Effect[] Effects { get; set; }
         public LuyenKhiRewardItem Item => LuyenKhiResources.Instance.RewardItems.FirstOrDefault(x => x.Id == Id);
-
+        public ushort[] MaterialIds { get; set; }
+        public Material[] Materials => LuyenKhiResources.Instance.Materials.Where(x => MaterialIds.Contains((ushort)x.Id)).ToArray();
         public void Deserialize(IReader reader, ref Equipment value)
         {
             value.SelfId = reader.Read<ushort>();
             value.Id = reader.Read<ushort>();
             value.Name = reader.Read();
             value.Effects = reader.ReadArray<Effect>();
+            value.MaterialIds = reader.ReadArray<ushort>();
         }
 
         public int ByteSize()
         {
-            return SelfId.ByteSize() + Id.ByteSize() + Name.ByteSize() + Effects.ByteSize();
+            return SelfId.ByteSize() + Id.ByteSize() + Name.ByteSize() + Effects.ByteSize() +  MaterialIds.ByteSize();
         }
 
         public void Serialize(IWriter writer)
@@ -36,6 +39,7 @@ namespace CreateCharacter
             writer.Write(Id);
             writer.Write(Name);
             writer.WriteArray(Effects);
+            writer.WriteArray(MaterialIds);
         }
 
         public EquipmentType GetEquipmentType()
@@ -56,7 +60,20 @@ namespace CreateCharacter
                     return EquipmentType.Jewelry;
             }
         }
-
+        public EquipmentGrade GetGrade()
+        {
+            var materials = Materials;
+            var res = LuyenKhiResources.Instance;
+            var matConfigs = res.MaterialGradeConfigs;
+            var grade = 0;
+            foreach (var material in materials)
+            {
+                var matConfig = matConfigs.First(x => x.Tier == material.Tier);
+                grade += matConfig.Grade;
+            }
+            var equipmentGradeConfig = res.EquipmentGrades.Last(x => x.MinGrade <= grade);
+            return equipmentGradeConfig.Grade;
+        }
         public bool Equals(Equipment? other)
         {
             if (other is null) return false;
