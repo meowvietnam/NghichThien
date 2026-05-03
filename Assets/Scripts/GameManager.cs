@@ -394,9 +394,9 @@ public class GameManager : BaseBehaviour
     {
         var charData = Client.Instance.CharacterData;
         var stat = charData.Stats;
-        CreateCharacter.Equipment vuKhi = charData.InventoryManager.VuKhis.FirstOrDefault();
-        CreateCharacter.Equipment phongCu = charData.InventoryManager.PhongCus.FirstOrDefault();
-        CreateCharacter.Equipment trangSuc = charData.InventoryManager.TrangSucs.Any() ? charData.InventoryManager.TrangSucs.Last() : null;
+        var vuKhiData = charData.InventoryManager.VuKhis.FirstOrDefault();
+        var phongCuData = charData.InventoryManager.PhongCus.FirstOrDefault();
+        var trangSucData = charData.InventoryManager.TrangSucs.LastOrDefault(); // Dùng LastOrDefault cho gọn
 
         return new CharacterStatsSecure
         {
@@ -429,35 +429,40 @@ public class GameManager : BaseBehaviour
             colorList = charData.Appearance.Colors.Select(kvp => new CharacterStatsSecure.ColorData
                 { key = kvp.Key, value = kvp.Value }).ToList(),
 
-            vuKhi = new EquipmentClient
+            // Nếu vuKhiData null, nguyên cả cụm vukhi sẽ là null
+            vuKhi = vuKhiData == null ? new EquipmentClient() : new EquipmentClient
             {
-                id = vuKhi.Id,
-                nameEquip = vuKhi.Name,
-                listEffectEquip = vuKhi.Effects.Select(effect => new EquipmentClient.EffectClient
+                id = vuKhiData.Id,
+                nameEquip = vuKhiData.Name,
+                listEffectEquip = vuKhiData.Effects?.Select(effect => new EquipmentClient.EffectClient
                 {
                     Type = effect.Type,
                     Value = new SecureInt(effect.Value)
-                }).ToList(),
+                }).ToList() ?? new List<EquipmentClient.EffectClient>()
             },
-            phongCu = new EquipmentClient
+
+            // Tương tự cho phongCu
+            phongCu = phongCuData == null ? new EquipmentClient() : new EquipmentClient
             {
-                id = phongCu.Id,
-                nameEquip = phongCu.Name,
-                listEffectEquip = phongCu.Effects.Select(effect => new EquipmentClient.EffectClient
+                id = phongCuData.Id,
+                nameEquip = phongCuData.Name,
+                listEffectEquip = phongCuData.Effects?.Select(effect => new EquipmentClient.EffectClient
                 {
                     Type = effect.Type,
                     Value = new SecureInt(effect.Value)
-                }).ToList(),
+                }).ToList() ?? new List<EquipmentClient.EffectClient>()
             },
-            trangSuc = new EquipmentClient
+
+            // Tương tự cho trangSuc
+            trangSuc = trangSucData == null ? new EquipmentClient() : new EquipmentClient
             {
-                id = trangSuc.Id,
-                nameEquip = trangSuc.Name,
-                listEffectEquip = trangSuc.Effects.Select(effect => new EquipmentClient.EffectClient
+                id = trangSucData.Id,
+                nameEquip = trangSucData.Name,
+                listEffectEquip = trangSucData.Effects?.Select(effect => new EquipmentClient.EffectClient
                 {
                     Type = effect.Type,
                     Value = new SecureInt(effect.Value)
-                }).ToList(),
+                }).ToList() ?? new List<EquipmentClient.EffectClient>()
             }
 
         };
