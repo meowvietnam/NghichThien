@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Base;
+using LuyenDan;
 using LuyenKhi;
 using Network;
 using Network.Extensions;
@@ -27,7 +28,29 @@ namespace CreateCharacter
             value.Effects = reader.ReadArray<Effect>();
             value.MaterialIds = reader.ReadArray<ushort>();
         }
+        public ItemRef CreateRef()
+        {
+            var itemType = GetItemType();
+            Debug.Log($"[ItemRef] Created: ID={SelfId}, Type={itemType}");
+            return new ItemRef()
+            {
+                Id = SelfId,
+                Type = itemType,
+                Count = 1
+            };
+        }
+        public ItemType GetItemType()
+        {
+            var equipmentType = GetEquipmentType();
+            return equipmentType switch
+            {
+                EquipmentType.Weapon => ItemType.VuKhi,
+                EquipmentType.Armor => ItemType.PhongCu,
+                EquipmentType.Jewelry => ItemType.TrangSuc,
+                _ => ItemType.VuKhi
 
+            };
+        }
         public int ByteSize()
         {
             return SelfId.ByteSize() + Id.ByteSize() + Name.ByteSize() + Effects.ByteSize() +  MaterialIds.ByteSize();
