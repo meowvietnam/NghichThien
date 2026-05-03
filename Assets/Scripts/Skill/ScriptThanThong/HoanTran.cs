@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class HoanTran : ThanThong
 {
- 
+
+    [SerializeField] protected float delayTimeEffect = 0.85f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -12,6 +13,7 @@ public class HoanTran : ThanThong
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Cat, out SecureInt  cat);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, cat);
         target.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Cat, cat);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

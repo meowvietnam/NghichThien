@@ -14,6 +14,8 @@ public class BangNhamThuat : ThanThong
     {
         6,7,9,20,40
     };
+    [SerializeField] protected float delayTimeEffect = 0.85f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
@@ -30,6 +32,7 @@ public class BangNhamThuat : ThanThong
         } 
             
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

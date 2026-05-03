@@ -13,6 +13,8 @@ public class SaLao : ThanThong
     {
         2,3,4,6,10
     };
+    [SerializeField] protected float delayTimeEffect = 0.85f;
+
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -20,6 +22,8 @@ public class SaLao : ThanThong
         caster.AddThanThongCoolDown(hoaCat, -1);
         Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, hoaCat, new List<LinhKhiTieuTan>());
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieus[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectWorld(target, delayTimeEffect);
+
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)

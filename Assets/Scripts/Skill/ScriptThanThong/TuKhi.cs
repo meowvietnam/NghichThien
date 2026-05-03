@@ -6,10 +6,13 @@ public class TuKhi : ThanThong
 {
     [SerializeField]
     private int buffValues = 2;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TuKhi, buffValues);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

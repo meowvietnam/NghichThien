@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class KhuHanAn : ThanThong
 {
-   
+    [SerializeField] private float delayEffect = 0.5f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
@@ -14,6 +14,7 @@ public class KhuHanAn : ThanThong
 
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.ADJUST_LINHKHI, ObserverEffect);
+        ShowSkillEffectWorld(caster, delayEffect);
 
     }
 

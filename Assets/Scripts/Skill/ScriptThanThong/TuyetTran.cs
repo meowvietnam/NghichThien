@@ -6,10 +6,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = nameof(TuyetTran), menuName = "Skill/Thần Thông/" + nameof(TuyetTran))]
 public class TuyetTran : ThanThong , BaseSkill.LienKich
 {
+    [SerializeField] protected float delayTimeEffect = 1f;
+
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
     {
         int dame = damebuffs[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill, true);
+
     }
     [SerializeField]
     private int[] dames = new int[]
@@ -33,6 +36,7 @@ public class TuyetTran : ThanThong , BaseSkill.LienKich
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran,require);
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
 
 

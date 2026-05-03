@@ -11,12 +11,15 @@ public class SucLuc : ThanThong
     {
         2,2,2,2,2
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
     private void ObserverEffect(params object[] data)

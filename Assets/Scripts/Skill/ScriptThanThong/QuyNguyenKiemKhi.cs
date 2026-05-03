@@ -2,14 +2,12 @@
 [CreateAssetMenu(fileName = nameof(QuyNguyenKiemKhi), menuName = "Skill/Thần Thông/" + nameof(QuyNguyenKiemKhi))]
 public class QuyNguyenKiemKhi : TietMach
 {
-    [SerializeField] private float delay = 2;
     protected override EBuffAndDeBuff eBuffOrDebuff => EBuffAndDeBuff.ChayMau;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
         KiemY(caster);
-        ShowSkillEffectWorld(caster,delay);
     }
     public override string GetDesc(int level)
     {

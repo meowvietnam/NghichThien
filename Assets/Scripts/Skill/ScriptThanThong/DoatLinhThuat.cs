@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DoatLinhThuat : ThanThong
 {
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.HapThuLinhKhi(ELinhKhi.Kim,target.khiKim);
@@ -14,6 +16,7 @@ public class DoatLinhThuat : ThanThong
         caster.HapThuLinhKhi(ELinhKhi.Ma, target.khiMa);
 
         target.TieuTanAllLinhKhi();
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

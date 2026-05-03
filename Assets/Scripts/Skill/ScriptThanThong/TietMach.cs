@@ -11,12 +11,15 @@ public class TietMach : ThanThong , BaseSkill.TuongDong
     [SerializeField] private int[] buffDame;
 
     [SerializeField] private int deBuff = 1;
+    [SerializeField] protected float delayTimeEffect = 1f;
 
     [SerializeField] protected virtual EBuffAndDeBuff eBuffOrDebuff => EBuffAndDeBuff.TreKhi;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.CaculateDameByThanThong(caster,new List<int> { dameMain[GetIndexLevelThanThong(caster)]}, eTypeSkill);
         target.AddBuffAndDebuffCount(eBuffOrDebuff, deBuff);
+        ShowSkillEffectWorld(target, delayTimeEffect);
+
     }
 
     public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)

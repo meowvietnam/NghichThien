@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class ThietGiapChu : ThanThong
 {
-   
+
+    [SerializeField] protected float delayTimeEffect = 1f;
 
     [SerializeField]
     private int[] buffValues = new int[]
@@ -20,6 +21,7 @@ public class ThietGiapChu : ThanThong
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect2);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
     private void ObserverEffect(params object[] data)

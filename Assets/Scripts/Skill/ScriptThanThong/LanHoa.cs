@@ -12,11 +12,14 @@ public class LanHoa : ThanThong
     
     [SerializeField]
     private int[] myThieuDot;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, targetThieuDot[GetIndexLevelThanThong(caster)]);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, myThieuDot[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
 
 

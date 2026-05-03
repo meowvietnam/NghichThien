@@ -8,12 +8,16 @@ public class VanTranHoaTho : ThanThong
     {
         1,1,1,1,1
     };
+    [SerializeField] protected float delayTimeEffect = 1;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt  tran);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanTho, tran * buffValues[GetIndexLevelThanThong(caster)]);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, tran);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
     }
 
 

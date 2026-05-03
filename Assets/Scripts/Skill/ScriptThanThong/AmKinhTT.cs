@@ -4,13 +4,9 @@ using Skill;
 using UnityEngine;
 public abstract class AmKinhTT : ThanThong
 {
-    [SerializeField] private int afterHiep = 3;
-    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
-    {
-        caster.AddAmKinhTT(this, afterHiep);
-            
-    }
-    
+    [SerializeField] protected int afterHiep = 3;
+    public abstract override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
+   
     public abstract void ExecuteAmKinh(CharacterCombat caster, CharacterCombat target);
         
 

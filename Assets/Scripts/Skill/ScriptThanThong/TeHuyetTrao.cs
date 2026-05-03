@@ -9,6 +9,8 @@ public class TeHuyetTrao : ThanThong
    {
         20,30,50,80,160
    };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -17,6 +19,8 @@ public class TeHuyetTrao : ThanThong
         caster.TakeDameByStatic(null, new System.Collections.Generic.List<int> { hp }, false, null, false);
 
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hp);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
 
     }
 

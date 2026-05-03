@@ -7,9 +7,16 @@ public class HuyenAmKinh : AmKinhTT
     {
         9,9,9,10,10
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
+    {
+        target.AddAmKinhTT(this, afterHiep);
+
+    }
     public override void ExecuteAmKinh(CharacterCombat caster, CharacterCombat target)
     {
-        target.AddBuffAndDebuffCount(EBuffAndDeBuff.NoiThuong, buffValues[GetIndexLevelThanThong(caster)]);
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NoiThuong, buffValues[GetIndexLevelThanThong(target)]);
     }
 
     public override string GetDescAmKinhTT(int level)

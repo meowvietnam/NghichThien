@@ -14,12 +14,15 @@ public class ThauThachThuat : ThanThong
     {
         4,8,13,27,32
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.PhaThe, buffValues[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

@@ -9,11 +9,15 @@ public class VanThoQuyTran : ThanThong
     {
         1,3,7,20,40
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, caster.khiTho * buffValues[GetIndexLevelThanThong(caster)]);
         caster.TieuTanLinhKhi(ELinhKhi.Tho, caster.khiTho);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
     }
 
 

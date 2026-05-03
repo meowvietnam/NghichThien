@@ -6,9 +6,10 @@ using UnityEngine;
 
 public class LinhSaThuat : ThanThong
 {
-    
 
-   
+
+    [SerializeField] protected float delayTimeEffect = 1f;
+
     [SerializeField]
     private int require = 1;
     [SerializeField]
@@ -18,6 +19,8 @@ public class LinhSaThuat : ThanThong
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, require);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.PLAY_SKILL, ObserverEffect);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
 
     }
     private void ObserverEffect(params object[] data)
