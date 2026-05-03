@@ -34,6 +34,12 @@ public class NpcManager : MonoBehaviour
         LoadEnemyMap();
         OnTimeAdjust();
     }
+    [Button]
+    public void ClearDataTime()
+    {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save(); // Đảm bảo dữ liệu được ghi xuống đĩa ngay lập tức
+    }    
     public void OnTimeAdjust()
     {
         // 1. Lấy tổng số tháng hiện tại của thế giới
