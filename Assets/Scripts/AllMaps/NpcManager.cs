@@ -26,6 +26,7 @@ public class NpcManager : MonoBehaviour
     {
         Pool.Set(this);
         Observer.AddObserver(EventList.GamePlay.TIME_ADJUST, OnTimeAdjust);
+
     }
     private void Start()
     {
@@ -145,6 +146,7 @@ public class NpcManager : MonoBehaviour
         currentEnemy = listEnemy;
         foreach (var item in currentMap)
         {
+            if(item == null) continue;
             item.ResetData();
         }
         currentMap.Clear();

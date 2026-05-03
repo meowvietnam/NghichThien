@@ -29,22 +29,44 @@ namespace CreateCharacter.CharStats
         {
             var text = $"<color=#6495ED>Hiệu quả: </color>{effective}\n\n<color=#FF7F50>Mô tả: </color>{description}";
             this.text.text = text;
-            Canvas.ForceUpdateCanvases();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(thisTransform);
+            FixVisual();
         }
         public void SetText(string des)
         {
+
             this.text.text = des;
-            Canvas.ForceUpdateCanvases();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(thisTransform);
+            FixVisual();
         }
 
         public void SetTextInfo(string infoName, string info)
         {
+
             var text = $"<color=#6495ED>{infoName}: </color>{info}";
             this.text.text = text;
+            FixVisual();
+        }
+        void FixVisual()
+        {
+            float signX = thisTransform.parent.transform.localScale.x;
+            if (signX > 0)
+            {
+                thisTransform.pivot = new Vector2(0, 1f);
+            }
+            else
+            {
+                thisTransform.pivot = new Vector2(1, 1f);
+
+            }
             Canvas.ForceUpdateCanvases();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(thisTransform);
+            var contenSize = GetComponent<ContentSizeFitter>();
+            for (int i = 0; i < 3; i++)
+            {
+
+                contenSize.enabled = false;
+                contenSize.enabled = true;
+            }
+            thisTransform.localPosition = new Vector3(0, -45, 0);
+
         }
         public void DoShow()
         {

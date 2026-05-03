@@ -21,7 +21,7 @@ public class NguHanhKiemQuyet : CongPhap
             int indexLevel = CurrentLevelCongPhapInCombat(caster) - 1;
             int count = caster.congPhapDynamic.Count(x => x.congPhap is NguHanhKiemQuyet);
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, count * buffValues[indexLevel]);
-            caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKiem, count * buffValues[indexLevel]);
+            caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKiemHiep, count * buffValues[indexLevel]);
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKiem, count* buffValues[indexLevel]);
             caster.AddCPDynamic(GetCongPhapMono(caster.congPhapEquip));
 
@@ -61,7 +61,7 @@ public class NguHanhKiemQuyet : CongPhap
     }
     public override string GetDesc(int level)
     {
-        return $"Sử dụng {GetTextTypeSkill(ETypeSkill.Kiem)} hệ thần thông và kích hoạt ngũ hành {GetKeyWord(EKeyWord.LienKich)} thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}*X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiem)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChanKiem)} (X là số lần kích hoạt công pháp này liên tục nếu không làm mới về 1)";
+        return $"Sử dụng {GetTextTypeSkill(ETypeSkill.Kiem)} hệ thần thông và kích hoạt ngũ hành {GetKeyWord(EKeyWord.LienKich)} thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}*X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiemHiep)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChanKiem)} (X là số lần kích hoạt công pháp này liên tục nếu không làm mới về 1)";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

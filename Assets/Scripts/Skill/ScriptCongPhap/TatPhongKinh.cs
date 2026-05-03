@@ -13,7 +13,7 @@ public class TatPhongKinh : PhiVanKinh
        };
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if(caster.characterStatsTemp.tocDoBay > target.characterStatsTemp.tocDoBay)
+        if(caster.GetToDoBay() > target.GetToDoBay())
         {
             target.AddDamageData(new System.Collections.Generic.List<int> { buffValues2[CurrentLevelCongPhapInCombat(caster)-1] });
             RemoveCongPhap(caster);

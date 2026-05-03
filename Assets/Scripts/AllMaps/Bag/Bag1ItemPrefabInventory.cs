@@ -2,6 +2,7 @@
 using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
+using LuyenKhi;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -137,7 +138,15 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             {
                 itemRef = itemDataShows[index];
 
-                data = LuyenDanResources.Instance.FindItem(itemRef);
+                if(itemRef.Type == ItemType.Material)
+                {
+                    data = LuyenKhiResources.Instance.FindItem(itemRef);
+                }    
+               
+                else
+                {
+                    data = LuyenDanResources.Instance.FindItem(itemRef);
+                }    
 
 
 
@@ -148,17 +157,23 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
                 {
                     if (itemRef.Type == ItemType.ThanThong)
                     {
-                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, gameConfig.FindThanThongWithItemRef(itemRef),null, ETypeInventoryItem.Item);
+                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, gameConfig.FindThanThongWithItemRef(itemRef), itemRef, ETypeInventoryItem.Item);
 
 
                     }
                     else if (itemRef.Type == ItemType.CongPhap)
                     {
-                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, gameConfig.FindCongPhapWithItemRef(itemRef),null, ETypeInventoryItem.Item);
+                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, gameConfig.FindCongPhapWithItemRef(itemRef),itemRef, ETypeInventoryItem.Item);
+
+                    }
+                    else if (itemRef.Type == ItemType.VuKhi || itemRef.Type == ItemType.PhongCu || itemRef.Type == ItemType.TrangSuc)
+                    {
+                        Pool.Get<UIManager>().InitVisualEquipment(currentItem,null, itemRef, ETypeInventoryItem.Item);
 
                     }
                 }
             }
+
             Pool.Get<UIManager>().InitVisualItemInventory(currentItem, data, itemRef , isIconSkillBase);
             actionItemInventory?.Invoke(currentItem);
 

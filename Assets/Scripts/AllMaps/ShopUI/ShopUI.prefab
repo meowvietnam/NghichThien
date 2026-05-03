@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -2.4995255, y: 0.000030517578}
-  m_SizeDelta: {x: 375.47, y: 0}
+  m_SizeDelta: {x: 375.47, y: 20}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &5896158161676806236
 MonoBehaviour:
@@ -966,8 +966,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Bag1ItemPrefabInventory
   isLoadingMore: 0
   prefabItemBag: {fileID: 268684046175530127}
-  itemDatas: []
+  itemFullDatas: []
+  itemDataShows: []
   isIconSkillBase: 0
+  filterControl: {fileID: 0}
 --- !u!1 &1044310537884557
 GameObject:
   m_ObjectHideFlags: 0
@@ -6372,7 +6374,7 @@ RectTransform:
   m_Father: {fileID: 224525592154414173}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -18.74, y: -2}
   m_SizeDelta: {x: 14.562897, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -12601,7 +12603,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 12.2, y: 0.6}
-  m_SizeDelta: {x: 0, y: 37.497345}
+  m_SizeDelta: {x: 34, y: 37.497345}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222781829161125211
 CanvasRenderer:
@@ -14342,7 +14344,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -11, y: -48.6}
-  m_SizeDelta: {x: 0, y: 37}
+  m_SizeDelta: {x: 66, y: 37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222419971136812549
 CanvasRenderer:
@@ -14642,7 +14644,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -5.3, y: -46.493}
-  m_SizeDelta: {x: 0, y: 37}
+  m_SizeDelta: {x: 24, y: 37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222605286986768817
 CanvasRenderer:
@@ -14873,7 +14875,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &224384627676379744
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14925,6 +14927,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74ad8304fea09c449a022ce7f4fc54b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopUI
+  commonMask: {fileID: 0}
   btnClose: {fileID: 6479521288729223522}
   scaleBase: 1
   eShopType: 0
@@ -20225,7 +20228,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -2.4995255, y: 0.000030517578}
-  m_SizeDelta: {x: 375.47, y: 0}
+  m_SizeDelta: {x: 375.47, y: 20}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2486891070673833948
 MonoBehaviour:
@@ -22761,7 +22764,7 @@ RectTransform:
   m_Father: {fileID: 5509226504730538371}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -18.74, y: -2}
   m_SizeDelta: {x: 14.562897, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -26262,7 +26265,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 3.6540804}
-  m_SizeDelta: {x: 0, y: 41.6918}
+  m_SizeDelta: {x: 146, y: 41.6918}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &203186281645940867
 CanvasRenderer:
@@ -32232,8 +32235,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Bag1ItemPrefabInventory
   isLoadingMore: 0
   prefabItemBag: {fileID: 9085241840381092360}
-  itemDatas: []
+  itemFullDatas: []
+  itemDataShows: []
   isIconSkillBase: 0
+  filterControl: {fileID: 0}
 --- !u!1 &4529012197368281921
 GameObject:
   m_ObjectHideFlags: 0
@@ -39129,7 +39134,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: -40.129333}
-  m_SizeDelta: {x: 0, y: 79.79599}
+  m_SizeDelta: {x: 233, y: 79.79599}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7852180283998246223
 CanvasRenderer:
@@ -50063,7 +50068,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2773723d43193ea42895473c2d395a45, type: 3}
+  m_Sprite: {fileID: 21300000, guid: becbb8bd0d405439caf7e26b0d0e63f6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

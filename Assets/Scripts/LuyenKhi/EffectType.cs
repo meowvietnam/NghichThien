@@ -1,10 +1,10 @@
-namespace LuyenKhi
+﻿namespace LuyenKhi
 {
     public enum EffectType : byte
     {
         Bui,
         Cat,
-        ChanHoa,
+        ChanHoa, // Caster nhận 
         ChanKhi,
         ChanKiem,
         ChanKim,

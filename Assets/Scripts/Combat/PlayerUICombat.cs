@@ -24,7 +24,6 @@ public class PlayerUICombat : BaseBehaviour
     public List<SlotLinhKhi> linhKhiRemains;  // các nút cần sắp xếp
     public List<SlotLinhKhi> currentNodes;  // các nút cần sắp xếp
     public Sprite[] spriteUILinhKhis;
-    public Sprite[] spriteFrame;
 
     public float radius = 120f;         // bán kính vòng tròn
     public Button btnConfirm;
@@ -36,6 +35,8 @@ public class PlayerUICombat : BaseBehaviour
     public EStateControl eStateControl = EStateControl.None;
 
     public List<FightSkillItem> fightSkills;
+    public PlayerUICombatItem equipmentWeapon;
+
     public FightSkillItem fightSkillSelect;
     public Image tuongSinhImg;
     public Image tuongKhacImg;
@@ -344,11 +345,38 @@ public class PlayerUICombat : BaseBehaviour
 
             });
             ThanThong thanThong = s < currentThanThong.Length ? currentThanThong[s] : null;
-            skill.Init(thanThong, thanThong != null ? spriteFrame[(int)(((int)thanThong.eTierSkill - 1) / 3)] : null, actionHolder, actionPointerUp); // test data 
+            var inforVisualSkill = Pool.Get<UIManager>().GetFrameAndQualityFullAndColorNameSkill(thanThong);
+
+            skill.Init(thanThong, thanThong != null ? inforVisualSkill.Item1 : null, actionHolder, actionPointerUp);
+            skill.SetFullQuality(inforVisualSkill.Item2);
         }
         skillTip.DoHide();
+        if(player.characterStatsBase.vuKhi.Item != null)
+        {
+            equipmentWeapon.gameObject.SetActive(true);
+
+            var inforVisualEquipment = Pool.Get<UIManager>().GetFrameAndQualityFullAndColorNameEquipment(player.characterStatsBase.vuKhi.Item.Tier);
+
+            equipmentWeapon.Init(new BaseItemData { name = player.characterStatsBase.vuKhi.nameEquip, spriteItem = player.characterStatsBase.vuKhi.Item.Icon }, inforVisualEquipment.Item1, null, () =>
+            {
+                CombatManager.ExcuteWeapon();
+                SetVisualCDEquipmentWeapon();
+            });
+            equipmentWeapon.SetFullQuality(inforVisualEquipment.Item2);
+        }
+        else
+        {
+            equipmentWeapon.gameObject.SetActive(false);
+        }
+
+
     }
-   
+    private void SetVisualCDEquipmentWeapon()
+    {
+        equipmentWeapon.SetLock(player.isCooldownWeapon.Value);
+
+        equipmentWeapon.SetCoolDown(player.isCooldownWeapon.Value,1);
+    }    
     private void Awake()
     {
        
@@ -592,6 +620,7 @@ public class PlayerUICombat : BaseBehaviour
             }
         }
         CheckFightSkillCanUse();
+        SetVisualCDEquipmentWeapon();
 
     }
     [Button]

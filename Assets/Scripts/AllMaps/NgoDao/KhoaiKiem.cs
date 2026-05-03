@@ -13,13 +13,13 @@ public class KhoaiKiem : NgoDaoCombat
 
         if (BaseSkill.CheckIsEqualETypeSkill(caster, eTypeRequire))
         {
-            caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKiem, buff);
+            caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKiemHiep, buff);
         }
     }
 
     public override string GetDes()
     {
-        return $"Sử dụng kiếm hệ thần thông sát thương, thu hoạch được {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiem)}";
+        return $"Sử dụng kiếm hệ thần thông sát thương, thu hoạch được {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiemHiep)}";
 
     }
 

@@ -36,12 +36,10 @@ namespace LuyenDan
         [field: SerializeField] public RecipeListUI RecipeListUI { get; private set; }
         [field: SerializeField] public AlchermyResult AlchermyResult { get; private set; }
         [field: SerializeField] public ProgressBar ProgressBar { get; private set; }
-        [field: SerializeField] public ToolTipItems ToolTipItems { get; private set; }
         private CharacterData CharacterData => Client.Instance.CharacterData;
 
         private void Start()
         {
-            ToolTipItems.Init();
             var client = Client.Instance;
             client.ChangeState(new Network.ClientState.LuyenDan(this));
             var charData = CharacterData;

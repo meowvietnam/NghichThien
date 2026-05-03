@@ -29,7 +29,7 @@ public class HuyenAnhThanHanhQuyet : PhiVanKinh
     {
         // target ng nhận dame là ng cần check né tránh
         int index = (int)data[2];
-        if(target.characterStatsTemp.tocDoBay > caster.characterStatsTemp.tocDoBay)
+        if(target.GetToDoBay() > caster.GetToDoBay())
         {
             if (target == null) return;
             if (target.allDamages[index] == -1) return;

@@ -28,6 +28,7 @@ public class SayDialogManager : BaseBehaviour
     private string fullContent; // Lưu lại nội dung đầy đủ để hiện nhanh khi cần
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private Text textName;
+    public static SayDialogManager Instance;
     private void Awake()
     {
         Init();
@@ -136,7 +137,15 @@ public class SayDialogManager : BaseBehaviour
 
     public void Init()
     {
-        DontDestroyOnLoad(this);
-        Pool.Set(this);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            // Nếu đã có một bản Instance rồi, thì xóa bản mới tạo này đi
+            Destroy(gameObject);
+        }
     }
 }

@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using LuyenDan;
 using Network;
 using Network.Extensions;
 using Sirenix.OdinInspector;
@@ -13,6 +14,9 @@ namespace LuyenKhi
         [field: SerializeField] public EquipmentTier Tier { get; set; }
         [field: SerializeField] public ArtifactType Type { get; set; }
         [field: SerializeField, PreviewField(75)] public Sprite Icon { get; set; }
+        [field: SerializeField, PreviewField(75)] public Sprite IconFight { get; set; }
+
+
         public void Deserialize(IReader reader, ref LuyenKhiRewardItem value)
         {
             value.Id = reader.Read<int>();

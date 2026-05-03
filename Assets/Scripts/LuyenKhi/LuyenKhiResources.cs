@@ -1,11 +1,12 @@
-using System.IO;
-using System.Linq;
-using Base;
+﻿using Base;
 using LuyenDan;
 using LuyenDan.Inventory;
 using Network;
 using Network.Extensions;
 using Sirenix.OdinInspector;
+using System.IO;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace LuyenKhi
@@ -90,5 +91,51 @@ namespace LuyenKhi
             File.WriteAllBytes(path, writer.Buffer);
             Debug.Log(path);
         }
+#if UNITY_EDITOR
+        [Button]
+        public void LoadIconsFromFolder()
+        {
+            // 1. Mở cửa sổ chọn Folder trong máy
+            string folderPath = EditorUtility.OpenFolderPanel("Chọn folder chứa ảnh FightFaBao", "Assets", "");
+
+            if (string.IsNullOrEmpty(folderPath)) return;
+
+            // 2. Chuyển đổi đường dẫn tuyệt đối sang đường dẫn Assets của Unity
+            if (folderPath.StartsWith(Application.dataPath))
+            {
+                folderPath = "Assets" + folderPath.Substring(Application.dataPath.Length);
+            }
+            else
+            {
+                Debug.LogError("Vui lòng chọn folder nằm bên trong thư mục Assets của Project!");
+                return;
+            }
+
+            int count = 0;
+            foreach (var item in RewardItems)
+            {
+                if (item.Icon != null)
+                {
+                    string spriteName = item.Icon.name;
+                    // Tìm kiếm file có tên tương ứng trong folder đã chọn
+                    string fullPath = Path.Combine(folderPath, spriteName + ".png");
+                    // Có thể bổ sung kiểm tra .jpg, .tga tùy bạn
+
+                    Sprite loadedSprite = AssetDatabase.LoadAssetAtPath<Sprite>(fullPath);
+
+                    if (loadedSprite != null)
+                    {
+                        item.IconFight = loadedSprite;
+                        count++;
+                    }
+                }
+            }
+
+            // Lưu lại thay đổi vào Asset/Scene
+            EditorUtility.SetDirty(this);
+            AssetDatabase.SaveAssets();
+            Debug.Log($"Đã cập nhật thành công {count} Icon Fight từ folder: {folderPath}");
+        }
+#endif
     }
 }
