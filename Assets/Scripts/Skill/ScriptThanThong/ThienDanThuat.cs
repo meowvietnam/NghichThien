@@ -17,7 +17,7 @@ public class ThienDanThuat : ThanThong
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
-        ShowSkillEffectParticle(caster, delayTimeEffect,5);
+        ShowSkillEffectParticleBase(caster, delayTimeEffect,5);
 
     }
     private void ObserverEffect(params object[] data)

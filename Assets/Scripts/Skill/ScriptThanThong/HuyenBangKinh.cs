@@ -8,10 +8,11 @@ public class HuyenBangKinh : AmKinhTT
     [SerializeField] private float delayTimeEffect = 1f;
     public override void ExecuteAmKinh(CharacterCombat caster, CharacterCombat target)
     {
-        target.AddBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, suongGias[GetIndexLevelThanThong(caster)]);
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, suongGias[GetIndexLevelThanThong(target)]);
     }
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
+        target.AddAmKinhTT(this, afterHiep);
         ShowSkillEffectWorld(target, delayTimeEffect);
 
 
@@ -19,7 +20,7 @@ public class HuyenBangKinh : AmKinhTT
 
     public override string GetDescAmKinhTT(int level)
     {
-        return $"Đối phương nhận phải {GetColoredText($"+{suongGias[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SuongGia)}";
+        return $"Nhận phải {GetColoredText($"+{suongGias[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SuongGia)}";
     }
 
 

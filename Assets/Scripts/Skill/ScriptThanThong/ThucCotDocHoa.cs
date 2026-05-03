@@ -25,7 +25,7 @@ public class ThucCotDocHoa : ThanThong
 
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, deBuffs[GetIndexLevelThanThong(caster)]);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, deBuffs[GetIndexLevelThanThong(caster)]);
-        ShowSkillEffectParticle(caster,delayEffect,3.5f);
+        ShowSkillEffectParticleBase(caster,delayEffect,3.5f);
 
 
     }

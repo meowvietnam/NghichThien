@@ -323,11 +323,29 @@ public abstract class ThanThong : BaseSkill
     public virtual bool IsCanUse(CharacterCombat caster , CharacterCombat target)
     {
         return caster.congPhapDynamic.Count(x => x.congPhap is DietLinhQuyet) <= DietLinhQuyet.require-1;
-    }    
-   
-    protected virtual void ShowSkillEffectParticle(CharacterCombat target, float delay, float cameraSize = 50f) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
+    }
+
+    protected virtual void ShowSkillEffectParticleBase(CharacterCombat target, float delay, float cameraSize = 50f) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
     {
-        if (prefabEffectSkill == null) return;
+        var effect = ShowSkillEffectParticle(target, delay, cameraSize);
+        int signX = target.transform.localEulerAngles.y != 0 ? -1 : 1;
+        var childEffect = effect.transform.GetChild(0);
+        var childPrefab = prefabEffectSkill.transform.GetChild(0);
+        if (signX < 0) // chiều đúng của player user char 1 là chiều ngược lại với chiều đúng của target
+        {
+            childEffect.transform.localPosition = new Vector3(childPrefab.transform.localPosition.x * -1 , childPrefab.transform.localPosition.y, childPrefab.transform.localPosition.z);
+
+        }
+        else
+        {
+            childEffect.transform.localPosition = childPrefab.transform.localPosition;
+        }
+
+
+    }
+    protected virtual GameObject ShowSkillEffectParticle(CharacterCombat target, float delay, float cameraSize = 50f) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
+    {
+        if (prefabEffectSkill == null) return null;
         
         GameObject effect = prefabEffectSkill.Spawn(target.transform);
         effect.transform.SetParent(null);
@@ -336,21 +354,29 @@ public abstract class ThanThong : BaseSkill
         int signX = target.transform.localEulerAngles.y != 0 ? -1 : 1;
         if (signX < 0)
         {
-            effect.transform.GetChild(0).transform.localEulerAngles = new Vector3(effect.transform.GetChild(0).transform.localEulerAngles.x, effect.transform.GetChild(0).transform.localEulerAngles.y,-180);
+            effect.transform.GetChild(0).transform.localScale = new Vector3(prefabEffectSkill.transform.GetChild(0).localScale.x * -1, prefabEffectSkill.transform.GetChild(0).localScale.y, prefabEffectSkill.transform.GetChild(0).localScale.z);
 
         }
         else
         {
-            effect.transform.GetChild(0).transform.localEulerAngles = new Vector3(effect.transform.GetChild(0).transform.localEulerAngles.x, effect.transform.GetChild(0).transform.localEulerAngles.y, 0);
+            effect.transform.GetChild(0).transform.localScale = new Vector3(prefabEffectSkill.transform.GetChild(0).localScale.x, prefabEffectSkill.transform.GetChild(0).localScale.y, prefabEffectSkill.transform.GetChild(0).localScale.z);
 
         }
 
         Pool.Get<CombatManager>().cameraEffectSkill.orthographicSize = cameraSize;
+        var mainPS = effect.transform.GetChild(0).GetComponent<ParticleSystem>();
 
+        if (mainPS != null)
+        {
+            // CÁCH SỬA CHÍNH Ở ĐÂY:
+            // Thêm tham số true vào hàm Play để bao gồm tất cả các con lồng bên trong (withChildren)
+            mainPS.Play(true);
+        }
         DOVirtual.DelayedCall(delay, () =>
         {
             effect.gameObject.Recycle();
         });
+        return effect;
 
     }
     protected virtual void ShowSkillEffectWorld(CharacterCombat target, float delay) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi

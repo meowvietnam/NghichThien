@@ -651,7 +651,7 @@ public abstract class BaseSkill : BaseItemData
                 text = $"Sử dụng thần thông này thu hoạch {GetColoredText($"[Kiếm Khí] +1", "green")}";
                 break;
             case EKeyWord.AmKinh:
-                text = "Hiệu quả của thần thông sẽ được kích hoạt sau X hiệp tiếp theo";
+                text = "Người đang sở hữu Ám Kình sẽ nhận hiệu ứng của thần thông sau X hiệp tiếp theo";
                 break;
             case EKeyWord.TranPhap:
                 text = "Mỗi cuộc chiến chỉ có thể sử dụng một lần";

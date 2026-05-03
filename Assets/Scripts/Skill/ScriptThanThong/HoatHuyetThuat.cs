@@ -4,6 +4,11 @@
 public class HoatHuyetThuat : AmKinhTT
 {
     [SerializeField] private int[] healValues;
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
+    {
+        caster.AddAmKinhTT(this, afterHiep);
+
+    }
     public override string GetDescAmKinhTT(int level)
     {
         return $"Khôi phục {GetColoredText($"+{healValues[level-1]}", "red")} Hp";

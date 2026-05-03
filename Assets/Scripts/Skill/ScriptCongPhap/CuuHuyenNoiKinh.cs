@@ -13,7 +13,7 @@ public class CuuHuyenNoiKinh : CongPhap
     
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        int count = caster.listAmKinhTT
+        int count = target.listAmKinhTT
                 .Where(x => x.ThanThong is AmKinhTT)
                 .Select(x => x.ThanThong.name)
                 .Distinct()
@@ -25,7 +25,7 @@ public class CuuHuyenNoiKinh : CongPhap
 
     public override string GetDesc(int level)
     {
-        return $"Bản thân mỗi có một loại {GetKeyWord(EKeyWord.AmKinh)} khác biệt thì đối phương nhận tổn thương tăng lên {GetColoredText($"+{buffValues[level - 1]}%", "red")}";
+        return $"Đối thủ mỗi có một loại {GetKeyWord(EKeyWord.AmKinh)} khác biệt thì nhận tổn thương tăng lên {GetColoredText($"+{buffValues[level - 1]}%", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

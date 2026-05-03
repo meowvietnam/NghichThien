@@ -11,8 +11,8 @@ public class DanKhi : NgoDaoCombat
 
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        CombatStatic.AmKinhTTNewTurn(caster, target);
-        int count = caster.listAmKinhTT
+        CombatStatic.AmKinhTTNewTurn(target, caster);
+        int count = target.listAmKinhTT
                           .Select(x => x.ThanThong)
                           .Distinct()
                           .Count();
@@ -21,7 +21,7 @@ public class DanKhi : NgoDaoCombat
 
     public override string GetDes()
     {
-        return $"Kết thúc hiệp, Tất cả {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.AmKinh)} của bạn số hiệp {BaseSkill.GetColoredText($"-{buff}", "red")}. Mỗi một loại {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.AmKinh)} khác biệt thì đối thủ nhận phải {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NoiThuong)}";
+        return $"Kết thúc hiệp, Tất cả {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.AmKinh)} của đối thủ số hiệp {BaseSkill.GetColoredText($"-{buff}", "red")}. Mỗi một loại {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.AmKinh)} khác biệt thì đối thủ nhận phải {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NoiThuong)}";
 
     }
 

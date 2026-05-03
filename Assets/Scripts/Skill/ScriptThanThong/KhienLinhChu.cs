@@ -12,7 +12,7 @@ public class KhienLinhChu : ThanThong , BaseSkill.TuongSinh
     };
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        CombatStatic.AmKinhTTNewTurn(caster, target);
+        CombatStatic.AmKinhTTNewTurn(target, caster);
             
 
 
@@ -25,7 +25,7 @@ public class KhienLinhChu : ThanThong , BaseSkill.TuongSinh
 
     public override string GetDesc(int level)
     {
-        return $"Tất cả {GetKeyWord(EKeyWord.AmKinh)} của bạn số hiệp {GetColoredText($"-{decreaseHiep}", "red")}. {GetKeyWord(EKeyWord.TuongSinh)} Khôi phục {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm HP";
+        return $"Tất cả {GetKeyWord(EKeyWord.AmKinh)} của đối thủ số hiệp {GetColoredText($"-{decreaseHiep}", "red")}. {GetKeyWord(EKeyWord.TuongSinh)} Khôi phục {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm HP";
 
     }
 }

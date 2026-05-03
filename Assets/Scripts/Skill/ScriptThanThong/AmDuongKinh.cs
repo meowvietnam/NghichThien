@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 [CreateAssetMenu(fileName = nameof(AmDuongKinh), menuName = "Skill/Thần Thông/" + nameof(AmDuongKinh))]
 
 public class AmDuongKinh : AmKinhTT , BaseSkill.TuongSinh
@@ -14,12 +15,19 @@ public class AmDuongKinh : AmKinhTT , BaseSkill.TuongSinh
     {
         20,30,50,100,200
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
+    {
+        target.AddAmKinhTT(this, afterHiep);
+        ShowSkillEffectParticleBase(caster, delayTimeEffect, 5);
+
+    }
     public override void ExecuteAmKinh(CharacterCombat caster, CharacterCombat target)
     {
-        int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByStatic(caster, new List<int> { (int)dame }, false, eTypeSkill);
+        int dame = dames[GetIndexLevelThanThong(target)];
+        caster.TakeDameByStatic(target, new List<int> { (int)dame }, false, eTypeSkill);
 
-        
+
     }
 
     public void ExecuteTuongSinh(CharacterCombat caster, CharacterCombat target)

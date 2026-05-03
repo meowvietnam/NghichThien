@@ -24,7 +24,7 @@ public class PhuongLinhYeuHoa : ThanThong , BaseSkill.LienKich
             dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
         }
         target.CaculateDameByThanThong(caster, dames, eTypeSkill, false);
-        ShowSkillEffectParticle(caster, delayEffect, 5f);
+        ShowSkillEffectParticleBase(caster, delayEffect, 5f);
 
 
 

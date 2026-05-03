@@ -7,6 +7,8 @@ public class VanKhiThuat : ThanThong
    
     [SerializeField]
     private int hapThuSO = 3;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int hapThu = this.hapThuSO;
@@ -23,10 +25,11 @@ public class VanKhiThuat : ThanThong
        
         HauKeVoLuc(caster);
         caster.HapThuLinhKhi(hapThu);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
-  
-   
+
+
     public override string GetDesc(int level)
     {
         return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Hấp thụ {GetColoredText($"{hapThuSO}", "red")} điểm linh khí";
