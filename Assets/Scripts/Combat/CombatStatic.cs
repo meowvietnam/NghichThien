@@ -1,4 +1,5 @@
 ﻿using LongDH.LongDHModules;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,6 +7,26 @@ using static UnityEngine.GraphicsBuffer;
 
 public class CombatStatic : MonoBehaviour
 {
+    public static void ActiveAnimEffect<T>(CharacterCombat charActive, EBuffAndDeBuff buffFind, Action<T> action)
+     where T : BuffEffect
+    {
+        // Search specifically for components of type T to ensure the Action matches
+        var listBuff = charActive.GetComponentsInChildren<T>();
+
+        foreach (var item in listBuff)
+        {
+            // Check if the buff type matches the enum
+            if (item.eBuff == buffFind)
+            {
+                item.ShowEffect();
+
+                // Invoke the callback action passed into the method
+                action?.Invoke(item);
+
+                break;
+            }
+        }
+    }
     public static void TrungDoc(CharacterCombat charSender, CharacterCombat charTrungDoc)
     {
         if (charTrungDoc.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out SecureInt trungDoc))
@@ -13,30 +34,15 @@ public class CombatStatic : MonoBehaviour
             charTrungDoc.TakeDameByStatic(charSender, new List<int> { (int)trungDoc }, false, new[] {BaseSkill.ETypeSkill.Moc});
            
             Observer.Notify(EventList.Combat.TRUNG_DOC, charSender, charTrungDoc);
-            var listBuff = charTrungDoc.GetComponentsInChildren<BuffEffect>();
-            foreach (var item in listBuff)
-            {
-                if (item.eBuff == EBuffAndDeBuff.TrungDoc)
-                {
-                    item.ShowEffect();
-                    break;
-                }
-            }
+            ActiveAnimEffect<BuffEffect>(charTrungDoc, EBuffAndDeBuff.TrungDoc, null);
         }
     }
     public static void ThieuDot(CharacterCombat charSender, CharacterCombat charThieuDot)
     {
         if (charThieuDot.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt thieuDot))
         {
-            var listBuff = charThieuDot.GetComponentsInChildren<BuffEffect>();
-            foreach (var item in listBuff)
-            {
-                if (item.eBuff == EBuffAndDeBuff.ThieuDot)
-                {
-                    item.ShowEffect();
-                    break;
-                }
-            }
+            ActiveAnimEffect<BuffEffect>(charThieuDot, EBuffAndDeBuff.ThieuDot, null);
+
             if (charThieuDot.ngoDaoCombats.FirstOrDefault(x => x is DucHoa) is DucHoa ducHoa
             && ducHoa.IsCanUse(charThieuDot))
             {
@@ -64,16 +70,11 @@ public class CombatStatic : MonoBehaviour
         {
             charTakeDame.TakeDameByStatic(charSender, new List<int> { sucThe }, false, new[] { BaseSkill.ETypeSkill.Kiem });
 
-            var listBuff = charSender.GetComponentsInChildren<SucTheEffect>();
-
-            foreach (var item in listBuff)
+            ActiveAnimEffect<SucTheEffect>(charSender, EBuffAndDeBuff.SucThe, (SucTheEffect) =>
             {
-                if (item.eBuff == EBuffAndDeBuff.SucThe)
-                {
-                    item.ShowSucTheAtk();
-                    break;
-                }
-            }
+                SucTheEffect.ShowSucTheAtk();
+            });
+
         }
 
     }
@@ -82,15 +83,11 @@ public class CombatStatic : MonoBehaviour
         if (charSender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out SecureInt kiemKhi))
         {
             charTakeDame.TakeDameByStatic(charSender, new List<int> { kiemKhi }, false, new[] { BaseSkill.ETypeSkill.Kiem });
-            var listBuff = charSender.GetComponentsInChildren<BuffEffect>();
-            foreach (var item in listBuff)
+            ActiveAnimEffect<BuffEffectTriggerAttack>(charSender, EBuffAndDeBuff.KiemKhi, (buff) =>
             {
-                if(item.eBuff == EBuffAndDeBuff.KiemKhi)
-                {
-                    item.anim.SetTrigger("Active");
-                    break;
-                }    
-            }
+                buff.ActiveAnim();
+            });
+            
             Observer.Notify(EventList.Combat.KIEM_KHI, charSender, charTakeDame);
 
         }
@@ -115,8 +112,10 @@ public class CombatStatic : MonoBehaviour
             charTakeDame.TakeDameByStatic(charSender, new List<int> { (int)anhDich }, false, new[] { BaseSkill.ETypeSkill.Khi });
 
             charSender.Healing(anhDich);
-            Observer.Notify(EventList.Combat.ANH_DICH, charSender, charTakeDame);
-
+            ActiveAnimEffect<BuffEffectTriggerAttack>(charSender, EBuffAndDeBuff.AnhDich, (buff) =>
+            {
+                buff.ActiveAnim();
+            });
 
 
         }
@@ -156,7 +155,7 @@ public class CombatStatic : MonoBehaviour
     }
     public static void QuyTon(CharacterCombat charActive, CharacterCombat charTakeDame)
     {
-        void ActiveQuyTon(int countDebuff , int resetHonLuc)
+        void ActiveQuyTon(int countDebuff , int resetHonLuc , EBuffAndDeBuff eBuff)
         {
             for (int i = 0; i < countDebuff; i++)
             {
@@ -172,31 +171,33 @@ public class CombatStatic : MonoBehaviour
 
             }
             charActive.AddBuffAndDebuffCount(EBuffAndDeBuff.HonLuc,resetHonLuc);
-            Observer.Notify(EventList.Combat.QUY_TON, charActive, charTakeDame);
-
+            ActiveAnimEffect<BuffEffectTriggerAttack>(charActive, eBuff, (buff) =>
+            {
+                buff.ActiveAnim();
+            });
         }
         if (charActive.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyLinh, out SecureInt QuyLinh))
         {
-            ActiveQuyTon(1,150);
+            ActiveQuyTon(1,150 , EBuffAndDeBuff.QuyLinh);
         }
         if (charActive.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyBinh, out SecureInt QuyBinh))
         {
-            ActiveQuyTon(2,300);
+            ActiveQuyTon(2,300, EBuffAndDeBuff.QuyBinh);
 
         }
         if (charActive.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyTuong, out SecureInt QuyTuong))
         {
-            ActiveQuyTon(3,500);
+            ActiveQuyTon(3,500, EBuffAndDeBuff.QuyTuong);
 
         }
         if (charActive.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyTon, out SecureInt quyTon))
         {
-            ActiveQuyTon(4,1500);
+            ActiveQuyTon(4,1500, EBuffAndDeBuff.QuyTon);
 
         }
         if (charActive.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyDe, out SecureInt QuyDe))
         {
-            ActiveQuyTon(5,5000);
+            ActiveQuyTon(5,5000, EBuffAndDeBuff.QuyDe);
 
         }
 
