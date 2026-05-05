@@ -67,15 +67,18 @@ MonoBehaviour:
   - {fileID: 8166118867486249300}
   - {fileID: 5115802629980982499}
   congPhapEquip: []
+  thanThongEquip: []
   congPhapDynamic: []
-  allDameTaked:
-    encA: 0
-    encB: 0
-    keyA: 0
-    keyB: 0
-    fakeValue: 0
+  listDameTaked: []
+  skillVoHieuHoa: []
   specialThanThongImpactAfterPlaySkill: []
+  ngoDaoCombats: []
+  ngoDaoCombatsDynamic: []
   listAmKinhTT: []
+  isAutoCastSkill:
+    encValue: 0
+    key: 0
+    fakeValue: 0
   isSkipTieuTanLinhKhi:
     encValue: 0
     key: 0
@@ -117,6 +120,12 @@ MonoBehaviour:
     keyB: 0
     fakeValue: 0
   characterStatsBase:
+    idChar:
+      encA: -21941
+      encB: 22227
+      keyA: 22305
+      keyB: 21573
+      fakeValue: 0
     percentKim:
       encA: 0
       encB: 0
@@ -153,38 +162,7 @@ MonoBehaviour:
       keyA: 0
       keyB: 0
       fakeValue: 0
-    level:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    hp:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    nameUser: 
-    tuoiTac:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    thoNguyen:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
     tuChat:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    thanThuc:
       encA: 0
       encB: 0
       keyA: 0
@@ -196,7 +174,37 @@ MonoBehaviour:
       keyA: 0
       keyB: 0
       fakeValue: 0
+    thanThuc:
+      encA: 0
+      encB: 0
+      keyA: 0
+      keyB: 0
+      fakeValue: 0
     tocDoBay:
+      encA: 0
+      encB: 0
+      keyA: 0
+      keyB: 0
+      fakeValue: 0
+    linhThach:
+      encA: -24944
+      encB: 75203
+      keyA: 25417
+      keyB: 75748
+      fakeValue: 0
+    hp:
+      encA: 0
+      encB: 0
+      keyA: 0
+      keyB: 0
+      fakeValue: 0
+    hpMax:
+      encA: -30513
+      encB: 38010
+      keyA: 30664
+      keyB: 38019
+      fakeValue: 0
+    thoNguyen:
       encA: 0
       encB: 0
       keyA: 0
@@ -208,36 +216,46 @@ MonoBehaviour:
       keyA: 0
       keyB: 0
       fakeValue: 0
-    danDoc:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    money:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
     idLinhCan:
       encA: 0
       encB: 0
       keyA: 0
       keyB: 0
       fakeValue: 0
-    chucVi:
+    ability: 0
+    ngoDaoDiem:
+      encA: -74598
+      encB: 72524
+      keyA: 74011
+      keyB: 71987
+      fakeValue: 0
+    danDoc:
       encA: 0
       encB: 0
       keyA: 0
       keyB: 0
       fakeValue: 0
-    monPhai:
+    nameUser: 
+    level:
       encA: 0
       encB: 0
       keyA: 0
       keyB: 0
       fakeValue: 0
+    tuoiTac:
+      encA: 0
+      encB: 0
+      keyA: 0
+      keyB: 0
+      fakeValue: 0
+    currentExp:
+      encA: -36250
+      encB: 19370
+      keyA: 36549
+      keyB: 18679
+      fakeValue: 0
+    ngoDaoSaves: []
+    monPhai: 0
     thanThongOwner: []
     thanThongEquip: []
     donThuatUsed:
@@ -282,337 +300,204 @@ MonoBehaviour:
       keyA: 0
       keyB: 0
       fakeValue: 0
-  characterStatsMax:
+    Gender: 0
+    skinList: []
+    colorList: []
+    idNode:
+      encA: -40037
+      encB: 62185
+      keyA: 40780
+      keyB: 61888
+      fakeValue: 0
+  characterStatsTemp:
+    idChar:
+      encA: -19967
+      encB: 49670
+      keyA: 20205
+      keyB: 49426
+      fakeValue: 0
     percentKim:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: -1007115193
+      encB: 1140346277
+      keyA: 18265
+      keyB: 44731
       fakeValue: 0
     percentMoc:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: -1009180780
+      encB: 1138278234
+      keyA: 80821
+      keyB: 39803
       fakeValue: 0
     percentThuy:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: -1004431316
+      encB: 1142954511
+      keyA: 54578
+      keyB: 87825
       fakeValue: 0
     percentHoa:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: -1002297028
+      encB: 1145200912
+      keyA: 52330
+      keyB: 33862
       fakeValue: 0
     percentTho:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: -1000847738
+      encB: 1146699568
+      keyA: 16930
+      keyB: 80788
       fakeValue: 0
     percentMa:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    level:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    hp:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    nameUser: 
-    tuoiTac:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    thoNguyen:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: 1143188733
+      encB: -1004399413
+      keyA: 96852
+      keyB: 49762
       fakeValue: 0
     tuChat:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    thanThuc:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: 53035
+      encB: -78243
+      keyA: 52657
+      keyB: 78651
       fakeValue: 0
     ngoTinh:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: -56757
+      encB: 54977
+      keyA: 56855
+      keyB: 54629
+      fakeValue: 0
+    thanThuc:
+      encA: -75247
+      encB: 46049
+      keyA: 75447
+      keyB: 45243
       fakeValue: 0
     tocDoBay:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: 13417
+      encB: -79731
+      keyA: 13555
+      keyB: 79851
+      fakeValue: 0
+    linhThach:
+      encA: 13924
+      encB: -44411
+      keyA: 13935
+      keyB: 44400
+      fakeValue: 0
+    hp:
+      encA: -42047
+      encB: 99335
+      keyA: 42684
+      keyB: 99972
+      fakeValue: 0
+    hpMax:
+      encA: -64354
+      encB: 15168
+      keyA: 64459
+      keyB: 15339
+      fakeValue: 0
+    thoNguyen:
+      encA: -39263
+      encB: 43248
+      keyA: 39832
+      keyB: 43575
       fakeValue: 0
     tamCanh:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    danDoc:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    money:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: 83493
+      encB: -82790
+      keyA: 83376
+      keyB: 82161
       fakeValue: 0
     idLinhCan:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: 86251
+      encB: -66494
+      keyA: 86736
+      keyB: 65927
       fakeValue: 0
-    chucVi:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+    ability: 0
+    ngoDaoDiem:
+      encA: 64317
+      encB: -79899
+      keyA: 64388
+      keyB: 80034
       fakeValue: 0
-    monPhai:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+    danDoc:
+      encA: -76262
+      encB: 50846
+      keyA: 75797
+      keyB: 51055
       fakeValue: 0
+    nameUser: 
+    level:
+      encA: 85794
+      encB: -61913
+      keyA: 85044
+      keyB: 62156
+      fakeValue: 1
+    tuoiTac:
+      encA: -96956
+      encB: 84314
+      keyA: 96551
+      keyB: 84725
+      fakeValue: 18
+    currentExp:
+      encA: -39395
+      encB: 29207
+      keyA: 39321
+      keyB: 29291
+      fakeValue: 0
+    ngoDaoSaves: []
+    monPhai: 0
     thanThongOwner: []
     thanThongEquip: []
     donThuatUsed:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: 26921
+      encB: -32679
+      keyA: 26724
+      keyB: 32490
       fakeValue: 0
     phuTu1Used:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: 48368
+      encB: -60971
+      keyA: 48873
+      keyB: 60466
       fakeValue: 0
     phuTu2Used:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: 73544
+      encB: -24760
+      keyA: 73518
+      keyB: 24786
       fakeValue: 0
     phuTu3Used:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: 68681
+      encB: -82645
+      keyA: 69314
+      keyB: 82014
       fakeValue: 0
     phuTu4Used:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: 55478
+      encB: -19659
+      keyA: 55968
+      keyB: 20191
       fakeValue: 0
     chuTu1Used:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: 64933
+      encB: -62117
+      keyA: 65495
+      keyB: 61653
       fakeValue: 0
     chuTu2Used:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+      encA: 40169
+      encB: -28413
+      keyA: 40450
+      keyB: 27670
       fakeValue: 0
-  characterStatsCurrent:
-    percentKim:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    percentMoc:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    percentThuy:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    percentHoa:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    percentTho:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    percentMa:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    level:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    hp:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    nameUser: 
-    tuoiTac:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    thoNguyen:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    tuChat:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    thanThuc:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    ngoTinh:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    tocDoBay:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    tamCanh:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    danDoc:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    money:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    idLinhCan:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    chucVi:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    monPhai:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    thanThongOwner: []
-    thanThongEquip: []
-    donThuatUsed:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    phuTu1Used:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    phuTu2Used:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    phuTu3Used:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    phuTu4Used:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    chuTu1Used:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
-      fakeValue: 0
-    chuTu2Used:
-      encA: 0
-      encB: 0
-      keyA: 0
-      keyB: 0
+    Gender: 0
+    skinList: []
+    colorList: []
+    idNode:
+      encA: -77779
+      encB: 23462
+      keyA: 77392
+      keyB: 23077
       fakeValue: 0
   totalKhi:
     encA: 0
@@ -1154,6 +1039,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 2687753596363256040, guid: bb01285bc86131a45a48bb657af8e3c9,
+        type: 3}
+      propertyPath: eBuff
+      value: 43
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1356,6 +1246,11 @@ PrefabInstance:
     - target: {fileID: 4835273543195683, guid: bb01285bc86131a45a48bb657af8e3c9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2687753596363256040, guid: bb01285bc86131a45a48bb657af8e3c9,
+        type: 3}
+      propertyPath: eBuff
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: 6613620011685142462, guid: bb01285bc86131a45a48bb657af8e3c9,
         type: 3}
@@ -2352,6 +2247,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 2687753596363256040, guid: bb01285bc86131a45a48bb657af8e3c9,
+        type: 3}
+      propertyPath: eBuff
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 6613620011685142462, guid: bb01285bc86131a45a48bb657af8e3c9,
         type: 3}
       propertyPath: eBuff
@@ -2486,6 +2386,11 @@ PrefabInstance:
     - target: {fileID: 4835273543195683, guid: bb01285bc86131a45a48bb657af8e3c9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2687753596363256040, guid: bb01285bc86131a45a48bb657af8e3c9,
+        type: 3}
+      propertyPath: eBuff
+      value: 51
       objectReference: {fileID: 0}
     - target: {fileID: 6613620011685142462, guid: bb01285bc86131a45a48bb657af8e3c9,
         type: 3}

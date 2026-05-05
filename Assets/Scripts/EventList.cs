@@ -26,6 +26,8 @@ public static partial class EventList
         public const string ADD_BASESKILL = "Combat.ADD_BASESKILL";
         public const string UPDATE_AMKINH_THANTHONG= "Combat.UPDATE_AMKINH_THANTHONG";
         public const string CHARACTER_HEALING = "Combat.CHARACTER_HEALING";
+        public const string ANH_DICH = "Combat.ANH_DICH";
+        public const string QUY_TON = "Combat.QUY_TON";
 
     }
     public static class GamePlay

@@ -115,6 +115,9 @@ public class CombatStatic : MonoBehaviour
             charTakeDame.TakeDameByStatic(charSender, new List<int> { (int)anhDich }, false, new[] { BaseSkill.ETypeSkill.Khi });
 
             charSender.Healing(anhDich);
+            Observer.Notify(EventList.Combat.ANH_DICH, charSender, charTakeDame);
+
+
 
         }
 
@@ -169,6 +172,8 @@ public class CombatStatic : MonoBehaviour
 
             }
             charActive.AddBuffAndDebuffCount(EBuffAndDeBuff.HonLuc,resetHonLuc);
+            Observer.Notify(EventList.Combat.QUY_TON, charActive, charTakeDame);
+
         }
         if (charActive.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyLinh, out SecureInt QuyLinh))
         {
