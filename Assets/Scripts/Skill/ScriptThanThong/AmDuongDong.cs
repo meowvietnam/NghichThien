@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class AmDuongDong : ThanThong
 {
-   
+    [SerializeField] private float delayTimeEffect = 2f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddSkillVoHieuHoa(this);
         caster.AddThanThongImpactAfterPlaySkill(this);
+        ShowSkillEffectNoTarget(delayTimeEffect);
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)

@@ -9,6 +9,7 @@ public class MeTungBo : LaYenBo
     {
         1,1,2,2,3
     };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
        base.Execute(caster, target, data);

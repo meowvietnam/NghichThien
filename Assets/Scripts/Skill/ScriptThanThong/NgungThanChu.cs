@@ -10,9 +10,11 @@ public class NgungThanChu : ThanThong
     {
         1,2,3,4,5
     };
+    [SerializeField] private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NgungThan, buffValues[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
 
     }

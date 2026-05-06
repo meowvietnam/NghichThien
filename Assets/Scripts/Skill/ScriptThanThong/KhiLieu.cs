@@ -10,9 +10,11 @@ public class KhiLieu : ThanThong
     {
         4,6,8,12,17
     };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.Healing(buffValues[GetIndexLevelThanThong(caster)]);
+
     }
 
 

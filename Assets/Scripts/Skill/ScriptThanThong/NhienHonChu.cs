@@ -15,6 +15,8 @@ public class NhienHonChu : ThanThong
      };
     [SerializeField]
     private int addDebuff = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
@@ -22,6 +24,8 @@ public class NhienHonChu : ThanThong
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect2);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
     }
 
 

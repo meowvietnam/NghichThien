@@ -8,9 +8,13 @@ public class KhuAnhThuat : ThanThong , BaseSkill.TuongSinh , BaseSkill.TuongKhac
     private int buffSinh = 2;
     [SerializeField]
     private int buffKhac = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-       
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
+
 
 
     }

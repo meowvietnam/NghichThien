@@ -9,7 +9,8 @@ public class VoAnhThoi : ThanThong
     {
         3,5,8,15,30
     };
-   
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         
@@ -19,6 +20,7 @@ public class VoAnhThoi : ThanThong
             dame *= 2;
         }    
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

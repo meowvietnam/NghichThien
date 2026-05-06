@@ -20,6 +20,8 @@ public class PheAnh : ThanThong , BaseSkill.TuongKhac
     private int tieuHao2 = 15;
     [SerializeField]
     private int hapThu2 = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
+
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -28,6 +30,7 @@ public class PheAnh : ThanThong , BaseSkill.TuongKhac
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.AnhDich, require);
         caster.HapThuLinhKhi(hapThus1[GetIndexLevelThanThong(caster)]);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, buffValues2);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
 
 

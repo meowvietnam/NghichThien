@@ -12,7 +12,8 @@ public class KhuVatThuat : ThanThong
       };
     [SerializeField]
     private int countAttack = 1;
-    
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         List<int> dameList = new List<int>();
@@ -21,6 +22,7 @@ public class KhuVatThuat : ThanThong
             dameList.Add(dames[GetIndexLevelThanThong(caster)]);
         }
         target.CaculateDameByThanThong(caster, dameList, eTypeSkill);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

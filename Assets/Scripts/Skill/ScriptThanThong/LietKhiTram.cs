@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class LietKhiTram : ThanThong
 {
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt  hoTrao);
 
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { hoTrao }, eTypeSkill);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

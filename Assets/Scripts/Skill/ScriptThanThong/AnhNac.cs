@@ -12,15 +12,18 @@ public class AnhNac : ThanThong
     };
     [SerializeField]
     private int[] buffValues2 = new int[]
-   {
+    {
         0,1,8,16,27
-   };
+    };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.AnhNac, buffValues[GetIndexLevelThanThong(caster)]);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Anh, buffValues2[GetIndexLevelThanThong(caster)]);
 
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)

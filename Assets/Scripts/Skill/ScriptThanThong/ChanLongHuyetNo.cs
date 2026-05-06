@@ -7,14 +7,16 @@ using UnityEngine;
 
 public class ChanLongHuyetNo : ThanThong
 {
-    [SerializeField] private int require = 1;   
-    
+    [SerializeField] private int require = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanLongChiHuyet,require);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
     private void ObserverEffect(params object[] data)

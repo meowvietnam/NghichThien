@@ -12,6 +12,7 @@ public class HuyenAmKinh : AmKinhTT
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddAmKinhTT(this, afterHiep);
+        ShowSkillEffectParticleBase(target, delayTimeEffect, 5);
 
     }
     public override void ExecuteAmKinh(CharacterCombat caster, CharacterCombat target)

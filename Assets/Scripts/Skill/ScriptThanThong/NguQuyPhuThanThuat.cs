@@ -12,6 +12,7 @@ public class NguQuyPhuThanThuat : ThanThong
     
     };
     [SerializeField] private int takedDame = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -19,6 +20,7 @@ public class NguQuyPhuThanThuat : ThanThong
         caster.Healing(0);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CHARACTER_BEFORE_TAKE_DAME, ObserverEffect);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
     private void ObserverEffect(params object[] data)

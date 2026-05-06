@@ -10,7 +10,8 @@ public class TinhThanThanNiemThe : ThanThong
     private int dameBuffPercent = 15;
     [SerializeField]
     private int takeDameBuffPercent = 30;
-
+    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] private float cameraSize = 5;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -34,6 +35,7 @@ public class TinhThanThanNiemThe : ThanThong
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect3);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
         Observer.AddObserver(EventList.Combat.CHARACTER_BEFORE_TAKE_DAME, ObserverEffect2);
+        ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
 
 
     }

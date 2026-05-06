@@ -14,7 +14,8 @@ public class NguyetBocHanHuy : ThanThong
  {
         1,1,2,2,3
  };
-
+    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] private float cameraSize = 5;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -22,6 +23,7 @@ public class NguyetBocHanHuy : ThanThong
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.PLAY_SKILL, ObserverEffect);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect3);
+        ShowSkillEffectParticleBase(target, delayTimeEffect, cameraSize);
 
     }
     private void ObserverEffect(params object[] data)

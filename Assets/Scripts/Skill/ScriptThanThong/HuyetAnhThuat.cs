@@ -15,10 +15,13 @@ public class HuyetAnhThuat : ThanThong
     {
         10,12,18,26,36
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.TakeDameByStatic(null, new System.Collections.Generic.List<int> { tieuHaos[GetIndexLevelThanThong(caster)] }, false , null ,false);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Anh, buffValues[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

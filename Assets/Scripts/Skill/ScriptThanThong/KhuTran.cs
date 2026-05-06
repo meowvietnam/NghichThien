@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class KhuTran : ThanThong
 {
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -15,6 +17,8 @@ public class KhuTran : ThanThong
         {
             tp.ExecuteTranPhap(caster,target);
         });
+        ShowSkillEffectParticleBase(caster, delayTimeEffect,2.5f);
+
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)

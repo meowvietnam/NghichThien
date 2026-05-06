@@ -19,6 +19,8 @@ public class AnhSat : ThanThong
     {
         1,2,3,4,5
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int require = tieuHaos[GetIndexLevelThanThong(caster)];
@@ -26,6 +28,7 @@ public class AnhSat : ThanThong
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Anh, require);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, buffValues[GetIndexLevelThanThong(caster)]);
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill );
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
 
 
