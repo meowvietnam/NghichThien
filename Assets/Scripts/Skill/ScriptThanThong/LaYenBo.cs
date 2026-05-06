@@ -12,12 +12,15 @@ public class LaYenBo : ThanThong
     private int require = 5;
     [SerializeField]
     private int dameBuffs = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int X = (int)caster.characterStatsTemp.tocDoBay / require;
         int dame = dames[GetIndexLevelThanThong(caster)] + X * dameBuffs;
 
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

@@ -9,11 +9,14 @@ public class ChietTinhBoKhiQuyet : ThanThong
     {
         8,12,16,20,24
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] private float cameraSize = 5;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NgungThan, out SecureInt ngungThan);
         caster.Healing(ngungThan * buffValues[GetIndexLevelThanThong(caster)]);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.NgungThan, ngungThan);
+        ShowSkillEffectParticleBase(caster, delayTimeEffect , cameraSize);
 
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)

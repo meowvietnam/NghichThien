@@ -10,10 +10,13 @@ public class KhienLinhChu : ThanThong , BaseSkill.TuongSinh
     {
         2,3,4,6,9
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         CombatStatic.AmKinhTTNewTurn(target, caster);
-            
+
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
 
     }

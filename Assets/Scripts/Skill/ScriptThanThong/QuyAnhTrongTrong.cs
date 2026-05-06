@@ -12,6 +12,8 @@ public class QuyAnhTrongTrong : ThanThong
     {
         3,3,3,3,3
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -19,6 +21,7 @@ public class QuyAnhTrongTrong : ThanThong
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhDich, out SecureInt  anhDich);
         int count = anhDich / require;
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.AnhDich, count * buffValues[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
 
     }

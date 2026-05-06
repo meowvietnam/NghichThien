@@ -16,6 +16,7 @@ public class CuuUThu : ThanThong
    };
     [SerializeField] private int tieuHao = 30;
     [SerializeField] private int percent = 90;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -26,10 +27,11 @@ public class CuuUThu : ThanThong
         caster.TakeDameByStatic(null, new System.Collections.Generic.List<int> { dameHP } ,false , null , false);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Anh, anh);
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
 
     }
-    
+
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
       

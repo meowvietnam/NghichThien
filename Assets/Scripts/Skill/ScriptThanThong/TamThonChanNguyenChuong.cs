@@ -12,11 +12,14 @@ public class TamThonChanNguyenChuong : ThanThong
     {
         5,7,10,25,50
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TreKhi, out SecureInt  treKhi);
         int dame = dames[GetIndexLevelThanThong(caster)] + treKhi * buffValues[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

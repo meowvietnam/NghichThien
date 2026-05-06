@@ -10,6 +10,8 @@ public class DaiThonDietThuat : ThanThong
    {
         9,15,28,50,86
    };
+    [SerializeField] private float delayTimeEffect = 1f;
+
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -20,6 +22,8 @@ public class DaiThonDietThuat : ThanThong
 
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect);
+        ShowSkillEffectWorld(target, delayTimeEffect);
+
 
     }
     private void ObserverEffect(params object[] data)

@@ -13,11 +13,14 @@ public class HoanAnhLuc : ThanThong
     {
         2,3,5,7,9
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int require = tieuHaos[GetIndexLevelThanThong(caster)];
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Anh, require);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.AnhDich, buffValues[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
 
     }

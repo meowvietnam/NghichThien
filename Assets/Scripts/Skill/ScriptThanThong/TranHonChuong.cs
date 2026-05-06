@@ -14,12 +14,16 @@ public class TranHonChuong : ThanThong
     {
         1,2,3,4,5
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChayMau, out SecureInt  chayMau);
         int dame = dames[GetIndexLevelThanThong(caster)] + chayMau * buffValues[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         caster.Healing(dame);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
     }
 
 

@@ -5,6 +5,12 @@ using static UnityEngine.GraphicsBuffer;
 
 public class AmDuongKinh : AmKinhTT , BaseSkill.TuongSinh
 {
+    public enum TypeAmDuongKinh
+    {
+        AmDuongKinh,
+        PhongLinhKinh,
+        AmLoiKinh
+    }
     [SerializeField]
     private int[] dames = new int[]
    {
@@ -16,10 +22,20 @@ public class AmDuongKinh : AmKinhTT , BaseSkill.TuongSinh
         20,30,50,100,200
     };
     [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] private TypeAmDuongKinh currentType;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddAmKinhTT(this, afterHiep);
-        ShowSkillEffectParticleBase(caster, delayTimeEffect, 5);
+        if(currentType == TypeAmDuongKinh.AmDuongKinh)
+        {
+            ShowSkillEffectParticleBase(caster, delayTimeEffect, 5);
+        }    
+        else if(currentType == TypeAmDuongKinh.PhongLinhKinh || currentType == TypeAmDuongKinh.AmLoiKinh)
+        {
+            ShowSkillEffectWorld(target, delayTimeEffect);
+
+        }
 
     }
     public override void ExecuteAmKinh(CharacterCombat caster, CharacterCombat target)

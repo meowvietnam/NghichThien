@@ -14,9 +14,13 @@ public class ToiHuyetChuong : ThanThong , BaseSkill.TuongSinh
     {
         3,4,6,7,9
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         Action(caster,target,dames);
+        ShowSkillEffectWorld(target, delayTimeEffect);
+
     }
     private void Action(CharacterCombat caster , CharacterCombat target , int[] dames)
     {

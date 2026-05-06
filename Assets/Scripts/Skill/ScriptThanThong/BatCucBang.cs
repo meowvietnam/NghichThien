@@ -15,10 +15,12 @@ public class BatCucBang : ThanThong , BaseSkill.TuongKhac
     };
     [SerializeField]
     private int treKhi = 2;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         ActionBCB(caster, target, dames);
-
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
     private void ActionBCB(CharacterCombat caster, CharacterCombat target , int[] dames , bool isCongDon = false)

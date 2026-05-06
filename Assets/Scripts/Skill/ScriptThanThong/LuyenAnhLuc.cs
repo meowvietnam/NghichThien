@@ -18,11 +18,14 @@ public class LuyenAnhLuc : ThanThong , BaseSkill.TuongSinh , BaseSkill.TuongKhac
     {
         9,18,27,36,45
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int require = tieuHaos[GetIndexLevelThanThong(caster)];
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.AnhDich, require);
-        
+        ShowSkillEffectWorld(target, delayTimeEffect);
+
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {

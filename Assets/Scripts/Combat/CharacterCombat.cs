@@ -58,6 +58,16 @@ public class CharacterCombat : MonoBehaviour
 
     public List<AmKinhEntry> listAmKinhTT = new List<AmKinhEntry>();
     public SecureBool isAutoCastSkill;
+    public Dictionary<BaseSkill,GameObject> effectSkillNoDestroy = new Dictionary<BaseSkill,GameObject>();
+    public void RemoveEffectSkillNoDestroy(BaseSkill skill)
+    {
+        effectSkillNoDestroy.TryGetValue(skill, out var effect);
+        if (effect != null)
+        {
+            effect.Recycle();
+        }
+        effectSkillNoDestroy.Remove(skill);
+    }    
  
     [System.Serializable]
     public class AmKinhEntry

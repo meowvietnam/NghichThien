@@ -28,6 +28,8 @@ public class LoanAnhSat : ThanThong
     };
     [SerializeField]
     private int dame2 = 6;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.TakeDameByStatic(null, new System.Collections.Generic.List<int> { tieuHaos[GetIndexLevelThanThong(caster)] }, false, null, false);
@@ -48,11 +50,12 @@ public class LoanAnhSat : ThanThong
 
                 target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame2 }, eTypeSkill);
             }
-        }    
+        }
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
 
     }
-   
+
 
 
 

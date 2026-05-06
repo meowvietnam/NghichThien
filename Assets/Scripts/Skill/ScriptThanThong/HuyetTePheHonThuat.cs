@@ -10,6 +10,8 @@ public class HuyetTePheHonThuat : ThanThong
     {
         4,5,6,7,8
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon, out SecureInt  hon);
@@ -18,6 +20,7 @@ public class HuyetTePheHonThuat : ThanThong
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Hon, hon);
 
         caster.Healing(heal);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

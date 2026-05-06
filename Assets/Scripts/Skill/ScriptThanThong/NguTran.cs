@@ -14,12 +14,15 @@ public class NguTran : ThanThong
     {
         4,6,9,17,33
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int count = caster.specialThanThongImpactAfterPlaySkill.Count(x=>x is TranPhapTT);
         int dame = dames[GetIndexLevelThanThong(caster)] + count * buffValues[GetIndexLevelThanThong(caster)];
 
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 
