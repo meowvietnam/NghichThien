@@ -11,12 +11,12 @@ namespace Skill
     public abstract class ThanThong : BaseSkill
     {
         [System.Serializable]
-        public class RequireActive 
+        public class RequireActive
         {
             public ELinhKhi linhKhiRequire;
             public int count;
         }
-        [SerializeField]protected List<RequireActive> requireActives;
+        [SerializeField] protected List<RequireActive> requireActives;
         public List<RequireActive> BaseRequireActive => requireActives;
         public virtual List<RequireActive> GetRequireActive(CharacterCombat caster)
         {
@@ -27,7 +27,7 @@ namespace Skill
                 .Where(r => r.linhKhiRequire != ELinhKhi.None)
                 .Select(r => r.linhKhiRequire)
                 .ToArray();
-   
+
         public float timeDelayTakeDame = 0;
         public override abstract string GetDesc(int daiCanhGioi);
         public override string GetDesc()
@@ -49,7 +49,7 @@ namespace Skill
         }
         public static int GetIndexLevelThanThong(CharacterStatsSecure characterStatsCurrent)
         {
-       
+
             int indexLevel = GetDaiCanhGioi(characterStatsCurrent) - 1;
             return indexLevel;
         }
@@ -322,72 +322,99 @@ namespace Skill
             return GetLinhKhiTieuTanIfPossible(caster) != null;
         }
 
-   
-    public virtual bool IsCanUse(CharacterCombat caster , CharacterCombat target)
-    {
-        return caster.congPhapDynamic.Count(x => x.congPhap is DietLinhQuyet) <= DietLinhQuyet.require-1;
-    }
 
-    protected GameObject ShowSkillEffectParticleBase(CharacterCombat caster, float delay, float cameraSize = 50f, bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
-    {
-        var actionControl = GetActionControlEffectParticleBase();
-        var effect = ShowSkillEffectParticle(caster, delay, cameraSize , isDestroy , actionControl.Item1,actionControl.Item2);
-        
-        return effect;
-
-    }
-    protected virtual (Action<Transform,Transform>,Action<Transform, Transform>) GetActionControlEffectParticleBase()
-    {
-        
-        return ((childEffect,childPrefab) => {
-            childEffect.transform.localPosition = new Vector3(childPrefab.transform.localPosition.x * -1, childPrefab.transform.localPosition.y, childPrefab.transform.localPosition.z);
-            
-        }, (childEffect, childPrefab) => {
-            childEffect.transform.localPosition = childPrefab.transform.localPosition;
-        }
-        );
-    }    
-    protected virtual GameObject ShowSkillEffectParticle(CharacterCombat caster, float delay, float cameraSize = 50f ,bool isDestroy = true , Action<Transform, Transform> actionControlChildEffectIf = null, Action<Transform, Transform> actionControlChildEffectElse = null) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
-    {
-        if (prefabEffectSkill == null) return null;
-        
-        GameObject effect = prefabEffectSkill.Spawn(caster.transform);
-        effect.transform.SetParent(null);
-        effect.transform.localEulerAngles = prefabEffectSkill.transform.localEulerAngles;
-        effect.transform.localScale = new Vector3(1,1,1);
-        var childEffect = effect.transform.GetChild(0);
-        var childPrefab = prefabEffectSkill.transform.GetChild(0);
-        int signX = caster.transform.localEulerAngles.y != 0 ? -1 : 1;
-        if (signX < 0)
+        public virtual bool IsCanUse(CharacterCombat caster, CharacterCombat target)
         {
-            childEffect.transform.localScale = new Vector3(childPrefab.localScale.x * -1, childPrefab.localScale.y, childPrefab.localScale.z);
-            actionControlChildEffectIf?.Invoke(childEffect,childPrefab);
+            return caster.congPhapDynamic.Count(x => x.congPhap is DietLinhQuyet) <= DietLinhQuyet.require - 1;
+        }
+
+        protected GameObject ShowSkillEffectParticleBase(CharacterCombat caster, float delay, float cameraSize = 50f, bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
+        {
+            var actionControl = GetActionControlEffectParticleBase();
+            var effect = ShowSkillEffectParticle(caster, delay, cameraSize, isDestroy, actionControl.Item1, actionControl.Item2);
+
+            return effect;
+
+        }
+        protected virtual (Action<Transform, Transform>, Action<Transform, Transform>) GetActionControlEffectParticleBase()
+        {
+
+            return ((childEffect, childPrefab) =>
+            {
+                childEffect.transform.localPosition = new Vector3(childPrefab.transform.localPosition.x * -1, childPrefab.transform.localPosition.y, childPrefab.transform.localPosition.z);
+
+            }, (childEffect, childPrefab) =>
+            {
+                childEffect.transform.localPosition = childPrefab.transform.localPosition;
+            }
+            );
+        }
+        protected virtual GameObject ShowSkillEffectParticle(CharacterCombat caster, float delay, float cameraSize = 50f, bool isDestroy = true, Action<Transform, Transform> actionControlChildEffectIf = null, Action<Transform, Transform> actionControlChildEffectElse = null) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
+        {
+            if (prefabEffectSkill == null) return null;
+
+            GameObject effect = prefabEffectSkill.Spawn(caster.transform);
+            effect.transform.SetParent(null);
+            effect.transform.localEulerAngles = prefabEffectSkill.transform.localEulerAngles;
+            effect.transform.localScale = new Vector3(1, 1, 1);
+            var childEffect = effect.transform.GetChild(0);
+            var childPrefab = prefabEffectSkill.transform.GetChild(0);
+            int signX = caster.transform.localEulerAngles.y != 0 ? -1 : 1;
+            if (signX < 0)
+            {
+                childEffect.transform.localScale = new Vector3(childPrefab.localScale.x * -1, childPrefab.localScale.y, childPrefab.localScale.z);
+                actionControlChildEffectIf?.Invoke(childEffect, childPrefab);
+            }
+            else
+            {
+                childEffect.transform.localScale = new Vector3(childPrefab.localScale.x, childPrefab.localScale.y, childPrefab.localScale.z);
+                actionControlChildEffectElse?.Invoke(childEffect, childPrefab);
+
+            }
+
+            Pool.Get<CombatManager>().cameraEffectSkill.orthographicSize = cameraSize;
+            var mainPS = effect.transform.GetChild(0).GetComponent<ParticleSystem>();
+
+            if (mainPS != null)
+            {
+                // CÁCH SỬA CHÍNH Ở ĐÂY:
+                // Thêm tham số true vào hàm Play để bao gồm tất cả các con lồng bên trong (withChildren)
+                mainPS.Play(true);
+            }
+            if (isDestroy)
+            {
+                DOVirtual.DelayedCall(delay, () =>
+                {
+                    effect.gameObject.Recycle();
+                });
+            }
+            effect.transform.localPosition = new Vector3(effect.transform.localPosition.x, effect.transform.localPosition.y, 0);
+            return effect;
+
         }
         protected virtual void ShowSkillEffectWorld(CharacterCombat target, float delay) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
         {
-            childEffect.transform.localScale = new Vector3(childPrefab.localScale.x, childPrefab.localScale.y, childPrefab.localScale.z);
-            actionControlChildEffectElse?.Invoke(childEffect,childPrefab);
+            if (prefabEffectSkill == null) return;
 
-        }
+            GameObject effect = prefabEffectSkill.Spawn(target.transform);
+            effect.transform.SetParent(null);
+            effect.transform.localEulerAngles = prefabEffectSkill.transform.localEulerAngles;
+            int signX = target.transform.localEulerAngles.y != 0 ? -1 : 1;
+            effect.transform.localScale = new Vector3(1 * signX, 1, 1);
 
-        Pool.Get<CombatManager>().cameraEffectSkill.orthographicSize = cameraSize;
-        var mainPS = effect.transform.GetChild(0).GetComponent<ParticleSystem>();
 
-        if (mainPS != null)
-        {
-            // CÁCH SỬA CHÍNH Ở ĐÂY:
-            // Thêm tham số true vào hàm Play để bao gồm tất cả các con lồng bên trong (withChildren)
-            mainPS.Play(true);
-        }
-        if(isDestroy)
-        {
+            Pool.Get<CombatManager>().cameraEffectSkill.orthographicSize = 50;
+            effect.transform.localPosition = new Vector3(effect.transform.localPosition.x, effect.transform.localPosition.y, 0);
+
             DOVirtual.DelayedCall(delay, () =>
             {
                 effect.gameObject.Recycle();
             });
+
         }
-        effect.transform.localPosition = new Vector3(effect.transform.localPosition.x, effect.transform.localPosition.y, 0);
-        return effect;
+        protected virtual void ShowSkillEffectNoTarget(float delay)// base thì chỉnh scale thôi
+        {
+            if (prefabEffectSkill == null) return;
 
             GameObject effect = prefabEffectSkill.Spawn();
             effect.transform.localEulerAngles = prefabEffectSkill.transform.localEulerAngles;
@@ -401,30 +428,6 @@ namespace Skill
                 effect.gameObject.Recycle();
             });
 
-        Pool.Get<CombatManager>().cameraEffectSkill.orthographicSize = 50;
-        effect.transform.localPosition = new Vector3(effect.transform.localPosition.x, effect.transform.localPosition.y, 0);
-
-        DOVirtual.DelayedCall(delay, () =>
-        {
-            effect.gameObject.Recycle();
-        });
-
-    }
-    protected virtual void ShowSkillEffectNoTarget(float delay)// base thì chỉnh scale thôi
-    {
-        if (prefabEffectSkill == null) return;
-
-        GameObject effect = prefabEffectSkill.Spawn();
-        effect.transform.localEulerAngles = prefabEffectSkill.transform.localEulerAngles;
-        effect.transform.localScale = Vector3.one;
-        effect.transform.localPosition = Vector3.zero;
-
-        Pool.Get<CombatManager>().cameraEffectSkill.orthographicSize = 50;
-
-        DOVirtual.DelayedCall(delay, () =>
-        {
-            effect.gameObject.Recycle();
-        });
-
+        }
     }
 }
