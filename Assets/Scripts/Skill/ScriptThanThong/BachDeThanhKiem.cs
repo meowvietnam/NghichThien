@@ -8,6 +8,8 @@ public class BachDeThanhKiem : NguKiemThuat
     {
         1,2,4,9,18
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
@@ -16,6 +18,10 @@ public class BachDeThanhKiem : NguKiemThuat
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ThienKiem, buffValues[GetIndexLevelThanThong(caster)]);
 
 
+    }
+    protected override void ShowEffect(CharacterCombat caster, CharacterCombat target)
+    {
+        ShowSkillEffectWorld(target, delayTimeEffect);
     }
     public override void ExecuteTuongSinh(CharacterCombat caster, CharacterCombat target)
     {

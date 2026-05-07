@@ -10,6 +10,7 @@ public class TramThienKiem : ThanThong
     };
    
     [SerializeField] private int require = 2;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -17,6 +18,7 @@ public class TramThienKiem : ThanThong
         int dame = dames[GetIndexLevelThanThong(caster)];
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, require);
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

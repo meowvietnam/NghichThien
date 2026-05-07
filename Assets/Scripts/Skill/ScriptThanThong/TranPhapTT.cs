@@ -7,10 +7,16 @@ public abstract class TranPhapTT : ThanThong
     [SerializeField] protected List<RequireActive> requireActivesKhuTran;
     [SerializeField]
     protected bool isCanKhuTran => requireActivesKhuTran != null && requireActivesKhuTran.Count>0;
+    [SerializeField] private float delayTimeEf = 2f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if(caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong.GetType() == this.GetType())))
         {
+            if (prefabEffectSkill != null)
+            {
+                ShowSkillEffectWorld(caster, delayTimeEf);
+            }
             if (!caster.specialThanThongImpactAfterPlaySkill.Any(x => x.GetType() == this.GetType()))
             {
                 caster.AddThanThongImpactAfterPlaySkill(this);
@@ -22,7 +28,7 @@ public abstract class TranPhapTT : ThanThong
                 if (caster.ngoDaoCombats.Any(x => x is KyMon))
                 {
                     HauKeVoLuc(caster);
-                    ExecuteTranPhap(caster, target);
+                    OnExecuteTranPhap(caster, target);
 
 
                 }
@@ -50,6 +56,14 @@ public abstract class TranPhapTT : ThanThong
         }
         return false;
     }
+    public void OnExecuteTranPhap(CharacterCombat caster, CharacterCombat target)
+    {
+        if (prefabEffectSkill != null)
+        {
+            ShowSkillEffectWorld(caster, delayTimeEf);
+        }
+        ExecuteTranPhap(caster,target);
+    }    
 
     public abstract void ExecuteTranPhap(CharacterCombat caster, CharacterCombat target);
 
@@ -62,10 +76,10 @@ public abstract class TranPhapTT : ThanThong
 
         if (caster.specialThanThongImpactAfterPlaySkill.Any(x => x.GetType() == this.GetType()))
         {
-            ExecuteTranPhap(caster,target);
+            OnExecuteTranPhap(caster,target);
 
         }
-
+         
 
     }
     public override string GetDesc(int level)

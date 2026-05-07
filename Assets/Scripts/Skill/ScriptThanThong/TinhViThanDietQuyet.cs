@@ -22,7 +22,7 @@ public class TinhViThanDietQuyet : ThanNiemQuyet
     }
     protected override (Action<Transform, Transform>, Action<Transform, Transform>) GetActionControlEffectParticleBase()
     {
-        // nếu caster ng nhận effec là âm thì 
+        // nếu caster ng nhận effec là enemy thì 
         return ((childEffect, childPrefab) => {
             base.GetActionControlEffectParticleBase().Item1?.Invoke(childEffect, childPrefab);
             childEffect.transform.localEulerAngles = new Vector3(childPrefab.transform.localEulerAngles.x , childPrefab.transform.localEulerAngles.y *-1, childEffect.transform.localEulerAngles.y);

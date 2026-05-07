@@ -366,8 +366,22 @@ public abstract class ThanThong : BaseSkill
             actionControlChildEffectElse?.Invoke(childEffect,childPrefab);
 
         }
+        if(cameraSize == 50 )
+        {
+            effect.SetLayerRecursiveWithCamera(Pool.Get<CombatManager>().cameraEffectSkillLock50.cullingMask);
 
-        Pool.Get<CombatManager>().cameraEffectSkill.orthographicSize = cameraSize;
+        }
+        else if (cameraSize == 5)
+        {
+            effect.SetLayerRecursiveWithCamera(Pool.Get<CombatManager>().cameraEffectSkillLock5.cullingMask);
+
+        }
+        else
+        {
+            effect.SetLayerRecursiveWithCamera(Pool.Get<CombatManager>().cameraEffectSkillDynamic.cullingMask);
+            Pool.Get<CombatManager>().cameraEffectSkillDynamic.orthographicSize = cameraSize;
+
+        }
         var mainPS = effect.transform.GetChild(0).GetComponent<ParticleSystem>();
 
         if (mainPS != null)
@@ -387,9 +401,9 @@ public abstract class ThanThong : BaseSkill
         return effect;
 
     }
-    protected virtual void ShowSkillEffectWorld(CharacterCombat target, float delay) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
+    protected virtual GameObject ShowSkillEffectWorld(CharacterCombat target, float delay , bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
     {
-        if (prefabEffectSkill == null) return;
+        if (prefabEffectSkill == null) return null;
 
         GameObject effect = prefabEffectSkill.Spawn(target.transform);
         effect.transform.SetParent(null);
@@ -398,13 +412,17 @@ public abstract class ThanThong : BaseSkill
         effect.transform.localScale = new Vector3(1 * signX, 1, 1);
 
 
-        Pool.Get<CombatManager>().cameraEffectSkill.orthographicSize = 50;
+        effect.SetLayerRecursiveWithCamera(Pool.Get<CombatManager>().cameraEffectSkillLock50.cullingMask);
         effect.transform.localPosition = new Vector3(effect.transform.localPosition.x, effect.transform.localPosition.y, 0);
 
-        DOVirtual.DelayedCall(delay, () =>
+        if (isDestroy)
         {
-            effect.gameObject.Recycle();
-        });
+            DOVirtual.DelayedCall(delay, () =>
+            {
+                effect.gameObject.Recycle();
+            });
+        }
+        return effect;
 
     }
     protected virtual void ShowSkillEffectNoTarget(float delay)// base thì chỉnh scale thôi
@@ -416,7 +434,7 @@ public abstract class ThanThong : BaseSkill
         effect.transform.localScale = Vector3.one;
         effect.transform.localPosition = Vector3.zero;
 
-        Pool.Get<CombatManager>().cameraEffectSkill.orthographicSize = 50;
+        effect.SetLayerRecursiveWithCamera(Pool.Get<CombatManager>().cameraEffectSkillLock50.cullingMask);
 
         DOVirtual.DelayedCall(delay, () =>
         {
@@ -424,4 +442,5 @@ public abstract class ThanThong : BaseSkill
         });
 
     }
+ 
 }

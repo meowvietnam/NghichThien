@@ -1,4 +1,5 @@
 ﻿using Sirenix.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu(fileName = nameof(HonKhieu), menuName = "Skill/Thần Thông/" + nameof(HonKhieu))]
@@ -15,14 +16,28 @@ public class HonKhieu : ThanThong
     {
         3,3,3,3,3
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] private float cameraSize = 5;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon, out SecureInt hon);
         int dame = dames[GetIndexLevelThanThong(caster)] + hon * buffValues[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectParticleBase(target, delayTimeEffect, cameraSize);
 
     }
-
+    protected override (Action<Transform, Transform>, Action<Transform, Transform>) GetActionControlEffectParticleBase()
+    {
+        // nếu caster ng nhận effec là enemy  thì 
+        return ((childEffect, childPrefab) => {
+            base.GetActionControlEffectParticleBase().Item1?.Invoke(childEffect, childPrefab);
+            childEffect.transform.localEulerAngles = new Vector3(childPrefab.transform.localEulerAngles.x, childPrefab.transform.localEulerAngles.y , childPrefab.transform.localEulerAngles.z);
+        }, (childEffect, childPrefab) => {
+            base.GetActionControlEffectParticleBase().Item2?.Invoke(childEffect, childPrefab);
+            childEffect.transform.localEulerAngles = new Vector3(childPrefab.transform.localEulerAngles.x, childPrefab.transform.localEulerAngles.y * -1, childPrefab.transform.localEulerAngles.z);
+        }
+        );
+    }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(GetEKeywordBuffSkillQuy(caster.characterStatsTemp.level), out SecureInt quy);

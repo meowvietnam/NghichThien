@@ -70,8 +70,10 @@ public class CombatManager : MonoBehaviour
 
     public SecureBool IsDelayEffectSkill;
 
-    public Camera cameraEffectSkill;
-    
+    public Camera cameraEffectSkillDynamic;
+    public Camera cameraEffectSkillLock50;
+    public Camera cameraEffectSkillLock5;
+
     public Text GetTextDame()
     {
         return prefabTextDame.Spawn(this.transform);

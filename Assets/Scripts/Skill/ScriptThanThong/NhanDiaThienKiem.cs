@@ -13,6 +13,8 @@ public class NhanDiaThienKiem : ThanThong , BaseSkill.TuongKhac
     private int[] buffValues;
     [SerializeField]
     private int[] buffValueKiemKhis;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         KiemY(caster);
@@ -21,6 +23,7 @@ public class NhanDiaThienKiem : ThanThong , BaseSkill.TuongKhac
         caster.AddBuffAndDebuffCount(GetTypeKiem(), buffValues[GetIndexLevelThanThong(caster)]);
 
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 
