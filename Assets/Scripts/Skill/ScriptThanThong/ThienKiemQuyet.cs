@@ -12,6 +12,8 @@ public class ThienKiemQuyet : ThanThong
       };
 
     [SerializeField] private int require = 10;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         KiemY(caster);
@@ -23,6 +25,7 @@ public class ThienKiemQuyet : ThanThong
             dame *= 2;
         }
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 

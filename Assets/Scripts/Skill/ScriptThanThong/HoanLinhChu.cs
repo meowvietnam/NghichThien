@@ -10,7 +10,8 @@ public class HoanLinhChu : ThanThong
      {
         20,32,42,60,120
      };
-    
+    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] private float cameraSize = 5;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyCuu, out SecureInt quyCuu);
@@ -18,6 +19,7 @@ public class HoanLinhChu : ThanThong
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Hon, tieuHaos[GetIndexLevelThanThong(caster)]);
         caster.AddBuffAndDebuffCount(GetEKeywordBuffSkillQuy(caster.characterStatsTemp.level), 1);
         CombatStatic.QuyTon(caster, target);
+        ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
 
     }
 

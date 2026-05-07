@@ -10,6 +10,8 @@ public class HoTheKiemCuong : ThanThong
     {
         4,4,4,4,4
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -17,6 +19,7 @@ public class HoTheKiemCuong : ThanThong
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, kiemKhi * buffValues[GetIndexLevelThanThong(caster)]);
 
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, kiemKhi);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

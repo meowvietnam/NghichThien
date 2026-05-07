@@ -14,6 +14,8 @@ public class VanKiemQuyet : ThanThong
     {
         3,3,4,4,5
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         KiemY(caster);
@@ -22,6 +24,7 @@ public class VanKiemQuyet : ThanThong
 
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, kiemKhi);
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
 
     }
 

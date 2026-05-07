@@ -15,7 +15,7 @@ public class KhuTran : ThanThong
         // Bây giờ bạn có thể thao tác với tranPhapSkills
         tranPhapSkills.ForEach(tp =>
         {
-            tp.ExecuteTranPhap(caster,target);
+            tp.OnExecuteTranPhap(caster,target);
         });
         ShowSkillEffectParticleBase(caster, delayTimeEffect,2.5f);
 

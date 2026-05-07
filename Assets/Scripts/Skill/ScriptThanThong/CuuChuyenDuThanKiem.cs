@@ -1,4 +1,5 @@
-﻿using LongDH.LongDHModules;
+﻿using DG.Tweening;
+using LongDH.LongDHModules;
 using System.Collections.Generic;
 using Skill;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class CuuChuyenDuThanKiem : ThanThong
     [SerializeField]
     private int require = 2;
     [SerializeField] private ThanThong thanThongActive;
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -30,6 +32,13 @@ public class CuuChuyenDuThanKiem : ThanThong
             Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, thanThongActive, new List<LinhKhiTieuTan>());
 
         }
+        else
+        {
+            DOVirtual.DelayedCall(delayTimeEffect, () =>
+            {
+                caster.RemoveEffectSkillNoDestroy(this);
+            });
+        }    
 
     }
     private void Action(CharacterCombat caster, CharacterCombat target, params object[] data)
@@ -37,6 +46,12 @@ public class CuuChuyenDuThanKiem : ThanThong
         KiemY(caster);
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        caster.effectSkillNoDestroy.TryGetValue(this, out GameObject effect);
+        if(effect == null)
+        {
+            caster.effectSkillNoDestroy.Add(this, ShowSkillEffectWorld(target, 0, false));
+        }    
+
 
     }
 

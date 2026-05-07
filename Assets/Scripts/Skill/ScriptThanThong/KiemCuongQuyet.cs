@@ -14,6 +14,8 @@ public class KiemCuongQuyet : ThanThong
     {
         1,1,1,1,1
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         KiemY(caster);
@@ -21,10 +23,11 @@ public class KiemCuongQuyet : ThanThong
         int dame = dames[GetIndexLevelThanThong(caster)] + kiemKhi * buffValues[GetIndexLevelThanThong(caster)];
 
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(target, delayTimeEffect);
 
     }
 
-   
+
 
     public override string GetDesc(int level)
     {

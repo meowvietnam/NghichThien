@@ -15,11 +15,14 @@ public class TrucSonKiemPhap : ThanThong , BaseSkill.LienKich
      {
         1,2,3,6,11
      };
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         KiemY(caster);
         TakeDame(caster, target, dames, false);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
     }
     private void TakeDame(CharacterCombat caster, CharacterCombat target, int[] dames,bool isCongDon = false)
     {

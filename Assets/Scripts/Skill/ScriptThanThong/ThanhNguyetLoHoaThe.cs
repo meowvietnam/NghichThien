@@ -13,13 +13,15 @@ public class ThanhNguyetLoHoaThe : ThanThong
  {
         1,1,1,1,1
  };
-
+    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] private float cameraSize = 5;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect3);
+        ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
 
     }
     private void ObserverEffect(params object[] data)

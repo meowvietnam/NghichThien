@@ -15,12 +15,15 @@ public class TuQuyThuat : ThanThong
     {
         8,10,13,21,36
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] private float cameraSize = 5;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         int dame = dames[GetIndexLevelThanThong(caster)];
         caster.TakeDameByStatic(null, new System.Collections.Generic.List<int> { dame }, false , null , false);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, buffValues[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
 
     }
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)

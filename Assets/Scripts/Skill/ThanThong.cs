@@ -392,7 +392,31 @@ namespace Skill
             return effect;
 
         }
-        protected virtual void ShowSkillEffectWorld(CharacterCombat target, float delay) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
+        if(cameraSize == 50 )
+        {
+            effect.SetLayerRecursiveWithCamera(Pool.Get<CombatManager>().cameraEffectSkillLock50.cullingMask);
+
+        }
+        else if (cameraSize == 5)
+        {
+            effect.SetLayerRecursiveWithCamera(Pool.Get<CombatManager>().cameraEffectSkillLock5.cullingMask);
+
+        }
+        else
+        {
+            effect.SetLayerRecursiveWithCamera(Pool.Get<CombatManager>().cameraEffectSkillDynamic.cullingMask);
+            Pool.Get<CombatManager>().cameraEffectSkillDynamic.orthographicSize = cameraSize;
+
+        }
+        var mainPS = effect.transform.GetChild(0).GetComponent<ParticleSystem>();
+
+        if (mainPS != null)
+        {
+            // CÁCH SỬA CHÍNH Ở ĐÂY:
+            // Thêm tham số true vào hàm Play để bao gồm tất cả các con lồng bên trong (withChildren)
+            mainPS.Play(true);
+        }
+        if(isDestroy)
         {
             if (prefabEffectSkill == null) return;
 
@@ -412,9 +436,32 @@ namespace Skill
             });
 
         }
-        protected virtual void ShowSkillEffectNoTarget(float delay)// base thì chỉnh scale thôi
+        effect.transform.localPosition = new Vector3(effect.transform.localPosition.x, effect.transform.localPosition.y, 0);
+        return effect;
+
+    }
+    protected virtual GameObject ShowSkillEffectWorld(CharacterCombat target, float delay , bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
+    {
+        if (prefabEffectSkill == null) return null;
+
+        GameObject effect = prefabEffectSkill.Spawn(target.transform);
+        effect.transform.SetParent(null);
+        effect.transform.localEulerAngles = prefabEffectSkill.transform.localEulerAngles;
+        int signX = target.transform.localEulerAngles.y != 0 ? -1 : 1;
+        effect.transform.localScale = new Vector3(1 * signX, 1, 1);
+
+
+        effect.SetLayerRecursiveWithCamera(Pool.Get<CombatManager>().cameraEffectSkillLock50.cullingMask);
+        effect.transform.localPosition = new Vector3(effect.transform.localPosition.x, effect.transform.localPosition.y, 0);
+
+        if (isDestroy)
         {
-            if (prefabEffectSkill == null) return;
+            DOVirtual.DelayedCall(delay, () =>
+            {
+                effect.gameObject.Recycle();
+            });
+        }
+        return effect;
 
             GameObject effect = prefabEffectSkill.Spawn();
             effect.transform.localEulerAngles = prefabEffectSkill.transform.localEulerAngles;
@@ -423,11 +470,14 @@ namespace Skill
 
             Pool.Get<CombatManager>().cameraEffectSkill.orthographicSize = 50;
 
-            DOVirtual.DelayedCall(delay, () =>
-            {
-                effect.gameObject.Recycle();
-            });
+        effect.SetLayerRecursiveWithCamera(Pool.Get<CombatManager>().cameraEffectSkillLock50.cullingMask);
+
+        DOVirtual.DelayedCall(delay, () =>
+        {
+            effect.gameObject.Recycle();
+        });
 
         }
     }
+ 
 }

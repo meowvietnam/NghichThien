@@ -13,11 +13,15 @@ public class ThucThanThu : ThanThong, BaseSkill.ThanThuc
     {
         1,1,2,2,3
     };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
        
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
     }
 
     public void ExecuteThanThuc(CharacterCombat caster, CharacterCombat target)

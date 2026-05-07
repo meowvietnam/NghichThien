@@ -15,13 +15,16 @@ public class TinhHaKiemPhap : ThanThong, BaseSkill.LienKich
      {
         1,2,3,6,11
      };
+    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         KiemY(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKiem, buffValues[GetIndexLevelThanThong(caster)]);
+        ShowSkillEffectWorld(caster, delayTimeEffect);
+
     }
-   
+
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKiem, buffValues2[GetIndexLevelThanThong(caster)]);
