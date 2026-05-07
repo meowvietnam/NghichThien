@@ -13,6 +13,9 @@ public class KimHongKiemTran : TranPhapTT
     {
         3,3,3,3,3
     };
+    [SerializeField] private GameObject prefabEffect2;
+    [SerializeField] private float delayTimeEffect2 = 0.5f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
@@ -28,6 +31,8 @@ public class KimHongKiemTran : TranPhapTT
             dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
         }
         target.TakeDameByStatic(caster, dames, false, new[] { BaseSkill.ETypeSkill.Kiem });
+        ShowSkillEffectWorld(caster,prefabEffect2, delayTimeEffect2);
+
     }
 
     public override string GetDescTranPhapTT(int level)
