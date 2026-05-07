@@ -405,6 +405,14 @@ public abstract class ThanThong : BaseSkill
     {
         if (prefabEffectSkill == null) return null;
 
+      
+        return ShowSkillEffectWorld(target,prefabEffectSkill,delay,isDestroy);
+
+    }
+    protected virtual GameObject ShowSkillEffectWorld(CharacterCombat target,GameObject prefabEffectSkill, float delay, bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
+    {
+        if (prefabEffectSkill == null) return null;
+
         GameObject effect = prefabEffectSkill.Spawn(target.transform);
         effect.transform.SetParent(null);
         effect.transform.localEulerAngles = prefabEffectSkill.transform.localEulerAngles;

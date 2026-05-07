@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class TieuMeTungTran : NeTranhTT
 {
+    [SerializeField] private float delayTimeEf = 2f;
+
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
+    {
+        base.Execute(caster, target, data);
+        if (prefabEffectSkill != null)
+        {
+            ShowSkillEffectWorld(caster, delayTimeEf);
+        }
+    }
     public override string GetDesc(int level)
     {
         return $"{GetKeyWord(EKeyWord.TranPhap)}. Bản thân có {GetColoredText($"{percentNeTranh[level - 1]}%", "red")} né tránh sát thương";
