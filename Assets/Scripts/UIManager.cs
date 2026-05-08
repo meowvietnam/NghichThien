@@ -25,7 +25,6 @@ public class UIManager : BaseBehaviour
     /// <summary>
     /// Abstract Factory để lấy equipment từ các collection khác nhau
     /// </summary>
-    private EquipmentProviderFactory _equipmentProviderFactory => new EquipmentProviderFactory(Client.Instance.CharacterData.InventoryManager);
 
 
     public (Sprite,Sprite,Color) GetFrameAndQualityFullAndColorNameSkill(BaseSkill data)
@@ -75,8 +74,7 @@ public class UIManager : BaseBehaviour
         //    equipment = Client.Instance.CharacterData.InventoryManager.BiKhis.FirstOrDefault(...);
         // ...
         // Sử dụng Abstract Factory thay vì if-else chain
-        equipment = _equipmentProviderFactory.GetEquipment(typeCurrent, itemRef.Id);
-      
+        equipment = EquipmentProviderFactory.GetProvider(typeCurrent).GetEquipmentById(itemRef.Id);
         if(equipment == null)
         {
             Debug.Log("equipment null");
