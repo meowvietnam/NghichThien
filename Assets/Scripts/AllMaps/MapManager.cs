@@ -163,7 +163,7 @@ namespace AllMaps
             List<CharacterStatsSecure> characterStatsSecures = new List<CharacterStatsSecure>();
             foreach (var character in characters)
             {
-                characterStatsSecures.Add(new CharacterStatsSecure { tuoiTac = GameManager.GetIntTuoiTac(character.TuoiTac), hpMax = character.SinhMenh, level = character.Level, thoNguyen = character.ThoNguyen, tuChat = character.TuChat, ngoTinh = character.NgoTinh, tocDoBay = character.TocDoBay, thanThuc = character.ThanThuc, nameUser = character.Name, monPhai = character.MonPhai, thanThongEquip = character.ThanThongEquip.ConvertAll<SecureInt>(id => new SecureInt(id)), chuTu1Used = character.ChuTu1Used, chuTu2Used = character.ChuTu2Used, phuTu1Used = character.PhuTu1Used, phuTu2Used = character.PhuTu2Used, phuTu3Used = character.PhuTu3Used, phuTu4Used = character.PhuTu4Used });
+                characterStatsSecures.Add(CharacterStatsSecureBuilder.FromCharacterSnapshot(character));
             }
             List<NPCData> npcOnCurrentMap = Pool.Get<NpcManager>().npcDatas.Where(x => x.charStats.idNode == current.Id).ToList();
             foreach (var character in npcOnCurrentMap)
