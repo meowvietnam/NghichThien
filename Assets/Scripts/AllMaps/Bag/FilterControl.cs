@@ -244,43 +244,13 @@ public class FilterControl : BaseBehaviour
                     Filter();
                 });
             }
-            int countFilter = 0;
-            if (typeCurrent == ItemType.ThanThong || typeCurrent == ItemType.CongPhap)
-            {
-                countFilter = listTierSkill.Count;
-
-            }
-            else if (typeCurrent == ItemType.VuKhi || typeCurrent == ItemType.PhongCu || typeCurrent == ItemType.TrangSuc)
-            {
-                countFilter = listTierEquipment.Count;
-
-            }
-            else
-            {
-                countFilter = listTier.Count;
-
-            }
-            
+            var filterProvider = FilterProviderFactory.Create(typeCurrent);
+            int countFilter = filterProvider.OptionCount;
 
             for (int i = 0; i < countFilter; i++)
             {
                 filtersRight[i + 1].gameObject.SetActive(true);
-                if(typeCurrent == ItemType.ThanThong || typeCurrent == ItemType.CongPhap)
-                {
-                    filtersRight[i + 1].transform.GetChild(0).GetComponent<Text>().text = BaseSkill.GetTextTierSkill(listTierSkill[i]);
-
-                }
-                else if (typeCurrent == ItemType.VuKhi || typeCurrent == ItemType.PhongCu || typeCurrent == ItemType.TrangSuc)
-                {
-                    filtersRight[i + 1].transform.GetChild(0).GetComponent<Text>().text = GameManager.TextWithTierEquirement.GetValueOrDefault(listTierEquipment[i]);
-
-                }
-                else
-                {
-                    filtersRight[i + 1].transform.GetChild(0).GetComponent<Text>().text = GameManager.TextWithTier.GetValueOrDefault(listTier[i]);
-
-                }
-               
+                filtersRight[i + 1].transform.GetChild(0).GetComponent<Text>().text = filterProvider.GetOptionText(i);
             }
 
             filterRightAnim.gameObject.SetActive(false);
@@ -363,54 +333,11 @@ public class FilterControl : BaseBehaviour
                 }
                 else
                 {
+                    var filterProvider = FilterProviderFactory.Create(typeCurrent);
                     itemDataShows = bag.itemFullDatas.Where(item =>
                     {
-                        // Chỉ xét những item cùng Type trước
                         if (item.Type != typeCurrent) return false;
-
-                        if (typeCurrent == ItemType.ThanThong)
-                        {
-                            var skill = Pool.Get<GameManager>().FindThanThongWithItemRef(item);
-                            // Giả sử skill có biến .tierSkill kiểu ETierSkill
-                            return skill != null && skill.eTierSkill == eTierSkillCurrent;
-                        }
-                        else if (typeCurrent == ItemType.CongPhap)
-                        {
-                            var skill = Pool.Get<GameManager>().FindCongPhapWithItemRef(item);
-                            return skill != null && skill.eTierSkill == eTierSkillCurrent;
-                        }
-                        else if(typeCurrent == ItemType.VuKhi )
-                        {
-                            var vuKhi = Client.Instance.CharacterData.InventoryManager.VuKhis.FirstOrDefault(x => x.SelfId == item.Id);
-                            return vuKhi != null && vuKhi.Item.Tier == eTierEquipmentCurrent;
-
-                        }   
-                        else if (typeCurrent == ItemType.PhongCu)
-                        {
-                            var phongCu = Client.Instance.CharacterData.InventoryManager.PhongCus.FirstOrDefault(x => x.SelfId == item.Id);
-                            return phongCu != null && phongCu.Item.Tier == eTierEquipmentCurrent;
-                        }   
-                        else if (typeCurrent == ItemType.TrangSuc)
-                        {
-                            var trangSuc = Client.Instance.CharacterData.InventoryManager.TrangSucs.FirstOrDefault(x => x.SelfId == item.Id);
-                            return trangSuc != null && trangSuc.Item.Tier == eTierEquipmentCurrent;
-                        }    
-                        else
-                        {
-                            IItemData itemData = null;
-
-                            if (item.Type == ItemType.Material)
-                            {
-                                itemData = LuyenKhiResources.Instance.FindItem(item);
-                            }    
-                            else
-                            {
-                                itemData = LuyenDanResources.Instance.FindItem(item);
-                            }    
-                              
-                            // Giả sử itemData có biến .tier kiểu Tier
-                            return itemData != null && itemData.Tier == tierCurrent;
-                        }
+                        return filterProvider.Matches(item, typeCurrent, tierCurrent, eTierSkillCurrent, eTierEquipmentCurrent);
                     }).ToList();
                 }
             }

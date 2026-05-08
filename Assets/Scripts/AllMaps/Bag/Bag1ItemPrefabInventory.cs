@@ -137,44 +137,17 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             if (i < itemDataShows.Count)
             {
                 itemRef = itemDataShows[index];
-
-                if(itemRef.Type == ItemType.Material)
-                {
-                    data = LuyenKhiResources.Instance.FindItem(itemRef);
-                }    
-               
-                else
-                {
-                    data = LuyenDanResources.Instance.FindItem(itemRef);
-                }    
-
-
-
             }
-            if (data == null) // tức là k tìm đc hoặc nó là thanThong hoặc là CongPhap
+
+            if (itemRef != null)
             {
-                if (itemRef != null)
-                {
-                    if (itemRef.Type == ItemType.ThanThong)
-                    {
-                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, gameConfig.FindThanThongWithItemRef(itemRef), itemRef, ETypeInventoryItem.Item);
-
-
-                    }
-                    else if (itemRef.Type == ItemType.CongPhap)
-                    {
-                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, gameConfig.FindCongPhapWithItemRef(itemRef),itemRef, ETypeInventoryItem.Item);
-
-                    }
-                    else if (itemRef.Type == ItemType.VuKhi || itemRef.Type == ItemType.PhongCu || itemRef.Type == ItemType.TrangSuc)
-                    {
-                        Pool.Get<UIManager>().InitVisualEquipment(currentItem,null, itemRef, ETypeInventoryItem.Item);
-
-                    }
-                }
+                var handler = ItemTypeHandlerFactory.Create(itemRef.Type);
+                handler.Handle(currentItem, itemRef, isIconSkillBase);
             }
-
-            Pool.Get<UIManager>().InitVisualItemInventory(currentItem, data, itemRef , isIconSkillBase);
+            else
+            {
+                Pool.Get<UIManager>().InitVisualItemInventory(currentItem, null, itemRef, isIconSkillBase);
+            }
             actionItemInventory?.Invoke(currentItem);
 
 
