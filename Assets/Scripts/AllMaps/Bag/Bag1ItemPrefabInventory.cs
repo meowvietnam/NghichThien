@@ -24,6 +24,9 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
     public Action<ItemInventory> actionItemInventory;
     public bool isIconSkillBase = false;
     public FilterControl filterControl;
+
+    private InventoryUIFacade inventoryUIFacade;
+    private InventoryUIFacade InventoryUIFacade => inventoryUIFacade ?? (inventoryUIFacade = new InventoryUIFacade());
     void OnScrollChanged(Vector2 value, Action<bool> loadBagFunc)
     {
         Debug.Log("co vao onscrooll change");
@@ -139,15 +142,7 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
                 itemRef = itemDataShows[index];
             }
 
-            if (itemRef != null)
-            {
-                var handler = ItemTypeHandlerFactory.Create(itemRef.Type);
-                handler.Handle(currentItem, itemRef, isIconSkillBase);
-            }
-            else
-            {
-                Pool.Get<UIManager>().InitVisualItemInventory(currentItem, null, itemRef, isIconSkillBase);
-            }
+            InventoryUIFacade.RenderBagItem(currentItem, itemRef, isIconSkillBase);
             actionItemInventory?.Invoke(currentItem);
 
 

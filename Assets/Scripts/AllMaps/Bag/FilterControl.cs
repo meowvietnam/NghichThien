@@ -63,6 +63,9 @@ public class FilterControl : BaseBehaviour
     [SerializeField] private List<ItemType> listFilterType = new List<ItemType>();
     [SerializeField] private EquipmentTier eTierEquipmentCurrent;
 
+    private InventoryFilterFacade inventoryFilterFacade;
+    private InventoryFilterFacade InventoryFilterFacade => inventoryFilterFacade ?? (inventoryFilterFacade = new InventoryFilterFacade(transform.GetComponentInParent<Bag1ItemPrefabInventory>()));
+
     private void OnEnable()
     {
         Init();
@@ -244,13 +247,12 @@ public class FilterControl : BaseBehaviour
                     Filter();
                 });
             }
-            var filterProvider = FilterProviderFactory.Create(typeCurrent);
-            int countFilter = filterProvider.OptionCount;
+            var secondaryOptions = InventoryFilterFacade.GetSecondaryFilterOptions(typeCurrent);
 
-            for (int i = 0; i < countFilter; i++)
+            for (int i = 0; i < secondaryOptions.Count; i++)
             {
                 filtersRight[i + 1].gameObject.SetActive(true);
-                filtersRight[i + 1].transform.GetChild(0).GetComponent<Text>().text = filterProvider.GetOptionText(i);
+                filtersRight[i + 1].transform.GetChild(0).GetComponent<Text>().text = secondaryOptions[i];
             }
 
             filterRightAnim.gameObject.SetActive(false);
@@ -317,30 +319,14 @@ public class FilterControl : BaseBehaviour
         {
             Observer.Notify(DONE_FILTER);
 
-            if (isAllFilterA)
-            {
-                // Nếu là True: Lấy toàn bộ danh sách gốc
-                itemDataShows = bag.itemFullDatas;
-            }
-            else
-            {
-                // Nếu là False: Lọc danh sách theo typeCurrent
-                if (isAllFilterB)
-                {
-                    itemDataShows = bag.itemFullDatas
-                        .Where(item => item.Type == typeCurrent)
-                        .ToList();
-                }
-                else
-                {
-                    var filterProvider = FilterProviderFactory.Create(typeCurrent);
-                    itemDataShows = bag.itemFullDatas.Where(item =>
-                    {
-                        if (item.Type != typeCurrent) return false;
-                        return filterProvider.Matches(item, typeCurrent, tierCurrent, eTierSkillCurrent, eTierEquipmentCurrent);
-                    }).ToList();
-                }
-            }
+            itemDataShows = InventoryFilterFacade.ApplyFilter(
+                bag.itemFullDatas,
+                isAllFilterA,
+                isAllFilterB,
+                typeCurrent,
+                tierCurrent,
+                eTierSkillCurrent,
+                eTierEquipmentCurrent);
 
             bag.itemDataShows = itemDataShows;
             bag.InitBag();
