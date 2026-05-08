@@ -62,7 +62,17 @@ public class UIManager : BaseBehaviour
         Sprite frame = null;
         CreateCharacter.Equipment equipment = null;
         var typeCurrent = itemRef.Type;
-        
+
+        // code cũ 
+        //if (typeCurrent == ItemType.VuKhi)
+        //    equipment = Client.Instance.CharacterData.InventoryManager.VuKhis.FirstOrDefault(...);
+        //else if (typeCurrent == ItemType.PhongCu)
+        //    equipment = Client.Instance.CharacterData.InventoryManager.PhongCus.FirstOrDefault(...);
+        //else if (typeCurrent == ItemType.TrangSuc)
+        //    equipment = Client.Instance.CharacterData.InventoryManager.TrangSucs.FirstOrDefault(...);
+        //else if (typeCurrent == ItemType.BiKhi)  // ← PHẢI SỬA UIManager nếu muốn update
+        //    equipment = Client.Instance.CharacterData.InventoryManager.BiKhis.FirstOrDefault(...);
+        // ...
         // Sử dụng Abstract Factory thay vì if-else chain
         equipment = _equipmentProviderFactory.GetEquipment(typeCurrent, itemRef.Id);
       

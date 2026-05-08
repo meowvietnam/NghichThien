@@ -10,9 +10,15 @@ namespace LuyenDan.Inventory
         [SerializeField] private List<FilterGroup> filterGroups;
         [SerializeField] private Button closeButton;
         [SerializeField] private GameObject thisObject;
+        [SerializeField] private Button maskBtn;
+
         private void Start()
         {
             closeButton.onClick.AddListener(Close);
+            maskBtn.onClick.AddListener(() =>
+            {
+                SetActive(false);
+            });
         }
         protected void InitFilterGroup()
         {

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using LuyenDan;
 using LuyenDan.Inventory;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace LuyenKhi
 {
@@ -10,10 +11,16 @@ namespace LuyenKhi
         [SerializeField] private ItemListUI itemListUI;
         [SerializeField] private GameObject selfObject;
         private ISelectItemBagCallback callback;
+        [SerializeField] private Button maskBtn;
+
         public void SetActive(bool active)
         {
             selfObject.SetActive(active);
             LuyenKhiPanel.Instance.SetBackContext(this);
+            maskBtn.onClick.AddListener(() =>
+            {
+                SetActive(false);
+            });
         }
         public void Init(IEnumerable<ItemRef> items)
         {
