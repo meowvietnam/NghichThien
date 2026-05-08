@@ -99,6 +99,10 @@ public class ItemInventory : BaseItemUI
             default:
                 break;
         }
+        if (itemRef.Type == ItemType.Furnace || itemRef.Type == ItemType.VuKhi || itemRef.Type == ItemType.PhongCu || itemRef.Type == ItemType.TrangSuc)
+        {
+            textCount.gameObject.SetActive(false);
+        }
     }
     public override void OnPointerDown(PointerEventData eventData)
     {

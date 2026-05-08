@@ -25,7 +25,8 @@ public class UIManager : BaseBehaviour
     /// <summary>
     /// Abstract Factory để lấy equipment từ các collection khác nhau
     /// </summary>
-    private EquipmentProviderFactory _equipmentProviderFactory;
+    private EquipmentProviderFactory _equipmentProviderFactory => new EquipmentProviderFactory(Client.Instance.CharacterData.InventoryManager);
+
 
     public (Sprite,Sprite,Color) GetFrameAndQualityFullAndColorNameSkill(BaseSkill data)
     {
@@ -76,6 +77,10 @@ public class UIManager : BaseBehaviour
         // Sử dụng Abstract Factory thay vì if-else chain
         equipment = _equipmentProviderFactory.GetEquipment(typeCurrent, itemRef.Id);
       
+        if(equipment == null)
+        {
+            Debug.Log("equipment null");
+        }    
         if(data == null && equipment != null)
         {
             data = new BaseItemData
@@ -152,18 +157,9 @@ public class UIManager : BaseBehaviour
         Pool.Set(this);
         DontDestroyOnLoad(gameObject);
         
-        // Khởi tạo Abstract Factory
-        InitializeEquipmentProviderFactory();
     }
 
-    /// <summary>
-    /// Khởi tạo Equipment Provider Factory
-    /// </summary>
-    private void InitializeEquipmentProviderFactory()
-    {
-        var inventoryManager = Client.Instance.CharacterData.InventoryManager;
-        _equipmentProviderFactory = new EquipmentProviderFactory(inventoryManager);
-    }
+   
     private void Start()
     {
         var listPanel = transform.GetComponentsInChildren<PanelGroup>(true);

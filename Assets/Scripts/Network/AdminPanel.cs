@@ -139,7 +139,7 @@ namespace Network
             var mats = luyenKhiRes.Materials.Select(x => new ItemRef()
             {
                 Id = (ushort)x.Id,
-                Count = 1,
+                Count = 20,
                 Type = ItemType.Material
             });
             items.AddRange(mats);
