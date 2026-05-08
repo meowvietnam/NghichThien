@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using LuyenKhi;
@@ -45,7 +46,7 @@ public class SkillBagItemTypeHandler : IBagItemTypeHandler
         }
 
         uiManager.InitVisualItemSkill(currentItem, data, itemRef, ETypeInventoryItem.Item);
-        uiManager.InitVisualItemInventory(currentItem, data, itemRef, isIconSkillBase);
+        uiManager.InitVisualItemInventory(currentItem, null, itemRef, isIconSkillBase);
     }
 }
 
