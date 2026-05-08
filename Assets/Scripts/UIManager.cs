@@ -21,6 +21,11 @@ public class UIManager : BaseBehaviour
     [SerializeField] private Sprite spriteTTInven;
     [SerializeField] private Sprite spriteCPInven;
     [SerializeField] private Sprite spriteRecipeInven;
+    
+    /// <summary>
+    /// Abstract Factory để lấy equipment từ các collection khác nhau
+    /// </summary>
+    private EquipmentProviderFactory _equipmentProviderFactory;
 
     public (Sprite,Sprite,Color) GetFrameAndQualityFullAndColorNameSkill(BaseSkill data)
     {
@@ -57,46 +62,30 @@ public class UIManager : BaseBehaviour
         Sprite frame = null;
         CreateCharacter.Equipment equipment = null;
         var typeCurrent = itemRef.Type;
-        if (typeCurrent == ItemType.VuKhi)
-        {
-            equipment = Client.Instance.CharacterData.InventoryManager.VuKhis.FirstOrDefault(x => x.SelfId == itemRef.Id);
-           
-
-        }
-        else if (typeCurrent == ItemType.PhongCu)
-        {
-            equipment = Client.Instance.CharacterData.InventoryManager.PhongCus.FirstOrDefault(x => x.SelfId == itemRef.Id);
-        }
-        else if (typeCurrent == ItemType.TrangSuc)
-        {
-            equipment = Client.Instance.CharacterData.InventoryManager.TrangSucs.FirstOrDefault(x => x.SelfId == itemRef.Id);
-        }
+        
+        // Sử dụng Abstract Factory thay vì if-else chain
+        equipment = _equipmentProviderFactory.GetEquipment(typeCurrent, itemRef.Id);
       
-        if(data == null)
+        if(data == null && equipment != null)
         {
             data = new BaseItemData
             {
                 nameItem = equipment.Name,
                 spriteItem = equipment.Item.Icon,
-                
-
-
             };
         }    
-        if (data != null)
+        
+        if (data != null && equipment != null)
         {
             var inforVisualEquipment = GetFrameAndQualityFullAndColorNameEquipment(equipment.Item.Tier);
 
             frame = inforVisualEquipment.Item1;
             item.SetColorName(inforVisualEquipment.Item3);
             item.SetQualityFull(inforVisualEquipment.Item2);
-
         }
 
         item.Init(data, frame);
         item.InitInventory(eTypeInventoryItem, itemRef, null);
-
-
     }
     public void InitVisualItemInventory(ItemInventory item, IItemData data, ItemRef itemRef , bool isIconSkillBase = false)
     {
@@ -152,6 +141,18 @@ public class UIManager : BaseBehaviour
         // Nếu chưa có, mình là "trùm", đăng ký vào Pool và giữ lại
         Pool.Set(this);
         DontDestroyOnLoad(gameObject);
+        
+        // Khởi tạo Abstract Factory
+        InitializeEquipmentProviderFactory();
+    }
+
+    /// <summary>
+    /// Khởi tạo Equipment Provider Factory
+    /// </summary>
+    private void InitializeEquipmentProviderFactory()
+    {
+        var inventoryManager = Client.Instance.CharacterData.InventoryManager;
+        _equipmentProviderFactory = new EquipmentProviderFactory(inventoryManager);
     }
     private void Start()
     {
