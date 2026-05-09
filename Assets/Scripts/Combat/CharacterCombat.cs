@@ -1245,128 +1245,58 @@ public class CharacterCombat : MonoBehaviour
     {
         if (sender != null && eTypeSkils != null)
         {
-            SecureInt chanKim = 0, chanMoc = 0, chanThuy = 0, chanHoa = 0, chanTho = 0, chanKiem = 0, nguKiemHiep = 0, diem = 0 , chanThan = 0 , chanKhi = 0 , nguKhiHiep = 0 , nguKimHiep = 0 , nguMocHiep = 0, nguThuyHiep = 0, nguHoaHiep = 0,nguThoHiep = 0 ,nguThanThucHiep = 0 , nguKim = 0 , nguMoc = 0, nguThuy = 0 , nguHoa = 0 , nguTho = 0;
-
-            sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SuongGia, out SecureInt suongGia);
-
-            bool isChanKim = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanKim, out chanKim)
-                             && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Kim);
-
-            bool isChanMoc = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanMoc, out chanMoc)
-                             && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Moc);
-
-            bool isChanThuy = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanThuy, out chanThuy)
-                             && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Thuy);
-
-            bool isChanHoa = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanHoa, out chanHoa)
-                             && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Hoa);
-
-            bool isChanTho = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanTho, out chanTho)
-                             && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Tho);
-
-            bool isChanKiem = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanKiem, out chanKiem)
-                             && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Kiem);
-            bool isChanThan = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanThan, out chanThan)
-                           && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Than);
-            bool isNguKiemHiep = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguKiemHiep, out nguKiemHiep)
-                             && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Kiem);
-            bool isDiem = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out diem)
-                             && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Hoa);
-
-            bool isChanKhi = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanKhi, out chanKhi)
-                          && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Khi);
-
-            bool isNguKhiHiep = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguKhiHiep, out nguKhiHiep)
-                          && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Khi);
-
-            bool isNguKimHiep = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguKimHiep, out nguKimHiep)
-                             && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Kim);
-
-            bool isNguMocHiep = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguMocHiep, out nguMocHiep)
-                             && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Moc);
-
-            bool isNguThuyHiep = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguThuyHiep, out nguThuyHiep)
-                             && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Thuy);
-
-            bool isNguHoaHiep = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguHoaHiep, out nguHoaHiep)
-                             && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Hoa);
-
-            bool isNguThoHiep = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguThoHiep, out nguThoHiep)
-                             && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Tho);
-       
-            bool isNguThanThucHiep = sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguThanThucHiep, out nguThanThucHiep)
-                             && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Than);
-         
-
-            sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucLuc, out SecureInt sucLuc);
-            buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DeTonThuong, out SecureInt deTonThuong);
-
-            bool isNguKim = buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguKim, out nguKim)
-                          && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Kim);
-            bool isNguMoc = buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguMoc, out nguMoc)
-                         && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Moc);
-            bool isNguThuy = buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguThuy, out nguThuy)
-                         && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Thuy);
-            bool isNguHoa = buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguHoa, out nguHoa)
-                         && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Hoa);
-            bool isNguTho = buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguTho, out nguTho)
-                         && eTypeSkils.Any(x => x == BaseSkill.ETypeSkill.Tho);
-            // ===== XỬ LÝ TỪNG DAME =====
             for (int i = 0; i < dames.Count; i++)
             {
-                int dame = dames[i];
+                // Build decorator chain for this damage value
+                IDamageModifier damageModifier = new PlainDamageModifier(dames[i]);
 
-                if (isChanKim) dame += chanKim;
-                if (isChanMoc) dame += chanMoc;
-                if (isChanThuy) dame += chanThuy;
-                if (isChanHoa) dame += chanHoa;
-                if (isChanTho) dame += chanTho;
-                if (isChanKiem) dame += chanKiem;
-                if (isNguKiemHiep) dame += nguKiemHiep;
-                if (isDiem) dame += diem;
-                if (isChanThan) dame += chanThan;
-                if (isChanKhi) dame += chanKhi;
+                // Apply sender's offensive buffs
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanKim, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanMoc, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanThuy, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanHoa, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanTho, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanKiem, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanThan, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanKhi, eTypeSkils);
+            // Apply sender's offensive buffs
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguKimHiep, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguMocHiep, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguThuyHiep, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguHoaHiep, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguThoHiep, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguKiemHiep, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguThanThucHiep, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguKhiHiep, eTypeSkils);
+                // Apply SucLuc and Diem
+                damageModifier = new BuffDameDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.SucLuc);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.Diem, eTypeSkils);
 
-                if (isNguKhiHiep) dame += nguKhiHiep;
-                if (isNguKimHiep) dame += nguKimHiep;
-                if (isNguMocHiep) dame += nguMocHiep;
-                if (isNguThuyHiep) dame += nguThuyHiep;
-                if (isNguHoaHiep) dame += nguHoaHiep;
-                if (isNguThoHiep) dame += nguThoHiep;
-                if (isNguThanThucHiep) dame += nguThanThucHiep;
+                // Apply defender's damage reductions (DeTonThuong)
+                damageModifier = new BuffDameDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.DeTonThuong);
 
-                dame += sucLuc;
-                dame += deTonThuong;
-
-                dame -= suongGia;
-                if (isNguKim) dame -= nguKim;
-                if (isNguMoc) dame -= nguMoc;
-                if (isNguThuy) dame -= nguThuy;
-                if (isNguHoa) dame -= nguHoa;
-                if (isNguTho) dame -= nguTho;
+                // Apply defender's debuffs (NguKim, NguMoc, etc.)
+                damageModifier = new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguKim, eTypeSkils);
+                damageModifier = new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguMoc, eTypeSkils);
+                damageModifier = new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguThuy, eTypeSkils);
+                damageModifier = new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguHoa, eTypeSkils);
+                damageModifier = new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguTho, eTypeSkils);
+                // Apply GiảmTonThuong (sender's damage reduction)
+                damageModifier = new GiamTonThuongDecorator(damageModifier, dames[i], this);
 
 
-                dame = Mathf.Clamp(dame, 0, int.MaxValue);
+                // Apply SuongGia (sender's damage reduction)
+                damageModifier = new SuongGiaDecorator(damageModifier, dames[i], sender);
+               
 
-                dames[i] = dame;
+                // Calculate final damage
+                int finalDame = damageModifier.Calculate();
+
+                dames[i] = finalDame;
             }
-
-            // ===== REMOVE BUFF SAU KHI DÙNG =====
-            sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, 1);
-
-            if (isChanKim) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanKim, chanKim);
-            if (isChanMoc) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanMoc, chanMoc);
-            if (isChanThuy) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanThuy, chanThuy);
-            if (isChanHoa) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanHoa, chanHoa);
-            if (isChanTho) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanTho, chanTho);
-            if (isChanKiem) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanKiem, chanKiem);
-            if (isChanThan) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanThan, chanThan);
-            if (isChanKhi) sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanKhi, chanKhi);
-
         }
         AddDamageData(dames, isCongDon);
         return dames;
-
     }
     public void TakeDameByStatic(CharacterCombat sender, List<int> dames,  bool isCongDon = false , BaseSkill.ETypeSkill[] eTypeSkils = null , bool isDef = true)
     {
@@ -1458,8 +1388,7 @@ public class CharacterCombat : MonoBehaviour
     {
         if(isDef)
         {
-            int giamTonThuong = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.GiamTonThuong, 0);
-            dame -= giamTonThuong;
+            
             int hotraoMax = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.HoTrao, 0);
             hotraoMax = Mathf.Clamp(hotraoMax, 0, int.MaxValue);
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, dame);
