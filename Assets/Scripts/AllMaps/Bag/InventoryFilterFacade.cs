@@ -3,6 +3,8 @@ using System.Linq;
 using Base;
 using LuyenDan;
 using LuyenDan.Inventory;
+using LuyenKhi;
+
 
 public class InventoryFilterFacade
 {
@@ -21,7 +23,7 @@ public class InventoryFilterFacade
         Tier tierCurrent,
         BaseSkill.ETierSkill eTierSkillCurrent,
         EquipmentTier eTierEquipmentCurrent)
-    {
+        {
         if (itemFullDatas == null)
         {
             return new List<ItemRef>();
