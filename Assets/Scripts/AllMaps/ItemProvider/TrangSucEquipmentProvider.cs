@@ -4,7 +4,8 @@ using LuyenDan;
 using LuyenKhi;
 using Network;
 using UnityEngine;
-namespace CreateCharacter
+using CreateCharacter;
+namespace AllMaps.ItemProvider
 {
     /// <summary>
     /// Concrete factory cung cấp TrangSuc (Trang Sức) từ InventoryManager
@@ -21,7 +22,7 @@ namespace CreateCharacter
 
             return $"Trang Sức {base.GetTextNameEquipment(artifactType)}";
         }
-        public override Equipment GetDataItemById(ushort equipmentId)
+        public override CreateCharacter.Equipment GetDataItemById(ushort equipmentId)
         {
             return _inventoryManager.TrangSucs.FirstOrDefault(x => x.SelfId == equipmentId);
         }

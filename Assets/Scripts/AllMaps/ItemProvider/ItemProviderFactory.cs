@@ -4,7 +4,7 @@ using AllMaps.ItemProvider;
 using LuyenDan;
 using Network;
 
-namespace CreateCharacter
+namespace AllMaps.ItemProvider
 {
     /// <summary>
     /// Factory class để tạo IEquipmentProvider theo ItemType

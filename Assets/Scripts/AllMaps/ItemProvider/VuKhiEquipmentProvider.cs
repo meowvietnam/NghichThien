@@ -3,8 +3,9 @@ using AllMaps.ItemProvider;
 using LuyenDan;
 using LuyenKhi;
 using Network;
+using CreateCharacter;
 using UnityEngine;
-namespace CreateCharacter
+namespace AllMaps.ItemProvider
 {
     /// <summary>
     /// Concrete factory cung cấp VuKhi (Vũ Khí) từ InventoryManager
@@ -22,7 +23,7 @@ namespace CreateCharacter
             return $"Vũ Khí {base.GetTextNameEquipment(artifactType)}";
         }
 
-        public override Equipment GetDataItemById(ushort equipmentId)
+        public override CreateCharacter.Equipment GetDataItemById(ushort equipmentId)
         {
             return _inventoryManager.VuKhis.FirstOrDefault(x => x.SelfId == equipmentId);
         }
