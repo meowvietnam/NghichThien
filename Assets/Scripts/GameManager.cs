@@ -510,15 +510,7 @@ public class GameManager : BaseBehaviour
         { EquipmentTier.ThuanDuong, "Thuần Dương" },
         { EquipmentTier.ThongThien, "Thông Thiên" },
     };
-    public static Dictionary<Tier, int> PriceTienNgocVatLieuAndHerbWithTier = new Dictionary<Tier, int>
-    {
-        { Tier.NhatPham, 70 },
-        { Tier.NhiPham, 60 },
-        { Tier.TamPham, 50 },
-        { Tier.TuPham, 40 },
-        { Tier.NguPham, 30 },
-        { Tier.LucPham, 20 },
-    };
+   
 
     public static Dictionary<Tier, int> PriceVatLieuWithTier = new Dictionary<Tier, int>
     {
@@ -540,15 +532,8 @@ public class GameManager : BaseBehaviour
         { Tier.LucPham, 81000 },
     };
 
-    public static Dictionary<Tier, int> PriceFurnaceWithTier = new Dictionary<Tier, int>
-    {
-        { Tier.NhatPham, 200 },
-        { Tier.NhiPham, 600 },
-        { Tier.TamPham, 2000 },
-        { Tier.TuPham, 5000 },
-        { Tier.NguPham, 7500 },
-        { Tier.LucPham, 10000 },
-    };
+    public static Dictionary<Tier, int> PriceFurnaceWithTierPerDurability => PriceHerbWithTier;
+  
 
     public static Dictionary<BaseSkill.ETierSkill, int> PriceTTWithTier = new Dictionary<BaseSkill.ETierSkill, int>
     {
@@ -576,60 +561,9 @@ public class GameManager : BaseBehaviour
         { BaseSkill.ETierSkill.ThienGiaiThuong, 600000 },
     };
 
-    public static int GetPriceItemSell(ItemRef itemRef, IItemData data)
-    {
-        int price = 0;
-        switch (itemRef.Type)
-        {
-            case ItemType.Herb:
-                price = PriceHerbWithTier[data.Tier];
-                break;
-            case ItemType.Furnace:
-                int basePrice = PriceFurnaceWithTier[data.Tier];
-                int currentDoBen = Client.Instance.CharacterData.InventoryManager.Furnaces
-                    .FirstOrDefault(x => x.Id == itemRef.Id)!.Durability;
-                price = basePrice * currentDoBen / 100;
+   
 
-                break;
-            case ItemType.LinhDan:
-                if (data != null && data is LinhDan linhDan)
-                {
-                    price = linhDan.PriceV130;
-                }
-
-                break;
-            case ItemType.ThanThong:
-                price = PriceTTWithTier[Pool.Get<GameManager>().GetThanThongWithId(itemRef.Id).eTierSkill];
-
-                break;
-            case ItemType.CongPhap:
-                price = PriceCPWithTier[Pool.Get<GameManager>().GetCongPhapWithId(itemRef.Id).eTierSkill];
-
-                break;
-            case ItemType.VuKhi:
-                break;
-            case ItemType.PhongCu:
-                break;
-            case ItemType.TrangSuc:
-                break;
-            case ItemType.Recipe:
-                if (data != null && data is RecipeData recipe)
-                {
-                    price = recipe.LinhDan.PriceV130 * 5;
-                }
-
-                break;
-            default:
-                break;
-        }
-
-        return price;
-    }
-
-    public static int GetPriceItemBuy(ItemRef itemRef, IItemData data)
-    {
-        return GetPriceItemSell(itemRef, data) * 3;
-    }
+  
 
     [Button]
     private void OnUpdateDataThanThong()
@@ -858,14 +792,13 @@ public class GameManager : BaseBehaviour
         return textDesc;
     }
   
-    private static string GetEffectDescription(dynamic effect)
+    private static string GetEffectDescription(EffectType type,string Value)
     {
-
-        switch (effect.Type)
+        switch (type)
         {
             // --- NHÓM CASTER THU HOẠCH (BUFF/DEBUFF) ---
             case EffectType.Bui:
-                return $"Thu hoạch được {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)}.";
+                return $"Thu hoạch được {Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)}.";
             case EffectType.ChanHoa:
             case EffectType.ChanKhi:
             case EffectType.ChanKiem:
@@ -900,143 +833,19 @@ public class GameManager : BaseBehaviour
             case EffectType.TichMoc:
             case EffectType.TichThuy:
                 // Map ngược từ EffectType sang EBuffAndDeBuff để lấy Keyword
-                EBuffAndDeBuff buffEnum = (EBuffAndDeBuff)System.Enum.Parse(typeof(EBuffAndDeBuff), effect.Type.ToString());
-                return $"Thu hoạch được {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(buffEnum)}.";
-
-            case EffectType.Nhanh:
-                return $"Thu hoạch được {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TangToc)}.";
-            case EffectType.TriLieuLieu:
-                return $"Thu hoạch được {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)}.";
-            case EffectType.NguThanHiep:
-                return $"Thu hoạch được {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguThanThucHiep)}.";
-
-            // --- NHÓM ĐỐI THỦ NHẬN PHẢI (DEBUFF) ---
-            case EffectType.Cat:
-                return $"Đối thủ nhận phải {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cat)}.";
-            case EffectType.ChayMau:
-            case EffectType.DeTonThuong:
-            case EffectType.PhaThe:
-            case EffectType.SuongGia:
-            case EffectType.ThanThuong:
-            case EffectType.ThieuDot:
-            case EffectType.TrungDoc:
-                EBuffAndDeBuff debuffEnum = (EBuffAndDeBuff)System.Enum.Parse(typeof(EBuffAndDeBuff), effect.Type.ToString());
-                return $"Đối thủ nhận phải {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(debuffEnum)}.";
-
-            case EffectType.QuanQuanh:
-                return $"Đối thủ nhận phải {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}.";
-            case EffectType.TroiDu:
-                return $"Đối thủ nhận phải {effect.Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TroiChan)}.";
-
-            // --- NHÓM HẤP THỤ LINH KHÍ ---
-            case EffectType.HapThuLinhKhi:
-                return $"Hấp thụ ngẫu nhiên {effect.Value} Linh Khí.";
-            case EffectType.HapThuHoaLinhKhi:
-                return $"Hấp thụ {effect.Value} điểm Hỏa Linh Khí.";
-            case EffectType.HapThuKimLinhKhi:
-                return $"Hấp thụ {effect.Value} điểm Kim Linh Khí.";
-            case EffectType.HapThuMocLinhKhi:
-                return $"Hấp thụ {effect.Value} điểm Mộc Linh Khí.";
-            case EffectType.HapThuThoLinhKhi:
-                return $"Hấp thụ {effect.Value} điểm Thổ Linh Khí.";
-            case EffectType.HapThuThuyLinhKhi:
-                return $"Hấp thụ {effect.Value} điểm Thủy Linh Khí.";
-
-            // --- NHÓM HỒI PHỤC ---
-            case EffectType.KhoiPhucGiaTriSinhMenh:
-            case EffectType.KhoiPhucGiaTriSinhMenhDauLuot:
-                return $"Khôi phục {effect.Value} điểm HP.";
-
-            // --- NHÓM SÁT THƯƠNG ---
-            case EffectType.TaoThanhTonThuong:
-                return $"Tạo thành {effect.Value} điểm tổn thương.";
-            case EffectType.TaoThanhXLanXDiemThuongTon:
-                return $"Tạo thành {effect.Value} lần {effect.Value} điểm tổn thương.";
-
-            // --- NHÓM "TRONG" (START COMBAT) ---
-            case EffectType.KimTrong:
-                return $"Tăng {effect.Value}% tỉ lệ hấp thụ Kim linh khí.";
-
-            case EffectType.MocTrong:
-                return $"Tăng {effect.Value}% tỉ lệ hấp thụ Mộc linh khí.";
-
-            case EffectType.ThuyTrong:
-                return $"Tăng {effect.Value}% tỉ lệ hấp thụ Thủy linh khí.";
-
-            case EffectType.HoaTrong:
-                return $"Tăng {effect.Value}% tỉ lệ hấp thụ Hỏa linh khí.";
-
-            case EffectType.ThoTrong:
-                return $"Tăng {effect.Value}% tỉ lệ hấp thụ Thổ linh khí.";
-
-            default:
-                return "";
-        }
-    }
-    public static string GetEffectDescription(EffectType type)
-    {
-        string suffix = " (X là giá trị ngẫu nhiên được luyện thành)";
-        string description = "";
-
-        switch (type)
-        {
-            // --- NHÓM CASTER THU HOẠCH (BUFF/DEBUFF) ---
-            case EffectType.Bui:
-                description = $"Thu hoạch được X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)}.";
-                break;
-
-            case EffectType.ChanHoa:
-            case EffectType.ChanKhi:
-            case EffectType.ChanKiem:
-            case EffectType.ChanKim:
-            case EffectType.ChanMoc:
-            case EffectType.ChanThan:
-            case EffectType.ChanTho:
-            case EffectType.ChanThuy:
-            case EffectType.Diem:
-            case EffectType.GiamTonThuong:
-            case EffectType.HoaDiem:
-            case EffectType.HoTrao:
-            case EffectType.KiemKhi:
-            case EffectType.NguHoa:
-            case EffectType.NguHoaHiep:
-            case EffectType.NguKhiHiep:
-            case EffectType.NguKiemHiep:
-            case EffectType.NguKim:
-            case EffectType.NguKimHiep:
-            case EffectType.NguMoc:
-            case EffectType.NguMocHiep:
-            case EffectType.NgungThan:
-            case EffectType.NguTho:
-            case EffectType.NguThoHiep:
-            case EffectType.NguThuy:
-            case EffectType.NguThuyHiep:
-            case EffectType.PhanTonThuong:
-            case EffectType.SucThe:
-            case EffectType.TichDoc:
-            case EffectType.TichHoa:
-            case EffectType.TichKim:
-            case EffectType.TichMoc:
-            case EffectType.TichThuy:
                 EBuffAndDeBuff buffEnum = (EBuffAndDeBuff)System.Enum.Parse(typeof(EBuffAndDeBuff), type.ToString());
-                description = $"Thu hoạch được X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(buffEnum)}.";
-                break;
+                return $"Thu hoạch được {Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(buffEnum)}.";
 
             case EffectType.Nhanh:
-                description = $"Thu hoạch được X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TangToc)}.";
-                break;
+                return $"Thu hoạch được {Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TangToc)}.";
             case EffectType.TriLieuLieu:
-                description = $"Thu hoạch được X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)}.";
-                break;
+                return $"Thu hoạch được {Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)}.";
             case EffectType.NguThanHiep:
-                description = $"Thu hoạch được X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguThanThucHiep)}.";
-                break;
+                return $"Thu hoạch được {Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguThanThucHiep)}.";
 
             // --- NHÓM ĐỐI THỦ NHẬN PHẢI (DEBUFF) ---
             case EffectType.Cat:
-                description = $"Đối thủ nhận phải X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cat)}.";
-                break;
-
+                return $"Đối thủ nhận phải {Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cat)}.";
             case EffectType.ChayMau:
             case EffectType.DeTonThuong:
             case EffectType.PhaThe:
@@ -1045,71 +854,81 @@ public class GameManager : BaseBehaviour
             case EffectType.ThieuDot:
             case EffectType.TrungDoc:
                 EBuffAndDeBuff debuffEnum = (EBuffAndDeBuff)System.Enum.Parse(typeof(EBuffAndDeBuff), type.ToString());
-                description = $"Đối thủ nhận phải X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(debuffEnum)}.";
-                break;
+                return $"Đối thủ nhận phải {Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(debuffEnum)}.";
 
             case EffectType.QuanQuanh:
-                description = $"Đối thủ nhận phải X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}.";
-                break;
+                return $"Đối thủ nhận phải {Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}.";
             case EffectType.TroiDu:
-                description = $"Đối thủ nhận phải X tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TroiChan)}.";
-                break;
+                return $"Đối thủ nhận phải {Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TroiChan)}.";
 
             // --- NHÓM HẤP THỤ LINH KHÍ ---
             case EffectType.HapThuLinhKhi:
-                description = "Hấp thụ ngẫu nhiên X Linh Khí.";
-                break;
+                return $"Hấp thụ ngẫu nhiên {Value} Linh Khí.";
             case EffectType.HapThuHoaLinhKhi:
-                description = "Hấp thụ X điểm Hỏa Linh Khí.";
-                break;
+                return $"Hấp thụ {Value} điểm Hỏa Linh Khí.";
             case EffectType.HapThuKimLinhKhi:
-                description = "Hấp thụ X điểm Kim Linh Khí.";
-                break;
+                return $"Hấp thụ {Value} điểm Kim Linh Khí.";
             case EffectType.HapThuMocLinhKhi:
-                description = "Hấp thụ X điểm Mộc Linh Khí.";
-                break;
+                return $"Hấp thụ {Value} điểm Mộc Linh Khí.";
             case EffectType.HapThuThoLinhKhi:
-                description = "Hấp thụ X điểm Thổ Linh Khí.";
-                break;
+                return $"Hấp thụ {Value} điểm Thổ Linh Khí.";
             case EffectType.HapThuThuyLinhKhi:
-                description = "Hấp thụ X điểm Thủy Linh Khí.";
-                break;
+                return $"Hấp thụ {Value} điểm Thủy Linh Khí.";
 
             // --- NHÓM HỒI PHỤC ---
             case EffectType.KhoiPhucGiaTriSinhMenh:
             case EffectType.KhoiPhucGiaTriSinhMenhDauLuot:
-                description = "Khôi phục X điểm HP.";
-                break;
+                return $"Khôi phục {Value} điểm HP.";
 
             // --- NHÓM SÁT THƯƠNG ---
             case EffectType.TaoThanhTonThuong:
-                description = "Tạo thành X điểm tổn thương.";
-                break;
+                return $"Tạo thành {Value} điểm tổn thương.";
             case EffectType.TaoThanhXLanXDiemThuongTon:
-                description = "Tạo thành X lần X điểm tổn thương.";
-                break;
+                return $"Tạo thành {Value} lần {Value} điểm tổn thương.";
 
             // --- NHÓM "TRONG" (START COMBAT) ---
             case EffectType.KimTrong:
-                description = "Tăng X% tỉ lệ hấp thụ Kim linh khí.";
-                break;
+                return $"Tăng {Value}% tỉ lệ hấp thụ Kim linh khí.";
+
             case EffectType.MocTrong:
-                description = "Tăng X% tỉ lệ hấp thụ Mộc linh khí.";
-                break;
+                return $"Tăng {Value}% tỉ lệ hấp thụ Mộc linh khí.";
+
             case EffectType.ThuyTrong:
-                description = "Tăng X% tỉ lệ hấp thụ Thủy linh khí.";
-                break;
+                return $"Tăng {Value}% tỉ lệ hấp thụ Thủy linh khí.";
+
             case EffectType.HoaTrong:
-                description = "Tăng X% tỉ lệ hấp thụ Hỏa linh khí.";
-                break;
+                return $"Tăng {Value}% tỉ lệ hấp thụ Hỏa linh khí.";
+
             case EffectType.ThoTrong:
-                description = "Tăng X% tỉ lệ hấp thụ Thổ linh khí.";
-                break;
+                return $"Tăng {Value}% tỉ lệ hấp thụ Thổ linh khí.";
 
             default:
                 return "";
         }
+    }
+    private static string GetEffectDescription(dynamic effect)
+    {
+        // BƯỚC QUAN TRỌNG: Kiểm tra và bóc tách giá trị số thực tế
+        int actualValue;
 
+        // Nếu nó là SecureInt (trong EffectClient)
+        if (effect.Value is SecureInt secure)
+        {
+            actualValue = secure.Value;
+        }
+        // Nếu nó là byte/int (trong Effect)
+        else
+        {
+            actualValue = (int)effect.Value;
+        }
+
+        // Bây giờ gọi hàm mô tả với kiểu dữ liệu "thuần" (EffectType, int)
+        return GetEffectDescription((EffectType)effect.Type, actualValue.ToString());
+    }
+    public static string GetEffectDescription(EffectType type)
+    {
+        string suffix = " (X là giá trị ngẫu nhiên được luyện thành)";
+        string description = GetEffectDescription(type,"X");
         return description + suffix;
     }
     private static string GetDescEquipment(EquipmentType equipmentType)

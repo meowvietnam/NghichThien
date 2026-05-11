@@ -9,7 +9,7 @@ public class TaskDailySnapshot
     public int ID { get; set; }
     public ETaskDaily ETaskDaily { get; set; }
     public ItemRef ItemRef { get; set; }
-    public IItemData ItemData { get; set; }
+    public DataItemSnapshot itemSnapShot { get; set; }
     public bool IsGap { get; set; }
     public bool IsDone { get; set; }
 

@@ -45,27 +45,17 @@ public class ToolTipItems : BaseBehaviour , ISingleton
     [SerializeField]
     private ItemRef itemRef;
     private IItemData iItemData;
+    [SerializeField]
     private FurnaceData furnaceData;
+
+
     [SerializeField] private Text descTextItem;
     [SerializeField] private EActionShowItemInfor eActionShowItem;
     public static ToolTipItems Instance { get; private set; }
-    private readonly Dictionary<ItemType, IToolTipDisplayer> displayerRegistry = new();
     private CharacterData CharData => Client.Instance.CharacterData;
-    private void RegisterDisplayers()
-    {
-        Register(new HerbDisplayer());
-        Register(new FurnaceDisplayer());
-        Register(new LinhDanDisplayer());
-        Register(new RecipeDisplayer());
-        Register(new MaterialDisplayer());
-        Register(new ThanThongBookDisplayer());
-        Register(new CongPhapBookDisplayer());
-    }
+   
 
-    private void Register(IToolTipDisplayer displayer)
-    {
-        displayerRegistry[displayer.SupportedType] = displayer;
-    }
+   
     public void ShowInfoItem(IItemData itemData,ItemRef itemRef, FurnaceData furnaceData = null)
     {
         iItemData = itemData;
@@ -243,18 +233,18 @@ public class ToolTipItems : BaseBehaviour , ISingleton
         }
 
         if (itemRef == null) return;
-
-        if (displayerRegistry.TryGetValue(itemRef.Type, out var displayer))
+        var disPlayer = ItemProviderFactory.GetDisplay(itemRef.Type);
+        if(disPlayer != null)
         {
             var ctx = BuildContext();
-            displayer.Display(ctx);
+            disPlayer.Display(ctx);
         }
         else
         {
-            if (eActionShowItem == EActionShowItemInfor.None || eActionShowItem == EActionShowItemInfor.Sell)
-                SetPriceText(GameManager.GetPriceItemSell(itemRef, iItemData));
-            else
-                SetPriceText(GameManager.GetPriceItemBuy(itemRef, iItemData));
+            //if (eActionShowItem == EActionShowItemInfor.None || eActionShowItem == EActionShowItemInfor.Sell)
+            //    SetPriceText(GameManager.GetPriceItemSell(itemRef, iItemData));
+            //else
+            //    SetPriceText(GameManager.GetPriceItemBuy(itemRef, iItemData));
         }
     }
     private ToolTipContext BuildContext()
@@ -270,8 +260,13 @@ public class ToolTipItems : BaseBehaviour , ISingleton
             PrefabRightInfor  = prefabRightInfor,
             SpriteLinhKhis  = spriteLinhKhis,
             ItemRef         = itemRef,
-            FurnaceData      = furnaceData,
-            IItemData       = iItemData,
+            ItemSnapshot      = new DataItemSnapshot
+            {
+                ItemRef = this.itemRef,
+                furnaceData = this.furnaceData,
+                IItemData = iItemData,
+                BaseItemData = itemData,
+            },
             ActionShowItem  = eActionShowItem,
             SetPriceText    = SetPriceText,
         };
@@ -299,7 +294,6 @@ public class ToolTipItems : BaseBehaviour , ISingleton
     }
     public void Init()
     {
-        RegisterDisplayers();
         gameObject.SetActive(true);
         Instance = this;
         gameObject.SetActive(false);

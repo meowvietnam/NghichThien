@@ -328,7 +328,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 textNameLinhHoi.transform.parent.gameObject.SetActive(true);
                 Debug.Log("co event linh hoi2");
 
-                int cost = (int)GameManager.GetPriceItemBuy(itemRef, null) / 2;
+                int cost = ItemProviderFactory.GetDisplay(item.itemRef.Type).GetPriceItemBuy(new DataItemSnapshot { ItemRef = item.itemRef, BaseItemData = item.itemData, IItemData = item.iItemData }) / 2;
                 priceTextLinhHoi.text = $"{cost}";
                 if (itemRef.Type == ItemType.ThanThong)
                 {
@@ -446,7 +446,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 {
                     daiCanhGioiCP = c.Level;
                 }
-                int cost = (int)GameManager.GetPriceItemBuy(itemRef, null) * (daiCanhGioiCP + 1);
+                int cost = ItemProviderFactory.GetDisplay(item.itemRef.Type).GetPriceItemBuy(new DataItemSnapshot { ItemRef = item.itemRef, BaseItemData = item.itemData, IItemData = item.iItemData }) * (daiCanhGioiCP + 1);
                 int cost2 = (daiCanhGioiCP + 1) * 2;
                 priceTextUpdateCongPhap.text = $"x{cost}";
                 priceItemCongPhap.Init(item.itemData, item.frame.sprite);

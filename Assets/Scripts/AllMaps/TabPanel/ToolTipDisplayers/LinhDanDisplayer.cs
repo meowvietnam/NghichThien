@@ -3,11 +3,11 @@ using LuyenDan.Inventory;
 
 namespace AllMaps.TabPanel.ToolTipDisplayers
 {
-    public class LinhDanDisplayer : IToolTipDisplayer
+    public class LinhDanDisplayer : ItemDisplayer
     {
-        public ItemType SupportedType => ItemType.LinhDan;
+        public override ItemType SupportedType => ItemType.LinhDan;
 
-        public void Display(ToolTipContext ctx)
+        public override void Display(ToolTipContext ctx)
         {
             string text = "Đan Dược";
 
@@ -32,11 +32,14 @@ namespace AllMaps.TabPanel.ToolTipDisplayers
             ctx.SetPriceText?.Invoke(GetPrice(ctx));
         }
 
-        private int GetPrice(ToolTipContext ctx)
+        public override int GetPriceItemSell(DataItemSnapshot ctx)
         {
-            return ctx.ActionShowItem == EActionShowItemInfor.None || ctx.ActionShowItem == EActionShowItemInfor.Sell
-                ? GameManager.GetPriceItemSell(ctx.ItemRef, ctx.IItemData)
-                : GameManager.GetPriceItemBuy(ctx.ItemRef, ctx.IItemData);
+            var data = ctx.IItemData;
+            if (data != null && data is LinhDan linhDan)
+            {
+                return linhDan.PriceV130;
+            }
+            return 0;
         }
     }
 }

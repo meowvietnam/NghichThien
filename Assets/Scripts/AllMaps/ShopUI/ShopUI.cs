@@ -95,14 +95,15 @@ public class ShopUI : Popup, ISingleton, INetworkEvent.IBuyAndSell, INetworkEven
     private void SetTextMoneyCurrent()
     {
         int totalMoney = 0;
+
         foreach (ItemInventory item in listItemUserSell)
         {
             if (!item.gameObject.activeSelf)
             {
                 break;
             }
-
-            totalMoney += GameManager.GetPriceItemSell(item.itemRef, item.iItemData) * item.count;
+            int priceSell = ItemProviderFactory.GetDisplay(item.itemRef.Type).GetPriceItemSell(new DataItemSnapshot { ItemRef = item.itemRef,BaseItemData = item.itemData,IItemData = item.iItemData});
+            totalMoney += priceSell * item.count;
         }
 
         foreach (ItemInventory item in listItemUserBuy)
@@ -111,8 +112,9 @@ public class ShopUI : Popup, ISingleton, INetworkEvent.IBuyAndSell, INetworkEven
             {
                 break;
             }
+            int priceBuy = ItemProviderFactory.GetDisplay(item.itemRef.Type).GetPriceItemBuy(new DataItemSnapshot { ItemRef = item.itemRef, BaseItemData = item.itemData, IItemData = item.iItemData });
 
-            totalMoney -= GameManager.GetPriceItemBuy(item.itemRef, item.iItemData) * item.count;
+            totalMoney -= priceBuy * item.count;
         }
 
         if (totalMoney >= 0)
@@ -139,7 +141,7 @@ public class ShopUI : Popup, ISingleton, INetworkEvent.IBuyAndSell, INetworkEven
         // itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
         itemDatas.AddRange(characterData.InventoryManager.LinhDans.ToList());
         // Sử dụng LINQ để trích xuất Ref từ mỗi phần tử trong furnaceDatas
-        var furnaceRefs = characterData.InventoryManager.Furnaces.Select(f => f.CreateRef()).ToList();
+        var furnaceRefs = characterData.InventoryManager.Furnaces.Select(f => f.CreateRefSelfID()).ToList();
 
         // Thêm danh sách Ref vừa lấy được vào itemDatas
         itemDatas.AddRange(furnaceRefs);

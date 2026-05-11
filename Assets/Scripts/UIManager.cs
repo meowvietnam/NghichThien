@@ -74,7 +74,7 @@ public class UIManager : BaseBehaviour
         //    equipment = Client.Instance.CharacterData.InventoryManager.BiKhis.FirstOrDefault(...);
         // ...
         // Sử dụng Abstract Factory thay vì if-else chain
-        equipment = EquipmentProviderFactory.GetProvider(typeCurrent).GetEquipmentById(itemRef.Id);
+        equipment = ItemProviderFactory.GetEquipmentProvider(typeCurrent).GetEquipmentById(itemRef.Id);
         if(equipment == null)
         {
             Debug.Log("equipment null");

@@ -1,12 +1,13 @@
 using LuyenDan;
+using static UnityEngine.Analytics.IAnalytic;
 
 namespace AllMaps.TabPanel.ToolTipDisplayers
 {
-    public class HerbDisplayer : IToolTipDisplayer
+    public class HerbDisplayer : ItemDisplayer
     {
-        public ItemType SupportedType => ItemType.Herb;
+        public override ItemType SupportedType => ItemType.Herb;
 
-        public void Display(ToolTipContext ctx)
+        public override void Display(ToolTipContext ctx)
         {
             ctx.TypeText.text = "Dược Liệu";
             ctx.DescriptionText.text = "Thảo dược có thể dùng luyện chế đan dược";
@@ -21,11 +22,13 @@ namespace AllMaps.TabPanel.ToolTipDisplayers
             ctx.QualityText.text = GameManager.TextWithTier[ctx.IItemData.Tier];
             ctx.SetPriceText?.Invoke(GetPrice(ctx));
         }
-        private int GetPrice(ToolTipContext ctx)
+
+     
+        public override int GetPriceItemSell(DataItemSnapshot ctx)
         {
-            return ctx.ActionShowItem == EActionShowItemInfor.None || ctx.ActionShowItem == EActionShowItemInfor.Sell
-                ? GameManager.GetPriceItemSell(ctx.ItemRef, ctx.IItemData)
-                : GameManager.GetPriceItemBuy(ctx.ItemRef, ctx.IItemData);
+            return GameManager.PriceHerbWithTier[ctx.IItemData.Tier];
         }
+
+     
     }
 }

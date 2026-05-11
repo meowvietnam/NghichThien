@@ -168,7 +168,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         // itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
         itemDatas.AddRange(characterData.InventoryManager.LinhDans.ToList());
         // Sử dụng LINQ để trích xuất Ref từ mỗi phần tử trong furnaceDatas
-        var furnaceRefs = characterData.InventoryManager.Furnaces.Select(f => f.CreateRef()).ToList();
+        var furnaceRefs = characterData.InventoryManager.Furnaces.Select(f => f.CreateRefSelfID()).ToList();
 
         // Thêm danh sách Ref vừa lấy được vào itemDatas
         itemDatas.AddRange(furnaceRefs);

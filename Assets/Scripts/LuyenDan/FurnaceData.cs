@@ -20,6 +20,15 @@ namespace LuyenDan
             return SelfId.ByteSize() + Id.ByteSize() + Durability.ByteSize();
         }
 
+        public ItemRef CreateRefSelfID()
+        {
+            return new ItemRef()
+            {
+                Id = SelfId,
+                Type = ItemType.Furnace,
+                Count = 1
+            };
+        }
         public ItemRef CreateRef()
         {
             return new ItemRef()
@@ -29,7 +38,6 @@ namespace LuyenDan
                 Count = 1
             };
         }
-
         public void Serialize(IWriter writer)
         {
             writer.Write(SelfId);

@@ -4,11 +4,11 @@ using Network;
 
 namespace AllMaps.TabPanel.ToolTipDisplayers
 {
-    public class FurnaceDisplayer : IToolTipDisplayer
+    public class FurnaceDisplayer : ItemDisplayer
     {
-        public ItemType SupportedType => ItemType.Furnace;
+        public override ItemType SupportedType => ItemType.Furnace;
 
-        public void Display(ToolTipContext ctx)
+        public override void Display(ToolTipContext ctx)
         {
             var furnaceData = ctx.FurnaceData;
             ctx.TypeText.text = "Lò Luyện Đan";
@@ -18,21 +18,14 @@ namespace AllMaps.TabPanel.ToolTipDisplayers
             ctx.QualityText.text = GameManager.TextWithTier[ctx.IItemData.Tier];
             ctx.SetPriceText?.Invoke(GetPrice(ctx));
         }
-        private int GetPrice(ToolTipContext ctx)
+      
+        public override int GetPriceItemSell(DataItemSnapshot ctx)
         {
-            return ctx.ActionShowItem == EActionShowItemInfor.None || ctx.ActionShowItem == EActionShowItemInfor.Sell
-                ? GetPriceItemSell(ctx)
-                : GetPriceItemBuy(ctx);
+            return ctx.FurnaceData.Durability * GameManager.PriceFurnaceWithTierPerDurability[ctx.IItemData.Tier];
         }
 
-        private int GetPriceItemSell(ToolTipContext ctx)
-        {
-            return ctx.FurnaceData.Durability * GameManager.PriceFurnaceWithTier[ctx.IItemData.Tier];
-        }
+     
 
-        private int GetPriceItemBuy(ToolTipContext ctx)
-        {
-            return GetPriceItemSell(ctx) * 3;
-        }
+       
     }
 }

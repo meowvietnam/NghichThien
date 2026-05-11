@@ -1,3 +1,4 @@
+using Base;
 using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using CreateCharacter;
 
 public class TaskDaily : BaseBehaviour
 {
@@ -24,14 +26,14 @@ public class TaskDaily : BaseBehaviour
     {
         this.taskDailySnapshot = taskDailySnapshot;
         var itemRef = taskDailySnapshot.ItemRef;
-        var iItemData = taskDailySnapshot.ItemData;
+        var iItemData = taskDailySnapshot.itemSnapShot.IItemData;
         var isGap = taskDailySnapshot.IsGap;
         imgDone.gameObject.SetActive(false);
         imgGap.gameObject.SetActive(isGap);
-        linhThachText.text = GameManager.GetPriceItemBuy(itemRef, iItemData).ToString();
-        if(isGap )
+        linhThachText.text = ItemProviderFactory.GetDisplay(itemRef.Type).GetPriceItemBuy(taskDailySnapshot.itemSnapShot).ToString();
+        if (isGap )
         {
-            tienNgocText.text = GameManager.PriceTienNgocVatLieuAndHerbWithTier.GetValueOrDefault(iItemData.Tier).ToString();
+            tienNgocText.text = PriceTienNgocVatLieuAndHerbTask.GetValueOrDefault(iItemData.Tier).ToString();
 
         }
         else
@@ -88,7 +90,15 @@ public class TaskDaily : BaseBehaviour
         btnCantConfirm.gameObject.SetActive(false);
 
     }
-
+    public static Dictionary<Tier, int> PriceTienNgocVatLieuAndHerbTask = new Dictionary<Tier, int>
+    {
+        { Tier.NhatPham, 20 },
+        { Tier.NhiPham, 30 },
+        { Tier.TamPham, 40 },
+        { Tier.TuPham, 50 },
+        { Tier.NguPham, 60 },
+        { Tier.LucPham, 70 },
+    };
 
 }
 
