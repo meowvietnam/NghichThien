@@ -131,7 +131,6 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
         {// TẠO BIẾN TẠM Ở ĐÂY
             int index = i + startIndex;
             var currentItem = GameManager.GetItemPool(prefabItemBag);
-            IItemData data = null;
             ItemRef itemRef = null;
             if (index >= itemDataShows.Count)
             {
