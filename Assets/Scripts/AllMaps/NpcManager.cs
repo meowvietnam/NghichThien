@@ -96,68 +96,50 @@ public class NpcManager : MonoBehaviour
     {
         // 1. Lấy level player
         int playerLevel = Client.Instance.CharacterData.Progression.Level;
+        List<EnemyData> listEnemy = new List<EnemyData>();
 
-        // 2. Xác định Đại Cảnh Giới (1-3: Luyện Khí, 4-6: Trúc Cơ...)
-        // Công thức: (level - 1) / 3 giúp xác định nhóm cảnh giới (0: LK, 1: TC, 2: KD...)
-        int currentGreatRealmIndex = (playerLevel - 1) / 3;
-        int currentGreatRealmMax = (currentGreatRealmIndex + 1) * 3;
-
-        int targetLevel = playerLevel;
-        float rand = UnityEngine.Random.value;
-
-        if (rand <= 0.25f)
+        // 2. Chạy vòng lặp đúng số lượng maxCount để chọn từng enemy
+        for (int i = 0; i < maxCount; i++)
         {
-            // --- 25% RANDOM ENEMY CÓ LEVEL LỚN HƠN +2 LEVEL CỦA PLAYER ---
-            // Min là level tiếp theo (playerLevel + 1), Max là +2 (playerLevel + 2)
-            // Nhưng theo ví dụ của bạn (lv10 -> lấy 11 hoặc 12), ta dùng:
-            int minLvl = playerLevel + 1;
-            int maxLvl = playerLevel + 2;
-            targetLevel = UnityEngine.Random.Range(minLvl, maxLvl + 1);
-        }
-        else
-        {
-            // --- 75% RANDOM TRONG ĐẠI CẢNH GIỚI (TỪ LV 1 ĐẾN MAX CỦA CẢNH GIỚI HIỆN TẠI) ---
-            // Ví dụ: Player lv 10 (Nguyên Anh sơ kỳ), Max cảnh giới này là 12.
-            // Nhưng theo yêu cầu của bạn: "Min là 1, Max là 10 (level hiện tại)"
-            targetLevel = UnityEngine.Random.Range(1, playerLevel + 1);
-        }
+            int targetLevel = playerLevel;
+            float rand = UnityEngine.Random.value;
 
-        // 3. Lọc danh sách Enemy theo targetLevel
-        // GroupBy theo typeCombo để đa dạng hóa loại kẻ địch trên map
-        var groupedEnemies = enemyDatas
-            .Where(e => e != null &&
-                        e.charStatsCreateRef != null &&
-                        e.charStatsCreateRef.level.Value == targetLevel)
-            .GroupBy(e => e.comboChar.typeCombo)
-            .Select(group => group.ElementAt(UnityEngine.Random.Range(0, group.Count()))) // Lấy ngẫu nhiên 1 con trong nhóm combo đó
-            .ToList();
+            // Xác định level mục tiêu cho vị trí này
+            if (rand <= 0.25f)
+            {
+                // 25% vượt cấp (+1 hoặc +2)
+                targetLevel = UnityEngine.Random.Range(playerLevel + 1, playerLevel + 3);
+            }
+            else
+            {
+                // 75% cùng hoặc dưới cảnh giới (1 -> playerLevel)
+                targetLevel = UnityEngine.Random.Range(1, playerLevel + 1);
+            }
 
-        // Bảo hiểm: Nếu level target không có enemy nào, lấy enemy cùng level player
-        if (groupedEnemies.Count == 0)
-        {
-            groupedEnemies = enemyDatas
-                .Where(e => e != null && e.charStatsCreateRef.level.Value == playerLevel)
-                .GroupBy(e => e.comboChar.typeCombo)
-                .Select(group => group.First())
+            // 3. Tìm danh sách enemy phù hợp với level này
+            var possibleEnemies = enemyDatas
+                .Where(e => e != null &&
+                            e.charStatsCreateRef != null &&
+                            e.charStatsCreateRef.level.Value == targetLevel)
                 .ToList();
+
+            // Bảo hiểm: Nếu level đó không có quái, lấy quái bằng level player
+            if (possibleEnemies.Count == 0)
+            {
+                possibleEnemies = enemyDatas
+                    .Where(e => e != null && e.charStatsCreateRef.level.Value == playerLevel)
+                    .ToList();
+            }
+
+            // Chọn ngẫu nhiên 1 con từ danh sách phù hợp
+            if (possibleEnemies.Count > 0)
+            {
+                EnemyData randomEnemy = possibleEnemies[UnityEngine.Random.Range(0, possibleEnemies.Count)];
+                listEnemy.Add(randomEnemy);
+            }
         }
 
-        // 4. Xáo trộn (Shuffle) danh sách
-        for (int i = groupedEnemies.Count - 1; i > 0; i--)
-        {
-            int j = UnityEngine.Random.Range(0, i + 1);
-            var temp = groupedEnemies[i];
-            groupedEnemies[i] = groupedEnemies[j];
-            groupedEnemies[j] = temp;
-        }
-
-        // 5. Lấy số lượng ngẫu nhiên từ 2 đến maxCount
-        int finalCount = UnityEngine.Random.Range(2, maxCount + 1);
-        finalCount = Mathf.Min(finalCount, groupedEnemies.Count);
-
-        var listEnemy = groupedEnemies.Take(finalCount).ToList();
-
-        // 6. Cập nhật Map và Lưu trữ
+        // 4. Cập nhật dữ liệu Map (Reset và Lưu)
         currentEnemy = listEnemy;
         foreach (var item in currentMap)
         {
@@ -167,6 +149,8 @@ public class NpcManager : MonoBehaviour
 
         SetEnemyOnMap();
         SaveEnemyMap(listEnemy);
+
+        // Lưu thời gian random
         PlayerPrefs.SetInt(SaveOldTimeRandomEnemy, GameManager.GetTimeWorldInt());
         PlayerPrefs.Save();
 
