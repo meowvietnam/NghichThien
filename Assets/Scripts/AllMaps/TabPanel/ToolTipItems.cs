@@ -1,5 +1,5 @@
 ﻿using AllMaps;
-using AllMaps.TabPanel.ToolTipDisplayers;
+using AllMaps.ItemProvider;
 using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
@@ -47,7 +47,14 @@ public class ToolTipItems : BaseBehaviour , ISingleton
     private IItemData iItemData;
     [SerializeField]
     private FurnaceData furnaceData;
-
+    public FurnaceData FurnaceData
+    {
+        get
+        {
+            // Nếu _furnaceData null thì tạo mới một cái rồi trả về
+            return furnaceData ??= itemRef.Type == ItemType.Furnace ? Client.Instance.CharacterData.InventoryManager.Furnaces.FirstOrDefault(x => x.SelfId == itemRef.Id) : null;
+        }
+    }
 
     [SerializeField] private Text descTextItem;
     [SerializeField] private EActionShowItemInfor eActionShowItem;
@@ -233,7 +240,7 @@ public class ToolTipItems : BaseBehaviour , ISingleton
         }
 
         if (itemRef == null) return;
-        var disPlayer = ItemProviderFactory.GetDisplay(itemRef.Type);
+        var disPlayer = ItemProviderFactory.GetProvider(itemRef.Type);
         if(disPlayer != null)
         {
             var ctx = BuildContext();
@@ -260,13 +267,9 @@ public class ToolTipItems : BaseBehaviour , ISingleton
             PrefabRightInfor  = prefabRightInfor,
             SpriteLinhKhis  = spriteLinhKhis,
             ItemRef         = itemRef,
-            ItemSnapshot      = new DataItemSnapshot
-            {
-                ItemRef = this.itemRef,
-                furnaceData = this.furnaceData,
-                IItemData = iItemData,
-                BaseItemData = itemData,
-            },
+            FurnaceData = FurnaceData,
+            IItemData = iItemData,
+            BaseItemData = itemData,
             ActionShowItem  = eActionShowItem,
             SetPriceText    = SetPriceText,
         };

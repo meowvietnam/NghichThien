@@ -1,5 +1,5 @@
 using System.Linq;
-using AllMaps.TabPanel.ToolTipDisplayers;
+using AllMaps.ItemProvider;
 using LuyenDan;
 using LuyenKhi;
 using Network;
@@ -9,14 +9,8 @@ namespace CreateCharacter
     /// <summary>
     /// Concrete factory cung cấp VuKhi (Vũ Khí) từ InventoryManager
     /// </summary>
-    public class VuKhiEquipmentProvider : EquipmentDisplayer, IEquipmentProvider
+    public class VuKhiEquipmentProvider : EquipmentDisplayer
     {
-        private readonly InventoryManager _inventoryManager;
-
-        public VuKhiEquipmentProvider(InventoryManager inventoryManager)
-        {
-            _inventoryManager = inventoryManager;
-        }
 
         public override ItemType SupportedType => ItemType.VuKhi;
 
@@ -28,7 +22,7 @@ namespace CreateCharacter
             return $"Vũ Khí {base.GetTextNameEquipment(artifactType)}";
         }
 
-        public Equipment GetEquipmentById(ushort equipmentId)
+        public override Equipment GetDataItemById(ushort equipmentId)
         {
             return _inventoryManager.VuKhis.FirstOrDefault(x => x.SelfId == equipmentId);
         }

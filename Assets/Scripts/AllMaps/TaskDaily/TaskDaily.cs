@@ -26,14 +26,15 @@ public class TaskDaily : BaseBehaviour
     {
         this.taskDailySnapshot = taskDailySnapshot;
         var itemRef = taskDailySnapshot.ItemRef;
-        var iItemData = taskDailySnapshot.itemSnapShot.IItemData;
         var isGap = taskDailySnapshot.IsGap;
         imgDone.gameObject.SetActive(false);
         imgGap.gameObject.SetActive(isGap);
-        linhThachText.text = ItemProviderFactory.GetDisplay(itemRef.Type).GetPriceItemBuy(taskDailySnapshot.itemSnapShot).ToString();
+        var provider = ItemProviderFactory.GetProvider<IItemData>(itemRef.Type);
+        var iItemData = provider.GetDataItemById(itemRef.Id);
+        linhThachText.text = $"{provider.GetPriceItemBuy(itemRef.Id) * itemRef.Count}";
         if (isGap )
         {
-            tienNgocText.text = PriceTienNgocVatLieuAndHerbTask.GetValueOrDefault(iItemData.Tier).ToString();
+            tienNgocText.text = $"{PriceTienNgocVatLieuAndHerbTask.GetValueOrDefault(iItemData.Tier) * itemRef.Count}";
 
         }
         else

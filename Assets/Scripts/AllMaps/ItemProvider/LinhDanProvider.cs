@@ -1,14 +1,16 @@
 using LuyenDan;
 using LuyenDan.Inventory;
 
-namespace AllMaps.TabPanel.ToolTipDisplayers
+namespace AllMaps.ItemProvider
 {
-    public class LinhDanDisplayer : ItemDisplayer
+    public class LinhDanProvider : ItemProvider<LinhDan>
     {
         public override ItemType SupportedType => ItemType.LinhDan;
 
         public override void Display(ToolTipContext ctx)
         {
+            base.Display(ctx);
+
             string text = "Đan Dược";
 
             if (ctx.IItemData is LinhDan linhDan)
@@ -29,12 +31,17 @@ namespace AllMaps.TabPanel.ToolTipDisplayers
 
             ctx.TypeText.text = text;
             ctx.QualityText.text = GameManager.TextWithTier[ctx.IItemData.Tier];
-            ctx.SetPriceText?.Invoke(GetPrice(ctx));
         }
 
-        public override int GetPriceItemSell(DataItemSnapshot ctx)
+        public override LinhDan GetDataItemById(ushort Id)
         {
-            var data = ctx.IItemData;
+            return LuyenDanResources.Instance.FindLinhDan(Id);
+
+        }
+
+        public override int GetPriceItemSell(ushort Id)
+        {
+            var data = GetDataItemById(Id);
             if (data != null && data is LinhDan linhDan)
             {
                 return linhDan.PriceV130;

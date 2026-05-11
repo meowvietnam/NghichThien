@@ -1,22 +1,28 @@
 using LuyenDan;
 
-namespace AllMaps.TabPanel.ToolTipDisplayers
+namespace AllMaps.ItemProvider
 {
-    public class RecipeDisplayer : ItemDisplayer
+    public class RecipeProvider : ItemProvider<RecipeData>
     {
         public override ItemType SupportedType => ItemType.Recipe;
 
         public override void Display(ToolTipContext ctx)
         {
+            base.Display(ctx);
+
             ctx.TypeText.text = "Đan Phương";
             ctx.DescriptionText.text = $"Công thức luyện chế {ctx.IItemData.Name}";
             ctx.QualityText.text = GameManager.TextWithTier[ctx.IItemData.Tier];
-            ctx.SetPriceText?.Invoke(GetPrice(ctx));
         }
 
-        public override int GetPriceItemSell(DataItemSnapshot ctx)
+        public override RecipeData GetDataItemById(ushort Id)
         {
-            var data = ctx.IItemData;
+           return LuyenDanResources.Instance.FindRecipe(Id);
+        }
+
+        public override int GetPriceItemSell(ushort Id)
+        {
+            var data = GetDataItemById(Id);
 
             if (data != null && data is RecipeData recipe)
             {

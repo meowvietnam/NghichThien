@@ -8,7 +8,6 @@ public class BachDeThanhKiem : NguKiemThuat
     {
         1,2,4,9,18
     };
-    [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {

@@ -15,7 +15,7 @@ public class NguKiemThuat : ThanThong , BaseSkill.TuongSinh
     {
         1,2,3,4,5
     };
-    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] protected float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {

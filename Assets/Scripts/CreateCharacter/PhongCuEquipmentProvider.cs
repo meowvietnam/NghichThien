@@ -1,5 +1,5 @@
 using System.Linq;
-using AllMaps.TabPanel.ToolTipDisplayers;
+using AllMaps.ItemProvider;
 using LuyenDan;
 using LuyenKhi;
 using Network;
@@ -10,14 +10,9 @@ namespace CreateCharacter
     /// <summary>
     /// Concrete factory cung cấp PhongCu (Phòng Cụ) từ InventoryManager
     /// </summary>
-    public class PhongCuEquipmentProvider : EquipmentDisplayer, IEquipmentProvider
+    public class PhongCuEquipmentProvider : EquipmentDisplayer
     {
-        private readonly InventoryManager _inventoryManager;
 
-        public PhongCuEquipmentProvider(InventoryManager inventoryManager)
-        {
-            _inventoryManager = inventoryManager;
-        }
         public override ItemType SupportedType => ItemType.PhongCu;
 
         public override EquipmentType EquipemtType => EquipmentType.Armor;
@@ -28,7 +23,7 @@ namespace CreateCharacter
             return $"Phòng Cụ {base.GetTextNameEquipment(artifactType)}";
         }
 
-        public Equipment GetEquipmentById(ushort equipmentId)
+        public override Equipment GetDataItemById(ushort equipmentId)
         {
             return _inventoryManager.PhongCus.FirstOrDefault(x => x.SelfId == equipmentId);
         }

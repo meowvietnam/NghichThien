@@ -48,7 +48,11 @@ namespace LuyenKhi
 
             return null;
         }
+        public Material FindMaterial(ushort Id)
+        {
+            return Materials.FirstOrDefault(x => x.Id == Id);
 
+        }
 
         public void Deserialize(IReader reader, ref LuyenKhiResources value)
         {

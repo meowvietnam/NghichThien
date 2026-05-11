@@ -102,7 +102,8 @@ public class ShopUI : Popup, ISingleton, INetworkEvent.IBuyAndSell, INetworkEven
             {
                 break;
             }
-            int priceSell = ItemProviderFactory.GetDisplay(item.itemRef.Type).GetPriceItemSell(new DataItemSnapshot { ItemRef = item.itemRef,BaseItemData = item.itemData,IItemData = item.iItemData});
+            var provider = ItemProviderFactory.GetProvider(item.itemRef.Type);
+            int priceSell = provider.GetPriceItemSell(item.itemRef.Id);
             totalMoney += priceSell * item.count;
         }
 
@@ -112,7 +113,8 @@ public class ShopUI : Popup, ISingleton, INetworkEvent.IBuyAndSell, INetworkEven
             {
                 break;
             }
-            int priceBuy = ItemProviderFactory.GetDisplay(item.itemRef.Type).GetPriceItemBuy(new DataItemSnapshot { ItemRef = item.itemRef, BaseItemData = item.itemData, IItemData = item.iItemData });
+            var provider = ItemProviderFactory.GetProvider(item.itemRef.Type);
+            int priceBuy = provider.GetPriceItemBuy(item.itemRef.Id);
 
             totalMoney -= priceBuy * item.count;
         }

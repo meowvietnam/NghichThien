@@ -1,14 +1,16 @@
 using LuyenDan;
 using static UnityEngine.Analytics.IAnalytic;
 
-namespace AllMaps.TabPanel.ToolTipDisplayers
+namespace AllMaps.ItemProvider
 {
-    public class HerbDisplayer : ItemDisplayer
+    public class HerbProvider : ItemProvider<HerbData>
     {
         public override ItemType SupportedType => ItemType.Herb;
 
         public override void Display(ToolTipContext ctx)
         {
+            base.Display(ctx);
+
             ctx.TypeText.text = "Dược Liệu";
             ctx.DescriptionText.text = "Thảo dược có thể dùng luyện chế đan dược";
             if (ctx.IItemData is HerbData duocLieu)
@@ -20,13 +22,16 @@ namespace AllMaps.TabPanel.ToolTipDisplayers
                     "<color=#ffb143>【Dược Dẫn】 </color>" + $"{duocLieu.ThuocDan}";
             }
             ctx.QualityText.text = GameManager.TextWithTier[ctx.IItemData.Tier];
-            ctx.SetPriceText?.Invoke(GetPrice(ctx));
         }
 
-     
-        public override int GetPriceItemSell(DataItemSnapshot ctx)
+        public override HerbData GetDataItemById(ushort Id)
         {
-            return GameManager.PriceHerbWithTier[ctx.IItemData.Tier];
+            return LuyenDanResources.Instance.FindHerb(Id);
+        }
+
+        public override int GetPriceItemSell(ushort Id)
+        {
+            return GameManager.PriceHerbWithTier[GetDataItemById(Id).Tier];
         }
 
      

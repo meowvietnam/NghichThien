@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using AllMaps.TabPanel.ToolTipDisplayers;
+using AllMaps.ItemProvider;
 using LuyenDan;
 using Network;
 
@@ -12,37 +12,34 @@ namespace CreateCharacter
     /// </summary>
     public static class ItemProviderFactory
     {
-        public static IEquipmentProvider GetEquipmentProvider(ItemType itemType)
+        // 1. Hàm dành cho hiển thị (Không cần <T>, không lo bị null do ép kiểu)
+        public static IItemProvider GetProvider(ItemType itemType)
         {
-            InventoryManager inventoryManager = Client.Instance.CharacterData.InventoryManager;
-            return itemType switch
-            {
-                ItemType.VuKhi => new VuKhiEquipmentProvider(inventoryManager),
-                ItemType.PhongCu => new PhongCuEquipmentProvider(inventoryManager),
-                ItemType.TrangSuc => new TrangSucEquipmentProvider(inventoryManager),
-                _ => null,
-            };
-
+            return GetRawProvider(itemType) as IItemProvider;
         }
-        public static ItemDisplayer GetDisplay(ItemType itemType)
+
+        // 2. Hàm dành cho việc lấy Data cụ thể (Cần truyền <T>)
+        public static ItemProvider<T> GetProvider<T>(ItemType itemType)
         {
-            InventoryManager inventoryManager = Client.Instance.CharacterData.InventoryManager;
+            return GetRawProvider(itemType) as ItemProvider<T>;
+        }
+        private static object GetRawProvider(ItemType itemType)
+        {
             return itemType switch
             {
-                ItemType.VuKhi => new VuKhiEquipmentProvider(inventoryManager),
-                ItemType.PhongCu => new PhongCuEquipmentProvider(inventoryManager),
-                ItemType.TrangSuc => new TrangSucEquipmentProvider(inventoryManager),
-                ItemType.Herb => new HerbDisplayer(),
-                ItemType.Furnace => new FurnaceDisplayer(),
-                ItemType.LinhDan => new LinhDanDisplayer(),
-                ItemType.Recipe => new RecipeDisplayer(),
-                ItemType.Material => new MaterialDisplayer(),
-                ItemType.ThanThong => new ThanThongBookDisplayer(),
-                ItemType.CongPhap => new CongPhapBookDisplayer(),
+                ItemType.VuKhi => new VuKhiEquipmentProvider(),
+                ItemType.PhongCu => new PhongCuEquipmentProvider(),
+                ItemType.TrangSuc => new TrangSucEquipmentProvider(),
+                ItemType.Herb => new HerbProvider(),
+                ItemType.Furnace => new FurnaceProvider(),
+                ItemType.LinhDan => new LinhDanProvider(),
+                ItemType.Recipe => new RecipeProvider(),
+                ItemType.Material => new MaterialProvider(),
+                ItemType.ThanThong => new ThanThongBooProvider(),
+                ItemType.CongPhap => new CongPhapBookProvider(),
 
                 _ => null,
             };
-
         }
     }
 }
