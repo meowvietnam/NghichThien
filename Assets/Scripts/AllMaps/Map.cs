@@ -29,7 +29,11 @@ namespace AllMaps
         }
         private void OnMouseDown()
         {
-            if (IsPointerOverUIElement()) return;
+            if (IsPointerOverUIElement())
+            {
+                Debug.Log("k move duoc do over UI");               
+                return;
+            }
             mapManager.PlayerMoveTo(this);
         }
         public bool IsPointerOverUIElement()

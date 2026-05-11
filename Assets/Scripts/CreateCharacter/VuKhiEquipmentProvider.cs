@@ -9,7 +9,7 @@ namespace CreateCharacter
     /// <summary>
     /// Concrete factory cung cấp VuKhi (Vũ Khí) từ InventoryManager
     /// </summary>
-    public class VuKhiEquipmentProvider : EquipmentDisplayer
+    public class VuKhiEquipmentProvider : EquipmentProvider
     {
 
         public override ItemType SupportedType => ItemType.VuKhi;

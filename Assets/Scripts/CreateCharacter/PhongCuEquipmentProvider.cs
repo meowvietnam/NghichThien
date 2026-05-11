@@ -10,7 +10,7 @@ namespace CreateCharacter
     /// <summary>
     /// Concrete factory cung cấp PhongCu (Phòng Cụ) từ InventoryManager
     /// </summary>
-    public class PhongCuEquipmentProvider : EquipmentDisplayer
+    public class PhongCuEquipmentProvider : EquipmentProvider
     {
 
         public override ItemType SupportedType => ItemType.PhongCu;

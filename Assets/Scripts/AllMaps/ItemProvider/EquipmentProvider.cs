@@ -6,7 +6,7 @@ using LuyenKhi;
 using Network;
 using UnityEngine;
 
-public abstract class EquipmentDisplayer : ItemProvider<CreateCharacter.Equipment>
+public abstract class EquipmentProvider : ItemProvider<CreateCharacter.Equipment>
 {
     public override abstract  ItemType SupportedType { get; }
     public abstract EquipmentType EquipemtType { get; }
@@ -76,55 +76,40 @@ public abstract class EquipmentDisplayer : ItemProvider<CreateCharacter.Equipmen
         }
         return artifactName;
     }
-   
+
     public override int GetPriceItemSell(ushort id)
     {
+        var equipmentData = GetDataItemById(id);
+        if (equipmentData == null) return 0;
 
-        var equipment = GetDataItemById(id);
-        if (equipment == null) return 0;
+        int totalPrice = 0;
 
-        float finalPrice = 0;
-
-        // Duyệt qua từng Effect để tính toán
-        foreach (var effect in equipment.Effects)
+        foreach (var item in equipmentData.Effects)
         {
-            // 1. Lấy danh sách nguyên liệu tạo ra Effect này
-            var materials = equipment.GetMaterialsWithEffectType(effect.Type);
-            if (materials == null || materials.Length == 0) continue;
+            var materials = equipmentData.GetMaterialsWithEffectType(item.Type);
+            int materialCost = materials.Sum(x => GameManager.PriceVatLieuWithTier[x.Tier]);
 
-            // 2. Tính tổng giá gốc của nhóm nguyên liệu này
-            int groupMaterialPrice = materials.Sum(m => GameManager.PriceVatLieuWithTier[m.Tier]);
-
-            // 3. Tính toán chất lượng (Quality Percent)
-            var (min, max) = equipment.GetMinMaxValue(effect.Type);
-            int actualValue = effect.Value;
-
-            float qualityBonusPercent = 0;
+            // 1. Tính toán Percent từ chỉ số Craft (Từ -0.5 đến 0.5)
+            var (min, max) = equipmentData.GetMinMaxValue(item.Type);
+            float craftPercent = 0;
             if (max > min)
             {
                 float mid = (min + max) / 2f;
-                // Tính độ lệch so với trung bình: Trả về từ -0.5 đến 0.5
-                qualityBonusPercent = (float)(actualValue - mid) / (max - min);
-                // Giới hạn: Tệ nhất giảm 40%, Xịn nhất tăng 60% giá trị nguyên liệu
-                qualityBonusPercent = Mathf.Clamp(qualityBonusPercent, -0.4f, 0.6f);
+                craftPercent = (item.Value - mid) / (max - min);
             }
 
-            // 4. Tính giá trị sử dụng (Value Bonus)
-            // Hệ số: Lấy giá trung bình của các nguyên liệu trong nhóm chia 10 (tương đương 10%)
-            // Điều này giúp Tier càng cao, mỗi điểm chỉ số càng đáng giá.
-            float avgMaterialPrice = (float)groupMaterialPrice / materials.Length;
-            int goldPerPoint = Mathf.Max(1, Mathf.RoundToInt(avgMaterialPrice / 10f));
-            int valueBonus = actualValue * goldPerPoint;
+            // 2. Tính toán "Giá trị cơ bản sau khi đã Bonus theo Tier"
+            // GradeBonus đóng vai trò nâng tầm giá trị nguyên liệu lên
+            float gradeBonus = equipmentData.GradeConfig.MinGrade / 100f;
+            float basePriceWithTier = materialCost * (1 + gradeBonus);
 
-            // 5. Cộng dồn vào tổng giá: (Giá NL đã điều chỉnh theo chất lượng) + (Tiền theo điểm chỉ số)
-            finalPrice += (groupMaterialPrice * (1 + qualityBonusPercent)) + valueBonus;
+            // 3. Nhân thêm phần Craft Percent vào CẢ CỤM đã có Bonus
+            // Công thức: [Giá sau Tier] + [Giá sau Tier * CraftPercent]
+            // Hoặc viết gọn: basePriceWithTier * (1 + craftPercent)
+            totalPrice += Mathf.RoundToInt(basePriceWithTier * (1 + craftPercent));
         }
 
-        // Đảm bảo không bao giờ trả về số âm hoặc quá nhỏ (Min là 10% tổng giá nguyên liệu gốc)
-        int absoluteMinPrice = equipment.Effects.Sum(e =>
-            equipment.GetMaterialsWithEffectType(e.Type).Sum(m => GameManager.PriceVatLieuWithTier[m.Tier])) / 10;
-
-        return Mathf.Max(Mathf.RoundToInt(finalPrice), absoluteMinPrice);
+        return totalPrice;
     }
 
     public override int GetPriceItemBuy(ushort id)

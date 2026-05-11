@@ -9,7 +9,7 @@ namespace CreateCharacter
     /// <summary>
     /// Concrete factory cung cấp TrangSuc (Trang Sức) từ InventoryManager
     /// </summary>
-    public class TrangSucEquipmentProvider : EquipmentDisplayer
+    public class TrangSucEquipmentProvider : EquipmentProvider
     {
 
         public override ItemType SupportedType => ItemType.TrangSuc;
