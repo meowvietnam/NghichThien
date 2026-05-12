@@ -9,6 +9,8 @@ using Sirenix.OdinInspector;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using AllMaps.ItemProvider;
+
 public interface ISingleton
 {
     void Init();

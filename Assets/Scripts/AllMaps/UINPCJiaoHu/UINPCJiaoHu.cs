@@ -72,7 +72,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         .Key;
     }
     [SerializeField] public Popup npcPop;
-    [SerializeField] public Popup xemXetPop;
+    [SerializeField] public PopupInfor xemXetPop;
     [SerializeField] public Popup thinhGiaoPop;
     [SerializeField] public Popup tangQuaPop;
    
@@ -129,20 +129,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
     public ETypeSkillRelationShip CurrentPageTypeRelationShip;
 
     private int relatetionshipValue => Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar);
-    [Header("--- Pop Dò Xét ---")]
-    [SerializeField] private CharacterGraphic charVisualPopXemXet;
-    [SerializeField] private Text textThanThuc;
-    [SerializeField] private Text textTocDoBay;
-    [SerializeField] private Text textNgoTinh;
-    [SerializeField] private Text textTuChat;
-    [SerializeField] private Text textThoNguyen;
-    [SerializeField] private Text textSinhMenh;
-    [SerializeField] private Text textTuoiTac;
-    [SerializeField] private Text textLevel;
-    [SerializeField] private Text textNamePopXemXet;
-    [SerializeField] private Text textHaoCam;
-    [SerializeField] private List<ItemInventory> listThanThongItemSlot;
-    [SerializeField] private List<ItemInventory> listCongPhapItemSlot;
+  
     [Header("--- Pop Tặng Quà ---")]
     [SerializeField] private ItemInventory slotItemGift;
     [SerializeField] private Text textMoney;
@@ -287,8 +274,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         SetEventButton(btnXemXet, () =>
         {
             HideAllPop();
-            xemXetPop.Show();
-            InitPopDoXet();
+            xemXetPop.InitPopDoXet(characterStatsTarget);
         });
         SetEventButton(btnTangQua, () =>
         {
@@ -576,40 +562,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
 
 
     }
-    public void InitPopDoXet()
-    {
-        textNamePopXemXet.text = characterStatsTarget.nameUser;
-        charVisualPopXemXet.SetGender(characterStatsTarget.Gender);
-        charVisualPopXemXet.SetSkin(characterStatsTarget.Skins);
-        textThanThuc.text = characterStatsTarget.thanThuc.Value.ToString();
-        textTocDoBay.text = characterStatsTarget.tocDoBay.Value.ToString();
-        textNgoTinh.text = characterStatsTarget.ngoTinh.Value.ToString();
-        textTuChat.text = characterStatsTarget.tuChat.Value.ToString();
-        textThoNguyen.text = characterStatsTarget.thoNguyen.Value.ToString();
-        textTuoiTac.text = characterStatsTarget.tuoiTac.Value.ToString();
-        textSinhMenh.text = characterStatsTarget.hpMax.Value.ToString();
-        textLevel.text = GameManager.levelWithText[characterStatsTarget.level];
-        textHaoCam.text = Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar).ToString();
-        List<ThanThong> listThanThongData = new List<ThanThong>();
-        var gameConfig = Pool.Get<GameManager>();
-        foreach (var item in characterStatsTarget.thanThongEquip)
-        {
-            listThanThongData.Add(gameConfig.GetThanThongWithId(item.Value));
-        }
-        for (int i = 0; i < listThanThongItemSlot.Count; i++)
-        {
-            var item = listThanThongItemSlot[i];
-            var data = i<listThanThongData.Count?listThanThongData[i]:null;
-
-            Pool.Get<UIManager>().InitVisualItemSkill(item,data);
-        }
-        Pool.Get<UIManager>().InitVisualItemSkill(listCongPhapItemSlot[0],gameConfig.GetCongPhapWithId(characterStatsTarget.chuTu1Used.Value));
-        Pool.Get<UIManager>().InitVisualItemSkill(listCongPhapItemSlot[1], gameConfig.GetCongPhapWithId(characterStatsTarget.chuTu2Used.Value));
-        Pool.Get<UIManager>().InitVisualItemSkill(listCongPhapItemSlot[2], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu1Used.Value));
-        Pool.Get<UIManager>().InitVisualItemSkill(listCongPhapItemSlot[3], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu2Used.Value));
-        Pool.Get<UIManager>().InitVisualItemSkill(listCongPhapItemSlot[4], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu3Used.Value));
-        Pool.Get<UIManager>().InitVisualItemSkill(listCongPhapItemSlot[5], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu4Used.Value));
-    }
+   
     // Helper method to keep your dictionary clean
     private static Color HexToColor(string hex)
     {

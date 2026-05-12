@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using CreateCharacter;
+using AllMaps.ItemProvider;
 
 public class TaskDaily : BaseBehaviour
 {

@@ -83,9 +83,8 @@ public class CharacterCombat : MonoBehaviour
     public string ANIM_DIE => "Die_0";
     public CombatManager CombatManager=>transform.GetComponentInParent<CombatManager>();
     [SerializeField] protected Text textSkillNameCall;
-    [SerializeField] public ETypeVisualChar eTypeVisualChar;
-    [SerializeField] SkeletonGraphic[] characterGenders;
-    [SerializeField] public SkeletonGraphic currentCharGender => characterGenders[(int)eTypeVisualChar];
+    [SerializeField] public CharacterVisualControl characterVisualControl;
+    [SerializeField] public SkeletonGraphic currentCharGender => characterVisualControl.currentCharGender;
     [SerializeField]
     public List<CongPhapMono> congPhapEquip = new List<CongPhapMono>();
     [SerializeField]
@@ -630,8 +629,8 @@ public class CharacterCombat : MonoBehaviour
     }
     public void Init(GameManager.CharCombatInit charCombatInit )
     {
-        eTypeVisualChar = charCombatInit.eTypeVisual;
         var characterStat = charCombatInit.charStats;
+        characterVisualControl.Init(charCombatInit.eTypeVisual, characterStat);
         characterStatsBase = characterStat;
         characterStatsTemp = characterStat.Clone();
         thanThongCoolDown.Clear();
@@ -659,12 +658,7 @@ public class CharacterCombat : MonoBehaviour
             thanThongEquip.Add(Pool.Get<GameManager>().GetThanThongWithId(item.Value));
             
         }
-        if(eTypeVisualChar == ETypeVisualChar.Character)
-        {
-            var charGraphic = currentCharGender.GetComponent<CharacterGraphic>();
-            charGraphic.SetGender(characterStatsBase.Gender);
-            charGraphic.SetSkin(characterStatsBase.Skins, characterStatsBase.Colors);
-        }
+       
 
         if(currentVuKhiVisual != null)
         {

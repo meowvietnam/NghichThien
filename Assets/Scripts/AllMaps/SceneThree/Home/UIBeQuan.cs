@@ -13,6 +13,7 @@ using UnityEngine.UI;
 using static UnityEngine.Analytics.IAnalytic;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
+using AllMaps.ItemProvider;
 
 public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.ILinhNgo, INetworkEvent.IDotPhaCongPhap
 {

@@ -9,7 +9,12 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-
+[System.Serializable]
+public class EnemySaveEntry
+{
+    public int idChar;
+    public int idNode;
+}
 public class NpcManager : MonoBehaviour
 {
     [SerializeField] public NPCData[] npcDatas;
@@ -81,15 +86,21 @@ public class NpcManager : MonoBehaviour
     {
         currentEnemy.Remove(enemyData);
         SaveEnemyMap(currentEnemy);
-    }    
+    }
     private void SaveEnemyMap(List<EnemyData> enemyDataSave)
     {
-        Dictionary<int, int> dict = new Dictionary<int, int>();
+        List<EnemySaveEntry> saveList = new List<EnemySaveEntry>();
+
         foreach (var enemy in enemyDataSave)
         {
-            dict.Add(enemy.charStatsCreateRef.idChar.Value, enemy.charStats.idNode);
+            saveList.Add(new EnemySaveEntry
+            {
+                idChar = enemy.charStatsCreateRef.idChar.Value,
+                idNode = enemy.charStats.idNode
+            });
         }
-        string json = JsonConvert.SerializeObject(dict);
+
+        string json = JsonConvert.SerializeObject(saveList);
         File.WriteAllText(Application.persistentDataPath + "/saveEnemyMap.json", json);
     }
     private List<EnemyData> EnemyRandomOnMap(int maxCount)
@@ -238,14 +249,13 @@ public class NpcManager : MonoBehaviour
         {
             string json = File.ReadAllText(path);
             // Tiếp tục xử lý dữ liệu (JsonUtility.FromJson...)
-            var dictLoadEnemyMap = JsonConvert.DeserializeObject<Dictionary<int, int>>(json);
-
+            var data = JsonConvert.DeserializeObject<List<EnemySaveEntry>>(json);
             List<int> npcExcept = new List<int>();
-            foreach (var item in dictLoadEnemyMap)
+            foreach (var item in data)
             {
-                var enemy = enemyDatas.FirstOrDefault(x => x.charStatsCreateRef.idChar == item.Key);
+                var enemy = enemyDatas.FirstOrDefault(x => x.charStatsCreateRef.idChar == item.idChar);
                 currentEnemy.Add(enemy);
-                enemy.charStats.idNode = item.Value;
+                enemy.charStats.idNode = item.idNode;
                 
             }
             SetEnemyOnMap();

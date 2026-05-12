@@ -373,15 +373,13 @@ public class GameManager : BaseBehaviour
         public ETypeVisualChar eTypeVisual;
         public CharacterStatsSecure charStats;
     }
-
     public CharCombatInit enemyCombat = null;
 
     public void GoToCombat(CharCombatInit enemyCombat)
     {
         this.enemyCombat = enemyCombat;
         if (enemyCombat == null) return;
-        Pool.Get<UIManager>().panelGroup.SetActive(false);
-        SceneManager.LoadScene("Combat");
+        Pool.Get<PrepareCombatPanel>().Show();
     }
 
     public void BackAllMaps()

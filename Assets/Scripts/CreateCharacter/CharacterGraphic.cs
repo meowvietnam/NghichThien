@@ -10,7 +10,7 @@ namespace CreateCharacter
 {
     public class CharacterGraphic : MonoBehaviour
     {
-        [SerializeField] protected SkeletonGraphic graphic;
+        [SerializeField] public SkeletonGraphic graphic;
         [SerializeField] protected SkinResources skinResources;
         private Dictionary<string, string> currentSkins = new Dictionary<string, string>();
         private Dictionary<string, Color> currentColors = new Dictionary<string, Color>();
