@@ -26,6 +26,14 @@ public class CharacterVisualControl : MonoBehaviour
     }
     public void Init(ETypeVisualChar eTypeVisualChar , CharacterStatsSecure charStat)
     {
+        foreach (var item in characterGenders)
+        {
+            if(item.gameObject.activeSelf)
+            {
+                item.gameObject.SetActive(false);
+
+            }
+        }
         this.eTypeVisualChar = eTypeVisualChar;
         if (eTypeVisualChar == ETypeVisualChar.Character)
         {

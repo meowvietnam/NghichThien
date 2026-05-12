@@ -311,7 +311,7 @@ public class CharacterCombat : MonoBehaviour
         // Chạy anim tấn công ngay lập tức
         characterVisualControl.AnimPunch();
         // Xếp hàng anim Idle để chạy ngay sau khi anim trên kết thúc
-        characterVisualControl.AnimIdle();
+        currentCharGender.AnimationState.AddAnimation(0, characterVisualControl.ANIM_IDLE, true, 0);
     }
 
     public void StartAnimHit()
