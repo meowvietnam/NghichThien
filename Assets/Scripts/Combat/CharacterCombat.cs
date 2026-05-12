@@ -64,23 +64,8 @@ public enum ETypeVisualChar
 }
 public class CharacterCombat : MonoBehaviour
 {
-    public string ANIM_IDLE
-    {
-        get
-        {
-            // Truy cập vào SkeletonData để tìm Animation
-            var skeletonData = currentCharGender.SkeletonDataAsset.GetSkeletonData(true);
-
-            if (skeletonData.FindAnimation("Idle_0") != null)
-            {
-                return "Idle_0";
-            }
-            return "stand_0";
-        }
-    }
-    public string ANIM_PUNCH => "Punch_0";
-    public string ANIM_HIT => "Hit_0";
-    public string ANIM_DIE => "Die_0";
+  
+  
     public CombatManager CombatManager=>transform.GetComponentInParent<CombatManager>();
     [SerializeField] protected Text textSkillNameCall;
     [SerializeField] public CharacterVisualControl characterVisualControl;
@@ -324,9 +309,9 @@ public class CharacterCombat : MonoBehaviour
     public void StartAnimPunch()
     {
         // Chạy anim tấn công ngay lập tức
-        currentCharGender.AnimationState.SetAnimation(0, ANIM_PUNCH, false);
+        characterVisualControl.AnimPunch();
         // Xếp hàng anim Idle để chạy ngay sau khi anim trên kết thúc
-        currentCharGender.AnimationState.AddAnimation(0, ANIM_IDLE, true, 0);
+        characterVisualControl.AnimIdle();
     }
 
     public void StartAnimHit()
@@ -336,15 +321,14 @@ public class CharacterCombat : MonoBehaviour
         currentCharGender.AnimationState.ClearTracks();
 
         // Chạy Hit
-        currentCharGender.AnimationState.SetAnimation(0, ANIM_HIT, false);
-
+        characterVisualControl.AnimHit();
         // Dùng Coroutine để ép về Idle sau đúng thời gian của anim Hit
         StartCoroutine(ForceReturnToIdle());
     }
 
     IEnumerator ForceReturnToIdle()
     {
-        var anim = currentCharGender.Skeleton.Data.FindAnimation(ANIM_HIT);
+        var anim = currentCharGender.Skeleton.Data.FindAnimation(characterVisualControl.ANIM_HIT);
         // Lấy thời gian thực tế trừ đi khoảng 0.1s hoặc 0.2s để chuyển cảnh sớm hơn
         float duration = (anim != null) ? anim.Duration : 0.1f;
         float spacing = characterStatsBase.Gender == Gender.Female ? 1.75f : 0;
@@ -354,12 +338,13 @@ public class CharacterCombat : MonoBehaviour
         yield return new WaitForSeconds(actualWait);
 
         // Ép về Idle
-        currentCharGender.AnimationState.SetAnimation(0, ANIM_IDLE, true);
+        characterVisualControl.AnimIdle();
     }
     public void StartAnimDie()
     {
         // Chạy anim tấn công ngay lập tức
-        currentCharGender.AnimationState.SetAnimation(0, ANIM_DIE, false);
+        characterVisualControl.AnimDie();
+        
         
     }
     // Khai báo struct để lưu trữ thông tin text chờ hiển thị
@@ -635,7 +620,7 @@ public class CharacterCombat : MonoBehaviour
         characterStatsTemp = characterStat.Clone();
         thanThongCoolDown.Clear();
         currentCharGender.gameObject.SetActive(true);
-        currentCharGender.AnimationState.SetAnimation(0, ANIM_IDLE, true);
+        characterVisualControl.AnimIdle();
         thanThongUseThisComBat.Clear();
         InitTotalKhi();
         congPhapDynamic.Clear();
