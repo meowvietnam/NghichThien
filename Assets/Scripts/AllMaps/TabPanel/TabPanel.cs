@@ -6,6 +6,7 @@ using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using Network;
+using Newtonsoft.Json.Linq;
 using Sirenix.Utilities;
 using System;
 using System.Collections;
@@ -17,7 +18,7 @@ using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
 
 
-public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEvent.IUnEquipCongPhap,INetworkEvent.IEquipThanThong, INetworkEvent.IUnEquipThanThong
+public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEvent.IUnEquipCongPhap,INetworkEvent.IEquipThanThong, INetworkEvent.IUnEquipThanThong , INetworkEvent.IUseDan
 {
     public enum ETypePanel { 
         
@@ -558,26 +559,9 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                     Debug.Log("data null");
 
                     return;
-                } 
-                    
-                itemSelect.Show(currentItem, new List<RectTransform> { bag.GetComponent<RectTransform>()}, (resultRect) =>
-                {
-                    if (resultRect != null)
-                    {
+                }
 
-                        Observer.Notify(EventList.Network.UNEQUIP_CONGPHAP,this, GetTypeSlotCP(currentItem.GetComponent<RectTransform>()));
-                        // Cách viết chuẩn
-
-
-                    }
-                    else
-                    {
-                        Debug.Log("Thả trượt rồi!");
-
-                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, (BaseSkill)itemSelect.itemData);
-
-                    }
-                });
+                Observer.Notify(EventList.Network.UNEQUIP_CONGPHAP, this, GetTypeSlotCP(currentItem.GetComponent<RectTransform>()));
                 Pool.Get<UIManager>().InitVisualItemSkill(currentItem, null);
 
             });
@@ -717,24 +701,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                     return;
                 }
 
-                itemSelect.Show(currentItem, new List<RectTransform> { bag.GetComponent<RectTransform>() }, (resultRect) =>
-                {
-                    if (resultRect != null)
-                    {
-                        Observer.Notify(EventList.Network.UNEQUIP_THANTHONG,this, thanThong.Id);
-                        Debug.Log("updaet thần thông id unequip");
-                        // Cách viết chuẩn
-
-
-                    }
-                    else
-                    {
-                        Debug.Log("Thả trượt rồi!");
-
-                        Pool.Get<UIManager>().InitVisualItemSkill(currentItem, (BaseSkill)itemSelect.itemData);
-
-                    }
-                });
+                Observer.Notify(EventList.Network.UNEQUIP_THANTHONG, this, thanThong.Id);
                 Pool.Get<UIManager>().InitVisualItemSkill(currentItem, null);
 
             });
@@ -778,7 +745,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                             //equip
                             //congPhap.EquipCongPhap();
                             //save player thần thông equip id
-                            Observer.Notify(EventList.Network.EQUIP_THANTHONG, this, thanThong.Id);
+                            Observer.Notify(EventList.Network.EQUIP_THANTHONG, this, thanThong.Id , listItemSlotThanThongs.IndexOf(itemSlot));
                             // Cách viết chuẩn
 
 
@@ -809,7 +776,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     [Header("--- Inventory ---")]
     [SerializeField] private List<ItemInventory> listItemSlotEquipment;
     [SerializeField] private CharacterGraphic charPageInventory;
-  
+    [SerializeField] private SelectNum selectNum;  
     public void InitInventory()
     {
         InitBag();
@@ -830,37 +797,20 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         // unEquip Acion
         foreach (var currentItem in listItemSlotEquipment)
         {
-            //currentItem.InitAction(null, null, () =>
-            //{
-            //    Debug.Log("có vào đây");
-            //    if (currentItem.itemData == null)
-            //    {
-            //        Debug.Log("data null");
+            currentItem.InitAction(null, null, () =>
+            {
+                Debug.Log("có vào đây");
+                if (currentItem.itemData == null)
+                {
+                    Debug.Log("data null");
 
-            //        return;
-            //    }
+                    return;
+                }
 
-            //    itemSelect.Show(currentItem.itemData, new List<RectTransform> { Bag.GetComponent<RectTransform>() }, (resultRect) =>
-            //    {
-            //        if (resultRect != null)
-            //        {
-            //            Observer.Notify(EventList.Network.UNEQUIP_THANTHONG, listItemSlotThanThongs.IndexOf(currentItem), this);
-            //            Debug.Log("updaet thần thông id unequip");
-            //            // Cách viết chuẩn
+                Observer.Notify(EventList.Network.UNEQUIP_THANTHONG, listItemSlotThanThongs.IndexOf(currentItem), this);
+                Pool.Get<UIManager>().InitVisualItemSkill(currentItem, null);
 
-
-            //        }
-            //        else
-            //        {
-            //            Debug.Log("Thả trượt rồi!");
-
-            //            InitVisualItemSkill(currentItem, (BaseSkill)itemSelect.itemData);
-
-            //        }
-            //    });
-            //    InitVisualItemSkill(currentItem, null);
-
-            //});
+            });
         }
         var characterData = CharData;
         var gameConfig = Pool.Get<GameManager>();
@@ -887,9 +837,48 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         itemDatas.AddRange(characterData.InventoryManager.TrangSucs.Select(f => f.CreateRef()).ToList());
         bag.InitDataItem(itemDatas, (ItemInventory) =>
         {
-            ItemInventory.InitAction(null, null, () =>
+            ItemInventory.InitAction(null,  () =>
             {
 
+                if(ItemInventory.itemRef.Type == ItemType.LinhDan)
+                {
+                    if(ItemInventory.iItemData is LinhDan danDuoc)
+                    {
+                        if(danDuoc.ETypeDan == ETypeDan.DanBuff || danDuoc.ETypeDan == ETypeDan.DanCombat)
+                        {
+                            selectNum.Show(0.15f);
+                            selectNum.SetMin(0);
+                            int maxValue = 0;
+                            if(danDuoc.ETypeDan == ETypeDan.DanBuff)
+                            {
+                                maxValue = ItemInventory.itemRef.Count;
+                            }    
+                            else
+                            {
+                                maxValue = danDuoc.NhinThuoc; /// nhịn thuốc - cho số lượng đan loại này đang đc sử dụng trong list
+                            }    
+                            selectNum.SetMax(maxValue);
+                            selectNum.ValueChanged += (value) =>
+                            {
+                                selectNum.SetText($"{ItemInventory.iItemData.Name} x{value}");
+                            };
+                            selectNum.confirmAction.RemoveAllListeners();
+                            selectNum.confirmAction.AddListener(() =>
+                            {
+                                var value = selectNum.GetValue();
+                                if (value >= 1)
+                                {
+                                    Observer.Notify(EventList.Network.USE_DAN, this, ItemInventory.itemRef.Id, value);
+                                    ItemInventory.AddCount(-value);
+                                }
+
+                            });
+                        }
+                          
+
+                    }
+                    //Observer.Notify(EventList.Network.USE_DAN,);
+                }    
 
                 //if (slotItemGift.itemRef.SelfId != ItemInventory.itemRef.SelfId)
                 //{
@@ -920,7 +909,9 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
 
 
-            });
+
+
+            },null);
         });
         bag.InitBag(false);
 
@@ -968,5 +959,15 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     public void FailEquipThanThong(string message)
     {
         Debug.LogError(message);
+    }
+
+    public void SuccessUseDan()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void FailUseDan(string message)
+    {
+        throw new NotImplementedException();
     }
 }

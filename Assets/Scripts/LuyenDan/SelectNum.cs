@@ -15,7 +15,7 @@ namespace LuyenDan
         [SerializeField] private Button increaseButton;
         [SerializeField] private Button confirm;
         [SerializeField] private Button back;
-        [SerializeField] private UnityEvent confirmAction;
+        [SerializeField] public UnityEvent confirmAction;
         [SerializeField] private RectTransform selectNumTransform;
         public event Action<int> ValueChanged;
         private void Start()

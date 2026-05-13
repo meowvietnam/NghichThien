@@ -30,6 +30,8 @@ namespace LuyenDan.Inventory
         [field: SerializeField] public int ProfitDanThanhPerDay { get; private set; }
         [field: SerializeField] public float IncomeDanThanh { get; private set; }
         [field: SerializeField] public ETypeDan ETypeDan { get; private set; }
+        [field: SerializeField] public int BuffValue { get; private set; }
+        [field: SerializeField] public EDanBuffType EBuffType{ get; private set; }
 
         public int ByteSize()
         {

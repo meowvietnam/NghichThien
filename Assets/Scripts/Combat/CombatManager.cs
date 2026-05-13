@@ -23,7 +23,7 @@ public enum ETuongQuan
     None,
 }
 
-public class CombatManager : MonoBehaviour
+public class CombatManager : BaseBehaviour
 {
     [System.Serializable]   
     public class BuffOrDebuffIcon {
@@ -78,7 +78,7 @@ public class CombatManager : MonoBehaviour
     public Camera cameraEffectSkillDynamic;
     public Camera cameraEffectSkillLock50;
     public Camera cameraEffectSkillLock5;
-
+    [SerializeField] private Button backCombat;
     public Text GetTextDame()
     {
         return prefabTextDame.Spawn(this.transform);
@@ -172,6 +172,13 @@ public class CombatManager : MonoBehaviour
         {
             SetUIBuffEquipment(char2, char2.characterStatsBase.trangSuc, EquipmentType.Jewelry);
         }
+        SetEventButton(backCombat, () =>
+        {
+            Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Xác nhận bỏ chạy khỏi trận chiến này?", () =>
+            {
+                Pool.Get<GameManager>().BackAllMaps();
+            });
+        });
     }
 
     public static bool IsTuongDong(List<LinhKhiTieuTan> linhKhiTieuTan)

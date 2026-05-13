@@ -18,7 +18,7 @@ namespace LuyenDan
 
         [field: SerializeField, ReadOnly] public List<TempFurnaceData> TempFurnaceDatas { get; private set; }
         [field: SerializeField, ReadOnly] public List<HerbData> HerbDatas { get; private set; }
-        [field: SerializeField, ReadOnly] public List<LinhDan> LinhDans { get; private set; }
+        [field: SerializeField,ReadOnly] public List<LinhDan> LinhDans { get; private set; }
         [field: SerializeField, ReadOnly] public List<RecipeData> Recipes { get; private set; }
         public const string EmptyDetail = "Không";
         private static LuyenDanResources instance;

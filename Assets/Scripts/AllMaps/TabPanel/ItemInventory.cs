@@ -35,13 +35,23 @@ public class ItemInventory : BaseItemUI
     {
         this.count = count;
         textCount.text = count.ToString();
-
+        if (count >0 && !this.gameObject.activeSelf)
+        {
+            this.gameObject.SetActive(true);
+        }
     }
     public void AddCount(int count)
     {
         this.count += count;
         textCount.text = this.count.ToString();
-
+        if(count<= 0 && this.gameObject.activeSelf)
+        {
+            this.gameObject.SetActive(false);
+        }
+        else if (count > 0 && !this.gameObject.activeSelf)
+        {
+            this.gameObject.SetActive(true);
+        }
     }
     public void InitCountRequire(int countRequire)
     {

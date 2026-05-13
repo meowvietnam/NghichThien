@@ -6,6 +6,8 @@ namespace CreateCharacter
     public record DanCombatUsed : IMemorySerializable<DanCombatUsed>
     {
         public ushort Id { get; set; }
+        public int count { get; set; }
+
         public void Deserialize(IReader reader, ref DanCombatUsed value)
         {
             value.Id = reader.Read<ushort>();
