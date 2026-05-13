@@ -39,8 +39,6 @@ namespace LuyenDan
         TuChat,
         TamCanh,
         ThoNguyen,
-
-
     }
 }
    

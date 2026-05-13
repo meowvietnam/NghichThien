@@ -893,7 +893,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 //}
                 //else
                 //{
-                //    if (slotItemGift.count < ItemInventory.count)
+                //    if (slotItemGift.Count < ItemInventory.Count)
                 //    {
                 //        slotItemGift.AddCount(1);
                 //    }

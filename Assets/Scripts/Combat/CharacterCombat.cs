@@ -805,7 +805,7 @@ public class CharacterCombat : MonoBehaviour
                     // 3. Trừ 1 đơn vị trong Dictionary
                     dictLinhKhiTemp[randomKey] -= 1;
 
-                    // 4. Lưu vào danh sách tiêu tán (Bạn có thể gộp các count giống nhau sau hoặc add mới)
+                    // 4. Lưu vào danh sách tiêu tán (Bạn có thể gộp các Count giống nhau sau hoặc add mới)
                     linhKhiTieuTan.Add(new LinhKhiTieuTan { eLinhKhi = randomKey, count = 1 });
                 }
                 else
@@ -988,7 +988,7 @@ public class CharacterCombat : MonoBehaviour
                     // 3. Chọn ngẫu nhiên một key trong danh sách debuff đã lọc
                     var randomDebuffKey = debuffKeys[CombatStatic.IndexRandom(0, debuffKeys.Count)];
 
-                    // 4. Thực hiện xóa 1 count
+                    // 4. Thực hiện xóa 1 Count
                     RemoveBuffAndDebuffCount(randomDebuffKey, 1);
 
                 }

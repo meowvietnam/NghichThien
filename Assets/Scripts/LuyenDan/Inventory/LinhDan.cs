@@ -39,7 +39,8 @@ namespace LuyenDan.Inventory
                    + DanDoc.ByteSize() + NhinThuoc.ByteSize() + PriceV104.ByteSize() + PriceV130.ByteSize()
                    + Price.ByteSize() + Profit.ByteSize() + Income.ByteSize()
                    + ProfitPerDay.ByteSize() + ProfitDanThanh.ByteSize() + ProfitDanThanhPerDay.ByteSize()
-                   + IncomeDanThanh.ByteSize() + ETypeDan.ByteSize();
+                   + IncomeDanThanh.ByteSize() + ETypeDan.ByteSize()
+                   + BuffValue.ByteSize() + EBuffType.ByteSize();
         }
 
         public void Serialize(IWriter writer)
@@ -60,6 +61,8 @@ namespace LuyenDan.Inventory
             writer.Write(ProfitDanThanhPerDay);
             writer.Write(IncomeDanThanh);
             writer.Write(ETypeDan);
+            writer.Write(BuffValue);
+            writer.Write(EBuffType);
         }
 
         public void Deserialize(IReader reader, ref LinhDan value)
@@ -80,6 +83,8 @@ namespace LuyenDan.Inventory
             value.ProfitDanThanhPerDay = reader.Read<int>();
             value.IncomeDanThanh = reader.Read<float>();
             value.ETypeDan = reader.Read<ETypeDan>();
+            value.BuffValue = reader.Read<int>();
+            value.EBuffType = reader.Read<EDanBuffType>();
         }
     }
 }

@@ -31,7 +31,7 @@ public class DaiDeLuanHoaKinh : CongPhap
                         // 3. Chọn ngẫu nhiên một key trong danh sách debuff đã lọc
                         var randomDebuffKey = debuffKeys[CombatStatic.IndexRandom(0, debuffKeys.Count)];
 
-                        // 4. Thực hiện xóa 1 count
+                        // 4. Thực hiện xóa 1 Count
                         caster.RemoveBuffAndDebuffCount(randomDebuffKey, 1);
                     }
 
