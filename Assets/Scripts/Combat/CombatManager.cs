@@ -183,7 +183,7 @@ public class CombatManager : BaseBehaviour
 
     public static bool IsTuongDong(List<LinhKhiTieuTan> linhKhiTieuTan)
     {
-        // Lấy danh sách các hệ có count > 0
+        // Lấy danh sách các hệ có Count > 0
         List<ELinhKhi> list = linhKhiTieuTan
                               .Where(x => x.count > 0)
                               .Select(x => x.eLinhKhi)

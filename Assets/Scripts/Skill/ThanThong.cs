@@ -111,7 +111,7 @@ namespace Skill
             foreach (var requirement in noneRequires)
             {
                 // Tìm loại khí đầu tiên có đủ số lượng (Ưu tiên loại có ít để giữ lại loại nhiều, hoặc ngược lại tùy logic bạn muốn)
-                // Ở đây lấy loại đầu tiên tìm thấy thỏa mãn >= count
+                // Ở đây lấy loại đầu tiên tìm thấy thỏa mãn >= Count
                 var match = availableKhis.FirstOrDefault(x => x.Value >= requirement.count);
 
                 if (match.Value < (int)requirement.count)
