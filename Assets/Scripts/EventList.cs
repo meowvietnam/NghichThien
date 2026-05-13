@@ -39,25 +39,29 @@ public static partial class EventList
     }
     public static class Network
     {
-        public const string USE_DAN = "GamePlay.USE_DAN";
-        public const string LEARN_NGODAO = "GamePlay.LEARN_NGODAO";
-        public const string LEARN_SKILL = "GamePlay.LEARN_SKILL";
-        public const string EQUIP_THANTHONG = "GamePlay.EQUIP_THANTHONG";
-        public const string EQUIP_CONGPHAP = "GamePlay.EQUIP_CONGPHAP";
-        public const string UNEQUIP_CONGPHAP = "GamePlay.UNEQUIP_CONGPHAP";
-        public const string UNEQUIP_THANTHONG = "GamePlay.UNEQUIP_THANTHONG";
+        public const string USE_DAN = "Network.USE_DAN";
+        public const string LEARN_NGODAO = "Network.LEARN_NGODAO";
+        public const string LEARN_SKILL = "Network.LEARN_SKILL";
+        public const string EQUIP_THANTHONG = "Network.EQUIP_THANTHONG";
+        public const string EQUIP_CONGPHAP = "Network.EQUIP_CONGPHAP";
+        public const string UNEQUIP_CONGPHAP = "Network.UNEQUIP_CONGPHAP";
+        public const string UNEQUIP_THANTHONG = "Network.UNEQUIP_THANTHONG";
 
-        public const string TU_LUYEN = "GamePlay.TU_LUYEN";
-        public const string LINH_NGO = "GamePlay.LINH_NGO";
-        public const string DOT_PHA_CONGPHAP = "GamePlay.DOT_PHA_CONGPHAP";
-        public const string TANG_QUA_NPC = "GamePlay.TANG_QUA_NPC";
-        public const string THINH_GIAO_NPC = "GamePlay.THINH_GIAO_NPC";
-        public const string BUY_AND_SELL = "GamePlay.BUY_AND_SELL";
-        public const string LOAD_SHOP = "GamePlay.LOAD_SHOP";
-        public const string RELOAD_SHOP = "GamePlay.RELOAD_SHOP";
+        public const string TU_LUYEN = "Network.TU_LUYEN";
+        public const string LINH_NGO = "Network.LINH_NGO";
+        public const string DOT_PHA_CONGPHAP = "Network.DOT_PHA_CONGPHAP";
+        public const string TANG_QUA_NPC = "Network.TANG_QUA_NPC";
+        public const string THINH_GIAO_NPC = "Network.THINH_GIAO_NPC";
+        public const string BUY_AND_SELL = "Network.BUY_AND_SELL";
+        public const string LOAD_SHOP = "Network.LOAD_SHOP";
+        public const string RELOAD_SHOP = "Network.RELOAD_SHOP";
 
-        public const string LOAD_TASK = "GamePlay.LOAD_TASK";
-        public const string RELOAD_TASK = "GamePlay.RELOAD_TASK";
-        public const string DONE_TASK = "GamePlay.DONE_TASK";
+        public const string LOAD_TASK = "Network.LOAD_TASK";
+        public const string RELOAD_TASK = "Network.RELOAD_TASK";
+        public const string DONE_TASK = "Network.DONE_TASK";
+
+        public const string EQUIP_EQUIPMENT = "Network.EQUIP_EQUIPMENT";
+        public const string UNEQUIP_EQUIPMENT = "Network.EQUIP_EQUIPMENT";
+
     }
 }

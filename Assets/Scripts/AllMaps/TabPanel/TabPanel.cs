@@ -1,10 +1,12 @@
 ﻿using AllMaps;
+using AllMaps.ItemProvider;
 using Base;
 using CreateCharacter;
 using CreateCharacter.CharStats;
 using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
+using LuyenKhi;
 using Network;
 using Newtonsoft.Json.Linq;
 using Sirenix.Utilities;
@@ -18,7 +20,7 @@ using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
 
 
-public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEvent.IUnEquipCongPhap,INetworkEvent.IEquipThanThong, INetworkEvent.IUnEquipThanThong , INetworkEvent.IUseDan
+public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEvent.IUnEquipCongPhap,INetworkEvent.IEquipThanThong, INetworkEvent.IUnEquipThanThong , INetworkEvent.IUseDan , INetworkEvent.IEquipEquipment , INetworkEvent.IUnEquipEquipment
 {
     public enum ETypePanel { 
         
@@ -560,15 +562,15 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
                     return;
                 }
+                Pool.Get<UIManager>().InitVisualItemSkill(currentItem, null);
 
                 Observer.Notify(EventList.Network.UNEQUIP_CONGPHAP, this, GetTypeSlotCP(currentItem.GetComponent<RectTransform>()));
-                Pool.Get<UIManager>().InitVisualItemSkill(currentItem, null);
 
             });
         }
         var gameConfig = Pool.Get<GameManager>();
         List<ItemRef> itemDatas = new List<ItemRef>();
-        foreach (var item in CharacterDatas.InventoryManager.CamNgos)
+        foreach (var item in CharacterDatas.InventoryManager.CongPhapOwners)
         {
             itemDatas.Add(new ItemRef { Id = (ushort)item.Id, Type = ItemType.CongPhap, Count = 1 });
         }
@@ -689,20 +691,20 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         // unEquip
         foreach (var currentItem in listItemSlotThanThongs)
         {
-            ThanThong thanThong = currentItem.itemData as ThanThong;
 
             currentItem.InitAction(null, null, () =>
             {
+                ThanThong thanThong = currentItem.itemData as ThanThong;
                 Debug.Log("có vào đây");
-                if (currentItem.itemData == null)
+                if (thanThong == null)
                 {
                     Debug.Log("data null");
 
                     return;
                 }
-
                 Observer.Notify(EventList.Network.UNEQUIP_THANTHONG, this, thanThong.Id);
                 Pool.Get<UIManager>().InitVisualItemSkill(currentItem, null);
+
 
             });
         }
@@ -774,44 +776,53 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     }
  
     [Header("--- Inventory ---")]
-    [SerializeField] private List<ItemInventory> listItemSlotEquipment;
+    [SerializeField] public ItemInventory itemWeapon;
+    [SerializeField] public ItemInventory itemPhongCu;
+    [SerializeField] public ItemInventory itemTrangSuc;
+
     [SerializeField] private CharacterGraphic charPageInventory;
-    [SerializeField] private SelectNum selectNum;  
+    [SerializeField] public SelectNum selectNum;
+    public void LoadEquipment(ItemInventory currentItem, ItemType itemType, ushort id)
+    {
+        var equipment = ItemProviderFactory.GetProvider<CreateCharacter.Equipment>(itemType).GetDataItemById(id);
+        if (equipment == null) return;
+        Pool.Get<UIManager>().InitVisualEquipment(currentItem, null, equipment.CreateRef());
+        SetActionUnEquipEquipment(itemWeapon);
+        SetActionUnEquipEquipment(itemPhongCu);
+        SetActionUnEquipEquipment(itemTrangSuc);
+    }
+    void SetActionUnEquipEquipment(ItemInventory currentItem)
+    {
+
+        currentItem.InitAction(null, null, () =>
+        {
+            Debug.Log("có vào đây");
+            if (currentItem.itemRef == null || currentItem.itemData == null || currentItem.itemRef.Type != ItemType.VuKhi && currentItem.itemRef.Type != ItemType.PhongCu && currentItem.itemRef.Type != ItemType.VuKhi)
+            {
+                Debug.Log("data null");
+
+                return;
+            }
+            EquipmentType equipmentType = GameManager.ItemTypeToEquipemtType.GetValueOrDefault(currentItem.itemRef.Type);
+
+            Observer.Notify(EventList.Network.UNEQUIP_EQUIPMENT, this, currentItem.itemRef.Id, equipmentType); // id equipment này là self id
+            Pool.Get<UIManager>().InitVisualEquipment(currentItem, null);
+
+        });
+    }
     public void InitInventory()
     {
         InitBag();
         bag.filterControl.InitAllFilterType();
+      
+       
+        LoadEquipment(itemWeapon,ItemType.VuKhi,Client.Instance.CharacterData.EquipmentManager.VuKhi);
+        LoadEquipment(itemPhongCu, ItemType.PhongCu, Client.Instance.CharacterData.EquipmentManager.PhongCu);
+        LoadEquipment(itemTrangSuc, ItemType.TrangSuc, Client.Instance.CharacterData.EquipmentManager.TrangSuc);
 
-        // load data equipment 
-        for (int i = 0; i < listItemSlotEquipment.Count; i++)
-        {
-            //var item = listItemSlotThanThongs[i];
-            //ThanThong thanThongData = null;
-            //if (i < Player.characterStatsBase.thanThongEquip.Count)
-            //{
-            //    thanThongData = GameConfig.GetThanThongWithId(Player.characterStatsBase.thanThongEquip[i]);
-            //}
-
-           // InitVisualItemSkill(item, thanThongData);
-        }
         // unEquip Acion
-        foreach (var currentItem in listItemSlotEquipment)
-        {
-            currentItem.InitAction(null, null, () =>
-            {
-                Debug.Log("có vào đây");
-                if (currentItem.itemData == null)
-                {
-                    Debug.Log("data null");
+        
 
-                    return;
-                }
-
-                Observer.Notify(EventList.Network.UNEQUIP_THANTHONG, listItemSlotThanThongs.IndexOf(currentItem), this);
-                Pool.Get<UIManager>().InitVisualItemSkill(currentItem, null);
-
-            });
-        }
         var characterData = CharData;
         var gameConfig = Pool.Get<GameManager>();
         List<ItemRef> itemDatas = new List<ItemRef>();
@@ -839,78 +850,9 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         {
             ItemInventory.InitAction(null,  () =>
             {
-
-                if(ItemInventory.itemRef.Type == ItemType.LinhDan)
-                {
-                    if(ItemInventory.iItemData is LinhDan danDuoc)
-                    {
-                        if(danDuoc.ETypeDan == ETypeDan.DanBuff || danDuoc.ETypeDan == ETypeDan.DanCombat)
-                        {
-                            selectNum.Show(0.15f);
-                            selectNum.SetMin(0);
-                            int maxValue = 0;
-                            if(danDuoc.ETypeDan == ETypeDan.DanBuff)
-                            {
-                                maxValue = ItemInventory.itemRef.Count;
-                            }    
-                            else
-                            {
-                                maxValue = danDuoc.NhinThuoc; /// nhịn thuốc - cho số lượng đan loại này đang đc sử dụng trong list
-                            }    
-                            selectNum.SetMax(maxValue);
-                            selectNum.ValueChanged += (value) =>
-                            {
-                                selectNum.SetText($"{ItemInventory.iItemData.Name} x{value}");
-                            };
-                            selectNum.confirmAction.RemoveAllListeners();
-                            selectNum.confirmAction.AddListener(() =>
-                            {
-                                var value = selectNum.GetValue();
-                                if (value >= 1)
-                                {
-                                    Observer.Notify(EventList.Network.USE_DAN, this, ItemInventory.itemRef.Id, value);
-                                    ItemInventory.AddCount(-value);
-                                }
-
-                            });
-                        }
-                          
-
-                    }
-                    //Observer.Notify(EventList.Network.USE_DAN,);
-                }    
-
-                //if (slotItemGift.itemRef.SelfId != ItemInventory.itemRef.SelfId)
-                //{
-                //    if (ItemInventory.itemRef.Type == ItemType.ThanThong || ItemInventory.itemRef.Type == ItemType.CongPhap)
-                //    {
-                //        Pool.Get<UIManager>().InitVisualItemSkill(slotItemGift, (BaseSkill)ItemInventory.itemData);
-
-
-                //    }
-                //    Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, ItemInventory.iItemData, ItemInventory.itemRef);
-                //    slotItemGift.InitCount(1);
-                //}
-                //else
-                //{
-                //    if (slotItemGift.count < ItemInventory.count)
-                //    {
-                //        slotItemGift.AddCount(1);
-                //    }
-                //}
-
-                //foreach (var item in listItemSlotThanThongs)
-                //{
-                //    if (item.itemData != null)
-                //    {
-                //        DisableHighlight(item);
-                //    }
-                //}
-
-
-
-
-
+                ItemProviderFactory.GetUseItemProvider(ItemInventory.itemRef.Type).UseItem(ItemInventory);
+               
+             
             },null);
         });
         bag.InitBag(false);
@@ -963,11 +905,25 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
     public void SuccessUseDan()
     {
-        throw new NotImplementedException();
     }
 
     public void FailUseDan(string message)
     {
-        throw new NotImplementedException();
+    }
+
+    public void SuccessEquipEquipment(List<TaskDailySnapshot> listTask)
+    {
+    }
+
+    public void FailEquipEquipment(string message)
+    {
+    }
+
+    public void SuccessUnEquipEquipment()
+    {
+    }
+
+    public void FailUnEquipEquipment(string message)
+    {
     }
 }

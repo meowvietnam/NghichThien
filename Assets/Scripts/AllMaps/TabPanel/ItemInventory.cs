@@ -6,14 +6,6 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-public enum ETypeInventoryItem
-{
-
-    None,
-    Skill,
-    Item,
-
-}
 public class ItemInventory : BaseItemUI
 {
     [SerializeField] private GameObject hasItem;
@@ -62,7 +54,7 @@ public class ItemInventory : BaseItemUI
     {
         this.itemRef = itemRef;
     }
-    public void InitInventory(ETypeInventoryItem type,ItemRef itemRefInven,IItemData iItemData , EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
+    public void InitInventory(ItemRef itemRefInven,IItemData iItemData , EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
     {
 
         this.itemRef = itemRefInven;
@@ -86,30 +78,14 @@ public class ItemInventory : BaseItemUI
         {
             SetEventButton(btnShowInfor, () =>
             {
-                ToolTipItems.Instance.InitShow(this,frame.sprite,qualityFull.sprite,textName.color,type, itemRefInven, iItemData , eActionShowItemInfor);
+                ToolTipItems.Instance.InitShow(this,frame.sprite,qualityFull.sprite,textName.color, itemRefInven, iItemData , eActionShowItemInfor);
             });
         }    
         textName.text = itemData.nameItem;
 
-        switch (type)
-        {
-            case ETypeInventoryItem.None:
-                break;
-            case ETypeInventoryItem.Skill:
-                textCount.gameObject.SetActive(false);
-                leftUpMask.gameObject.SetActive(false);
-
-                break;
-            case ETypeInventoryItem.Item:
-                textCount.gameObject.SetActive(true);
-                leftUpMask.gameObject.SetActive(false);
-
-                //leftUpMask.gameObject.SetActive(true);
-                break;
-            default:
-                break;
-        }
-        if(itemRef != null)
+        textCount.gameObject.SetActive(false);
+        leftUpMask.gameObject.SetActive(false);
+        if (itemRef != null)
         {
             if (itemRef.Type == ItemType.Furnace || itemRef.Type == ItemType.VuKhi || itemRef.Type == ItemType.PhongCu || itemRef.Type == ItemType.TrangSuc)
             {

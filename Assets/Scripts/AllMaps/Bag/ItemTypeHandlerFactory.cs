@@ -45,7 +45,7 @@ public class SkillBagItemTypeHandler : IBagItemTypeHandler
             data = gameManager.FindCongPhapWithItemRef(itemRef);
         }
 
-        uiManager.InitVisualItemSkill(currentItem, data, itemRef, ETypeInventoryItem.Item);
+        uiManager.InitVisualItemSkill(currentItem, data, itemRef);
         uiManager.InitVisualItemInventory(currentItem, null, itemRef, isIconSkillBase);
     }
 }
@@ -55,7 +55,7 @@ public class EquipmentBagItemTypeHandler : IBagItemTypeHandler
     public void Handle(ItemInventory currentItem, ItemRef itemRef, bool isIconSkillBase)
     {
         var uiManager = Pool.Get<UIManager>();
-        uiManager.InitVisualEquipment(currentItem, null, itemRef, ETypeInventoryItem.Item);
+        uiManager.InitVisualEquipment(currentItem, null, itemRef);
         uiManager.InitVisualItemInventory(currentItem, null, itemRef, isIconSkillBase);
     }
 }

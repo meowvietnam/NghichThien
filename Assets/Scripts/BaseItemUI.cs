@@ -26,10 +26,9 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
             selectHighLight.gameObject.SetActive(isActive);
         }    
     }
-    public virtual void Init(BaseItemData itemData , Sprite frameSprite, Action actionHolder = null , Action actionPointerUp = null)
+    public virtual void Init(BaseItemData itemData , Sprite frameSprite)
     {
         InitItemData(itemData, frameSprite);
-        InitAction(actionHolder, actionPointerUp);
     }
     [Button]
     public virtual void InitItemData(BaseItemData itemData , Sprite frameSprite)
@@ -59,17 +58,7 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
         this.actionPointerUp = actionPointerUp;
         this.actionPointerDown = actionPointerDown;
 
-        if (actionHolder != null) 
-        {
-        }    
-        if(actionPointerUp != null)
-        {
-
-        }
-        if (actionPointerDown != null)
-        {
-
-        }
+    
     }
     public virtual void EventHolder()
     {
@@ -100,6 +89,7 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
     {
         enumerator = StartCoroutine(IECheckHolder());
         actionPointerDown?.Invoke();
+        Debug.Log("cos goi OnPointerDown item ui");
 
     }
 

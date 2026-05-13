@@ -40,7 +40,7 @@ public class UIManager : BaseBehaviour
         int index = (int)tierEquipment + 1;
         return (spriteFrames[index], spriteQualityFulls[index], colorQualitys[index]);
     }
-    public void InitVisualItemSkill(ItemInventory item, BaseSkill data,ItemRef itemRef = null, ETypeInventoryItem eTypeInventoryItem = ETypeInventoryItem.Skill)
+    public void InitVisualItemSkill(ItemInventory item, BaseSkill data,ItemRef itemRef = null)
     {
         Sprite frame = null;
         if (data != null)
@@ -55,28 +55,33 @@ public class UIManager : BaseBehaviour
 
         item.Init(data, frame);
 
-        item.InitInventory(eTypeInventoryItem, itemRef, null);
+        item.InitInventory(itemRef, null);
 
 
     }
-    public void InitVisualEquipment(ItemInventory item, BaseItemData data, ItemRef itemRef = null, ETypeInventoryItem eTypeInventoryItem = ETypeInventoryItem.Skill)
+    public void InitVisualEquipment(ItemInventory item, BaseItemData data, ItemRef itemRef = null)
     {
         Sprite frame = null;
         CreateCharacter.Equipment equipment = null;
-        var typeCurrent = itemRef.Type;
+        if(itemRef != null)
+        {
+            var typeCurrent = itemRef.Type;
 
-        // code cũ 
-        //if (typeCurrent == ItemType.VuKhi)
-        //    equipment = Client.Instance.CharacterData.InventoryManager.VuKhis.FirstOrDefault(...);
-        //else if (typeCurrent == ItemType.PhongCu)
-        //    equipment = Client.Instance.CharacterData.InventoryManager.PhongCus.FirstOrDefault(...);
-        //else if (typeCurrent == ItemType.TrangSuc)
-        //    equipment = Client.Instance.CharacterData.InventoryManager.TrangSucs.FirstOrDefault(...);
-        //else if (typeCurrent == ItemType.BiKhi)  // ← PHẢI SỬA UIManager nếu muốn update
-        //    equipment = Client.Instance.CharacterData.InventoryManager.BiKhis.FirstOrDefault(...);
-        // ...
-        // Sử dụng Abstract Factory thay vì if-else chain
-        equipment = ItemProviderFactory.GetProvider<CreateCharacter.Equipment>(typeCurrent).GetDataItemById(itemRef.Id);
+            // code cũ 
+            //if (typeCurrent == ItemType.VuKhi)
+            //    equipment = Client.Instance.CharacterData.InventoryManager.VuKhis.FirstOrDefault(...);
+            //else if (typeCurrent == ItemType.PhongCu)
+            //    equipment = Client.Instance.CharacterData.InventoryManager.PhongCus.FirstOrDefault(...);
+            //else if (typeCurrent == ItemType.TrangSuc)
+            //    equipment = Client.Instance.CharacterData.InventoryManager.TrangSucs.FirstOrDefault(...);
+            //else if (typeCurrent == ItemType.BiKhi)  // ← PHẢI SỬA UIManager nếu muốn update
+            //    equipment = Client.Instance.CharacterData.InventoryManager.BiKhis.FirstOrDefault(...);
+            // ...
+            // Sử dụng Abstract Factory thay vì if-else chain
+            equipment = ItemProviderFactory.GetProvider<CreateCharacter.Equipment>(typeCurrent).GetDataItemById(itemRef.Id);
+
+        }    
+
         if(equipment == null)
         {
             Debug.Log("equipment null");
@@ -100,7 +105,7 @@ public class UIManager : BaseBehaviour
         }
 
         item.Init(data, frame);
-        item.InitInventory(eTypeInventoryItem, itemRef, null);
+        item.InitInventory(itemRef, null);
     }
     public void InitVisualItemInventory(ItemInventory item, IItemData data, ItemRef itemRef , bool isIconSkillBase = false)
     {
@@ -133,7 +138,7 @@ public class UIManager : BaseBehaviour
         }
 
 
-        item.InitInventory(ETypeInventoryItem.Item, itemRef, data);
+        item.InitInventory(itemRef, data);
 
 
 

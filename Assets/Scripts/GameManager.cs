@@ -531,8 +531,13 @@ public class GameManager : BaseBehaviour
     };
 
     public static Dictionary<Tier, int> PriceFurnaceWithTierPerDurability => PriceHerbWithTier;
-  
+    public static Dictionary<ItemType, EquipmentType> ItemTypeToEquipemtType = new Dictionary<ItemType, EquipmentType>
+    {
+        { ItemType.VuKhi, EquipmentType.Weapon },
+        { ItemType.PhongCu, EquipmentType.Armor },
+        { ItemType.TrangSuc, EquipmentType.Jewelry },
 
+    };
     public static Dictionary<BaseSkill.ETierSkill, int> PriceTTWithTier = new Dictionary<BaseSkill.ETierSkill, int>
     {
         { BaseSkill.ETierSkill.NhanGiaiHa, 25 },
