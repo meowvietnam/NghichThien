@@ -10,7 +10,7 @@ namespace Skill
         public CongPhap congPhap;
         public SecureInt level;
     }
-    public abstract class CongPhap : BaseSkill
+    public abstract class CongPhap : BaseSkill , IStaticCombatEffect
     {
         [SerializeField] private int tocDoTuLuyenBase;
         [SerializeField] public bool isDonThuat = false;
@@ -54,7 +54,7 @@ namespace Skill
         {
             var equip = congPhapMonos.FirstOrDefault(x =>
                     x.congPhap != null &&
-                    x.congPhap.GetType() == this.GetType() && // So sánh kiểu chính xác của class thực tế
+                    x.congPhap.Id == this.Id && // So sánh kiểu chính xác của class thực tế
                     x.congPhap.eTypeSkill == this.eTypeSkill  // Khớp loại kỹ năng
             );
 

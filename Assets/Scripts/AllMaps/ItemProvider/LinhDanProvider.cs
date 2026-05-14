@@ -68,7 +68,7 @@ namespace AllMaps.ItemProvider
                     }
                     else
                     {
-                        maxValue = itemInventory.itemRef.Count <= danDuoc.NhinThuoc ? itemInventory.itemRef.Count : danDuoc.NhinThuoc - Client.Instance.CharacterData.EquipmentManager.DanCombatUseds.FirstOrDefault(x => x.Id == itemInventory.itemRef.Id).Count; /// nhịn thuốc - cho số lượng đan loại này đang đc sử dụng trong list
+                        maxValue = itemInventory.itemRef.Count <= Client.Instance.CharacterData.Progression.Level ? itemInventory.itemRef.Count : Client.Instance.CharacterData.Progression.Level; ///
                         if (maxValue <= 0)
                         {
                             NotifyGroup.Instance.Show($"Đã đạt tốt đa số lần sử dụng {itemInventory.iItemData.Name} hãy chiến đấu để làm mới");

@@ -86,7 +86,22 @@ namespace LongDH.LongDHModules
             CallbackPara.Clear();
             CallbackVoid.Clear();
         }
+        // Thêm vào trong class Observer
+        public static void RemoveObserversForEvents(IEnumerable<string> eventNames)
+        {
+            foreach (var eventName in eventNames)
+            {
+                if (CallbackPara.ContainsKey(eventName))
+                {
+                    CallbackPara.Remove(eventName);
+                }
 
+                if (CallbackVoid.ContainsKey(eventName))
+                {
+                    CallbackVoid.Remove(eventName);
+                }
+            }
+        }
         #endregion
 
         #region NOTIFY

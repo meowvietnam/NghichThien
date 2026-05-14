@@ -26,7 +26,7 @@ public class SungDoanh : NgoDaoCombat
 
         if (caster == null) return;
 
-        if (caster.congPhapDynamic.Any(x => x.GetType() == this.GetType()))
+        if (caster.ngoDaoCombatsDynamic.Any(x => x.Id == this.Id))
         {
             ExecuteNgoDao2(caster, target, data);
 
@@ -36,7 +36,7 @@ public class SungDoanh : NgoDaoCombat
     }
     public void ExecuteNgoDao2(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if (caster.ngoDaoCombatsDynamic.Count(x => x is TamTrai) >= requireSave)
+        if (caster.ngoDaoCombatsDynamic.Count(x => x is SungDoanh) >= requireSave)
         {
             int count = caster.thanThongCurrentUse.linhKhiTieuTan.Sum(x => x.count);
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, buff * count);

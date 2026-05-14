@@ -1019,6 +1019,29 @@ public abstract class BaseSkill : BaseItemData
     public void KiemY(CharacterCombat caster)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, 1);
-    }    
-  
+    }
+
+    public static BaseSkill.ETypeSkill GetETypeSkillWithLinhKhi(ELinhKhi elinhKhi)
+    {
+        switch (elinhKhi)
+        {
+            case ELinhKhi.None:
+                break;
+            case ELinhKhi.Kim:
+                return BaseSkill.ETypeSkill.Kim;
+            case ELinhKhi.Moc:
+                return BaseSkill.ETypeSkill.Moc;
+            case ELinhKhi.Thuy:
+                return BaseSkill.ETypeSkill.Thuy;
+            case ELinhKhi.Hoa:
+                return BaseSkill.ETypeSkill.Hoa;
+            case ELinhKhi.Tho:
+                return BaseSkill.ETypeSkill.Tho;
+            case ELinhKhi.Ma:
+                break;
+            default:
+                break;
+        }
+        return BaseSkill.ETypeSkill.None;
+    }
 }

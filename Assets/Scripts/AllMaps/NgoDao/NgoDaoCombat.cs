@@ -2,7 +2,7 @@ using System.Linq;
 using AllMaps.NgoDao;
 using UnityEngine;
 
-public abstract class NgoDaoCombat : NgoDao
+public abstract class NgoDaoCombat : NgoDao , IStaticCombatEffect
 {
     public abstract void InitPosCallExecute(CharacterCombat caster);
     public abstract void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data);
@@ -15,7 +15,7 @@ public abstract class NgoDaoCombat : NgoDao
 
         if (caster == null) return;
 
-        if (caster.ngoDaoCombats.Any(x => x.GetType() == this.GetType()))
+        if (caster.ngoDaoCombats.Any(x => x.Id == this.Id))
         {
             ExecuteNgoDao(caster, target,data);
 

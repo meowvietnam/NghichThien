@@ -38,6 +38,7 @@ public class PrepareCombatPanel : Popup , ISingleton
             if (gameManager.enemyCombat == null) return;
             Pool.Get<UIManager>().panelGroup.SetActive(false);
             Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
+            this.Hide();
             SceneManager.LoadScene("Combat");
 
         });

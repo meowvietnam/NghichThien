@@ -20,6 +20,7 @@ using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.Networking.UnityWebRequest;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
+using Network;
 
 public enum ETypeVisualChar
 {
@@ -97,6 +98,9 @@ public class CharacterCombat : MonoBehaviour
     public List<NgoDaoCombat> ngoDaoCombats = new List<NgoDaoCombat>();
     public List<NgoDaoCombat> ngoDaoCombatsDynamic = new List<NgoDaoCombat>();
 
+    public List<CountStack<BaseDanDuocCombat>> danDuocCombats = new List<CountStack<BaseDanDuocCombat>>();
+    public List<BaseDanDuocCombat> danDuocCombatsDynamic = new List<BaseDanDuocCombat>();
+
     public List<AmKinhEntry> listAmKinhTT = new List<AmKinhEntry>();
     public SecureBool isAutoCastSkill;
     public Dictionary<BaseSkill,GameObject> effectSkillNoDestroy = new Dictionary<BaseSkill,GameObject>();
@@ -161,7 +165,7 @@ public class CharacterCombat : MonoBehaviour
         specialThanThongImpactAfterPlaySkill.Add(thanThong);
         int newValue = currentValue+1;
 
-        Observer.Notify(EventList.Combat.ADD_BASESKILL,this, thanThong, newValue,currentValue , ThanThong.GetDaiCanhGioi(this));
+        Observer.Notify(EventList.Combat.ADD_COMBATEFFECT,this, thanThong, newValue,currentValue , ThanThong.GetDaiCanhGioi(this));
 
         // call observer event add UI 
 
@@ -169,26 +173,26 @@ public class CharacterCombat : MonoBehaviour
     public void RemoveAllThanThongImpactAfterPlaySkill(ThanThong thanThong)
     {
         // Lấy type của đối tượng truyền vào
-        var typeToRemove = thanThong.GetType();
-        int currentValue = specialThanThongImpactAfterPlaySkill.Count(item => item.GetType() == typeToRemove);
+        var typeToRemove = thanThong.Id;
+        int currentValue = specialThanThongImpactAfterPlaySkill.Count(item => item.Id == typeToRemove);
         // Xóa tất cả các item có cùng Type
-        specialThanThongImpactAfterPlaySkill.RemoveAll(item => item.GetType() == typeToRemove);
-        Observer.Notify(EventList.Combat.ADD_BASESKILL,this, thanThong, 0, currentValue, ThanThong.GetDaiCanhGioi(this));
+        specialThanThongImpactAfterPlaySkill.RemoveAll(item => item.Id == typeToRemove);
+        Observer.Notify(EventList.Combat.ADD_COMBATEFFECT,this, thanThong, 0, currentValue, ThanThong.GetDaiCanhGioi(this));
 
         // call observer event update UI
     }
     public void RemoveOneThanThongImpactAfterPlaySkill(ThanThong thanThong)
     {
         // Lấy type của đối tượng truyền vào
-        var typeToRemove = thanThong.GetType();
+        var typeToRemove = thanThong.Id;
         int currentValue = specialThanThongImpactAfterPlaySkill.Count(x => x == thanThong);
 
         // Xóa tất cả các item có cùng Type
-        var thanThongRemove = specialThanThongImpactAfterPlaySkill.FirstOrDefault(item => item.GetType() == typeToRemove);
+        var thanThongRemove = specialThanThongImpactAfterPlaySkill.FirstOrDefault(item => item.Id == typeToRemove);
         specialThanThongImpactAfterPlaySkill.Remove(thanThongRemove);
         int newValue = currentValue - 1;
 
-        Observer.Notify(EventList.Combat.ADD_BASESKILL,this, thanThong, newValue,currentValue, ThanThong.GetDaiCanhGioi(this));
+        Observer.Notify(EventList.Combat.ADD_COMBATEFFECT,this, thanThong, newValue,currentValue, ThanThong.GetDaiCanhGioi(this));
 
         // call observer event update UI
     }
@@ -199,7 +203,7 @@ public class CharacterCombat : MonoBehaviour
             int currentValue = congPhapDynamic.Count(x => x.congPhap == cp.congPhap);
             congPhapDynamic.Add(cp);
             int newValue = currentValue + 1;
-            Observer.Notify(EventList.Combat.ADD_BASESKILL, this, cp.congPhap, newValue, currentValue, cp.level.Value);
+            Observer.Notify(EventList.Combat.ADD_COMBATEFFECT, this, cp.congPhap, newValue, currentValue, cp.level.Value);
 
         }
 
@@ -211,11 +215,17 @@ public class CharacterCombat : MonoBehaviour
         congPhapDynamic.RemoveAll(x =>
             x.congPhap == cp
         );
-        Observer.Notify(EventList.Combat.ADD_BASESKILL, this, cp, 0, currentValue, 1);
+        Observer.Notify(EventList.Combat.ADD_COMBATEFFECT, this, cp, 0, currentValue, 1);
 
        
 
     }
+    public void RemoveDanDuocDynamic(BaseDanDuocCombat dd)
+    {
+        danDuocCombatsDynamic.RemoveAll(x =>
+           x == dd
+        );
+    }    
     public void AddNgoDaoCombatDynamic(NgoDaoCombat nd, int count = 1)
     {
         for (int i = 0; i < count; i++)
@@ -503,7 +513,7 @@ public class CharacterCombat : MonoBehaviour
         // 1. Tìm chính xác cái Key đang nằm trong Dictionary dựa trên điều kiện của bạn
         var key = skillTichLuy.Keys.FirstOrDefault(x =>
                     x != null &&
-                    x.GetType() == thanThong.GetType() 
+                    x.Id == thanThong.Id 
                   );
 
         // 2. Nếu không tìm thấy Key phù hợp, trả về false ngay lập tức
@@ -612,12 +622,105 @@ public class CharacterCombat : MonoBehaviour
         return  characterStatsTemp.tocDoBay  + tangToc - troiChan;
 
     }
+    void LoadCongPhapCombatData(SecureInt idCP)
+    {
+        if (idCP == null)
+        {
+            Debug.Log("idCP bị null, không thể tiếp tục xử lý!");
+            return;
+        }
+
+        var CP = Pool.Get<GameManager>().GetCongPhapWithId(idCP.Value);
+        if (CP == null)
+        {
+            Debug.Log($"Không tìm thấy CongPhap trong Data với ID: {idCP.Value}");
+            return;
+        }
+
+        // 1. Kiểm tra InventoryManager và danh sách sở hữu
+        if (Client.Instance?.CharacterData?.InventoryManager?.CongPhapOwners == null)
+        {
+            Debug.Log("Danh sách CongPhapOwners bị null! Hãy kiểm tra lại dữ liệu Inventory khi Load.");
+        }
+        else
+        {
+            var ownerData = Client.Instance.CharacterData.InventoryManager.CongPhapOwners
+                            .FirstOrDefault(x => x.Id == idCP.Value);
+
+            if (ownerData == null)
+            {
+                Debug.Log($"Cảnh báo: ID {idCP.Value} có trong list IdEquip nhưng không tìm thấy trong Inventory.");
+            }
+
+            // 2. Kiểm tra danh sách congPhapEquip trước khi Add
+            if (congPhapEquip == null)
+            {
+                Debug.Log("Danh sách 'congPhapEquip' chưa được khởi tạo (null)! Đang tự động khởi tạo mới...");
+                congPhapEquip = new List<CongPhapMono>();
+            }
+
+            // Tính toán Level an toàn
+            int levelRecord = (ownerData != null) ? ownerData.Level : 1;
+
+            congPhapEquip.Add(new CongPhapMono
+            {
+                congPhap = CP,
+                level = levelRecord
+            });
+        }
+    }
+    void LoadData()
+    {
+        foreach (var item in characterStatsBase.thanThongEquip)
+        {
+            ThanThong thanThong = Pool.Get<GameManager>().GetThanThongWithId(item.Value);
+            if(thanThong != null )
+            {
+                thanThongEquip.Add(thanThong);
+
+            }
+
+        }
+        LoadCongPhapCombatData(characterStatsBase.chuTu1Used);
+        LoadCongPhapCombatData(characterStatsBase.chuTu2Used);
+        LoadCongPhapCombatData(characterStatsBase.phuTu1Used);
+        LoadCongPhapCombatData(characterStatsBase.phuTu2Used);
+        LoadCongPhapCombatData(characterStatsBase.phuTu3Used);
+        LoadCongPhapCombatData(characterStatsBase.phuTu4Used);
+        LoadCongPhapCombatData(characterStatsBase.donThuatUsed);
+        foreach (var item in characterStatsBase.ngoDaoSaves)
+        {
+            AllMaps.NgoDao.NgoDao ngoDao = Pool.Get<GameManager>().GetNgoDaoWithId(item.Value);
+            if (ngoDao != null &&ngoDao is NgoDaoCombat ngoDaoCombat)
+            {
+                ngoDaoCombats.Add(ngoDaoCombat);
+
+            }
+
+        }
+        foreach (var item in characterStatsBase.danDuocCombat)
+        {
+            var data = Pool.Get<GameManager>().GetDanDuocWithId(item.id);
+            if (data != null)
+            {
+                danDuocCombats.Add(new CountStack<BaseDanDuocCombat>
+                {
+                    type = data,
+                    count = item.value // Sửa lại đúng tên biến ở đây
+                });
+            }
+
+        }
+    }
     public void Init(GameManager.CharCombatInit charCombatInit )
     {
         var characterStat = charCombatInit.charStats;
         characterVisualControl.Init(charCombatInit.eTypeVisual, characterStat);
         characterStatsBase = characterStat;
         characterStatsTemp = characterStat.Clone();
+        LoadData();
+        
+
         thanThongCoolDown.Clear();
         currentCharGender.gameObject.SetActive(true);
         characterVisualControl.AnimIdle();
@@ -629,23 +732,15 @@ public class CharacterCombat : MonoBehaviour
         {
             AddCPDynamic(cp);
         }
-        foreach (var cp in congPhapEquip)
+        foreach (var item in GetStaticCombatEffects())
         {
-            cp.congPhap.InitPosCallExecute(this);
-        }
-        foreach (var nd in ngoDaoCombats)
-        {
-           nd.InitPosCallExecute(this);
+            item.InitPosCallExecute(this);
+
         }
         Debug.Log("dcmmm " + congPhapDynamic.Count);
-        foreach (var item in characterStat.thanThongEquip)
-        {
-            thanThongEquip.Add(Pool.Get<GameManager>().GetThanThongWithId(item.Value));
-            
-        }
-       
+      
 
-        if(currentVuKhiVisual != null)
+        if (currentVuKhiVisual != null)
         {
             currentVuKhiVisual.Init(characterStatsBase.vuKhi.Item.IconFight);
         }
@@ -655,7 +750,19 @@ public class CharacterCombat : MonoBehaviour
 
 
     }
+    public List<IStaticCombatEffect> GetStaticCombatEffects()
+    {
+        // Gom tất cả các danh sách lẻ vào một danh sách interface chung
+        List<IStaticCombatEffect> effects = new List<IStaticCombatEffect>();
 
+        // Dùng AddRange để thêm toàn bộ phần tử từ các List con
+        // Giả sử congPhapEquip, ngoDaoCombats, danDuocCombats đều là List các object kế thừa IStaticCombatEffect
+        if (congPhapEquip != null) effects.AddRange(congPhapEquip.Select(x => x.congPhap));
+        if (ngoDaoCombats != null) effects.AddRange(ngoDaoCombats);
+        if (danDuocCombats != null) effects.AddRange(danDuocCombats.Select(x=>x.type));
+
+        return effects;
+    }
     public void HapThuLinhKhi(ELinhKhi elinhKhi , int count)
     {
         switch (elinhKhi)

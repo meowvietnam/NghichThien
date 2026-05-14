@@ -29,7 +29,7 @@ public class ManKiem : NgoDaoCombat
 
         if (caster == null) return;
         // kiểm tra dame được truyền vào có phải là mộc linh khí không
-        if (caster.ngoDaoCombats.Any(x => x.GetType() == this.GetType()) && eTypeSkills != null && BaseSkill.CheckIsEqualETypeSkill(eTypeSkills, eTypeRequire))
+        if (caster.ngoDaoCombats.Any(x => x.Id == this.Id) && eTypeSkills != null && BaseSkill.CheckIsEqualETypeSkill(eTypeSkills, eTypeRequire))
         {
             Action(caster, target);
 

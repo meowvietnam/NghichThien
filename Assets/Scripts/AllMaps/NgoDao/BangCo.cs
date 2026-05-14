@@ -12,7 +12,7 @@ public class BangCo : NgoDaoCombat
 
         if (target == null) return;
 
-        if (target.ngoDaoCombatsDynamic.Any(x => x.GetType() == this.GetType()))
+        if (target.ngoDaoCombatsDynamic.Any(x => x.Id == this.Id))
         {
             ExecuteNgoDao2(caster, target, data);
 

@@ -20,7 +20,7 @@ public abstract class NeTranhTT : ThanThong
         CharacterCombat takeDameChar = (CharacterCombat)data[1];
         int index = (int)data[2];
         if (takeDameChar == null) return;
-        if (!takeDameChar.specialThanThongImpactAfterPlaySkill.Any(x=>x.GetType() == this.GetType())) return;
+        if (!takeDameChar.specialThanThongImpactAfterPlaySkill.Any(x=>x.Id == this.Id)) return;
         if (takeDameChar.allDamages[index] == -1) return;
         if (CombatStatic.IsActiveWithPercent(percentNeTranh[GetIndexLevelThanThong(takeDameChar)]))
         {
