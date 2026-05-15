@@ -122,13 +122,11 @@ namespace DumpGame
         {
             var fields = classType.GetFields(
                 BindingFlags.Instance |
-                BindingFlags.Static |
                 BindingFlags.Public |
                 BindingFlags.NonPublic |
                 BindingFlags.DeclaredOnly
             );
             var properties = classType.GetProperties(BindingFlags.Instance |
-                                                     BindingFlags.Static |
                                                      BindingFlags.Public |
                                                      BindingFlags.NonPublic |
                                                      BindingFlags.DeclaredOnly);
