@@ -1,12 +1,16 @@
 ﻿using Sirenix.OdinInspector;
 using System.Collections.Generic;
+using System.Linq;
 using AllMaps.NgoDao;
+using DumpGame;
+using Network;
+using Network.Extensions;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = nameof(NgoDaoResource), menuName = "Ngộ Đạo/" + nameof(NgoDaoResource))]
-public class NgoDaoResource : BaseData
+public class NgoDaoResource : BaseData, IMemorySerializable<NgoDaoResource>
 {
-    [ShowInInspector] public List<NgoDaoList> ngoDao = new List<NgoDaoList>(5);
+    [ShowInInspector] public List<NgoDaoList> ngoDao = new(5);
 
     [System.Serializable]
     public class NgoDaoList
@@ -73,5 +77,27 @@ public class NgoDaoResource : BaseData
         }
 
         return levelIndex + 1;
+    }
+
+    public override int ByteSize()
+    {
+        return base.ByteSize() + ngoDao.Count.ByteSize()
+                               + ngoDao.Sum(x => x.list.Select(y => y.Id).ByteSize())
+                               + eTypeSkill.ByteSize();
+    }
+    public void Deserialize(IReader reader, ref NgoDaoResource value)
+    {
+        throw new System.NotImplementedException();
+    }
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+        writer.Write(ngoDao.Count);
+        foreach (var nd in ngoDao)
+        {
+            var ngoDaoList = nd.list;
+            writer.WriteArray(ngoDaoList.Select(x => x.Id));
+        }
+        writer.Write(eTypeSkill);
     }
 }

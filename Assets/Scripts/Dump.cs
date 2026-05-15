@@ -670,12 +670,10 @@ namespace DumpGame
 
     public class Dump : MonoBehaviour
     {
-        [SerializeField] private List<NgoDao> ngoDaos;
-        [SerializeField] private List<CongPhap> congPhaps;
-        [SerializeField] private List<ThanThong> thanThongs;
         [SerializeField] public List<MetaData> metaDatas;
         [SerializeField] public List<MemberDefinition> memberDefinitions;
-
+        [SerializeField] private NDCPTTManager manager;
+        [SerializeField] private NgoDaoManager ngoDaoManager;
         [Button("Refresh")]
         public void Refresh()
         {
@@ -689,9 +687,15 @@ namespace DumpGame
                 list.Add(data);
             }
 
-            ngoDaos = list.OfType<NgoDao>().ToList();
-            congPhaps = list.OfType<CongPhap>().ToList();
-            thanThongs = list.OfType<ThanThong>().ToList();
+            var ngoDaos = list.OfType<NgoDao>().ToList();
+            var congPhaps = list.OfType<CongPhap>().ToList();
+            var thanThongs = list.OfType<ThanThong>().ToList();
+            manager = new NDCPTTManager()
+            {
+                NgoDaos = ngoDaos,
+                CongPhaps = congPhaps,
+                ThanThongs = thanThongs
+            };
         }
 
         public string GetPath(Object obj)
@@ -772,6 +776,9 @@ namespace DumpGame
         public void GetMemberDefinitions()
         {
             memberDefinitions = new();
+            var ngoDaos = manager.NgoDaos;
+            var congPhaps = manager.CongPhaps;
+            var thanThongs = manager.ThanThongs;
             foreach (var ngoDao in ngoDaos)
             {
                 if (!(ngoDao is NgoDaoBuffStats))
@@ -868,6 +875,9 @@ namespace DumpGame
         [Button]
         public void ExtractMetaData()
         {
+            var ngoDaos = manager.NgoDaos;
+            var congPhaps = manager.CongPhaps;
+            var thanThongs = manager.ThanThongs;
             metaDatas = ngoDaos.Select(x => GetMetaData(x))
                 .Concat(congPhaps.Select(y => GetMetaData(y)))
                 .Concat(thanThongs.Select(z => GetMetaData(z)))
@@ -880,23 +890,25 @@ namespace DumpGame
             File.WriteAllText(Path.Combine(Application.dataPath, "Exports", "metadatas.json"), json);
         }
 
-        [SerializeField] private NDCPTTManager manager;
 
         [Button]
-        public void DumpAll()
+        public void DumpNDCPTT()
         {
-            var t = new NDCPTTManager()
-            {
-                NgoDaos = ngoDaos,
-                CongPhaps = congPhaps,
-                ThanThongs = thanThongs,
-            };
-            var byteSize = t.ByteSize();
-            Debug.Log(byteSize);
-            var writer = new Writer(byteSize);
-            writer.Write(t);
-            var reader = new Reader(writer.Buffer);
-            manager = reader.Read<NDCPTTManager>();
+           var writer = new Writer(manager.ByteSize());
+           writer.Write(manager);
+           var path = Path.Combine(Application.dataPath, "Exports", "NDCPTTManager.bin");
+           File.WriteAllBytes(path, writer.Buffer);
+           Debug.Log(path);
+        }
+
+        [Button]
+        public void DumpNDResources()
+        {
+            var writer = new Writer(ngoDaoManager.ByteSize());
+            writer.Write(ngoDaoManager);
+            var path = Path.Combine(Application.dataPath, "Exports", "NgoDaoManager.bin");
+            File.WriteAllBytes(path, writer.Buffer);
+            Debug.Log(path);
         }
     }
 }
