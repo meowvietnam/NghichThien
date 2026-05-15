@@ -25,7 +25,7 @@ public static partial class EventList
         public const string CHARACTER_TAKE_DAME_BY_STATIC = "GamePlay.CHARACTER_TAKE_DAME_BY_STATIC";
         public const string KIEM_KHI = "Combat.KIEM_KHI";
 
-        public const string ADD_COMBATEFFECT = "Combat.ADD_COMBATEFFECT";
+        public const string ADD_SKILL = "Combat.ADD_SKILL";
         public const string UPDATE_AMKINH_THANTHONG= "Combat.UPDATE_AMKINH_THANTHONG";
         public const string CHARACTER_HEALING = "Combat.CHARACTER_HEALING";
         public static void RemoveAllCombatObservers()

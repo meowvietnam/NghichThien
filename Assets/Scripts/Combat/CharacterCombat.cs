@@ -165,7 +165,7 @@ public class CharacterCombat : MonoBehaviour
         specialThanThongImpactAfterPlaySkill.Add(thanThong);
         int newValue = currentValue+1;
 
-        Observer.Notify(EventList.Combat.ADD_COMBATEFFECT,this, thanThong, newValue,currentValue , ThanThong.GetDaiCanhGioi(this));
+        Observer.Notify(EventList.Combat.ADD_SKILL,this, thanThong, newValue,currentValue , ThanThong.GetDaiCanhGioi(this));
 
         // call observer event add UI 
 
@@ -177,7 +177,7 @@ public class CharacterCombat : MonoBehaviour
         int currentValue = specialThanThongImpactAfterPlaySkill.Count(item => item.Id == typeToRemove);
         // Xóa tất cả các item có cùng Type
         specialThanThongImpactAfterPlaySkill.RemoveAll(item => item.Id == typeToRemove);
-        Observer.Notify(EventList.Combat.ADD_COMBATEFFECT,this, thanThong, 0, currentValue, ThanThong.GetDaiCanhGioi(this));
+        Observer.Notify(EventList.Combat.ADD_SKILL,this, thanThong, 0, currentValue, ThanThong.GetDaiCanhGioi(this));
 
         // call observer event update UI
     }
@@ -192,7 +192,7 @@ public class CharacterCombat : MonoBehaviour
         specialThanThongImpactAfterPlaySkill.Remove(thanThongRemove);
         int newValue = currentValue - 1;
 
-        Observer.Notify(EventList.Combat.ADD_COMBATEFFECT,this, thanThong, newValue,currentValue, ThanThong.GetDaiCanhGioi(this));
+        Observer.Notify(EventList.Combat.ADD_SKILL,this, thanThong, newValue,currentValue, ThanThong.GetDaiCanhGioi(this));
 
         // call observer event update UI
     }
@@ -203,7 +203,7 @@ public class CharacterCombat : MonoBehaviour
             int currentValue = congPhapDynamic.Count(x => x.congPhap == cp.congPhap);
             congPhapDynamic.Add(cp);
             int newValue = currentValue + 1;
-            Observer.Notify(EventList.Combat.ADD_COMBATEFFECT, this, cp.congPhap, newValue, currentValue, cp.level.Value);
+            Observer.Notify(EventList.Combat.ADD_SKILL, this, cp.congPhap, newValue, currentValue, cp.level.Value);
 
         }
 
@@ -215,7 +215,7 @@ public class CharacterCombat : MonoBehaviour
         congPhapDynamic.RemoveAll(x =>
             x.congPhap == cp
         );
-        Observer.Notify(EventList.Combat.ADD_COMBATEFFECT, this, cp, 0, currentValue, 1);
+        Observer.Notify(EventList.Combat.ADD_SKILL, this, cp, 0, currentValue, 1);
 
        
 
