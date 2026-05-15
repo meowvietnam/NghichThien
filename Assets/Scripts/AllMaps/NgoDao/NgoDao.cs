@@ -1,16 +1,36 @@
-﻿using UnityEngine;
+﻿using Network;
+using Network.Extensions;
+using UnityEngine;
 
 namespace AllMaps.NgoDao
 {
-    public abstract class NgoDao : BaseData
+    public class NgoDao : BaseData, IMemorySerializable<NgoDao>
     {
         [SerializeField] public int require;
         [SerializeField] public BaseSkill.ETypeSkill[] eTypeRequire;
-
+        
         public virtual void Learn(INetworkEvent.ILearnNgoDao data)
         {
         }    
-        public abstract string GetDes();
-   
+        public virtual string GetDes() => string.Empty;
+        public new int ByteSize()
+        {
+            var byteSize = base.ByteSize();
+            return byteSize + require.ByteSize() + eTypeRequire.ByteSize(); 
+        }
+
+        public void Deserialize(IReader reader, ref NgoDao value)
+        {
+            BaseData baseValue = value;
+            baseValue.Deserialize(reader, ref baseValue);
+            value.require = reader.Read<int>();
+            value.eTypeRequire = reader.ReadArray<BaseSkill.ETypeSkill>();
+        }
+        public new void Serialize(IWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(require);
+            writer.WriteArray(eTypeRequire);
+        }
     }
 }

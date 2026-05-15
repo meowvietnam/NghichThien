@@ -1,4 +1,4 @@
-﻿ using AllMaps;
+﻿using AllMaps;
 using Base;
 using CreateCharacter;
 using DG.Tweening;
@@ -27,11 +27,11 @@ public enum ETypeVisualChar
 
     // --- Nhóm Luyện Khí ---
     EnemyLuyenKhiSoKi,
-    EnemyLuyenKhiTrungKi ,
-    EnemyLuyenKhiHauKi ,
+    EnemyLuyenKhiTrungKi,
+    EnemyLuyenKhiHauKi,
 
     // --- Nhóm Trúc Cơ ---
-    EnemyTrucCoSoKi ,
+    EnemyTrucCoSoKi,
     EnemyTrucCoTrungKi,
     EnemyTrucCoHauKi,
 
@@ -60,37 +60,30 @@ public enum ETypeVisualChar
     EnemyStory7,
     EnemyStory8,
     EnemyStory9_1,
-
 }
+
 public class CharacterCombat : MonoBehaviour
 {
-  
-  
-    public CombatManager CombatManager=>transform.GetComponentInParent<CombatManager>();
+    public CombatManager CombatManager => transform.GetComponentInParent<CombatManager>();
     [SerializeField] protected Text textSkillNameCall;
     [SerializeField] public CharacterVisualControl characterVisualControl;
     [SerializeField] public SkeletonGraphic currentCharGender => characterVisualControl.currentCharGender;
-    [SerializeField]
-    public List<CongPhapMono> congPhapEquip = new List<CongPhapMono>();
-    [SerializeField]
-    public List<ThanThong> thanThongEquip = new List<ThanThong>();
-    [SerializeField]
-    public List<CongPhapMono> congPhapDynamic = new List<CongPhapMono>();
-    [SerializeField]
-    public SecureInt allDameTaked => listDameTaked.Sum(x=>x.Value);
-    [SerializeField]
-    public SecureInt currentTurnDameTaked => listDameTaked.Count > 0 ? listDameTaked[^1] : null;
+    [SerializeField] public List<CongPhapMono> congPhapEquip = new List<CongPhapMono>();
+    [SerializeField] public List<ThanThong> thanThongEquip = new List<ThanThong>();
+    [SerializeField] public List<CongPhapMono> congPhapDynamic = new List<CongPhapMono>();
+    [SerializeField] public SecureInt allDameTaked => listDameTaked.Sum(x => x.Value);
+    [SerializeField] public SecureInt currentTurnDameTaked => listDameTaked.Count > 0 ? listDameTaked[^1] : null;
     public SecureInt oldTurnDameTaked => listDameTaked.Count > 1 ? listDameTaked[^2] : null;
 
-    [SerializeField]
-    public List<SecureInt> listDameTaked;
+    [SerializeField] public List<SecureInt> listDameTaked;
 
-    [SerializeField]
-    public List<BaseSkill> skillVoHieuHoa;
+    [SerializeField] public List<BaseSkill> skillVoHieuHoa;
+
     public void AddSkillVoHieuHoa(BaseSkill baseSkill)
     {
         skillVoHieuHoa.Add(baseSkill);
     }
+
     public int CurrentTurn => thanThongUseThisComBat.Count;
     public List<LinhKhiTieuTan> linhKhiTieuTanOldPlaySkill = new List<LinhKhiTieuTan>();
     public List<ThanThong> specialThanThongImpactAfterPlaySkill = new List<ThanThong>();
@@ -99,7 +92,8 @@ public class CharacterCombat : MonoBehaviour
 
     public List<AmKinhEntry> listAmKinhTT = new List<AmKinhEntry>();
     public SecureBool isAutoCastSkill;
-    public Dictionary<BaseSkill,GameObject> effectSkillNoDestroy = new Dictionary<BaseSkill,GameObject>();
+    public Dictionary<BaseSkill, GameObject> effectSkillNoDestroy = new Dictionary<BaseSkill, GameObject>();
+
     public void RemoveEffectSkillNoDestroy(BaseSkill skill)
     {
         effectSkillNoDestroy.TryGetValue(skill, out var effect);
@@ -107,11 +101,13 @@ public class CharacterCombat : MonoBehaviour
         {
             effect.Recycle();
         }
+
         effectSkillNoDestroy.Remove(skill);
-    }    
- 
+    }
+
     public SecureBool isCooldownWeapon;
     public List<PhapBaoVisual> vuKhiVisuals;
+
     public PhapBaoVisual currentVuKhiVisual
     {
         get
@@ -140,32 +136,34 @@ public class CharacterCombat : MonoBehaviour
             this.RemainingTurns = turns;
         }
     }
+
     public SecureBool isSkipTieuTanLinhKhi;
-    public void AddAmKinhTT(AmKinhTT thanThong , SecureInt countHiep)
+
+    public void AddAmKinhTT(AmKinhTT thanThong, SecureInt countHiep)
     {
         if (thanThong != null && thanThong != null)
         {
-            
         }
+
         AmKinhEntry amKinh = new AmKinhEntry(thanThong, countHiep);
         listAmKinhTT.Add(amKinh);
-        Observer.Notify(EventList.Combat.UPDATE_AMKINH_THANTHONG,this, amKinh);
+        Observer.Notify(EventList.Combat.UPDATE_AMKINH_THANTHONG, this, amKinh);
 
         // call observer event add UI 
-
     }
 
     public void AddThanThongImpactAfterPlaySkill(ThanThong thanThong)
     {
         int currentValue = specialThanThongImpactAfterPlaySkill.Count(x => x == thanThong);
         specialThanThongImpactAfterPlaySkill.Add(thanThong);
-        int newValue = currentValue+1;
+        int newValue = currentValue + 1;
 
-        Observer.Notify(EventList.Combat.ADD_BASESKILL,this, thanThong, newValue,currentValue , ThanThong.GetDaiCanhGioi(this));
+        Observer.Notify(EventList.Combat.ADD_BASESKILL, this, thanThong, newValue, currentValue,
+            ThanThong.GetDaiCanhGioi(this));
 
         // call observer event add UI 
-
     }
+
     public void RemoveAllThanThongImpactAfterPlaySkill(ThanThong thanThong)
     {
         // Lấy type của đối tượng truyền vào
@@ -173,10 +171,12 @@ public class CharacterCombat : MonoBehaviour
         int currentValue = specialThanThongImpactAfterPlaySkill.Count(item => item.GetType() == typeToRemove);
         // Xóa tất cả các item có cùng Type
         specialThanThongImpactAfterPlaySkill.RemoveAll(item => item.GetType() == typeToRemove);
-        Observer.Notify(EventList.Combat.ADD_BASESKILL,this, thanThong, 0, currentValue, ThanThong.GetDaiCanhGioi(this));
+        Observer.Notify(EventList.Combat.ADD_BASESKILL, this, thanThong, 0, currentValue,
+            ThanThong.GetDaiCanhGioi(this));
 
         // call observer event update UI
     }
+
     public void RemoveOneThanThongImpactAfterPlaySkill(ThanThong thanThong)
     {
         // Lấy type của đối tượng truyền vào
@@ -184,15 +184,18 @@ public class CharacterCombat : MonoBehaviour
         int currentValue = specialThanThongImpactAfterPlaySkill.Count(x => x == thanThong);
 
         // Xóa tất cả các item có cùng Type
-        var thanThongRemove = specialThanThongImpactAfterPlaySkill.FirstOrDefault(item => item.GetType() == typeToRemove);
+        var thanThongRemove =
+            specialThanThongImpactAfterPlaySkill.FirstOrDefault(item => item.GetType() == typeToRemove);
         specialThanThongImpactAfterPlaySkill.Remove(thanThongRemove);
         int newValue = currentValue - 1;
 
-        Observer.Notify(EventList.Combat.ADD_BASESKILL,this, thanThong, newValue,currentValue, ThanThong.GetDaiCanhGioi(this));
+        Observer.Notify(EventList.Combat.ADD_BASESKILL, this, thanThong, newValue, currentValue,
+            ThanThong.GetDaiCanhGioi(this));
 
         // call observer event update UI
     }
-    public void AddCPDynamic(CongPhapMono cp , int count = 1)
+
+    public void AddCPDynamic(CongPhapMono cp, int count = 1)
     {
         for (int i = 0; i < count; i++)
         {
@@ -200,10 +203,9 @@ public class CharacterCombat : MonoBehaviour
             congPhapDynamic.Add(cp);
             int newValue = currentValue + 1;
             Observer.Notify(EventList.Combat.ADD_BASESKILL, this, cp.congPhap, newValue, currentValue, cp.level.Value);
-
         }
-
     }
+
     public void RemoveCPDynamic(CongPhap cp)
     {
         int currentValue = congPhapDynamic.Count(x => x.congPhap == cp);
@@ -212,26 +214,21 @@ public class CharacterCombat : MonoBehaviour
             x.congPhap == cp
         );
         Observer.Notify(EventList.Combat.ADD_BASESKILL, this, cp, 0, currentValue, 1);
-
-       
-
     }
+
     public void AddNgoDaoCombatDynamic(NgoDaoCombat nd, int count = 1)
     {
         for (int i = 0; i < count; i++)
         {
             ngoDaoCombatsDynamic.Add(nd);
-           
-
         }
-
     }
+
     public void RemoveNgoDaoCombatDynamic(NgoDaoCombat nd)
     {
         ngoDaoCombatsDynamic.RemoveAll(x =>
-           x == nd
-       );
-
+            x == nd
+        );
     }
 
     protected void VisualPlaySkill(ThanThong thanThong)
@@ -240,33 +237,35 @@ public class CharacterCombat : MonoBehaviour
 
         textSkillNameCall.transform.parent.gameObject.SetActive(true);
         textSkillNameCall.text = thanThong.name;
-        DOVirtual.DelayedCall(thanThong.timeDelayTakeDame <=1 ? 1 : thanThong.timeDelayTakeDame/2, () =>
-        {
-            textSkillNameCall.transform.parent.gameObject.SetActive(false);
-        }).SetId("HideSkillName");
+        DOVirtual.DelayedCall(thanThong.timeDelayTakeDame <= 1 ? 1 : thanThong.timeDelayTakeDame / 2,
+            () => { textSkillNameCall.transform.parent.gameObject.SetActive(false); }).SetId("HideSkillName");
         StartAnimPunch();
     }
-    public void PlaySkill(ThanThong thanThong , List<LinhKhiTieuTan> linhKhiTieuTans)
+
+    public void PlaySkill(ThanThong thanThong, List<LinhKhiTieuTan> linhKhiTieuTans)
     {
         VisualPlaySkill(thanThong);
-         
+
         var thanThongCurrentUse = new PlaySkillData { thanThong = thanThong, linhKhiTieuTan = linhKhiTieuTans };
         thanThongUseThisComBat[^1].Add(thanThongCurrentUse);
-        if (!BaseSkill.CheckIsEqualETypeSkill(this,new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Hoa }))
+        if (!BaseSkill.CheckIsEqualETypeSkill(this, new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Hoa }))
         {
             if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt hoaDiem))
             {
                 RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoaDiem, hoaDiem);
             }
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TichMoc, out SecureInt TichMoc))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, TichMoc);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TichThuy, out SecureInt TichThuy))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, TichThuy);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out SecureInt danLuc))
         {
             for (int i = 0; i < danLuc; i++)
@@ -274,28 +273,28 @@ public class CharacterCombat : MonoBehaviour
                 TieuTanLinhKhi(GetRandomLinhKhiConLai(), 1);
             }
         }
-        if (BaseSkill.CheckIsEqualETypeSkill(this, new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Kiem })  && buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemTam, out SecureInt kiemTam))
+
+        if (BaseSkill.CheckIsEqualETypeSkill(this, new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Kiem }) &&
+            buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemTam, out SecureInt kiemTam))
         {
             AddBuffAndDebuffCount(EBuffAndDeBuff.NguKiemHiep, 1);
             AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, 1);
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemTam, 1);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnNac, out SecureInt anNac))
         {
-           if(!(thanThong is ThucThanThu || thanThong is ThuHonThuat || thanThong is TinhThanThanNiemThe))
-           {
+            if (!(thanThong is ThucThanThu || thanThong is ThuHonThuat || thanThong is TinhThanThanNiemThe))
+            {
                 RemoveBuffAndDebuffCount(EBuffAndDeBuff.AnNac, 1);
-           }    
-
+            }
         }
 
-       // StartCoroutine(DelayFrame());
+        // StartCoroutine(DelayFrame());
         Debug.Log(this.thanThongCurrentUse.thanThong.name);
         Debug.Log(this.thanThongOldUse?.thanThong.name);
-       
-      
-
     }
+
     private IEnumerator DelayFrame()
     {
         yield return null;
@@ -303,9 +302,8 @@ public class CharacterCombat : MonoBehaviour
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.AnNac, 1);
         }
+    }
 
-    }    
-   
     public void StartAnimPunch()
     {
         // Chạy anim tấn công ngay lập tức
@@ -340,13 +338,13 @@ public class CharacterCombat : MonoBehaviour
         // Ép về Idle
         characterVisualControl.AnimIdle();
     }
+
     public void StartAnimDie()
     {
         // Chạy anim tấn công ngay lập tức
         characterVisualControl.AnimDie();
-        
-        
     }
+
     // Khai báo struct để lưu trữ thông tin text chờ hiển thị
     public struct DamageQueueData
     {
@@ -369,6 +367,7 @@ public class CharacterCombat : MonoBehaviour
             StartCoroutine(ProcessDamageQueue());
         }
     }
+
     private IEnumerator ProcessDamageQueue()
     {
         isProcessingQueue = true;
@@ -434,21 +433,19 @@ public class CharacterCombat : MonoBehaviour
             activeTextCount--;
             if (activeTextCount < 0) activeTextCount = 0;
         });
-            
+
         // Di chuyển lên trên
-        textDame.transform.DOLocalMoveY(textDame.transform.localPosition.y + flyHeight, time/4)
+        textDame.transform.DOLocalMoveY(textDame.transform.localPosition.y + flyHeight, time / 4)
             .SetEase(Ease.OutQuad);
 
         // 2. Co nhỏ scale về 0
-        textDame.transform.DOScale(Vector3.zero, time/2)
+        textDame.transform.DOScale(Vector3.zero, time / 2)
             .SetEase(Ease.InBack); // InBack tạo cảm giác thu nhỏ hơi nhanh dần
 
         // 3. Mờ dần và thu hồi
-        textDame.DOFade(0, time).OnComplete(() => {
-         
-            textDame.gameObject.Recycle();
-        });
+        textDame.DOFade(0, time).OnComplete(() => { textDame.gameObject.Recycle(); });
     }
+
     public SecureInt khiKim;
     public SecureInt khiMoc;
     public SecureInt khiThuy;
@@ -456,23 +453,29 @@ public class CharacterCombat : MonoBehaviour
     public SecureInt khiTho;
     public SecureInt khiMa;
 
-   
+
     public Dictionary<BaseData, SecureInt> skillTichLuy = new Dictionary<BaseData, SecureInt>();
 
-    public CharacterStatsSecure characterStatsBase; // khi end combat thì characterStatsBase sẽ lấy hp từ hp của stats Temp
+    public CharacterStatsSecure
+        characterStatsBase; // khi end combat thì characterStatsBase sẽ lấy hp từ hp của stats Temp
+
     public CharacterStatsSecure characterStatsTemp;
+
     public List<PlaySkillData> thanThongUseThisTurn =>
         thanThongUseThisComBat.Count > 0 ? thanThongUseThisComBat[^1] : null;
+
     public List<PlaySkillData> thanThongUseLastTurn =>
         thanThongUseThisComBat.Count > 1 ? thanThongUseThisComBat[^2] : null;
+
     public List<List<PlaySkillData>> thanThongUseThisComBat = new List<List<PlaySkillData>>();
+
     public PlaySkillData thanThongCurrentUse
     {
         get
         {
             List<PlaySkillData> thanThanTurnCheck = thanThongUseThisComBat
-                               .SelectMany(t => t)
-                                .ToList();
+                .SelectMany(t => t)
+                .ToList();
             if (thanThanTurnCheck == null || thanThanTurnCheck.Count <= 0)
                 return null;
 
@@ -485,26 +488,24 @@ public class CharacterCombat : MonoBehaviour
         get
         {
             List<PlaySkillData> thanThanTurnCheck = thanThongUseThisComBat
-                                .SelectMany(t => t)
-                                 .ToList();
-            if (thanThanTurnCheck == null || thanThanTurnCheck.Count <= 1) 
+                .SelectMany(t => t)
+                .ToList();
+            if (thanThanTurnCheck == null || thanThanTurnCheck.Count <= 1)
                 return null;
 
-          
 
             return thanThanTurnCheck[^2];
         }
     }
 
 
-
-    public bool IsSkillTichLuyCanUse(BaseData thanThong, SecureInt ValueNeedSave , SecureInt require )
+    public bool IsSkillTichLuyCanUse(BaseData thanThong, SecureInt ValueNeedSave, SecureInt require)
     {
         // 1. Tìm chính xác cái Key đang nằm trong Dictionary dựa trên điều kiện của bạn
         var key = skillTichLuy.Keys.FirstOrDefault(x =>
-                    x != null &&
-                    x.GetType() == thanThong.GetType() 
-                  );
+            x != null &&
+            x.GetType() == thanThong.GetType()
+        );
 
         // 2. Nếu không tìm thấy Key phù hợp, trả về false ngay lập tức
         if (key == null)
@@ -513,6 +514,7 @@ public class CharacterCombat : MonoBehaviour
             skillTichLuy.Add(thanThong, ValueNeedSave);
             return false;
         }
+
         skillTichLuy[key] += ValueNeedSave;
 
         // 3. Kiểm tra số lượng tích lũy
@@ -526,19 +528,22 @@ public class CharacterCombat : MonoBehaviour
         // 4. Nếu không đủ: Không cộng thêm (bỏ logic item.Value += require cũ)
         return false;
     }
+
     [Serializable]
     public class PlaySkillData
     {
         public ThanThong thanThong;
         public List<LinhKhiTieuTan> linhKhiTieuTan;
     }
+
     public class CountStack<T>
     {
         public T type;
         public SecureInt count;
     }
-    public Dictionary<ThanThong , SecureInt> thanThongCoolDown = new Dictionary<ThanThong, SecureInt>();
-    public Dictionary<EBuffAndDeBuff, SecureInt> buffAndDebuffCount = new  Dictionary <EBuffAndDeBuff, SecureInt>();
+
+    public Dictionary<ThanThong, SecureInt> thanThongCoolDown = new Dictionary<ThanThong, SecureInt>();
+    public Dictionary<EBuffAndDeBuff, SecureInt> buffAndDebuffCount = new Dictionary<EBuffAndDeBuff, SecureInt>();
 
     public void AddThanThongCoolDown(ThanThong thanThong, int count)
     {
@@ -550,29 +555,27 @@ public class CharacterCombat : MonoBehaviour
         else
             thanThongCoolDown[thanThong] = newValue;
     }
+
     [Button]
     public void AddBuffAndDebuffCount(EBuffAndDeBuff type, int count)
     {
-
         buffAndDebuffCount.TryGetValue(type, out var current);
 
         SecureInt newValue = current + count;
         buffAndDebuffCount[type] = newValue;
 
         Observer.Notify(EventList.Combat.ADD_BUFF, this, type, (int)newValue, (int)current);
-
     }
+
     [Button]
     public void TryGetCountBuff(EBuffAndDeBuff type)
     {
-
         SecureInt count = 0;
         buffAndDebuffCount.TryGetValue(type, out count);
         Debug.Log(type + " " + count);
-
-
     }
-    public void RemoveBuffAndDebuffCount(EBuffAndDeBuff type, int count , Action actionRemoveDone = null)
+
+    public void RemoveBuffAndDebuffCount(EBuffAndDeBuff type, int count, Action actionRemoveDone = null)
     {
         if (!buffAndDebuffCount.TryGetValue(type, out SecureInt current))
             return; // không có buff thì khỏi remove
@@ -592,6 +595,7 @@ public class CharacterCombat : MonoBehaviour
 
         Observer.Notify(EventList.Combat.ADD_BUFF, this, type, (int)newValue, (int)current);
     }
+
     [Button]
     public int GetThanThuc()
     {
@@ -603,16 +607,16 @@ public class CharacterCombat : MonoBehaviour
         thanThuc = Mathf.Clamp(thanThuc, 0, int.MaxValue);
         Debug.Log("thanThuc" + thanThuc);
         return thanThuc;
+    }
 
-    }    
     public int GetToDoBay()
     {
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TangToc, out SecureInt tangToc);
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TroiChan, out SecureInt troiChan);
-        return  characterStatsTemp.tocDoBay  + tangToc - troiChan;
-
+        return characterStatsTemp.tocDoBay + tangToc - troiChan;
     }
-    public void Init(GameManager.CharCombatInit charCombatInit )
+
+    public void Init(GameManager.CharCombatInit charCombatInit)
     {
         var characterStat = charCombatInit.charStats;
         characterVisualControl.Init(charCombatInit.eTypeVisual, characterStat);
@@ -629,34 +633,33 @@ public class CharacterCombat : MonoBehaviour
         {
             AddCPDynamic(cp);
         }
+
         foreach (var cp in congPhapEquip)
         {
             cp.congPhap.InitPosCallExecute(this);
         }
+
         foreach (var nd in ngoDaoCombats)
         {
-           nd.InitPosCallExecute(this);
+            nd.InitPosCallExecute(this);
         }
+
         Debug.Log("dcmmm " + congPhapDynamic.Count);
         foreach (var item in characterStat.thanThongEquip)
         {
             thanThongEquip.Add(Pool.Get<GameManager>().GetThanThongWithId(item.Value));
-            
         }
-       
 
-        if(currentVuKhiVisual != null)
+
+        if (currentVuKhiVisual != null)
         {
             currentVuKhiVisual.Init(characterStatsBase.vuKhi.Item.IconFight);
         }
 
         //Test
-        
-
-
     }
 
-    public void HapThuLinhKhi(ELinhKhi elinhKhi , int count)
+    public void HapThuLinhKhi(ELinhKhi elinhKhi, int count)
     {
         switch (elinhKhi)
         {
@@ -690,15 +693,16 @@ public class CharacterCombat : MonoBehaviour
             default:
                 break;
         }
-        Observer.Notify(EventList.Combat.ADJUST_LINHKHI, this,elinhKhi,count );
 
+        Observer.Notify(EventList.Combat.ADJUST_LINHKHI, this, elinhKhi, count);
     }
+
     public SecureInt totalKhi;
 
     public SecureInt totalKhiRandom;
-    public int CurrentLinhKhi => khiKim + khiMoc+khiThuy+khiHoa+khiTho+khiMa;
+    public int CurrentLinhKhi => khiKim + khiMoc + khiThuy + khiHoa + khiTho + khiMa;
 
-    public int baseCountHapThuLinhKhi => CurrentTurn != 1? totalKhiRandom - totalKhi : totalKhiRandom - CurrentLinhKhi;
+    public int baseCountHapThuLinhKhi => CurrentTurn != 1 ? totalKhiRandom - totalKhi : totalKhiRandom - CurrentLinhKhi;
     public SecureInt countHapThuLinhKhiNewTurn;
 
     private void InitTotalKhi()
@@ -715,23 +719,23 @@ public class CharacterCombat : MonoBehaviour
         // 3) Tổng khí
         totalKhi = khiPerLevel;
 
-     
+
         int baseKhiTotalKhiRandom = 9;
-        int khiPerLevelRandom = baseKhiTotalKhiRandom + 2*(daiCanhGioi - 1);
+        int khiPerLevelRandom = baseKhiTotalKhiRandom + 2 * (daiCanhGioi - 1);
 
         // 3) Tổng khí theo yêu cầu: bạn đang return chỉ số khí/lv
         totalKhiRandom = khiPerLevelRandom;
-
     }
-    [Button]    
-    public void TieuTanLinhKhi(ELinhKhi eLinhKhi,int count)
+
+    [Button]
+    public void TieuTanLinhKhi(ELinhKhi eLinhKhi, int count)
     {
         switch (eLinhKhi)
         {
             case ELinhKhi.None:
                 break;
             case ELinhKhi.Kim:
-                khiKim -= count; 
+                khiKim -= count;
                 break;
             case ELinhKhi.Moc:
                 khiMoc -= count;
@@ -756,30 +760,31 @@ public class CharacterCombat : MonoBehaviour
             default:
                 break;
         }
-        Observer.Notify(EventList.Combat.ADJUST_LINHKHI, this, eLinhKhi, -count);
 
+        Observer.Notify(EventList.Combat.ADJUST_LINHKHI, this, eLinhKhi, -count);
     }
+
     public void TieuTanAllLinhKhi()
     {
-        TieuTanLinhKhi(ELinhKhi.Kim,khiKim);
+        TieuTanLinhKhi(ELinhKhi.Kim, khiKim);
         TieuTanLinhKhi(ELinhKhi.Moc, khiMoc);
         TieuTanLinhKhi(ELinhKhi.Thuy, khiThuy);
         TieuTanLinhKhi(ELinhKhi.Hoa, khiHoa);
         TieuTanLinhKhi(ELinhKhi.Tho, khiTho);
         TieuTanLinhKhi(ELinhKhi.Ma, khiMa);
-
     }
+
     public List<LinhKhiTieuTan> GetLinhKhiTieuTanForTotalLinhKhi()
     {
         System.Random rand = new System.Random();
         Dictionary<ELinhKhi, int> dictLinhKhiTemp = new Dictionary<ELinhKhi, int>
         {
-            { ELinhKhi.Kim,  khiKim },
-            { ELinhKhi.Moc,  khiMoc },
+            { ELinhKhi.Kim, khiKim },
+            { ELinhKhi.Moc, khiMoc },
             { ELinhKhi.Thuy, khiThuy },
-            { ELinhKhi.Hoa,  khiHoa },
-            { ELinhKhi.Tho,  khiTho },
-            { ELinhKhi.Ma,   khiMa }
+            { ELinhKhi.Hoa, khiHoa },
+            { ELinhKhi.Tho, khiTho },
+            { ELinhKhi.Ma, khiMa }
         };
 
         List<LinhKhiTieuTan> linhKhiTieuTan = new();
@@ -815,11 +820,10 @@ public class CharacterCombat : MonoBehaviour
                 }
             }
         }
+
         return linhKhiTieuTan;
-
-
-
     }
+
     public int GetLinhKhi(ELinhKhi e)
     {
         switch (e)
@@ -833,6 +837,7 @@ public class CharacterCombat : MonoBehaviour
             default: return 0;
         }
     }
+
     public ELinhKhi GetRandomLinhKhiConLai()
     {
         List<ELinhKhi> list = new List<ELinhKhi>();
@@ -848,12 +853,12 @@ public class CharacterCombat : MonoBehaviour
         if (list.Count == 0)
             return ELinhKhi.None;
 
-        int index = CombatStatic.IndexRandom(0,list.Count);
+        int index = CombatStatic.IndexRandom(0, list.Count);
         return list[index];
     }
+
     public void HapThuLinhKhiNewTurn(out Dictionary<ELinhKhi, int> dictHapThuLinhKhi)
     {
-
         SecureInt treKhi = 0;
         SecureInt tuKhi = 0;
 
@@ -861,25 +866,27 @@ public class CharacterCombat : MonoBehaviour
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TuKhi, out tuKhi);
 
         int totalKhiHapThu = baseCountHapThuLinhKhi + tuKhi - treKhi;
-        if(buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NhieuHon, out SecureInt NhieuHon))
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NhieuHon, out SecureInt NhieuHon))
         {
             totalKhiHapThu /= 2;
         }
+
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, treKhi);
-        totalKhiHapThu = Mathf.Clamp(totalKhiHapThu,0,int.MaxValue);
+        totalKhiHapThu = Mathf.Clamp(totalKhiHapThu, 0, int.MaxValue);
         dictHapThuLinhKhi = DictHapThuLinhKhi(totalKhiHapThu);
         foreach (var item in dictHapThuLinhKhi)
         {
             HapThuLinhKhi(item.Key, item.Value);
         }
+
         NoiThuongAction();
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.NoiThuong, 1);
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.TuKhi, tuKhi);
     }
+
     public void NoiThuongAction()
     {
         CombatStatic.NoiThuong(null, this);
-
     }
 
 
@@ -890,9 +897,9 @@ public class CharacterCombat : MonoBehaviour
             HapThuLinhKhi(item.Key, item.Value);
         }
     }
-    public Dictionary<ELinhKhi,int> DictHapThuLinhKhi(int total)
-    {
 
+    public Dictionary<ELinhKhi, int> DictHapThuLinhKhi(int total)
+    {
         Dictionary<ELinhKhi, int> result = new Dictionary<ELinhKhi, int>();
 
         // Lấy % từ stats hiện tại
@@ -945,6 +952,7 @@ public class CharacterCombat : MonoBehaviour
             else
                 khiMa++;
         }
+
         // Add vào Dictionary theo enum
         if (khiKim > 0) result.Add(ELinhKhi.Kim, khiKim);
         if (khiMoc > 0) result.Add(ELinhKhi.Moc, khiMoc);
@@ -955,6 +963,7 @@ public class CharacterCombat : MonoBehaviour
 
         return result;
     }
+
     public void NewTurn()
     {
         var keys = new List<ThanThong>(thanThongCoolDown.Keys);
@@ -962,26 +971,30 @@ public class CharacterCombat : MonoBehaviour
         {
             AddThanThongCoolDown(key, -1);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TichDoc, out SecureInt TichDoc))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, TichDoc);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out SecureInt value))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, value);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhNac, out SecureInt anhNac))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.AnhNac, anhNac);
         }
-        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanLongChiHuyet,out SecureInt chanLongChiHuyet);
-        if(chanLongChiHuyet > 0)
+
+        buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanLongChiHuyet, out SecureInt chanLongChiHuyet);
+        if (chanLongChiHuyet > 0)
         {
             for (int i = 0; i < 10; i++)
             {
                 var debuffKeys = buffAndDebuffCount.Keys
-                .Where(key => BaseSkill.eDebuffs.Contains(key))
-                .ToList();
+                    .Where(key => BaseSkill.eDebuffs.Contains(key))
+                    .ToList();
                 // 2. Kiểm tra xem có debuff nào để xóa không
                 if (debuffKeys.Count > 0)
                 {
@@ -990,18 +1003,14 @@ public class CharacterCombat : MonoBehaviour
 
                     // 4. Thực hiện xóa 1 Count
                     RemoveBuffAndDebuffCount(randomDebuffKey, 1);
-
                 }
                 else
                 {
                     break;
-                }    
-              
+                }
             }
-           
-
         }
-       
+
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, 1);
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.GiamTonThuong, out SecureInt giamTonThuong))
         {
@@ -1009,12 +1018,12 @@ public class CharacterCombat : MonoBehaviour
         }
 
         thanThongUseThisComBat.Add(new List<PlaySkillData>());
-        if(isCooldownWeapon)
+        if (isCooldownWeapon)
         {
             isCooldownWeapon = false;
-        }    
-
+        }
     }
+
     public bool IsKietSuc()
     {
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KietSuc, out SecureInt kietSuc);
@@ -1024,10 +1033,11 @@ public class CharacterCombat : MonoBehaviour
         {
             return true;
         }
-        return false;
 
+        return false;
     }
-    [Button]   
+
+    [Button]
     public void EndTurn()
     {
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChayMau, 1);
@@ -1036,137 +1046,154 @@ public class CharacterCombat : MonoBehaviour
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, value);
         }
-        
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TriLieu, out SecureInt triLieu))
         {
             Healing(triLieu);
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TriLieu, 1);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out SecureInt trienNhieu))
         {
-
-            
-
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieu);
-
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.PhaThe, out SecureInt phaThe))
         {
-
-            
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.PhaThe, phaThe);
-
         }
+
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, 1);
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt hoaDiem);
-        if(hoaDiem>0)
+        if (hoaDiem > 0)
         {
             AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, 1);
-        }    
+        }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucLuc, out SecureInt sucLuc))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucLuc, sucLuc);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguKiemHiep, out SecureInt nguKiemHiep))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.NguKiemHiep, nguKiemHiep);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguKhiHiep, out SecureInt nguKhiHiep))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.NguKhiHiep, nguKhiHiep);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguKimHiep, out SecureInt nguKimHiep))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.NguKimHiep, nguKimHiep);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguMocHiep, out SecureInt nguMocHiep))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.NguMocHiep, nguMocHiep);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguThuyHiep, out SecureInt nguThuyHiep))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.NguThuyHiep, nguThuyHiep);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguHoaHiep, out SecureInt NguHoaHiep))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.NguHoaHiep, NguHoaHiep);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguThoHiep, out SecureInt NguThoHiep))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.NguThoHiep, NguThoHiep);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguThanThucHiep, out SecureInt NguThanThucHiep))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.NguThanThucHiep, NguThanThucHiep);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NhanKiem, out SecureInt nhanKiem))
         {
             AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, nhanKiem);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DiaKiem, out SecureInt diaKiem))
         {
             AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, diaKiem);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemTam, out SecureInt kiemTam))
         {
-           
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemTam, kiemTam);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TinhHonChiLuc, out SecureInt TinhHonChiLuc))
         {
-
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TinhHonChiLuc, TinhHonChiLuc);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguKim, out SecureInt NguKim))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.NguKim, NguKim);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguMoc, out SecureInt NguMoc))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.NguMoc, NguMoc);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguThuy, out SecureInt NguThuy))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.NguThuy, NguThuy);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguHoa, out SecureInt NguHoa))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.NguHoa, NguHoa);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NguTho, out SecureInt NguTho))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.NguTho, NguTho);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TichHoa, out SecureInt TichHoa))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, TichHoa);
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TichHoa, TichHoa);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TichKim, out SecureInt TichKim))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TichKim, TichKim);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TichMoc, out SecureInt TichMoc))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TichMoc, TichMoc);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TichThuy, out SecureInt TichThuy))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TichThuy, TichThuy);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TichDoc, out SecureInt TichDoc))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TichDoc, TichDoc);
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.PhanTonThuong, out SecureInt PhanTonThuong))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.PhanTonThuong, PhanTonThuong);
         }
-        isSkipTieuTanLinhKhi = false;
 
+        isSkipTieuTanLinhKhi = false;
     }
 
-  
 
     public List<int> allDamages = new List<int>();
 
@@ -1179,7 +1206,8 @@ public class CharacterCombat : MonoBehaviour
             {
                 sum += d;
             }
-            if(allDamages.Count>0)
+
+            if (allDamages.Count > 0)
             {
                 for (int i = 0; i < allDamages.Count; i++)
                 {
@@ -1187,18 +1215,18 @@ public class CharacterCombat : MonoBehaviour
                     if (allDamages[i] < 0)
                     {
                         allDamages[i] = 0;
-                    }    
+                    }
                 }
-            }   
+            }
             else
             {
-                if (sum<0)
+                if (sum < 0)
                 {
                     return;
                 }
-                allDamages.Add(sum);
-            }    
 
+                allDamages.Add(sum);
+            }
         }
         else
         {
@@ -1209,18 +1237,18 @@ public class CharacterCombat : MonoBehaviour
     }
 
     [Button]
-    public void CaculateDameByThanThong(CharacterCombat sender, List<int> dames, BaseSkill.ETypeSkill[] eTypeSkils, bool isCongDon = false)
+    public void CaculateDameByThanThong(CharacterCombat sender, List<int> dames, BaseSkill.ETypeSkill[] eTypeSkils,
+        bool isCongDon = false)
     {
-
         var listNewDames = CaculateDame(sender, dames, isCongDon, eTypeSkils);
-      
+
         listDameTaked[listDameTaked.Count - 1] += listNewDames.Sum();
 
         Observer.Notify(EventList.Combat.CACULATE_DAME_BY_THANTHONG, sender, this, listNewDames);
-
-
     }
-    private List<int> CaculateDame(CharacterCombat sender, List<int> dames, bool isCongDon = false, BaseSkill.ETypeSkill[] eTypeSkils = null)
+
+    private List<int> CaculateDame(CharacterCombat sender, List<int> dames, bool isCongDon = false,
+        BaseSkill.ETypeSkill[] eTypeSkils = null)
     {
         if (sender != null && eTypeSkils != null)
         {
@@ -1230,43 +1258,65 @@ public class CharacterCombat : MonoBehaviour
                 IDamageModifier damageModifier = new PlainDamageModifier(dames[i]);
 
                 // Apply sender's offensive buffs
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanKim, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanMoc, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanThuy, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanHoa, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanTho, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanKiem, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanThan, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanKhi, eTypeSkils);
-            // Apply sender's offensive buffs
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguKimHiep, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguMocHiep, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguThuyHiep, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguHoaHiep, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguThoHiep, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguKiemHiep, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguThanThucHiep, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguKhiHiep, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanKim,
+                    eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanMoc,
+                    eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanThuy,
+                    eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanHoa,
+                    eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanTho,
+                    eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanKiem,
+                    eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanThan,
+                    eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanKhi,
+                    eTypeSkils);
+                // Apply sender's offensive buffs
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguKimHiep,
+                    eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguMocHiep,
+                    eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender,
+                    EBuffAndDeBuff.NguThuyHiep, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguHoaHiep,
+                    eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguThoHiep,
+                    eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender,
+                    EBuffAndDeBuff.NguKiemHiep, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender,
+                    EBuffAndDeBuff.NguThanThucHiep, eTypeSkils);
+                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguKhiHiep,
+                    eTypeSkils);
                 // Apply SucLuc and Diem
                 damageModifier = new BuffDameDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.SucLuc);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.Diem, eTypeSkils);
+                damageModifier =
+                    new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.Diem, eTypeSkils);
 
                 // Apply defender's damage reductions (DeTonThuong)
                 damageModifier = new BuffDameDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.DeTonThuong);
 
                 // Apply defender's debuffs (NguKim, NguMoc, etc.)
-                damageModifier = new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguKim, eTypeSkils);
-                damageModifier = new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguMoc, eTypeSkils);
-                damageModifier = new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguThuy, eTypeSkils);
-                damageModifier = new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguHoa, eTypeSkils);
-                damageModifier = new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguTho, eTypeSkils);
+                damageModifier =
+                    new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguKim, eTypeSkils);
+                damageModifier =
+                    new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguMoc, eTypeSkils);
+                damageModifier =
+                    new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguThuy, eTypeSkils);
+                damageModifier =
+                    new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguHoa, eTypeSkils);
+                damageModifier =
+                    new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguTho, eTypeSkils);
                 // Apply GiảmTonThuong (sender's damage reduction)
                 damageModifier = new GiamTonThuongDecorator(damageModifier, dames[i], this);
 
 
                 // Apply SuongGia (sender's damage reduction)
                 damageModifier = new SuongGiaDecorator(damageModifier, dames[i], sender);
-               
+
 
                 // Calculate final damage
                 int finalDame = damageModifier.Calculate();
@@ -1274,56 +1324,60 @@ public class CharacterCombat : MonoBehaviour
                 dames[i] = finalDame;
             }
         }
+
         AddDamageData(dames, isCongDon);
         return dames;
     }
-    public void TakeDameByStatic(CharacterCombat sender, List<int> dames,  bool isCongDon = false , BaseSkill.ETypeSkill[] eTypeSkils = null , bool isDef = true)
-    {
 
+    public void TakeDameByStatic(CharacterCombat sender, List<int> dames, bool isCongDon = false,
+        BaseSkill.ETypeSkill[] eTypeSkils = null, bool isDef = true)
+    {
         var newListDames = CaculateDame(sender, dames, isCongDon, eTypeSkils);
         if (sender != null && eTypeSkils != null)
         {
             Observer.Notify(EventList.Combat.CHARACTER_TAKE_DAME_BY_STATIC, sender, this, newListDames, eTypeSkils);
-
         }
-        TakeDame(sender,isDef);
-       
 
+        TakeDame(sender, isDef);
     }
+
     [Button]
-    public void  TakeDame(CharacterCombat sender , bool isDef)
+    public void TakeDame(CharacterCombat sender, bool isDef)
     {
-        if(sender != null)
+        if (sender != null)
         {
             if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt hoaDiem))
             {
                 sender.TakeDameByStatic(this, new List<int> { hoaDiem }, false, new[] { BaseSkill.ETypeSkill.Hoa });
-
             }
+
             if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.PhanTonThuong, out SecureInt phanTonThuong))
             {
                 sender.TakeDameByStatic(this, new List<int> { phanTonThuong }, false);
-
             }
         }
+
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TichKim, out SecureInt TichKim))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, TichKim);
         }
+
         void NeTranh()
         {
             SetTextDameAnim("Né Tránh!", Color.whiteSmoke);
             Observer.Notify(EventList.Combat.NE_TRANH_SUCCESS, sender, this);
         }
+
         Observer.Notify(EventList.Combat.CHARACTER_BEFORE_TAKE_DAME, sender, this);
 
         for (int i = 0; i < allDamages.Count; i++)
         {
-            if(!isDef)
+            if (!isDef)
             {
                 TakeDame(sender, allDamages[i], isDef);
                 continue;
-            }    
+            }
+
             if (allDamages[i] != 0)
             {
                 bool isActiveHuyenVu = CombatStatic.IsActiveHuyenVu(null, this);
@@ -1336,55 +1390,48 @@ public class CharacterCombat : MonoBehaviour
                 }
 
                 Observer.Notify(EventList.Combat.CHECK_NE_TRANH, sender, this, i);
-               
             }
+
             var dame = allDamages[i];
             bool isNeTranh = dame == -1;
-
-
 
 
             if (isNeTranh)
             {
                 NeTranh();
-
-               
             }
             else
             {
-
-                TakeDame(sender, allDamages[i] , isDef);
+                TakeDame(sender, allDamages[i], isDef);
             }
-
         }
-       
+
 
         allDamages.Clear();
-
-
     }
-    private void TakeDame(CharacterCombat sender ,int dame , bool isDef)
+
+    private void TakeDame(CharacterCombat sender, int dame, bool isDef)
     {
-        if(isDef)
+        if (isDef)
         {
-            
             int hotraoMax = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.HoTrao, 0);
             hotraoMax = Mathf.Clamp(hotraoMax, 0, int.MaxValue);
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, dame);
             int textDameHoTrao = hotraoMax > dame ? dame : hotraoMax;
-            if(hotraoMax > 0 )
+            if (hotraoMax > 0)
             {
                 SetTextDameAnim($"-{textDameHoTrao}", Color.cyan);
-            }    
+            }
 
             dame -= hotraoMax;
-        }    
+        }
+
         dame = Mathf.Clamp(dame, 0, int.MaxValue);
 
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, dame);
 
         Debug.Log(this.gameObject.name + "nhận dame là : " + dame);
-        
+
         characterStatsTemp.hp -= dame;
         characterStatsTemp.hp = Mathf.Clamp(characterStatsTemp.hp, 0, characterStatsTemp.hpMax);
 
@@ -1395,58 +1442,44 @@ public class CharacterCombat : MonoBehaviour
 
             if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HonLuc, out SecureInt honLuc))
             {
-                RemoveBuffAndDebuffCount(EBuffAndDeBuff.HonLuc,dame , () =>
+                RemoveBuffAndDebuffCount(EBuffAndDeBuff.HonLuc, dame, () =>
                 {
                     if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyLinh, out SecureInt QuyLinh))
                     {
                         RemoveBuffAndDebuffCount(EBuffAndDeBuff.QuyLinh, QuyLinh);
-
-
-
                     }
+
                     if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyBinh, out SecureInt QuyBinh))
                     {
                         RemoveBuffAndDebuffCount(EBuffAndDeBuff.QuyBinh, QuyBinh);
-
-
-
                     }
+
                     if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyTuong, out SecureInt QuyTuong))
                     {
                         RemoveBuffAndDebuffCount(EBuffAndDeBuff.QuyTuong, QuyTuong);
-
-
-
                     }
+
                     if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyTon, out SecureInt quyTon))
                     {
                         RemoveBuffAndDebuffCount(EBuffAndDeBuff.QuyTon, quyTon);
-
-
-
                     }
+
                     if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyDe, out SecureInt QuyDe))
                     {
                         RemoveBuffAndDebuffCount(EBuffAndDeBuff.QuyDe, QuyDe);
-
-
-
                     }
                 });
-
-
             }
         }
+
         Observer.Notify(EventList.Combat.CHARACTER_TAKE_DAME, sender, this, dame);
         Observer.Notify(EventList.Combat.CHARACTER_ADJUST_HP);
-        
-
     }
+
     public void SetHp(int hp)
     {
         characterStatsTemp.hp = hp;
         Observer.Notify(EventList.Combat.CHARACTER_ADJUST_HP);
-
     }
 
     public virtual bool CheckDie()
@@ -1456,18 +1489,22 @@ public class CharacterCombat : MonoBehaviour
             Die();
             return true;
         }
+
         return false;
-    }    
+    }
+
     public virtual void Die()
     {
         StartAnimDie();
     }
 
     int dataHeal = 0;
+
     public void AddDataHeal(int hp)
     {
         dataHeal += hp;
-    }    
+    }
+
     public void Healing(int hp)
     {
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.PhaThe, out SecureInt phaThe);
@@ -1480,14 +1517,13 @@ public class CharacterCombat : MonoBehaviour
         Observer.Notify(EventList.Combat.CHARACTER_HEALING, this, currentValueHp, dataHeal);
         Healing();
     }
+
     public void Healing()
     {
-
-        
         // Áp dụng vào chỉ số nhân vật
         characterStatsTemp.hp += dataHeal;
 
-      
+
         characterStatsTemp.hp = Mathf.Clamp(characterStatsTemp.hp, 0, characterStatsTemp.hpMax);
 
         // Hiển thị hiệu ứng số nhảy (Nếu hồi phục > 0 thì mới hiện)
@@ -1506,8 +1542,8 @@ public class CharacterCombat : MonoBehaviour
                 break;
             }
         }
+
         dataHeal = 0;
         Observer.Notify(EventList.Combat.CHARACTER_ADJUST_HP);
-    }    
-
+    }
 }

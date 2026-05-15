@@ -158,7 +158,6 @@ public abstract class BaseSkill : BaseItemData
         Than,
         DiHoa,
         TranPhap
-
     }
     public enum EKeyWord
     {

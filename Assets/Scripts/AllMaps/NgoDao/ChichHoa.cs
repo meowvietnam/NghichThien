@@ -6,7 +6,6 @@ public class ChichHoa : NgoDaoCombat
 {
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-
         CombatStatic.ThieuDot(caster, target);
     }
 

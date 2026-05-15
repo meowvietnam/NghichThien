@@ -6,12 +6,9 @@ public class TuongSinh : NgoDaoCombat
 {
     [SerializeField] private ELinhKhi elinhKhi;
     [SerializeField] private int buff = 6;
-
-
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddNgoDaoCombatDynamic(this);
-
     }
     public virtual void ObserverEffect2(params object[] data)
     {
@@ -23,10 +20,7 @@ public class TuongSinh : NgoDaoCombat
         if (caster.ngoDaoCombatsDynamic.Any(x => x.GetType() == this.GetType()))
         {
             ExecuteNgoDao2(caster, target, data);
-
         }
-
-
     }
     public void ExecuteNgoDao2(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
@@ -35,7 +29,6 @@ public class TuongSinh : NgoDaoCombat
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TuKhi, buff);
             caster.RemoveNgoDaoCombatDynamic(this);
         }    
-
     }
 
     public override string GetDes()
