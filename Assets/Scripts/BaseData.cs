@@ -21,12 +21,12 @@ public class BaseData : ScriptableObject, IMemorySerializable<BaseData>
     {
         value.Id = reader.Read<int>();
     }
-    public int ByteSize()
+    public virtual int ByteSize()
     {
         return Id.ByteSize();
     }
 
-    public void Serialize(IWriter writer)
+    public virtual void Serialize(IWriter writer)
     {
         writer.Write(Id);
     }

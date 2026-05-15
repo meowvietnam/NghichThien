@@ -25,13 +25,13 @@ public class CPTieuHaoThoNguyen : CongPhap, IMemorySerializable<CPTieuHaoThoNguy
         return $"(Học tập hoặc đột phá tiêu hao thọ nguyên {GetColoredText($"{tieuHao[level-1]} năm", "red")})";
     }
 
-    public new int ByteSize()
+    public override int ByteSize()
     {
         var byteSize = base.ByteSize();
         return byteSize + tieuHao.ByteSize();
     }
 
-    public new void Serialize(IWriter writer)
+    public override void Serialize(IWriter writer)
     {
         base.Serialize(writer);
         writer.WriteArray(tieuHao);

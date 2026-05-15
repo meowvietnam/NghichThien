@@ -114,7 +114,7 @@ namespace Skill
         }
 
 
-        public new int ByteSize()
+        public override int ByteSize()
         {
             var byteSize = base.ByteSize();
             return byteSize + tocDoTuLuyenBase.ByteSize() + isDonThuat.ByteSize(); 
@@ -127,7 +127,7 @@ namespace Skill
             value.tocDoTuLuyenBase = reader.Read<int>();
             value.isDonThuat = reader.Read<bool>();
         }
-        public new void Serialize(IWriter writer)
+        public override void Serialize(IWriter writer)
         {
             base.Serialize(writer);
             writer.Write(tocDoTuLuyenBase);

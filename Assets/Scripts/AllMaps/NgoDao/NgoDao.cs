@@ -13,7 +13,7 @@ namespace AllMaps.NgoDao
         {
         }    
         public virtual string GetDes() => string.Empty;
-        public new int ByteSize()
+        public override int ByteSize()
         {
             var byteSize = base.ByteSize();
             return byteSize + require.ByteSize() + eTypeRequire.ByteSize(); 
@@ -26,7 +26,7 @@ namespace AllMaps.NgoDao
             value.require = reader.Read<int>();
             value.eTypeRequire = reader.ReadArray<BaseSkill.ETypeSkill>();
         }
-        public new void Serialize(IWriter writer)
+        public override void Serialize(IWriter writer)
         {
             base.Serialize(writer);
             writer.Write(require);

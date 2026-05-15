@@ -6,7 +6,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = nameof(NgoDaoBuffStats),
     menuName = "Ngộ Đạo/Ngộ Đạo Buff Stats/" + nameof(NgoDaoBuffStats))]
-public class NgoDaoBuffStats : NgoDao, IMemorySerializable<NgoDaoBuffStats>
+public class NgoDaoBuffStats : NgoDao
 {
     [SerializeField] private EBuffStats currentEBuffStat;
     [SerializeField] private int buff;
@@ -38,26 +38,5 @@ public class NgoDaoBuffStats : NgoDao, IMemorySerializable<NgoDaoBuffStats>
                 break;
         }
         return "";
-    }
-
-    public new int ByteSize()
-    {
-        var byteSize = base.ByteSize();
-        return byteSize + currentEBuffStat.ByteSize() + buff.ByteSize();
-    }
-
-    public void Deserialize(IReader reader, ref NgoDaoBuffStats value)
-    {
-        NgoDao baseValue = value;
-        baseValue.Deserialize(reader, ref baseValue);
-        value.currentEBuffStat = reader.Read<EBuffStats>();
-        value.buff = reader.Read<int>();
-    }
-
-    public new void Serialize(IWriter writer)
-    {
-        base.Serialize(writer);
-        writer.Write(currentEBuffStat);
-        writer.Write(buff);
     }
 }
