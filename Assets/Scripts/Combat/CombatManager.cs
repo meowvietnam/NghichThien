@@ -1,8 +1,12 @@
-﻿using CreateCharacter.CharStats;
+﻿using AllMaps.NgoDao;
+using CreateCharacter.CharStats;
 using DG.Tweening;
 using LongDH.LongDHModules;
 using LongDH.Script.ObjectPool;
+using LuyenDan;
+using LuyenDan.Inventory;
 using LuyenKhi;
+using NUnit.Framework;
 using Sirenix.OdinInspector;
 using Skill;
 using System;
@@ -134,7 +138,7 @@ public class CombatManager : BaseBehaviour
         Pool.Set(this);
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, EndTurn);
         Observer.AddObserver(EventList.Combat.PLAY_SKILL, PlaySkill);
-        Observer.AddObserver(EventList.Combat.ADD_COMBATEFFECT, SetUICombatEffect);
+        Observer.AddObserver(EventList.Combat.ADD_SKILL, SetUISkill);
         Observer.AddObserver(EventList.Combat.ADD_BUFF, SetUIBuff);
         Observer.AddObserver(EventList.Combat.UPDATE_AMKINH_THANTHONG, SetUIAmKinh);
 
@@ -173,6 +177,11 @@ public class CombatManager : BaseBehaviour
         {
             SetUIBuffEquipment(char2, char2.characterStatsBase.trangSuc, EquipmentType.Jewelry);
         }
+        SetUIBuffDanDuoc(char1);
+        SetUIBuffDanDuoc(char2);
+        SetUIBuffNgoDao(char1);
+        SetUIBuffNgoDao(char2);
+
         SetEventButton(backCombat, () =>
         {
             Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Xác nhận bỏ chạy khỏi trận chiến này?", () =>
@@ -400,6 +409,62 @@ public class CombatManager : BaseBehaviour
             currentTurn = char1;
         }
     }
+   
+    public (bool isHave,ItemUI buffIcon) SetUIEffectStatic(CharacterCombat characterCombat , bool isCreate , Func<ScrollRect,(bool isHave, ItemUI buffIcon)> actionCheckHave,Sprite spriteIcon,string descIcon , int currentValue)
+    {
+        
+
+        ScrollRect scrollRect = null;
+        if (characterCombat == char1)
+        {
+            scrollRect = statusChar1;
+
+        }
+        else
+        {
+            scrollRect = statusChar2;
+
+
+        }
+        int scaleX = (int)scrollRect.transform.parent.localScale.x;
+        int signX = scaleX / Mathf.Abs(scaleX);
+
+        var result = actionCheckHave?.Invoke(scrollRect);
+        bool isHave = result.Value.isHave;
+        ItemUI buffIcon = result.Value.buffIcon;
+
+        if (isCreate)
+        {
+            if (isHave)
+            {
+                buffIcon.Recycle();
+            }
+        }    
+        else
+        {
+            if (!isHave)
+            {
+                buffIcon = prefabBuffIcon.Spawn(scrollRect.content.transform);
+                buffIcon.transform.localScale = new Vector3(1 * signX, 1, 1);
+                buffIcon.InitIcon(spriteIcon, null);
+                buffIcon.InitAction(null, () =>
+                {
+                    Debug.Log("cos goi pointer up buff icon show tip");
+                    buffInfor.transform.SetParent(buffIcon.transform);
+                    buffInfor.SetText(descIcon);
+
+
+
+                    buffInfor.DoShow();
+
+                });
+                isHave = true;
+            }
+
+            buffIcon.AddCount(currentValue - buffIcon.count);
+        }
+        return (isHave, buffIcon);
+    }
   
 
     public void SetUIAmKinh(params object[] data)
@@ -409,131 +474,61 @@ public class CombatManager : BaseBehaviour
             CharacterCombat.AmKinhEntry entry = (CharacterCombat.AmKinhEntry)data[1];
 
             int remove = data.Length > 2 ? (int)data[2] : 0;
-
-            ItemUI buffIcon = null;
-            ScrollRect scrollRect = null;
-            if (characterCombat == char1)
+            string desc = $"{BaseSkill.GetColoredText($"[{entry.ThanThong.nameItem}]", "#ffb143")}: {entry.ThanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level))}";
+            var result = SetUIEffectStatic(characterCombat, remove == -1, (ScrollRect) =>
             {
-                scrollRect = statusChar1;
-
-            }
-            else
-            {
-                scrollRect = statusChar2;
-
-
-            }
-            bool isHave = false;
-            int scaleX = (int)scrollRect.transform.parent.localScale.x;
-            int signX = scaleX / Mathf.Abs(scaleX);
-            if(dictAmKinhItemUI.TryGetValue(entry,out ItemUI item))
-            {
-                isHave = true;
-                buffIcon = item;
-            }    
-           
-            if (remove == -1)
-            {
-                if (isHave)
+                if (dictAmKinhItemUI.TryGetValue(entry, out ItemUI item))
                 {
-                    buffIcon.Recycle();
+                    return (true,item);
                 }
-            }
-            else
+                return (false, null);
+
+
+            },entry.ThanThong.spriteItem, desc, entry.RemainingTurns);
+            if (remove != -1)
             {
-
-                if (!isHave)
+                if(!result.isHave)
                 {
-                    buffIcon = prefabBuffIcon.Spawn(scrollRect.content.transform);
-                    buffIcon.transform.localScale = new Vector3(1 * signX, 1, 1);
-                    buffIcon.InitIcon(entry.ThanThong.spriteItem, null);
-                    buffIcon.InitAction(null, () =>
-                    {
-                        Debug.Log("cos goi pointer up buff icon show tip");
-                        buffInfor.transform.SetParent(buffIcon.transform);
-                        buffInfor.SetText($"{BaseSkill.GetColoredText($"[{entry.ThanThong.nameItem}]", "#ffb143")}: {entry.ThanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level))}");
-                        
-
-
-                        buffInfor.DoShow();
-
-                    });
-                    dictAmKinhItemUI.Add(entry, buffIcon);
+                    dictAmKinhItemUI.Add(entry, result.buffIcon);
 
                 }
 
-                buffIcon.AddCount(entry.RemainingTurns - buffIcon.count);
             }
+          
 
         }
 
     }
-    public void SetUICombatEffect(params object[] data)
+    public void SetUISkill(params object[] data)
     {
         if (data[0] is CharacterCombat characterCombat)
         {
             BaseSkill thanThong = (BaseSkill)data[1];
             int newValue = (int)data[2];
-            int level = (int)data[4];
+            int daiCanhGioi = (int)data[4];
 
-            ItemUI buffIcon = null;
-            ScrollRect scrollRect = null;
-            if (characterCombat == char1)
+            string desc = $"{BaseSkill.GetColoredText($"[{thanThong.nameItem}]", "#ffb143")}: {thanThong.GetDesc(daiCanhGioi)}";
+
+            var result = SetUIEffectStatic(characterCombat, newValue <= 0, (scrollRect) =>
             {
-                scrollRect = statusChar1;
-
-            }
-            else
-            {
-                scrollRect = statusChar2;
-
-
-            }
-            bool isHave = false;
-            int scaleX = (int)scrollRect.transform.parent.localScale.x;
-            int signX = scaleX / Mathf.Abs(scaleX);
-            for (int i = 0; i < scrollRect.content.transform.childCount; i++)
-            {
-                ItemUI itemUI = scrollRect.content.transform.GetChild(i).GetComponent<ItemUI>();
-                if (itemUI.icon.sprite == thanThong.spriteItem) // cos toon tai
+                for (int i = 0; i < scrollRect.content.transform.childCount; i++)
                 {
-                    isHave = true;
-                    buffIcon = itemUI;
-                    break;
-                }
-
-            }
-            if (newValue <= 0)
-            {
-                if (isHave)
-                {
-                    buffIcon.Recycle();
-                }
-            }
-            else
-            {
-
-                if (!isHave)
-                {
-                    buffIcon = prefabBuffIcon.Spawn(scrollRect.content.transform);
-                    buffIcon.transform.localScale = new Vector3(1 * signX, 1, 1);
-                    buffIcon.InitIcon(thanThong.spriteItem, null);
-                    buffIcon.InitAction(null, () =>
+                    ItemUI itemUI = scrollRect.content.transform.GetChild(i).GetComponent<ItemUI>();
+                    if (itemUI.icon.sprite == thanThong.spriteItem) // cos toon tai
                     {
-                        Debug.Log("cos goi pointer up buff icon show tip");
-                        buffInfor.transform.SetParent(buffIcon.transform);
+                        return (true, itemUI);
 
-                        buffInfor.SetText($"{BaseSkill.GetColoredText($"[{thanThong.nameItem}]", "#ffb143")}: {thanThong.GetDesc(level)}");
-                      
+                    }
 
-
-                        buffInfor.DoShow();
-
-                    });
                 }
+               
+                return (false, null);
 
-                buffIcon.AddCount(newValue - buffIcon.count);
-            }
+
+            }, thanThong.spriteItem, desc, newValue);
+
+
+          
 
         }
 
@@ -542,45 +537,77 @@ public class CombatManager : BaseBehaviour
     {
         if (characterCombat)
         {
+            string desc = $"{BaseSkill.GetColoredText($"[{equipment.nameEquip}]", "#ffb143")}: {GameManager.GetDescEquipment(equipment.listEffectEquip, equipmentType)}";
+
+
+            var result = SetUIEffectStatic(characterCombat, false, (scrollRect) =>
+            {
+               
+
+                return (false, null);
+
+
+            }, equipment.Item.Icon, desc, 1);
+
           
-            ItemUI buffIcon = null;
-            ScrollRect scrollRect = null;
-            if (characterCombat == char1)
-            {
-                scrollRect = statusChar1;
 
+        }
+    }
+    private void SetUIBuffDanDuoc(CharacterCombat characterCombat)
+    {
+        void SetUIBuffDanDuoc(LinhDan linhDan)
+        {
+            string desc = $"{BaseSkill.GetColoredText($"[{linhDan.Name}]", "#ffb143")}: {linhDan.Description}";
+
+            var result = SetUIEffectStatic(characterCombat, false, (scrollRect) =>
+            {
+
+
+                return (false, null);
+
+
+            }, linhDan.Icon, desc ,characterCombat.danDuocCombats.FirstOrDefault(x => x.type.Id == linhDan.Id).count);
+        }
+        if (characterCombat)
+        {
+
+            foreach (var item in characterCombat.danDuocCombats)
+            {
+                SetUIBuffDanDuoc(LuyenDanResources.Instance.FindLinhDan(item.type.Id));
             }
-            else
+
+
+
+        }
+    }
+    private void SetUIBuffNgoDao(CharacterCombat characterCombat)
+    {
+        void SetUIBuffNgoDao(NgoDaoCombat ngoDaoCombat)
+        {
+            string desc = $"{BaseSkill.GetColoredText($"[{ngoDaoCombat.nameItem}]", "#ffb143")}: {ngoDaoCombat.GetDes()}";
+
+            if (ngoDaoCombat)
             {
-                scrollRect = statusChar2;
-
-
-            }
-            bool isHave = false;
-            int scaleX = (int)scrollRect.transform.parent.localScale.x;
-            int signX = scaleX / Mathf.Abs(scaleX);
-           
-
-            if (!isHave)
-            {
-                buffIcon = prefabBuffIcon.Spawn(scrollRect.content.transform);
-                buffIcon.transform.localScale = new Vector3(1 * signX, 1, 1);
-                buffIcon.InitIcon(equipment.Item.Icon, null);
-                buffIcon.AddCount(1);
-                buffIcon.InitAction(null, () =>
+                var result = SetUIEffectStatic(characterCombat, false, (scrollRect) =>
                 {
-                    Debug.Log("cos goi pointer up buff icon show tip");
-                    buffInfor.transform.SetParent(buffIcon.transform);
-                    buffInfor.SetText(GameManager.GetDescEquipment(equipment.listEffectEquip, equipmentType));
-                   
 
 
-                    buffInfor.DoShow();
+                    return (false, null);
 
-                });
-                isHave = true;
 
+                }, ngoDaoCombat.spriteItem, desc, 1);
             }
+        }
+        if (characterCombat)
+        {
+
+            foreach (var item in characterCombat.ngoDaoCombats)
+            {
+                SetUIBuffNgoDao(item);
+            }
+
+
+
 
 
         }
@@ -591,63 +618,24 @@ public class CombatManager : BaseBehaviour
         {
             EBuffAndDeBuff buffType = (EBuffAndDeBuff)data[1];
             int newValues = (int)data[2];
-            ItemUI buffIcon = null;
-            ScrollRect scrollRect = null;
-            if (characterCombat == char1)
-            {
-                scrollRect = statusChar1;
 
-            }
-            else
+            var result = SetUIEffectStatic(characterCombat, newValues <= 0, (scrollRect) =>
             {
-                scrollRect = statusChar2;
-
-
-            }
-            bool isHave = false;
-            int scaleX = (int)scrollRect.transform.parent.localScale.x;
-            int signX = scaleX/Mathf.Abs(scaleX);
-            for (int i = 0; i < scrollRect.content.transform.childCount; i++)
-            {
-                ItemUI itemUI = scrollRect.content.transform.GetChild(i).GetComponent<ItemUI>();
-                if (itemUI.icon.sprite == GetSpriteBuffIcon(buffType)) // cos toon tai
+                for (int i = 0; i < scrollRect.content.transform.childCount; i++)
                 {
-                    isHave = true;
-                    buffIcon = itemUI;
-                    break;
-                }
-
-            }
-            if (newValues <= 0)
-            {
-                if(isHave)
-                {
-                    buffIcon.Recycle();
-                }    
-            }
-            else
-            {
-                
-                if (!isHave)
-                {
-                    buffIcon = prefabBuffIcon.Spawn(scrollRect.content.transform);
-                    buffIcon.transform.localScale = new Vector3(1*signX,1,1);
-                    buffIcon.InitIcon(GetSpriteBuffIcon(buffType), null);
-                    buffIcon.InitAction(null, () =>
+                    ItemUI itemUI = scrollRect.content.transform.GetChild(i).GetComponent<ItemUI>();
+                    if (itemUI.icon.sprite == GetSpriteBuffIcon(buffType)) // cos toon tai
                     {
-                        Debug.Log("cos goi pointer up buff icon show tip");
-                        buffInfor.transform.SetParent(buffIcon.transform);
-                        buffInfor.SetText(BaseSkill.GetDescBuffOrDeBuff(buffType));
-                        
+                        return (true, itemUI);
+                    }
 
-
-                        buffInfor.DoShow();
-
-                    });
                 }
-                
-                buffIcon.AddCount(newValues - buffIcon.count);
-            }
+
+                return (false, null);
+
+
+            }, GetSpriteBuffIcon(buffType), BaseSkill.GetDescBuffOrDeBuff(buffType), newValues);
+        
           
         }
       
