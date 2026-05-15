@@ -1,46 +1,57 @@
-﻿using Skill;
+using Skill;
 using UnityEngine;
-[CreateAssetMenu(fileName = nameof(HoanAnhLuc), menuName = "Skill/Thần Thông/" + nameof(HoanAnhLuc))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class HoanAnhLuc : ThanThong
+[CreateAssetMenu(fileName = nameof(HoanAnhLuc), menuName = "Skill/Thần Thông/" + nameof(HoanAnhLuc))]
+public class HoanAnhLuc : ThanThong, IMemorySerializable<HoanAnhLuc>
 {
     [SerializeField]
-    private int[] tieuHaos = new int[]
-   {
-        5,15,30,40,50
-   };
+    private int[] tieuHaos = new int[]{5, 15, 30, 40, 50};
     [SerializeField]
-    private int[] buffValues = new int[]
-    {
-        2,3,5,7,9
-    };
-    [SerializeField] private float delayTimeEffect = 1f;
-
+    private int[] buffValues = new int[]{2, 3, 5, 7, 9};
+    [SerializeField]
+    private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int require = tieuHaos[GetIndexLevelThanThong(caster)];
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Anh, require);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.AnhDich, buffValues[GetIndexLevelThanThong(caster)]);
         ShowSkillEffectWorld(caster, delayTimeEffect);
-
-
     }
+
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Anh, out SecureInt  anh);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Anh, out SecureInt anh);
         int require = tieuHaos[GetIndexLevelThanThong(caster)];
-        if(anh >= require && base.IsCanUse(caster, target))
+        if (anh >= require && base.IsCanUse(caster, target))
         {
             return true;
-        }    
+        }
+
         return false;
     }
-
-
 
     public override string GetDesc(int level)
     {
         return $"Tiêu hao {GetColoredText($"{tieuHaos[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Anh)}. Thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnhDich)}";
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref HoanAnhLuc value)
+    {
+        ThanThong baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
     }
 }

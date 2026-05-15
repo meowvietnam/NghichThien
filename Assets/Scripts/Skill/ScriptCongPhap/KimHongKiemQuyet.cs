@@ -1,16 +1,22 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using Skill;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(KimHongKiemQuyet))]
-public class KimHongKiemQuyet : CongPhap
-{
-    [SerializeField] private int[] sucTheBuff;
-    [SerializeField] private int[] percentX2Dame;
-    [SerializeField] private int requireLinhKhi =4 ;
+using System;
+using Network;
+using Network.Extensions;
 
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(KimHongKiemQuyet))]
+public class KimHongKiemQuyet : CongPhap, IMemorySerializable<KimHongKiemQuyet>
+{
+    [SerializeField]
+    private int[] sucTheBuff;
+    [SerializeField]
+    private int[] percentX2Dame;
+    [SerializeField]
+    private int requireLinhKhi = 4;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         List<LinhKhiTieuTan> linhKhiTieuTans = (List<LinhKhiTieuTan>)data[3];
@@ -22,35 +28,34 @@ public class KimHongKiemQuyet : CongPhap
                 kimLinhKhi += item.count;
             }
         }
+
         if (caster.IsSkillTichLuyCanUse(this, kimLinhKhi, requireLinhKhi))
         {
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SucThe, sucTheBuff[CurrentLevelCongPhapInCombat(caster) - 1]);
-        }   
-        
-    }
-    public void Execute2(CharacterCombat caster, CharacterCombat target,List<int> dame)
-    {
-       
-        if (CheckIsEqualETypeSkill(caster) && CombatStatic.IsActiveWithPercent(percentX2Dame[CurrentLevelCongPhapInCombat(caster) - 1]))
-        {
-            
-            target.AddDamageData(new List<int> { dame[0] *2 });
         }
     }
+
+    public void Execute2(CharacterCombat caster, CharacterCombat target, List<int> dame)
+    {
+        if (CheckIsEqualETypeSkill(caster) && CombatStatic.IsActiveWithPercent(percentX2Dame[CurrentLevelCongPhapInCombat(caster) - 1]))
+        {
+            target.AddDamageData(new List<int>{dame[0] * 2});
+        }
+    }
+
     public virtual void ExecuteParams2(params object[] data)
     {
         // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
         CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
         CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
         List<int> dame = (List<int>)data[2];
-
         // Tìm trong danh sách trang bị của caster
-        if (caster != null&&IsCanUse(caster))
+        if (caster != null && IsCanUse(caster))
         {
-            Execute2(caster, target,dame);
-
+            Execute2(caster, target, dame);
         }
     }
+
     public override string GetDesc(int level)
     {
         return $"Mỗi tích lũy sử dụng {GetColoredText($"{requireLinhKhi}", "red")} điểm kim hệ linh khí, thu hoạch được {GetColoredText($"+{sucTheBuff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}. Tạo thành {GetTextTypeSkill()} hệ thần thông sát thương có tỉ lệ {GetColoredText($"{percentX2Dame[level - 1]}%", "red")} khiến cho sát thương lần này gấp đôi";
@@ -60,7 +65,22 @@ public class KimHongKiemQuyet : CongPhap
     {
         Observer.AddObserver(EventList.Combat.PLAY_SKILL, ExecuteParams);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams2);
-
     }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref KimHongKiemQuyet value)
+    {
+        CongPhap baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+    }
 }

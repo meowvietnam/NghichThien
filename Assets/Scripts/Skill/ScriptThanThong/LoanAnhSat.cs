@@ -1,68 +1,68 @@
-﻿using Skill;
+using Skill;
 using UnityEngine;
-[CreateAssetMenu(fileName = nameof(LoanAnhSat), menuName = "Skill/Thần Thông/" + nameof(LoanAnhSat))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class LoanAnhSat : ThanThong
+[CreateAssetMenu(fileName = nameof(LoanAnhSat), menuName = "Skill/Thần Thông/" + nameof(LoanAnhSat))]
+public class LoanAnhSat : ThanThong, IMemorySerializable<LoanAnhSat>
 {
-    
     [SerializeField]
-    private int[] tieuHaos = new int[]
-   {
-        5,10,15,20,25
-   };
+    private int[] tieuHaos = new int[]{5, 10, 15, 20, 25};
     [SerializeField]
-    private int[] tieuHaos2 = new int[]
-   {
-        8,16,24,36,40
-   };
+    private int[] tieuHaos2 = new int[]{8, 16, 24, 36, 40};
     [SerializeField]
-    private int[] dames1 = new int[]
-    {
-        7,10,15,20,28
-    };
+    private int[] dames1 = new int[]{7, 10, 15, 20, 28};
     [SerializeField]
     private int countDame1 = 2;
     [SerializeField]
-    private int[] countDame2 = new int[]
-    {
-        1,2,3,4,5
-    };
+    private int[] countDame2 = new int[]{1, 2, 3, 4, 5};
     [SerializeField]
     private int dame2 = 6;
-    [SerializeField] private float delayTimeEffect = 1f;
-
+    [SerializeField]
+    private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.TakeDameByStatic(null, new System.Collections.Generic.List<int> { tieuHaos[GetIndexLevelThanThong(caster)] }, false, null, false);
-
+        caster.TakeDameByStatic(null, new System.Collections.Generic.List<int>{tieuHaos[GetIndexLevelThanThong(caster)]}, false, null, false);
         for (int i = 0; i < countDame1; i++)
         {
-
             int dame = dames1[GetIndexLevelThanThong(caster)];
-            target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+            target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
         }
+
         int tieuHao2 = tieuHaos2[GetIndexLevelThanThong(caster)];
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Anh, out SecureInt  anh);
-        if(anh >= tieuHao2)
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Anh, out SecureInt anh);
+        if (anh >= tieuHao2)
         {
             caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Anh, tieuHao2);
             for (int i = 0; i < countDame2[GetIndexLevelThanThong(caster)]; i++)
             {
-
-                target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame2 }, eTypeSkill);
+                target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame2}, eTypeSkill);
             }
         }
+
         ShowSkillEffectWorld(target, delayTimeEffect);
-
-
     }
-
-
-
 
     public override string GetDesc(int level)
     {
-        return $"Tiêu hao {GetColoredText($"{tieuHaos[level - 1]}", "red")} điểm HP thì tạo thành {GetColoredText($"{countDame1} lần", "red")} {GetColoredText($"+{dames1[level - 1]}", "red")} điểm sát thương. Nếu đủ thì tiêu hao {GetColoredText($"{tieuHaos2[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Anh)} thì tạo thành {GetColoredText($"{countDame2[level-1]} lần", "red")} {GetColoredText($"+{dame2}", "red")} điểm sát thương";
+        return $"Tiêu hao {GetColoredText($"{tieuHaos[level - 1]}", "red")} điểm HP thì tạo thành {GetColoredText($"{countDame1} lần", "red")} {GetColoredText($"+{dames1[level - 1]}", "red")} điểm sát thương. Nếu đủ thì tiêu hao {GetColoredText($"{tieuHaos2[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Anh)} thì tạo thành {GetColoredText($"{countDame2[level - 1]} lần", "red")} {GetColoredText($"+{dame2}", "red")} điểm sát thương";
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref LoanAnhSat value)
+    {
+        ThanThong baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
     }
 }

@@ -1,20 +1,21 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
 using Skill;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(LietBangQuyet))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class LietBangQuyet : CongPhap
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(LietBangQuyet))]
+public class LietBangQuyet : CongPhap, IMemorySerializable<LietBangQuyet>
 {
     [SerializeField]
-    private int[] buffValues = new int[]
-     {
-        1, 1 , 2 ,2 , 3
-     };
-    [SerializeField] private int require = 2;
+    private int[] buffValues = new int[]{1, 1, 2, 2, 3};
+    [SerializeField]
+    private int require = 2;
     public override void ExecuteParams(params object[] data)
     {
         CharacterCombat caster = (CharacterCombat)data[0];
@@ -23,31 +24,27 @@ public class LietBangQuyet : CongPhap
         if (GetCongPhapMono(caster.congPhapEquip) != null)
         {
             Execute(caster, target, data);
-
         }
     }
- 
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int count = caster.congPhapDynamic.Count(x => x.congPhap is LietBangQuyet);
-        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SuongGia, out SecureInt  suongGia);
+        target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SuongGia, out SecureInt suongGia);
         List<int> dames = (List<int>)data[2];
         int dame = dames[0];
-        if(count >= require)
+        if (count >= require)
         {
-            float percent = (float)buffValues[CurrentLevelCongPhapInCombat(caster)-1] * suongGia / 100f; 
-            target.AddDamageData(new List<int> { (int)(dame * percent)});
+            float percent = (float)buffValues[CurrentLevelCongPhapInCombat(caster) - 1] * suongGia / 100f;
+            target.AddDamageData(new List<int>{(int)(dame * percent)});
             RemoveCongPhap(caster);
-        }   
+        }
         else
         {
             caster.AddCPDynamic(GetCongPhapMono(caster.congPhapEquip));
-
         }
-         
-
-
     }
+
     public override string GetDesc(int level)
     {
         return $"Mỗi khi sử dụng đủ {GetColoredText($"{require} lần", "red")} thần thông gây tổn thương, lần tiếp theo thần thông tạo thành tổn thương tăng lên {GetColoredText($"{buffValues[level - 1]}*X%", "red")} (X là số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SuongGia)} của đối thủ)";
@@ -57,6 +54,22 @@ public class LietBangQuyet : CongPhap
     {
         RemoveCongPhap(caster);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref LietBangQuyet value)
+    {
+        CongPhap baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
     }
 }

@@ -1,12 +1,16 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using System.Collections.Generic;
 using Skill;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ToKimChanPhap))]
-public class ToKimChanPhap : CongPhap
-{
-    [SerializeField] private int[] dame;
+using System;
+using Network;
+using Network.Extensions;
 
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ToKimChanPhap))]
+public class ToKimChanPhap : CongPhap, IMemorySerializable<ToKimChanPhap>
+{
+    [SerializeField]
+    private int[] dame;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         List<LinhKhiTieuTan> linhKhiTieuTan = data[2] as List<LinhKhiTieuTan>;
@@ -15,8 +19,9 @@ public class ToKimChanPhap : CongPhap
         {
             count += item.count;
         }
-        Debug.Log("lmm"+count);
-        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int> { count * dame[CurrentLevelCongPhapInCombat(caster) - 1] }, true, eTypeSkill);
+
+        Debug.Log("lmm" + count);
+        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int>{count * dame[CurrentLevelCongPhapInCombat(caster) - 1]}, true, eTypeSkill);
     }
 
     public override string GetDesc(int level)
@@ -24,12 +29,25 @@ public class ToKimChanPhap : CongPhap
         return $"Giai đoạn tiêu tán linh khí, mỗi tiêu tán 1 điểm linh khí đối phương nhận {GetColoredText($"+{dame[level - 1]}", "red")} sát thương";
     }
 
-
-  
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ExecuteParams);
     }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref ToKimChanPhap value)
+    {
+        CongPhap baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+    }
 }
-   

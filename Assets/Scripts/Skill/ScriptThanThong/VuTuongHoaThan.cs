@@ -1,38 +1,60 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using System.Linq;
 using UnityEngine;
-[CreateAssetMenu(fileName = nameof(VuTuongHoaThan), menuName = "Skill/Thần Thông/" + nameof(VuTuongHoaThan))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class VuTuongHoaThan : NeTranhTT
+[CreateAssetMenu(fileName = nameof(VuTuongHoaThan), menuName = "Skill/Thần Thông/" + nameof(VuTuongHoaThan))]
+public class VuTuongHoaThan : NeTranhTT, IMemorySerializable<VuTuongHoaThan>
 {
-    [SerializeField] private int requireHuyenVu = 2;
-    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField]
+    private int requireHuyenVu = 2;
+    [SerializeField]
+    private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddThanThongImpactAfterPlaySkill(this);
-
         Observer.AddObserver(EventList.Combat.CHECK_NE_TRANH, ObserverEffectNeTranh, 0);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HuyenVu, requireHuyenVu);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
-   
+
     public override string GetDesc(int level)
     {
         return $"Gỡ ra {GetColoredText($"{requireHuyenVu}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HuyenVu)}. Triệu hoán sương mù làm thế thân giúp ngươi né tránh sát thương (Có thể cộng dồn)";
-
     }
+
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HuyenVu, out SecureInt  huyenVu);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HuyenVu, out SecureInt huyenVu);
         if (huyenVu >= requireHuyenVu && base.IsCanUse(caster, target))
         {
             return true;
         }
+
         return false;
     }
 
     protected override void NeTranhSuccess(CharacterCombat takeDameChar)
     {
         takeDameChar.RemoveOneThanThongImpactAfterPlaySkill(this);
+    }
+
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref VuTuongHoaThan value)
+    {
+        NeTranhTT baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
     }
 }

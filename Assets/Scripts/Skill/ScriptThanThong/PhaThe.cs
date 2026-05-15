@@ -1,11 +1,18 @@
-﻿using Skill;
+using Skill;
 using UnityEngine;
+using System;
+using Network;
+using Network.Extensions;
+
 [CreateAssetMenu(fileName = nameof(PhaThe), menuName = "Skill/Thần Thông/" + nameof(PhaThe))]
-public class PhaThe : ThanThong , BaseSkill.TuongDong
+public class PhaThe : ThanThong, BaseSkill.TuongDong, IMemorySerializable<PhaThe>
 {
-    [SerializeField]private int[] debuffValues;
-    [SerializeField]private int[] debuffTuongDong;
-    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField]
+    private int[] debuffValues;
+    [SerializeField]
+    private int[] debuffTuongDong;
+    [SerializeField]
+    private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, debuffValues[GetIndexLevelThanThong(caster)]);
@@ -19,9 +26,23 @@ public class PhaThe : ThanThong , BaseSkill.TuongDong
 
     public override string GetDesc(int level)
     {
-        return $"Đối thủ {GetColoredText($"+{debuffValues[level-1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}. Nếu {GetKeyWord(EKeyWord.TuongDong)} đối phương nhận thêm {GetColoredText($"+{debuffTuongDong[level-1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}";
-
+        return $"Đối thủ {GetColoredText($"+{debuffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}. Nếu {GetKeyWord(EKeyWord.TuongDong)} đối phương nhận thêm {GetColoredText($"+{debuffTuongDong[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}";
     }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
 
+    public void Deserialize(IReader reader, ref PhaThe value)
+    {
+        ThanThong baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+    }
 }

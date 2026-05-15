@@ -1,35 +1,47 @@
-﻿using Skill;
+using Skill;
 using UnityEngine;
-[CreateAssetMenu(fileName = nameof(LaYenBo), menuName = "Skill/Thần Thông/" + nameof(LaYenBo))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class LaYenBo : ThanThong
+[CreateAssetMenu(fileName = nameof(LaYenBo), menuName = "Skill/Thần Thông/" + nameof(LaYenBo))]
+public class LaYenBo : ThanThong, IMemorySerializable<LaYenBo>
 {
     [SerializeField]
-    private int[] dames = new int[]
-    {
-        3,5,8,15,30
-    };
+    private int[] dames = new int[]{3, 5, 8, 15, 30};
     [SerializeField]
     private int require = 5;
     [SerializeField]
     private int dameBuffs = 1;
-    [SerializeField] private float delayTimeEffect = 1f;
-
+    [SerializeField]
+    private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int X = (int)caster.GetToDoBay() / require;
         int dame = dames[GetIndexLevelThanThong(caster)] + X * dameBuffs;
-
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
         ShowSkillEffectWorld(target, delayTimeEffect);
-
     }
-
-
 
     public override string GetDesc(int level)
     {
         return $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Mỗi có {GetColoredText($"{require}", "red")} điểm độn tốc thì tăng lên {GetColoredText($"+{dameBuffs}", "red")} điểm sát thương";
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref LaYenBo value)
+    {
+        ThanThong baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
     }
 }

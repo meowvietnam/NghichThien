@@ -1,12 +1,16 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using UnityEngine;
+using System;
+using Network;
+using Network.Extensions;
+
 [CreateAssetMenu(fileName = nameof(SinhKimMocThuyHoaTho), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(SinhKimMocThuyHoaTho))]
-public class SinhKimMocThuyHoaTho : NgoDaoCombat
+public class SinhKimMocThuyHoaTho : NgoDaoCombat, IMemorySerializable<SinhKimMocThuyHoaTho>
 {
-    [SerializeField] private ELinhKhi elinhKhi;
-    [SerializeField] private int countLinhKhi = 2;
-
-
+    [SerializeField]
+    private ELinhKhi elinhKhi;
+    [SerializeField]
+    private int countLinhKhi = 2;
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.HapThuLinhKhi(elinhKhi, countLinhKhi);
@@ -22,4 +26,20 @@ public class SinhKimMocThuyHoaTho : NgoDaoCombat
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
     }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref SinhKimMocThuyHoaTho value)
+    {
+        NgoDaoCombat baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+    }
 }

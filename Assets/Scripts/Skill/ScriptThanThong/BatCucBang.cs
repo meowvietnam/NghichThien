@@ -1,43 +1,57 @@
-﻿using Skill;
+using Skill;
 using UnityEngine;
-[CreateAssetMenu(fileName = nameof(BatCucBang), menuName = "Skill/Thần Thông/" + nameof(BatCucBang))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class BatCucBang : ThanThong , BaseSkill.TuongKhac
+[CreateAssetMenu(fileName = nameof(BatCucBang), menuName = "Skill/Thần Thông/" + nameof(BatCucBang))]
+public class BatCucBang : ThanThong, BaseSkill.TuongKhac, IMemorySerializable<BatCucBang>
 {
     [SerializeField]
-    private int[] dames = new int[]
-   {
-        6,9,14,26,52
-   };
+    private int[] dames = new int[]{6, 9, 14, 26, 52};
     [SerializeField]
-    private int[] buffValues = new int[]
-    {
-        3,4,6,11,23
-    };
+    private int[] buffValues = new int[]{3, 4, 6, 11, 23};
     [SerializeField]
     private int treKhi = 2;
-    [SerializeField] private float delayTimeEffect = 1f;
-
+    [SerializeField]
+    private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         ActionBCB(caster, target, dames);
         ShowSkillEffectWorld(target, delayTimeEffect);
-
     }
-    private void ActionBCB(CharacterCombat caster, CharacterCombat target , int[] dames , bool isCongDon = false)
+
+    private void ActionBCB(CharacterCombat caster, CharacterCombat target, int[] dames, bool isCongDon = false)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, treKhi);
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame },eTypeSkill , isCongDon);
-    }    
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill, isCongDon);
+    }
+
     public void ExecuteTuongKhac(CharacterCombat caster, CharacterCombat target)
     {
-        ActionBCB(caster, target, buffValues , true);
+        ActionBCB(caster, target, buffValues, true);
     }
 
     public override string GetDesc(int level)
     {
         return $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương, thu hoạch được {GetColoredText($"+{treKhi}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}. {GetKeyWord(EKeyWord.TuongKhac)} cũng tăng lên {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương, thu hoạch được {GetColoredText($"+{treKhi}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}";
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref BatCucBang value)
+    {
+        ThanThong baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
     }
 }

@@ -1,23 +1,24 @@
-﻿using Skill;
+using Skill;
 using UnityEngine;
-[CreateAssetMenu(fileName = nameof(DiemLinhChieuLai), menuName = "Skill/Thần Thông/" + nameof(DiemLinhChieuLai))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class DiemLinhChieuLai : ThanThong
+[CreateAssetMenu(fileName = nameof(DiemLinhChieuLai), menuName = "Skill/Thần Thông/" + nameof(DiemLinhChieuLai))]
+public class DiemLinhChieuLai : ThanThong, IMemorySerializable<DiemLinhChieuLai>
 {
-    [SerializeField] private int require = 5;
     [SerializeField]
-    private int[] dameValues = new int[]
-    {
-        2,3,4,7,12
-    };
-    [SerializeField] private float delayTimeEffect = 1f;
+    private int require = 5;
+    [SerializeField]
+    private int[] dameValues = new int[]{2, 3, 4, 7, 12};
+    [SerializeField]
+    private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Diem, require);
         int dame = dameValues[GetIndexLevelThanThong(caster)];
-        target.CaculateDameByThanThong(caster,new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
         ShowSkillEffectWorld(caster, delayTimeEffect);
-
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
@@ -27,14 +28,29 @@ public class DiemLinhChieuLai : ThanThong
         {
             return true;
         }
+
         return false;
     }
-
-
 
     public override string GetDesc(int level)
     {
         return $"Tiêu hao {GetColoredText($"{require}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Diem)}, Tạo thành {GetColoredText($"+{dameValues[level - 1]}", "red")} điểm sát thương";
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref DiemLinhChieuLai value)
+    {
+        ThanThong baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
     }
 }

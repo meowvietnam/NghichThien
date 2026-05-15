@@ -1,41 +1,50 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using Newtonsoft.Json;
 using System.Linq;
 using Skill;
 using UnityEngine;
+using System;
+using Network;
+using Network.Extensions;
+
 [CreateAssetMenu(fileName = nameof(CucAmLanhHoa), menuName = "Skill/Thần Thông/" + nameof(CucAmLanhHoa))]
-
-public class CucAmLanhHoa : ThanThong
+public class CucAmLanhHoa : ThanThong, IMemorySerializable<CucAmLanhHoa>
 {
-
     [SerializeField]
-    private int[] debuffs = new int[]
-    {
-        1,2,3,4,5
-    };
+    private int[] debuffs = new int[]{1, 2, 3, 4, 5};
     [SerializeField]
-    private int[] dameBuffs = new int[]
-    {
-        30,40,56,80,117
-    };
-    [SerializeField] private float delayTimeEffect = 1f;
+    private int[] dameBuffs = new int[]{30, 40, 56, 80, 117};
+    [SerializeField]
+    private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dameBuffs[GetIndexLevelThanThong(caster)];
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
         int debuff = debuffs[GetIndexLevelThanThong(caster)];
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, debuff);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, debuff);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
-   
-
-
-
     public override string GetDesc(int level)
     {
         return $"Tạo thành {GetColoredText($"+{dameBuffs[level - 1]}", "red")} điểm sát thương. Đối thủ nhận phải {GetColoredText($"+{debuffs[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SuongGia)}";
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref CucAmLanhHoa value)
+    {
+        ThanThong baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
     }
 }

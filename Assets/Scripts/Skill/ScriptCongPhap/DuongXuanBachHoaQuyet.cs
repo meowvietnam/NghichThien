@@ -1,35 +1,38 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using System.Collections.Generic;
 using Skill;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(DuongXuanBachHoaQuyet))]
-public class DuongXuanBachHoaQuyet : CongPhap
-{
-    [SerializeField] private int require = 4;
-    [SerializeField] private int[] hapThu;
+using System;
+using Network;
+using Network.Extensions;
 
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(DuongXuanBachHoaQuyet))]
+public class DuongXuanBachHoaQuyet : CongPhap, IMemorySerializable<DuongXuanBachHoaQuyet>
+{
+    [SerializeField]
+    private int require = 4;
+    [SerializeField]
+    private int[] hapThu;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int countDebuff = 0;
         foreach (var item in target.buffAndDebuffCount)
         {
-            if(eDebuffs.Contains(item.Key))
+            if (eDebuffs.Contains(item.Key))
             {
                 countDebuff++;
-            }    
-        }     
-        if(countDebuff >= require)
+            }
+        }
+
+        if (countDebuff >= require)
         {
-            var dic = caster.DictHapThuLinhKhi(hapThu[CurrentLevelCongPhapInCombat(caster)-1]);
+            var dic = caster.DictHapThuLinhKhi(hapThu[CurrentLevelCongPhapInCombat(caster) - 1]);
             Debug.Log("DuongXuanBachHoaQuyet" + dic.Count);
             foreach (var item in dic)
             {
                 caster.HapThuLinhKhi(item.Key, item.Value);
             }
-            
-                
-
-        }    
+        }
     }
 
     public override string GetDesc(int level)
@@ -40,8 +43,22 @@ public class DuongXuanBachHoaQuyet : CongPhap
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ExecuteParams);
-
     }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
 
+    public void Deserialize(IReader reader, ref DuongXuanBachHoaQuyet value)
+    {
+        CongPhap baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+    }
 }

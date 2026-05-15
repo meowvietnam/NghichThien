@@ -1,23 +1,23 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(TatPhongKinh))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class TatPhongKinh : PhiVanKinh
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(TatPhongKinh))]
+public class TatPhongKinh : PhiVanKinh, IMemorySerializable<TatPhongKinh>
 {
     [SerializeField]
-    private int[] buffValues2 = new int[]
-       {
-            16, 32 , 66,136, 278
-       };
+    private int[] buffValues2 = new int[]{16, 32, 66, 136, 278};
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if(caster.GetToDoBay() > target.GetToDoBay())
+        if (caster.GetToDoBay() > target.GetToDoBay())
         {
-            target.AddDamageData(new System.Collections.Generic.List<int> { buffValues2[CurrentLevelCongPhapInCombat(caster)-1] });
+            target.AddDamageData(new System.Collections.Generic.List<int>{buffValues2[CurrentLevelCongPhapInCombat(caster) - 1]});
             RemoveCongPhap(caster);
-        }    
+        }
     }
 
     public override string GetDesc(int level)
@@ -28,6 +28,24 @@ public class TatPhongKinh : PhiVanKinh
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize + buffValues2.ByteSize();
+    }
+
+    public void Deserialize(IReader reader, ref TatPhongKinh value)
+    {
+        PhiVanKinh baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+        value.buffValues2 = reader.ReadArray<Int32>();
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+        writer.WriteArray(buffValues2);
     }
 }

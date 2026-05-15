@@ -1,22 +1,22 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using System.Linq;
 using Skill;
 using UnityEngine;
-[CreateAssetMenu(fileName = nameof(ThonDiemQuyet), menuName = "Skill/Thần Thông/" + nameof(ThonDiemQuyet))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class ThonDiemQuyet : ThanThong
+[CreateAssetMenu(fileName = nameof(ThonDiemQuyet), menuName = "Skill/Thần Thông/" + nameof(ThonDiemQuyet))]
+public class ThonDiemQuyet : ThanThong, IMemorySerializable<ThonDiemQuyet>
 {
-    [SerializeField] private int require = 3;
-    [SerializeField] private int[] healValues = new int[]
-    {
-        1,2,3,4,5
-    };
     [SerializeField]
-    private int[] dameBuffs = new int[]
-    {
-        2,3,4,5,6
-    };
-    [SerializeField] private float delayTimeEffect = 1f;
+    private int require = 3;
+    [SerializeField]
+    private int[] healValues = new int[]{1, 2, 3, 4, 5};
+    [SerializeField]
+    private int[] dameBuffs = new int[]{2, 3, 4, 5, 6};
+    [SerializeField]
+    private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, require);
@@ -24,42 +24,55 @@ public class ThonDiemQuyet : ThanThong
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
         ShowSkillEffectWorld(target, delayTimeEffect);
-
-
     }
+
     private void ObserverEffect(params object[] data)
     {
         CharacterCombat currentTurn = (CharacterCombat)data[0];
         CharacterCombat targetTurn = (CharacterCombat)data[1];
-
-        if (currentTurn == null) return;
-        if(!CheckIsEqualETypeSkill(currentTurn)) return;
+        if (currentTurn == null)
+            return;
+        if (!CheckIsEqualETypeSkill(currentTurn))
+            return;
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is ThonDiemQuyet))
         {
             int count = currentTurn.specialThanThongImpactAfterPlaySkill.Count(x => x is ThonDiemQuyet);
             int dame = dameBuffs[GetIndexLevelThanThong(currentTurn)] * count;
-            targetTurn.AddDamageData(new System.Collections.Generic.List<int> { dame } ,true);
+            targetTurn.AddDamageData(new System.Collections.Generic.List<int>{dame}, true);
             currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
-
         }
-
-
     }
+
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt  thieuDot);
-        if(thieuDot >= require && base.IsCanUse(caster, target))
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt thieuDot);
+        if (thieuDot >= require && base.IsCanUse(caster, target))
         {
             return true;
-        }    
+        }
+
         return false;
     }
-
-
 
     public override string GetDesc(int level)
     {
         return $"Bản thân gỡ ra {GetColoredText($"{require}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}, khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm HP. Lần tiếp theo tạo thành {GetTextTypeSkill()} hệ thần thông tổn thương {GetColoredText($"+{dameBuffs[level - 1]}", "red")} (Có thể cộng dồn)";
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref ThonDiemQuyet value)
+    {
+        ThanThong baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
     }
 }

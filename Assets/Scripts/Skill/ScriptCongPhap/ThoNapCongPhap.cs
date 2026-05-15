@@ -1,27 +1,28 @@
-﻿using Skill;
+using Skill;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThoNapCongPhap))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class ThoNapCongPhap : CongPhap
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThoNapCongPhap))]
+public class ThoNapCongPhap : CongPhap, IMemorySerializable<ThoNapCongPhap>
 {
     [SerializeField]
     private int[] buffValues;
-    public override void EquipCongPhap(CharacterStatsSecure statsCurrent , int daiCanhGioiCongPhap)
+    public override void EquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
-
         statsCurrent.hpMax += buffValues[daiCanhGioiCongPhap - 1];
     }
+
     public override void UnEquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
-
         statsCurrent.hpMax -= buffValues[daiCanhGioiCongPhap - 1];
-        if(statsCurrent.hp >= statsCurrent.hpMax)
+        if (statsCurrent.hp >= statsCurrent.hpMax)
         {
             statsCurrent.hp -= buffValues[daiCanhGioiCongPhap - 1];
-
         }
-
     }
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         return;
@@ -35,6 +36,24 @@ public class ThoNapCongPhap : CongPhap
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         return;
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize + buffValues.ByteSize();
+    }
+
+    public void Deserialize(IReader reader, ref ThoNapCongPhap value)
+    {
+        CongPhap baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+        value.buffValues = reader.ReadArray<Int32>();
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+        writer.WriteArray(buffValues);
     }
 }

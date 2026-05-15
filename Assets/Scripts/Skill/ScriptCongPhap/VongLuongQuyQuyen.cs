@@ -1,29 +1,24 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(VongLuongQuyQuyen))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class VongLuongQuyQuyen : CPTieuHaoThoNguyen
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(VongLuongQuyQuyen))]
+public class VongLuongQuyQuyen : CPTieuHaoThoNguyen, IMemorySerializable<VongLuongQuyQuyen>
 {
     [SerializeField]
-    private int[] buffValues = new int[]
-        {
-            5, 18 , 33,48, 63
-        };
+    private int[] buffValues = new int[]{5, 18, 33, 48, 63};
     [SerializeField]
-    private int[] debuffValues = new int[]
-       {
-            2, 4 , 6,8, 10
-       };
-   
+    private int[] debuffValues = new int[]{2, 4, 6, 8, 10};
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int indexLevel = CurrentLevelCongPhapInCombat(caster) - 1;
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Anh, buffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThanThuong, debuffValues[indexLevel]);
         RemoveCongPhap(caster);
-
     }
 
     public override string GetDesc(int level)
@@ -34,6 +29,22 @@ public class VongLuongQuyQuyen : CPTieuHaoThoNguyen
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ExecuteParams);
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref VongLuongQuyQuyen value)
+    {
+        CPTieuHaoThoNguyen baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
     }
 }

@@ -1,16 +1,17 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using System.Collections.Generic;
 using System.Linq;
 using Skill;
 using UnityEngine;
+using System;
+using Network;
+using Network.Extensions;
+
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(TieuTuDiCamPhap))]
-public class TieuTuDiCamPhap : CongPhap
+public class TieuTuDiCamPhap : CongPhap, IMemorySerializable<TieuTuDiCamPhap>
 {
     [SerializeField]
-    private int[] buffValues = new int[]
-         {
-            20, 25 , 30,35, 40
-         };
+    private int[] buffValues = new int[]{20, 25, 30, 35, 40};
     [SerializeField]
     private ThanThong thanThongActive;
     public override void ExecuteParams(params object[] data)
@@ -18,19 +19,18 @@ public class TieuTuDiCamPhap : CongPhap
         // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
         CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
         CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
-
         // Kiểm tra caster không null và thỏa mãn điều kiện sử dụng
         if (target != null && IsCanUse(target))
         {
             Execute(caster, target, data);
         }
     }
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (CombatStatic.IsActiveWithPercent(buffValues[CurrentLevelCongPhapInCombat(target) - 1]))
         {
             Observer.Notify(EventList.Combat.PLAY_SKILL, target, caster, thanThongActive, new List<LinhKhiTieuTan>());
-
         }
     }
 
@@ -42,6 +42,22 @@ public class TieuTuDiCamPhap : CongPhap
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref TieuTuDiCamPhap value)
+    {
+        CongPhap baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
     }
 }

@@ -1,15 +1,18 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using Skill;
 using UnityEngine;
+using System;
+using Network;
+using Network.Extensions;
+
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(HuyetDocKinh))]
-
-public class HuyetDocKinh : CongPhap
+public class HuyetDocKinh : CongPhap, IMemorySerializable<HuyetDocKinh>
 {
-    [SerializeField] private int[] healValues;
-
+    [SerializeField]
+    private int[] healValues;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.Healing(healValues[CurrentLevelCongPhapInCombat(caster)-1]);
+        caster.Healing(healValues[CurrentLevelCongPhapInCombat(caster) - 1]);
     }
 
     public override string GetDesc(int level)
@@ -20,7 +23,22 @@ public class HuyetDocKinh : CongPhap
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.Combat.TRUNG_DOC, ExecuteParams);
-
     }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref HuyetDocKinh value)
+    {
+        CongPhap baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+    }
 }

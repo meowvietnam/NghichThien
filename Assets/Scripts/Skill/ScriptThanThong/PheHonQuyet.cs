@@ -1,39 +1,51 @@
-﻿using Skill;
+using Skill;
 using UnityEngine;
-[CreateAssetMenu(fileName = nameof(PheHonQuyet), menuName = "Skill/Thần Thông/" + nameof(PheHonQuyet))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class PheHonQuyet : ThanThong, BaseSkill.ThanThuc
+[CreateAssetMenu(fileName = nameof(PheHonQuyet), menuName = "Skill/Thần Thông/" + nameof(PheHonQuyet))]
+public class PheHonQuyet : ThanThong, BaseSkill.ThanThuc, IMemorySerializable<PheHonQuyet>
 {
     [SerializeField]
-    private int[] dames = new int[]
-     {
-        4,6,10,20,40
-     };
+    private int[] dames = new int[]{4, 6, 10, 20, 40};
     [SerializeField]
-    private int[] buffValues = new int[]
-    {
-        2,2,2,2,2
-    };
-    [SerializeField] private float delayTimeEffect = 1f;
-
+    private int[] buffValues = new int[]{2, 2, 2, 2, 2};
+    [SerializeField]
+    private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
         ShowSkillEffectWorld(target, delayTimeEffect);
-
     }
 
     public void ExecuteThanThuc(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon,out SecureInt  hon);
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon, out SecureInt hon);
         int dame = hon * buffValues[GetIndexLevelThanThong(caster)];
-        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int> { dame }, true, eTypeSkill);
+        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int>{dame}, true, eTypeSkill);
     }
 
     public override string GetDesc(int level)
     {
         return $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.ThanThuc)} Mỗi có một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} tăng lên {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương";
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref PheHonQuyet value)
+    {
+        ThanThong baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
     }
 }

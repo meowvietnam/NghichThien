@@ -1,15 +1,15 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using Skill;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(LongTuongThonHaiQuyet))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class LongTuongThonHaiQuyet : CongPhap
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(LongTuongThonHaiQuyet))]
+public class LongTuongThonHaiQuyet : CongPhap, IMemorySerializable<LongTuongThonHaiQuyet>
 {
     [SerializeField]
-    private int[] buffValues = new int[]
-    {
-        1 , 2 , 3 ,4 , 5
-    };
+    private int[] buffValues = new int[]{1, 2, 3, 4, 5};
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
     }
@@ -25,5 +25,20 @@ public class LongTuongThonHaiQuyet : CongPhap
         caster.totalKhi += buffValues[CurrentLevelCongPhapInCombat(caster) - 1];
     }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
 
+    public void Deserialize(IReader reader, ref LongTuongThonHaiQuyet value)
+    {
+        CongPhap baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+    }
 }

@@ -1,19 +1,19 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using Skill;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(DuThanNguThuyQuyet))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class DuThanNguThuyQuyet : CongPhap
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(DuThanNguThuyQuyet))]
+public class DuThanNguThuyQuyet : CongPhap, IMemorySerializable<DuThanNguThuyQuyet>
 {
     [SerializeField]
-    private int[] buffValues = new int[]
-     {
-        2 , 3 , 4 ,5 , 8
-     };
+    private int[] buffValues = new int[]{2, 3, 4, 5, 8};
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         ThanThong thanThong = (ThanThong)data[2];
-        if(thanThong is NguThuyQuyet)
+        if (thanThong is NguThuyQuyet)
         {
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SucLuc, buffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
         }
@@ -29,4 +29,20 @@ public class DuThanNguThuyQuyet : CongPhap
         Observer.AddObserver(EventList.Combat.PLAY_SKILL, ExecuteParams);
     }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref DuThanNguThuyQuyet value)
+    {
+        CongPhap baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+    }
 }

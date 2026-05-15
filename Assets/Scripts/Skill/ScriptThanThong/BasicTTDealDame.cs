@@ -1,44 +1,60 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Skill;
+using System;
+using Network;
+using Network.Extensions;
 
 [CreateAssetMenu(fileName = nameof(BasicTTDealDame), menuName = "Skill/Thần Thông/" + nameof(BasicTTDealDame))]
-public class BasicTTDealDame : ThanThong, BaseSkill.LienKich
+public class BasicTTDealDame : ThanThong, BaseSkill.LienKich, IMemorySerializable<BasicTTDealDame>
 {
-
-    [SerializeField] private int[] dame;
-    [SerializeField] private int[] dameLienKich;
-    [SerializeField] private ELinhKhi elinhKhi;
     [SerializeField]
-    private float delayTimeEffect  = 1f;
+    private int[] dame;
+    [SerializeField]
+    private int[] dameLienKich;
+    [SerializeField]
+    private ELinhKhi elinhKhi;
+    [SerializeField]
+    private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-
-        target.CaculateDameByThanThong(caster, new List<int> {     dame[GetIndexLevelThanThong(caster)] },eTypeSkill);
-        if(elinhKhi == ELinhKhi.Hoa || elinhKhi == ELinhKhi.Thuy)
+        target.CaculateDameByThanThong(caster, new List<int>{dame[GetIndexLevelThanThong(caster)]}, eTypeSkill);
+        if (elinhKhi == ELinhKhi.Hoa || elinhKhi == ELinhKhi.Thuy)
         {
             ShowSkillEffectWorld(caster, delayTimeEffect);
         }
         else
         {
             ShowSkillEffectWorld(target, delayTimeEffect);
-
         }
-
     }
 
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
     {
-        target.CaculateDameByThanThong(caster, new List<int> { dameLienKich[GetIndexLevelThanThong(caster)] },eTypeSkill,true);
+        target.CaculateDameByThanThong(caster, new List<int>{dameLienKich[GetIndexLevelThanThong(caster)]}, eTypeSkill, true);
         Debug.Log("call lien kich basse tt dame");
-
     }
 
     public override string GetDesc(int level)
     {
-        return $"Cơ sở {GetTextLinhKhi(elinhKhi)} hệ thần thông, tạo thành {GetColoredText($"{dame[level-1]}","red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} nếu trước đó dùng {GetTextLinhKhi(CombatManager.linhKhiLienKich[elinhKhi])} hệ kĩ năng thì tổn thương {GetColoredText($"+{dameLienKich[level-1]}", "red")}";
+        return $"Cơ sở {GetTextLinhKhi(elinhKhi)} hệ thần thông, tạo thành {GetColoredText($"{dame[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} nếu trước đó dùng {GetTextLinhKhi(CombatManager.linhKhiLienKich[elinhKhi])} hệ kĩ năng thì tổn thương {GetColoredText($"+{dameLienKich[level - 1]}", "red")}";
     }
 
-   
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref BasicTTDealDame value)
+    {
+        ThanThong baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+    }
 }

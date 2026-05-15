@@ -1,21 +1,21 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using System.Collections.Generic;
 using System.Linq;
 using Skill;
 using UnityEngine;
+using System;
+using Network;
+using Network.Extensions;
+
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(HonNguyenTranDanLuc))]
-public class HonNguyenTranDanLuc : CongPhap
+public class HonNguyenTranDanLuc : CongPhap, IMemorySerializable<HonNguyenTranDanLuc>
 {
     [SerializeField]
-    private int[] buffValues = new int[]
-         {
-            4, 5 , 6,9, 15
-         };
-  
+    private int[] buffValues = new int[]{4, 5, 6, 9, 15};
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out SecureInt  danLuc);
-        if(danLuc > 0)
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out SecureInt danLuc);
+        if (danLuc > 0)
         {
             ThanThong thanThong = (ThanThong)data[2];
             if (thanThong is HoanTran)
@@ -26,9 +26,7 @@ public class HonNguyenTranDanLuc : CongPhap
             {
                 target.AddBuffAndDebuffCount(EBuffAndDeBuff.Cat, buffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
             }
-
         }
-
     }
 
     public override string GetDesc(int level)
@@ -39,6 +37,22 @@ public class HonNguyenTranDanLuc : CongPhap
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.Combat.PLAY_SKILL, ExecuteParams);
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref HonNguyenTranDanLuc value)
+    {
+        CongPhap baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
     }
 }

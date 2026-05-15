@@ -1,37 +1,36 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using Skill;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(BangSuongQuyet))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class BangSuongQuyet : CongPhap
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(BangSuongQuyet))]
+public class BangSuongQuyet : CongPhap, IMemorySerializable<BangSuongQuyet>
 {
     [SerializeField]
-    private int[] percentActives = new int[]
-    {
-        40 , 55 , 70 ,85 , 100
-    };
+    private int[] percentActives = new int[]{40, 55, 70, 85, 100};
     public override void ExecuteParams(params object[] data)
     {
         // target là ng nhận dame 
         // ktra xem ng nhận dame có công pháp này k
-
         // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
         CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
         CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
         // Tìm trong danh sách trang bị của caster
-        if (target!=null&&IsCanUse(target))
+        if (target != null && IsCanUse(target))
         {
             Execute(caster, target, data);
-
         }
     }
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         // khi target nhận sát thương thì caster là ng gây dame
-        if (CombatStatic.IsActiveWithPercent(percentActives[CurrentLevelCongPhapInCombat(target)-1]))
+        if (CombatStatic.IsActiveWithPercent(percentActives[CurrentLevelCongPhapInCombat(target) - 1]))
         {
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, 1);
-        }    
+        }
     }
 
     public override string GetDesc(int level)
@@ -44,4 +43,20 @@ public class BangSuongQuyet : CongPhap
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
     }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref BangSuongQuyet value)
+    {
+        CongPhap baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+    }
 }

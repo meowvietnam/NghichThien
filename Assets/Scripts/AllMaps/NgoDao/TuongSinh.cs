@@ -1,34 +1,41 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using System.Linq;
 using UnityEngine;
+using System;
+using Network;
+using Network.Extensions;
+
 [CreateAssetMenu(fileName = nameof(TuongSinh), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(TuongSinh))]
-public class TuongSinh : NgoDaoCombat
+public class TuongSinh : NgoDaoCombat, IMemorySerializable<TuongSinh>
 {
-    [SerializeField] private ELinhKhi elinhKhi;
-    [SerializeField] private int buff = 6;
+    [SerializeField]
+    private ELinhKhi elinhKhi;
+    [SerializeField]
+    private int buff = 6;
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddNgoDaoCombatDynamic(this);
     }
+
     public virtual void ObserverEffect2(params object[] data)
     {
         CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
         CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
-
-        if (caster == null) return;
-
+        if (caster == null)
+            return;
         if (caster.ngoDaoCombatsDynamic.Any(x => x.Id == this.Id))
         {
             ExecuteNgoDao2(caster, target, data);
         }
     }
+
     public void ExecuteNgoDao2(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if(BaseSkill.CheckIsEqualETypeSkill(caster, eTypeRequire))
+        if (BaseSkill.CheckIsEqualETypeSkill(caster, eTypeRequire))
         {
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TuKhi, buff);
             caster.RemoveNgoDaoCombatDynamic(this);
-        }    
+        }
     }
 
     public override string GetDes()
@@ -40,7 +47,22 @@ public class TuongSinh : NgoDaoCombat
     {
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
         Observer.AddObserver(EventList.Combat.LIEN_KICH, ObserverEffect2);
-
     }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref TuongSinh value)
+    {
+        NgoDaoCombat baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+    }
 }

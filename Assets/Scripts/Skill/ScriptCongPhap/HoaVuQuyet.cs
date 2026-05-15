@@ -1,23 +1,23 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using Skill;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(HoaVuQuyet))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class HoaVuQuyet : CongPhap
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(HoaVuQuyet))]
+public class HoaVuQuyet : CongPhap, IMemorySerializable<HoaVuQuyet>
 {
     [SerializeField]
     private int[] healValues;
-
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.Healing(healValues[CurrentLevelCongPhapInCombat(caster) - 1]);
-
     }
 
     public override string GetDesc(int level)
     {
         return $"Kết thúc hiệp, bản thân khôi phục {GetColoredText($"+{healValues}", "red")} điểm Hp";
-
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)
@@ -25,4 +25,20 @@ public class HoaVuQuyet : CongPhap
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ExecuteParams);
     }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref HoaVuQuyet value)
+    {
+        CongPhap baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+    }
 }

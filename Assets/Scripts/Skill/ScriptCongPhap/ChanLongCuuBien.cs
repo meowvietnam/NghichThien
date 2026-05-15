@@ -1,22 +1,18 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ChanLongCuuBien))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class ChanLongCuuBien : ThoNapCongPhap
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ChanLongCuuBien))]
+public class ChanLongCuuBien : ThoNapCongPhap, IMemorySerializable<ChanLongCuuBien>
 {
     [SerializeField]
-    private int[] buffValues2 = new int[]
-           {
-            0, 0 , 1,1, 1
-           };
-
-
+    private int[] buffValues2 = new int[]{0, 0, 1, 1, 1};
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-
-
     }
 
     public override string GetDesc(int level)
@@ -27,6 +23,24 @@ public class ChanLongCuuBien : ThoNapCongPhap
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanLongChiHuyet, buffValues2[CurrentLevelCongPhapInCombat(caster) - 1]);
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize + buffValues2.ByteSize();
+    }
+
+    public void Deserialize(IReader reader, ref ChanLongCuuBien value)
+    {
+        ThoNapCongPhap baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+        value.buffValues2 = reader.ReadArray<Int32>();
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+        writer.WriteArray(buffValues2);
     }
 }

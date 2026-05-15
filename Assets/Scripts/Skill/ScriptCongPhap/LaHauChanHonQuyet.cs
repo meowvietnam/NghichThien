@@ -1,24 +1,20 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using Skill;
 using UnityEngine;
+using System;
+using Network;
+using Network.Extensions;
+
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(LaHauChanHonQuyet))]
-public class LaHauChanHonQuyet : CongPhap
+public class LaHauChanHonQuyet : CongPhap, IMemorySerializable<LaHauChanHonQuyet>
 {
     [SerializeField]
-    private int[] buffValues = new int[]
-       {
-            1,2,3,4,5
-       };
+    private int[] buffValues = new int[]{1, 2, 3, 4, 5};
     [SerializeField]
-    private int[] requires = new int[]
-      {
-            10,15,20,25,30
-      };
-
-
+    private int[] requires = new int[]{10, 15, 20, 25, 30};
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = (int)data[2];
@@ -27,11 +23,7 @@ public class LaHauChanHonQuyet : CongPhap
         {
             int buff = buffValues[indexLevel];
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TinhHonChiLuc, buff);
-
         }
-
-
-
     }
 
     public override string GetDesc(int level)
@@ -42,6 +34,22 @@ public class LaHauChanHonQuyet : CongPhap
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.Combat.CHARACTER_TAKE_DAME, ExecuteParams);
+    }
 
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref LaHauChanHonQuyet value)
+    {
+        CongPhap baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
     }
 }

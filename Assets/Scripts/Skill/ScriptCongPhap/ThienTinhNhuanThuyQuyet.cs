@@ -1,18 +1,18 @@
-﻿using LongDH.LongDHModules;
+using LongDH.LongDHModules;
 using Skill;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThienTinhNhuanThuyQuyet))]
+using System;
+using Network;
+using Network.Extensions;
 
-public class ThienTinhNhuanThuyQuyet : CongPhap
+[CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThienTinhNhuanThuyQuyet))]
+public class ThienTinhNhuanThuyQuyet : CongPhap, IMemorySerializable<ThienTinhNhuanThuyQuyet>
 {
     [SerializeField]
-    private int[] buffValues = new int[]
-    {
-        2 , 3 , 5 ,9 , 16
-    };
+    private int[] buffValues = new int[]{2, 3, 5, 9, 16};
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        caster.Healing(buffValues[CurrentLevelCongPhapInCombat(caster) - 1] *  caster.CurrentLinhKhi);
+        caster.Healing(buffValues[CurrentLevelCongPhapInCombat(caster) - 1] * caster.CurrentLinhKhi);
     }
 
     public override string GetDesc(int level)
@@ -23,5 +23,22 @@ public class ThienTinhNhuanThuyQuyet : CongPhap
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ExecuteParams);
+    }
+
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize;
+    }
+
+    public void Deserialize(IReader reader, ref ThienTinhNhuanThuyQuyet value)
+    {
+        CongPhap baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
     }
 }
