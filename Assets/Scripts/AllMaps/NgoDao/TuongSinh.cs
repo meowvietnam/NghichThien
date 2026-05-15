@@ -17,7 +17,7 @@ public class TuongSinh : NgoDaoCombat
 
         if (caster == null) return;
 
-        if (caster.ngoDaoCombatsDynamic.Any(x => x.GetType() == this.GetType()))
+        if (caster.ngoDaoCombatsDynamic.Any(x => x.Id == this.Id))
         {
             ExecuteNgoDao2(caster, target, data);
         }

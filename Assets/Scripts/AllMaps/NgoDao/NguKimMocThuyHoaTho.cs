@@ -15,7 +15,7 @@ public class NguKimMocThuyHoaTho : NgoDaoCombat
         CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
         if (target == null) return;
         // kiểm tra thần thông vừa truyền vào của caster có phải mộc k  
-        if (target.ngoDaoCombats.Any(x => x.GetType() == this.GetType()) && BaseSkill.CheckIsEqualETypeSkill(caster, new BaseSkill.ETypeSkill[] { GetETypeSkillKhacWithLinhKhi(elinhKhi) }))
+        if (target.ngoDaoCombats.Any(x => x.Id == this.Id) && BaseSkill.CheckIsEqualETypeSkill(caster, new BaseSkill.ETypeSkill[] { GetETypeSkillKhacWithLinhKhi(elinhKhi) }))
         {
             ExecuteNgoDao(caster, target);
 
@@ -31,7 +31,7 @@ public class NguKimMocThuyHoaTho : NgoDaoCombat
 
         if (target == null) return;
         // kiểm tra dame được truyền vào có phải là mộc linh khí không
-        if (target.ngoDaoCombats.Any(x => x.GetType() == this.GetType()) && eTypeSkills != null && BaseSkill.CheckIsEqualETypeSkill(eTypeSkills, new BaseSkill.ETypeSkill[] { GetETypeSkillKhacWithLinhKhi(elinhKhi) }))
+        if (target.ngoDaoCombats.Any(x => x.Id == this.Id) && eTypeSkills != null && BaseSkill.CheckIsEqualETypeSkill(eTypeSkills, new BaseSkill.ETypeSkill[] { GetETypeSkillKhacWithLinhKhi(elinhKhi) }))
         {
             ExecuteNgoDao(caster, target);
 
@@ -49,7 +49,8 @@ public class NguKimMocThuyHoaTho : NgoDaoCombat
     {
         return $"Mỗi một điểm {BaseSkill.GetTextLinhKhi(elinhKhi)} hệ linh khí, nhận {BaseSkill.GetTextTypeSkill(GetETypeSkillKhacWithLinhKhi(elinhKhi))} hệ tổn thương -1";
     }
-    private BaseSkill.ETypeSkill GetETypeSkillKhacWithLinhKhi(ELinhKhi elinhKhi)
+
+    public BaseSkill.ETypeSkill GetETypeSkillKhacWithLinhKhi(ELinhKhi elinhKhi)
     {
         switch (elinhKhi)
         {
@@ -72,5 +73,4 @@ public class NguKimMocThuyHoaTho : NgoDaoCombat
         }
         return BaseSkill.ETypeSkill.None;
     }
-
 }

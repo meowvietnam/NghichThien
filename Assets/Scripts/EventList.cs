@@ -1,3 +1,5 @@
+﻿using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public static partial class EventList
@@ -23,10 +25,22 @@ public static partial class EventList
         public const string CHARACTER_TAKE_DAME_BY_STATIC = "GamePlay.CHARACTER_TAKE_DAME_BY_STATIC";
         public const string KIEM_KHI = "Combat.KIEM_KHI";
 
-        public const string ADD_BASESKILL = "Combat.ADD_BASESKILL";
+        public const string ADD_COMBATEFFECT = "Combat.ADD_COMBATEFFECT";
         public const string UPDATE_AMKINH_THANTHONG= "Combat.UPDATE_AMKINH_THANTHONG";
         public const string CHARACTER_HEALING = "Combat.CHARACTER_HEALING";
-       
+        public static void RemoveAllCombatObservers()
+        {
+            // Lấy tất cả các trường const string trong class Combat
+            var eventFields = typeof(Combat).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+                .Where(f => f.IsLiteral && !f.IsInitOnly && f.FieldType == typeof(string))
+                .Select(f => (string)f.GetValue(null))
+                .ToList();
+
+            // Gọi hàm xóa đã thêm ở class Observer (Cách 1)
+            LongDH.LongDHModules.Observer.RemoveObserversForEvents(eventFields);
+
+            Debug.Log("Đã xóa toàn bộ Observer của Combat");
+        }
     }
     public static class GamePlay
     {  

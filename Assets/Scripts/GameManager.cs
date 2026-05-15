@@ -434,8 +434,8 @@ public class GameManager : BaseBehaviour
             phongCu = EquipmentClientBuilder.FromEquipment(phongCuData),
 
             // Tương tự cho trangSuc
-            trangSuc = EquipmentClientBuilder.FromEquipment(trangSucData)
-
+            trangSuc = EquipmentClientBuilder.FromEquipment(trangSucData),
+            danDuocCombat = charData.EquipmentManager.DanCombatUseds.Select(x=> new CharacterStatsSecure.DataSave { id = new SecureInt(x.Id),value = new SecureInt(x.Count) }).ToList(),
         };
     }
 
@@ -460,6 +460,8 @@ public class GameManager : BaseBehaviour
 
     public ThanThong[] thanThongs;
     public CongPhap[] congPhaps;
+    public AllMaps.NgoDao.NgoDao[] ngoDaos;
+    public BaseDanDuocCombat[] danDuocs;
 
     public ThanThong GetThanThongWithId(int id)
     {
@@ -470,7 +472,15 @@ public class GameManager : BaseBehaviour
     {
         return congPhaps.FirstOrDefault(x => x.Id == id);
     }
+    public AllMaps.NgoDao.NgoDao GetNgoDaoWithId(int id)
+    {
+        return ngoDaos.FirstOrDefault(x => x.Id == id);
+    }
 
+    public BaseDanDuocCombat GetDanDuocWithId(int id)
+    {
+        return danDuocs.FirstOrDefault(x => x.Id == id);
+    }
     public ThanThong FindThanThongWithItemRef(ItemRef itemRef)
     {
         if (itemRef.Type == ItemType.ThanThong)
@@ -601,8 +611,46 @@ public class GameManager : BaseBehaviour
         Debug.Log($"Đã cập nhật {congPhaps.Length} CongPhap vào mảng.");
 #endif
     }
+    [Button]
+    private void OnUpdateDataNgoDao()
+    {
+#if UNITY_EDITOR
+    // Xác định folder quét để tránh quét nhầm các asset khác cùng type
+    string[] foldersToSearch = { "Assets/Scripts/AllMaps/NgoDao" };
+    
+    // Tìm GUID của các asset có type là NgoDaoCombat (ScriptableObject)
+    string[] guids = AssetDatabase.FindAssets("t:NgoDaoCombat", foldersToSearch);
 
+    ngoDaos = guids
+        .Select(guid => AssetDatabase.LoadAssetAtPath<ScriptableObject>(AssetDatabase.GUIDToAssetPath(guid)))
+        // Ép kiểu về NgoDao an toàn, nếu NgoDao không kế thừa UnityEngine.Object trực tiếp thì ép qua ScriptableObject trước
+        .OfType<AllMaps.NgoDao.NgoDao>() 
+        .ToArray();
 
+    EditorUtility.SetDirty(this);
+    Debug.Log($"Đã cập nhật {ngoDaos.Length} Ngộ Đạo từ thư mục AllMaps/NgoDao.");
+#endif
+    }
+    [Button]
+    private void OnUpdateDataDanDuoc()
+    {
+#if UNITY_EDITOR
+    // Xác định folder quét
+    string[] foldersToSearch = { "Assets/Scripts/Combat/DanDuocCombat" };
+
+    // Tìm tất cả GUID của các asset có type gốc là BaseDanDuocCombat
+    string[] guids = AssetDatabase.FindAssets("t:BaseDanDuocCombat", foldersToSearch);
+
+    danDuocs = guids
+        .Select(guid => AssetDatabase.LoadAssetAtPath<ScriptableObject>(AssetDatabase.GUIDToAssetPath(guid)))
+        // Cần đảm bảo Class đích (BaseDanDuocCombat hoặc DanDuocCombat) tồn tại trong Namespace
+        .OfType<BaseDanDuocCombat>() 
+        .ToArray();
+
+    EditorUtility.SetDirty(this);
+    Debug.Log($"Đã cập nhật {danDuocs.Length} Đan Dược từ thư mục Combat/DanDuocCombat.");
+#endif
+    }
     public static string[] tamCanh = new string[]
     {
         "Tâm phiền ý loạn",

@@ -14,7 +14,7 @@ public class ThongMinh : NgoDaoCombat
 
         if (target == null) return;
 
-        if (target.ngoDaoCombats.Any(x => x.GetType() == this.GetType()))
+        if (target.ngoDaoCombats.Any(x => x.Id == this.Id))
         {
             if (BaseSkill.CheckIsEqualETypeSkill(caster, eTypeRequire))
             {
@@ -41,7 +41,7 @@ public class ThongMinh : NgoDaoCombat
 
         if (target == null) return;
         // kiểm tra dame được truyền vào có phải là mộc linh khí không
-        if (target.ngoDaoCombats.Any(x => x.GetType() == this.GetType()) && eTypeSkills != null && BaseSkill.CheckIsEqualETypeSkill(eTypeSkills, eTypeRequire))
+        if (target.ngoDaoCombats.Any(x => x.Id == this.Id) && eTypeSkills != null && BaseSkill.CheckIsEqualETypeSkill(eTypeSkills, eTypeRequire))
         {
             ExecuteNgoDao(caster, target);
 

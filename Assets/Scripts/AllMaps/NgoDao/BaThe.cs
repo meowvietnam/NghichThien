@@ -14,7 +14,7 @@ public class BaThe : NgoDaoCombat
 
         if (target == null) return;
 
-        if (target.ngoDaoCombats.Any(x => x.GetType() == this.GetType()))
+        if (target.ngoDaoCombats.Any(x => x.Id == this.Id))
         {
             ExecuteNgoDao(caster, target, data);
 

@@ -124,6 +124,7 @@ public class CombatManager : BaseBehaviour
         if(characterDie != null)
         {
             Observer.Notify(EventList.Combat.END_COMBAT, characterWin, characterDie);// thằng đầu là thằng win thằng sau là thằng die
+            EventList.Combat.RemoveAllCombatObservers();
         } 
             
 
@@ -133,7 +134,7 @@ public class CombatManager : BaseBehaviour
         Pool.Set(this);
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, EndTurn);
         Observer.AddObserver(EventList.Combat.PLAY_SKILL, PlaySkill);
-        Observer.AddObserver(EventList.Combat.ADD_BASESKILL, SetUIBaseSkill);
+        Observer.AddObserver(EventList.Combat.ADD_COMBATEFFECT, SetUICombatEffect);
         Observer.AddObserver(EventList.Combat.ADD_BUFF, SetUIBuff);
         Observer.AddObserver(EventList.Combat.UPDATE_AMKINH_THANTHONG, SetUIAmKinh);
 
@@ -467,7 +468,7 @@ public class CombatManager : BaseBehaviour
         }
 
     }
-    public void SetUIBaseSkill(params object[] data)
+    public void SetUICombatEffect(params object[] data)
     {
         if (data[0] is CharacterCombat characterCombat)
         {
@@ -1199,5 +1200,9 @@ public class CombatManager : BaseBehaviour
                 break;
         }
         return null;
+    }
+    private void OnDestroy()
+    {
+        EventList.Combat.RemoveAllCombatObservers();
     }
 }

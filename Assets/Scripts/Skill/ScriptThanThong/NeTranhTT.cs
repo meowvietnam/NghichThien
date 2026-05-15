@@ -20,7 +20,7 @@ public class NeTranhTT : ThanThong, IMemorySerializable<NeTranhTT>
         CharacterCombat takeDameChar = (CharacterCombat)data[1];
         int index = (int)data[2];
         if (takeDameChar == null) return;
-        if (!takeDameChar.specialThanThongImpactAfterPlaySkill.Any(x => x.GetType() == this.GetType())) return;
+        if (!takeDameChar.specialThanThongImpactAfterPlaySkill.Any(x => x.Id == this.Id)) return;
         if (takeDameChar.allDamages[index] == -1) return;
         if (CombatStatic.IsActiveWithPercent(percentNeTranh[GetIndexLevelThanThong(takeDameChar)]))
         {
@@ -29,10 +29,7 @@ public class NeTranhTT : ThanThong, IMemorySerializable<NeTranhTT>
         }
     }
 
-    protected virtual void NeTranhSuccess(CharacterCombat takeDameChar)
-    {
-    }
-
+    protected virtual void NeTranhSuccess(CharacterCombat takeDameChar) {}
     public void Deserialize(IReader reader, ref NeTranhTT value)
     {
         ThanThong baseValue = value;

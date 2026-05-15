@@ -15,7 +15,7 @@ public class HoaDiem : NgoDaoCombat
 
         if (target == null) return;
         // check target người nhận dame có sở hữu k 
-        if (target.ngoDaoCombats.Any(x => x.GetType() == this.GetType()))
+        if (target.ngoDaoCombats.Any(x => x.Id == this.Id))
         {
             ExecuteNgoDao(caster, target, data);
         }

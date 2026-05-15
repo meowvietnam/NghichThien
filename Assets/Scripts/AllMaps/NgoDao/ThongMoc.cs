@@ -22,7 +22,7 @@ public class ThongMoc : NgoDaoCombat
 
         if (caster == null) return;
 
-        if (caster.ngoDaoCombats.Any(x => x.GetType() == this.GetType()))
+        if (caster.ngoDaoCombats.Any(x => x.Id == this.Id))
         {
             ExecuteNgoDao2(caster, target, data);
 

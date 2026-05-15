@@ -12,7 +12,7 @@ namespace Skill
         public CongPhap congPhap;
         public SecureInt level;
     }
-    public class CongPhap : BaseSkill, IMemorySerializable<CongPhap>
+    public class CongPhap : BaseSkill , IStaticCombatEffect, IMemorySerializable<CongPhap>
     {
         [SerializeField] private int tocDoTuLuyenBase;
         [SerializeField] public bool isDonThuat = false;
@@ -42,8 +42,11 @@ namespace Skill
         }
         public virtual void ExecuteParams(params object[] data)
         {
+            // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
             CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
             CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
+
+            // Kiểm tra caster không null và thỏa mãn điều kiện sử dụng
             if (caster != null && IsCanUse(caster))
             {
                 Execute(caster, target, data);
@@ -53,8 +56,8 @@ namespace Skill
         {
             var equip = congPhapMonos.FirstOrDefault(x =>
                     x.congPhap != null &&
-                    x.congPhap.GetType() == this.GetType() && 
-                    x.congPhap.eTypeSkill == this.eTypeSkill
+                    x.congPhap.Id == this.Id && // So sánh kiểu chính xác của class thực tế
+                    x.congPhap.eTypeSkill == this.eTypeSkill  // Khớp loại kỹ năng
             );
 
             return equip;
@@ -98,11 +101,18 @@ namespace Skill
             return 1; // Giá trị mặc định nếu có bất kỳ thứ gì null
         }
 
-        public virtual void InitPosCallExecute(CharacterCombat caster) {}
+        public virtual void InitPosCallExecute(CharacterCombat caster)
+        {
+            
+        }
 
-        public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data) {}
 
-        public override string GetDesc(int level) => string.Empty;
+
+        public override string GetDesc()
+        {
+            return "";
+        }
+
 
         public new int ByteSize()
         {
@@ -122,6 +132,14 @@ namespace Skill
             base.Serialize(writer);
             writer.Write(tocDoTuLuyenBase);
             writer.Write(isDonThuat);
+        }
+        public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
+        {
+        }
+
+        public override string GetDesc(int daiCanhGioi)
+        {
+            return string.Empty;
         }
     }
 }

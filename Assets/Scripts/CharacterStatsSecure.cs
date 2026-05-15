@@ -52,7 +52,7 @@ public class CharacterStatsSecure
 
     public string nameUser = "";
     public SecureInt level = new SecureInt(1); // Thường level bắt đầu từ 1
-    public SecureInt tuoiTac = new SecureInt(18); // Ví dụ tuổi mặc định
+    public SecureInt tuoiTac = new SecureInt(15); // Ví dụ tuổi mặc định
     public SecureInt currentExp = new SecureInt(0);
 
     public List<SecureInt> ngoDaoSaves = new List<SecureInt>();
@@ -63,8 +63,8 @@ public class CharacterStatsSecure
     public class DataSave
     {
         // Trong class con cũng phải truyền giá trị
-        public SecureInt id = new SecureInt(0);
-        public SecureInt value = new SecureInt(0);
+        public SecureInt id = new SecureInt(ushort.MaxValue);
+        public SecureInt value = new SecureInt(ushort.MaxValue);
     }
 
     public EMonPhai monPhai;
@@ -74,13 +74,14 @@ public class CharacterStatsSecure
     public List<DataSave> congPhapOwner = new List<DataSave>();
 
     // Công pháp used
-    public SecureInt donThuatUsed = new SecureInt(0);
-    public SecureInt phuTu1Used = new SecureInt(0);
-    public SecureInt phuTu2Used = new SecureInt(0);
-    public SecureInt phuTu3Used = new SecureInt(0);
-    public SecureInt phuTu4Used = new SecureInt(0);
-    public SecureInt chuTu1Used = new SecureInt(0);
-    public SecureInt chuTu2Used = new SecureInt(0);
+    public SecureInt donThuatUsed = new SecureInt(ushort.MaxValue);
+    public SecureInt phuTu1Used = new SecureInt(ushort.MaxValue);
+    public SecureInt phuTu2Used = new SecureInt(ushort.MaxValue);
+    public SecureInt phuTu3Used = new SecureInt(ushort.MaxValue);
+    public SecureInt phuTu4Used = new SecureInt(ushort.MaxValue);
+    public SecureInt chuTu1Used = new SecureInt(ushort.MaxValue);
+    public SecureInt chuTu2Used = new SecureInt(ushort.MaxValue);
+
 
     public List<DataSave> relationShipNPC = new List<DataSave>();
     public Gender Gender;
@@ -90,6 +91,7 @@ public class CharacterStatsSecure
 
     public Dictionary<string, Color> Colors => colorList.ToDictionary(x => x.key, x => x.value);
     public SecureInt idNode = new SecureInt(0);
+    public List<DataSave> danDuocCombat = new List<DataSave>();
 
     public CharacterStatsSecure Clone()
     {

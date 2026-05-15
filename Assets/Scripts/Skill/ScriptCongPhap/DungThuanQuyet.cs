@@ -20,9 +20,6 @@ public class DungThuanQuyet : CongPhap
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, buffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
 
         }
-       
-
-
     }
     public override string GetDesc(int level)
     {

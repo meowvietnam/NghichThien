@@ -25,7 +25,7 @@ public class LacThachTran : TranPhapTT
 
         if (targetTurn == null) return;
 
-        if (targetTurn.specialThanThongImpactAfterPlaySkill.Any(x => x.GetType() == this.GetType()))
+        if (targetTurn.specialThanThongImpactAfterPlaySkill.Any(x => x.Id == this.Id))
         {
             ExecuteTranPhap(currentTurn, targetTurn);
 
