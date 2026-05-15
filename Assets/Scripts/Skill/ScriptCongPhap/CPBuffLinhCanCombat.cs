@@ -12,19 +12,13 @@ public class CPBuffLinhCanCombat : CongPhap
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
 
-        // CH? REMOVE KHI ?Ã TH?C THI BUFF THÀNH CÔNG
-
-        
 
     }
     public override string GetDesc(int level)
     {
         return $"Bắt đầu chiến đấu, {GetTextLinhKhi(eLinhKhi)} linh căn thuộc tính {GetColoredText($"+{buffs[level - 1]}", "red")}";
-
     }
 
-
-  
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {

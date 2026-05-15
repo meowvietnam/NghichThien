@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Network;
+using Network.Extensions;
 using UnityEngine;
 
 namespace Skill
@@ -10,7 +12,7 @@ namespace Skill
         public CongPhap congPhap;
         public SecureInt level;
     }
-    public abstract class CongPhap : BaseSkill , IStaticCombatEffect
+    public class CongPhap : BaseSkill , IStaticCombatEffect, IMemorySerializable<CongPhap>
     {
         [SerializeField] private int tocDoTuLuyenBase;
         [SerializeField] public bool isDonThuat = false;
@@ -99,11 +101,12 @@ namespace Skill
             return 1; // Giá trị mặc định nếu có bất kỳ thứ gì null
         }
 
-        public abstract void InitPosCallExecute(CharacterCombat caster);
+        public virtual void InitPosCallExecute(CharacterCombat caster)
+        {
+            
+        }
 
-        public abstract override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
 
-        public override abstract string GetDesc(int level);
 
         public override string GetDesc()
         {
@@ -111,6 +114,32 @@ namespace Skill
         }
 
 
+        public new int ByteSize()
+        {
+            var byteSize = base.ByteSize();
+            return byteSize + tocDoTuLuyenBase.ByteSize() + isDonThuat.ByteSize(); 
+        }
 
+        public void Deserialize(IReader reader, ref CongPhap value)
+        {
+            BaseData baseValue = value;
+            baseValue.Deserialize(reader, ref baseValue);
+            value.tocDoTuLuyenBase = reader.Read<int>();
+            value.isDonThuat = reader.Read<bool>();
+        }
+        public new void Serialize(IWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(tocDoTuLuyenBase);
+            writer.Write(isDonThuat);
+        }
+        public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
+        {
+        }
+
+        public override string GetDesc(int daiCanhGioi)
+        {
+            return string.Empty;
+        }
     }
 }

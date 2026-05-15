@@ -1,17 +1,33 @@
-﻿using UnityEngine;
+﻿using System;
+using Network;
+using Network.Extensions;
+using UnityEngine;
 using Sirenix.OdinInspector;
 
-public class BaseData : ScriptableObject
+public class BaseData : ScriptableObject, IMemorySerializable<BaseData>
 {
-    [field: SerializeField] protected int id;
-    public int Id => id;
+    [field: SerializeField] public int Id { get; protected set; }
     [SerializeField] public string nameItem;
-    [SerializeField]
-    public Sprite spriteItem;
-    
+    [SerializeField] public Sprite spriteItem;
+
     public virtual void SetId()
     {
-        id = int.Parse(spriteItem.name);
+        if (int.TryParse(spriteItem.name, out var id))
+        {
+            Id = id;
+        }
+    }
+    public void Deserialize(IReader reader, ref BaseData value)
+    {
+        value.Id = reader.Read<int>();
+    }
+    public int ByteSize()
+    {
+        return Id.ByteSize();
     }
 
+    public void Serialize(IWriter writer)
+    {
+        writer.Write(Id);
+    }
 }

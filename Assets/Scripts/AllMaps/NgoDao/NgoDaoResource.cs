@@ -6,20 +6,21 @@ using UnityEngine;
 [CreateAssetMenu(fileName = nameof(NgoDaoResource), menuName = "Ngộ Đạo/" + nameof(NgoDaoResource))]
 public class NgoDaoResource : BaseData
 {
-    [ShowInInspector]
-    public List<NgoDaoList> ngoDao = new List<NgoDaoList>(5);
+    [ShowInInspector] public List<NgoDaoList> ngoDao = new List<NgoDaoList>(5);
+
     [System.Serializable]
     public class NgoDaoList
     {
         public List<NgoDao> list;
     }
+
     [SerializeField] public BaseSkill.ETypeSkill eTypeSkill;
 
-
-    protected void OnValidate()
+    public override void SetId()
     {
-        id = (int)eTypeSkill;
+        Id = (int)eTypeSkill;
     }
+
     public static string[] CamNgoText = new string[]
     {
         "Sơ khuy môn kính",
@@ -27,8 +28,8 @@ public class NgoDaoResource : BaseData
         "Dung hội quán thông",
         "Đạo chi thật cảnh",
         "Đại đạo đã thành",
-
     };
+
     public static int[] CamNgoRequire = new int[]
     {
         1000,
@@ -36,29 +37,30 @@ public class NgoDaoResource : BaseData
         30000,
         70000,
         150000,
-
     };
+
     public int NgoDaoAtLevel(NgoDao ngoDaoSO)
     {
         for (int i = 0; i < ngoDao.Count; i++)
         {
             foreach (var item in ngoDao[i].list)
             {
-                if(item == ngoDaoSO)
+                if (item == ngoDaoSO)
                 {
-                    return i+1;
+                    return i + 1;
                 }
             }
         }
+
         return 0;
-            
-    }   
+    }
+
     public static int GetLevelCamNgo(int value)
     {
         int levelIndex = -1;
         for (int i = 0; i < CamNgoRequire.Length; i++)
         {
-            if ( value >= CamNgoRequire[i])
+            if (value >= CamNgoRequire[i])
             {
                 levelIndex = i;
             }
@@ -69,6 +71,7 @@ public class NgoDaoResource : BaseData
                 break;
             }
         }
+
         return levelIndex + 1;
     }
 }

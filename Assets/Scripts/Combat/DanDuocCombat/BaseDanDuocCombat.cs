@@ -40,7 +40,7 @@ public abstract class BaseDanDuocCombat : BaseData , IStaticCombatEffect
     [Button]  
     private void SetSprite()
     {
-        var LinhDan = LuyenDanResources.Instance.FindLinhDan(id);
+        var LinhDan = LuyenDanResources.Instance.FindLinhDan(Id);
         spriteItem = LinhDan.Icon;
         nameItem = LinhDan.Name;
     }    

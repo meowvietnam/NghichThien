@@ -25,8 +25,6 @@ public class ThoNapCongPhap : CongPhap
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         return;
-
-
     }
 
     public override string GetDesc(int level)

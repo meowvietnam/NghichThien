@@ -13,16 +13,13 @@ public class TapTrung : NgoDaoCombat
         if (caster.specialThanThongImpactAfterPlaySkill.Count(x => x is TranPhapTT || x.GetEKeywordSkillHave().Contains(BaseSkill.EKeyWord.TranPhap)) == 1)
         {
             Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, khuTran, new List<LinhKhiTieuTan>());
-
         }
     }
-
     public override string GetDes()
     {
         return $"Kết thúc hiệp, Có một cái {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.TranPhap)} thì phóng thích một lần thần thông [Khu Trận]";
 
     }
-
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect);

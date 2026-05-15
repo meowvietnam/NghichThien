@@ -1,11 +1,12 @@
 using System.Linq;
 using AllMaps.NgoDao;
+using Network;
 using UnityEngine;
 
-public abstract class NgoDaoCombat : NgoDao , IStaticCombatEffect
+public class NgoDaoCombat : NgoDao , IStaticCombatEffect, IMemorySerializable<NgoDaoCombat>
 {
-    public abstract void InitPosCallExecute(CharacterCombat caster);
-    public abstract void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data);
+    public virtual void InitPosCallExecute(CharacterCombat caster) {}
+    public virtual void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data) {}
 
 
     public virtual void ObserverEffect(params object[] data)
@@ -20,8 +21,11 @@ public abstract class NgoDaoCombat : NgoDao , IStaticCombatEffect
             ExecuteNgoDao(caster, target,data);
 
         }
-
-
     }
-    
+
+    public void Deserialize(IReader reader, ref NgoDaoCombat value)
+    {
+        NgoDao baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
 }

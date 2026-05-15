@@ -4,11 +4,12 @@ using System.Linq;
 using DG.Tweening;
 using LongDH.LongDHModules;
 using LongDH.Script.ObjectPool;
+using Network;
 using UnityEngine;
 
 namespace Skill
 {
-    public abstract class ThanThong : BaseSkill
+    public class ThanThong : BaseSkill, IMemorySerializable<ThanThong>
     {
         [System.Serializable]
         public class RequireActive
@@ -16,12 +17,15 @@ namespace Skill
             public ELinhKhi linhKhiRequire;
             public int count;
         }
+
         [SerializeField] protected List<RequireActive> requireActives;
         public List<RequireActive> BaseRequireActive => requireActives;
+
         public virtual List<RequireActive> GetRequireActive(CharacterCombat caster)
         {
             return requireActives;
         }
+
         public ELinhKhi[] LinhKhiTypes =>
             requireActives
                 .Where(r => r.linhKhiRequire != ELinhKhi.None)
@@ -29,7 +33,8 @@ namespace Skill
                 .ToArray();
 
         public float timeDelayTakeDame = 0;
-        public override abstract string GetDesc(int daiCanhGioi);
+        public override string GetDesc(int daiCanhGioi) => string.Empty;
+
         public override string GetDesc()
         {
             return "";
@@ -38,48 +43,55 @@ namespace Skill
         public void HauKeVoLuc(CharacterCombat caster)
         {
             caster.AddThanThongCoolDown(this, 1);
-
         }
+
         [SerializeField] protected GameObject prefabEffectSkill;
-        public abstract override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
+
+        public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
+        {
+        }
 
         public static int GetIndexLevelThanThong(CharacterCombat caster)
         {
             return GetIndexLevelThanThong(caster.characterStatsTemp);
         }
+
         public static int GetIndexLevelThanThong(CharacterStatsSecure characterStatsCurrent)
         {
-
             int indexLevel = GetDaiCanhGioi(characterStatsCurrent) - 1;
             return indexLevel;
         }
+
         public static int GetDaiCanhGioi(CharacterCombat caster)
         {
             int daiCanhGioi = GetDaiCanhGioi(caster.characterStatsTemp);
             return daiCanhGioi;
         }
+
         public static int GetDaiCanhGioi(CharacterStatsSecure characterStatsCurrent)
         {
             int level = characterStatsCurrent.level;
             int daiCanhGioi = GetDaiCanhGioi(level);
             return daiCanhGioi;
         }
+
         public static int GetDaiCanhGioi(int level)
         {
             int daiCanhGioi = ((level - 1) / 3) + 1;
             return daiCanhGioi;
         }
+
         public List<LinhKhiTieuTan> GetLinhKhiTieuTanIfPossible(CharacterCombat caster)
         {
             // 1. Khởi tạo Dictionary chứa tài nguyên hiện có của caster
             var availableKhis = new Dictionary<ELinhKhi, int>
             {
-                { ELinhKhi.Kim,  caster.khiKim },
-                { ELinhKhi.Moc,  caster.khiMoc },
+                { ELinhKhi.Kim, caster.khiKim },
+                { ELinhKhi.Moc, caster.khiMoc },
                 { ELinhKhi.Thuy, caster.khiThuy },
-                { ELinhKhi.Hoa,  caster.khiHoa },
-                { ELinhKhi.Tho,  caster.khiTho },
-                { ELinhKhi.Ma,   caster.khiMa }
+                { ELinhKhi.Hoa, caster.khiHoa },
+                { ELinhKhi.Tho, caster.khiTho },
+                { ELinhKhi.Ma, caster.khiMa }
             };
 
             List<LinhKhiTieuTan> consumedList = new List<LinhKhiTieuTan>();
@@ -92,7 +104,8 @@ namespace Skill
             // 3. Xử lý Fixed Type (Yêu cầu đích danh loại khí)
             foreach (var requirement in fixedRequires)
             {
-                if (!availableKhis.ContainsKey(requirement.linhKhiRequire) || availableKhis[requirement.linhKhiRequire] < requirement.count)
+                if (!availableKhis.ContainsKey(requirement.linhKhiRequire) ||
+                    availableKhis[requirement.linhKhiRequire] < requirement.count)
                 {
                     return null; // Không đủ điều kiện trả về null thay vì false
                 }
@@ -132,16 +145,17 @@ namespace Skill
 
             return consumedList; // Trả về danh sách nếu thỏa mãn tất cả
         }
+
         public List<LinhKhiTieuTan> GetLinhKhiTieuTanTuongDong(CharacterCombat caster)
         {
             var baseKhis = new Dictionary<ELinhKhi, int>
             {
-                { ELinhKhi.Kim,  caster.khiKim },
-                { ELinhKhi.Moc,  caster.khiMoc },
+                { ELinhKhi.Kim, caster.khiKim },
+                { ELinhKhi.Moc, caster.khiMoc },
                 { ELinhKhi.Thuy, caster.khiThuy },
-                { ELinhKhi.Hoa,  caster.khiHoa },
-                { ELinhKhi.Tho,  caster.khiTho },
-                { ELinhKhi.Ma,   caster.khiMa }
+                { ELinhKhi.Hoa, caster.khiHoa },
+                { ELinhKhi.Tho, caster.khiTho },
+                { ELinhKhi.Ma, caster.khiMa }
             };
 
             var requirements = GetRequireActive(caster).ToList();
@@ -163,7 +177,8 @@ namespace Skill
             // 2. TÌM KIẾM SỰ TƯƠNG ĐỒNG: Thử từng loại linh khí để làm "hệ chủ đạo" cho None
             // Theo logic IsTuongDong của bạn: Nếu Fixed đã có 1 loại, ta nên ưu tiên dùng loại đó cho None
             ELinhKhi? fixedType = fixedConsumed.Select(x => x.eLinhKhi).Distinct().Count() == 1
-                ? fixedConsumed[0].eLinhKhi : (ELinhKhi?)null;
+                ? fixedConsumed[0].eLinhKhi
+                : (ELinhKhi?)null;
 
             List<ELinhKhi> priorities = Enum.GetValues(typeof(ELinhKhi))
                 .Cast<ELinhKhi>()
@@ -206,6 +221,7 @@ namespace Skill
             // Ở đây mình chọn: Nếu không thể tạo tương đồng thì vẫn trả về kết quả hợp lệ bất kỳ
             return null;
         }
+
         public List<LinhKhiTieuTan> GetLinhKhiETuongQuan(CharacterCombat caster, ETuongQuan targetQuan)
         {
             var requirements = GetRequireActive(caster).ToList();
@@ -258,8 +274,10 @@ namespace Skill
 
             return null; // Không tìm được bộ nào thỏa mãn
         }
+
         // Hàm hỗ trợ tạo danh sách tiêu tán thử nghiệm
-        private List<LinhKhiTieuTan> GenerateCandidate(List<RequireActive> fixedReqs, List<RequireActive> noneReqs, List<ELinhKhi> combo)
+        private List<LinhKhiTieuTan> GenerateCandidate(List<RequireActive> fixedReqs, List<RequireActive> noneReqs,
+            List<ELinhKhi> combo)
         {
             var result = new List<LinhKhiTieuTan>();
 
@@ -297,6 +315,7 @@ namespace Skill
                 };
                 if (available < (int)item.count) return false;
             }
+
             return true;
         }
 
@@ -317,6 +336,7 @@ namespace Skill
                 }
             }
         }
+
         public bool IsCanUseLinhKhiRequire(CharacterCombat caster)
         {
             return GetLinhKhiTieuTanIfPossible(caster) != null;
@@ -328,28 +348,37 @@ namespace Skill
             return caster.congPhapDynamic.Count(x => x.congPhap is DietLinhQuyet) <= DietLinhQuyet.require - 1;
         }
 
-        protected GameObject ShowSkillEffectParticleBase(CharacterCombat caster, float delay, float cameraSize = 50f, bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
+        protected GameObject ShowSkillEffectParticleBase(CharacterCombat caster, float delay, float cameraSize = 50f,
+            bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
         {
             var actionControl = GetActionControlEffectParticleBase();
-            var effect = ShowSkillEffectParticle(caster, delay, cameraSize, isDestroy, actionControl.Item1, actionControl.Item2);
+            var effect = ShowSkillEffectParticle(caster, delay, cameraSize, isDestroy, actionControl.Item1,
+                actionControl.Item2);
 
             return effect;
-
         }
-        protected virtual (Action<Transform, Transform>, Action<Transform, Transform>) GetActionControlEffectParticleBase()
+
+        protected virtual (Action<Transform, Transform>, Action<Transform, Transform>)
+            GetActionControlEffectParticleBase()
         {
-
-            return ((childEffect, childPrefab) =>
-            {
-                childEffect.transform.localPosition = new Vector3(childPrefab.transform.localPosition.x * -1, childPrefab.transform.localPosition.y, childPrefab.transform.localPosition.z);
-
-            }, (childEffect, childPrefab) =>
-            {
-                childEffect.transform.localPosition = childPrefab.transform.localPosition;
-            }
+            return (
+                (childEffect, childPrefab) =>
+                {
+                    childEffect.transform.localPosition = new Vector3(childPrefab.transform.localPosition.x * -1,
+                        childPrefab.transform.localPosition.y, childPrefab.transform.localPosition.z);
+                },
+                (childEffect, childPrefab) =>
+                {
+                    childEffect.transform.localPosition = childPrefab.transform.localPosition;
+                }
             );
         }
-        protected virtual GameObject ShowSkillEffectParticle(CharacterCombat caster, float delay, float cameraSize = 50f, bool isDestroy = true, Action<Transform, Transform> actionControlChildEffectIf = null, Action<Transform, Transform> actionControlChildEffectElse = null) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
+
+        protected virtual GameObject ShowSkillEffectParticle(CharacterCombat caster, float delay,
+            float cameraSize = 50f, bool isDestroy = true,
+            Action<Transform, Transform> actionControlChildEffectIf = null,
+            Action<Transform, Transform> actionControlChildEffectElse =
+                null) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
         {
             if (prefabEffectSkill == null) return null;
 
@@ -362,31 +391,31 @@ namespace Skill
             int signX = caster.transform.localEulerAngles.y != 0 ? -1 : 1;
             if (signX < 0)
             {
-                childEffect.transform.localScale = new Vector3(childPrefab.localScale.x * -1, childPrefab.localScale.y, childPrefab.localScale.z);
+                childEffect.transform.localScale = new Vector3(childPrefab.localScale.x * -1, childPrefab.localScale.y,
+                    childPrefab.localScale.z);
                 actionControlChildEffectIf?.Invoke(childEffect, childPrefab);
             }
             else
             {
-                childEffect.transform.localScale = new Vector3(childPrefab.localScale.x, childPrefab.localScale.y, childPrefab.localScale.z);
+                childEffect.transform.localScale = new Vector3(childPrefab.localScale.x, childPrefab.localScale.y,
+                    childPrefab.localScale.z);
                 actionControlChildEffectElse?.Invoke(childEffect, childPrefab);
-
             }
+
             if (cameraSize == 50)
             {
                 effect.SetLayerRecursiveWithCamera(Pool.Get<CombatManager>().cameraEffectSkillLock50.cullingMask);
-
             }
             else if (cameraSize == 5)
             {
                 effect.SetLayerRecursiveWithCamera(Pool.Get<CombatManager>().cameraEffectSkillLock5.cullingMask);
-
             }
             else
             {
                 effect.SetLayerRecursiveWithCamera(Pool.Get<CombatManager>().cameraEffectSkillDynamic.cullingMask);
                 Pool.Get<CombatManager>().cameraEffectSkillDynamic.orthographicSize = cameraSize;
-
             }
+
             var mainPS = effect.transform.GetChild(0).GetComponent<ParticleSystem>();
 
             if (mainPS != null)
@@ -395,26 +424,29 @@ namespace Skill
                 // Thêm tham số true vào hàm Play để bao gồm tất cả các con lồng bên trong (withChildren)
                 mainPS.Play(true);
             }
+
             if (isDestroy)
             {
-                DOVirtual.DelayedCall(delay, () =>
-                {
-                    effect.gameObject.Recycle();
-                });
+                DOVirtual.DelayedCall(delay, () => { effect.gameObject.Recycle(); });
             }
-            effect.transform.localPosition = new Vector3(effect.transform.localPosition.x, effect.transform.localPosition.y, 0);
-            return effect;
 
+            effect.transform.localPosition =
+                new Vector3(effect.transform.localPosition.x, effect.transform.localPosition.y, 0);
+            return effect;
         }
-        protected virtual GameObject ShowSkillEffectWorld(CharacterCombat target, float delay , bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
+
+        protected virtual GameObject
+            ShowSkillEffectWorld(CharacterCombat target, float delay,
+                bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
         {
             if (prefabEffectSkill == null) return null;
 
-      
-            return ShowSkillEffectWorld(target,prefabEffectSkill,delay,isDestroy);
 
+            return ShowSkillEffectWorld(target, prefabEffectSkill, delay, isDestroy);
         }
-        protected virtual GameObject ShowSkillEffectWorld(CharacterCombat target,GameObject prefabEffectSkill, float delay, bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
+
+        protected virtual GameObject ShowSkillEffectWorld(CharacterCombat target, GameObject prefabEffectSkill,
+            float delay, bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
         {
             if (prefabEffectSkill == null) return null;
 
@@ -426,19 +458,18 @@ namespace Skill
 
 
             effect.SetLayerRecursiveWithCamera(Pool.Get<CombatManager>().cameraEffectSkillLock50.cullingMask);
-            effect.transform.localPosition = new Vector3(effect.transform.localPosition.x, effect.transform.localPosition.y, 0);
+            effect.transform.localPosition =
+                new Vector3(effect.transform.localPosition.x, effect.transform.localPosition.y, 0);
 
             if (isDestroy)
             {
-                DOVirtual.DelayedCall(delay, () =>
-                {
-                    effect.gameObject.Recycle();
-                });
+                DOVirtual.DelayedCall(delay, () => { effect.gameObject.Recycle(); });
             }
-            return effect;
 
+            return effect;
         }
-        protected virtual void ShowSkillEffectNoTarget(float delay)// base thì chỉnh scale thôi
+
+        protected virtual void ShowSkillEffectNoTarget(float delay) // base thì chỉnh scale thôi
         {
             if (prefabEffectSkill == null) return;
 
@@ -449,14 +480,13 @@ namespace Skill
 
             effect.SetLayerRecursiveWithCamera(Pool.Get<CombatManager>().cameraEffectSkillLock50.cullingMask);
 
-            DOVirtual.DelayedCall(delay, () =>
-            {
-                effect.gameObject.Recycle();
-            });
-
+            DOVirtual.DelayedCall(delay, () => { effect.gameObject.Recycle(); });
         }
 
+        public void Deserialize(IReader reader, ref ThanThong value)
+        {
+            BaseData baseValue = value;
+            baseValue.Deserialize(reader, ref baseValue);
+        }
     }
-   
- 
 }

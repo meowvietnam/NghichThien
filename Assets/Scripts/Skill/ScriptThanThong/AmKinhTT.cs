@@ -16,6 +16,5 @@ public abstract class AmKinhTT : ThanThong
        
     }
     public abstract string GetDescAmKinhTT(int level);
-    
 
 }

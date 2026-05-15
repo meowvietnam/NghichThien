@@ -267,8 +267,6 @@ public class NpcManager : MonoBehaviour
             Debug.LogWarning("Không tìm thấy file save. Khởi tạo dữ liệu mới.");
             return;
         }
-
-
     }
     [Button]
     private void OnUpdateDataNPCData()

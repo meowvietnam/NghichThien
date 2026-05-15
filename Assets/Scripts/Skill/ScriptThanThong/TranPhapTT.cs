@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Network;
 using Skill;
 using UnityEngine;
 
-public abstract class TranPhapTT : ThanThong
+public class TranPhapTT : ThanThong, IMemorySerializable<TranPhapTT>
 {
     [SerializeField] protected List<RequireActive> requireActivesKhuTran;
     [SerializeField]
@@ -66,7 +67,7 @@ public abstract class TranPhapTT : ThanThong
         ExecuteTranPhap(caster,target);
     }    
 
-    public abstract void ExecuteTranPhap(CharacterCombat caster, CharacterCombat target);
+    public virtual void ExecuteTranPhap(CharacterCombat caster, CharacterCombat target) {}
 
     public virtual void ObserverEffect(params object[] data)
     {
@@ -89,7 +90,7 @@ public abstract class TranPhapTT : ThanThong
         return $"{GetKeyWord(EKeyWord.TranPhap)}. {GetDescTranPhapTT(level)}";
 
     }
-    public abstract string GetDescTranPhapTT(int level);
+    public virtual string GetDescTranPhapTT(int level) => string.Empty;
 
     public virtual string GetDescTranPhap(CharacterCombat caster , int level)
     {
@@ -99,6 +100,11 @@ public abstract class TranPhapTT : ThanThong
 
         }
         return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Khu động một lần {GetColoredText($"[{this.nameItem}]", "#ffb143")}";
-    }    
+    }
 
+    public void Deserialize(IReader reader, ref TranPhapTT value)
+    {
+        ThanThong baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+    }
 }
