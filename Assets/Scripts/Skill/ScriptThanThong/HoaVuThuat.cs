@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
-using LongDH.LongDHModules;
+﻿using UnityEngine;
 using Skill;
 
 [CreateAssetMenu(fileName = nameof(HoaVuThuat), menuName = "Skill/Thần Thông/" + nameof(HoaVuThuat))]
@@ -22,7 +20,7 @@ public class HoaVuThuat : ThanThong , BaseSkill.LienKich
     {
         for (int i = 0; i < debuffCount; i++)
         {
-            target.AddBuffAndDebuffCount(BaseSkill.eDebuffs[Random.Range(0,BaseSkill.eDebuffs.Count)], 1);
+            target.AddBuffAndDebuffCount(BaseSkill.eDebuffs[UnityEngine.Random.Range(0,BaseSkill.eDebuffs.Count)], 1);
 
         }
 
