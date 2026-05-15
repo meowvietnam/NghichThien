@@ -1,9 +1,13 @@
+using CreateCharacter;
+using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
+using Network;
+using System.Linq;
 
 namespace AllMaps.ItemProvider
 {
-    public class LinhDanProvider : ItemProvider<LinhDan>
+    public class LinhDanProvider : ItemProvider<LinhDan> , IUseItemProvider
     {
         public override ItemType SupportedType => ItemType.LinhDan;
 
@@ -47,6 +51,52 @@ namespace AllMaps.ItemProvider
                 return linhDan.PriceV130;
             }
             return 0;
+        }
+
+        public void UseItem(ItemInventory itemInventory)
+        {
+            if (itemInventory.iItemData is LinhDan danDuoc)
+            {
+                if (danDuoc.ETypeDan == ETypeDan.DanBuff || danDuoc.ETypeDan == ETypeDan.DanCombat)
+                {
+                    var selectNum = Pool.Get<TabPanel>().selectNum;
+                    selectNum.SetMin(0);
+                    int maxValue = 0;
+                    if (danDuoc.ETypeDan == ETypeDan.DanBuff)
+                    {
+                        maxValue = itemInventory.itemRef.Count;
+                    }
+                    else
+                    {
+                        maxValue = itemInventory.itemRef.Count <= danDuoc.NhinThuoc ? itemInventory.itemRef.Count : danDuoc.NhinThuoc - Client.Instance.CharacterData.EquipmentManager.DanCombatUseds.FirstOrDefault(x => x.Id == itemInventory.itemRef.Id).Count; /// nhịn thuốc - cho số lượng đan loại này đang đc sử dụng trong list
+                        if (maxValue <= 0)
+                        {
+                            NotifyGroup.Instance.Show($"Đã đạt tốt đa số lần sử dụng {itemInventory.iItemData.Name} hãy chiến đấu để làm mới");
+                            return;
+                        }
+                    }
+                    selectNum.Show(0.15f);
+
+                    selectNum.SetMax(maxValue);
+                    selectNum.ValueChanged += (value) =>
+                    {
+                        selectNum.SetText($"{itemInventory.iItemData.Name} x{value}");
+                    };
+                    selectNum.confirmAction.RemoveAllListeners();
+                    selectNum.confirmAction.AddListener(() =>
+                    {
+                        var value = selectNum.GetValue();
+                        if (value >= 1)
+                        {
+                            Observer.Notify(EventList.Network.USE_DAN, this, itemInventory.itemRef.Id, value);
+                            itemInventory.AddCount(-value);
+                        }
+
+                    });
+                }
+
+
+            }
         }
     }
 }

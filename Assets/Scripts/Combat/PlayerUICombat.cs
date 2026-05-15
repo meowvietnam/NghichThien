@@ -347,7 +347,8 @@ public class PlayerUICombat : BaseBehaviour
             ThanThong thanThong = s < currentThanThong.Length ? currentThanThong[s] : null;
             var inforVisualSkill = Pool.Get<UIManager>().GetFrameAndQualityFullAndColorNameSkill(thanThong);
 
-            skill.Init(thanThong, thanThong != null ? inforVisualSkill.Item1 : null, actionHolder, actionPointerUp);
+            skill.Init(thanThong, thanThong != null ? inforVisualSkill.Item1 : null);
+            skill.InitAction(actionHolder, actionPointerUp);
             skill.SetFullQuality(inforVisualSkill.Item2);
         }
         skillTip.DoHide();
@@ -357,7 +358,8 @@ public class PlayerUICombat : BaseBehaviour
 
             var inforVisualEquipment = Pool.Get<UIManager>().GetFrameAndQualityFullAndColorNameEquipment(player.characterStatsBase.vuKhi.Item.Tier);
 
-            equipmentWeapon.Init(new BaseItemData { name = player.characterStatsBase.vuKhi.nameEquip, spriteItem = player.characterStatsBase.vuKhi.Item.Icon }, inforVisualEquipment.Item1, null, () =>
+            equipmentWeapon.Init(new BaseItemData { name = player.characterStatsBase.vuKhi.nameEquip, spriteItem = player.characterStatsBase.vuKhi.Item.Icon }, inforVisualEquipment.Item1);
+            equipmentWeapon.InitAction(null, () =>
             {
                 CombatManager.ExcuteWeapon();
                 SetVisualCDEquipmentWeapon();

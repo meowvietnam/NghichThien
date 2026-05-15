@@ -87,7 +87,7 @@ public class ToolTipItems : BaseBehaviour , ISingleton
         InitInforItem();
         RefreshTooltipLayout();
     }
-    public void InitShow(ItemInventory itemInventory,Sprite frameSprite, Sprite qualityFull , Color colorName , ETypeInventoryItem eTypeItemShow , ItemRef itemRef, IItemData iItemData , EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)
+    public void InitShow(ItemInventory itemInventory,Sprite frameSprite, Sprite qualityFull , Color colorName , ItemRef itemRef, IItemData iItemData , EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)
     {
         if (itemInventory.itemData == null) return;
         gameObject.SetActive(true);
@@ -108,14 +108,8 @@ public class ToolTipItems : BaseBehaviour , ISingleton
         {
             SetQualityText(iItemData.Tier);
         }
-        if (eTypeItemShow == ETypeInventoryItem.Skill)
-        {
-            InitInforSkill();
-        }
-        else if (eTypeItemShow == ETypeInventoryItem.Item)
-        {
-            InitInforItem();
-        }
+        InitInforItem();
+
         RefreshTooltipLayout();        
     }
 

@@ -98,4 +98,14 @@ public class INetworkEvent
         void SuccessDoneTask();
         void FailDoneTask(string message);
     }
+    public interface IEquipEquipment// Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessEquipEquipment(List<TaskDailySnapshot> listTask);
+        void FailEquipEquipment(string message);
+    }
+    public interface IUnEquipEquipment// Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessUnEquipEquipment();
+        void FailUnEquipEquipment(string message);
+    }
 }

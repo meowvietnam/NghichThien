@@ -1,12 +1,14 @@
-﻿using System.Linq;
-using AllMaps.ItemProvider;
+﻿using AllMaps.ItemProvider;
 using CreateCharacter;
+using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenKhi;
 using Network;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public abstract class EquipmentProvider : ItemProvider<CreateCharacter.Equipment>
+public abstract class EquipmentProvider : ItemProvider<CreateCharacter.Equipment> , IUseItemProvider
 {
     public override abstract  ItemType SupportedType { get; }
     public abstract EquipmentType EquipemtType { get; }
@@ -115,6 +117,32 @@ public abstract class EquipmentProvider : ItemProvider<CreateCharacter.Equipment
     public override int GetPriceItemBuy(ushort id)
     {
         return GetPriceItemSell(id);
+    }
+
+    public void UseItem(ItemInventory itemInventory)
+    {
+        EquipmentType equipmentType = GameManager.ItemTypeToEquipemtType.GetValueOrDefault(itemInventory.itemRef.Type);
+        ItemInventory itemEquipmentSlot = null;
+        switch (equipmentType)
+        {
+            case EquipmentType.Weapon:
+                itemEquipmentSlot = Pool.Get<TabPanel>().itemWeapon;
+                break;
+            case EquipmentType.Armor:
+                itemEquipmentSlot = Pool.Get<TabPanel>().itemPhongCu;
+
+                break;
+            case EquipmentType.Jewelry:
+                itemEquipmentSlot = Pool.Get<TabPanel>().itemTrangSuc;
+
+                break;
+            default:
+                break;
+        }
+        Pool.Get<TabPanel>().LoadEquipment(itemEquipmentSlot, itemInventory.itemRef.Type, itemInventory.itemRef.Id);
+
+        Observer.Notify(EventList.Network.EQUIP_EQUIPMENT, this, itemInventory.itemRef.Id, equipmentType); // id equipment này là self id
+
     }
 }
 

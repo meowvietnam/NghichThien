@@ -17,7 +17,20 @@ namespace AllMaps.ItemProvider
         {
             return GetRawProvider(itemType) as IItemProvider;
         }
+        public static IUseItemProvider GetUseItemProvider(ItemType itemType)
+        {
+            return itemType switch
+            {
+                ItemType.VuKhi => new VuKhiEquipmentProvider(),
+                ItemType.PhongCu => new PhongCuEquipmentProvider(),
+                ItemType.TrangSuc => new TrangSucEquipmentProvider(),
+               
+                ItemType.LinhDan => new LinhDanProvider(),
+               
 
+                _ => null,
+            };
+        }
         // 2. Hàm dành cho việc lấy Data cụ thể (Cần truyền <T>)
         public static ItemProvider<T> GetProvider<T>(ItemType itemType)
         {

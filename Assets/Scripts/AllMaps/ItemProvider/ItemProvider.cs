@@ -35,6 +35,10 @@ namespace AllMaps.ItemProvider
 
         int GetPriceItemBuy(ushort id);
     }
+    public interface IUseItemProvider
+    {
+        void UseItem(ItemInventory itemInventory);
+    }
     public abstract class ItemProvider<T> : IItemProvider
     {
         public abstract T GetDataItemById(ushort Id);
