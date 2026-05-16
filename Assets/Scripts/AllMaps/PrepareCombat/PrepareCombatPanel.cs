@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PrepareCombatPanel : Popup , ISingleton
+public class PrepareCombatPanel : Popup , IUISingleton
 {
     [SerializeField] private CharacterStatsSecure charTarget => Pool.Get<GameManager>().enemyCombat.charStats;
     [SerializeField] private PopupInfor popupInfor;

@@ -10,7 +10,7 @@ public interface IBagItemTypeHandler
     void Handle(ItemInventory currentItem, ItemRef itemRef, bool isIconSkillBase);
 }
 
-public static class ItemTypeHandlerFactory
+public static class ItemTypeHandlerBagFactory
 {
     public static IBagItemTypeHandler Create(ItemType itemType)
     {

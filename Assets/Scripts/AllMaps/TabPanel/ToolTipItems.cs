@@ -22,7 +22,7 @@ public enum EActionShowItemInfor
     Buy,
     Sell,
 }
-public class ToolTipItems : BaseBehaviour , ISingleton
+public class ToolTipItems : BaseBehaviour , IUISingleton
 {
     [SerializeField] private Button btnMask;
     [SerializeField] private Image icon;

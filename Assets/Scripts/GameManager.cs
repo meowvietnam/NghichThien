@@ -329,7 +329,7 @@ public class GameManager : BaseBehaviour
             Gender randomGender = (Gender)values.GetValue(_random.Next(values.Length));
             var xungHo = XungHoText(6, randomGender);
             SayDialogManager.Instance.ShowDialogRandomSkin("Người Gác Cổng", randomGender,
-                $"{xungHo.targetCallMe} xin dừng bước hiện tại nơi này chưa thể vào hãy kiên nhẫn chờ bản cập nhật tiếp theo !");
+               new List<string> { $"{xungHo.targetCallMe} xin dừng bước hiện tại nơi này chưa thể vào hãy kiên nhẫn chờ bản cập nhật tiếp theo !" });
             return;
         }
 

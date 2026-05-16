@@ -14,6 +14,10 @@ using UnityEngine.UI;
 
 namespace AllMaps
 {
+    public interface IActionMap
+    {
+        void EnterMap(Map map);
+    }
     public class MapManager : MonoBehaviour, IAllMapsCallback
     {
         [SerializeField] public Map[] maps;
@@ -22,22 +26,28 @@ namespace AllMaps
         private Dictionary<Map, List<Map>> graph;
         [SerializeField] private GameObject prefabEnemyIcon;
         [SerializeField] private GameObject prefabQuestIcon;
+        [SerializeField] private GameObject prefabSideQuestIcon;
 
-        public void SetEnemyOnMap(EnemyData enemyData,int nodeId)
-        { 
-            Map map = FindMap(nodeId);
+        private GameObject SetIconEvent(Map map , GameObject prefabIcon)
+        {
             GameObject iconAction = null;
-            if(map is Stronghold)
+
+            if (map is Stronghold)
             {
-                iconAction =  prefabEnemyIcon.Spawn(map.transform.GetChild(1).transform);
+                iconAction = prefabIcon.Spawn(map.transform.GetChild(1).transform);
 
             }
             else
             {
-                iconAction = prefabEnemyIcon.Spawn(map.transform.GetChild(0).transform);
+                iconAction = prefabIcon.Spawn(map.transform.GetChild(0).transform);
 
             }
-            map.SetData(enemyData,iconAction);
+            return iconAction;
+        }
+        public void SetEnemyOnMap(IActionMap Data,int nodeId)
+        {
+            Map map = FindMap(nodeId);
+            map.SetData(Data, SetIconEvent(map, prefabEnemyIcon));
         }    
         public Map FindMap(int id)
         {

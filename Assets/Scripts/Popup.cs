@@ -9,8 +9,9 @@ public class Popup : BaseBehaviour
     [SerializeField] protected Image commonMask ;
     [SerializeField] protected Button btnClose;
     [SerializeField] protected float scaleBase =1f;
-  
-    public virtual void Show(float delay = 0.5f,Action actionComplete = null)
+    [SerializeField]
+    protected Action actionClose;
+  public virtual void Show(float delay = 0.5f,Action actionComplete = null)
     {
         if(commonMask == null)
         {
@@ -31,9 +32,14 @@ public class Popup : BaseBehaviour
             ActionBtnClose();
         });
     }
+    public void InitActionClose(Action action)
+    {
+        actionClose = action;
+    }    
     protected virtual void ActionBtnClose()
     {
         Hide();
+        actionClose?.Invoke();
     }    
     public void Hide(float delay = 0, Action actionComplete = null)
     {

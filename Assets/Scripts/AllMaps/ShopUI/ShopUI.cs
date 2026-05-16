@@ -18,7 +18,7 @@ public enum EShopType
     Skill,
 }
 
-public class ShopUI : Popup, ISingleton, INetworkEvent.IBuyAndSell, INetworkEvent.ILoadShop, INetworkEvent.IReLoadShop
+public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEvent.ILoadShop, INetworkEvent.IReLoadShop
 {
     public EShopType eShopType;
     public EMonPhai eMonPhai => Pool.Get<GameManager>().CurrentEMonPhai;
