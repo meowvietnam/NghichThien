@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using CreateCharacter;
 using LuyenDan;
+using Network.Models;
 
 public class INetworkEvent 
 {
@@ -10,7 +12,7 @@ public class INetworkEvent
     }
     public interface ILearnNgoDao // Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessLearnNgoDao();
+        void SuccessLearnNgoDao(NgoDaoBuff buff, NgoDao ngoDao);
         void FailLearnNgoDao(string message);
     }
     public interface ILearnSkill // Check đủ ngộ đạo điểm mới learn được

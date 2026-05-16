@@ -67,11 +67,13 @@ namespace Network
 
             return result;
         }
+
         [Button]
         private List<int> GetFullIdNgoDaoWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
             var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
-            return combo.comboWithDaiCanhGioi[Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1]
+            return combo
+                .comboWithDaiCanhGioi[Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1]
                 .ngoDaos.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
                 .ToList();
         }
@@ -80,7 +82,8 @@ namespace Network
         private List<int> GetFullIdCongPhapWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
             var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
-            return combo.comboWithDaiCanhGioi[Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1]
+            return combo
+                .comboWithDaiCanhGioi[Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1]
                 .congPhaps.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
                 .ToList();
         }
@@ -172,6 +175,25 @@ namespace Network
             Client.Send(MessageTag.SetInfinityEnergy, isInfinityEnergy);
         }
 
+        [Button]
+        [ShowIf(nameof(IsReady))]
+        public void SetNgoDaoDiem(int point)
+        {
+            Client.Send(MessageTag.SetNgoDaoDiem, point);
+        }
+
+        [Button]
+        [ShowIf(nameof(IsReady))]
+        public void SetCamNgo(AllMaps.NgoDao.NgoDao ngoDao, int value)
+        {
+            var camNgo = new CamNgo()
+            {
+                Id = (ushort)ngoDao.Id,
+                Value = value
+            };
+            Client.Send(MessageTag.SetCamNgo, camNgo);
+        }
+
         public void StartListen()
         {
             var module = Client.CoreModule;
@@ -200,6 +222,16 @@ namespace Network
                 var inventoryManager = Client.CharacterData.InventoryManager;
                 inventoryManager.AddToInventory(rewards);
             }
+            else if (tag == MessageTag.SetNgoDaoDiemResult)
+            {
+                var ngoDaoDiem = reader.Read<int>();
+                Client.CharacterData.Progression.NgoDaoDiem = ngoDaoDiem;
+            }
+            else if (tag == MessageTag.SetCamNgoResult)
+            {
+                var camNgo = reader.Read<CamNgo>();
+                Client.CharacterData.InventoryManager.AddOrUpdate(camNgo);
+            }
         }
 
         public void OnLeave()
@@ -210,7 +242,9 @@ namespace Network
         {
         }
 
-        private static readonly MessageTag[] handler = { MessageTag.AddItemsResult };
+        private static readonly MessageTag[] handler =
+            { MessageTag.AddItemsResult, MessageTag.SetNgoDaoDiemResult, MessageTag.SetCamNgoResult };
+
         public MessageTag[] HandleTag => handler;
     }
 }

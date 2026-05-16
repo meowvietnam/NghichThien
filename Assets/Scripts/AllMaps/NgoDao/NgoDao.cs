@@ -8,10 +8,6 @@ namespace AllMaps.NgoDao
     {
         [SerializeField] public int require;
         [SerializeField] public BaseSkill.ETypeSkill[] eTypeRequire;
-        
-        public virtual void Learn(INetworkEvent.ILearnNgoDao data)
-        {
-        }    
         public virtual string GetDes() => string.Empty;
         public override int ByteSize()
         {

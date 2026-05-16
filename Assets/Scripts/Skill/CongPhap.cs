@@ -29,7 +29,6 @@ namespace Skill
         {
             UnEquipCongPhap(statsCurrent, daiCanhGioiCongPhap);
             EquipCongPhap(statsCurrent, daiCanhGioiCongPhap);
-
         }
         public virtual void LearnCongPhapSuccess(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
         {

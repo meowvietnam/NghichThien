@@ -7,16 +7,16 @@ using UnityEngine;
 namespace CreateCharacter
 {
     [Serializable]
-    public class CamNgo : IMemorySerializable<CamNgo>, IDeepClone<CamNgo>
+    public class CamNgo : IMemorySerializable<CamNgo>, IDeepClone<CamNgo>, IEquatable<CamNgo>
     {
         [field: SerializeField]
         public ushort Id { get; set; }
         [field: SerializeField]
-        public ushort Value { get; set; }
+        public int Value { get; set; }
         public void Deserialize(IReader reader, ref CamNgo value)
         {
             value.Id = reader.Read<ushort>();
-            value.Value = reader.Read<ushort>();
+            value.Value = reader.Read<int>();
         }
         public override int GetHashCode()
         {

@@ -129,7 +129,7 @@ namespace CreateCharacter
                 Add(itemRef);
             }
         }
-
+        
         public void Add(ItemRef itemRef)
         {
             var type = itemRef.Type;
@@ -244,8 +244,29 @@ namespace CreateCharacter
                     break;
             }
         }
-
-   
+        public void Add(NgoDao ngoDao)
+        {
+            NgoDaos.Add(ngoDao);
+        }
+        public void AddOrUpdate(CamNgo camNgo)
+        {
+            if (CamNgos.TryGetValue(camNgo, out var cam))
+            {
+                Update(cam, camNgo);
+            }
+            else
+            {
+                Add(camNgo);
+            }
+        }
+        public void Update(CamNgo oldValue, CamNgo newValue)
+        {
+            oldValue.Value = newValue.Value;
+        }
+        public void Add(CamNgo camNgo)
+        {
+            CamNgos.Add(camNgo);
+        }
         public void ApplyModify(InventoryModify m)
         {
             m.Apply(this);

@@ -18,11 +18,11 @@ namespace CreateCharacter.CharStats
         [field: SerializeField] public float Ma { get; private set; }
         [field: SerializeField] public int TuChat { get; private set; }
         [field: SerializeField] public int NgoTinh { get; private set; }
-        [field: SerializeField] public int ThanThuc { get; private set; }
-        [field: SerializeField] public int TocDoBay { get; private set; }
+        [field: SerializeField] public int ThanThuc { get; set; }
+        [field: SerializeField] public int TocDoBay { get; set; }
         [field: SerializeField] public int LinhThach { get; private set; }
         [field: SerializeField] public int Hp { get; private set; }
-        [field: SerializeField] public int SinhMenh { get; private set; }
+        [field: SerializeField] public int SinhMenh { get; set; }
         [field: SerializeField] public int ThoNguyen { get; private set; }
         [field: SerializeField] public int TamCanh { get; private set; }
         [field: SerializeField] public LinhCan LinhCan { get; private set; }

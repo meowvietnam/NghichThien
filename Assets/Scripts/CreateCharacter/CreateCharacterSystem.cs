@@ -118,6 +118,10 @@ namespace CreateCharacter
                     var sceneManager = new Network.Core.SceneManager();
                     module.RemoveHandler<Network.Core.SceneManager>();
                     module.AddHandler(sceneManager);
+                    
+                    var skillHandler = new Network.Core.SkillHandler();
+                    module.RemoveHandler<Network.Core.SkillHandler>();
+                    module.AddHandler(skillHandler);
                     AdminPanel.Instance.StartListen();
                     progressBar.DoKill(() => {  });
                     StartCoroutine(GameManager.LoadSceneWithDelay("AllMaps",0));

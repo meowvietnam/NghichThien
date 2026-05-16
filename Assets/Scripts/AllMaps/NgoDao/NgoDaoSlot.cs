@@ -3,10 +3,11 @@ using LongDH.LongDHModules;
 using Sirenix.OdinInspector;
 using System.Linq;
 using AllMaps.NgoDao;
+using Network.Models;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NgoDaoSlot : BaseBehaviour , INetworkEvent.ILearnNgoDao
+public class NgoDaoSlot : BaseBehaviour, INetworkEvent.ILearnNgoDao
 {
     [SerializeField] public NgoDao ngoDaoSO;
     [SerializeField] private Button btn;
@@ -21,11 +22,9 @@ public class NgoDaoSlot : BaseBehaviour , INetworkEvent.ILearnNgoDao
     {
         this.ngoDaoSO = ngoDaoSO;
         InitData();
-        SetEventButton(btn, () =>
-        {
-            Pool.Get<TabPanel>().ShowNgoDaoToolTip(this);
-        });
-    }    
+        SetEventButton(btn, () => { Pool.Get<TabPanel>().ShowNgoDaoToolTip(this); });
+    }
+
     private void InitData()
     {
         nameText.text = ngoDaoSO.name;
@@ -33,13 +32,13 @@ public class NgoDaoSlot : BaseBehaviour , INetworkEvent.ILearnNgoDao
         icon.SetNativeSize();
         countRequire.text = ngoDaoSO.require.ToString();
     }
+
     public void LearnAndUpdateData()
     {
         Observer.Notify(EventList.Network.LEARN_NGODAO, this, ngoDaoSO.Id);
         //ngoDaoSO.Learn(this);
-
     }
-    
+
     [Button]
     public void LearnedVisual()
     {
@@ -50,6 +49,7 @@ public class NgoDaoSlot : BaseBehaviour , INetworkEvent.ILearnNgoDao
         isLearned = true;
         canLearn = false;
     }
+
     [Button]
     public void UnLearnVisual()
     {
@@ -57,10 +57,9 @@ public class NgoDaoSlot : BaseBehaviour , INetworkEvent.ILearnNgoDao
         countRequire.transform.parent.gameObject.SetActive(true);
         icon.color = Color.darkGray;
         nameText.transform.parent.gameObject.SetActive(true);
-        isLearned=false;
-        
-
+        isLearned = false;
     }
+
     [Button]
     public void GetComponent()
     {
@@ -69,13 +68,11 @@ public class NgoDaoSlot : BaseBehaviour , INetworkEvent.ILearnNgoDao
         icon = transform.GetChild(1).transform.GetChild(0).GetComponent<Image>();
         countRequire = transform.GetChild(3).transform.GetChild(0).GetComponent<Text>();
         blackImg = transform.GetChild(0).GetComponent<Image>();
-
     }
 
-   
-
-    public void SuccessLearnNgoDao()
+    public void SuccessLearnNgoDao(NgoDaoBuff buff, CreateCharacter.NgoDao ngoDao)
     {
+        //Đã buff
         var TabPanel = Pool.Get<TabPanel>();
         TabPanel.SetNgoDaoDiem();
         LearnedVisual();

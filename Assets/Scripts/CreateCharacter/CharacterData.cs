@@ -111,10 +111,12 @@ namespace CreateCharacter
             InventoryManager = inventory;
             InventoryChanged();
         }
+
         public void InventoryChanged()
         {
             OnInventoryUpdated?.Invoke(InventoryManager);
         }
+
         public void GetInventory()
         {
             Client.Instance.Send(MessageTag.GetInventory);
@@ -124,6 +126,24 @@ namespace CreateCharacter
         {
             InventoryManager.ApplyModify(modify);
             InventoryChanged();
+        }
+
+        public void ApplyBuff(NgoDaoBuff buff)
+        {
+            var type = buff.BuffStat;
+            var buffValue = buff.BuffValue;
+            switch (type)
+            {
+                case NgoDaoBuffStats.EBuffStats.ThanThuc:
+                    Stats.ThanThuc += buffValue;
+                    break;
+                case NgoDaoBuffStats.EBuffStats.HP:
+                    Stats.SinhMenh += buffValue;
+                    break;
+                case NgoDaoBuffStats.EBuffStats.DonToc:
+                    Stats.TocDoBay += buffValue;
+                    break;
+            }
         }
     }
 }
