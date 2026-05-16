@@ -374,18 +374,22 @@ public class GameManager : BaseBehaviour
         public CharacterStatsSecure charStats;
     }
     public CharCombatInit enemyCombat = null;
+    public ETypeCombat currentETypeCombat = ETypeCombat.None;
 
-    public void GoToCombat(CharCombatInit enemyCombat)
+    public void GoToCombat(CharCombatInit enemyCombat , ETypeCombat eTypeCombat)
     {
         this.enemyCombat = enemyCombat;
         if (enemyCombat == null) return;
+        currentETypeCombat = eTypeCombat;
         Pool.Get<PrepareCombatPanel>().Show();
     }
 
     public void BackAllMaps()
     {
         Pool.Get<UIManager>().panelGroup.SetActive(true);
+        currentETypeCombat = ETypeCombat.None;
         SceneManager.LoadScene(listSceneLoaded[0]);
+
     }
 
     public static CharacterStatsSecure ConvertCharServerDataToCharClientData()

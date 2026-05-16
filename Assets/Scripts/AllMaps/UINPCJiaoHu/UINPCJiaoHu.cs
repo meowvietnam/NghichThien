@@ -298,7 +298,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
             {
                 charStats = characterStatsTarget,
                 eTypeVisual = ETypeVisualChar.Character,
-            });
+            },ETypeCombat.LuanBan);
 
         });
     }
