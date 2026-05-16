@@ -25,6 +25,8 @@ namespace CreateCharacter
         [field: SerializeField, TabGroup("Basic")]
         public EMonPhai MonPhai { get; set; }
 
+        [field: SerializeField, TabGroup("Basic")]
+        public int MoneyVip { get; set; }
         [field: ShowInInspector, TabGroup("Basic")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
@@ -59,6 +61,7 @@ namespace CreateCharacter
             Gender = clone.Gender;
             Name = clone.Name;
             MonPhai = clone.MonPhai;
+            MoneyVip = clone.MoneyVip;
             CreatedAt = clone.CreatedAt;
         }
 
@@ -71,6 +74,7 @@ namespace CreateCharacter
                    + Appearance.ByteSize()
                    + EquipmentManager.ByteSize()
                    + MonPhai.ByteSize()
+                   + MoneyVip.ByteSize()
                    + InventoryManager.ByteSize()
                    + CreatedAt.ByteSize()
                    + Social.ByteSize();
@@ -86,6 +90,7 @@ namespace CreateCharacter
             writer.Write(Appearance);
             writer.Write(EquipmentManager);
             writer.Write(MonPhai);
+            writer.Write(MoneyVip);
             writer.Write(InventoryManager);
             writer.Write(CreatedAt);
             writer.Write(Social);
@@ -101,6 +106,7 @@ namespace CreateCharacter
             value.Appearance = reader.Read<Appearance>();
             value.EquipmentManager = reader.Read<EquipmentManager>();
             value.MonPhai = reader.Read<EMonPhai>();
+            value.MoneyVip = reader.Read<int>();
             value.InventoryManager = reader.Read<InventoryManager>();
             value.CreatedAt = reader.Read<DateTime>();
             value.Social = reader.Read<Social>();
