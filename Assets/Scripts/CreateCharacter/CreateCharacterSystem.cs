@@ -102,7 +102,7 @@ namespace CreateCharacter
         public void SelectCharacter(int id)
         {
             progressBar.SetText(selecting);
-            progressBar.DoShow(0.15f, 0.15f, null);
+            progressBar.DoShow(0.5f, 0.15f, null);
             Client.Instance.Send(MessageTag.SelectCharacter, id);
         }
 
@@ -118,13 +118,16 @@ namespace CreateCharacter
                     var sceneManager = new Network.Core.SceneManager();
                     module.RemoveHandler<Network.Core.SceneManager>();
                     module.AddHandler(sceneManager);
-                    
                     var skillHandler = new Network.Core.SkillHandler();
                     module.RemoveHandler<Network.Core.SkillHandler>();
                     module.AddHandler(skillHandler);
                     AdminPanel.Instance.StartListen();
-                    progressBar.DoKill(() => {  });
-                    StartCoroutine(GameManager.LoadSceneWithDelay("AllMaps",0));
+                    Debug.Log("Load");
+                    var op = SceneManager.LoadSceneAsync("AllMaps");
+                    if (op != null)
+                    {
+                        op.completed += (o) => { progressBar.DoKill(() => {}); };
+                    }
                 }
                 else
                 {

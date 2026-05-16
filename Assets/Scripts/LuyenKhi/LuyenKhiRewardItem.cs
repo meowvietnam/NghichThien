@@ -13,8 +13,38 @@ namespace LuyenKhi
         [field: SerializeField] public int Id { get; set; }
         [field: SerializeField] public EquipmentTier Tier { get; set; }
         [field: SerializeField] public ArtifactType Type { get; set; }
-        [field: SerializeField, PreviewField(75)] public Sprite Icon { get; set; }
-        [field: SerializeField, PreviewField(75)] public Sprite IconFight { get; set; }
+        private Sprite icon;
+        private Sprite iconFight;
+        [field: SerializeField] public string IconPath { get; set; }
+        [field: SerializeField] public string IconFightPath { get; set; }
+
+        public Sprite Icon
+        {
+            get
+            {
+                if (icon == null)
+                {
+                    icon = Resources.Load<Sprite>(IconPath);
+                }
+                return icon;
+            }
+        }
+
+        public Sprite IconFight
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(IconFightPath))
+                {
+                    return iconFight;
+                }
+                if (iconFight == null)
+                {
+                    iconFight = Resources.Load<Sprite>(IconFightPath);
+                }
+                return iconFight;
+            }
+        }
 
 
         public void Deserialize(IReader reader, ref LuyenKhiRewardItem value)

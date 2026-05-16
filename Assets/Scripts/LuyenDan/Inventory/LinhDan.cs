@@ -12,8 +12,17 @@ namespace LuyenDan.Inventory
     {
         [field: SerializeField] public int Id { get; private set; }
 
-        [field: SerializeField, PreviewField(75)]
-        public Sprite Icon { get; private set; }
+        public Sprite Icon
+        {
+            get
+            {
+                if (icon == null)
+                {
+                    icon = Resources.Load<Sprite>(IconPath);
+                }
+                return icon;
+            }
+        }
 
         [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public Tier Tier { get; private set; }
@@ -32,7 +41,8 @@ namespace LuyenDan.Inventory
         [field: SerializeField] public ETypeDan ETypeDan { get; private set; }
         [field: SerializeField] public int BuffValue { get; private set; }
         [field: SerializeField] public EDanBuffType EBuffType{ get; private set; }
-
+        private Sprite icon;
+        [field: SerializeField] public string IconPath { get; private set; }
         public int ByteSize()
         {
             return Id.ByteSize() + Name.ByteSize() + Tier.ByteSize() + Description.ByteSize()

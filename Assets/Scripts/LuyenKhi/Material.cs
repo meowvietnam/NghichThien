@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Base;
 using LuyenDan.Inventory;
@@ -13,39 +14,68 @@ namespace LuyenKhi
     [Serializable]
     public class Material : IItemData, IMemorySerializable<Material>
     {
-        [field: SerializeField,TabGroup("Info")]
+        [field: SerializeField, TabGroup("Info")]
         public int Id { get; set; }
-        [field: SerializeField,TabGroup("Info")]
+
+        [field: SerializeField, TabGroup("Info")]
         public string Name { get; set; }
-        [field: SerializeField,TabGroup("Info")]
+
+        [field: SerializeField, TabGroup("Info")]
         public Tier Tier { get; set; }
-        [field: SerializeField, PreviewField(75),TabGroup("Info")]
-        public Sprite Icon { get; set; }
-        [field: SerializeField,TabGroup("Info")]
+
+        private Sprite icon;
+
+        [field: SerializeField, TabGroup("Info")]
+        public string IconPath { get; set; }
+
+        public Sprite Icon
+        {
+            get
+            {
+                if (icon == null)
+                {
+                    icon = Resources.Load<Sprite>(IconPath);
+                }
+                return icon;
+            }
+        }
+
+        [field: SerializeField, TabGroup("Info")]
         public CultivationElement CultivationElement { get; set; }
-        [field: SerializeField,TabGroup("Info")]
+
+        [field: SerializeField, TabGroup("Info")]
         public YinYangType YinYangType { get; set; }
+
         public string Description => Desc2;
-        [field: SerializeField,TabGroup("Ref")]
+
+        [field: SerializeField, TabGroup("Ref")]
         public int TypeRef { get; set; }
-        [field: SerializeField,TabGroup("Ref")]
+
+        [field: SerializeField, TabGroup("Ref")]
         public int PropertyRef { get; set; }
-        [field: SerializeField,TabGroup("Ref")]
+
+        [field: SerializeField, TabGroup("Ref")]
         public int[] OriginRef { get; set; }
-        [field: SerializeField,TabGroup("Ref")]
+
+        [field: SerializeField, TabGroup("Ref")]
         public int Desc1Ref { get; set; }
-        [field: SerializeField,TabGroup("Ref")]
+
+        [field: SerializeField, TabGroup("Ref")]
         public int Desc2Ref { get; set; }
-        [field: SerializeField,TabGroup("Data")]
+
+        [field: SerializeField, TabGroup("Data")]
         public int[] ItemFlags { get; set; }
-        [field: SerializeField,TabGroup("Data")]
+
+        [field: SerializeField, TabGroup("Data")]
         public int Price { get; set; }
+
         private StringDict Dict => LuyenKhiResources.Instance.Strings;
         [TabGroup("Preview"), ShowInInspector] public string Type => Dict[TypeRef];
         [TabGroup("Preview"), ShowInInspector] public string Property => Dict[PropertyRef];
         [TabGroup("Preview"), ShowInInspector] public string[] Origin => OriginRef.Select(o => Dict[o]).ToArray();
         [TabGroup("Preview"), ShowInInspector] public string Desc1 => Dict[Desc1Ref];
         [TabGroup("Preview"), ShowInInspector] public string Desc2 => Dict[Desc2Ref];
+
         public void Deserialize(IReader reader, ref Material value)
         {
             value.Id = reader.Read<int>();
@@ -64,9 +94,9 @@ namespace LuyenKhi
 
         public int ByteSize()
         {
-            return Id.ByteSize() + Name.ByteSize() + Tier.ByteSize() 
+            return Id.ByteSize() + Name.ByteSize() + Tier.ByteSize()
                    + CultivationElement.ByteSize() + YinYangType.ByteSize() + TypeRef.ByteSize()
-                   + PropertyRef.ByteSize() + OriginRef.ByteSize() + Desc1Ref.ByteSize() 
+                   + PropertyRef.ByteSize() + OriginRef.ByteSize() + Desc1Ref.ByteSize()
                    + Desc2Ref.ByteSize() + ItemFlags.ByteSize() + Price.ByteSize();
         }
 
