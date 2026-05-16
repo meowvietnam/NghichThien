@@ -126,7 +126,6 @@ namespace LuyenDan
         [field: SerializeField] public int Id { get; private set; }
         [field: SerializeField] public int LinhDanId { get; set; }
 
-        [ShowInInspector, ReadOnly, PreviewField(75)]
         public Sprite Icon
         {
             get
@@ -136,7 +135,6 @@ namespace LuyenDan
                 {
                     return null;
                 }
-
                 return linhDan.Icon;
             }
         }

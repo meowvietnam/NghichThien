@@ -51,7 +51,6 @@ namespace LuyenKhi
         public Material FindMaterial(ushort Id)
         {
             return Materials.FirstOrDefault(x => x.Id == Id);
-
         }
 
         public void Deserialize(IReader reader, ref LuyenKhiResources value)
@@ -129,7 +128,7 @@ namespace LuyenKhi
 
                     if (loadedSprite != null)
                     {
-                        item.IconFight = loadedSprite;
+                        // item.IconFight = loadedSprite;
                         count++;
                     }
                 }

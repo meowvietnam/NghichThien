@@ -20,10 +20,19 @@ namespace LuyenDan
         [field: SerializeField] public string ThuocDan { get; private set; }
         [field: SerializeField] public string Locations { get; private set; }
         [field: SerializeField] public string Description { get; private set; }
-
-        [field: SerializeField, PreviewField(75)]
-        public Sprite Icon { get; private set; }
-
+        private Sprite icon;
+        [field: SerializeField] public string IconPath { get; private set; }
+        public Sprite Icon
+        {
+            get
+            {
+                if (icon == null)
+                {
+                    icon = Resources.Load<Sprite>(IconPath);
+                }
+                return icon;
+            }
+        }
         [ShowInInspector]
         public HerbType HerbType
         {

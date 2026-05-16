@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CreateCharacter;
@@ -36,8 +37,16 @@ namespace Network
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            StartCoroutine(LoadGameManager());
         }
 
+        private IEnumerator LoadGameManager()
+        {
+            var req = Resources.LoadAsync<GameManager>("GameManager");
+            yield return req;
+            var prefab = req.asset as GameManager;
+            InstantiateAsync(prefab);
+        }
         public async Task Connect(IUnauthenticatedClientCallback callback)
         {
             try
