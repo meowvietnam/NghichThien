@@ -184,13 +184,8 @@ namespace Network
 
         [Button]
         [ShowIf(nameof(IsReady))]
-        public void SetCamNgo(AllMaps.NgoDao.NgoDao ngoDao, int value)
+        public void SetCamNgo(CamNgo camNgo)
         {
-            var camNgo = new CamNgo()
-            {
-                Id = (ushort)ngoDao.Id,
-                Value = value
-            };
             Client.Send(MessageTag.SetCamNgo, camNgo);
         }
 
