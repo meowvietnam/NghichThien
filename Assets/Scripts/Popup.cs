@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class Popup : BaseBehaviour
 {
-    [SerializeField] private Image commonMask ;
-    [SerializeField] private Button btnClose;
-    [SerializeField] private float scaleBase =1f;
+    [SerializeField] protected Image commonMask ;
+    [SerializeField] protected Button btnClose;
+    [SerializeField] protected float scaleBase =1f;
   
     public virtual void Show(float delay = 0.5f,Action actionComplete = null)
     {
@@ -28,9 +28,13 @@ public class Popup : BaseBehaviour
         });
         SetEventButton(btnClose, () =>
         {
-            Hide();
+            ActionBtnClose();
         });
     }
+    protected virtual void ActionBtnClose()
+    {
+        Hide();
+    }    
     public void Hide(float delay = 0, Action actionComplete = null)
     {
 

@@ -195,11 +195,11 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         danDocValue.text = $"{CharacterDatas.Stats.DanDoc}/{getDanDoc.nextMilestone}";
         danDocIcon.sprite = listSpriteIconDanDoc[getDanDoc.index];
 
-        kimText.text = CharacterDatas.Stats.Kim.ToString();
-        mocText.text = CharacterDatas.Stats.Moc.ToString();
-        thuyText.text = CharacterDatas.Stats.Thuy.ToString();
-        hoaText.text = CharacterDatas.Stats.Hoa.ToString();
-        thoText.text = CharacterDatas.Stats.Tho.ToString();
+        kimText.text = $"{(int)CharacterDatas.Stats.Kim}";
+        mocText.text = $"{(int)CharacterDatas.Stats.Moc}";
+        thuyText.text = $"{(int)CharacterDatas.Stats.Thuy}";
+        hoaText.text = $"{(int)CharacterDatas.Stats.Hoa}";
+        thoText.text = $"{(int)CharacterDatas.Stats.Tho}";
 
     }
     [Header("--- NGỘ ĐẠO ---")]
@@ -468,6 +468,8 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     [SerializeField] private Bag1ItemPrefabInventory bag;
     [SerializeField] private GameObject prefab5Item;
     [SerializeField] private Text moneyText;
+    [SerializeField] private Text moneyVipText;
+
     [SerializeField] private Sprite[] spriteQualityFulls;
     [SerializeField] private Sprite[] spriteFrames;
     [SerializeField] private Color[] colorQualitys;
@@ -479,6 +481,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         bag.isLoadingMore = false;
         bag.gameObject.SetActive(true);
         moneyText.text = CharData.Stats.LinhThach.ToString();
+       // moneyVipText.text = CharData.MoneyVip.ToString();
         lianziAnim.SetTrigger("Show");
 
     }

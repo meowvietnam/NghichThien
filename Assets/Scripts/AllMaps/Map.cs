@@ -68,7 +68,7 @@ namespace AllMaps
             {
                 ResetData();
                 Pool.Get<NpcManager>().OnGoToEnemy(currenEnemy);
-                Pool.Get<GameManager>().GoToCombat(new GameManager.CharCombatInit { eTypeVisual = currenEnemy.eTypeVisualChar, charStats = currenEnemy.charStats });
+                Pool.Get<GameManager>().GoToCombat(new GameManager.CharCombatInit { eTypeVisual = currenEnemy.eTypeVisualChar, charStats = currenEnemy.charStats } , ETypeCombat.AllMaps);
             }
            
         }

@@ -58,8 +58,13 @@ public class PrepareCombatPanel : Popup , ISingleton
         graphicUser.SetGender(Client.Instance.CharacterData.Gender);
         graphicUser.SetSkin(Client.Instance.CharacterData.Appearance.Skins, Client.Instance.CharacterData.Appearance.Colors);
         SetVisualHaveEnemyAndCharacter(graphicTarget);
+        
 
-
+    }
+    protected override void ActionBtnClose()
+    {
+        base.ActionBtnClose();
+        Pool.Get<GameManager>().currentETypeCombat = ETypeCombat.None;
 
     }
     private void SetVisualHaveEnemyAndCharacter(CharacterVisualControl graphicTarget)

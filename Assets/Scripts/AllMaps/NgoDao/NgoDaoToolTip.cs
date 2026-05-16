@@ -46,7 +46,26 @@ public class NgoDaoToolTip : BaseBehaviour
 
             });
         }
-        
+        RefreshTooltipLayout();
+
+
+    }
+    private void RefreshTooltipLayout()
+    {
+        var fitter = this.transform.GetComponentsInChildren<ContentSizeFitter>();
+        if (fitter != null)
+        {
+            foreach (var item in fitter)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    Canvas.ForceUpdateCanvases();
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
+                    item.enabled = false;
+                    item.enabled = true;
+                }
+            }
+        }
     }
     private void InitData(int levelNgoDaoRequire)
     {
@@ -67,7 +86,7 @@ public class NgoDaoToolTip : BaseBehaviour
         for (int i = 0; i < requires.Length; i++)
         {
             baseStr += BaseSkill.GetTextTypeSkill(requires[i]);
-            if(i<requires.Length-2)
+            if(i<requires.Length)
             {
                 baseStr += ", ";
             }    
