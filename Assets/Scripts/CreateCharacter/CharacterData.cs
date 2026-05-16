@@ -48,7 +48,8 @@ namespace CreateCharacter
 
         [field: SerializeField, TabGroup("Social")]
         public Social Social { get; set; } = new();
-
+        [field: SerializeField, TabGroup("Quest")]
+        public QuestManager QuestManager { get; set; } = new();
         public event Action<InventoryManager> OnInventoryUpdated;
 
         public CharacterData()
@@ -77,7 +78,8 @@ namespace CreateCharacter
                    + MoneyVip.ByteSize()
                    + InventoryManager.ByteSize()
                    + CreatedAt.ByteSize()
-                   + Social.ByteSize();
+                   + Social.ByteSize()
+                   + QuestManager.ByteSize();
         }
 
         public void Serialize(IWriter writer)
@@ -94,6 +96,7 @@ namespace CreateCharacter
             writer.Write(InventoryManager);
             writer.Write(CreatedAt);
             writer.Write(Social);
+            writer.Write(QuestManager);
         }
 
         public void Deserialize(IReader reader, ref CharacterData value)
@@ -110,6 +113,7 @@ namespace CreateCharacter
             value.InventoryManager = reader.Read<InventoryManager>();
             value.CreatedAt = reader.Read<DateTime>();
             value.Social = reader.Read<Social>();
+            value.QuestManager = reader.Read<QuestManager>();
         }
 
         public void SetInventory(InventoryManager inventory)
