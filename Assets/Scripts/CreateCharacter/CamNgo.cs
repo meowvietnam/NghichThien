@@ -10,17 +10,17 @@ namespace CreateCharacter
     public class CamNgo : IMemorySerializable<CamNgo>, IDeepClone<CamNgo>, IEquatable<CamNgo>
     {
         [field: SerializeField]
-        public ushort Id { get; set; }
+        public BaseSkill.ETypeSkill Id { get; set; }
         [field: SerializeField]
         public int Value { get; set; }
         public void Deserialize(IReader reader, ref CamNgo value)
         {
-            value.Id = reader.Read<ushort>();
+            value.Id = reader.Read<BaseSkill.ETypeSkill>();
             value.Value = reader.Read<int>();
         }
         public override int GetHashCode()
         {
-            return Id;
+            return (int)Id;
         }
         public bool Equals(CamNgo? other)
         {

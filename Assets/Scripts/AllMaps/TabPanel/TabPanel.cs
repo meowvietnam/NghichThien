@@ -328,7 +328,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             }
         }
 
-        var camNgoThisPage = CharacterDatas.InventoryManager.CamNgos.FirstOrDefault(x => x.Id == listNgoDaoResources[indexThisPage].Id);
+        var camNgoThisPage = CharacterDatas.InventoryManager.CamNgos.FirstOrDefault(x => x.Id == listNgoDaoResources[indexThisPage].eTypeSkill);
         int camNgoValue = 0;
         if (camNgoThisPage != null)
         {
@@ -352,7 +352,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                     bool allDone = true;
                     foreach (var eRequire in ngoDaoSlot.ngoDaoSO.eTypeRequire)
                     {
-                        var camNgo = CharacterDatas.InventoryManager.CamNgos.FirstOrDefault(x => x.Id == listNgoDaoResources[(int)eRequire-1].Id);
+                        var camNgo = CharacterDatas.InventoryManager.CamNgos.FirstOrDefault(x => x.Id == listNgoDaoResources[(int)eRequire-1].eTypeSkill);
                         int levelCamNgo = NgoDaoResource.GetLevelCamNgo(camNgo.Value);
                         if (levelCamNgo < i + 1) // i là level index hàng hiện tại
                         {
@@ -387,7 +387,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         var CharacterDatas = CharData;
         foreach (var item in CharacterDatas.InventoryManager.CamNgos)
         {
-            if(item.Id == ngoDaoResource.Id)
+            if(item.Id == ngoDaoResource.eTypeSkill)
             {
                 int levelIndex = NgoDaoResource.GetLevelCamNgo(item.Value) -1;
                
