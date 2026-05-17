@@ -21,6 +21,7 @@ public class ItemInventory : BaseItemUI
 
     private void OnEnable()
     {
+        if (selectHighLight == null) return;
         selectHighLight.gameObject.SetActive(false);
     }
     public void InitCount(int count)

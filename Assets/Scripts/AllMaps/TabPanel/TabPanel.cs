@@ -14,6 +14,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
 using CongPhap = Skill.CongPhap;
@@ -89,17 +90,25 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 
 
                 }
-                if (item.typePanel == ETypePanel.ThanThong)
+                else if (item.typePanel == ETypePanel.ThanThong)
                 {
                     InitThanThong();
                   
                 }
-                if (item.typePanel == ETypePanel.VatPham)
+                else if (item.typePanel == ETypePanel.VatPham)
                 {
                   
                     InitInventory();
                    
                 }
+                else if (item.typePanel == ETypePanel.NgoDao)
+                {
+
+                    InitNgoDao();
+
+
+                }
+                
 
             });
         }
@@ -108,7 +117,6 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         {
             gameObject.SetActive(false);
         });
-        InitNgoDao();
     }
     private void OnEnable()
     {
@@ -294,7 +302,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
         }
         SetNgoDaoDiem();
-
+        dictBtnWithNgoDaos.Keys.ElementAt(0).onClick?.Invoke();
     }
     public void SetNgoDaoDiem()
     {
@@ -352,7 +360,19 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                     bool allDone = true;
                     foreach (var eRequire in ngoDaoSlot.ngoDaoSO.eTypeRequire)
                     {
-                        var camNgo = CharacterDatas.InventoryManager.CamNgos.FirstOrDefault(x => x.Id == listNgoDaoResources[(int)eRequire-1].eTypeSkill);
+                        var resource = listNgoDaoResources.FirstOrDefault(x => x.eTypeSkill == eRequire);
+                        CamNgo camNgo = null;
+                        if (resource != null)
+                        {
+                            camNgo = CharacterDatas.InventoryManager.CamNgos.FirstOrDefault(x => x.Id == resource.eTypeSkill);
+
+                            // Tiếp tục logic xử lý...
+                        }
+                        else
+                        {
+                            Debug.LogError($"Hệ {eRequire} không tồn tại trong danh sách listNgoDaoResources!");
+                        }
+                        if (camNgo == null) continue;
                         int levelCamNgo = NgoDaoResource.GetLevelCamNgo(camNgo.Value);
                         if (levelCamNgo < i + 1) // i là level index hàng hiện tại
                         {
@@ -385,66 +405,68 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
         }
         var CharacterDatas = CharData;
-        foreach (var item in CharacterDatas.InventoryManager.CamNgos)
+        var itemCamNgo = CharacterDatas.InventoryManager.CamNgos.FirstOrDefault(x=>x.Id == ngoDaoResource.eTypeSkill);
+        if(itemCamNgo != null)
         {
-            if(item.Id == ngoDaoResource.eTypeSkill)
+            int levelIndex = NgoDaoResource.GetLevelCamNgo(itemCamNgo.Value) - 1;
+
+            int totalStages = NgoDaoResource.CamNgoRequire.Length; // 5 mốc: 1k, 8k, 30k, 70k, 150k
+
+            // Kiểm tra nếu đã vượt qua hoặc bằng mốc cuối cùng
+            Debug.Log("dcmmm level index =  " + levelIndex);
+
+            if (levelIndex >= totalStages - 1)
             {
-                int levelIndex = NgoDaoResource.GetLevelCamNgo(item.Value) -1;
-               
-                int totalStages = NgoDaoResource.CamNgoRequire.Length; // 5 mốc: 1k, 8k, 30k, 70k, 150k
+                camNgoSlider.fillAmount = 1f;
+            }
+            else if (levelIndex < 0)
+            {
+                camNgoSlider.fillAmount = 0;
 
-                // Kiểm tra nếu đã vượt qua hoặc bằng mốc cuối cùng
-                if (levelIndex >= totalStages - 1)
+            }
+            else
+            {
+                int currentLevel = levelIndex + 1;
+                float currentExp = (float)itemCamNgo.Value;
+
+                // Mốc hiện tại và mốc kế tiếp
+                float minExpOfLevel = NgoDaoResource.CamNgoRequire[levelIndex];
+                float maxExpOfLevel = NgoDaoResource.CamNgoRequire[levelIndex + 1];
+
+                // 1. Tính % trong giai đoạn hiện tại
+                float progressInCurrentLevel = (currentExp - minExpOfLevel) / (maxExpOfLevel - minExpOfLevel);
+
+                // 2. Tính tổng Fill Amount
+                // Chia cho totalStages để đảm bảo thanh trượt khớp với số lượng "lư hương" trên UI
+                camNgoSlider.fillAmount = (currentLevel + progressInCurrentLevel) / totalStages;
+            }
+
+
+            if (levelIndex != -1)
+            {
+
+                Debug.Log("dcmmm ngộ đạo có vào đây ");
+
+                for (int k = 0; k <= levelIndex; k++)
                 {
-                    camNgoSlider.fillAmount = 1f;
+                    levelNgoDao[k].transform.GetChild(0).gameObject.SetActive(true);
+                    var cloud = levelNgoDao[k].transform.GetChild(0).transform.GetChild(1).GetComponent<Image>();
+                    cloud.sprite = listSpriteCloudNgoDao[ngoDaoResource.ngoDao[k].list.Count - 1];
+                    cloud.SetNativeSize();
+                    levelNgoDao[k].transform.GetChild(1).gameObject.SetActive(false);
                 }
-                else if(levelIndex <= 0)
-                {
-                    camNgoSlider.fillAmount = 0;
+            }
 
-                }
-                else
-                {
-                    int currentLevel = levelIndex + 1;
-                    float currentExp = (float)item.Value;
+        }
+        else
+        {
+            camNgoSlider.fillAmount = 0;
 
-                    // Mốc hiện tại và mốc kế tiếp
-                    float minExpOfLevel = NgoDaoResource.CamNgoRequire[levelIndex];
-                    float maxExpOfLevel = NgoDaoResource.CamNgoRequire[levelIndex + 1];
-
-                    // 1. Tính % trong giai đoạn hiện tại
-                    float progressInCurrentLevel = (currentExp - minExpOfLevel) / (maxExpOfLevel - minExpOfLevel);
-
-                    // 2. Tính tổng Fill Amount
-                    // Chia cho totalStages để đảm bảo thanh trượt khớp với số lượng "lư hương" trên UI
-                    camNgoSlider.fillAmount = (currentLevel + progressInCurrentLevel) / totalStages;
-                }
-
-
-                if(levelIndex != -1)
-                {
-
-                    Debug.Log("dcmmm ngộ đạo có vào đây " + levelIndex);
-
-                    for (int k = 0; k <= levelIndex; k++)
-                    {
-                        levelNgoDao[k].transform.GetChild(0).gameObject.SetActive(true);
-                        var cloud = levelNgoDao[k].transform.GetChild(0).transform.GetChild(1).GetComponent<Image>();
-                        cloud.sprite = listSpriteCloudNgoDao[ngoDaoResource.ngoDao[k].list.Count - 1];
-                        cloud.SetNativeSize();
-                        levelNgoDao[k].transform.GetChild(1).gameObject.SetActive(false);
-                    }    
-                }    
-
-
-
-                break;
-            }    
-        } 
+        }
         
-            
-        
-    }    
+
+
+    }
     public void ShowNgoDaoToolTip(NgoDaoSlot ngoDaoSlot)
     {
         
@@ -867,7 +889,8 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
    
     public void SuccessEquipCongPhap()
     {
-       // reload lại tab congphap
+        Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
+
     }
 
     public void FailEquipCongPhap(string message)
@@ -877,7 +900,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
     public void SuccessUnEquipCongPhap()
     {
-        // reload lại tab congphap
+        Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
 
     }
 
@@ -908,6 +931,8 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
     public void SuccessUseDan()
     {
+        Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
+
     }
 
     public void FailUseDan(string message)

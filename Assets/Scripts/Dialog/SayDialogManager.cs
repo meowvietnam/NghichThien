@@ -3,6 +3,7 @@ using CreateCharacter;
 using DG.Tweening;
 using LongDH.LongDHModules;
 using Network;
+using Newtonsoft.Json.Linq;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
@@ -38,12 +39,21 @@ public class SayDialogManager : BaseBehaviour
     {
         Init();
     }
-
-    // 1. Hàm ShowDialog với danh sách ngẫu nhiên Skin
-    public void ShowDialogRandomSkin(string name, Gender gender, List<string> contents, Sprite spriteContent = null, List<AudioClip> voices = null, Action actionEndThisDialog = null, bool isAutoHideAfterDoneDialog = true)
+    public void ShowDialogRandomSkin(string name,Gender gender, List<string> contents, Sprite spriteContent = null, List<AudioClip> voices = null, Action actionEndThisDialog = null, bool isAutoHideAfterDoneDialog = true)
     {
+       
         var skinRandom = characterGraphic.RandomSkin(gender, false);
-        ShowDialog(name, gender, skinRandom.skins, skinRandom.colors, contents, spriteContent, voices, actionEndThisDialog,isAutoHideAfterDoneDialog);
+        ShowDialog(name, gender, skinRandom.skins, skinRandom.colors, contents, spriteContent, voices, actionEndThisDialog, isAutoHideAfterDoneDialog);
+    }
+    // 1. Hàm ShowDialog với danh sách ngẫu nhiên Skin
+    public (Gender gender,Dictionary<string,string> skin ,Dictionary<string,Color> color) ShowDialogRandomSkin(string name, List<string> contents, Sprite spriteContent = null, List<AudioClip> voices = null, Action actionEndThisDialog = null, bool isAutoHideAfterDoneDialog = true)
+    {
+        System.Random _random = new System.Random();
+        Array values = Enum.GetValues(typeof(Gender));
+        Gender randomGender = (Gender)values.GetValue(_random.Next(values.Length));
+        var skinRandom = characterGraphic.RandomSkin(randomGender, false);
+        ShowDialog(name, randomGender, skinRandom.skins, skinRandom.colors, contents, spriteContent, voices, actionEndThisDialog,isAutoHideAfterDoneDialog);
+        return (randomGender,skinRandom.skins,skinRandom.colors);
     }
 
     // 2. Hàm ShowDialog hiển thị thông tin User

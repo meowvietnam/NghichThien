@@ -76,6 +76,8 @@ public class NgoDaoSlot : BaseBehaviour, INetworkEvent.ILearnNgoDao
         var TabPanel = Pool.Get<TabPanel>();
         TabPanel.SetNgoDaoDiem();
         LearnedVisual();
+        Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
+
     }
 
     public void FailLearnNgoDao(string message)

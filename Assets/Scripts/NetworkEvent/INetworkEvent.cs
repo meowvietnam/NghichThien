@@ -110,4 +110,10 @@ public class INetworkEvent
         void SuccessUnEquipEquipment();
         void FailUnEquipEquipment(string message);
     }
+    public interface ICompleteSideQuest// Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessCompleteSideQuest(int moneyVip);
+        void FailCompleteSideQuest(string message);
+    }
+   
 }

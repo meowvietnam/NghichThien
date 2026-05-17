@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CreateCharacter;
 using LongDH.LongDHModules;
@@ -45,10 +46,19 @@ namespace AllMaps
             }
             return iconAction;
         }
-        public void SetEnemyOnMap(IActionMap Data,int nodeId)
+        public void SetDataOnMap(IActionMap Data,int nodeId)
         {
             Map map = FindMap(nodeId);
-            map.SetData(Data, SetIconEvent(map, prefabEnemyIcon));
+            GameObject prefabIcon = null;
+            if(Data is SideQuizQuestResource)
+            {
+                prefabIcon = prefabSideQuestIcon;
+            }
+            else if(Data is EnemyData)
+            {
+                prefabIcon = prefabEnemyIcon;
+            }
+            map.SetData(Data, SetIconEvent(map, prefabIcon));
         }    
         public Map FindMap(int id)
         {

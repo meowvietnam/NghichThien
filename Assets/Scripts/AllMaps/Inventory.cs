@@ -25,6 +25,7 @@ namespace AllMaps
 
         private void OnDestroy()
         {
+            if (Client.Instance == null) return;
             var module = Client.Instance.CoreModule;
             var inventoryHandler = module.GetHandler<InventoryHandler>();
             Client.Instance.CharacterData.OnInventoryUpdated -= OnInventoryUpdated;

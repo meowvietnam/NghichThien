@@ -177,7 +177,7 @@ public class NpcManager : MonoBehaviour
             int randomMapId = mapExcept[UnityEngine.Random.Range(0, mapExcept.Count)].Id;
             var map = mapManager.FindMap(randomMapId);
             enemy.charStats.idNode = randomMapId;
-            mapManager.SetEnemyOnMap(enemy,randomMapId);
+            mapManager.SetDataOnMap(enemy,randomMapId);
             mapExcept.Remove(map);
             currentMapEnemy.Add(map);
         }

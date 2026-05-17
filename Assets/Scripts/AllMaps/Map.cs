@@ -22,7 +22,7 @@ namespace AllMaps
 
         public GameObject iconVisualAction;
 
-        public bool IsEmptyAction => actionMap == null; 
+        public bool IsEmptyAction => actionMap == null || iconVisualAction == null; 
         public Node[] Nodes => nodes;
         public Node FindNodeByMap(Map map)
         {
@@ -58,7 +58,11 @@ namespace AllMaps
            
         public virtual void OnPlayerEnter()
         {
-            actionMap.EnterMap(this);
+            if(actionMap != null)
+            {
+                actionMap.EnterMap(this);
+
+            }
             ResetDataAction();
 
         }
