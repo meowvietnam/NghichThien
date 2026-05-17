@@ -9,6 +9,7 @@ using Network.ClientState;
 using Network.Extensions;
 using Network.Models;
 using Sirenix.OdinInspector;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -182,6 +183,52 @@ namespace AllMaps
                 characterStatsSecures.Add(character.charStats);
             }
             Pool.Get<UINPCJiaoHu>().ShowNPCList(characterStatsSecures);
+        }
+
+        [Button]
+        public void ChangeSprites()
+        {
+            var renderers = FindObjectsByType<SpriteRenderer>(
+                FindObjectsInactive.Include,
+                FindObjectsSortMode.None
+            );
+            var res = GetAllSpritesInFolder("Assets/Texture2D");
+            foreach (var sr in renderers)
+            {
+                if(sr.sprite == null) continue; 
+                var spriteName = sr.sprite.name;
+                var newSprite = res.FirstOrDefault(x => x.name == spriteName);
+                if (newSprite == null)
+                {
+                    Debug.Log($"Sprite {spriteName} not found",sr);
+                    continue;
+                }
+                sr.sprite = newSprite;
+            }
+        }
+
+        public static List<Sprite> GetAllSpritesInFolder(string folderPath)
+        {
+            List<Sprite> result = new List<Sprite>();
+
+            string[] guids = AssetDatabase.FindAssets("t:Texture2D", new[] { folderPath });
+
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+
+                Object[] assets =
+                    AssetDatabase.LoadAllAssetRepresentationsAtPath(path);
+
+                foreach (var obj in assets)
+                {
+                    if (obj is Sprite sprite)
+                    {
+                        result.Add(sprite);
+                    }
+                }
+            }
+            return result;
         }
     }
 }

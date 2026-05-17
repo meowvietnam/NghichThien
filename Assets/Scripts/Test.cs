@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
+    [SerializeField] private int minSize = 4096;
+    [SerializeField] private int target = 2048;
     public void Rescale(Sprite source, float scale)
     {
         SerializedObject so = new SerializedObject(source);
@@ -34,17 +36,7 @@ public class Test : MonoBehaviour
         return sprites;
     }
 
-    [Button]
-    public void Optimize2()
-    {
-        string[] guids = AssetDatabase.FindAssets("t:Texture2D");
-        foreach (var guid in guids)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
-            ResizeTexture(texture,new());
-        }
-    }
+
     [Button]
     public void Optimize()
     {
@@ -70,14 +62,24 @@ public class Test : MonoBehaviour
             ResizeTexture(texture, s);
         }
     }
+    [Button]
+    public void Optimize2()
+    {
+        string[] guids = AssetDatabase.FindAssets("t:Texture2D");
+        foreach (var guid in guids)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+            ResizeTexture(texture,new());
+        }
+    }
     public void ResizeTexture(Texture2D texture, HashSet<Sprite> sprites)
     {
-        var target = 2048;
         string path = AssetDatabase.GetAssetPath(texture);
         var importer = AssetImporter.GetAtPath(path) as TextureImporter;
         if (importer == null) return;
         int maxSize = GetMaxSize(importer);
-        if (maxSize >= 1024*4)
+        if (maxSize >= minSize)
         {
             Debug.Log($"Resize: {texture.name} ({maxSize} -> {target})");
             SetMaxSize(importer, target);
