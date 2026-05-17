@@ -194,6 +194,7 @@ namespace AllMaps
             }
             Pool.Get<UINPCJiaoHu>().ShowNPCList(characterStatsSecures);
         }
+        #if UNITY_EDITOR
 
         [Button]
         public void ChangeSprites()
@@ -227,7 +228,7 @@ namespace AllMaps
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
 
-                Object[] assets =
+                System.Object[] assets =
                     AssetDatabase.LoadAllAssetRepresentationsAtPath(path);
 
                 foreach (var obj in assets)
@@ -240,5 +241,7 @@ namespace AllMaps
             }
             return result;
         }
+#endif
+
     }
 }
