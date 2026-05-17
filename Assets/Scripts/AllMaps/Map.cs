@@ -19,24 +19,18 @@ namespace AllMaps
         [SerializeField] protected Node[] nodes;
         [SerializeField] protected int[] nextIndex;
         [field: SerializeField] public Vector2 PlayerPosition { get; private set; }
-        public EnemyData enemyDataCurrent;
+        public IActionMap actionMap;
+
         public GameObject iconVisualAction;
 
+        public bool IsEmptyAction => actionMap == null; 
         public Node[] Nodes => nodes;
         public Node FindNodeByMap(Map map)
         {
             return nodes.FirstOrDefault(node => node.NextMap == map);
         }
-        // private void OnMouseDown()
-        // {
-        //     if (IsPointerOverUIElement())
-        //     {
-        //         Debug.Log("k move duoc do over UI");               
-        //         return;
-        //     }
-        //     Debug.Log(Id + " mouse down");
-        //     mapManager.PlayerMoveTo(this);
-        // }
+
+
         public bool IsPointerOverUIElement()
         {
             var eventData = new PointerEventData(EventSystem.current);
@@ -48,30 +42,26 @@ namespace AllMaps
             // Nếu results.Count > 0 nghĩa là có UI đang nằm tại vị trí chuột/touch
             return results.Count > 0;
         }
-        public virtual void SetData(EnemyData enemyDataCurrent, GameObject iconVisualAction)
+        public void ResetDataAction()
         {
-            this.enemyDataCurrent = enemyDataCurrent;
-            this.iconVisualAction = iconVisualAction;
-        }    
-        public virtual void ResetData()
-        {
-            enemyDataCurrent = null;
-            if(iconVisualAction != null)
+            actionMap = null;
+            if (iconVisualAction != null)
             {
                 iconVisualAction.Recycle();
                 iconVisualAction = null;
-            }    
+            }
         }    
+        public virtual void SetData(IActionMap dataCurrent, GameObject iconVisualAction)
+        {
+            this.actionMap = dataCurrent;
+            this.iconVisualAction = iconVisualAction;
+        }    
+           
         public virtual void OnPlayerEnter()
         {
-            var currenEnemy = enemyDataCurrent;
-            if (currenEnemy != null)
-            {
-                ResetData();
-                Pool.Get<NpcManager>().OnGoToEnemy(currenEnemy);
-                Pool.Get<GameManager>().GoToCombat(new GameManager.CharCombatInit { eTypeVisual = currenEnemy.eTypeVisualChar, charStats = currenEnemy.charStats } , ETypeCombat.AllMaps);
-            }
-           
+            actionMap.EnterMap(this);
+            ResetDataAction();
+
         }
         public virtual void OnPlayerExit()
         {
@@ -105,7 +95,6 @@ namespace AllMaps
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            Debug.Log(Id + " mouse down");
             mapManager.PlayerMoveTo(this);
         }
     }
