@@ -1,4 +1,4 @@
-using LuyenDan;
+﻿using LuyenDan;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
@@ -56,12 +56,14 @@ public class EventRewardPanel : Popup , IUISingleton
     private void SetVisualRewardMoney(ItemInventory itemInventory , Text textCount)
     {
         itemInventory.InitIcon(spriteMoney,null);
+        itemInventory.textName.text = "Linh Thạch";
         textCount.text = rewardDataCurrent.Money.ToString();
 
     }
     private void SetVisualRewardMoneyVip(ItemInventory itemInventory, Text textCount)
     {
         itemInventory.InitIcon(spriteMoneyVip, null);
+        itemInventory.textName.text = "Tiên Ngọc";
         textCount.text = rewardDataCurrent.MoneyVip.ToString();
 
     }

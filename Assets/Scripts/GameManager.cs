@@ -328,7 +328,7 @@ public class GameManager : BaseBehaviour
             Array values = Enum.GetValues(typeof(Gender));
             Gender randomGender = (Gender)values.GetValue(_random.Next(values.Length));
             var xungHo = XungHoText(6, randomGender);
-            SayDialogManager.Instance.ShowDialogRandomSkin("Người Gác Cổng", randomGender,
+            SayDialogManager.Instance.ShowDialogRandomSkin("Người Gác Cổng",
                new List<string> { $"{xungHo.targetCallMe} xin dừng bước hiện tại nơi này chưa thể vào hãy kiên nhẫn chờ bản cập nhật tiếp theo !" });
             return;
         }
