@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 using LongDH.Script.ObjectPool;
 namespace AllMaps
 {
-    public class Map : BaseBehaviour, IMemorySerializable<Map>
+    public class Map : BaseBehaviour, IMemorySerializable<Map>, IPointerClickHandler
     {
         
         [SerializeField] private MapManager mapManager;
@@ -29,15 +29,7 @@ namespace AllMaps
         {
             return nodes.FirstOrDefault(node => node.NextMap == map);
         }
-        private void OnMouseDown()
-        {
-            if (IsPointerOverUIElement())
-            {
-                Debug.Log("k move duoc do over UI");               
-                return;
-            }
-            mapManager.PlayerMoveTo(this);
-        }
+
 
         public bool IsPointerOverUIElement()
         {
@@ -103,6 +95,11 @@ namespace AllMaps
             writer.Write(MapType);
             writer.Write(Id);
             writer.WriteArray(nextIndex);
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            mapManager.PlayerMoveTo(this);
         }
     }
 }
