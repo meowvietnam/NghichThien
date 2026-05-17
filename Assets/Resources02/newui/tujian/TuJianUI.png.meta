@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: df1e03cdf73137b408f6eca257592882
-timeCreated: 1760182966
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,11 +57,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 4096
     resizeAlgorithm: 0
@@ -70,39 +77,744 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: MCS_TJ_bg.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 3124
+        width: 1849
+        height: 970
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce03c8386a2f414a0800000000000000
+      internalID: -6623402354969661204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_bg2.png
+      rect:
+        serializedVersion: 2
+        x: 1014
+        y: 2787
+        width: 677
+        height: 160
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eafc0c66f4e5c0670800000000000000
+      internalID: 8506277491315363758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_btn1.png
+      rect:
+        serializedVersion: 2
+        x: 1931
+        y: 3805
+        width: 49
+        height: 107
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79fe03cb20a60a8b0800000000000000
+      internalID: -5142994214477303913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_btn_gundong.png
+      rect:
+        serializedVersion: 2
+        x: 2015
+        y: 4051
+        width: 26
+        height: 43
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 546580ccc821d7580800000000000000
+      internalID: -8827879298648484283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_close.png
+      rect:
+        serializedVersion: 2
+        x: 1853
+        y: 3812
+        width: 76
+        height: 100
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb5eae2d983426970800000000000000
+      internalID: 8746627685535114687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_gundong_line1.png
+      rect:
+        serializedVersion: 2
+        x: 1999
+        y: 3391
+        width: 4
+        height: 655
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cb6fa564588332e0800000000000000
+      internalID: -2147222701260969015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_gundong_line2.png
+      rect:
+        serializedVersion: 2
+        x: 2005
+        y: 3637
+        width: 4
+        height: 409
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b33aa692a3d28f70800000000000000
+      internalID: 9188138885055132596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_icon_bg.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1574
+        width: 534
+        height: 224
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d80b214d0e6c1180800000000000000
+      internalID: -9143312140261979943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_jiansuo_biao.png
+      rect:
+        serializedVersion: 2
+        x: 2015
+        y: 4038
+        width: 21
+        height: 11
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9b6d80563757f3e0800000000000000
+      internalID: -2020050017061082213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_jiansuo_kuang.png
+      rect:
+        serializedVersion: 2
+        x: 1853
+        y: 4048
+        width: 160
+        height: 46
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd653456d5a4ab960800000000000000
+      internalID: 7618483484641941212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_line.png
+      rect:
+        serializedVersion: 2
+        x: 2043
+        y: 3373
+        width: 3
+        height: 721
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fb0157dc3e0de1d0800000000000000
+      internalID: -3319981695828947976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_sousuo_bg.png
+      rect:
+        serializedVersion: 2
+        x: 1631
+        y: 2670
+        width: 285
+        height: 88
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2afda238822c39550800000000000000
+      internalID: 6166485794055446434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_sousuo_kuang.png
+      rect:
+        serializedVersion: 2
+        x: 1631
+        y: 2565
+        width: 254
+        height: 48
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0877a89fc4ac32b0800000000000000
+      internalID: -5603422624829442033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_title_gn.png
+      rect:
+        serializedVersion: 2
+        x: 1631
+        y: 2401
+        width: 207
+        height: 99
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ed3cf1aa89db63a0800000000000000
+      internalID: -6670999233572880921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_title_light.png
+      rect:
+        serializedVersion: 2
+        x: 1631
+        y: 2300
+        width: 207
+        height: 99
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e8fd8a3b75288bf0800000000000000
+      internalID: -321966162163402525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_xuanzhong_1.png
+      rect:
+        serializedVersion: 2
+        x: 1853
+        y: 3958
+        width: 141
+        height: 53
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14bb7350584df3840800000000000000
+      internalID: 5206113362046860097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_xuanzhong_2.png
+      rect:
+        serializedVersion: 2
+        x: 1631
+        y: 2615
+        width: 255
+        height: 53
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3208a7baa03e0870800000000000000
+      internalID: 8650905444009116222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_zhezhao_1_shang.png
+      rect:
+        serializedVersion: 2
+        x: 1853
+        y: 4013
+        width: 144
+        height: 33
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83b5acc0bb8f20bd0800000000000000
+      internalID: -2665294547192751304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_zhezhao_1_xia.png
+      rect:
+        serializedVersion: 2
+        x: 1853
+        y: 3914
+        width: 132
+        height: 42
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 112f3839bf72bb3b0800000000000000
+      internalID: -5495754958810385903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_zhezhao_2.2_shang.png
+      rect:
+        serializedVersion: 2
+        x: 1693
+        y: 2760
+        width: 306
+        height: 84
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8476f73e661f3340800000000000000
+      internalID: 4845616386715055247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_zhezhao_2.2_xia.png
+      rect:
+        serializedVersion: 2
+        x: 1693
+        y: 2846
+        width: 306
+        height: 101
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5cddfc4b6816b1870800000000000000
+      internalID: 8654618340109573573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_zhezhao_2_shang.png
+      rect:
+        serializedVersion: 2
+        x: 1631
+        y: 2502
+        width: 243
+        height: 28
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03ecb547b00f9e9f0800000000000000
+      internalID: -438555556704432592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_zhezhao_2_xia.png
+      rect:
+        serializedVersion: 2
+        x: 1631
+        y: 2532
+        width: 243
+        height: 31
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ac811eef5d47d150800000000000000
+      internalID: 5897267311476313256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_zhezhao_3_shang.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1800
+        width: 537
+        height: 28
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0eef028ab8cb15640800000000000000
+      internalID: 5067038363775729376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_zhezhao_3_xia.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1830
+        width: 537
+        height: 39
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45dd124de1da20be0800000000000000
+      internalID: -1512456176923452076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_zhezhao_4_shang.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 2575
+        width: 1010
+        height: 547
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8c8f69fe5a6ece00800000000000000
+      internalID: 1066907117877693578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_zhezhao_4_xia.png
+      rect:
+        serializedVersion: 2
+        x: 1014
+        y: 2949
+        width: 1010
+        height: 173
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0599fb1e4d5411b0800000000000000
+      internalID: -5686817839403920117
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_zhezhao_5.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1871
+        width: 558
+        height: 702
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb8081a2c2e1e9d40800000000000000
+      internalID: 5592940962274347198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_zhezhao_5_zhe.png
+      rect:
+        serializedVersion: 2
+        x: 1014
+        y: 2049
+        width: 615
+        height: 736
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56a78238783f070c0800000000000000
+      internalID: -4579893057689191835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TJ_zhezhao_5bg.png
+      rect:
+        serializedVersion: 2
+        x: 562
+        y: 1336
+        width: 557
+        height: 711
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfee8c14aa5342f30800000000000000
+      internalID: 4549820528915443453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MCS_TJ_bg.png: -6623402354969661204
+      MCS_TJ_bg2.png: 8506277491315363758
+      MCS_TJ_btn1.png: -5142994214477303913
+      MCS_TJ_btn_gundong.png: -8827879298648484283
+      MCS_TJ_close.png: 8746627685535114687
+      MCS_TJ_gundong_line1.png: -2147222701260969015
+      MCS_TJ_gundong_line2.png: 9188138885055132596
+      MCS_TJ_icon_bg.png: -9143312140261979943
+      MCS_TJ_jiansuo_biao.png: -2020050017061082213
+      MCS_TJ_jiansuo_kuang.png: 7618483484641941212
+      MCS_TJ_line.png: -3319981695828947976
+      MCS_TJ_sousuo_bg.png: 6166485794055446434
+      MCS_TJ_sousuo_kuang.png: -5603422624829442033
+      MCS_TJ_title_gn.png: -6670999233572880921
+      MCS_TJ_title_light.png: -321966162163402525
+      MCS_TJ_xuanzhong_1.png: 5206113362046860097
+      MCS_TJ_xuanzhong_2.png: 8650905444009116222
+      MCS_TJ_zhezhao_1_shang.png: -2665294547192751304
+      MCS_TJ_zhezhao_1_xia.png: -5495754958810385903
+      MCS_TJ_zhezhao_2.2_shang.png: 4845616386715055247
+      MCS_TJ_zhezhao_2.2_xia.png: 8654618340109573573
+      MCS_TJ_zhezhao_2_shang.png: -438555556704432592
+      MCS_TJ_zhezhao_2_xia.png: 5897267311476313256
+      MCS_TJ_zhezhao_3_shang.png: 5067038363775729376
+      MCS_TJ_zhezhao_3_xia.png: -1512456176923452076
+      MCS_TJ_zhezhao_4_shang.png: 1066907117877693578
+      MCS_TJ_zhezhao_4_xia.png: -5686817839403920117
+      MCS_TJ_zhezhao_5.png: 5592940962274347198
+      MCS_TJ_zhezhao_5_zhe.png: -4579893057689191835
+      MCS_TJ_zhezhao_5bg.png: 4549820528915443453
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

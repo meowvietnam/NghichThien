@@ -44,9 +44,10 @@ public class Test : MonoBehaviour
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
             var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
-            ResizeTexture(texture,new());
+            ResizeTexture(texture, new());
         }
     }
+
     [Button]
     public void Optimize()
     {
@@ -67,7 +68,10 @@ public class Test : MonoBehaviour
             var originalSprites = GetOriginalSprites(pair.Key);
             pair.Value.ExceptWith(originalSprites);
         }
+
         Resize(dict);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
 
     private void Resize(Dictionary<Texture2D, HashSet<Sprite>> dict)
@@ -77,6 +81,7 @@ public class Test : MonoBehaviour
             ResizeTexture(texture, s);
         }
     }
+
     public void ResizeTexture(Texture2D texture, HashSet<Sprite> sprites)
     {
         var target = 2048;
@@ -84,9 +89,8 @@ public class Test : MonoBehaviour
         var importer = AssetImporter.GetAtPath(path) as TextureImporter;
         if (importer == null) return;
         int maxSize = GetMaxSize(importer);
-        if (maxSize >= 1024*4)
+        if (maxSize >= 1024 * 4)
         {
-            Debug.Log($"Resize: {texture.name} ({maxSize} -> {target})");
             var metas = sprites.Select(x => CreateMeta(x)).ToArray();
             ApplySpriteSheet(texture, metas);
             //SetMaxSize(importer, target);
@@ -97,8 +101,6 @@ public class Test : MonoBehaviour
             //     Copy(originalSprite, sprite);
             // }
             importer.SaveAndReimport();
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
         }
     }
 
@@ -119,6 +121,7 @@ public class Test : MonoBehaviour
             importer.SetPlatformTextureSettings(settings);
         }
     }
+
     Vector2 GetPivot(Rect rect, Vector2 pixelPivot)
     {
         return new Vector2(
@@ -126,6 +129,7 @@ public class Test : MonoBehaviour
             pixelPivot.y / rect.height
         );
     }
+
     public void Copy(Sprite source, Sprite dest)
     {
         var so = new SerializedObject(source);
@@ -147,6 +151,7 @@ public class Test : MonoBehaviour
         EditorUtility.SetDirty(dest);
         Debug.Log($"Copy: {source.name} -> {dest.name}");
     }
+
     public SpriteMetaData CreateMeta(Sprite sprite)
     {
         var meta = new SpriteMetaData()
@@ -158,6 +163,7 @@ public class Test : MonoBehaviour
         };
         return meta;
     }
+
     public static void ApplySpriteSheet(Texture2D tex, SpriteMetaData[] metas)
     {
         string path = AssetDatabase.GetAssetPath(tex);

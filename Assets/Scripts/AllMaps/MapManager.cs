@@ -220,16 +220,12 @@ namespace AllMaps
         public static List<Sprite> GetAllSpritesInFolder(string folderPath)
         {
             List<Sprite> result = new List<Sprite>();
-
             string[] guids = AssetDatabase.FindAssets("t:Texture2D", new[] { folderPath });
-
             foreach (string guid in guids)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
-
-                Object[] assets =
+                var assets =
                     AssetDatabase.LoadAllAssetRepresentationsAtPath(path);
-
                 foreach (var obj in assets)
                 {
                     if (obj is Sprite sprite)

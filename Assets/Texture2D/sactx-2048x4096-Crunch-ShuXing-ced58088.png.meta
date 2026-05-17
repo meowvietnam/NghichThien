@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: 1a9d1c59ec56f024e96803bf216ea8dc
-timeCreated: 1760182887
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,11 +57,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 4096
     resizeAlgorithm: 0
@@ -70,39 +77,560 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: MCS_TAB_mutou
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 2048
+        height: 863
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49976498}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00245a8d33b2f3e90800000000000000
+      internalID: -7043863790506130944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_mutou_din
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1760
+        width: 2048
+        height: 167
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49927625}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14e89af38635b1b70800000000000000
+      internalID: 8870775598246104641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_mutou_yin
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1931
+        width: 2048
+        height: 157
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49846148}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df800c8c1261fd350800000000000000
+      internalID: 6043573559312255229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_bg2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 867
+        width: 1052
+        height: 889
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1095f54b43a562b0800000000000000
+      internalID: -5591883818619006946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_bg3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2092
+        width: 81
+        height: 307
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5de8b9bab0d94cff0800000000000000
+      internalID: -16715825153339691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_bg_line
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2457
+        width: 537
+        height: 11
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a3fd5aafa73e1e60800000000000000
+      internalID: 7934840821090481056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_dunsu
+      rect:
+        serializedVersion: 2
+        x: 548
+        y: 2092
+        width: 32
+        height: 30
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76030ed76fecbda50800000000000000
+      internalID: 6547054041382269031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_huo
+      rect:
+        serializedVersion: 2
+        x: 0.05637169
+        y: 2472
+        width: 52.867508
+        height: 64
+      alignment: 9
+      pivot: {x: 0.519102, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f77cefdddefcfd500800000000000000
+      internalID: 423285510534776703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_jin
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 2092.0762
+        width: 61.973248
+        height: 59.887596
+      alignment: 9
+      pivot: {x: 0.50828385, y: 0.4996674}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a80c98b9bd74bb30800000000000000
+      internalID: 4302201780665321639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_jindan_bg
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 2092
+        width: 326
+        height: 69
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95c8ccabdefaedbb0800000000000000
+      internalID: -4909293108211184551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_jindan_bg2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2403
+        width: 233
+        height: 50
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dbeb40cb92e98e30800000000000000
+      internalID: 4506382060734901206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_mu
+      rect:
+        serializedVersion: 2
+        x: 171.07613
+        y: 2165.0269
+        width: 55.897125
+        height: 61.93034
+      alignment: 9
+      pivot: {x: 0.50850344, y: 0.5001305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04bfdea702d18a9e0800000000000000
+      internalID: -1610004841446376640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_nianlin
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 2251
+        width: 32
+        height: 30
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d65b15ab1f0e8260800000000000000
+      internalID: 7101630273818416857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_ren
+      rect:
+        serializedVersion: 2
+        x: 1056
+        y: 867
+        width: 738
+        height: 793
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3c204b92f5a42f00800000000000000
+      internalID: 1091179471135845439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_shengshi
+      rect:
+        serializedVersion: 2
+        x: 1798
+        y: 867
+        width: 32
+        height: 30
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf7809700028cf620800000000000000
+      internalID: 2809263204210870268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_shouyuan
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 2251
+        width: 32
+        height: 30
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbc292e97c8683ff0800000000000000
+      internalID: -56179788780852036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_shui
+      rect:
+        serializedVersion: 2
+        x: 0.07612038
+        y: 2540
+        width: 47.847755
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5104498, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fabc8994a6717ab20800000000000000
+      internalID: 3145508610010303407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_shuxin_bg
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 2165
+        width: 82
+        height: 82
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 102413bdbc1877cb0800000000000000
+      internalID: -4866278159794748927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_tu
+      rect:
+        serializedVersion: 2
+        x: 481
+        y: 2092.0513
+        width: 63
+        height: 57.872562
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5002143}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc2b49b6bd134ca30800000000000000
+      internalID: 4234564368107614925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_wuxin
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 2092
+        width: 32
+        height: 30
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cec163b448b87a6f0800000000000000
+      internalID: -673416218954818324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_xiulian
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 2506
+        width: 32
+        height: 30
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e47f71a5a4008baf0800000000000000
+      internalID: -380553849173706930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TAB_shuxin_zizhi
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 2472
+        width: 32
+        height: 30
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e0b72cd2078126a0800000000000000
+      internalID: -6475746342828789529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MCS_TAB_mutou: -7043863790506130944
+      MCS_TAB_mutou_din: 8870775598246104641
+      MCS_TAB_mutou_yin: 6043573559312255229
+      MCS_TAB_shuxin_bg2: -5591883818619006946
+      MCS_TAB_shuxin_bg3: -16715825153339691
+      MCS_TAB_shuxin_bg_line: 7934840821090481056
+      MCS_TAB_shuxin_dunsu: 6547054041382269031
+      MCS_TAB_shuxin_huo: 423285510534776703
+      MCS_TAB_shuxin_jin: 4302201780665321639
+      MCS_TAB_shuxin_jindan_bg: -4909293108211184551
+      MCS_TAB_shuxin_jindan_bg2: 4506382060734901206
+      MCS_TAB_shuxin_mu: -1610004841446376640
+      MCS_TAB_shuxin_nianlin: 7101630273818416857
+      MCS_TAB_shuxin_ren: 1091179471135845439
+      MCS_TAB_shuxin_shengshi: 2809263204210870268
+      MCS_TAB_shuxin_shouyuan: -56179788780852036
+      MCS_TAB_shuxin_shui: 3145508610010303407
+      MCS_TAB_shuxin_shuxin_bg: -4866278159794748927
+      MCS_TAB_shuxin_tu: 4234564368107614925
+      MCS_TAB_shuxin_wuxin: -673416218954818324
+      MCS_TAB_shuxin_xiulian: -380553849173706930
+      MCS_TAB_shuxin_zizhi: -6475746342828789529
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

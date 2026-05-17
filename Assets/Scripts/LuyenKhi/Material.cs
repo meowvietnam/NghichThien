@@ -115,5 +115,13 @@ namespace LuyenKhi
             writer.WriteArray(ItemFlags);
             writer.Write(Price);
         }
+
+        public void Move()
+        {
+            var icon = Icon;
+            var root = "Assets/Resources/";
+            var path = Path.GetDirectoryName(root + IconPath);
+            AssetOptimize.Move(icon.texture, path);
+        }
     }
 }
