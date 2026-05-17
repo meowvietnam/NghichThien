@@ -143,9 +143,9 @@ namespace LuyenKhi
         [Button]
         public void Move()
         {
-            foreach (var material in Materials)
+            foreach (var luyenKhiRewardItem in RewardItems)
             {
-                material.Move();
+                luyenKhiRewardItem.Move();
             }
         }
     }
