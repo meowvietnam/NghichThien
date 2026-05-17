@@ -140,13 +140,5 @@ namespace LuyenKhi
             Debug.Log($"Đã cập nhật thành công {count} Icon Fight từ folder: {folderPath}");
         }
 #endif
-        [Button]
-        public void Move()
-        {
-            foreach (var luyenKhiRewardItem in RewardItems)
-            {
-                luyenKhiRewardItem.Move();
-            }
-        }
     }
 }

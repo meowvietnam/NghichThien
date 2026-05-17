@@ -84,24 +84,41 @@ public class Test : MonoBehaviour
 
     public void ResizeTexture(Texture2D texture, HashSet<Sprite> sprites)
     {
-        var target = 2048;
-        string path = AssetDatabase.GetAssetPath(texture);
-        var importer = AssetImporter.GetAtPath(path) as TextureImporter;
-        if (importer == null) return;
-        int maxSize = GetMaxSize(importer);
-        if (maxSize >= 1024 * 4)
+        // var target = 2048;
+        // string path = AssetDatabase.GetAssetPath(texture);
+        // var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+        // if (importer == null) return;
+        // int maxSize = GetMaxSize(importer);
+        var metas = sprites.Select(x => CreateMeta(x)).ToArray();
+        ApplySpriteSheet(texture, metas);
+        //SetMaxSize(importer, target);
+        // var originalSprites = GetOriginalSprites(texture);
+        // foreach (var sprite in sprites)
+        // {
+        //     var originalSprite = originalSprites.FirstOrDefault(x => x.name == sprite.name);
+        //     Copy(originalSprite, sprite);
+        // }
+        // importer.SaveAndReimport();
+        // if (maxSize >= 1024 * 4)
+        // {
+        //
+        // }
+    }
+
+    [Button]
+    public void RemoveSprites()
+    {
+        var sprites = Resources.LoadAll<Sprite>("");
+        foreach (var sprite in sprites)
         {
-            var metas = sprites.Select(x => CreateMeta(x)).ToArray();
-            ApplySpriteSheet(texture, metas);
-            //SetMaxSize(importer, target);
-            // var originalSprites = GetOriginalSprites(texture);
-            // foreach (var sprite in sprites)
-            // {
-            //     var originalSprite = originalSprites.FirstOrDefault(x => x.name == sprite.name);
-            //     Copy(originalSprite, sprite);
-            // }
-            importer.SaveAndReimport();
+            var path = AssetDatabase.GetAssetPath(sprite);
+            if (path.EndsWith(".asset"))
+            {
+                AssetDatabase.DeleteAsset(path);
+            }
         }
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
 
     static int GetMaxSize(TextureImporter importer)
