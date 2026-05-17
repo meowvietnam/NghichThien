@@ -1,7 +1,10 @@
-﻿using Skill;
+﻿using AllMaps;
+using LongDH.LongDHModules;
+using LongDH.Script.ObjectPool;
+using Skill;
 using UnityEngine;
 
-public class EnemyData : NPCData
+public class EnemyData : NPCData , IActionMap
 {
     public ETypeVisualChar eTypeVisualChar => GameManager.levelWithVisualChar[charStats.level];
     // Tiền tố: Chỉ thuộc tính/màu sắc (Hệ)
@@ -21,6 +24,14 @@ public class EnemyData : NPCData
         "Thú", "Vật", "Giả", "Thể", "Hồn", "Tinh", "Quái", "Ma", "Yêu", "Xác",
         "Binh", "Tướng", "Vương", "Hoàng", "Đế", "Nghiệt", "Ma", "Biến", "Sư", "Tử"
     };
+
+    public void EnterMap(Map map)
+    {
+        
+        Pool.Get<NpcManager>().OnGoToEnemy(this);
+        Pool.Get<GameManager>().GoToCombat(new GameManager.CharCombatInit { eTypeVisual = this.eTypeVisualChar, charStats = this.charStats }, ETypeCombat.AllMaps);
+    }
+
     public override void SetBaseStats(GameManager gameConfig)
     {
       

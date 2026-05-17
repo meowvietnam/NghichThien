@@ -481,7 +481,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         bag.isLoadingMore = false;
         bag.gameObject.SetActive(true);
         moneyText.text = CharData.Stats.LinhThach.ToString();
-       // moneyVipText.text = CharData.MoneyVip.ToString();
+        moneyVipText.text = CharData.MoneyVip.ToString();
         lianziAnim.SetTrigger("Show");
 
     }

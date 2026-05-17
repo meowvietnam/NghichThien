@@ -20,7 +20,7 @@ public class NpcManager : MonoBehaviour
     [SerializeField] public NPCData[] npcDatas;
     [SerializeField] public EnemyData[] enemyDatas;
     [SerializeField] public List<EnemyData> currentEnemy;
-    [SerializeField] public List<Map> currentMap;
+    [SerializeField] public List<Map> currentMapEnemy;
     public int timeMonthRandomEnemy => 5;
     public int timeMonthRandomNPC => 5;
 
@@ -152,11 +152,11 @@ public class NpcManager : MonoBehaviour
 
         // 4. Cập nhật dữ liệu Map (Reset và Lưu)
         currentEnemy = listEnemy;
-        foreach (var item in currentMap)
+        foreach (var item in currentMapEnemy)
         {
-            if (item != null) item.ResetData();
+            if (item != null) item.ResetDataAction();
         }
-        currentMap.Clear();
+        currentMapEnemy.Clear();
 
         SetEnemyOnMap();
         SaveEnemyMap(listEnemy);
@@ -170,7 +170,7 @@ public class NpcManager : MonoBehaviour
     private void SetEnemyOnMap()
     {
         var mapManager = Pool.Get<MapManager>();
-        var mapExcept = mapManager.maps.Where(x => x.iconVisualAction == null && x.enemyDataCurrent == null && !(x is Stronghold)).ToList();
+        var mapExcept = mapManager.maps.Where(x => x.IsEmptyAction && !(x is Stronghold)).ToList();
 
         foreach (var enemy in currentEnemy)
         {
@@ -179,7 +179,7 @@ public class NpcManager : MonoBehaviour
             enemy.charStats.idNode = randomMapId;
             mapManager.SetEnemyOnMap(enemy,randomMapId);
             mapExcept.Remove(map);
-            currentMap.Add(map);
+            currentMapEnemy.Add(map);
         }
     }    
     private void NPCRandomOnMap(List<int> idNpcExcept)

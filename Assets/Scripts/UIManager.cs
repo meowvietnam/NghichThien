@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using AllMaps.ItemProvider;
 
-public interface ISingleton
+public interface IUISingleton
 {
     void Init();
 }
@@ -168,7 +168,7 @@ public class UIManager : BaseBehaviour
     private void Start()
     {
         var listPanel = transform.GetComponentsInChildren<PanelGroup>(true);
-        var listSingleTon = transform.GetComponentsInChildren<ISingleton>(true);
+        var listSingleTon = transform.GetComponentsInChildren<IUISingleton>(true);
         foreach (var item in listPanel)
         {
             item.Init();

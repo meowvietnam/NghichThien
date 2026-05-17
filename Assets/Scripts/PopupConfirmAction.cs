@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using LongDH.LongDHModules;
 
-public class PopupConfirmAction : Popup,ISingleton
+public class PopupConfirmAction : Popup,IUISingleton
 {
     [SerializeField] private Button btnConfirm;
     [SerializeField] private Text contentText;

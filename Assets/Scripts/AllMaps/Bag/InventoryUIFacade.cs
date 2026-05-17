@@ -23,7 +23,7 @@ public class InventoryUIFacade
             return;
         }
 
-        var handler = ItemTypeHandlerFactory.Create(itemRef.Type);
+        var handler = ItemTypeHandlerBagFactory.Create(itemRef.Type);
         handler.Handle(currentItem, itemRef, isIconSkillBase);
     }
 }
