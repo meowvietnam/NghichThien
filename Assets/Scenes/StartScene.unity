@@ -1211,7 +1211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 397025179}
   - component: {fileID: 397025182}
-  - component: {fileID: 397025181}
   - component: {fileID: 397025180}
   m_Layer: 5
   m_Name: Image
@@ -1251,36 +1250,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4cbffed6ac64250bdf2a688c630598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Test
---- !u!114 &397025181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 397025178}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7cd6cff57f7b04844bf0f7d2098a71d7, type: 2}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  minSize: 2048
+  target: 1024
 --- !u!222 &397025182
 CanvasRenderer:
   m_ObjectHideFlags: 0

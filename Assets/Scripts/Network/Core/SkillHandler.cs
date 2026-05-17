@@ -33,12 +33,13 @@ namespace Network.Core
                     var charData = Client.Instance.CharacterData;
                     charData.InventoryManager.Add(result.NgoDao);
                     charData.ApplyBuff(result.Buff);
+                    charData.Progression.NgoDaoDiem = result.NewNgoDaoDiem;
                 }
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
                     {
-                        learnNgoDaoCallback.SuccessLearnNgoDao(result.Buff, result.NgoDao);
+                        learnNgoDaoCallback.SuccessLearnNgoDao(result.Buff, result.NgoDao,result.NewNgoDaoDiem);
                     }
                     else
                     {

@@ -70,7 +70,7 @@ public class NgoDaoSlot : BaseBehaviour, INetworkEvent.ILearnNgoDao
         blackImg = transform.GetChild(0).GetComponent<Image>();
     }
 
-    public void SuccessLearnNgoDao(NgoDaoBuff buff, CreateCharacter.NgoDao ngoDao)
+    public void SuccessLearnNgoDao(NgoDaoBuff buff, CreateCharacter.NgoDao ngoDao, int newNgoDaoDiem)
     {
         //Đã buff
         var TabPanel = Pool.Get<TabPanel>();

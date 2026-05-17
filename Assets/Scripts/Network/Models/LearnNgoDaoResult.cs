@@ -9,6 +9,7 @@ namespace Network.Models
         public string Message { get; set; }
         public NgoDaoBuff Buff { get; set; }
         public NgoDao NgoDao { get; set; }
+        public int NewNgoDaoDiem { get; set; }
         public void Deserialize(IReader reader, ref LearnNgoDaoResult value)
         {
             var success = reader.Read<bool>();
@@ -17,6 +18,7 @@ namespace Network.Models
             {
                 value.Buff = reader.Read<NgoDaoBuff>();
                 value.NgoDao = reader.Read<NgoDao>();
+                value.NewNgoDaoDiem = reader.Read<int>();
             }
             else
             {
@@ -27,7 +29,7 @@ namespace Network.Models
         public int ByteSize()
         {
             var byteSize = Success.ByteSize();
-            var eByteSize = Success ? Buff.ByteSize() + NgoDao.ByteSize() : Message.ByteSize();
+            var eByteSize = Success ? Buff.ByteSize() + NgoDao.ByteSize() + NewNgoDaoDiem.ByteSize() : Message.ByteSize();
             return byteSize + eByteSize;
         }
 
@@ -38,6 +40,7 @@ namespace Network.Models
             {
                 writer.Write(Buff);
                 writer.Write(NgoDao);
+                writer.Write(NewNgoDaoDiem);
             }
             else
             {
