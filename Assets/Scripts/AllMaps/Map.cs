@@ -67,7 +67,11 @@ namespace AllMaps
            
         public virtual void OnPlayerEnter()
         {
-            actionMap.EnterMap(this);
+            if(actionMap != null)
+            {
+                actionMap.EnterMap(this);
+
+            }
             ResetDataAction();
 
         }
