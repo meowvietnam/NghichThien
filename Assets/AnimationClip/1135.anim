@@ -2,12 +2,12 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!74 &7400000
 AnimationClip:
-  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 1135
+  serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
@@ -17,7 +17,8 @@ AnimationClip:
   m_PositionCurves: []
   m_ScaleCurves: []
   m_FloatCurves:
-  - curve:
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -32,7 +33,7 @@ AnimationClip:
       - serializedVersion: 3
         time: 0.06666667
         value: 0.7
-        inSlope: -1.4401479E-06
+        inSlope: -0.0000014401479
         outSlope: 0
         tangentMode: 1
         weightedMode: 0
@@ -41,7 +42,7 @@ AnimationClip:
       - serializedVersion: 3
         time: 0.8333334
         value: 1
-        inSlope: -1.6587668E-07
+        inSlope: -0.00000016587668
         outSlope: 0
         tangentMode: 1
         weightedMode: 0
@@ -51,10 +52,12 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.b
-    path:
+    path: 
     classID: 212
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -79,10 +82,12 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.r
-    path:
+    path: 
     classID: 212
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -107,10 +112,12 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.g
-    path:
+    path: 
     classID: 212
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -135,11 +142,13 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.a
-    path:
+    path: 
     classID: 212
     script: {fileID: 0}
+    flags: 16
   m_PPtrCurves:
-  - curve:
+  - serializedVersion: 2
+    curve:
     - time: 0
       value: {fileID: 21300000, guid: 2e3439d5d52905b479b10108c51122c4, type: 2}
     - time: 0.033333335
@@ -191,9 +200,10 @@ AnimationClip:
     - time: 0.8
       value: {fileID: 21300000, guid: 02638de95f450544393e9b3626728a2c, type: 2}
     attribute: m_Sprite
-    path:
+    path: 
     classID: 212
     script: {fileID: 0}
+    flags: 2
   m_SampleRate: 30
   m_WrapMode: 0
   m_Bounds:
@@ -208,6 +218,8 @@ AnimationClip:
       typeID: 212
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 0
       attribute: 0
@@ -215,6 +227,8 @@ AnimationClip:
       typeID: 212
       customType: 23
       isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 0
       attribute: 2526845255
@@ -222,6 +236,8 @@ AnimationClip:
       typeID: 212
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 0
       attribute: 4215373228
@@ -229,6 +245,8 @@ AnimationClip:
       typeID: 212
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 0
       attribute: 304273561
@@ -236,6 +254,8 @@ AnimationClip:
       typeID: 212
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     pptrCurveMapping:
     - {fileID: 21300000, guid: 2e3439d5d52905b479b10108c51122c4, type: 2}
     - {fileID: 21300000, guid: 54e453ec38bed9d45bcb216e51e74fa7, type: 2}
@@ -289,14 +309,14 @@ AnimationClip:
   m_Events:
   - time: 0
     functionName: PlayHit
-    data:
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.8333333
     functionName: removeParent
-    data:
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

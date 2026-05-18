@@ -2,12 +2,12 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!74 &7400000
 AnimationClip:
-  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 532
+  serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
@@ -18,7 +18,8 @@ AnimationClip:
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves:
-  - curve:
+  - serializedVersion: 2
+    curve:
     - time: 0
       value: {fileID: 21300000, guid: ab65b6897c00f7348b7b7f0a75097d6d, type: 2}
     - time: 0.083333336
@@ -116,9 +117,10 @@ AnimationClip:
     - time: 3.9166667
       value: {fileID: 21300000, guid: 8aa764f640b456344af9956600476aed, type: 2}
     attribute: m_Sprite
-    path:
+    path: 
     classID: 212
     script: {fileID: 0}
+    flags: 2
   m_SampleRate: 12
   m_WrapMode: 0
   m_Bounds:
@@ -133,6 +135,8 @@ AnimationClip:
       typeID: 212
       customType: 23
       isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     pptrCurveMapping:
     - {fileID: 21300000, guid: ab65b6897c00f7348b7b7f0a75097d6d, type: 2}
     - {fileID: 21300000, guid: ab1d9c13b5ac90d47b59af1f0ebcf35b, type: 2}

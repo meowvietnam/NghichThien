@@ -172,6 +172,23 @@ public class AssetOptimize
             AssetDatabase.SaveAssets();
         }
     }
+    [MenuItem("Tools/ReplaceRefPrefabs")]
+    public static void ReplaceRefPrefabs() {
+        var prefabs = GetAllPrefabs();
+        foreach (var (path, prefab) in prefabs)
+        {
+            GameObject root =
+                PrefabUtility.LoadPrefabContents(path);
+            var a = root.GetComponentsInChildren<RenderData>(true);
+            foreach (var renderData in a)
+            {
+                renderData.OnValidate();
+            }
+            PrefabUtility.SaveAsPrefabAsset(root, path);
+            PrefabUtility.UnloadPrefabContents(root);
+            AssetDatabase.SaveAssets();
+        }
+    }
     public static void InjectRenderDatas()
     {
         var guids = AssetDatabase.FindAssets("t:Scene");
@@ -189,6 +206,69 @@ public class AssetOptimize
         var gameObjects = scene.GetRootGameObjects();
         var renderDatas = gameObjects.SelectMany(x => x.GetComponentsInChildren<RenderData>(true));
         return renderDatas.ToArray();
+    }
+    public static Sprite[] GetOriginalSprites(Texture2D texture)
+    {
+        string path = AssetDatabase.GetAssetPath(texture);
+        Object[] assets =
+            AssetDatabase.LoadAllAssetRepresentationsAtPath(path);
+        var sprites = assets
+            .OfType<Sprite>()
+            .ToArray();
+        return sprites;
+    }
+    public static void ReplaceSprite(
+        AnimationClip clip, Dictionary<Texture2D, Sprite[]> dict)
+    {
+        var bindings =
+            AnimationUtility.GetObjectReferenceCurveBindings(clip);
+
+        foreach (var binding in bindings)
+        {
+            if (binding.propertyName != "m_Sprite")
+                continue;
+            var frames =
+                AnimationUtility.GetObjectReferenceCurve(
+                    clip,
+                    binding);
+            bool changed = false;
+            for (int i = 0; i < frames.Length; i++)
+            {
+                var frame = frames[i];
+                var sprite = frame.value as Sprite;
+                if (sprite == null)
+                {
+                    continue;
+                }
+
+                if (sprite.texture == null)
+                {
+                    Debug.Log(clip.name + $" has no texture {sprite.name}", sprite);
+                    continue;
+                }
+                if(IsOriginalSprite(sprite)) continue;
+                if (!dict.TryGetValue(sprite.texture, out Sprite[] sprites))
+                {
+                    sprites = GetOriginalSprites(sprite.texture);
+                    dict.Add(sprite.texture, sprites);
+                }
+                var newSprite = sprites.FirstOrDefault(x => x.name == sprite.name);
+                if (newSprite != null)
+                {
+                    frame.value = newSprite;
+                    changed = true;
+                }
+            }
+            if (changed)
+            {
+                AnimationUtility.SetObjectReferenceCurve(
+                    clip,
+                    binding,
+                    frames);
+            }
+        }
+        EditorUtility.SetDirty(clip);
+        AssetDatabase.SaveAssets();
     }
     [MenuItem("Tools/ValidateRenderDatas")]
     public static void ValidateRenderDatas()
@@ -210,6 +290,21 @@ public class AssetOptimize
                 scene
             );
         }
+        Debug.Log("Complete");
+    }
+
+    [MenuItem("Tools/ReplaceAnimationClips")]
+    public static void ReplaceAnimationClips()
+    {
+        var guids = AssetDatabase.FindAssets("t:AnimationClip");
+        var dict = new Dictionary<Texture2D, Sprite[]>();
+        foreach (var guid in guids)
+        {
+            var path = AssetDatabase.GUIDToAssetPath(guid);
+            var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(path);
+            ReplaceSprite(clip, dict);
+        }
+        AssetDatabase.SaveAssets();
         Debug.Log("Complete");
     }
 }

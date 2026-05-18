@@ -2,12 +2,12 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!74 &7400000
 AnimationClip:
-  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 105
+  serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
@@ -18,7 +18,8 @@ AnimationClip:
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves:
-  - curve:
+  - serializedVersion: 2
+    curve:
     - time: 0
       value: {fileID: 21300000, guid: 417056dd8f1cb5747aab3ed17e5eeefd, type: 2}
     - time: 0.041666668
@@ -38,9 +39,10 @@ AnimationClip:
     - time: 0.33333334
       value: {fileID: 21300000, guid: 95dc47653025d614ba93a5426712efa8, type: 2}
     attribute: m_Sprite
-    path:
+    path: 
     classID: 212
     script: {fileID: 0}
+    flags: 2
   m_SampleRate: 24
   m_WrapMode: 0
   m_Bounds:
@@ -55,6 +57,8 @@ AnimationClip:
       typeID: 212
       customType: 23
       isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     pptrCurveMapping:
     - {fileID: 21300000, guid: 417056dd8f1cb5747aab3ed17e5eeefd, type: 2}
     - {fileID: 21300000, guid: ea55b8ecc10a19a4697d71a8bd25bae3, type: 2}
@@ -92,14 +96,14 @@ AnimationClip:
   m_Events:
   - time: 0
     functionName: PlayHit
-    data:
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.375
     functionName: removeParent
-    data:
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

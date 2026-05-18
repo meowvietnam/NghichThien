@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,9 +6,31 @@ using Sirenix.OdinInspector;
 using Unity.EditorCoroutines.Editor;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
+
 
 public class Test : MonoBehaviour
 {
+    private Texture GetTexture(string name)
+    {
+        string[] guids =
+            AssetDatabase.FindAssets($"{name} t:Texture2D");
+        foreach (string guid in guids)
+        {
+            string path =
+                AssetDatabase.GUIDToAssetPath(guid);
+
+            Texture2D tex =
+                AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+
+            if (tex != null && tex.name == name)
+            {
+                return tex;
+            }
+        }
+
+        return null;
+    }
 
     [Button]
     public void Check()
@@ -17,12 +40,17 @@ public class Test : MonoBehaviour
         {
             var sprites = AssetOptimize.GetSprites(clip);
             var paths = sprites.Select(x => AssetDatabase.GetAssetPath(x)).ToArray();
-            if (paths.Any() && paths.Any(x => !x.EndsWith(".asset")))
+            if (paths.Any())
             {
-                Debug.Log(clip.name,clip);
+                if (paths.Any(x => x.EndsWith(".asset")))
+                {
+                    Debug.Log(clip.name, clip);
+                    continue;
+                }
             }
         }
     }
+
     public void Rescale(Sprite source, float scale)
     {
         SerializedObject so = new SerializedObject(source);
@@ -62,6 +90,7 @@ public class Test : MonoBehaviour
             ResizeTexture(texture, new());
         }
     }
+
     [Button]
     public void RemoveSprites()
     {
@@ -74,22 +103,42 @@ public class Test : MonoBehaviour
                 AssetDatabase.DeleteAsset(path);
             }
         }
+
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
-    [Button]
-    public void Optimize()
+
+    private List<Sprite> GetAllSprites()
     {
-        string[] guids = AssetDatabase.FindAssets("t:Sprite");
+        string[] guids = AssetDatabase.FindAssets("t:Sprite", new []{"Assets"});
         List<Sprite> sprites = new List<Sprite>();
+        HashSet<Sprite> set = new HashSet<Sprite>();
         foreach (string guid in guids)
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
-            Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
-            if (sprite != null && sprite.texture != null)
-                sprites.Add(sprite);
+
+            Object[] assets =
+                AssetDatabase.LoadAllAssetsAtPath(path);
+
+            foreach (Object obj in assets)
+            {
+                if (obj is Sprite sprite)
+                {
+                    if (set.Add(sprite))
+                    {
+                        sprites.Add(sprite);
+                    }
+                }
+            }
         }
 
+        return sprites;
+    }
+
+    [Button]
+    public void Optimize()
+    {
+        var sprites = GetAllSprites();
         var dict = sprites.GroupBy(x => x.texture).ToDictionary(x => x.Key, x => x.ToHashSet());
         Debug.Log(dict.Count);
         foreach (var pair in dict)
@@ -110,6 +159,7 @@ public class Test : MonoBehaviour
             ResizeTexture(texture, s);
         }
     }
+
     public void ResizeTexture(Texture2D texture, HashSet<Sprite> sprites)
     {
         // var target = 2048;
@@ -193,14 +243,22 @@ public class Test : MonoBehaviour
         };
         return meta;
     }
+
+    public static TextureImporter GetImporter(Texture2D texture)
+    {
+        string path = AssetDatabase.GetAssetPath(texture);
+
+        var importer =
+            AssetImporter.GetAtPath(path) as TextureImporter;
+        return importer;
+    }
+
     public static void ApplySpriteSheet(
         Texture2D tex,
         SpriteMetaData[] newMetas)
     {
-        string path = AssetDatabase.GetAssetPath(tex);
-
         var importer =
-            AssetImporter.GetAtPath(path) as TextureImporter;
+            GetImporter(tex);
 
         if (importer == null)
             return;

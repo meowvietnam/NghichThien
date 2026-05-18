@@ -25,53 +25,61 @@ public class RenderData : MonoBehaviour
                 .ToArray();
         return sprites;
     }
-    
+
     public void OnValidate()
     {
-        return;
-        if (Texture == null) return;
         var image = GetComponent<Image>();
-        try
+        if (image != null)
         {
-            if (image != null)
+            if (image.sprite != null)
             {
-                if (image.sprite != null)
+                Texture = image.sprite.texture;
+                if (AssetOptimize.IsOriginalSprite(image.sprite))
                 {
-                    if (AssetOptimize.IsOriginalSprite(image.sprite))
-                    {
-                        return;
-                    }
+                    return;
                 }
+            }
 
-                var sprites = GetSprites(Texture);
-                image.sprite = sprites.First(s => s.name == SpriteName);
-                EditorUtility.SetDirty(image);
+            var sprites = GetSprites(Texture);
+            var s = sprites.FirstOrDefault(s => s.name == SpriteName);
+            if (s != null)
+            {
+                image.sprite = s;
             }
             else
             {
-                var spriteRenderer = GetComponent<SpriteRenderer>();
-                if (spriteRenderer == null)
+                Debug.Log("Not found sprite: " + SpriteName);
+            }
+            EditorUtility.SetDirty(image);
+        }
+        else
+        {
+            var spriteRenderer = GetComponent<SpriteRenderer>();
+            if (spriteRenderer == null)
+            {
+                Debug.LogError($"{nameof(RenderData)} requires a sprite renderer");
+                return;
+            }
+            if (spriteRenderer.sprite != null)
+            {
+                Texture = spriteRenderer.sprite.texture;
+                if (AssetOptimize.IsOriginalSprite(spriteRenderer.sprite))
                 {
-                    Debug.LogError($"{nameof(RenderData)} requires a sprite renderer");
                     return;
                 }
-
-                if (spriteRenderer.sprite != null)
-                {
-                    if (AssetOptimize.IsOriginalSprite(spriteRenderer.sprite))
-                    {
-                        return;
-                    }
-                }
-
-                var sprites = GetSprites(Texture);
-                spriteRenderer.sprite = sprites.First(s => s.name == SpriteName);
-                EditorUtility.SetDirty(spriteRenderer);
             }
-        }
-        catch
-        {
-            
+        
+            var sprites = GetSprites(Texture);
+            var s =  sprites.FirstOrDefault(s => s.name == SpriteName);
+            if (s != null)
+            {
+                spriteRenderer.sprite = s;
+            }
+            else
+            {
+                Debug.Log("Not found sprite: " + SpriteName);
+            }
+            EditorUtility.SetDirty(gameObject);
         }
     }
 }

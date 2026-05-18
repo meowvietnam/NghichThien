@@ -2,12 +2,12 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!74 &7400000
 AnimationClip:
-  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PlayTutorialHandAnim
+  serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
@@ -30,7 +30,7 @@ AnimationClip:
       - serializedVersion: 3
         time: 1.0833334
         value: {x: 0.207, y: -0.23, z: 0}
-        inSlope: {x: -2.3900897E-09, y: -4.1720316E-09, z: 0}
+        inSlope: {x: -0.0000000023900897, y: -0.0000000041720316, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 1
         weightedMode: 0
@@ -39,7 +39,7 @@ AnimationClip:
       - serializedVersion: 3
         time: 2.1666667
         value: {x: 0.23, y: -0.33, z: 0}
-        inSlope: {x: 2.3900897E-09, y: 4.1720316E-09, z: 0}
+        inSlope: {x: 0.0000000023900897, y: 0.0000000041720316, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 1
         weightedMode: 0
@@ -48,7 +48,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path:
+    path: 
   m_ScaleCurves:
   - curve:
       serializedVersion: 2
@@ -65,7 +65,7 @@ AnimationClip:
       - serializedVersion: 3
         time: 1.0833334
         value: {x: 0.8, y: 0.8, z: 1}
-        inSlope: {x: 3.2558447E-08, y: 3.2558447E-08, z: 0}
+        inSlope: {x: 0.000000032558447, y: 0.000000032558447, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 1
         weightedMode: 0
@@ -74,7 +74,7 @@ AnimationClip:
       - serializedVersion: 3
         time: 2.1666667
         value: {x: 1, y: 1, z: 1}
-        inSlope: {x: -3.2558447E-08, y: -3.2558447E-08, z: 0}
+        inSlope: {x: -0.000000032558447, y: -0.000000032558447, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 1
         weightedMode: 0
@@ -83,9 +83,10 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path:
+    path: 
   m_FloatCurves:
-  - curve:
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -100,7 +101,7 @@ AnimationClip:
       - serializedVersion: 3
         time: 1.0833334
         value: 1
-        inSlope: 3.8633982E-07
+        inSlope: 0.00000038633982
         outSlope: 0
         tangentMode: 1
         weightedMode: 0
@@ -109,7 +110,7 @@ AnimationClip:
       - serializedVersion: 3
         time: 2.1666667
         value: 0.2
-        inSlope: -3.8633982E-07
+        inSlope: -0.00000038633982
         outSlope: 0
         tangentMode: 1
         weightedMode: 0
@@ -119,10 +120,12 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.a
-    path:
+    path: 
     classID: 212
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -147,10 +150,12 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.r
-    path:
+    path: 
     classID: 212
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -175,10 +180,12 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.g
-    path:
+    path: 
     classID: 212
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -203,9 +210,10 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.b
-    path:
+    path: 
     classID: 212
     script: {fileID: 0}
+    flags: 16
   m_PPtrCurves: []
   m_SampleRate: 60
   m_WrapMode: 0
@@ -221,6 +229,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 0
       attribute: 3
@@ -228,6 +238,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 0
       attribute: 304273561
@@ -235,6 +247,8 @@ AnimationClip:
       typeID: 212
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 0
       attribute: 2526845255
@@ -242,6 +256,8 @@ AnimationClip:
       typeID: 212
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 0
       attribute: 4215373228
@@ -249,6 +265,8 @@ AnimationClip:
       typeID: 212
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 0
       attribute: 2334886179
@@ -256,6 +274,8 @@ AnimationClip:
       typeID: 212
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     pptrCurveMapping: []
   m_AnimationClipSettings:
     serializedVersion: 2
