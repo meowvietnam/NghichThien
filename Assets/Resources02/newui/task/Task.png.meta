@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: 79fef4b9e8dd32947a59d171185138e6
-timeCreated: 1760182959
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,11 +57,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -70,39 +77,859 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: mcs_RW_bi.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 215
+        width: 540
+        height: 381
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec1231745a75b8d30800000000000000
+      internalID: 4434734625450041806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_bi_bg.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 598
+        width: 408
+        height: 444
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43907af7769aea9e0800000000000000
+      internalID: -1608161754936309452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_biaoji.png
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 9
+        width: 41
+        height: 40
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c97c0a631425b6b0800000000000000
+      internalID: -5281275322219857466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_biaoji2.png
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 15
+        width: 214
+        height: 34
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60275da1ac3ad6950800000000000000
+      internalID: 6443986730265965062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_biaoti_bg1.png
+      rect:
+        serializedVersion: 2
+        x: 463
+        y: 13
+        width: 185
+        height: 36
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d82ead8778f97aa60800000000000000
+      internalID: 7685286693328052877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_biaoti_bg2.png
+      rect:
+        serializedVersion: 2
+        x: 631
+        y: 617
+        width: 349
+        height: 19
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c8aede74e17a45b0800000000000000
+      internalID: -5383365178373003070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_biaoti_line.png
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 4
+        width: 391
+        height: 3
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 805f69fd78056f320800000000000000
+      internalID: 2591347180100318472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_chuanwen_or.png
+      rect:
+        serializedVersion: 2
+        x: 1197
+        y: 679
+        width: 156
+        height: 72
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dad9df8278b297890800000000000000
+      internalID: -7459883448254227027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_chuanwen_yw.png
+      rect:
+        serializedVersion: 2
+        x: 1121.0762
+        y: 582.0761
+        width: 102.89713
+        height: 34.910965
+      alignment: 9
+      pivot: {x: -0.25341982, y: 1.5446118}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7da1c53a34e7b320800000000000000
+      internalID: 2573776650726649214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_fanhui2.png
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 485
+        width: 74
+        height: 55
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bedaff52bb0f98d0800000000000000
+      internalID: -2837536379477762380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_fanhui3.png
+      rect:
+        serializedVersion: 2
+        x: 1012
+        y: 507
+        width: 101
+        height: 33
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1621d5e774e26d040800000000000000
+      internalID: 4671972548041052769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_fanhui_bg.png
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 476
+        width: 390
+        height: 129
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6a9fed3558a05690800000000000000
+      internalID: -7615401885818709396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_jiushi_gn.png
+      rect:
+        serializedVersion: 2
+        x: 253.02675
+        y: 47.026752
+        width: 122.897125
+        height: 123.9465
+      alignment: 9
+      pivot: {x: -0.3419669, y: 1.3390716}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5444793cb23407060800000000000000
+      internalID: 6949128080276800581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_jiushi_or.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 6
+        width: 207
+        height: 207
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5788a3a823dc68230800000000000000
+      internalID: 3640822965726775413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_liebiao_or.png
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 51
+        width: 265
+        height: 162
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e19742b68799d850800000000000000
+      internalID: 6402314950056317410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_liebiao_yw.png
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 607
+        width: 217
+        height: 134
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c334dc5185a95a40800000000000000
+      internalID: 5357495206760690625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_renwu_or.png
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 310
+        width: 157
+        height: 71
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e0aa55eee8bc2e50800000000000000
+      internalID: 6786002074730143975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_renwu_yw.png
+      rect:
+        serializedVersion: 2
+        x: 1234.043
+        y: 773.02673
+        width: 103.90578
+        height: 34.897125
+      alignment: 9
+      pivot: {x: -0.25064024, y: 1.5179837}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 153893c7c88d368a0800000000000000
+      internalID: -6312964154752138415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_shubg.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1044
+        width: 2016
+        height: 1002
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72f2fc989784a4ff0800000000000000
+      internalID: -51148758921040089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_weito_or.png
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 542
+        width: 157
+        height: 73
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef25c60008e6485b0800000000000000
+      internalID: -5367043359876820226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_weituo_yw.png
+      rect:
+        serializedVersion: 2
+        x: 1075.0762
+        y: 772.02673
+        width: 104.847755
+        height: 34.910187
+      alignment: 9
+      pivot: {x: -0.2487051, y: 1.5460607}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acd9802700ee4e6c0800000000000000
+      internalID: -4114902473829212726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_xizhe.png
+      rect:
+        serializedVersion: 2
+        x: 2020
+        y: 2022
+        width: 21
+        height: 24
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 436431b3ccc9f64b0800000000000000
+      internalID: -5444961023489259980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_xizhe1.png
+      rect:
+        serializedVersion: 2
+        x: 2014
+        y: 954
+        width: 31
+        height: 30
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75bd704dde6467870800000000000000
+      internalID: 8680203319081687895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_xizhe2.png
+      rect:
+        serializedVersion: 2
+        x: 1980
+        y: 961
+        width: 32
+        height: 23
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84c58d3c258e7b360800000000000000
+      internalID: 7185467172663614536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_xizhe3.png
+      rect:
+        serializedVersion: 2
+        x: 813
+        y: 7
+        width: 76
+        height: 6
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ffb32a4f66c1a230800000000000000
+      internalID: 3648415354434338805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_xizhe4.png
+      rect:
+        serializedVersion: 2
+        x: 1980
+        y: 933
+        width: 30
+        height: 26
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c670d33a28aac7dd0800000000000000
+      internalID: -2486925416154200212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_xuan_bl_bg.png
+      rect:
+        serializedVersion: 2
+        x: 1049
+        y: 828
+        width: 453
+        height: 103
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 511f7a45cf130b240800000000000000
+      internalID: 4805395762226131221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_xuan_or_bg.png
+      rect:
+        serializedVersion: 2
+        x: 631
+        y: 638
+        width: 564
+        height: 103
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b66e0d78cdfcfed60800000000000000
+      internalID: 7921778815646361195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_yiwanchen.png
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 743
+        width: 635
+        height: 299
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8619e65e77c116280800000000000000
+      internalID: -9051922474762071704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_zhezhao1.png
+      rect:
+        serializedVersion: 2
+        x: 1049
+        y: 934
+        width: 929
+        height: 25
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba15b125ddad8a030800000000000000
+      internalID: 3506292954008080811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_zhezhao2.png
+      rect:
+        serializedVersion: 2
+        x: 1049
+        y: 988
+        width: 929
+        height: 26
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4dc297b3fbc35b160800000000000000
+      internalID: 7040600384497855700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_zhezhao3.png
+      rect:
+        serializedVersion: 2
+        x: 1049
+        y: 961
+        width: 929
+        height: 25
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 854e8643470545a70800000000000000
+      internalID: 8814758830696621144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_zhezhao4.png
+      rect:
+        serializedVersion: 2
+        x: 1049
+        y: 1016
+        width: 929
+        height: 26
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4afac6c18957630f0800000000000000
+      internalID: -1137592559692107868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_zui.png
+      rect:
+        serializedVersion: 2
+        x: 1980
+        y: 986
+        width: 58
+        height: 56
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3c2ef814f87cfce0800000000000000
+      internalID: -1370087196840809414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_RW_zui_bg.png
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 383
+        width: 544
+        height: 91
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90e239c7bdff90430800000000000000
+      internalID: 3749809482915589641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      mcs_RW_bi.png: 4434734625450041806
+      mcs_RW_bi_bg.png: -1608161754936309452
+      mcs_RW_biaoji.png: -5281275322219857466
+      mcs_RW_biaoji2.png: 6443986730265965062
+      mcs_RW_biaoti_bg1.png: 7685286693328052877
+      mcs_RW_biaoti_bg2.png: -5383365178373003070
+      mcs_RW_biaoti_line.png: 2591347180100318472
+      mcs_RW_chuanwen_or.png: -7459883448254227027
+      mcs_RW_chuanwen_yw.png: 2573776650726649214
+      mcs_RW_fanhui2.png: -2837536379477762380
+      mcs_RW_fanhui3.png: 4671972548041052769
+      mcs_RW_fanhui_bg.png: -7615401885818709396
+      mcs_RW_jiushi_gn.png: 6949128080276800581
+      mcs_RW_jiushi_or.png: 3640822965726775413
+      mcs_RW_liebiao_or.png: 6402314950056317410
+      mcs_RW_liebiao_yw.png: 5357495206760690625
+      mcs_RW_renwu_or.png: 6786002074730143975
+      mcs_RW_renwu_yw.png: -6312964154752138415
+      mcs_RW_shubg.png: -51148758921040089
+      mcs_RW_weito_or.png: -5367043359876820226
+      mcs_RW_weituo_yw.png: -4114902473829212726
+      mcs_RW_xizhe.png: -5444961023489259980
+      mcs_RW_xizhe1.png: 8680203319081687895
+      mcs_RW_xizhe2.png: 7185467172663614536
+      mcs_RW_xizhe3.png: 3648415354434338805
+      mcs_RW_xizhe4.png: -2486925416154200212
+      mcs_RW_xuan_bl_bg.png: 4805395762226131221
+      mcs_RW_xuan_or_bg.png: 7921778815646361195
+      mcs_RW_yiwanchen.png: -9051922474762071704
+      mcs_RW_zhezhao1.png: 3506292954008080811
+      mcs_RW_zhezhao2.png: 7040600384497855700
+      mcs_RW_zhezhao3.png: 8814758830696621144
+      mcs_RW_zhezhao4.png: -1137592559692107868
+      mcs_RW_zui.png: -1370087196840809414
+      mcs_RW_zui_bg.png: 3749809482915589641
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

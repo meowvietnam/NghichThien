@@ -35,6 +35,20 @@ namespace LuyenDan
                 return instance;
             }
         }
+
+        [Button]
+        public void Move()
+        {
+            foreach (var herbData in HerbDatas)
+            {
+                herbData.Move();
+            }
+
+            foreach (var linhDan in LinhDans)
+            {
+                linhDan.Move();
+            }
+        }
         public IItemData FindItem(FurnaceData furnace)
         {
             return TempFurnaceDatas.FirstOrDefault(x => x.Id == furnace.Id);
@@ -131,5 +145,6 @@ namespace LuyenDan
             File.WriteAllBytes(path, writer.Buffer);
             Debug.Log(path);
         }
+        
     }
 }

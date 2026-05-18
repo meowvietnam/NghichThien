@@ -8,6 +8,21 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
+
+    [Button]
+    public void Check()
+    {
+        var clips = AssetOptimize.GetAllClips();
+        foreach (var clip in clips)
+        {
+            var sprites = AssetOptimize.GetSprites(clip);
+            var paths = sprites.Select(x => AssetDatabase.GetAssetPath(x)).ToArray();
+            if (paths.Any() && paths.Any(x => !x.EndsWith(".asset")))
+            {
+                Debug.Log(clip.name,clip);
+            }
+        }
+    }
     public void Rescale(Sprite source, float scale)
     {
         SerializedObject so = new SerializedObject(source);
@@ -44,8 +59,23 @@ public class Test : MonoBehaviour
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
             var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
-            ResizeTexture(texture,new());
+            ResizeTexture(texture, new());
         }
+    }
+    [Button]
+    public void RemoveSprites()
+    {
+        var sprites = Resources.LoadAll<Sprite>("");
+        foreach (var sprite in sprites)
+        {
+            var path = AssetDatabase.GetAssetPath(sprite);
+            if (path.EndsWith(".asset"))
+            {
+                AssetDatabase.DeleteAsset(path);
+            }
+        }
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
     [Button]
     public void Optimize()
@@ -67,7 +97,10 @@ public class Test : MonoBehaviour
             var originalSprites = GetOriginalSprites(pair.Key);
             pair.Value.ExceptWith(originalSprites);
         }
+
         Resize(dict);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
 
     private void Resize(Dictionary<Texture2D, HashSet<Sprite>> dict)
@@ -79,28 +112,27 @@ public class Test : MonoBehaviour
     }
     public void ResizeTexture(Texture2D texture, HashSet<Sprite> sprites)
     {
-        var target = 2048;
-        string path = AssetDatabase.GetAssetPath(texture);
-        var importer = AssetImporter.GetAtPath(path) as TextureImporter;
-        if (importer == null) return;
-        int maxSize = GetMaxSize(importer);
-        if (maxSize >= 1024*4)
-        {
-            Debug.Log($"Resize: {texture.name} ({maxSize} -> {target})");
-            var metas = sprites.Select(x => CreateMeta(x)).ToArray();
-            ApplySpriteSheet(texture, metas);
-            //SetMaxSize(importer, target);
-            // var originalSprites = GetOriginalSprites(texture);
-            // foreach (var sprite in sprites)
-            // {
-            //     var originalSprite = originalSprites.FirstOrDefault(x => x.name == sprite.name);
-            //     Copy(originalSprite, sprite);
-            // }
-            importer.SaveAndReimport();
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-        }
+        // var target = 2048;
+        // string path = AssetDatabase.GetAssetPath(texture);
+        // var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+        // if (importer == null) return;
+        // int maxSize = GetMaxSize(importer);
+        var metas = sprites.Select(x => CreateMeta(x)).ToArray();
+        ApplySpriteSheet(texture, metas);
+        //SetMaxSize(importer, target);
+        // var originalSprites = GetOriginalSprites(texture);
+        // foreach (var sprite in sprites)
+        // {
+        //     var originalSprite = originalSprites.FirstOrDefault(x => x.name == sprite.name);
+        //     Copy(originalSprite, sprite);
+        // }
+        // importer.SaveAndReimport();
+        // if (maxSize >= 1024 * 4)
+        // {
+        //
+        // }
     }
+
 
     static int GetMaxSize(TextureImporter importer)
     {
@@ -119,6 +151,7 @@ public class Test : MonoBehaviour
             importer.SetPlatformTextureSettings(settings);
         }
     }
+
     Vector2 GetPivot(Rect rect, Vector2 pixelPivot)
     {
         return new Vector2(
@@ -126,6 +159,7 @@ public class Test : MonoBehaviour
             pixelPivot.y / rect.height
         );
     }
+
     public void Copy(Sprite source, Sprite dest)
     {
         var so = new SerializedObject(source);
@@ -147,6 +181,7 @@ public class Test : MonoBehaviour
         EditorUtility.SetDirty(dest);
         Debug.Log($"Copy: {source.name} -> {dest.name}");
     }
+
     public SpriteMetaData CreateMeta(Sprite sprite)
     {
         var meta = new SpriteMetaData()
@@ -158,16 +193,23 @@ public class Test : MonoBehaviour
         };
         return meta;
     }
-    public static void ApplySpriteSheet(Texture2D tex, SpriteMetaData[] metas)
+    public static void ApplySpriteSheet(
+        Texture2D tex,
+        SpriteMetaData[] newMetas)
     {
         string path = AssetDatabase.GetAssetPath(tex);
-        TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
-        if (importer == null) return;
+
+        var importer =
+            AssetImporter.GetAtPath(path) as TextureImporter;
+
+        if (importer == null)
+            return;
+
         importer.textureType = TextureImporterType.Sprite;
         importer.spriteImportMode = SpriteImportMode.Multiple;
         importer.isReadable = true;
-        importer.spritesheet = metas;
+        importer.spritesheet = newMetas;
+        EditorUtility.SetDirty(importer);
         importer.SaveAndReimport();
-        AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
     }
 }

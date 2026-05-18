@@ -25,6 +25,20 @@ namespace LuyenKhi
         [field: SerializeField] public StringDict Strings { get; private set; } = new();
         private static LuyenKhiResources instance;
 
+        [Button]
+        public void Move()
+        {
+            foreach (var item in Materials)
+            {
+                item.Move();
+            }
+            foreach (var item in RewardItems)
+            {
+                item.Move();
+            }
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+        }
         public static LuyenKhiResources Instance
         {
             get

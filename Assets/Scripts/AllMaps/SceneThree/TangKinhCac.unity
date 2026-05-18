@@ -327,8 +327,83 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 600750516913732071, guid: b2fb0606eaee83248845c2e82e2a7af8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1005634841}
+    - targetCorrespondingSourceObject: {fileID: 1413079320658034216, guid: b2fb0606eaee83248845c2e82e2a7af8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1005634840}
+    - targetCorrespondingSourceObject: {fileID: 3385080943360726155, guid: b2fb0606eaee83248845c2e82e2a7af8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1005634839}
   m_SourcePrefab: {fileID: 100100000, guid: b2fb0606eaee83248845c2e82e2a7af8, type: 3}
+--- !u!1 &1005634836 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3385080943360726155, guid: b2fb0606eaee83248845c2e82e2a7af8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1005634835}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1005634837 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1413079320658034216, guid: b2fb0606eaee83248845c2e82e2a7af8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1005634835}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1005634838 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 600750516913732071, guid: b2fb0606eaee83248845c2e82e2a7af8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1005634835}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1005634839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005634836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RenderData
+  <Texture>k__BackingField: {fileID: 2800000, guid: 9413f22e46ebe2543a0c07337ad7dd99,
+    type: 3}
+  <SpriteName>k__BackingField: MCS_LQ_tuichu2.png
+--- !u!114 &1005634840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005634837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RenderData
+  <Texture>k__BackingField: {fileID: 2800000, guid: 334639947eb6685449a32ea88b25284f,
+    type: 3}
+  <SpriteName>k__BackingField: MCS_Btn_tuichu_norm
+--- !u!114 &1005634841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005634838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RenderData
+  <Texture>k__BackingField: {fileID: 10906, guid: 0000000000000000f000000000000000,
+    type: 0}
+  <SpriteName>k__BackingField: Background
 --- !u!1 &1031119901
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,6 +544,7 @@ GameObject:
   - component: {fileID: 1777907484}
   - component: {fileID: 1777907483}
   - component: {fileID: 1777907485}
+  - component: {fileID: 1777907486}
   m_Layer: 5
   m_Name: ShopControl
   m_TagString: Untagged
@@ -515,7 +591,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d45f6f61d052ef44fa3e1fd42735dc1e, type: 3}
+  m_Sprite: {fileID: -4594701262030632336, guid: d45f6f61d052ef44fa3e1fd42735dc1e,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -556,6 +633,21 @@ MonoBehaviour:
     eMapType: 9
   - eShopType: 2
     eMapType: 8
+--- !u!114 &1777907486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777907481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RenderData
+  <Texture>k__BackingField: {fileID: 2800000, guid: d45f6f61d052ef44fa3e1fd42735dc1e,
+    type: 3}
+  <SpriteName>k__BackingField: cangjingge
 --- !u!1 &1807827675
 GameObject:
   m_ObjectHideFlags: 0

@@ -259,6 +259,7 @@ GameObject:
   - component: {fileID: 3563139406705873723}
   - component: {fileID: 1706749516365853145}
   - component: {fileID: 6113661068279085170}
+  - component: {fileID: 1375496505260515184}
   m_Layer: 8
   m_Name: CreateAvatar
   m_TagString: Untagged
@@ -382,12 +383,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreateCharacter.CreateAvatar
   graphic: {fileID: 587156498972796878}
+  skinResources: {fileID: 0}
   button: {fileID: 1706749516365853145}
   addGO: {fileID: 8111350290073119086}
   hasCharGO: {fileID: 231498733209444508}
   nameText: {fileID: 7706456524660073119}
   levelText: {fileID: 2512009041547499364}
   levelImage: {fileID: 4988396038877854128}
+--- !u!114 &1375496505260515184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085869488853281962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RenderData
+  <Texture>k__BackingField: {fileID: 2800000, guid: 9f2a9514c78f37f4ebe3f88e5848ac79,
+    type: 3}
+  <SpriteName>k__BackingField: MCS_CJ_chuanjue_bg.png
 --- !u!1 &1096201830466425655
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,6 +560,7 @@ GameObject:
   - component: {fileID: 9002677289535962757}
   - component: {fileID: 6292059476294659581}
   - component: {fileID: 4988396038877854128}
+  - component: {fileID: 7637109289286472580}
   m_Layer: 8
   m_Name: Image
   m_TagString: Untagged
@@ -607,6 +625,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7637109289286472580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442740817824678191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RenderData
+  <Texture>k__BackingField: {fileID: 2800000, guid: 090ed601dd514804381c0c85a64f68f5,
+    type: 3}
+  <SpriteName>k__BackingField: icon_1
 --- !u!1 &1583456110122207534
 GameObject:
   m_ObjectHideFlags: 0
@@ -1348,6 +1381,7 @@ GameObject:
   - component: {fileID: 2438548383821066737}
   - component: {fileID: 1123777162595384730}
   - component: {fileID: 993607180160771654}
+  - component: {fileID: 2975813021760655339}
   m_Layer: 8
   m_Name: Avatar
   m_TagString: Untagged
@@ -1427,6 +1461,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Mask
   m_ShowMaskGraphic: 0
+--- !u!114 &2975813021760655339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6812271329548559843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RenderData
+  <Texture>k__BackingField: {fileID: 2800000, guid: edf09f7b30306da4cb9cafc06ce8689e,
+    type: 3}
+  <SpriteName>k__BackingField: MCS_CJ_chuanjue_zhezhao1.png
 --- !u!1 &7187333381171757560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1438,6 +1487,7 @@ GameObject:
   - component: {fileID: 2950221313586729562}
   - component: {fileID: 5367142702063677551}
   - component: {fileID: 5031429325669264882}
+  - component: {fileID: 2270229145790858882}
   m_Layer: 8
   m_Name: Image
   m_TagString: Untagged
@@ -1502,6 +1552,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2270229145790858882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7187333381171757560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RenderData
+  <Texture>k__BackingField: {fileID: 2800000, guid: 9f2a9514c78f37f4ebe3f88e5848ac79,
+    type: 3}
+  <SpriteName>k__BackingField: MCS_CJ_chuanjue_zhezhao(1).png
 --- !u!1 &7628513061701942057
 GameObject:
   m_ObjectHideFlags: 0
@@ -1709,6 +1774,7 @@ GameObject:
   - component: {fileID: 8024012983079497584}
   - component: {fileID: 1735785688717006496}
   - component: {fileID: 1290631434059590609}
+  - component: {fileID: 933970133727940412}
   m_Layer: 8
   m_Name: Button
   m_TagString: Untagged
@@ -1817,6 +1883,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &933970133727940412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7771958937827574169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RenderData
+  <Texture>k__BackingField: {fileID: 2800000, guid: 9f2a9514c78f37f4ebe3f88e5848ac79,
+    type: 3}
+  <SpriteName>k__BackingField: MCS_CJ_Btn_Delet.png
 --- !u!1 &8111350290073119086
 GameObject:
   m_ObjectHideFlags: 0
@@ -1828,6 +1909,7 @@ GameObject:
   - component: {fileID: 7273106669483596924}
   - component: {fileID: 4792767668923277162}
   - component: {fileID: 2542409182343815239}
+  - component: {fileID: 1254751865880066554}
   m_Layer: 8
   m_Name: Add
   m_TagString: Untagged
@@ -1892,6 +1974,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1254751865880066554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8111350290073119086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RenderData
+  <Texture>k__BackingField: {fileID: 2800000, guid: 9f2a9514c78f37f4ebe3f88e5848ac79,
+    type: 3}
+  <SpriteName>k__BackingField: MCS_CJ_chuanjue_jiahao.png
 --- !u!1 &8148720363816521060
 GameObject:
   m_ObjectHideFlags: 0
@@ -2033,6 +2130,7 @@ GameObject:
   - component: {fileID: 7281207384851606183}
   - component: {fileID: 8140917885731427078}
   - component: {fileID: 4751377151824216083}
+  - component: {fileID: 662009089825587931}
   m_Layer: 8
   m_Name: Level
   m_TagString: Untagged
@@ -2099,6 +2197,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &662009089825587931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8201028083152697161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RenderData
+  <Texture>k__BackingField: {fileID: 2800000, guid: 9f2a9514c78f37f4ebe3f88e5848ac79,
+    type: 3}
+  <SpriteName>k__BackingField: MCS_CJ_mingzi_bg.png
 --- !u!1 &8717799850991763945
 GameObject:
   m_ObjectHideFlags: 0

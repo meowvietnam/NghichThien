@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: 27b7c747021e41a409dcbda99e167342
-timeCreated: 1760182885
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,11 +57,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 4096
     resizeAlgorithm: 0
@@ -70,39 +77,1319 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: MCS_Btn_tuichu_bk
+      rect:
+        serializedVersion: 2
+        x: 2127.0269
+        y: 1324.0762
+        width: 84.9465
+        height: 84.84776
+      alignment: 9
+      pivot: {x: 0.5058861, y: 0.4941071}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9a5ae64d6df22af0800000000000000
+      internalID: -422496769236378979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_Btn_tuichu_hlg
+      rect:
+        serializedVersion: 2
+        x: 593.0761
+        y: 2382.0762
+        width: 98.84776
+        height: 98.84776
+      alignment: 9
+      pivot: {x: 0.5050583, y: 0.4949417}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7206562423df2fe0800000000000000
+      internalID: -1211517622523919750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_Btn_tuichu_norm
+      rect:
+        serializedVersion: 2
+        x: 956.0761
+        y: 2039.0762
+        width: 98.84776
+        height: 98.84776
+      alignment: 9
+      pivot: {x: 0.5050583, y: 0.4949417}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1f2caec0d6f2dd00800000000000000
+      internalID: 996129844283322143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_Btn_tuichu_zi2
+      rect:
+        serializedVersion: 2
+        x: 2015.0762
+        y: 1802.0513
+        width: 93.84776
+        height: 48.894554
+      alignment: 9
+      pivot: {x: 0.4786889, y: 0.4898027}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fdec98ab82da53e70800000000000000
+      internalID: 9094365412984475359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_bg
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 2340
+        height: 1320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fb79c3afa6d2d100800000000000000
+      internalID: 131403389002677234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_guizi
+      rect:
+        serializedVersion: 2
+        x: 1722
+        y: 1626
+        width: 289
+        height: 349
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 433af9aed526fd300800000000000000
+      internalID: 279049857428071220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_huihe_di
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3058
+        width: 365
+        height: 69
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 554dfda0aafe76f30800000000000000
+      internalID: 4568883860596577365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_jilv
+      rect:
+        serializedVersion: 2
+        x: 2344
+        y: 0
+        width: 958
+        height: 1030
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1312b4644fc78640800000000000000
+      internalID: 5082258597165011739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_jilv_zhezhao
+      rect:
+        serializedVersion: 2
+        x: 2344
+        y: 1034
+        width: 912
+        height: 755
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1addb8ae5723bfb0800000000000000
+      internalID: -4633316304122684900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_juese_hei
+      rect:
+        serializedVersion: 2
+        x: 1612
+        y: 1324
+        width: 399
+        height: 298
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1102e0a4529d79640800000000000000
+      internalID: 5086773058317721617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_juese_lan
+      rect:
+        serializedVersion: 2
+        x: 956
+        y: 1738.0762
+        width: 399
+        height: 296.9239
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49818784}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 053f0fc7b05439450800000000000000
+      internalID: 6094290636405535568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_juese_lvse
+      rect:
+        serializedVersion: 2
+        x: 884.0761
+        y: 2382
+        width: 398.9239
+        height: 298
+      alignment: 9
+      pivot: {x: 0.49990457, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d90d34f4ca544c730800000000000000
+      internalID: 4018413373887860893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_lianbu
+      rect:
+        serializedVersion: 2
+        x: 3306
+        y: 0
+        width: 458
+        height: 1320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6965164933b501a0800000000000000
+      internalID: -6843867000149284497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_lianbu2
+      rect:
+        serializedVersion: 2
+        x: 593
+        y: 2202
+        width: 863
+        height: 176
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58c40cf8d49136b80800000000000000
+      internalID: -8402844658828292987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_liaotian3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2634
+        width: 880
+        height: 158
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 039d7379f961ca320800000000000000
+      internalID: 2570454362014341424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_liaotiao_di
+      rect:
+        serializedVersion: 2
+        x: 748
+        y: 2382
+        width: 57
+        height: 49
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f791abfaddc7e5330800000000000000
+      internalID: 3701533235322952063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_naixin_kong
+      rect:
+        serializedVersion: 2
+        x: 1485
+        y: 2394
+        width: 21
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 004e2c17f91ae97b0800000000000000
+      internalID: -5215553612267985920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_naixin_man
+      rect:
+        serializedVersion: 2
+        x: 3820
+        y: 228
+        width: 21
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ad4345c31a9ea3b0800000000000000
+      internalID: -5499288685268218462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_NPC_bk
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 2912
+        width: 108
+        height: 112
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61cc3e0b46137bde0800000000000000
+      internalID: -1317530057448371178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_NPC_di
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 3131
+        width: 235
+        height: 29
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4207ddf2bf0d79a0800000000000000
+      internalID: -6233809047773576625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_NPC_di2
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 2796
+        width: 264
+        height: 112
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 680586a8f49178750800000000000000
+      internalID: 6307037632570871942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_NPC_di2_bk
+      rect:
+        serializedVersion: 2
+        x: 884
+        y: 2684
+        width: 264
+        height: 112
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b6eb7f6bac6105c0800000000000000
+      internalID: -4250997089695439177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_NPC_di_bk
+      rect:
+        serializedVersion: 2
+        x: 2015
+        y: 1769
+        width: 235
+        height: 29
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 860dc32ba5f31de20800000000000000
+      internalID: 3373547254647148648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_NPC_xinqu1
+      rect:
+        serializedVersion: 2
+        x: 2127
+        y: 1413
+        width: 19
+        height: 17
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 082ad95f3fe8ffe00800000000000000
+      internalID: 1080739614041154176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_NPC_xinqu2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3306
+        width: 19
+        height: 17
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cf523851c5014fa0800000000000000
+      internalID: -5818362915619446842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_NPC_xinqu3
+      rect:
+        serializedVersion: 2
+        x: 2127
+        y: 1434
+        width: 19
+        height: 17
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2328baa1ecaa6dc00800000000000000
+      internalID: 925114575658648114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_NPC_xuanzhong
+      rect:
+        serializedVersion: 2
+        x: 1359
+        y: 2036
+        width: 254
+        height: 126
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b22cc16d57d0c070800000000000000
+      internalID: 8124730523849073330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_NPC_zhezhao
+      rect:
+        serializedVersion: 2
+        x: 1834
+        y: 1979
+        width: 80
+        height: 108
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be9861ca723317180800000000000000
+      internalID: -9119451524964644373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_pai2_bei
+      rect:
+        serializedVersion: 2
+        x: 2015.0762
+        y: 1324.0762
+        width: 107.84776
+        height: 223.84775
+      alignment: 9
+      pivot: {x: 0.5, y: 0.50000006}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48605058178b2d240800000000000000
+      internalID: 4815113749314995844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_pai2_bk
+      rect:
+        serializedVersion: 2
+        x: 1572.0762
+        y: 2166.0762
+        width: 97.84776
+        height: 201.84775
+      alignment: 9
+      pivot: {x: 0.5, y: 0.50000006}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03d0db4c7d32fe920800000000000000
+      internalID: 3021673284614556976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_pai2_heng
+      rect:
+        serializedVersion: 2
+        x: 104.076126
+        y: 3164.0762
+        width: 21.84776
+        height: 223.84775
+      alignment: 9
+      pivot: {x: 0.4999999, y: 0.50000006}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1492c2f6c79fa2780800000000000000
+      internalID: -8706872616731006655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_pai2_hlg
+      rect:
+        serializedVersion: 2
+        x: 1287
+        y: 2382
+        width: 142
+        height: 258
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c7dc013445bcb970800000000000000
+      internalID: 8772085478696212425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_pai2_nom
+      rect:
+        serializedVersion: 2
+        x: 1460.0762
+        y: 2166.0762
+        width: 107.84776
+        height: 223.84775
+      alignment: 9
+      pivot: {x: 0.5, y: 0.50000006}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99b2cd10719745190800000000000000
+      internalID: -7974615900443890791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_pai_bei
+      rect:
+        serializedVersion: 2
+        x: 1722.0762
+        y: 1979.0762
+        width: 107.84776
+        height: 223.84775
+      alignment: 9
+      pivot: {x: 0.5, y: 0.50000006}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a7857421a2f2bb70800000000000000
+      internalID: 8913453386434971556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_pai_bk
+      rect:
+        serializedVersion: 2
+        x: 2015.0762
+        y: 1552.0762
+        width: 102.84776
+        height: 212.84775
+      alignment: 9
+      pivot: {x: 0.49513844, y: 0.50234914}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3561e37f965bfebe0800000000000000
+      internalID: -1445737488638405037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_pai_hen
+      rect:
+        serializedVersion: 2
+        x: 369.0761
+        y: 2912.0762
+        width: 21.84776
+        height: 223.84775
+      alignment: 9
+      pivot: {x: 0.4999999, y: 0.50000006}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 480eb3bb12f5024d0800000000000000
+      internalID: -3161422339934265212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_pai_hlg
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2796
+        width: 142
+        height: 258
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e78e46d6557e23c60800000000000000
+      internalID: 7796548259025315966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_pai_nom
+      rect:
+        serializedVersion: 2
+        x: 3768.0762
+        y: 0.07612038
+        width: 107.84776
+        height: 223.84775
+      alignment: 9
+      pivot: {x: 0.5, y: 0.50000006}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb0567216706bac90800000000000000
+      internalID: -7157521122543120194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_paizi_baoli
+      rect:
+        serializedVersion: 2
+        x: 1287
+        y: 2644
+        width: 48
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48312e8ad75cdee60800000000000000
+      internalID: 7993262057147470724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_paizi_benlun
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3131
+        width: 48
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbc4e6b0cf325e0f0800000000000000
+      internalID: -1088424169509598020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_paizi_chuyan
+      rect:
+        serializedVersion: 2
+        x: 2122
+        y: 1552.0762
+        width: 48
+        height: 170.84775
+      alignment: 9
+      pivot: {x: 0.5, y: 0.50000006}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6984827aae4ab0f0800000000000000
+      internalID: -1100480664965969555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_paizi_dali
+      rect:
+        serializedVersion: 2
+        x: 3768
+        y: 403.0761
+        width: 48
+        height: 170.92387
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49977735}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d901a7ee0fae938c0800000000000000
+      internalID: -4018922871937429347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_paizi_fangqi
+      rect:
+        serializedVersion: 2
+        x: 1918.043
+        y: 1979.004
+        width: 47.957092
+        height: 168.96921
+      alignment: 9
+      pivot: {x: 0.49955264, y: 0.5000672}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6fc0981577eb4410800000000000000
+      internalID: 1462516994121191278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_paizi_luewei
+      rect:
+        serializedVersion: 2
+        x: 3768
+        y: 228
+        width: 48
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2b16c0a1b99a8e10800000000000000
+      internalID: 2200740356109507375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_paizi_shengshi
+      rect:
+        serializedVersion: 2
+        x: 1433
+        y: 2394
+        width: 48
+        height: 170.98021
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5000579}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df43efa4b83f5e6b0800000000000000
+      internalID: -5267536409555749635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_paizi_yanyu
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 3131.0762
+        width: 48
+        height: 170.92387
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49977735}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 446a9db13ae379c70800000000000000
+      internalID: 8977713252454213188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_paizi_zuidi
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 2382
+        width: 48
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9c77c7036b0ed310800000000000000
+      internalID: 1431594251510578332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_qianzhi_di
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1738
+        width: 589
+        height: 892
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0336f61a844042e0800000000000000
+      internalID: -2143638062746946804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_qianzhi_di2
+      rect:
+        serializedVersion: 2
+        x: 1359
+        y: 1738
+        width: 359
+        height: 294
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 769d4293c646ad780800000000000000
+      internalID: -8657496917688395417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_qianzhi_di3
+      rect:
+        serializedVersion: 2
+        x: 593
+        y: 1738
+        width: 359
+        height: 460
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7e1e9eeb04c62680800000000000000
+      internalID: -8780114867985179014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_qianzhi_di4
+      rect:
+        serializedVersion: 2
+        x: 3260
+        y: 1324
+        width: 359
+        height: 625
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ac7d5b379f8a7a80800000000000000
+      internalID: -8468298269617980247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_qianzhi_kuang
+      rect:
+        serializedVersion: 2
+        x: 3623
+        y: 1324
+        width: 154
+        height: 154
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e2f89db8284ad280800000000000000
+      internalID: -9017815964039187735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_qianzhi_talkbg
+      rect:
+        serializedVersion: 2
+        x: 3768
+        y: 578
+        width: 74
+        height: 57
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 340b7d6476f02d760800000000000000
+      internalID: 7481058867260403779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_qianzhi_zi
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 2796
+        width: 203
+        height: 49
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac275e856ee348030800000000000000
+      internalID: 3495988369801179850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_PMH_zuozi
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1324
+        width: 1608
+        height: 410
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6bb0be2f86a9c7d0800000000000000
+      internalID: -2897601751342335122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MCS_Btn_tuichu_bk: -422496769236378979
+      MCS_Btn_tuichu_hlg: -1211517622523919750
+      MCS_Btn_tuichu_norm: 996129844283322143
+      MCS_Btn_tuichu_zi2: 9094365412984475359
+      MCS_PMH_NPC_bk: -1317530057448371178
+      MCS_PMH_NPC_di: -6233809047773576625
+      MCS_PMH_NPC_di2: 6307037632570871942
+      MCS_PMH_NPC_di2_bk: -4250997089695439177
+      MCS_PMH_NPC_di_bk: 3373547254647148648
+      MCS_PMH_NPC_xinqu1: 1080739614041154176
+      MCS_PMH_NPC_xinqu2: -5818362915619446842
+      MCS_PMH_NPC_xinqu3: 925114575658648114
+      MCS_PMH_NPC_xuanzhong: 8124730523849073330
+      MCS_PMH_NPC_zhezhao: -9119451524964644373
+      MCS_PMH_bg: 131403389002677234
+      MCS_PMH_guizi: 279049857428071220
+      MCS_PMH_huihe_di: 4568883860596577365
+      MCS_PMH_jilv: 5082258597165011739
+      MCS_PMH_jilv_zhezhao: -4633316304122684900
+      MCS_PMH_juese_hei: 5086773058317721617
+      MCS_PMH_juese_lan: 6094290636405535568
+      MCS_PMH_juese_lvse: 4018413373887860893
+      MCS_PMH_lianbu: -6843867000149284497
+      MCS_PMH_lianbu2: -8402844658828292987
+      MCS_PMH_liaotian3: 2570454362014341424
+      MCS_PMH_liaotiao_di: 3701533235322952063
+      MCS_PMH_naixin_kong: -5215553612267985920
+      MCS_PMH_naixin_man: -5499288685268218462
+      MCS_PMH_pai2_bei: 4815113749314995844
+      MCS_PMH_pai2_bk: 3021673284614556976
+      MCS_PMH_pai2_heng: -8706872616731006655
+      MCS_PMH_pai2_hlg: 8772085478696212425
+      MCS_PMH_pai2_nom: -7974615900443890791
+      MCS_PMH_pai_bei: 8913453386434971556
+      MCS_PMH_pai_bk: -1445737488638405037
+      MCS_PMH_pai_hen: -3161422339934265212
+      MCS_PMH_pai_hlg: 7796548259025315966
+      MCS_PMH_pai_nom: -7157521122543120194
+      MCS_PMH_paizi_baoli: 7993262057147470724
+      MCS_PMH_paizi_benlun: -1088424169509598020
+      MCS_PMH_paizi_chuyan: -1100480664965969555
+      MCS_PMH_paizi_dali: -4018922871937429347
+      MCS_PMH_paizi_fangqi: 1462516994121191278
+      MCS_PMH_paizi_luewei: 2200740356109507375
+      MCS_PMH_paizi_shengshi: -5267536409555749635
+      MCS_PMH_paizi_yanyu: 8977713252454213188
+      MCS_PMH_paizi_zuidi: 1431594251510578332
+      MCS_PMH_qianzhi_di: -2143638062746946804
+      MCS_PMH_qianzhi_di2: -8657496917688395417
+      MCS_PMH_qianzhi_di3: -8780114867985179014
+      MCS_PMH_qianzhi_di4: -8468298269617980247
+      MCS_PMH_qianzhi_kuang: -9017815964039187735
+      MCS_PMH_qianzhi_talkbg: 7481058867260403779
+      MCS_PMH_qianzhi_zi: 3495988369801179850
+      MCS_PMH_zuozi: -2897601751342335122
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

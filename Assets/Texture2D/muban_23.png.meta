@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: b2477ab04af88cf48bad49de021ee905
-timeCreated: 1760183372
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,11 +57,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 8192
     resizeAlgorithm: 0
@@ -70,39 +77,537 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: ranbao_00000.png
+      rect:
+        serializedVersion: 2
+        x: 374.0761
+        y: 871.0761
+        width: 205.91095
+        height: 104.86566
+      alignment: 9
+      pivot: {x: -1.8069758, y: 2.659821}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b3af0cbc6d7b7420800000000000000
+      internalID: 2628832713465897912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00001.png
+      rect:
+        serializedVersion: 2
+        x: 2571.0762
+        y: 1572.043
+        width: 205.91095
+        height: 106.90936
+      alignment: 9
+      pivot: {x: -2.8171215, y: 2.6373465}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72c6e7c8a2e4a93e0800000000000000
+      internalID: -2046237136033780697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00002.png
+      rect:
+        serializedVersion: 2
+        x: 744.00195
+        y: 1564.0762
+        width: 243.96454
+        height: 114.84778
+      alignment: 9
+      pivot: {x: -3.0414336, y: 2.5244184}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a42ba98ebdde8a70800000000000000
+      internalID: 8831239729743340711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00003.png
+      rect:
+        serializedVersion: 2
+        x: 2942.0762
+        y: 2267.0513
+        width: 239.91095
+        height: 110.912415
+      alignment: 9
+      pivot: {x: -3.9642882, y: 2.6232295}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76b6cc6248d9dcf10800000000000000
+      internalID: 2291660976313625447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00004.png
+      rect:
+        serializedVersion: 2
+        x: 1158.0334
+        y: 2263.0762
+        width: 241.91528
+        height: 111.897156
+      alignment: 9
+      pivot: {x: -4.778671, y: 2.6356688}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec84e384b1734cc10800000000000000
+      internalID: 2072842318812956878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00005.png
+      rect:
+        serializedVersion: 2
+        x: 2425.0762
+        y: 2909.0762
+        width: 1064.9058
+        height: 175.84778
+      alignment: 9
+      pivot: {x: -0.40761933, y: 2.006985}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d377e688914c4d5e0800000000000000
+      internalID: -1885666730019227843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00006.png
+      rect:
+        serializedVersion: 2
+        x: 644.0761
+        y: 2906.043
+        width: 205.91095
+        height: 106.90939
+      alignment: 9
+      pivot: {x: -3.1182222, y: 3.3295207}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d468e903a730573b0800000000000000
+      internalID: -5515498345308715443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00007.png
+      rect:
+        serializedVersion: 2
+        x: 2795.002
+        y: 3602.0762
+        width: 243.9646
+        height: 114.84778
+      alignment: 9
+      pivot: {x: -3.295568, y: 3.1687493}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acb4bea833aaf46f0800000000000000
+      internalID: -698152278868407350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00008.png
+      rect:
+        serializedVersion: 2
+        x: 1015.0761
+        y: 3545.0762
+        width: 608.8477
+        height: 235.84778
+      alignment: 9
+      pivot: {x: -1.6639236, y: 1.7847267}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3b8f0345b127b1f0800000000000000
+      internalID: -1029316927432979649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00009.png
+      rect:
+        serializedVersion: 2
+        x: 2493.0762
+        y: 4247.076
+        width: 1134.8477
+        height: 292.86566
+      alignment: 9
+      pivot: {x: -0.44241723, y: 1.4440881}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85b044d0b421d7f90800000000000000
+      internalID: -6954382136035767464
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00010.png
+      rect:
+        serializedVersion: 2
+        x: 712.0761
+        y: 4247.076
+        width: 1087.8477
+        height: 291.87616
+      alignment: 9
+      pivot: {x: -0.6527349, y: 1.4489838}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14bfa506a66eab290800000000000000
+      internalID: -7873727653946393791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00011.png
+      rect:
+        serializedVersion: 2
+        x: 2863.002
+        y: 4945.076
+        width: 931.9219
+        height: 297.84778
+      alignment: 9
+      pivot: {x: -0.93570286, y: 1.4400773}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72455b9623aa515b0800000000000000
+      internalID: -5398221444835093465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00012.png
+      rect:
+        serializedVersion: 2
+        x: 1083.0762
+        y: 4927.076
+        width: 738.84766
+        height: 310.88763
+      alignment: 9
+      pivot: {x: -1.4631922, y: 1.4375736}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 667bc3f63c1841c20800000000000000
+      internalID: 3176306313587898214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00013.png
+      rect:
+        serializedVersion: 2
+        x: 3277.0334
+        y: 5636.076
+        width: 536.8904
+        height: 348.84778
+      alignment: 9
+      pivot: {x: -2.395337, y: 1.2668099}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 415e031bf9c931800800000000000000
+      internalID: 581980986547430676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00014.png
+      rect:
+        serializedVersion: 2
+        x: 1391.0762
+        y: 5619.076
+        width: 435.84766
+        height: 370.84778
+      alignment: 9
+      pivot: {x: -3.1870682, y: 1.2374992}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a4b2f1552fa48e70800000000000000
+      internalID: 9116604120528237732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00015.png
+      rect:
+        serializedVersion: 2
+        x: 3417.0762
+        y: 6328.076
+        width: 413.84766
+        height: 369.84778
+      alignment: 9
+      pivot: {x: -3.4458964, y: 1.227326}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce08906e771f58ba0800000000000000
+      internalID: -6087193824058572564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00016.png
+      rect:
+        serializedVersion: 2
+        x: 1456.0762
+        y: 6337.076
+        width: 378.8971
+        height: 365.84778
+      alignment: 9
+      pivot: {x: -3.8376546, y: 1.2161447}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 301118a5d23b20f50800000000000000
+      internalID: 6846231390929883395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00017.png
+      rect:
+        serializedVersion: 2
+        x: 3431.0762
+        y: 7051.076
+        width: 345.84766
+        height: 363.84778
+      alignment: 9
+      pivot: {x: -4.163903, y: 1.1953455}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6afa154b8f641ace0800000000000000
+      internalID: -1395756375517057114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00018.png
+      rect:
+        serializedVersion: 2
+        x: 1452.0698
+        y: 7124.076
+        width: 289.854
+        height: 282.85803
+      alignment: 9
+      pivot: {x: -5.0027595, y: 1.2795247}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ea27f0f690559920800000000000000
+      internalID: 2996389736302979816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00019.png
+      rect:
+        serializedVersion: 2
+        x: 3452.0762
+        y: 7837.076
+        width: 271.8971
+        height: 276.84778
+      alignment: 9
+      pivot: {x: -5.3736367, y: 1.2747937}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ef4c0b1a01e602e0800000000000000
+      internalID: -2159791537757859863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ranbao_00020.png
+      rect:
+        serializedVersion: 2
+        x: 1500.0762
+        y: 7847.076
+        width: 187.84766
+        height: 262.84778
+      alignment: 9
+      pivot: {x: -7.9749527, y: 1.304648}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b0a74b9ed58bde90800000000000000
+      internalID: -6999854004682907465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      ranbao_00000.png: 2628832713465897912
+      ranbao_00001.png: -2046237136033780697
+      ranbao_00002.png: 8831239729743340711
+      ranbao_00003.png: 2291660976313625447
+      ranbao_00004.png: 2072842318812956878
+      ranbao_00005.png: -1885666730019227843
+      ranbao_00006.png: -5515498345308715443
+      ranbao_00007.png: -698152278868407350
+      ranbao_00008.png: -1029316927432979649
+      ranbao_00009.png: -6954382136035767464
+      ranbao_00010.png: -7873727653946393791
+      ranbao_00011.png: -5398221444835093465
+      ranbao_00012.png: 3176306313587898214
+      ranbao_00013.png: 581980986547430676
+      ranbao_00014.png: 9116604120528237732
+      ranbao_00015.png: -6087193824058572564
+      ranbao_00016.png: 6846231390929883395
+      ranbao_00017.png: -1395756375517057114
+      ranbao_00018.png: 2996389736302979816
+      ranbao_00019.png: -2159791537757859863
+      ranbao_00020.png: -6999854004682907465
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
+  userData: 
   assetBundleName: skilleffect
-  assetBundleVariant:
+  assetBundleVariant: 

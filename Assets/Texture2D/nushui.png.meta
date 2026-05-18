@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: 0640e57884e3cb3449fe9c15131a9957
-timeCreated: 1760183409
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,11 +57,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -70,39 +77,238 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: nushui_00008.png
+      rect:
+        serializedVersion: 2
+        x: 40.059727
+        y: 608.5761
+        width: 451.86417
+        height: 413.89713
+      alignment: 9
+      pivot: {x: -0.088654354, y: 1.2235502}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 282449095a5ded600800000000000000
+      internalID: 495067916129288834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nushui_00009.png
+      rect:
+        serializedVersion: 2
+        x: 586.9944
+        y: 649.5761
+        width: 382.91098
+        height: 348.84778
+      alignment: 9
+      pivot: {x: -0.19606683, y: 1.3341748}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a6d8e167987d0e90800000000000000
+      internalID: -7057852449441655134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nushui_00010.png
+      rect:
+        serializedVersion: 2
+        x: 1140.9126
+        y: 695.5761
+        width: 297.86752
+        height: 272.87256
+      alignment: 9
+      pivot: {x: -0.39304757, y: 1.5370687}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 406a8065b225ac010800000000000000
+      internalID: 1209869795982878212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nushui_00011.png
+      rect:
+        serializedVersion: 2
+        x: 1685.8309
+        y: 736.5761
+        width: 225.84776
+        height: 205.84776
+      alignment: 9
+      pivot: {x: -0.6645015, y: 1.8383677}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d40305e0d9f173e60800000000000000
+      internalID: 7941851227301621837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nushui_00012.png
+      rect:
+        serializedVersion: 2
+        x: 194.07613
+        y: 227.07613
+        width: 138.89711
+        height: 126.84776
+      alignment: 9
+      pivot: {x: -1.3972654, y: 2.6048853}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: caced40244d48ea00800000000000000
+      internalID: 785963089971244204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nushui_00013.png
+      rect:
+        serializedVersion: 2
+        x: 750.9612
+        y: 275.0761
+        width: 53.88098
+        height: 47.87256
+      alignment: 9
+      pivot: {x: -4.436499, y: 5.899494}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a0e73da508dac570800000000000000
+      internalID: 8487833966625677473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nushui_00014.png
+      rect:
+        serializedVersion: 2
+        x: 1256.8794
+        y: 269.02676
+        width: 64.93033
+        height: 57.946472
+      alignment: 9
+      pivot: {x: -3.5891225, y: 4.978271}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da4dd04f801a903c0800000000000000
+      internalID: -4392802901696850771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nushui_00015.png
+      rect:
+        serializedVersion: 2
+        x: 1768.8309
+        y: 269.02676
+        width: 64.89711
+        height: 57.946472
+      alignment: 9
+      pivot: {x: -3.5914724, y: 4.978271}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bf8d83a13e0ff9b0800000000000000
+      internalID: -5044297451271516235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      nushui_00008.png: 495067916129288834
+      nushui_00009.png: -7057852449441655134
+      nushui_00010.png: 1209869795982878212
+      nushui_00011.png: 7941851227301621837
+      nushui_00012.png: 785963089971244204
+      nushui_00013.png: 8487833966625677473
+      nushui_00014.png: -4392802901696850771
+      nushui_00015.png: -5044297451271516235
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
+  userData: 
   assetBundleName: skilleffect
-  assetBundleVariant:
+  assetBundleVariant: 

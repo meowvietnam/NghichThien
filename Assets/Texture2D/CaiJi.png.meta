@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: c1dce6505cff3ca4f8b414f46394be94
-timeCreated: 1760182908
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,11 +57,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -70,39 +77,836 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: MCS_CJ_bg.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1156
+        width: 1433
+        height: 890
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16f71b3b35d850cc0800000000000000
+      internalID: -3745432124452143263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_bg2.png
+      rect:
+        serializedVersion: 2
+        x: 1437
+        y: 1481
+        width: 455
+        height: 153
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba42c13ced152ccc0800000000000000
+      internalID: -3692298727292394325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_bg3.png
+      rect:
+        serializedVersion: 2
+        x: 1437
+        y: 1385
+        width: 455
+        height: 94
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e45650549e6b45d80800000000000000
+      internalID: -8262778303316400818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_bg22.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 22
+        width: 84
+        height: 39
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa538a2ce9441d580800000000000000
+      internalID: -8804180347871283793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_btn_caiji.png
+      rect:
+        serializedVersion: 2
+        x: 1829
+        y: 1114
+        width: 202
+        height: 68
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 850fe13246b5ea3b0800000000000000
+      internalID: -5499357609328709544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_btn_caiji2.png
+      rect:
+        serializedVersion: 2
+        x: 1829
+        y: 1044
+        width: 202
+        height: 68
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f037a571df2e4280800000000000000
+      internalID: -9057249223926927113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_btn_caiji2_bk.png
+      rect:
+        serializedVersion: 2
+        x: 10.07612
+        y: 1056.0762
+        width: 185.84775
+        height: 65.84776
+      alignment: 9
+      pivot: {x: -0.043455575, y: 1.0163417}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a14701acf90942a0800000000000000
+      internalID: -6752855185627332191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_btn_caiji2_hlg.png
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 1055
+        width: 202
+        height: 68
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 702763c37b3aeafd0800000000000000
+      internalID: -2328743949919423993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_btn_caiji_bk.png
+      rect:
+        serializedVersion: 2
+        x: 418.0761
+        y: 1056.0762
+        width: 185.84775
+        height: 65.84776
+      alignment: 9
+      pivot: {x: -0.043455523, y: 1.0163417}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 641cbfb4e3490f970800000000000000
+      internalID: 8786685868283511110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_btn_caiji_hlg.png
+      rect:
+        serializedVersion: 2
+        x: 614
+        y: 1055
+        width: 202
+        height: 68
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e74596439256f2280800000000000000
+      internalID: -9065916297226136450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_btn_likai.png
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 24
+        width: 202
+        height: 68
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 960e641a2cfe47a40800000000000000
+      internalID: 5365176675313573993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_btn_likai_bk.png
+      rect:
+        serializedVersion: 2
+        x: 472.0761
+        y: 58.076122
+        width: 185.84775
+        height: 65.84776
+      alignment: 9
+      pivot: {x: -0.043455523, y: 1.0163424}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37c2ea717ad99ea50800000000000000
+      internalID: 6550940473969486963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_btn_likai_hlg.png
+      rect:
+        serializedVersion: 2
+        x: 481
+        y: 150
+        width: 202
+        height: 68
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc66d1ede06a89d00800000000000000
+      internalID: 979715501739304652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_btn_or.png
+      rect:
+        serializedVersion: 2
+        x: 2018
+        y: 1443
+        width: 25
+        height: 61
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb4bb1a64bf5857a0800000000000000
+      internalID: -6388250842946095941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_btn_xuanzhe_bk.png
+      rect:
+        serializedVersion: 2
+        x: 321.02676
+        y: 117.01291
+        width: 44.946495
+        height: 94.910965
+      alignment: 9
+      pivot: {x: -0.045092814, y: 1.0640192}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6684abc36a27381e0800000000000000
+      internalID: -2196786134917691290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_btn_xuanzhe_hlg.png
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 111
+        width: 49
+        height: 107
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7efddaa752876580800000000000000
+      internalID: -8833948831023497602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_btn_xuanzhe_norm.png
+      rect:
+        serializedVersion: 2
+        x: 413
+        y: 2
+        width: 49
+        height: 107
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61be11e91cf3769c0800000000000000
+      internalID: -3934105648671626474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_din.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1125
+        width: 1392
+        height: 29
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30b7c053907e182b0800000000000000
+      internalID: -5583928036231972093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_icon.png
+      rect:
+        serializedVersion: 2
+        x: 1894
+        y: 1506
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b0a26d26eb361a50800000000000000
+      internalID: 6491441772691103925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_jindu_di.png
+      rect:
+        serializedVersion: 2
+        x: 1437
+        y: 1327
+        width: 392
+        height: 18
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00b36c02a6d6535b0800000000000000
+      internalID: -5389281076495107328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_jindu_man.png
+      rect:
+        serializedVersion: 2
+        x: 1437
+        y: 1307
+        width: 392
+        height: 18
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93031cf4b72604900800000000000000
+      internalID: 666641026609393721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_lianzi_gao.png
+      rect:
+        serializedVersion: 2
+        x: 1862
+        y: 1184
+        width: 180
+        height: 188
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51339873c3e6f4850800000000000000
+      internalID: 6363426003406631701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_lianzi_koudai.png
+      rect:
+        serializedVersion: 2
+        x: 1437
+        y: 1063
+        width: 390
+        height: 242
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 171e59615e9b6ee50800000000000000
+      internalID: 6838357477786247537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_lianzi_kuang.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 220
+        width: 618
+        height: 822
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19a279341c8443140800000000000000
+      internalID: 4698460306154138257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_lianzi_kuang2.png
+      rect:
+        serializedVersion: 2
+        x: 1242
+        y: 706
+        width: 365
+        height: 355
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15d003bb230504ae0800000000000000
+      internalID: -1567164491505857199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_lianzi_yao.png
+      rect:
+        serializedVersion: 2
+        x: 622
+        y: 220
+        width: 618
+        height: 822
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1bac32a55818a9b0800000000000000
+      internalID: -5068774624532321509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_lianzi_yaocai1.png
+      rect:
+        serializedVersion: 2
+        x: 1894
+        y: 1374
+        width: 122
+        height: 130
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ab495dfe883a7c40800000000000000
+      internalID: 5510779280828222371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_lianzi_yaocai2.png
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 70
+        width: 96
+        height: 148
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7928d036060e2110800000000000000
+      internalID: 1237933571232508282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_lianzi_yaocai3.png
+      rect:
+        serializedVersion: 2
+        x: 421
+        y: 127
+        width: 58
+        height: 91
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e6bd724f20a21af0800000000000000
+      internalID: -427102889807333661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_lianzi_yaocai4.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 63
+        width: 107
+        height: 155
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 604848de8a239dcc0800000000000000
+      internalID: -3685859118905261050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_lianzi_yaocai5.png
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 94
+        width: 108
+        height: 124
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c00850fd09526b50800000000000000
+      internalID: 6584923521570832580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_lianzi_youce.png
+      rect:
+        serializedVersion: 2
+        x: 1437
+        y: 1636
+        width: 590
+        height: 410
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a127e17e9cbc549a0800000000000000
+      internalID: -6249364839880297958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_line_bg.png
+      rect:
+        serializedVersion: 2
+        x: 1437
+        y: 1366
+        width: 423
+        height: 17
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6718cbed7017e1b0800000000000000
+      internalID: -5627511076363430034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_line_or.png
+      rect:
+        serializedVersion: 2
+        x: 1437
+        y: 1347
+        width: 423
+        height: 17
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5a6f12a8f30f77f0800000000000000
+      internalID: -612766657892357539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MCS_CJ_bg.png: -3745432124452143263
+      MCS_CJ_bg2.png: -3692298727292394325
+      MCS_CJ_bg22.png: -8804180347871283793
+      MCS_CJ_bg3.png: -8262778303316400818
+      MCS_CJ_btn_caiji.png: -5499357609328709544
+      MCS_CJ_btn_caiji2.png: -9057249223926927113
+      MCS_CJ_btn_caiji2_bk.png: -6752855185627332191
+      MCS_CJ_btn_caiji2_hlg.png: -2328743949919423993
+      MCS_CJ_btn_caiji_bk.png: 8786685868283511110
+      MCS_CJ_btn_caiji_hlg.png: -9065916297226136450
+      MCS_CJ_btn_likai.png: 5365176675313573993
+      MCS_CJ_btn_likai_bk.png: 6550940473969486963
+      MCS_CJ_btn_likai_hlg.png: 979715501739304652
+      MCS_CJ_btn_or.png: -6388250842946095941
+      MCS_CJ_btn_xuanzhe_bk.png: -2196786134917691290
+      MCS_CJ_btn_xuanzhe_hlg.png: -8833948831023497602
+      MCS_CJ_btn_xuanzhe_norm.png: -3934105648671626474
+      MCS_CJ_din.png: -5583928036231972093
+      MCS_CJ_icon.png: 6491441772691103925
+      MCS_CJ_jindu_di.png: -5389281076495107328
+      MCS_CJ_jindu_man.png: 666641026609393721
+      MCS_CJ_lianzi_gao.png: 6363426003406631701
+      MCS_CJ_lianzi_koudai.png: 6838357477786247537
+      MCS_CJ_lianzi_kuang.png: 4698460306154138257
+      MCS_CJ_lianzi_kuang2.png: -1567164491505857199
+      MCS_CJ_lianzi_yao.png: -5068774624532321509
+      MCS_CJ_lianzi_yaocai1.png: 5510779280828222371
+      MCS_CJ_lianzi_yaocai2.png: 1237933571232508282
+      MCS_CJ_lianzi_yaocai3.png: -427102889807333661
+      MCS_CJ_lianzi_yaocai4.png: -3685859118905261050
+      MCS_CJ_lianzi_yaocai5.png: 6584923521570832580
+      MCS_CJ_lianzi_youce.png: -6249364839880297958
+      MCS_CJ_line_bg.png: -5627511076363430034
+      MCS_CJ_line_or.png: -612766657892357539
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

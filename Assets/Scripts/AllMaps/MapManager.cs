@@ -227,7 +227,7 @@ namespace AllMaps
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
 
-                Object[] assets =
+                var assets =
                     AssetDatabase.LoadAllAssetRepresentationsAtPath(path);
 
                 foreach (var obj in assets)

@@ -7,7 +7,12 @@ public class RemoveMissingScript : MonoBehaviour
     [Button]
     public void RemoveScript()
     {
-        var transforms = GetComponentsInChildren<Transform>(true);
+        Remove(gameObject);
+    }
+
+    public static void Remove(GameObject gameObject)
+    {
+        var transforms = gameObject.GetComponentsInChildren<Transform>(true);
         foreach (var tf in transforms)
         {
             var go = tf.gameObject;

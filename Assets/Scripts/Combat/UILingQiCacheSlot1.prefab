@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4961813970389951047}
   - component: {fileID: 9057438977533812054}
   - component: {fileID: 7336964952047767527}
+  - component: {fileID: 6157724994542749761}
   m_Layer: 0
   m_Name: BG
   m_TagString: Untagged
@@ -76,6 +77,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6157724994542749761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 338447063594662211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RenderData
+  <Texture>k__BackingField: {fileID: 2800000, guid: 51e96cd3ee16ecb4286855c44194b8a1,
+    type: 3}
+  <SpriteName>k__BackingField: MCS_ZD_qiu_yuantiao
 --- !u!1 &1204519960993384604
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,6 +103,7 @@ GameObject:
   - component: {fileID: 3659481305258554356}
   - component: {fileID: 1479203550967538158}
   - component: {fileID: 2877531086116834716}
+  - component: {fileID: 9165490685563464862}
   m_Layer: 0
   m_Name: Highlight
   m_TagString: Untagged
@@ -151,6 +168,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &9165490685563464862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204519960993384604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RenderData
+  <Texture>k__BackingField: {fileID: 2800000, guid: 6cae1a8576d618443b8f7ff9b8c39c32,
+    type: 3}
+  <SpriteName>k__BackingField: MCS_ZD_qiu_yuan2
 --- !u!1 &3068992874281242746
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,6 +195,7 @@ GameObject:
   - component: {fileID: 8474442624319927459}
   - component: {fileID: 3008379125285583389}
   - component: {fileID: 3983807327581587534}
+  - component: {fileID: 7489899678276320976}
   m_Layer: 5
   m_Name: UILingQiCacheSlot1
   m_TagString: Untagged
@@ -242,11 +275,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7506622ee45bd2548bc35583517f29e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotLinhKhi
-  count: 0
+  count:
+    encA: 0
+    encB: 0
+    keyA: 0
+    keyB: 0
+    fakeValue: 0
   eLinhKhi: 0
   textCount: {fileID: 1754195270941733603}
   icon: {fileID: 1346516590930434313}
   isLock: 0
+  countRequire:
+    encA: 0
+    encB: 0
+    keyA: 0
+    keyB: 0
+    fakeValue: 0
+--- !u!114 &7489899678276320976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3068992874281242746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RenderData
+  <Texture>k__BackingField: {fileID: 2800000, guid: bf5885465ef855d4cb300eeffbdb9f4c,
+    type: 3}
+  <SpriteName>k__BackingField: MCS_ZD_qiu_yuan
 --- !u!1 &3348003288547890037
 GameObject:
   m_ObjectHideFlags: 0
