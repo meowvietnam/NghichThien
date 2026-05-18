@@ -18,7 +18,7 @@ namespace AllMaps
 {
     public interface IActionMap
     {
-        void EnterMap(Map map);
+        void ActiveEventMap(Map map);
     }
     public class MapManager : MonoBehaviour, IAllMapsCallback
     {
@@ -186,7 +186,7 @@ namespace AllMaps
             {
                 characterStatsSecures.Add(CharacterStatsSecureBuilder.FromCharacterSnapshot(character));
             }
-            List<NPCData> npcOnCurrentMap = Pool.Get<NpcManager>().npcDatas.Where(x => x.charStats.idNode == current.Id).ToList();
+            List<NPCData> npcOnCurrentMap = Pool.Get<NPCManager>().npcDatas.Where(x => x.charStats.idNode == current.Id).ToList();
             foreach (var character in npcOnCurrentMap)
             {
 

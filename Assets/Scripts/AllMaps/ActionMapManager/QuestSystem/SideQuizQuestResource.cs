@@ -12,8 +12,8 @@ using Sirenix.OdinInspector; // Thêm thư viện Odin
 using UnityEditor;
 #endif
 
-[CreateAssetMenu(fileName = nameof(SideQuizQuestResource), menuName = "Quest/Side Quest/" + nameof(SideQuizQuestResource))]
-public class SideQuizQuestResource : SideQuestResourceSO
+[CreateAssetMenu(fileName = nameof(SideQuizQuestResource), menuName = "Action Map/Side Quest/" + nameof(SideQuizQuestResource))]
+public class SideQuizQuestResource : ActionMapResourceSO
 {
     [Serializable]
     public class Quiz {
@@ -24,10 +24,10 @@ public class SideQuizQuestResource : SideQuestResourceSO
     }
     public Quiz[] quizDatas;
     
-    public override void EnterMap(Map map)
+    public override void ActiveEventMap(Map map)
     {
 
-        Pool.Get<SideQuestManager>().QuizQuestInitShow(quizDatas[UnityEngine.Random.Range(0,quizDatas.Length)]);
+        Pool.Get<QuestManager>().QuizQuestInitShow(quizDatas[UnityEngine.Random.Range(0,quizDatas.Length)]);
     }
 #if UNITY_EDITOR
     // Sử dụng [Button] của Odin để tạo nút bấm tùy chỉnh siêu nhanh

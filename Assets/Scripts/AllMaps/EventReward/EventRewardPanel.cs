@@ -39,7 +39,7 @@ public class EventRewardPanel : Popup , IUISingleton
         }
         this.InitActionClose(() =>
         {
-            Pool.Get<GameManager>().BackAllMaps();
+            Pool.Get<GameManager>().BackAllMapFromCombat(GameManager.ECombatResult.Win);
         });
     }
     public void InitShow(RewardSnapshot rewardData,string contentText)
