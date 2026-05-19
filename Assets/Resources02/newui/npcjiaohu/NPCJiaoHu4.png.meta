@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: 2791934fa557093479caceaab01745d9
-timeCreated: 1760182967
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,11 +57,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -70,39 +77,813 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_bg.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 982
+        width: 1729
+        height: 1064
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d46ecb264cdc4c6a0800000000000000
+      internalID: -6429788124624394675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_bg2.png
+      rect:
+        serializedVersion: 2
+        x: 1733
+        y: 1986
+        width: 207
+        height: 17
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6975d9f8d83ad8b20800000000000000
+      internalID: 3138344343742273430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_bg3.png
+      rect:
+        serializedVersion: 2
+        x: 1948
+        y: 1931
+        width: 97
+        height: 13
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97d44ebdc7156fd80800000000000000
+      internalID: -8217290873383924359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_bg4.png
+      rect:
+        serializedVersion: 2
+        x: 1733
+        y: 2005
+        width: 232
+        height: 41
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67256660468b51f90800000000000000
+      internalID: -6983472907424476554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_close.png
+      rect:
+        serializedVersion: 2
+        x: 1967
+        y: 1946
+        width: 76
+        height: 100
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aea61448ecb52cf40800000000000000
+      internalID: 5747257017018444522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_di.png
+      rect:
+        serializedVersion: 2
+        x: 1284
+        y: 917
+        width: 553
+        height: 63
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 794ddb793f82caca0800000000000000
+      internalID: -6004379176503749481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_di2.png
+      rect:
+        serializedVersion: 2
+        x: 1284
+        y: 852
+        width: 553
+        height: 63
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73269742641e6a810800000000000000
+      internalID: 1776354794420134455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_gujin.png
+      rect:
+        serializedVersion: 2
+        x: 1733
+        y: 1808
+        width: 151
+        height: 176
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d3b88e68715676d0800000000000000
+      internalID: -2993115324648737838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_dadao_gn.png
+      rect:
+        serializedVersion: 2
+        x: 1889.0267
+        y: 1943
+        width: 34.936962
+        height: 41
+      alignment: 9
+      pivot: {x: -0.08663413, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a540031387cd7af0800000000000000
+      internalID: -396941826365307479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_dadao_or.png
+      rect:
+        serializedVersion: 2
+        x: 1889.0267
+        y: 1900
+        width: 34.936962
+        height: 41
+      alignment: 9
+      pivot: {x: -0.08663413, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13e567c08f1dae7f0800000000000000
+      internalID: -582422338499879375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_dunsu.png
+      rect:
+        serializedVersion: 2
+        x: 1989
+        y: 1795
+        width: 30
+        height: 32
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c760083b56f8eba90800000000000000
+      internalID: -7296236679327644036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_nianling.png
+      rect:
+        serializedVersion: 2
+        x: 1989
+        y: 1761
+        width: 30
+        height: 32
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b2a1a92bdff76990800000000000000
+      internalID: -7392658946544000334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_qinfen.png
+      rect:
+        serializedVersion: 2
+        x: 1948
+        y: 1752
+        width: 30
+        height: 32
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cddfdf1c912ecc660800000000000000
+      internalID: 7407544087374331356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_qixue.png
+      rect:
+        serializedVersion: 2
+        x: 1980
+        y: 1727
+        width: 30
+        height: 32
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a58a79e9bfce62810800000000000000
+      internalID: 1740338871466960986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_shengshi.png
+      rect:
+        serializedVersion: 2
+        x: 1948
+        y: 1718
+        width: 30
+        height: 32
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1add451f96871d330800000000000000
+      internalID: 3733897962482621857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_shijian_gn.png
+      rect:
+        serializedVersion: 2
+        x: 1886
+        y: 1858.0762
+        width: 39
+        height: 39.923878
+      alignment: 9
+      pivot: {x: 0, y: 0.99999875}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c95dc7ef5f8ddc80800000000000000
+      internalID: -8296317296472925752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_shijian_or.png
+      rect:
+        serializedVersion: 2
+        x: 1886
+        y: 1815.0762
+        width: 39
+        height: 39.923878
+      alignment: 9
+      pivot: {x: 0, y: 0.99999875}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 749afb89326db59e0800000000000000
+      internalID: -1631474991616775865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_shouming.png
+      rect:
+        serializedVersion: 2
+        x: 2012
+        y: 1727
+        width: 30
+        height: 32
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7078f01677d54710800000000000000
+      internalID: 1676983338356207742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_wuxin.png
+      rect:
+        serializedVersion: 2
+        x: 1980
+        y: 1693
+        width: 30
+        height: 32
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52b844fc851563780800000000000000
+      internalID: -8703679787970557147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_xiuwei.png
+      rect:
+        serializedVersion: 2
+        x: 1948
+        y: 1684
+        width: 30
+        height: 32
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91ab6a313334d1ed0800000000000000
+      internalID: -2441721536312853991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_zhuangbei_gn.png
+      rect:
+        serializedVersion: 2
+        x: 1886
+        y: 1771.0762
+        width: 39
+        height: 40.923878
+      alignment: 9
+      pivot: {x: 0, y: 0.9999988}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0b6170dd78ccb9b0800000000000000
+      internalID: -5062951438377719030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_zhuangbei_or.png
+      rect:
+        serializedVersion: 2
+        x: 1948
+        y: 1786.0762
+        width: 39
+        height: 40.923878
+      alignment: 9
+      pivot: {x: 0, y: 0.9999988}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb52955ac3a0db580800000000000000
+      internalID: -8809874040478423620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_zhuangtai.png
+      rect:
+        serializedVersion: 2
+        x: 2012
+        y: 1693
+        width: 30
+        height: 32
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7db054017dfb8950800000000000000
+      internalID: 6452529552983899514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_icon_zizhi.png
+      rect:
+        serializedVersion: 2
+        x: 1980
+        y: 1659
+        width: 30
+        height: 32
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0df9f1f1ed10206d0800000000000000
+      internalID: -3025853946123018288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_line.png
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 723
+        width: 893
+        height: 30
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 348689073e62383f0800000000000000
+      internalID: -899832742255499197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_line2.png
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 755
+        width: 928
+        height: 45
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cbcad35f8a2d93b0800000000000000
+      internalID: -5504196374501340223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_line3.png
+      rect:
+        serializedVersion: 2
+        x: 1942
+        y: 1348
+        width: 4
+        height: 655
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97cf48c2be34918d0800000000000000
+      internalID: -2875192209756062599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_qi_gn.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 868
+        width: 322
+        height: 112
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c594d302a84c2f30800000000000000
+      internalID: 4552093184050894273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_qi_or.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 754
+        width: 322
+        height: 112
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ada0f3e2e0d92bfe0800000000000000
+      internalID: -1174703868559291686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_wen.png
+      rect:
+        serializedVersion: 2
+        x: 1948
+        y: 1829
+        width: 76
+        height: 100
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20e2328ebeb21efa0800000000000000
+      internalID: -5773284955100336638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_zhezhao_dadao_shang.png
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 892
+        width: 956
+        height: 88
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02e6d6d3ca0f052e0800000000000000
+      internalID: -2138945200445362656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_zhezhao_shijian_shang.png
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 802
+        width: 956
+        height: 88
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d74c2ccdf3f97c650800000000000000
+      internalID: 6253141704262730877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_NPCJH_Ss_zhezhao_xia.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 655
+        width: 946
+        height: 97
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e4292db2e10ef190800000000000000
+      internalID: -7926896220777667356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MCS_NPCJH_Ss_bg.png: -6429788124624394675
+      MCS_NPCJH_Ss_bg2.png: 3138344343742273430
+      MCS_NPCJH_Ss_bg3.png: -8217290873383924359
+      MCS_NPCJH_Ss_bg4.png: -6983472907424476554
+      MCS_NPCJH_Ss_close.png: 5747257017018444522
+      MCS_NPCJH_Ss_di.png: -6004379176503749481
+      MCS_NPCJH_Ss_di2.png: 1776354794420134455
+      MCS_NPCJH_Ss_gujin.png: -2993115324648737838
+      MCS_NPCJH_Ss_icon_dadao_gn.png: -396941826365307479
+      MCS_NPCJH_Ss_icon_dadao_or.png: -582422338499879375
+      MCS_NPCJH_Ss_icon_dunsu.png: -7296236679327644036
+      MCS_NPCJH_Ss_icon_nianling.png: -7392658946544000334
+      MCS_NPCJH_Ss_icon_qinfen.png: 7407544087374331356
+      MCS_NPCJH_Ss_icon_qixue.png: 1740338871466960986
+      MCS_NPCJH_Ss_icon_shengshi.png: 3733897962482621857
+      MCS_NPCJH_Ss_icon_shijian_gn.png: -8296317296472925752
+      MCS_NPCJH_Ss_icon_shijian_or.png: -1631474991616775865
+      MCS_NPCJH_Ss_icon_shouming.png: 1676983338356207742
+      MCS_NPCJH_Ss_icon_wuxin.png: -8703679787970557147
+      MCS_NPCJH_Ss_icon_xiuwei.png: -2441721536312853991
+      MCS_NPCJH_Ss_icon_zhuangbei_gn.png: -5062951438377719030
+      MCS_NPCJH_Ss_icon_zhuangbei_or.png: -8809874040478423620
+      MCS_NPCJH_Ss_icon_zhuangtai.png: 6452529552983899514
+      MCS_NPCJH_Ss_icon_zizhi.png: -3025853946123018288
+      MCS_NPCJH_Ss_line.png: -899832742255499197
+      MCS_NPCJH_Ss_line2.png: -5504196374501340223
+      MCS_NPCJH_Ss_line3.png: -2875192209756062599
+      MCS_NPCJH_Ss_qi_gn.png: 4552093184050894273
+      MCS_NPCJH_Ss_qi_or.png: -1174703868559291686
+      MCS_NPCJH_Ss_wen.png: -5773284955100336638
+      MCS_NPCJH_Ss_zhezhao_dadao_shang.png: -2138945200445362656
+      MCS_NPCJH_Ss_zhezhao_shijian_shang.png: 6253141704262730877
+      MCS_NPCJH_Ss_zhezhao_xia.png: -7926896220777667356
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: 766a53b7164373f468235ec56f0f7e55
-timeCreated: 1760182936
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,11 +57,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -70,39 +77,284 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: MCS_LD_pai_huo.png
+      rect:
+        serializedVersion: 2
+        x: 2.026751
+        y: 809.02673
+        width: 144.9465
+        height: 212.97325
+      alignment: 9
+      pivot: {x: -0.00018455803, y: 1.0000001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed9a2199e7850d0b0800000000000000
+      internalID: -5705963427121157666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LD_pai_jian.png
+      rect:
+        serializedVersion: 2
+        x: 149.02675
+        y: 809.02673
+        width: 144.9465
+        height: 212.97325
+      alignment: 9
+      pivot: {x: -0.00018454158, y: 1.0000001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d76f031594b86060800000000000000
+      internalID: 6947000977581893588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LD_pai_jin.png
+      rect:
+        serializedVersion: 2
+        x: 296.02676
+        y: 809.02673
+        width: 144.89713
+        height: 212.97325
+      alignment: 9
+      pivot: {x: -0.00018470977, y: 1.0000001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c053a4d702b32acb0800000000000000
+      internalID: -4854252437624965876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LD_pai_mu.png
+      rect:
+        serializedVersion: 2
+        x: 2.026751
+        y: 593.02673
+        width: 144.9465
+        height: 212.97325
+      alignment: 9
+      pivot: {x: -0.00018455803, y: 1.0000001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 687043cfd30639f90800000000000000
+      internalID: -6948103980762003578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LD_pai_qi.png
+      rect:
+        serializedVersion: 2
+        x: 149.04291
+        y: 593.02673
+        width: 144.93034
+        height: 212.97325
+      alignment: 9
+      pivot: {x: -0.0002960575, y: 1.0000001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 707ff57f7379b7eb0800000000000000
+      internalID: -4721013517738576121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LD_pai_sheng.png
+      rect:
+        serializedVersion: 2
+        x: 296.02676
+        y: 593.02673
+        width: 144.9465
+        height: 212.97325
+      alignment: 9
+      pivot: {x: -0.00018464685, y: 1.0000001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 421d3628fdefd1400800000000000000
+      internalID: 296673386395062564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LD_pai_shui.png
+      rect:
+        serializedVersion: 2
+        x: 2.026751
+        y: 377.02676
+        width: 144.9465
+        height: 212.97325
+      alignment: 9
+      pivot: {x: -0.00018455803, y: 0.99999994}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a800bbd94eb3f0c0800000000000000
+      internalID: -4543078374659061591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LD_pai_ti.png
+      rect:
+        serializedVersion: 2
+        x: 2.042908
+        y: 161.02675
+        width: 144.93034
+        height: 212.97325
+      alignment: 9
+      pivot: {x: -0.00029605915, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4adcf176a13109820800000000000000
+      internalID: 2922857162283666852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LD_pai_tu.png
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 376
+        width: 145
+        height: 214
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bae0dc63af0d8c100800000000000000
+      internalID: 128582362459868843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LD_pai_zhen.png
+      rect:
+        serializedVersion: 2
+        x: 296.02676
+        y: 377.02676
+        width: 144.9465
+        height: 212.97325
+      alignment: 9
+      pivot: {x: -0.00018464685, y: 0.99999994}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c207d349bcb910720800000000000000
+      internalID: 2810698941123620908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MCS_LD_pai_huo.png: -5705963427121157666
+      MCS_LD_pai_jian.png: 6947000977581893588
+      MCS_LD_pai_jin.png: -4854252437624965876
+      MCS_LD_pai_mu.png: -6948103980762003578
+      MCS_LD_pai_qi.png: -4721013517738576121
+      MCS_LD_pai_sheng.png: 296673386395062564
+      MCS_LD_pai_shui.png: -4543078374659061591
+      MCS_LD_pai_ti.png: 2922857162283666852
+      MCS_LD_pai_tu.png: 128582362459868843
+      MCS_LD_pai_zhen.png: 2810698941123620908
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -139,5 +139,12 @@ namespace LuyenDan
             value.Locations = reader.Read();
             value.Description = reader.Read();
         }
+        public void Move()
+        {
+            var icon = Icon;
+            var root = "Assets/Resources/";
+            var path = Path.GetDirectoryName(root + IconPath);
+            AssetOptimize.Move(icon.texture, path);
+        }
     }
 }

@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: c66fc64e178a39b41b64a2294f910b1c
-timeCreated: 1760182955
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,11 +57,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -70,39 +77,905 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: MCS_TY_sl_btn1.png
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 477
+        width: 87
+        height: 185
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44bb5731e180d5bb0800000000000000
+      internalID: -4945787890514412732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TY_sl_btn2.png
+      rect:
+        serializedVersion: 2
+        x: 376
+        y: 78
+        width: 114
+        height: 254
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d4006ad32dddfe80800000000000000
+      internalID: -8143109405158669099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TY_sl_jian.png
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 175
+        width: 44
+        height: 64
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8edcbe3e01323c780800000000000000
+      internalID: -8664042702680371736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TY_sl_jian2.png
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 2
+        width: 44
+        height: 74
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e9c843bdda4a4cc0800000000000000
+      internalID: -3726083425639544350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TY_sl_line.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 335
+        width: 56
+        height: 39
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4fb567bc80409ded0800000000000000
+      internalID: -2388873691523556364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TY_sl_line2.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 84
+        width: 46
+        height: 29
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b383e8b3866a65a60800000000000000
+      internalID: 7662494782623463483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TY_sl_zen.png
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 241
+        width: 44
+        height: 64
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0af8f8c3c5369990800000000000000
+      internalID: -7379651824393324017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_TY_sl_zen2.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 2
+        width: 44
+        height: 74
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4da9ba4d5c48b1810800000000000000
+      internalID: 1737128066492898004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ__close.png
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 322
+        width: 76
+        height: 76
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6756e4c40d34aced0800000000000000
+      internalID: -2393025690081532554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ__tupo_1.png
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 2
+        width: 34
+        height: 6
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: deb52942c1d717790800000000000000
+      internalID: -7534103141788001299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ__tupo_2.png
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 131
+        width: 36
+        height: 18
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5a6d4110c1b75be0800000000000000
+      internalID: -1488525713340536227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ__tupo_3.png
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 109
+        width: 34
+        height: 20
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42c615bd1f5e98c80800000000000000
+      internalID: -8319866009660855260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ__tupo_4.png
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 376
+        width: 32
+        height: 22
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf5045deac278aac0800000000000000
+      internalID: -3843696066070051332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ__tupo_5.png
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 151
+        width: 36
+        height: 22
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed8f1e2f1e55ab980800000000000000
+      internalID: -8522404915914344226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ__tupo_dk.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 118
+        width: 55
+        height: 55
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce24081cd3bc59c90800000000000000
+      internalID: -7163596166163053844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ__tupo_lg.png
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 334
+        width: 82
+        height: 113
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab70e6e09678a61e0800000000000000
+      internalID: -2203800182361028678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_bg.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 400
+        width: 170
+        height: 86
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ade94097f0eaca450800000000000000
+      internalID: 6101442976658267866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_bg2.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 488
+        width: 170
+        height: 86
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac6ffe3e2a864a710800000000000000
+      internalID: 1703601607871035082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_bg3.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 576
+        width: 170
+        height: 86
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31f2239e7e59dba60800000000000000
+      internalID: 7691468561901039379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_df_dk.png
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 443
+        width: 84
+        height: 32
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5cb0ff876eb7cbd0800000000000000
+      internalID: -2609908107032085414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_df_lg.png
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 379
+        width: 116
+        height: 66
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8f501f0fd13e3550800000000000000
+      internalID: 6142401775880134542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_fy_dk.png
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 341
+        width: 82
+        height: 30
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04d2b43be365a35c0800000000000000
+      internalID: -4234977672292520640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_fy_lg.png
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 115
+        width: 114
+        height: 64
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 655dc755930023510800000000000000
+      internalID: 1527283469879399766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_lf_dk.png
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 373
+        width: 82
+        height: 32
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79a90b288abe18930800000000000000
+      internalID: 4143852241137212055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_lf_lg.png
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 181
+        width: 114
+        height: 64
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b53bb6e659683d00800000000000000
+      internalID: 952627143147992496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_sy_dk.png
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 407
+        width: 82
+        height: 34
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95a6a24be53713e70800000000000000
+      internalID: 9093175973224540761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_sy_lg.png
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 313
+        width: 116
+        height: 64
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eea25a20392884cb0800000000000000
+      internalID: -4879506628339750162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_tpxq.png
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 447
+        width: 142
+        height: 32
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f74e1c2cc28fbedb0800000000000000
+      internalID: -4761439309884431233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_xx_dk.png
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 307
+        width: 80
+        height: 32
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e37416a55f73fad60800000000000000
+      internalID: 7903597397981349694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_xx_lg.png
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 10
+        width: 112
+        height: 66
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 614c166393b3f90f0800000000000000
+      internalID: -1108101866398301162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_zb_dk.png
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 449
+        width: 84
+        height: 30
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d1ccfbad6058b4b0800000000000000
+      internalID: -5424497319200636460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_btn_zb_lg.png
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 247
+        width: 114
+        height: 64
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d588346ca1e1f3950800000000000000
+      internalID: 6430891893252655197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_line1.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 704
+        width: 487
+        height: 87
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 692947203fdd33c10800000000000000
+      internalID: 2032211892662211222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_line2.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 908
+        width: 487
+        height: 114
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78a5743c748331bc0800000000000000
+      internalID: -3813642578582611321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_line3.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 793
+        width: 487
+        height: 113
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef20d022899205820800000000000000
+      internalID: 2904867493037015806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_wpbg.png
+      rect:
+        serializedVersion: 2
+        x: 286
+        y: 481
+        width: 196
+        height: 221
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6ba3b680f7398770800000000000000
+      internalID: 8613477268514384747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_WPXQ_wpbg2.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 664
+        width: 282
+        height: 38
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f42ca66463ffa6040800000000000000
+      internalID: 4641802974533435983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MCS_TY_sl_btn1.png: -4945787890514412732
+      MCS_TY_sl_btn2.png: -8143109405158669099
+      MCS_TY_sl_jian.png: -8664042702680371736
+      MCS_TY_sl_jian2.png: -3726083425639544350
+      MCS_TY_sl_line.png: -2388873691523556364
+      MCS_TY_sl_line2.png: 7662494782623463483
+      MCS_TY_sl_zen.png: -7379651824393324017
+      MCS_TY_sl_zen2.png: 1737128066492898004
+      MCS_WPXQ__close.png: -2393025690081532554
+      MCS_WPXQ__tupo_1.png: -7534103141788001299
+      MCS_WPXQ__tupo_2.png: -1488525713340536227
+      MCS_WPXQ__tupo_3.png: -8319866009660855260
+      MCS_WPXQ__tupo_4.png: -3843696066070051332
+      MCS_WPXQ__tupo_5.png: -8522404915914344226
+      MCS_WPXQ__tupo_dk.png: -7163596166163053844
+      MCS_WPXQ__tupo_lg.png: -2203800182361028678
+      MCS_WPXQ_btn_bg.png: 6101442976658267866
+      MCS_WPXQ_btn_bg2.png: 1703601607871035082
+      MCS_WPXQ_btn_bg3.png: 7691468561901039379
+      MCS_WPXQ_btn_df_dk.png: -2609908107032085414
+      MCS_WPXQ_btn_df_lg.png: 6142401775880134542
+      MCS_WPXQ_btn_fy_dk.png: -4234977672292520640
+      MCS_WPXQ_btn_fy_lg.png: 1527283469879399766
+      MCS_WPXQ_btn_lf_dk.png: 4143852241137212055
+      MCS_WPXQ_btn_lf_lg.png: 952627143147992496
+      MCS_WPXQ_btn_sy_dk.png: 9093175973224540761
+      MCS_WPXQ_btn_sy_lg.png: -4879506628339750162
+      MCS_WPXQ_btn_tpxq.png: -4761439309884431233
+      MCS_WPXQ_btn_xx_dk.png: 7903597397981349694
+      MCS_WPXQ_btn_xx_lg.png: -1108101866398301162
+      MCS_WPXQ_btn_zb_dk.png: -5424497319200636460
+      MCS_WPXQ_btn_zb_lg.png: 6430891893252655197
+      MCS_WPXQ_line1.png: 2032211892662211222
+      MCS_WPXQ_line2.png: -3813642578582611321
+      MCS_WPXQ_line3.png: 2904867493037015806
+      MCS_WPXQ_wpbg.png: 8613477268514384747
+      MCS_WPXQ_wpbg2.png: 4641802974533435983
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

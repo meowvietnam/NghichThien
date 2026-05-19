@@ -2,12 +2,12 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!74 &7400000
 AnimationClip:
-  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: E3D-Ground-Continuous-Blue2
+  serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
@@ -31,7 +31,7 @@ AnimationClip:
       - serializedVersion: 3
         time: 0.016666668
         value: {x: 4.3495793, y: 4.3495765, z: 4.3495765}
-        inSlope: {x: 2.3728568E-05, y: 1.070775E-05, z: 1.070775E-05}
+        inSlope: {x: 0.000023728568, y: 0.00001070775, z: 0.00001070775}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 1
         weightedMode: 0
@@ -40,7 +40,7 @@ AnimationClip:
       - serializedVersion: 3
         time: 0.21666667
         value: {x: 5.5, y: 5.5, z: 5.5}
-        inSlope: {x: -1.9285427E-07, y: 4.174968E-07, z: 4.174968E-07}
+        inSlope: {x: -0.00000019285427, y: 0.0000004174968, z: 0.0000004174968}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 1
         weightedMode: 0
@@ -58,7 +58,7 @@ AnimationClip:
       - serializedVersion: 3
         time: 1.2166667
         value: {x: 1.5395108, y: 1.5395099, z: 1.5395099}
-        inSlope: {x: -4.1710236E-06, y: -6.0402135E-06, z: -6.0402135E-06}
+        inSlope: {x: -0.0000041710236, y: -0.0000060402135, z: -0.0000060402135}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 1
         weightedMode: 0
@@ -69,7 +69,8 @@ AnimationClip:
       m_RotationOrder: 4
     path: E3D-DistrotSSphere
   m_FloatCurves:
-  - curve:
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -106,7 +107,9 @@ AnimationClip:
     path: E3D-DistrotSSphere
     classID: 1
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -152,6 +155,7 @@ AnimationClip:
     path: E3D-DistrotSSphere
     classID: 23
     script: {fileID: 0}
+    flags: 16
   m_PPtrCurves: []
   m_SampleRate: 60
   m_WrapMode: 0
@@ -167,6 +171,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3104487309
       attribute: 2086281974
@@ -174,6 +180,8 @@ AnimationClip:
       typeID: 1
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3104487309
       attribute: 2395791964
@@ -181,6 +189,8 @@ AnimationClip:
       typeID: 23
       customType: 22
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     pptrCurveMapping: []
   m_AnimationClipSettings:
     serializedVersion: 2
@@ -209,14 +219,14 @@ AnimationClip:
   m_Events:
   - time: 0.75
     functionName: PlayHit
-    data:
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.2333333
     functionName: removeParent
-    data:
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

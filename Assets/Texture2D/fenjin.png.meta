@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: 20d74215e392d9741be8d869c2b14bd3
-timeCreated: 1760183410
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,11 +57,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -70,39 +77,238 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: fenjin_00008.png
+      rect:
+        serializedVersion: 2
+        x: 35.042908
+        y: 563.52673
+        width: 436.9208
+        height: 550.9603
+      alignment: 9
+      pivot: {x: -0.080204256, y: 1.000931}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62c6da4f16d0f1db0800000000000000
+      internalID: -4819118361895146458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fenjin_00009.png
+      rect:
+        serializedVersion: 2
+        x: 582.9944
+        y: 608.5761
+        width: 369.89713
+        height: 468.84778
+      alignment: 9
+      pivot: {x: -0.1921511, y: 1.0801456}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94ade98fa8955c380800000000000000
+      internalID: -8951650230917473719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fenjin_00010.png
+      rect:
+        serializedVersion: 2
+        x: 1136.9126
+        y: 663.52673
+        width: 289.88098
+        height: 367.94647
+      alignment: 9
+      pivot: {x: -0.3900777, y: 1.227008}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fadbae96bd810c860800000000000000
+      internalID: 7548060306126847407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fenjin_00011.png
+      rect:
+        serializedVersion: 2
+        x: 1688.8309
+        y: 709.5761
+        width: 217.87254
+        height: 277.8971
+      alignment: 9
+      pivot: {x: -0.70259506, y: 1.4588994}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7975af7db906be3e0800000000000000
+      internalID: -2023417385113200745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fenjin_00012.png
+      rect:
+        serializedVersion: 2
+        x: 195.07613
+        y: 210.07613
+        width: 134.84776
+        height: 170.84776
+      alignment: 9
+      pivot: {x: -1.4466397, y: 2.033529}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3db53383516f81aa0800000000000000
+      internalID: -6189927116823110701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fenjin_00013.png
+      rect:
+        serializedVersion: 2
+        x: 751.945
+        y: 268.02676
+        width: 50.930344
+        height: 64.921906
+      alignment: 9
+      pivot: {x: -4.712844, y: 4.4587913}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9522604bd2380cb00800000000000000
+      internalID: 846820962262721113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fenjin_00014.png
+      rect:
+        serializedVersion: 2
+        x: 1257.8633
+        y: 261.02676
+        width: 61.89714
+        height: 77.897125
+      alignment: 9
+      pivot: {x: -3.7808983, y: 3.8059587}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51ebdc96fc44b52f0800000000000000
+      internalID: -983116436026311147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fenjin_00015.png
+      rect:
+        serializedVersion: 2
+        x: 1770.7815
+        y: 261.02676
+        width: 60.89714
+        height: 77.897125
+      alignment: 9
+      pivot: {x: -3.859405, y: 3.8059587}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c84dfa1078d3839d0800000000000000
+      internalID: -2794415918725213044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      fenjin_00008.png: -4819118361895146458
+      fenjin_00009.png: -8951650230917473719
+      fenjin_00010.png: 7548060306126847407
+      fenjin_00011.png: -2023417385113200745
+      fenjin_00012.png: -6189927116823110701
+      fenjin_00013.png: 846820962262721113
+      fenjin_00014.png: -983116436026311147
+      fenjin_00015.png: -2794415918725213044
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
+  userData: 
   assetBundleName: skilleffect
-  assetBundleVariant:
+  assetBundleVariant: 

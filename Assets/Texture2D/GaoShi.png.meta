@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: b0186b5e1f0afc945a965b3d60b5040a
-timeCreated: 1760182997
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,11 +57,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -70,39 +77,445 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: MCS_GS_bangdan.png
+      rect:
+        serializedVersion: 2
+        x: 1753
+        y: 1441
+        width: 270
+        height: 605
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98224bb913bbd0880800000000000000
+      internalID: -8643046288114048375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_bg.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1039
+        width: 1749
+        height: 1007
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6834625c220cca1f0800000000000000
+      internalID: -1032238959005645946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_icon_cangyuan.png
+      rect:
+        serializedVersion: 2
+        x: 2025
+        y: 2020
+        width: 20
+        height: 26
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7ad6cae074e7a9e0800000000000000
+      internalID: -1610067168135292293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_icon_hanshi.png
+      rect:
+        serializedVersion: 2
+        x: 2025
+        y: 1992
+        width: 20
+        height: 26
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06c641ef6d385d810800000000000000
+      internalID: 1789481386358631520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_icon_huojin.png
+      rect:
+        serializedVersion: 2
+        x: 2025
+        y: 1964
+        width: 20
+        height: 26
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d91e0534b28e62250800000000000000
+      internalID: 5919674032735707549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_icon_linshi.png
+      rect:
+        serializedVersion: 2
+        x: 2025
+        y: 1936
+        width: 20
+        height: 26
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f84399eac5c935e0800000000000000
+      internalID: -1929293490058737423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_icon_shajin.png
+      rect:
+        serializedVersion: 2
+        x: 2025
+        y: 1908
+        width: 20
+        height: 26
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f2cf9424b3aa9630800000000000000
+      internalID: 3934637218565440247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_icon_shengwang.png
+      rect:
+        serializedVersion: 2
+        x: 2025
+        y: 1855
+        width: 17
+        height: 23
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45bb82051ad89ead0800000000000000
+      internalID: -2672449179893580972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_icon_yuanlin.png
+      rect:
+        serializedVersion: 2
+        x: 2025
+        y: 1880
+        width: 20
+        height: 26
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56ac8bcbaf534d700800000000000000
+      internalID: 564135204352477797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_ji.png
+      rect:
+        serializedVersion: 2
+        x: 1987
+        y: 1363
+        width: 49
+        height: 76
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4c81733cf9850330800000000000000
+      internalID: 3676496387105721423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_line.png
+      rect:
+        serializedVersion: 2
+        x: 1753
+        y: 1258
+        width: 221
+        height: 11
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea39661f6539b7680800000000000000
+      internalID: -8756243048865295442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_tijiao.png
+      rect:
+        serializedVersion: 2
+        x: 1753
+        y: 1207
+        width: 137
+        height: 49
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d6777099f52b6600800000000000000
+      internalID: 462505140536440536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_tijiao_bk.png
+      rect:
+        serializedVersion: 2
+        x: 1897.0762
+        y: 1207.0762
+        width: 126.847755
+        height: 48.847755
+      alignment: 9
+      pivot: {x: -0.04001783, y: 1.0015574}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ea7c4e8ab769e160800000000000000
+      internalID: 7055284342201547497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_tijiao_hlg.png
+      rect:
+        serializedVersion: 2
+        x: 1753
+        y: 1156
+        width: 137
+        height: 49
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e95b678cc660e68b0800000000000000
+      internalID: -5157177459003181666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_yilinqu.png
+      rect:
+        serializedVersion: 2
+        x: 1753
+        y: 1356
+        width: 232
+        height: 83
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0b4ae5cfe0728a70800000000000000
+      internalID: 8827742394719554316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_yishougou.png
+      rect:
+        serializedVersion: 2
+        x: 1753
+        y: 1271
+        width: 232
+        height: 83
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57869f9681d57fcc0800000000000000
+      internalID: -3677368211286169483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_GS_zhezhao.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 317
+        width: 1458
+        height: 720
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b58872ce98cec000800000000000000
+      internalID: 58204429395461552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MCS_GS_bangdan.png: -8643046288114048375
+      MCS_GS_bg.png: -1032238959005645946
+      MCS_GS_icon_cangyuan.png: -1610067168135292293
+      MCS_GS_icon_hanshi.png: 1789481386358631520
+      MCS_GS_icon_huojin.png: 5919674032735707549
+      MCS_GS_icon_linshi.png: -1929293490058737423
+      MCS_GS_icon_shajin.png: 3934637218565440247
+      MCS_GS_icon_shengwang.png: -2672449179893580972
+      MCS_GS_icon_yuanlin.png: 564135204352477797
+      MCS_GS_ji.png: 3676496387105721423
+      MCS_GS_line.png: -8756243048865295442
+      MCS_GS_tijiao.png: 462505140536440536
+      MCS_GS_tijiao_bk.png: 7055284342201547497
+      MCS_GS_tijiao_hlg.png: -5157177459003181666
+      MCS_GS_yilinqu.png: 8827742394719554316
+      MCS_GS_yishougou.png: -3677368211286169483
+      MCS_GS_zhezhao.png: 58204429395461552
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
