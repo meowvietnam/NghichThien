@@ -200,7 +200,7 @@ public class AssetOptimize
             InjectRenderData();
         }
     }
-    [MenuItem("Tools/DeleteRenderDatas")]
+    // [MenuItem("Tools/DeleteRenderDatas")]
     public static void DeleteRenderDatas()
     {
         var guids = AssetDatabase.FindAssets("t:Scene");
@@ -222,7 +222,7 @@ public class AssetOptimize
             );
         }
     }
-    [MenuItem("Tools/DeleteRenderDataPrefabs")]
+    // [MenuItem("Tools/DeleteRenderDataPrefabs")]
     public static void DeleteRenderDataPrefabs() {
         var prefabs = GetAllPrefabs();
         foreach (var (path, prefab) in prefabs)
