@@ -200,7 +200,45 @@ public class AssetOptimize
             InjectRenderData();
         }
     }
-
+    [MenuItem("Tools/DeleteRenderDatas")]
+    public static void DeleteRenderDatas()
+    {
+        var guids = AssetDatabase.FindAssets("t:Scene");
+        foreach (var guid in guids)
+        {
+            var scenePath = AssetDatabase.GUIDToAssetPath(guid);
+            var scene = EditorSceneManager.OpenScene(scenePath);
+            var renderDatas = GetRenderDatas(scene);
+            foreach (var renderData in renderDatas)
+            {
+                Object.DestroyImmediate(renderData);
+            }
+            Debug.Log(scene.name);
+            EditorSceneManager.MarkSceneDirty(
+                scene
+            );
+            EditorSceneManager.SaveScene(
+                scene
+            );
+        }
+    }
+    [MenuItem("Tools/DeleteRenderDataPrefabs")]
+    public static void DeleteRenderDataPrefabs() {
+        var prefabs = GetAllPrefabs();
+        foreach (var (path, prefab) in prefabs)
+        {
+            GameObject root =
+                PrefabUtility.LoadPrefabContents(path);
+            var a = root.GetComponentsInChildren<RenderData>(true);
+            foreach (var renderData in a)
+            {
+                Object.DestroyImmediate(renderData);
+            }
+            PrefabUtility.SaveAsPrefabAsset(root, path);
+            PrefabUtility.UnloadPrefabContents(root);
+            AssetDatabase.SaveAssets();
+        }
+    }
     public static RenderData[] GetRenderDatas(Scene scene)
     {
         var gameObjects = scene.GetRootGameObjects();

@@ -3,6 +3,7 @@ using Base;
 using CreateCharacter;
 using LongDH.LongDHModules;
 using Network;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +18,6 @@ public class UIHeadPanel : PanelGroup
     [SerializeField] private Sprite[] listSpriteIconLevel;
     [SerializeField] private CharacterGraphic characterGraphic;
     public MailButton mailBtn;
-
     public override void Init()
     {
         base.Init();

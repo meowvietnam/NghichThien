@@ -29,7 +29,6 @@ GameObject:
   - component: {fileID: 39}
   - component: {fileID: 28}
   - component: {fileID: 57}
-  - component: {fileID: 60}
   m_Layer: 0
   m_Name: MCS_kaitou_dan
   m_TagString: Untagged
@@ -85,7 +84,6 @@ GameObject:
   - component: {fileID: 41}
   - component: {fileID: 29}
   - component: {fileID: 61}
-  - component: {fileID: 1209652760}
   m_Layer: 0
   m_Name: MCS_kaitou_aim6
   m_TagString: Untagged
@@ -122,7 +120,6 @@ GameObject:
   - component: {fileID: 43}
   - component: {fileID: 31}
   - component: {fileID: 62}
-  - component: {fileID: 647399530}
   m_Layer: 0
   m_Name: MCS_kaitou_aim2
   m_TagString: Untagged
@@ -141,7 +138,6 @@ GameObject:
   - component: {fileID: 44}
   - component: {fileID: 32}
   - component: {fileID: 63}
-  - component: {fileID: 1003474900}
   m_Layer: 0
   m_Name: MCS_kaitou_aim4
   m_TagString: Untagged
@@ -160,7 +156,6 @@ GameObject:
   - component: {fileID: 45}
   - component: {fileID: 33}
   - component: {fileID: 64}
-  - component: {fileID: 1214904194}
   m_Layer: 0
   m_Name: MCS_kaitou_aim1
   m_TagString: Untagged
@@ -197,7 +192,6 @@ GameObject:
   - component: {fileID: 46}
   - component: {fileID: 34}
   - component: {fileID: 66}
-  - component: {fileID: 70}
   m_Layer: 0
   m_Name: MCS_kaitou_aim3
   m_TagString: Untagged
@@ -216,7 +210,6 @@ GameObject:
   - component: {fileID: 47}
   - component: {fileID: 35}
   - component: {fileID: 67}
-  - component: {fileID: 69}
   m_Layer: 0
   m_Name: MCS_kaitou_aim5
   m_TagString: Untagged
@@ -883,21 +876,6 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
---- !u!114 &60
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RenderData
-  <Texture>k__BackingField: {fileID: 2800000, guid: 03a07c977773f23419e84165e5b73890,
-    type: 3}
-  <SpriteName>k__BackingField: MCS_kaitou_dan
 --- !u!114 &61
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1134,36 +1112,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &69
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 15}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RenderData
-  <Texture>k__BackingField: {fileID: 2800000, guid: b57a1b29949d9f1489a82873cc29667f,
-    type: 3}
-  <SpriteName>k__BackingField: MCS_kaitou_aim5
---- !u!114 &70
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RenderData
-  <Texture>k__BackingField: {fileID: 2800000, guid: 7363014e33c443244a4133cee17e41e6,
-    type: 3}
-  <SpriteName>k__BackingField: MCS_kaitou_aim3
 --- !u!29 &71
 OcclusionCullingSettings:
   m_ObjectHideFlags: 0
@@ -1317,21 +1265,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 397025178}
   m_CullTransparentMesh: 1
---- !u!114 &647399530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 10}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RenderData
-  <Texture>k__BackingField: {fileID: 2800000, guid: 7083cf5980b79874282782d8f9e559d2,
-    type: 3}
-  <SpriteName>k__BackingField: MCS_kaitou_aim2
 --- !u!1 &727112480
 GameObject:
   m_ObjectHideFlags: 0
@@ -1444,51 +1377,6 @@ MonoBehaviour:
   username: test09
   loggedIn: "\u0110ang \u0111\u0103ng nh\u1EADp..."
   startScene: {fileID: 775922832}
---- !u!114 &1003474900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 11}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RenderData
-  <Texture>k__BackingField: {fileID: 2800000, guid: f5188087bf2e3574482cddb0006d81ed,
-    type: 3}
-  <SpriteName>k__BackingField: MCS_kaitou_aim4
---- !u!114 &1209652760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RenderData
-  <Texture>k__BackingField: {fileID: 2800000, guid: 8ef39444339120d47910395c22a9604e,
-    type: 3}
-  <SpriteName>k__BackingField: MCS_kaitou_aim6
---- !u!114 &1214904194
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 12}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88cf0cf3a093e421aafedf653cda764c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RenderData
-  <Texture>k__BackingField: {fileID: 2800000, guid: 97cf0212510141a4181acee3652cfced,
-    type: 3}
-  <SpriteName>k__BackingField: MCS_kaitou_aim1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
