@@ -162,25 +162,23 @@ public class Test : MonoBehaviour
 
     public void ResizeTexture(Texture2D texture, HashSet<Sprite> sprites)
     {
-        // var target = 2048;
-        // string path = AssetDatabase.GetAssetPath(texture);
-        // var importer = AssetImporter.GetAtPath(path) as TextureImporter;
-        // if (importer == null) return;
-        // int maxSize = GetMaxSize(importer);
-        var metas = sprites.Select(x => CreateMeta(x)).ToArray();
-        ApplySpriteSheet(texture, metas);
-        //SetMaxSize(importer, target);
-        // var originalSprites = GetOriginalSprites(texture);
-        // foreach (var sprite in sprites)
-        // {
-        //     var originalSprite = originalSprites.FirstOrDefault(x => x.name == sprite.name);
-        //     Copy(originalSprite, sprite);
-        // }
-        // importer.SaveAndReimport();
-        // if (maxSize >= 1024 * 4)
-        // {
-        //
-        // }
+        string path = AssetDatabase.GetAssetPath(texture);
+        var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+        if (importer == null) return;
+        int maxSize = GetMaxSize(importer);
+        var minSize = 4096;
+        var target = 2048;
+        if (maxSize >= minSize)
+        {
+            Debug.Log($"Resize: {texture.name} ({maxSize} -> {target})");
+            SetMaxSize(importer, target);
+            var scale = maxSize / target;
+            foreach (var sprite in sprites)
+            {
+                Rescale(sprite, scale);
+            }
+            importer.SaveAndReimport();
+        }
     }
 
 
