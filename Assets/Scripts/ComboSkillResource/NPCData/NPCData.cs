@@ -1,10 +1,14 @@
-﻿using CreateCharacter;
+﻿using AllMaps;
+using CreateCharacter;
+using LongDH.LongDHModules;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using ThanThong = Skill.ThanThong;
 
 public class NPCData : ScriptableObject
 {
+    public virtual ETypeVisualChar eTypeVisualChar => ETypeVisualChar.Character;
+
     protected virtual string[] Surnames => new[] {
         "Diệp", "Tiêu", "Lâm", "Sở", "Hàn", "Thần", "Lục", "Tô", "Tần", "Mặc",
         "Cố", "Thẩm", "Phương", "Bạch", "Long", "Phượng", "Vân", "Tống", "Khương", "Vũ",
@@ -22,7 +26,7 @@ public class NPCData : ScriptableObject
         "Tâm", "Viêm", "Tôn", "Hoàng", "Không", "Ảnh", "Sát", "Ngạo", "Thương", "Lỗi",
         "Sương", "Yên", "Tịch", "Hùng", "Hải", "Sơn", "Lâm", "Hỏa", "Thổ", "Kim"
     };
-
+   
     public virtual string GenerateName()
     {
         string ho = Surnames[Random.Range(0, Surnames.Length)];

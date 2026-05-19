@@ -4,9 +4,9 @@ using LongDH.Script.ObjectPool;
 using Skill;
 using UnityEngine;
 
-public class EnemyData : NPCData , IActionMap
+public class EnemyData : NPCData
 {
-    public ETypeVisualChar eTypeVisualChar => GameManager.levelWithVisualChar[charStats.level];
+    public override ETypeVisualChar eTypeVisualChar => GameManager.levelWithVisualChar[charStats.level];
     // Tiền tố: Chỉ thuộc tính/màu sắc (Hệ)
     protected override string[] Surnames => new[] {
         "Hắc", "Bạch", "Xích", "Thanh", "Kim", "Tử", "U", "Huyết", "Ma", "Lôi",
@@ -25,12 +25,7 @@ public class EnemyData : NPCData , IActionMap
         "Binh", "Tướng", "Vương", "Hoàng", "Đế", "Nghiệt", "Ma", "Biến", "Sư", "Tử"
     };
 
-    public void EnterMap(Map map)
-    {
-        
-        Pool.Get<NpcManager>().OnGoToEnemy(this);
-        Pool.Get<GameManager>().GoToCombat(new GameManager.CharCombatInit { eTypeVisual = this.eTypeVisualChar, charStats = this.charStats }, ETypeCombat.AllMaps);
-    }
+ 
 
     public override void SetBaseStats(GameManager gameConfig)
     {

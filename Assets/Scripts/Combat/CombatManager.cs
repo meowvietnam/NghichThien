@@ -186,7 +186,7 @@ public class CombatManager : BaseBehaviour
         {
             Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Xác nhận bỏ chạy khỏi trận chiến này?", () =>
             {
-                Pool.Get<GameManager>().BackAllMaps();
+                Pool.Get<GameManager>().BackAllMapFromCombat(GameManager.ECombatResult.GiveUp);
             });
         });
     }

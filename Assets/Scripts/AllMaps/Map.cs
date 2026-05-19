@@ -60,7 +60,7 @@ namespace AllMaps
         {
             if(actionMap != null)
             {
-                actionMap.EnterMap(this);
+                actionMap.ActiveEventMap(this);
 
             }
             ResetDataAction();

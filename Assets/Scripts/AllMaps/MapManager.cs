@@ -18,7 +18,7 @@ namespace AllMaps
 {
     public interface IActionMap
     {
-        void EnterMap(Map map);
+        void ActiveEventMap(Map map);
     }
     public class MapManager : MonoBehaviour, IAllMapsCallback
     {
@@ -186,7 +186,7 @@ namespace AllMaps
             {
                 characterStatsSecures.Add(CharacterStatsSecureBuilder.FromCharacterSnapshot(character));
             }
-            List<NPCData> npcOnCurrentMap = Pool.Get<NpcManager>().npcDatas.Where(x => x.charStats.idNode == current.Id).ToList();
+            List<NPCData> npcOnCurrentMap = Pool.Get<NPCManager>().npcDatas.Where(x => x.charStats.idNode == current.Id).ToList();
             foreach (var character in npcOnCurrentMap)
             {
 
@@ -194,6 +194,7 @@ namespace AllMaps
             }
             Pool.Get<UINPCJiaoHu>().ShowNPCList(characterStatsSecures);
         }
+        #if UNITY_EDITOR
 
         [Button]
         public void ChangeSprites()
@@ -220,12 +221,16 @@ namespace AllMaps
         public static List<Sprite> GetAllSpritesInFolder(string folderPath)
         {
             List<Sprite> result = new List<Sprite>();
+
             string[] guids = AssetDatabase.FindAssets("t:Texture2D", new[] { folderPath });
+
             foreach (string guid in guids)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
-                var assets =
+
+                System.Object[] assets =
                     AssetDatabase.LoadAllAssetRepresentationsAtPath(path);
+
                 foreach (var obj in assets)
                 {
                     if (obj is Sprite sprite)
@@ -236,5 +241,7 @@ namespace AllMaps
             }
             return result;
         }
+#endif
+
     }
 }
