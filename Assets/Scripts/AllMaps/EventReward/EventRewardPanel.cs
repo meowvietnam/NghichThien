@@ -29,18 +29,21 @@ public class EventRewardPanel : Popup , IUISingleton
         if(rewardData != null)
         {
             imgBGTilte.sprite = spriteWin;
-
+            this.InitActionClose(() =>
+            {
+                Pool.Get<GameManager>().BackAllMapFromCombat(GameManager.ECombatResult.Win);
+            });
         }
         else
         {
             imgBGTilte.sprite = spriteLose;
-
+            this.InitActionClose(() =>
+            {
+                Pool.Get<GameManager>().BackAllMapFromCombat(GameManager.ECombatResult.Lose);
+            });
 
         }
-        this.InitActionClose(() =>
-        {
-            Pool.Get<GameManager>().BackAllMapFromCombat(GameManager.ECombatResult.Win);
-        });
+       
     }
     public void InitShow(RewardSnapshot rewardData,string contentText)
     {

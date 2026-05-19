@@ -1,4 +1,5 @@
 ﻿using AllMaps.NgoDao;
+using Base;
 using CreateCharacter.CharStats;
 using DG.Tweening;
 using LongDH.LongDHModules;
@@ -128,6 +129,19 @@ public class CombatManager : BaseBehaviour
         if(characterDie != null)
         {
             Observer.Notify(EventList.Combat.END_COMBAT, characterWin, characterDie);// thằng đầu là thằng win thằng sau là thằng die
+            if(characterWin == char1)
+            {
+                // Fake Data
+                Pool.Get<EventRewardPanel>().InitShowCombatReward(new RewardSnapshot {ItemRefs = new(),Money = 20, MoneyVip = 30},"Thắng làm vua, thua làm giặc!");
+
+            }
+            else
+            {
+                
+                Pool.Get<EventRewardPanel>().InitShowCombatReward(null,"Thất bại là mẹ thành công!");
+
+
+            }
             EventList.Combat.RemoveAllCombatObservers();
         } 
             

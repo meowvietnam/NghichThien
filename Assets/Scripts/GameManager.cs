@@ -390,6 +390,7 @@ public class GameManager : BaseBehaviour
         if (enemyCombat == null) return;
         currentETypeCombat = eTypeCombat;
         Pool.Get<PrepareCombatPanel>().Show();
+        currentECombatResult = ECombatResult.None;
     }
 
     public void BackAllMapFromCombat(ECombatResult eCombatResult)
