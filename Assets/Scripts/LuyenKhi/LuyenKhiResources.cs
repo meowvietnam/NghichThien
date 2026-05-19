@@ -25,20 +25,6 @@ namespace LuyenKhi
         [field: SerializeField] public StringDict Strings { get; private set; } = new();
         private static LuyenKhiResources instance;
 
-        [Button]
-        public void Move()
-        {
-            foreach (var item in Materials)
-            {
-                item.Move();
-            }
-            foreach (var item in RewardItems)
-            {
-                item.Move();
-            }
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-        }
         public static LuyenKhiResources Instance
         {
             get
@@ -107,6 +93,17 @@ namespace LuyenKhi
             var path = $"{Application.dataPath}/Exports/LuyenKhiResources.bin";
             File.WriteAllBytes(path, writer.Buffer);
             Debug.Log(path);
+        }
+        [Button]
+        public void ShowSpriteSize()
+        {
+            var sprites = EquipmentIcons.Select(x => x.Icon)
+                    .Concat(Materials.Select(x => x.Icon))
+                    .Concat(RewardItems.Select(x => new[] { x.Icon, x.IconFight }).SelectMany(x => x))
+                    .Where(x => x != null)
+                    .ToHashSet();
+            var size = AssetSize.CalculateSize(sprites);
+            Debug.Log(size);
         }
 #if UNITY_EDITOR
         [Button]

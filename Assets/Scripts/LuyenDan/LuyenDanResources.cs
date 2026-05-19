@@ -37,17 +37,14 @@ namespace LuyenDan
         }
 
         [Button]
-        public void Move()
+        public void ShowSpriteSize()
         {
-            foreach (var herbData in HerbDatas)
-            {
-                herbData.Move();
-            }
-
-            foreach (var linhDan in LinhDans)
-            {
-                linhDan.Move();
-            }
+            var sprites = TempFurnaceDatas.Select(x => new [] {x.Icon,x.BigIcon}).SelectMany(x => x)
+                .Concat(HerbDatas.Select(x => x.Icon))
+                .Concat(LinhDans.Select(x => x.Icon))
+                .ToHashSet();
+            var size = AssetSize.CalculateSize(sprites);
+            Debug.Log(size);
         }
         public IItemData FindItem(FurnaceData furnace)
         {
