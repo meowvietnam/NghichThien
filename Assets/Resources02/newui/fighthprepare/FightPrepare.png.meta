@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: 11a2f3f8079364d45a594581f4417078
-timeCreated: 1760182909
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,11 +57,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -70,39 +77,422 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: MCS_ZQ_bg.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 372
+        width: 966
+        height: 650
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c548c35f728ab630800000000000000
+      internalID: 3943607907094382016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_ZQ_btn_jian_bk.png
+      rect:
+        serializedVersion: 2
+        x: 14.07612
+        y: 301.0761
+        width: 253.84776
+        height: 66.89713
+      alignment: 9
+      pivot: {x: -0.047572292, y: 1.0302966}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a25961f499431e2a0800000000000000
+      internalID: -6710024136743807702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_ZQ_btn_jian_lg.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 226
+        width: 278
+        height: 71
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04b97398a32434cd0800000000000000
+      internalID: -2575141742748132544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_ZQ_btn_jian_og.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 153
+        width: 278
+        height: 71
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 928a0edfed7885110800000000000000
+      internalID: 1249898288407160873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_ZQ_btn_sheng2_bk.png
+      rect:
+        serializedVersion: 2
+        x: 14.07612
+        y: 82.07612
+        width: 253.84776
+        height: 66.89713
+      alignment: 9
+      pivot: {x: -0.047572292, y: 1.0302964}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7f5a6317391c9cd0800000000000000
+      internalID: -2550135564658909315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_ZQ_btn_sheng2_lg.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 7
+        width: 278
+        height: 71
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80082647d9ffc5660800000000000000
+      internalID: 7376051341453590536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_ZQ_btn_sheng2_og.png
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 299
+        width: 278
+        height: 71
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04c4b56afd46e98d0800000000000000
+      internalID: -2837719803465348032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_ZQ_btn_sheng_bk.png
+      rect:
+        serializedVersion: 2
+        x: 574.0761
+        y: 301.0761
+        width: 253.84776
+        height: 66.89713
+      alignment: 9
+      pivot: {x: -0.047572255, y: 1.0302966}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b10a9c2c6cbb5ec0800000000000000
+      internalID: -3577058306224946761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_ZQ_btn_sheng_lg.png
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 226
+        width: 278
+        height: 71
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acd0d5b03c0ec9b10800000000000000
+      internalID: 1989712263704808906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_ZQ_btn_sheng_og.png
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 153
+        width: 278
+        height: 71
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6f0cb4007fb84f00800000000000000
+      internalID: 1101340596728762221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_ZQ_btn_tao_bk.png
+      rect:
+        serializedVersion: 2
+        x: 294.0761
+        y: 82.07612
+        width: 253.84776
+        height: 66.89713
+      alignment: 9
+      pivot: {x: -0.047572255, y: 1.0302964}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b5a8f6f83f452380800000000000000
+      internalID: -8996697574522444364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_ZQ_btn_tao_lg.png
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 7
+        width: 278
+        height: 71
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9dcf0fc9a8fe2910800000000000000
+      internalID: 1814661108083969434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_ZQ_btn_tao_og.png
+      rect:
+        serializedVersion: 2
+        x: 562
+        y: 226
+        width: 278
+        height: 71
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c101af5e40b04e910800000000000000
+      internalID: 1865628261304373276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_ZQ_btn_zhan_bk.png
+      rect:
+        serializedVersion: 2
+        x: 574.0761
+        y: 155.07613
+        width: 253.84776
+        height: 66.89713
+      alignment: 9
+      pivot: {x: -0.047572255, y: 1.0302963}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eeccdae52edce2a60800000000000000
+      internalID: 7651279189083802862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_ZQ_btn_zhan_lg.png
+      rect:
+        serializedVersion: 2
+        x: 562
+        y: 80
+        width: 278
+        height: 71
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca823f24513520a30800000000000000
+      internalID: 4179994754935892140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_ZQ_btn_zhan_og.png
+      rect:
+        serializedVersion: 2
+        x: 562
+        y: 7
+        width: 278
+        height: 71
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08a482e1c8165f960800000000000000
+      internalID: 7635115997705816704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MCS_ZQ_bg.png: 3943607907094382016
+      MCS_ZQ_btn_jian_bk.png: -6710024136743807702
+      MCS_ZQ_btn_jian_lg.png: -2575141742748132544
+      MCS_ZQ_btn_jian_og.png: 1249898288407160873
+      MCS_ZQ_btn_sheng2_bk.png: -2550135564658909315
+      MCS_ZQ_btn_sheng2_lg.png: 7376051341453590536
+      MCS_ZQ_btn_sheng2_og.png: -2837719803465348032
+      MCS_ZQ_btn_sheng_bk.png: -3577058306224946761
+      MCS_ZQ_btn_sheng_lg.png: 1989712263704808906
+      MCS_ZQ_btn_sheng_og.png: 1101340596728762221
+      MCS_ZQ_btn_tao_bk.png: -8996697574522444364
+      MCS_ZQ_btn_tao_lg.png: 1814661108083969434
+      MCS_ZQ_btn_tao_og.png: 1865628261304373276
+      MCS_ZQ_btn_zhan_bk.png: 7651279189083802862
+      MCS_ZQ_btn_zhan_lg.png: 4179994754935892140
+      MCS_ZQ_btn_zhan_og.png: 7635115997705816704
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

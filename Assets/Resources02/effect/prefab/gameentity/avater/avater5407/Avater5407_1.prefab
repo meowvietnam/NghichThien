@@ -2,55 +2,17 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!1 &1136556559764407
 GameObject:
-  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4613057920813711}
   - component: {fileID: 95815821720878035}
-  - component: {fileID: 114496424218442170}
   - component: {fileID: 143591001004819412}
   m_Layer: 0
   m_Name: Avater5407_1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1613371663176898
-GameObject:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Component:
-  - component: {fileID: 4581132087560725}
-  - component: {fileID: 33796927082336276}
-  - component: {fileID: 23969713718063052}
-  - component: {fileID: 114190984087887955}
-  - component: {fileID: 114855490938506246}
-  m_Layer: 0
-  m_Name: Spine GameObject (hero-pro)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1891123828696504
-GameObject:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Component:
-  - component: {fileID: 4520201113956917}
-  - component: {fileID: 82189826654138113}
-  m_Layer: 0
-  m_Name: Audio Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,18 +25,19 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1136556559764407}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4581132087560725}
   - {fileID: 4520201113956917}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
 --- !u!95 &95815821720878035
 Animator:
-  serializedVersion: 3
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -87,61 +50,31 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
-  m_WarningMessage:
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114496424218442170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1136556559764407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1399947836, guid: 58c8735ab23f23d655e8cae226b87351, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  skeletonAnimation: {fileID: 114190984087887955}
-  statesAndAnimations:
-  - stateName: Idle
-    animation: {fileID: 11400000, guid: a1cae669723eda24c84a26c12b7d7d6f, type: 2}
-  - stateName: Walk
-    animation: {fileID: 11400000, guid: a1cae669723eda24c84a26c12b7d7d6f, type: 2}
-  - stateName: Run
-    animation: {fileID: 11400000, guid: a1cae669723eda24c84a26c12b7d7d6f, type: 2}
-  - stateName: Jump
-    animation: {fileID: 11400000, guid: a1cae669723eda24c84a26c12b7d7d6f, type: 2}
-  - stateName: Fall
-    animation: {fileID: 11400000, guid: a1cae669723eda24c84a26c12b7d7d6f, type: 2}
-  - stateName: Punch
-    animation: {fileID: 11400000, guid: a1cae669723eda24c84a26c12b7d7d6f, type: 2}
-  - stateName: Dead
-    animation: {fileID: 11400000, guid: a1cae669723eda24c84a26c12b7d7d6f, type: 2}
-  - stateName: Hit
-    animation: {fileID: 11400000, guid: ee158581d7f77d245a8753e2885b3979, type: 2}
-  transitions:
-  - from: {fileID: 11400000, guid: 65f943ea0ae3f1144949357587c0dfce, type: 2}
-    to: {fileID: 11400000, guid: b3ac60d94b2b231478c0a77654c56829, type: 2}
-    transition: {fileID: 11400000, guid: a65c050d5a3c5cf4baff44860744439d, type: 2}
-  - from: {fileID: 11400000, guid: 65f943ea0ae3f1144949357587c0dfce, type: 2}
-    to: {fileID: 11400000, guid: f87e3f5d4430b0d4a9ab9b31f3391a3b, type: 2}
-    transition: {fileID: 11400000, guid: b2a225d0b6f3bf4439a4d41a0251aacc, type: 2}
-  - from: {fileID: 11400000, guid: 65f943ea0ae3f1144949357587c0dfce, type: 2}
-    to: {fileID: 11400000, guid: 0f6b2abdbe862d846962a3f7b2e5bf77, type: 2}
-    transition: {fileID: 11400000, guid: dede3fc30a0771946873ce9ad893ea5b, type: 2}
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!143 &143591001004819412
 CharacterController:
-  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1136556559764407}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
+  serializedVersion: 3
   m_Height: 8.24
   m_Radius: 0.81
   m_SlopeLimit: 45
@@ -149,6 +82,24 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1613371663176898
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4581132087560725}
+  - component: {fileID: 33796927082336276}
+  - component: {fileID: 23969713718063052}
+  m_Layer: 0
+  m_Name: Spine GameObject (hero-pro)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &4581132087560725
 Transform:
   m_ObjectHideFlags: 0
@@ -156,12 +107,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1613371663176898}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 5, y: 1.66, z: 0}
   m_LocalScale: {x: -1.2, y: 1.2, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4613057920813711}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &33796927082336276
 MeshFilter:
@@ -182,9 +134,17 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -196,6 +156,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -205,67 +166,28 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
---- !u!114 &114190984087887955
-MonoBehaviour:
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1891123828696504
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1613371663176898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 354902358, guid: ebe353a9e51fc6708625f16edcb81e06, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  skeletonDataAsset: {fileID: 11400000, guid: a31d6311c37c42b498cf9bc406960fc1, type: 2}
-  initialSkinName:
-  initialFlipX: 0
-  initialFlipY: 0
-  updateWhenInvisible: 3
-  separatorSlotNames: []
-  zSpacing: 0
-  useClipping: 1
-  immutableTriangles: 0
-  pmaVertexColors: 1
-  clearStateOnDisable: 0
-  tintBlack: 0
-  singleSubmesh: 0
-  fixDrawOrder: 0
-  addNormals: 0
-  calculateTangents: 0
-  maskInteraction: 0
-  maskMaterials:
-    materialsMaskDisabled: []
-    materialsInsideMask: []
-    materialsOutsideMask: []
-  disableRenderingOnOverride: 1
-  updateTiming: 1
-  unscaledTime: 0
-  _animationName:
-  loop: 1
-  timeScale: 1
---- !u!114 &114855490938506246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1613371663176898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1039386308, guid: 58c8735ab23f23d655e8cae226b87351, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  skeletonAnimation: {fileID: 114190984087887955}
-  eventName: footstep
-  audioSource: {fileID: 82189826654138113}
-  audioClip: {fileID: 8300000, guid: 60823bec836275d4f83f9dfbad059775, type: 3}
-  basePitch: 1
-  randomPitchOffset: 0.1
-  logDebugMessage: 0
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4520201113956917}
+  - component: {fileID: 82189826654138113}
+  m_Layer: 0
+  m_Name: Audio Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &4520201113956917
 Transform:
   m_ObjectHideFlags: 0
@@ -273,24 +195,26 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1891123828696504}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4613057920813711}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &82189826654138113
 AudioSource:
-  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1891123828696504}
   m_Enabled: 1
+  serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.297
   m_Pitch: 1

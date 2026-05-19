@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: 86bb705d82ab94249be9599c2ffd4f8c
-timeCreated: 1760183400
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,13 +57,19 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 4096
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 2
@@ -70,39 +77,366 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: jin_00000.png
+      rect:
+        serializedVersion: 2
+        x: 2004.0762
+        y: 2914.013
+        width: 196.89716
+        height: 292.97418
+      alignment: 9
+      pivot: {x: -2.3874197, y: 1.6588051}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b064d5667fb6cff40800000000000000
+      internalID: 5763600333445875211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jin_00001.png
+      rect:
+        serializedVersion: 2
+        x: 928.0761
+        y: 2851.0762
+        width: 355.84778
+        height: 434.91095
+      alignment: 9
+      pivot: {x: -0.44984433, y: 1.2621522}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad730d6acac045dc0800000000000000
+      internalID: -3651279462218057766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jin_00002.png
+      rect:
+        serializedVersion: 2
+        x: 162.07613
+        y: 766.0761
+        width: 357.84778
+        height: 437.89716
+      alignment: 9
+      pivot: {x: -0.44733024, y: 1.2603961}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80ebabf724c69d340800000000000000
+      internalID: 4889057903353970184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jin_00003.png
+      rect:
+        serializedVersion: 2
+        x: 162.07613
+        y: 1460.0582
+        width: 344.84778
+        height: 434.91507
+      alignment: 9
+      pivot: {x: -0.46419358, y: 1.2690794}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e499fc11c2fb62630800000000000000
+      internalID: 3902016323161397582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jin_00004.png
+      rect:
+        serializedVersion: 2
+        x: 162.02675
+        y: 2156.0269
+        width: 331.89716
+        height: 426.96033
+      alignment: 9
+      pivot: {x: -0.48215765, y: 1.288113}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c54b2819b49b0d700800000000000000
+      internalID: 563153687636259932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jin_00005.png
+      rect:
+        serializedVersion: 2
+        x: 163.03629
+        y: 2854.0762
+        width: 318.93695
+        height: 405.84778
+      alignment: 9
+      pivot: {x: -0.5049157, y: 1.3451443}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84b076d5668442d70800000000000000
+      internalID: 9017411958393473864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jin_00006.png
+      rect:
+        serializedVersion: 2
+        x: 3229.0269
+        y: 3554
+        width: 316.94647
+        height: 368.94586
+      alignment: 9
+      pivot: {x: -0.51436716, y: 1.4636294}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88ae4323e8b1fba30800000000000000
+      internalID: 4233132472293190280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jin_00007.png
+      rect:
+        serializedVersion: 2
+        x: 2502.0269
+        y: 3527.0762
+        width: 365.89716
+        height: 467.88098
+      alignment: 9
+      pivot: {x: -0.5521411, y: 1.2116839}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 885f1eedf0f7584e0800000000000000
+      internalID: -1980036755018877560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jin_00008.png
+      rect:
+        serializedVersion: 2
+        x: 2502.0269
+        y: 3527.0762
+        width: 365.89716
+        height: 467.88098
+      alignment: 9
+      pivot: {x: -0.5521411, y: 1.2116839}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4b0d90471c3ef260800000000000000
+      internalID: 7133204930367392590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jin_00009.png
+      rect:
+        serializedVersion: 2
+        x: 1657.0267
+        y: 3477.0762
+        width: 504.92194
+        height: 580.91095
+      alignment: 9
+      pivot: {x: -0.24365495, y: 1.0619938}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4b158e43cede49c0800000000000000
+      internalID: -3940967693485270196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jin_00010.png
+      rect:
+        serializedVersion: 2
+        x: 1657.0267
+        y: 3477.0762
+        width: 504.92194
+        height: 580.91095
+      alignment: 9
+      pivot: {x: -0.24365495, y: 1.0619938}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07a7c0a9979df2be0800000000000000
+      internalID: -1499741034592306576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jin_00011.png
+      rect:
+        serializedVersion: 2
+        x: 891.0761
+        y: 3478.0762
+        width: 501.85858
+        height: 575.91095
+      alignment: 9
+      pivot: {x: -0.24524063, y: 1.0694776}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5522659da88500490800000000000000
+      internalID: -7782122802721185195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jin_00012.png
+      rect:
+        serializedVersion: 2
+        x: 126.07612
+        y: 3480.0762
+        width: 490.84778
+        height: 561.91095
+      alignment: 9
+      pivot: {x: -0.25277922, y: 1.0925642}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27a431950422708f0800000000000000
+      internalID: -574452767698761102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      jin_00000.png: 5763600333445875211
+      jin_00001.png: -3651279462218057766
+      jin_00002.png: 4889057903353970184
+      jin_00003.png: 3902016323161397582
+      jin_00004.png: 563153687636259932
+      jin_00005.png: 9017411958393473864
+      jin_00006.png: 4233132472293190280
+      jin_00007.png: -1980036755018877560
+      jin_00008.png: 7133204930367392590
+      jin_00009.png: -3940967693485270196
+      jin_00010.png: -1499741034592306576
+      jin_00011.png: -7782122802721185195
+      jin_00012.png: -574452767698761102
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
+  userData: 
   assetBundleName: skilleffect
-  assetBundleVariant:
+  assetBundleVariant: 

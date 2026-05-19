@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using Base;
 using LuyenDan.Inventory;
@@ -137,6 +138,13 @@ namespace LuyenDan
             value.ThuocDan = reader.Read();
             value.Locations = reader.Read();
             value.Description = reader.Read();
+        }
+        public void Move()
+        {
+            var icon = Icon;
+            var root = "Assets/Resources/";
+            var path = Path.GetDirectoryName(root + IconPath);
+            AssetOptimize.Move(icon.texture, path);
         }
     }
 }

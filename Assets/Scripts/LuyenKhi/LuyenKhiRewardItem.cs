@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using LuyenDan;
 using Network;
 using Network.Extensions;
@@ -62,6 +63,19 @@ namespace LuyenKhi
             writer.Write(Id);
             writer.Write(Tier);
             writer.Write(Type);
+        }
+        public void Move()
+        {
+            var icon = Icon;
+            var iconFight = IconFight;
+            var root = "Assets/Resources/";
+            var path = Path.GetDirectoryName(root + IconPath);
+            var fightPath = Path.GetDirectoryName(root + IconFightPath);
+            AssetOptimize.Move(icon.texture, path);
+            if (IconFight != null)
+            {
+                AssetOptimize.Move(iconFight.texture, fightPath);
+            }
         }
     }
 }

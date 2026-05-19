@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: 830787dce88b9fb48859ad00c851e5b5
-timeCreated: 1760183000
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,11 +57,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -70,39 +77,1549 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: MCS_BG_bg3.png
+      rect:
+        serializedVersion: 2
+        x: 965
+        y: 1474
+        width: 26
+        height: 374
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d600758371505bed0800000000000000
+      internalID: -2399005629217308563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_bg4.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1862
+        width: 654
+        height: 184
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f0f5fb4176fe0470800000000000000
+      internalID: 8362892524539736313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_ganwu_gn_hlt.png
+      rect:
+        serializedVersion: 2
+        x: 884
+        y: 1060.0267
+        width: 124
+        height: 127.97325
+      alignment: 9
+      pivot: {x: 0, y: 1.0000001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2777512049013e30800000000000000
+      internalID: 4481373275252291372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_ganwu_gn_normal.png
+      rect:
+        serializedVersion: 2
+        x: 587
+        y: 1121.0267
+        width: 124
+        height: 127.97325
+      alignment: 9
+      pivot: {x: 0, y: 1.0000001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb40e1d1c7b3acaa0800000000000000
+      internalID: -6140029737715759940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_ganwu_or_press.png
+      rect:
+        serializedVersion: 2
+        x: 720.0761
+        y: 1060.0267
+        width: 109.84776
+        height: 110.89713
+      alignment: 9
+      pivot: {x: -0.06441743, y: 1.0728254}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec808fca0eb081bc0800000000000000
+      internalID: -3812284024966608690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_ganwu_or_selected.png
+      rect:
+        serializedVersion: 2
+        x: 839
+        y: 926.02673
+        width: 124
+        height: 127.97325
+      alignment: 9
+      pivot: {x: 0, y: 1.0000001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7755257484a6b5500800000000000000
+      internalID: 386019051737077111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_linwu_gn_hlt.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1139.0762
+        width: 124
+        height: 128.92387
+      alignment: 9
+      pivot: {x: 0, y: 0.99999964}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b151cb21430509480800000000000000
+      internalID: -8894521079473892069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_linwu_gn_normal.png
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 1139.0762
+        width: 124
+        height: 128.92387
+      alignment: 9
+      pivot: {x: 0, y: 0.99999964}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: caf84d2df4e95afe0800000000000000
+      internalID: -1178361661810765908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_linwu_or_press.png
+      rect:
+        serializedVersion: 2
+        x: 261.0761
+        y: 1148.0762
+        width: 109.84776
+        height: 111.84776
+      alignment: 9
+      pivot: {x: -0.06441743, y: 1.0722059}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcf9849e767cf6b00800000000000000
+      internalID: 824096505941499855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_linwu_or_selected.png
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 1027.0762
+        width: 124
+        height: 128.92387
+      alignment: 9
+      pivot: {x: 0, y: 0.99999964}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d39bdebbd7d690a00800000000000000
+      internalID: 723229601960933693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_shanxuan_jiantou.png
+      rect:
+        serializedVersion: 2
+        x: 965
+        y: 1850
+        width: 30
+        height: 14
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18892bd30eb19b3a0800000000000000
+      internalID: -6649252724914087807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_tupo_gn_hlt.png
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 986.02673
+        width: 124
+        height: 128.97325
+      alignment: 9
+      pivot: {x: 0, y: 1.0000001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc0e41b52c234af80800000000000000
+      internalID: -8096290419772170037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_tupo_gn_normal.png
+      rect:
+        serializedVersion: 2
+        x: 701
+        y: 916.02673
+        width: 124
+        height: 128.97325
+      alignment: 9
+      pivot: {x: 0, y: 1.0000001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e04786714ec07dbe0800000000000000
+      internalID: -1452678181018897394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_tupo_or_press.png
+      rect:
+        serializedVersion: 2
+        x: 834.0761
+        y: 800.0429
+        width: 109.84776
+        height: 111.880974
+      alignment: 9
+      pivot: {x: -0.06441743, y: 1.0721849}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a3f11c101f42b4a0800000000000000
+      internalID: -6579109175025863769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_tupo_or_selected.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1005.02673
+        width: 124
+        height: 128.97325
+      alignment: 9
+      pivot: {x: 0, y: 1.0000001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e714e08e49c41f180800000000000000
+      internalID: -9083394770997460610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_xiulian_gn_hlt.png
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 1002
+        width: 124
+        height: 132
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db0b55b555fe3c080800000000000000
+      internalID: -9168221266512596803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_xiulian_gn_normal.png
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 1002
+        width: 124
+        height: 132
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e74483431cc4cd20800000000000000
+      internalID: 3297985210251233254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_xiulian_or_press.png
+      rect:
+        serializedVersion: 2
+        x: 387.0761
+        y: 898.0761
+        width: 109.84776
+        height: 115.84776
+      alignment: 9
+      pivot: {x: -0.06441743, y: 1.0697132}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1102087d03bcb0290800000000000000
+      internalID: -7923015708793888751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_btn_xiulian_or_selected.png
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 849
+        width: 124
+        height: 132
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 249b282cd34408570800000000000000
+      internalID: 8466842331503573314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_close.png
+      rect:
+        serializedVersion: 2
+        x: 841
+        y: 1453
+        width: 76
+        height: 76
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91f1ef451b8dacc00800000000000000
+      internalID: 921787329897439001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_ganwu_bg.png
+      rect:
+        serializedVersion: 2
+        x: 455
+        y: 1574
+        width: 144
+        height: 96
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1d78bb8d741b0a20800000000000000
+      internalID: 3029537703784381727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_ganwu_danyao_norm.png
+      rect:
+        serializedVersion: 2
+        x: 452
+        y: 1438
+        width: 145
+        height: 134
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f00cacfe49ce50280800000000000000
+      internalID: -9077589349473009649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_ganwu_huo_norm.png
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 1387
+        width: 145
+        height: 134
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f94d965e47802de0800000000000000
+      internalID: -1359938316935542285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_ganwu_jian_norm.png
+      rect:
+        serializedVersion: 2
+        x: 746
+        y: 1317
+        width: 145
+        height: 134
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cac34873235283870800000000000000
+      internalID: 8662714780857154732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_ganwu_jinshu_norm.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1406
+        width: 145
+        height: 134
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87473a397b1253c10800000000000000
+      internalID: 2032567879167341688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_ganwu_kuang.png
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 1523
+        width: 146
+        height: 135
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c598b216c5885890800000000000000
+      internalID: -7469072896229861946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_ganwu_line.png
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 1685
+        width: 207
+        height: 17
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae245cdbae104fd00800000000000000
+      internalID: 1005430724528259818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_ganwu_mu_norm.png
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 1406
+        width: 145
+        height: 134
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15b2ca127e0fe54d0800000000000000
+      internalID: -3143810614364984495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_ganwu_qi2_norm.png
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 1406
+        width: 145
+        height: 134
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6feba5cbd67b081d0800000000000000
+      internalID: -3350476440824267018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_ganwu_qi_norm.png
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 1302
+        width: 145
+        height: 134
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6868eea26bf56050800000000000000
+      internalID: 5793312896941844589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_ganwu_shengshi_norm.png
+      rect:
+        serializedVersion: 2
+        x: 590
+        y: 1251
+        width: 145
+        height: 134
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ee43191e8640e8e0800000000000000
+      internalID: -1666254286007087383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_ganwu_shui_norm.png
+      rect:
+        serializedVersion: 2
+        x: 737
+        y: 1181
+        width: 145
+        height: 134
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55eca0b2ceb750050800000000000000
+      internalID: 5766151152182414933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_ganwu_ti_norm.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1270
+        width: 145
+        height: 134
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87d069938192287e0800000000000000
+      internalID: -1764802919953724040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_ganwu_tu_norm.png
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 1270
+        width: 145
+        height: 134
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abb260554f54070d0800000000000000
+      internalID: -3427162400728142918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_ganwu_zhen_norm.png
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 1270
+        width: 145
+        height: 134
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1210f1862e448e7b0800000000000000
+      internalID: -5194826430971707103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_kezhan.png
+      rect:
+        serializedVersion: 2
+        x: 993
+        y: 1553
+        width: 24
+        height: 21
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02f7fc82b8423d950800000000000000
+      internalID: 6472557269565275936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_kuang.png
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 1158
+        width: 142
+        height: 142
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99ed3ca66c148e860800000000000000
+      internalID: 7559364294991928985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_tupo_line.png
+      rect:
+        serializedVersion: 2
+        x: 1002
+        y: 1576
+        width: 10
+        height: 361
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4507f5553fae23520800000000000000
+      internalID: 2680463059069136980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_tupo_man.png
+      rect:
+        serializedVersion: 2
+        x: 993
+        y: 1190
+        width: 10
+        height: 361
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8dbd28598b0e65120800000000000000
+      internalID: 2402354534635723736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_tupo_quan1.png
+      rect:
+        serializedVersion: 2
+        x: 919
+        y: 1392
+        width: 67
+        height: 80
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44475d3b9aadb7190800000000000000
+      internalID: -7963531093673151420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_tupo_quan1_bk.png
+      rect:
+        serializedVersion: 2
+        x: 913.02673
+        y: 1315.0582
+        width: 41.897125
+        height: 42.915043
+      alignment: 9
+      pivot: {x: -0.47799778, y: 1.7462821}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7d27e92674bd8c00800000000000000
+      internalID: 904577519773494651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_tupo_quan2.png
+      rect:
+        serializedVersion: 2
+        x: 884
+        y: 1228
+        width: 67
+        height: 80
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36f589e07f9feb8e0800000000000000
+      internalID: -1675627171838140573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_tupo_quan2_bk.png
+      rect:
+        serializedVersion: 2
+        x: 526.02673
+        y: 1081.0582
+        width: 41.897125
+        height: 42.915043
+      alignment: 9
+      pivot: {x: -0.47799778, y: 1.7462821}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9679fe1095a980790800000000000000
+      internalID: -7563625867093502103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_tupo_quan3.png
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 994
+        width: 67
+        height: 80
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fee048ddc3d733a10800000000000000
+      internalID: 1887990369166298863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_tupo_quan3_bk.png
+      rect:
+        serializedVersion: 2
+        x: 973.02673
+        y: 845.0582
+        width: 41.897125
+        height: 42.915043
+      alignment: 9
+      pivot: {x: -0.47799778, y: 1.7462821}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fa35fe58332767d0800000000000000
+      internalID: -2925330707935577354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_tupo_quan4.png
+      rect:
+        serializedVersion: 2
+        x: 953
+        y: 758
+        width: 67
+        height: 80
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73d5e480f9992fbb0800000000000000
+      internalID: -4903688135934845641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_tupo_quan4_bk.png
+      rect:
+        serializedVersion: 2
+        x: 526.02673
+        y: 917.0582
+        width: 41.897125
+        height: 42.915043
+      alignment: 9
+      pivot: {x: -0.47799778, y: 1.7462821}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf663098bdf748cd0800000000000000
+      internalID: -2556778107566332165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_tupo_quan5.png
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 830
+        width: 67
+        height: 80
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9dbf8559d1aade10800000000000000
+      internalID: 2223267320876219806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_tupo_quan5_bk.png
+      rect:
+        serializedVersion: 2
+        x: 721.02673
+        y: 836.0582
+        width: 41.897125
+        height: 42.915043
+      alignment: 9
+      pivot: {x: -0.47799778, y: 1.7462821}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3cdf1ed484e51320800000000000000
+      internalID: 2528178025151847485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_btn.png
+      rect:
+        serializedVersion: 2
+        x: 965
+        y: 1866
+        width: 35
+        height: 71
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2717d4e9c08e56520800000000000000
+      internalID: 2694815092944236914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_btn_xuan.png
+      rect:
+        serializedVersion: 2
+        x: 965
+        y: 1939
+        width: 49
+        height: 107
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d020817200fccf90800000000000000
+      internalID: -6931901833145212717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_di.png
+      rect:
+        serializedVersion: 2
+        x: 648
+        y: 1704
+        width: 213
+        height: 72
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 329b931e9e1fc36c0800000000000000
+      internalID: -4162185968788850397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_di2.png
+      rect:
+        serializedVersion: 2
+        x: 648
+        y: 1778
+        width: 295
+        height: 58
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbd7437a363c544e0800000000000000
+      internalID: -1997976026894533185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_di3.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1710
+        width: 644
+        height: 150
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f628ef0223a05df70800000000000000
+      internalID: 9211279823274410607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_di4.png
+      rect:
+        serializedVersion: 2
+        x: 841
+        y: 1531
+        width: 87
+        height: 39
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02b1f6f2c06047ff0800000000000000
+      internalID: -39399847334307040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_di5.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1579
+        width: 451
+        height: 91
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa4297f71310adbf0800000000000000
+      internalID: -298925113163045713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_jindu_di.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1691
+        width: 597
+        height: 17
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36162bfef4814c7b0800000000000000
+      internalID: -5205008537730522781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_jindu_man.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1672
+        width: 597
+        height: 17
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61acc4ee040804a20800000000000000
+      internalID: 3044574364466727446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_line.png
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 1660
+        width: 163
+        height: 23
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74e480879671f7f80800000000000000
+      internalID: -8106735062490788281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_quan_dimai.png
+      rect:
+        serializedVersion: 2
+        x: 863
+        y: 1678.0762
+        width: 90
+        height: 93.84776
+      alignment: 9
+      pivot: {x: 0, y: 1.0434327}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 281d2bd3e4ea9f1c0800000000000000
+      internalID: -4469349504122695294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_quan_gongfa.png
+      rect:
+        serializedVersion: 2
+        x: 766
+        y: 1585.0762
+        width: 90
+        height: 93.84776
+      alignment: 9
+      pivot: {x: 0, y: 1.0434327}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4b56f2108a762d80800000000000000
+      internalID: -8275792574754170036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_quan_tupo.png
+      rect:
+        serializedVersion: 2
+        x: 658
+        y: 1838
+        width: 305
+        height: 208
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35824b4f61c16c080800000000000000
+      internalID: -9167609106545760173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_quan_xinjin.png
+      rect:
+        serializedVersion: 2
+        x: 858
+        y: 1572
+        width: 90
+        height: 101
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55e347c5dec062fb0800000000000000
+      internalID: -4673033349752406443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_quan_zizhi.png
+      rect:
+        serializedVersion: 2
+        x: 749
+        y: 1482.0762
+        width: 90
+        height: 93.84776
+      alignment: 9
+      pivot: {x: 0, y: 1.0434327}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2ba988510a063700800000000000000
+      internalID: 519613807904533291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_BG_xl_zhongyao.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1542
+        width: 448
+        height: 35
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d49204aa406a8aec0800000000000000
+      internalID: -3555409366842594995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MCS_BG_bg3.png: -2399005629217308563
+      MCS_BG_bg4.png: 8362892524539736313
+      MCS_BG_btn_ganwu_gn_hlt.png: 4481373275252291372
+      MCS_BG_btn_ganwu_gn_normal.png: -6140029737715759940
+      MCS_BG_btn_ganwu_or_press.png: -3812284024966608690
+      MCS_BG_btn_ganwu_or_selected.png: 386019051737077111
+      MCS_BG_btn_linwu_gn_hlt.png: -8894521079473892069
+      MCS_BG_btn_linwu_gn_normal.png: -1178361661810765908
+      MCS_BG_btn_linwu_or_press.png: 824096505941499855
+      MCS_BG_btn_linwu_or_selected.png: 723229601960933693
+      MCS_BG_btn_shanxuan_jiantou.png: -6649252724914087807
+      MCS_BG_btn_tupo_gn_hlt.png: -8096290419772170037
+      MCS_BG_btn_tupo_gn_normal.png: -1452678181018897394
+      MCS_BG_btn_tupo_or_press.png: -6579109175025863769
+      MCS_BG_btn_tupo_or_selected.png: -9083394770997460610
+      MCS_BG_btn_xiulian_gn_hlt.png: -9168221266512596803
+      MCS_BG_btn_xiulian_gn_normal.png: 3297985210251233254
+      MCS_BG_btn_xiulian_or_press.png: -7923015708793888751
+      MCS_BG_btn_xiulian_or_selected.png: 8466842331503573314
+      MCS_BG_close.png: 921787329897439001
+      MCS_BG_ganwu_bg.png: 3029537703784381727
+      MCS_BG_ganwu_danyao_norm.png: -9077589349473009649
+      MCS_BG_ganwu_huo_norm.png: -1359938316935542285
+      MCS_BG_ganwu_jian_norm.png: 8662714780857154732
+      MCS_BG_ganwu_jinshu_norm.png: 2032567879167341688
+      MCS_BG_ganwu_kuang.png: -7469072896229861946
+      MCS_BG_ganwu_line.png: 1005430724528259818
+      MCS_BG_ganwu_mu_norm.png: -3143810614364984495
+      MCS_BG_ganwu_qi2_norm.png: -3350476440824267018
+      MCS_BG_ganwu_qi_norm.png: 5793312896941844589
+      MCS_BG_ganwu_shengshi_norm.png: -1666254286007087383
+      MCS_BG_ganwu_shui_norm.png: 5766151152182414933
+      MCS_BG_ganwu_ti_norm.png: -1764802919953724040
+      MCS_BG_ganwu_tu_norm.png: -3427162400728142918
+      MCS_BG_ganwu_zhen_norm.png: -5194826430971707103
+      MCS_BG_kezhan.png: 6472557269565275936
+      MCS_BG_kuang.png: 7559364294991928985
+      MCS_BG_tupo_line.png: 2680463059069136980
+      MCS_BG_tupo_man.png: 2402354534635723736
+      MCS_BG_tupo_quan1.png: -7963531093673151420
+      MCS_BG_tupo_quan1_bk.png: 904577519773494651
+      MCS_BG_tupo_quan2.png: -1675627171838140573
+      MCS_BG_tupo_quan2_bk.png: -7563625867093502103
+      MCS_BG_tupo_quan3.png: 1887990369166298863
+      MCS_BG_tupo_quan3_bk.png: -2925330707935577354
+      MCS_BG_tupo_quan4.png: -4903688135934845641
+      MCS_BG_tupo_quan4_bk.png: -2556778107566332165
+      MCS_BG_tupo_quan5.png: 2223267320876219806
+      MCS_BG_tupo_quan5_bk.png: 2528178025151847485
+      MCS_BG_xl_btn.png: 2694815092944236914
+      MCS_BG_xl_btn_xuan.png: -6931901833145212717
+      MCS_BG_xl_di.png: -4162185968788850397
+      MCS_BG_xl_di2.png: -1997976026894533185
+      MCS_BG_xl_di3.png: 9211279823274410607
+      MCS_BG_xl_di4.png: -39399847334307040
+      MCS_BG_xl_di5.png: -298925113163045713
+      MCS_BG_xl_jindu_di.png: -5205008537730522781
+      MCS_BG_xl_jindu_man.png: 3044574364466727446
+      MCS_BG_xl_line.png: -8106735062490788281
+      MCS_BG_xl_quan_dimai.png: -4469349504122695294
+      MCS_BG_xl_quan_gongfa.png: -8275792574754170036
+      MCS_BG_xl_quan_tupo.png: -9167609106545760173
+      MCS_BG_xl_quan_xinjin.png: -4673033349752406443
+      MCS_BG_xl_quan_zizhi.png: 519613807904533291
+      MCS_BG_xl_zhongyao.png: -3555409366842594995
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

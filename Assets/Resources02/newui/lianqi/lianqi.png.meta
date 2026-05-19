@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: 9413f22e46ebe2543a0c07337ad7dd99
-timeCreated: 1760182962
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,13 +57,19 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 4096
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 2
@@ -70,39 +77,1240 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: 2.png
+      rect:
+        serializedVersion: 2
+        x: 3088
+        y: 1890
+        width: 156
+        height: 156
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d36943e77a7f0fd60800000000000000
+      internalID: 7922104043293677117
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_bg.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 966
+        width: 1920
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f31ba5c50327f170800000000000000
+      internalID: 8212070953231520758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_bg2.png
+      rect:
+        serializedVersion: 2
+        x: 3246
+        y: 726
+        width: 653
+        height: 1320
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab304bd29ff80b3f0800000000000000
+      internalID: -887050826215586886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_bg3.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 18
+        width: 429
+        height: 71
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3527d2ce38789710800000000000000
+      internalID: 1700241070284547389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_bg_jiantou.png
+      rect:
+        serializedVersion: 2
+        x: 1420
+        y: 15
+        width: 99
+        height: 24
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e0259e6ad0a79f50800000000000000
+      internalID: 6888151015105044713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_bt_chongzhi.png
+      rect:
+        serializedVersion: 2
+        x: 2004
+        y: 32
+        width: 169
+        height: 57
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b41df6a3137a30620800000000000000
+      internalID: 2739216828247036235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_chulinli_bg.png
+      rect:
+        serializedVersion: 2
+        x: 3901
+        y: 1444
+        width: 106
+        height: 106
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd437524e80578fc0800000000000000
+      internalID: -3492734414073940772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_chulinli_bg2.png
+      rect:
+        serializedVersion: 2
+        x: 2999
+        y: 1791
+        width: 89
+        height: 89
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff5e71ff1b6beb320800000000000000
+      internalID: 2575696912507725311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_chushilinli-.png
+      rect:
+        serializedVersion: 2
+        x: 1521
+        y: 15
+        width: 98
+        height: 24
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 545510eef8c7d1870800000000000000
+      internalID: 8655211016491193669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_fuwen1.png
+      rect:
+        serializedVersion: 2
+        x: 1317
+        y: 2
+        width: 101
+        height: 37
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93869b27a7a3d8e40800000000000000
+      internalID: 5660244604259756089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_fuwen2.png
+      rect:
+        serializedVersion: 2
+        x: 1214
+        y: 2
+        width: 101
+        height: 37
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5db467e38ca1c6c0800000000000000
+      internalID: -4124826101171831461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_fuwen3.png
+      rect:
+        serializedVersion: 2
+        x: 1111
+        y: 2
+        width: 101
+        height: 37
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d9b773c20d8c1830800000000000000
+      internalID: 4043261608480717266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_fuwen_baihu.png
+      rect:
+        serializedVersion: 2
+        x: 2330.0762
+        y: 1048
+        width: 297.87256
+        height: 289.9239
+      alignment: 9
+      pivot: {x: -0.15468417, y: 1.065797}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7e57ef00d385ea30800000000000000
+      internalID: 4243943153509817982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_fuwen_fenhuang.png
+      rect:
+        serializedVersion: 2
+        x: 2416.0762
+        y: 1753.0762
+        width: 295.91098
+        height: 280.84778
+      alignment: 9
+      pivot: {x: -0.14219199, y: 1.0429986}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ff7aa6133a2bc2f0800000000000000
+      internalID: -951620497346756617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_fuwen_gui.png
+      rect:
+        serializedVersion: 2
+        x: 2276
+        y: 1373.0267
+        width: 358
+        height: 257.89713
+      alignment: 9
+      pivot: {x: 0, y: 1.1437633}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef3f9996ab41fd830800000000000000
+      internalID: 4098016976798610430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_fuwen_line.png
+      rect:
+        serializedVersion: 2
+        x: 2684
+        y: 1677
+        width: 123
+        height: 58
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0c9b8ee422909e60800000000000000
+      internalID: 7967028428137012239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_fuwen_line2.png
+      rect:
+        serializedVersion: 2
+        x: 2284
+        y: 988
+        width: 123
+        height: 58
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97e8bc06f2593ce10800000000000000
+      internalID: 2216779472316370553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_fuwen_qinlong.png
+      rect:
+        serializedVersion: 2
+        x: 1954.0267
+        y: 1017.0761
+        width: 318.89713
+        height: 298.9239
+      alignment: 9
+      pivot: {x: -0.09415805, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d429d0eb28daeca0800000000000000
+      internalID: -5986735071668132653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_fuwen_shuxin.png
+      rect:
+        serializedVersion: 2
+        x: 3901
+        y: 1320
+        width: 99
+        height: 60
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b63beb68a94bf720800000000000000
+      internalID: 2880977374347474608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_fuwen_shuxin2.png
+      rect:
+        serializedVersion: 2
+        x: 3901
+        y: 1383.2928
+        width: 99
+        height: 58.707108
+      alignment: 9
+      pivot: {x: 0, y: 1.0000008}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f9f078f504621ca0800000000000000
+      internalID: -6047661372799387149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_fuwen_shuxin3.png
+      rect:
+        serializedVersion: 2
+        x: 476
+        y: 2
+        width: 32
+        height: 17
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 692163b89361f52b0800000000000000
+      internalID: -5593727775766343018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_fuwen_shuxin4.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 14
+        width: 472
+        height: 2
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16142b6086501e9f0800000000000000
+      internalID: -441065344158514847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_huanqi.png
+      rect:
+        serializedVersion: 2
+        x: 2906
+        y: 1682
+        width: 95
+        height: 95
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97553836459d04bb0800000000000000
+      internalID: -4953720633637513863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_huanqi_zi.png
+      rect:
+        serializedVersion: 2
+        x: 1601
+        y: 45
+        width: 91
+        height: 44
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf40c69f36d50fa80800000000000000
+      internalID: -8435139418097187588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_kong.png
+      rect:
+        serializedVersion: 2
+        x: 3901
+        y: 1552
+        width: 134
+        height: 134
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03c7cffecdabbc450800000000000000
+      internalID: 6110182777540082736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_mingke.png
+      rect:
+        serializedVersion: 2
+        x: 1356
+        y: 41
+        width: 243
+        height: 48
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 426e15522937ef800800000000000000
+      internalID: 648082467916473892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_mingke2.png
+      rect:
+        serializedVersion: 2
+        x: 1111
+        y: 41
+        width: 243
+        height: 48
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64725915735a2aaf0800000000000000
+      internalID: -386564960989927610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_mingke_btn.png
+      rect:
+        serializedVersion: 2
+        x: 2734
+        y: 1882
+        width: 352
+        height: 164
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2096bf9469cd514d0800000000000000
+      internalID: -3164380625113487102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_mingke_btn2.png
+      rect:
+        serializedVersion: 2
+        x: 2636
+        y: 1507
+        width: 352
+        height: 164
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b824162956e6477a0800000000000000
+      internalID: -6380353389550550389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_tuichu.png
+      rect:
+        serializedVersion: 2
+        x: 2809
+        y: 1682
+        width: 95
+        height: 95
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e6989d6cefbba6d0800000000000000
+      internalID: -2978075706403547420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_tuichu2.png
+      rect:
+        serializedVersion: 2
+        x: 2990
+        y: 1635
+        width: 86
+        height: 45
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba206c01145ec9a20800000000000000
+      internalID: 3070581113576882859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_wanchen_bg.png
+      rect:
+        serializedVersion: 2
+        x: 778.14935
+        y: 12
+        width: 326.77454
+        height: 77
+      alignment: 9
+      pivot: {x: -0.012697908, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46147cc7be8fb5000800000000000000
+      internalID: 25887913175105892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_wanchen_bg2.png
+      rect:
+        serializedVersion: 2
+        x: 1924
+        y: 1670
+        width: 448
+        height: 376
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fec9da46a97de01c0800000000000000
+      internalID: -4535450716601475857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_wanchen_bg3.png
+      rect:
+        serializedVersion: 2
+        x: 3090
+        y: 1527
+        width: 69
+        height: 361
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbe378d9df4ecae70800000000000000
+      internalID: 9127922322693897915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_wanchen_bg4.png
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 21
+        width: 339
+        height: 68
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6b2ba2fd3459e4c0800000000000000
+      internalID: -4257779347661051028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_wuwei_bg.png
+      rect:
+        serializedVersion: 2
+        x: 3901
+        y: 1860
+        width: 186
+        height: 186
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da2aa61495c6e34a0800000000000000
+      internalID: -6611728072327912787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_wuwei_bg2.png
+      rect:
+        serializedVersion: 2
+        x: 3901
+        y: 1688
+        width: 178
+        height: 170
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c204d6d90e68cab0800000000000000
+      internalID: -4987615598774844734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_xiaoguo.png
+      rect:
+        serializedVersion: 2
+        x: 1621
+        y: 25
+        width: 13
+        height: 18
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75dc5af2fa9b588c0800000000000000
+      internalID: -3997584932151636649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_xuanzhe_bg.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 333
+        width: 2340
+        height: 631
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb09dd53cf325e280800000000000000
+      internalID: -9014759512969736002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_xuanzhe_bg2.png
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 91
+        width: 2340
+        height: 240
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a9921e45b0c70cf0800000000000000
+      internalID: -286048166383281758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_xuanzhe_bg3.png
+      rect:
+        serializedVersion: 2
+        x: 2990
+        y: 1299
+        width: 226
+        height: 226
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14bd30ea1b7387fa0800000000000000
+      internalID: -5802826883598656703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_xuanzhe_btn.png
+      rect:
+        serializedVersion: 2
+        x: 2734
+        y: 1779
+        width: 263
+        height: 101
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32e7a27b6e01ab820800000000000000
+      internalID: 2934676690286837283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_xuanzhe_btn2.png
+      rect:
+        serializedVersion: 2
+        x: 2638.0269
+        y: 1410.0762
+        width: 258.94647
+        height: 94.92388
+      alignment: 9
+      pivot: {x: -0.007827315, y: 0.99999946}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60981d1a1ec49b4a0800000000000000
+      internalID: -6577141248831682298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_xuanzhe_fangju.png
+      rect:
+        serializedVersion: 2
+        x: 2542.0762
+        y: 1687.0363
+        width: 127.887596
+        height: 34.936962
+      alignment: 9
+      pivot: {x: -0.10224738, y: 1.3728653}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2f61954ef7542130800000000000000
+      internalID: 3541051956620521262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_xuanzhe_fangju2.png
+      rect:
+        serializedVersion: 2
+        x: 2374
+        y: 1673
+        width: 153
+        height: 62
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc86a85099dfd5470800000000000000
+      internalID: 8385136914898512079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_xuanzhe_shipin.png
+      rect:
+        serializedVersion: 2
+        x: 2341.0762
+        y: 39.051315
+        width: 124.847755
+        height: 37.921932
+      alignment: 9
+      pivot: {x: -0.10473694, y: 1.317145}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9144f8ee44037df20800000000000000
+      internalID: 3447277112393679897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_xuanzhe_shipin2.png
+      rect:
+        serializedVersion: 2
+        x: 2175
+        y: 26
+        width: 151
+        height: 63
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12dfe7e6ee4f69af0800000000000000
+      internalID: -389855012827759327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_xuanzhe_wuqi.png
+      rect:
+        serializedVersion: 2
+        x: 1862.0762
+        y: 38.042908
+        width: 126.847755
+        height: 37.920807
+      alignment: 9
+      pivot: {x: -0.10308556, y: 1.3437766}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbb149db6c0d31040800000000000000
+      internalID: 4617263594987592635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_xuanzhe_wuqi2.png
+      rect:
+        serializedVersion: 2
+        x: 1694
+        y: 25
+        width: 153
+        height: 64
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ae5dcc3eadbbf5a0800000000000000
+      internalID: -6486382282255016279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_zonglinli.png
+      rect:
+        serializedVersion: 2
+        x: 2644
+        y: 1187
+        width: 215
+        height: 215
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3521ebc955c08be0800000000000000
+      internalID: -1476963688314231491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_LQ_zonglinli_bg.png
+      rect:
+        serializedVersion: 2
+        x: 1924
+        y: 1318
+        width: 350
+        height: 350
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5fb3138d7352ae70800000000000000
+      internalID: 9124947593541173082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      2.png: 7922104043293677117
+      MCS_LQ_bg.png: 8212070953231520758
+      MCS_LQ_bg2.png: -887050826215586886
+      MCS_LQ_bg3.png: 1700241070284547389
+      MCS_LQ_bg_jiantou.png: 6888151015105044713
+      MCS_LQ_bt_chongzhi.png: 2739216828247036235
+      MCS_LQ_chulinli_bg.png: -3492734414073940772
+      MCS_LQ_chulinli_bg2.png: 2575696912507725311
+      MCS_LQ_chushilinli-.png: 8655211016491193669
+      MCS_LQ_fuwen1.png: 5660244604259756089
+      MCS_LQ_fuwen2.png: -4124826101171831461
+      MCS_LQ_fuwen3.png: 4043261608480717266
+      MCS_LQ_fuwen_baihu.png: 4243943153509817982
+      MCS_LQ_fuwen_fenhuang.png: -951620497346756617
+      MCS_LQ_fuwen_gui.png: 4098016976798610430
+      MCS_LQ_fuwen_line.png: 7967028428137012239
+      MCS_LQ_fuwen_line2.png: 2216779472316370553
+      MCS_LQ_fuwen_qinlong.png: -5986735071668132653
+      MCS_LQ_fuwen_shuxin.png: 2880977374347474608
+      MCS_LQ_fuwen_shuxin2.png: -6047661372799387149
+      MCS_LQ_fuwen_shuxin3.png: -5593727775766343018
+      MCS_LQ_fuwen_shuxin4.png: -441065344158514847
+      MCS_LQ_huanqi.png: -4953720633637513863
+      MCS_LQ_huanqi_zi.png: -8435139418097187588
+      MCS_LQ_kong.png: 6110182777540082736
+      MCS_LQ_mingke.png: 648082467916473892
+      MCS_LQ_mingke2.png: -386564960989927610
+      MCS_LQ_mingke_btn.png: -3164380625113487102
+      MCS_LQ_mingke_btn2.png: -6380353389550550389
+      MCS_LQ_tuichu.png: -2978075706403547420
+      MCS_LQ_tuichu2.png: 3070581113576882859
+      MCS_LQ_wanchen_bg.png: 25887913175105892
+      MCS_LQ_wanchen_bg2.png: -4535450716601475857
+      MCS_LQ_wanchen_bg3.png: 9127922322693897915
+      MCS_LQ_wanchen_bg4.png: -4257779347661051028
+      MCS_LQ_wuwei_bg.png: -6611728072327912787
+      MCS_LQ_wuwei_bg2.png: -4987615598774844734
+      MCS_LQ_xiaoguo.png: -3997584932151636649
+      MCS_LQ_xuanzhe_bg.png: -9014759512969736002
+      MCS_LQ_xuanzhe_bg2.png: -286048166383281758
+      MCS_LQ_xuanzhe_bg3.png: -5802826883598656703
+      MCS_LQ_xuanzhe_btn.png: 2934676690286837283
+      MCS_LQ_xuanzhe_btn2.png: -6577141248831682298
+      MCS_LQ_xuanzhe_fangju.png: 3541051956620521262
+      MCS_LQ_xuanzhe_fangju2.png: 8385136914898512079
+      MCS_LQ_xuanzhe_shipin.png: 3447277112393679897
+      MCS_LQ_xuanzhe_shipin2.png: -389855012827759327
+      MCS_LQ_xuanzhe_wuqi.png: 4617263594987592635
+      MCS_LQ_xuanzhe_wuqi2.png: -6486382282255016279
+      MCS_LQ_zonglinli.png: -1476963688314231491
+      MCS_LQ_zonglinli_bg.png: 9124947593541173082
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

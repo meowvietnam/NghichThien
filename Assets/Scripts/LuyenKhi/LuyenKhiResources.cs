@@ -94,6 +94,17 @@ namespace LuyenKhi
             File.WriteAllBytes(path, writer.Buffer);
             Debug.Log(path);
         }
+        [Button]
+        public void ShowSpriteSize()
+        {
+            var sprites = EquipmentIcons.Select(x => x.Icon)
+                    .Concat(Materials.Select(x => x.Icon))
+                    .Concat(RewardItems.Select(x => new[] { x.Icon, x.IconFight }).SelectMany(x => x))
+                    .Where(x => x != null)
+                    .ToHashSet();
+            var size = AssetSize.CalculateSize(sprites);
+            Debug.Log(size);
+        }
 #if UNITY_EDITOR
         [Button]
         public void LoadIconsFromFolder()

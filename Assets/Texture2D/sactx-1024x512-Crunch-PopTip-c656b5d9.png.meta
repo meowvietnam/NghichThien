@@ -1,11 +1,9 @@
 fileFormatVersion: 2
 guid: 1949846a9d9777a4e84c5830310ddd2f
-timeCreated: 1760182886
-licenseType: Free
 TextureImporter:
-  serializedVersion: 9
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -22,9 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,11 +57,17 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -70,39 +77,284 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: MCS_CJ_ty_tip_chuanyinfu
+      rect:
+        serializedVersion: 2
+        x: 520.0761
+        y: 193.07613
+        width: 84.87257
+        height: 90.84776
+      alignment: 9
+      pivot: {x: 0.49985388, y: 0.50550365}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa902fe507b25f1e0800000000000000
+      internalID: -2164776284252403281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_ty_tip_down
+      rect:
+        serializedVersion: 2
+        x: 614.0761
+        y: 98.07612
+        width: 78.86568
+        height: 92.84776
+      alignment: 9
+      pivot: {x: 0.49988642, y: 0.5053851}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fa7e28a761277ed0800000000000000
+      internalID: -2416425945974015243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_ty_tip_gan
+      rect:
+        serializedVersion: 2
+        x: 774.02673
+        y: 97.07612
+        width: 35.946495
+        height: 86.86415
+      alignment: 9
+      pivot: {x: 0.51390964, y: 0.5056618}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4840be95c0ad91fd0800000000000000
+      internalID: -2370623982250818428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_ty_tip_item
+      rect:
+        serializedVersion: 2
+        x: 520.0761
+        y: 98.07612
+        width: 89.84776
+        height: 90.84776
+      alignment: 9
+      pivot: {x: 0.5055649, y: 0.50550365}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2246100df00a910f0800000000000000
+      internalID: -1145708640414374878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_ty_tip_lianqi
+      rect:
+        serializedVersion: 2
+        x: 697.0761
+        y: 97.02675
+        width: 72.84776
+        height: 90.9465
+      alignment: 9
+      pivot: {x: 0.51372725, y: 0.5054977}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6af0f7a3098520040800000000000000
+      internalID: 4612346344860749734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_ty_tip_mission
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 0
+        width: 91
+        height: 94
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b7417f673d20d980800000000000000
+      internalID: -8516257179241461838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_ty_tip_mission2
+      rect:
+        serializedVersion: 2
+        x: 615
+        y: 0.036285162
+        width: 91
+        height: 88.936966
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5055683}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 217eddb3d5aea6f60800000000000000
+      internalID: 8028486971898586898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MCS_CJ_ty_tip_up
+      rect:
+        serializedVersion: 2
+        x: 710.0761
+        y: 0.076120496
+        width: 78.86568
+        height: 92.84776
+      alignment: 9
+      pivot: {x: 0.49988642, y: 0.5053851}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5709890d5a119d30800000000000000
+      internalID: 4436356094830905183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_DT_tankuang
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 389
+        width: 494
+        height: 57
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37c50b4bdf28a1670800000000000000
+      internalID: 8510258472039767155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mcs_DT_tankuang_zhezhao1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 516
+        height: 385
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d67fcbd8febb7a00800000000000000
+      internalID: 755407338563663572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: 
+    internalID: 0
     vertices: []
-    indices: []
+    indices: 
     edges: []
     weights: []
-  spritePackingTag:
-  output:
-    textureImportInstructions:
-      compressedFormat: 0
-      uncompressedFormat: 0
-      desiredFormat: 0
-      usageMode: 0
-      colorSpace: 0
-      androidETC2FallbackFormat: 0
-      width: 0
-      height: 0
-      compressionQuality: 0
-      androidETC2FallbackDownscale: 0
-    sourceTextureInformation:
-      width: 0
-      height: 0
-      doesTextureContainAlpha: 0
-      sourceWasHDR: 0
-    importInspectorWarnings:
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MCS_CJ_ty_tip_chuanyinfu: -2164776284252403281
+      MCS_CJ_ty_tip_down: -2416425945974015243
+      MCS_CJ_ty_tip_gan: -2370623982250818428
+      MCS_CJ_ty_tip_item: -1145708640414374878
+      MCS_CJ_ty_tip_lianqi: 4612346344860749734
+      MCS_CJ_ty_tip_mission: -8516257179241461838
+      MCS_CJ_ty_tip_mission2: 8028486971898586898
+      MCS_CJ_ty_tip_up: 4436356094830905183
+      mcs_DT_tankuang: 8510258472039767155
+      mcs_DT_tankuang_zhezhao1: 755407338563663572
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

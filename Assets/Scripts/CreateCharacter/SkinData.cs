@@ -11,7 +11,7 @@ namespace CreateCharacter
     public class SkinData : IMemorySerializable<SkinData>
     {
         [field: SerializeField] public string Name { get; private set; }
-        [field: SerializeField] public Sprite Icon { get; private set; }
+        [field: SerializeField] public Sprite Icon { get; set; }
         public SkinData(string name, Sprite icon)
         {
             Name = name;

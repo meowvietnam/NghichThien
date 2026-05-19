@@ -2,15 +2,13 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!1 &1358322971997200
 GameObject:
-  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4772000997364609}
-  - component: {fileID: 114280750554092226}
-  - component: {fileID: 114713912776984262}
   m_Layer: 0
   m_Name: FloatTextEnemy
   m_TagString: Untagged
@@ -25,43 +23,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1358322971997200}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.7041931, y: 0, z: -11.574707}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
---- !u!114 &114280750554092226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1358322971997200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1e53c6905cce14e258d3e1bb0b68842, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  PositionMult: {x: 1, y: -10, z: 1}
-  PositionDirection: {x: 0, y: 5, z: 0}
---- !u!114 &114713912776984262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1358322971997200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecf84aa2ad0962346f112b9d2f5b1edc, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  CustomSkin: {fileID: 0}
-  Text:
-  LifeTime: 1
-  FadeEnd: 1
-  TextColor: {r: 1, g: 0.29850745, b: 0.29850745, a: 1}
-  Position3D: 1
-  Position: {x: 0, y: 0}

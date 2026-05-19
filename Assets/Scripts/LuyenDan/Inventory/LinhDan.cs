@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Base;
 using Network;
 using Network.Extensions;
@@ -95,6 +96,13 @@ namespace LuyenDan.Inventory
             value.ETypeDan = reader.Read<ETypeDan>();
             value.BuffValue = reader.Read<int>();
             value.EBuffType = reader.Read<EDanBuffType>();
+        }
+        public void Move()
+        {
+            var icon = Icon;
+            var root = "Assets/Resources/";
+            var path = Path.GetDirectoryName(root + IconPath);
+            AssetOptimize.Move(icon.texture, path);
         }
     }
 }

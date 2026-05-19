@@ -35,6 +35,17 @@ namespace LuyenDan
                 return instance;
             }
         }
+
+        [Button]
+        public void ShowSpriteSize()
+        {
+            var sprites = TempFurnaceDatas.Select(x => new [] {x.Icon,x.BigIcon}).SelectMany(x => x)
+                .Concat(HerbDatas.Select(x => x.Icon))
+                .Concat(LinhDans.Select(x => x.Icon))
+                .ToHashSet();
+            var size = AssetSize.CalculateSize(sprites);
+            Debug.Log(size);
+        }
         public IItemData FindItem(FurnaceData furnace)
         {
             return TempFurnaceDatas.FirstOrDefault(x => x.Id == furnace.Id);
@@ -131,5 +142,6 @@ namespace LuyenDan
             File.WriteAllBytes(path, writer.Buffer);
             Debug.Log(path);
         }
+        
     }
 }

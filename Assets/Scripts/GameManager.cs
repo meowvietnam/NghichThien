@@ -1035,4 +1035,17 @@ public class GameManager : BaseBehaviour
         }
         return "";
     }
+    [Button]
+    public void ShowSpriteSize()
+    {
+        var sprites = thanThongs.OfType<BaseData>()
+            .Concat(congPhaps)
+            .Concat(ngoDaos)
+            .Concat(danDuocs)
+            .Select(x => x.spriteItem)
+            .Where(x => x != null)
+            .ToHashSet();
+        var size = AssetSize.CalculateSize(sprites);
+        Debug.Log(size);
+    }
 }
