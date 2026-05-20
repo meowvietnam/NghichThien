@@ -26,9 +26,7 @@ namespace AllMaps
         [SerializeField] private Player player;
         private Map current;
         private Dictionary<Map, List<Map>> graph;
-        [SerializeField] private GameObject prefabEnemyIcon;
-        [SerializeField] private GameObject prefabQuestIcon;
-        [SerializeField] private GameObject prefabSideQuestIcon;
+       
 
         private GameObject SetIconEvent(Map map , GameObject prefabIcon)
         {
@@ -46,19 +44,11 @@ namespace AllMaps
             }
             return iconAction;
         }
-        public void SetDataOnMap(IActionMap Data,int nodeId)
+        public void SetDataOnMap(ActionMapResourceSO Data,int nodeId)
         {
             Map map = FindMap(nodeId);
-            GameObject prefabIcon = null;
-            if(Data is SideQuizQuestResource)
-            {
-                prefabIcon = prefabSideQuestIcon;
-            }
-            else if(Data is EnemyData)
-            {
-                prefabIcon = prefabEnemyIcon;
-            }
-            map.SetData(Data, SetIconEvent(map, prefabIcon));
+          
+            map.SetData(Data, SetIconEvent(map, Data.prefabIcon));
         }    
         public Map FindMap(int id)
         {

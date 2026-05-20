@@ -14,7 +14,7 @@ public class AnswerQuizQuest : BaseBehaviour
         this.textQuiz.text = textQuiz;
         SetEventButton(btn, () =>
         {
-            Pool.Get<QuestManager>().AnswerQuest(this);
+            Pool.Get<SideQuestManager>().AnswerQuest(this);
         });
     }
 }

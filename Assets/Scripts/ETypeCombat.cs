@@ -8,3 +8,10 @@ public enum ETypeCombat
     DauTruong,
     
 }
+public enum ECombatResult
+{
+    None,
+    Win,
+    Lose,
+    GiveUp,
+}

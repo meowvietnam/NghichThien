@@ -377,13 +377,7 @@ public class GameManager : BaseBehaviour
     public ETypeCombat currentETypeCombat = ETypeCombat.None;
     public ECombatResult currentECombatResult = ECombatResult.None;
 
-    public enum ECombatResult
-    {
-        None,
-        Win,
-        Lose,
-        GiveUp,
-    }
+ 
     public void GoToCombat(CharCombatInit enemyCombat , ETypeCombat eTypeCombat)
     {
         this.enemyCombat = enemyCombat;
@@ -396,9 +390,9 @@ public class GameManager : BaseBehaviour
     public void BackAllMapFromCombat(ECombatResult eCombatResult)
     {
         Pool.Get<UIManager>().panelGroup.SetActive(true);
-        currentETypeCombat = ETypeCombat.None;
         currentECombatResult = eCombatResult;
         SceneManager.LoadScene(listSceneLoaded[0]);
+        Pool.Get<SideQuestManager>().QuestCombatTrigger(enemyCombat,currentETypeCombat, currentECombatResult);
 
 
 

@@ -7,14 +7,17 @@ using System.Data;
 using System.Collections.Generic;
 using ExcelDataReader; // Hãy đảm bảo bạn đã import thư viện này qua DLL hoặc UPM
 using Sirenix.OdinInspector; // Thêm thư viện Odin
+using System.Drawing;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 [CreateAssetMenu(fileName = nameof(SideQuizQuestResource), menuName = "Action Map/Side Quest/" + nameof(SideQuizQuestResource))]
-public class SideQuizQuestResource : ActionMapResourceSO
+public class SideQuizQuestResource : SideQuestResource
 {
+    public override ETypeSideQuest Type =>  ETypeSideQuest.Quiz;
     [Serializable]
     public class Quiz {
 
@@ -23,12 +26,36 @@ public class SideQuizQuestResource : ActionMapResourceSO
         public int rightAnswerIndex;
     }
     public Quiz[] quizDatas;
-    
+    public List<string> GetQuizDialogs(string quizQuestion)
+    {
+        return new List<string>
+    {
+        "Đạo hữu dừng bước! Ta thấy ngươi căn cốt kinh kỳ, nhưng đường tu tiên cốt ở ngộ tính, chứ không chỉ có man lực.",
+        "Ta có vài câu hỏi về thiên địa quy luật. Trả lời đúng, ta sẽ tặng ngươi tiên ngọc.",
+        "Ngươi đã sẵn sàng chưa? Hãy nghe kỹ câu hỏi đầu tiên...",
+        $"{quizQuestion}" // Truyền thẳng câu hỏi vào đây, không gọi qua Pool nữa
+    };
+    }
+    public override List<string> CompleteSideQuest => new List<string>
+    {
+            "Ha ha ha! Khá khen cho câu trả lời của ngươi! Không hổ danh là đứa con của trời.",
+            "Đây là phần thưởng xứng đáng dành cho ngộ tính đỉnh cao của ngươi. Cầm lấy đi!"
+    };
+    public List<string> wrongDialog = new List<string>
+    {
+            "Sai rồi! Tiếc thay cho một tâm trí còn quá nhiều tạp niệm, chưa thấu hiểu được chân lý.",
+    };
     public override void ActiveEventMap(Map map)
     {
-
-        Pool.Get<QuestManager>().QuizQuestInitShow(quizDatas[UnityEngine.Random.Range(0,quizDatas.Length)]);
+        base.ActiveEventMap(map);
+        Pool.Get<SideQuestManager>().nameChar = "Người thần bí";
+        Pool.Get<SideQuestManager>().QuizQuestInitShow(quizDatas[UnityEngine.Random.Range(0,quizDatas.Length)]);
     }
+    public override void QuestDone()
+    {
+        Observer.Notify(EventList.Network.COMPLETE_SIDEQUEST, this, Type);
+    }
+
 #if UNITY_EDITOR
     // Sử dụng [Button] của Odin để tạo nút bấm tùy chỉnh siêu nhanh
     [Button("IMPORT QUIZ FROM EXCEL", ButtonSizes.Large, ButtonStyle.Box)]
@@ -101,5 +128,8 @@ public class SideQuizQuestResource : ActionMapResourceSO
             Debug.LogError("[Odin Import] Gặp lỗi khi xử lý file Excel: " + e.Message);
         }
     }
+
+   
+
 #endif
 }

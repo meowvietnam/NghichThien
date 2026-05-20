@@ -1,141 +1,72 @@
-﻿using AllMaps;
-using Base;
-using DG.Tweening;
+﻿using Base;
 using LongDH.LongDHModules;
-using LongDH.Script.ObjectPool;
-using Network;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class QuestManager : ActionEnterMapManager , INetworkEvent.ICompleteSideQuest
+public abstract class QuestManager : ActionEnterMapManager
 {
-    public enum ETypeSideQuest
+    [SerializeField] protected QuestResource currentQuest;
+    public string nameChar;
+    public CharacterStatsSecure characterStats;
+    public void SetSkinSideQuestCurrent(CharacterStatsSecure characterStats)
     {
-        Quiz,
-        Combat,
-
+       this.characterStats = characterStats;
     }
-    [SerializeField] public Dictionary<string, string> skins;
-    [SerializeField] public Dictionary<string, Color> color;
-    [SerializeField] public Gender gender;
-    public override string fileSaveMapNode => "SaveSideQuestMap";
-
-    public override int TimeMonthRandom => 5;
-
-    public override string fileSaveTime => "OldTimeRandomSideQuest";
-
-    public override int CountRandom => 3 - Client.Instance.CharacterData.QuestManager.CurrentCountSideQuest;
-
-    [Header("Quiz Side Quest Visual")]
-    [SerializeField] private AnswerQuizQuest answerPrefab;
-    [SerializeField] private SideQuizQuestResource.Quiz currentQuiz;
-   // [Header("Combat Side Quest Visual")]
-
-    // Thay vì khai báo biến List, hãy viết thành hàm trả về List
-    public List<string> GetQuizDialogs(string quizQuestion)
+    [SerializeField] public Dictionary<string, string> skins => characterStats.Skins;
+    [SerializeField] public Dictionary<string, Color> color => characterStats.Colors;
+    [SerializeField] public Gender gender => characterStats.Gender;
+    public virtual void InitQuest(QuestResource quest)
     {
-        return new List<string>
-    {
-        "Đạo hữu dừng bước! Ta thấy ngươi căn cốt kinh kỳ, nhưng đường tu tiên cốt ở ngộ tính, chứ không chỉ có man lực.",
-        "Ta có vài câu hỏi về thiên địa quy luật. Trả lời đúng, ta sẽ tặng ngươi tiên ngọc.",
-        "Ngươi đã sẵn sàng chưa? Hãy nghe kỹ câu hỏi đầu tiên...",
-        $"{quizQuestion}" // Truyền thẳng câu hỏi vào đây, không gọi qua Pool nữa
-    };
+        this.currentQuest = quest;
     }
-    List<string> correctDialog = new List<string>
+    public void QuestCombatTrigger(GameManager.CharCombatInit charCombat, ETypeCombat typeCombat, ECombatResult result)
     {
-            "Ha ha ha! Khá khen cho câu trả lời của ngươi! Không hổ danh là đứa con của trời.",
-            "Đây là phần thưởng xứng đáng dành cho ngộ tính đỉnh cao của ngươi. Cầm lấy đi!"
-    };
-    List<string> wrongDialog = new List<string>
-    {
-            "Sai rồi! Tiếc thay cho một tâm trí còn quá nhiều tạp niệm, chưa thấu hiểu được chân lý.",
-    };
-    [SerializeField] private Popup quizQuestParent;
-    public void SetSkinSideQuestCurrent(Gender gender, Dictionary<string, string> skin, Dictionary<string,Color>color)
-    {
-        this.gender = gender;
-        this.skins = skin;
-        this.color = color;
-    }
-    public void QuizQuestInitShow(SideQuizQuestResource.Quiz quiz)
-    {
-
-        quizQuestParent.Show();
-        currentQuiz = quiz;
-        List<AnswerQuizQuest> listBtnAnswer = new List<AnswerQuizQuest>();
-        var skinRandom = SayDialogManager.Instance.ShowDialogRandomSkin("Người thần bí", GetQuizDialogs(currentQuiz.quiz), null, null, () =>
+        if (typeCombat == ETypeCombat.AllMaps && result == ECombatResult.Win)
         {
-            for (int i = 0; i < listBtnAnswer.Count; i++)
-            {
-                var answerBtn = listBtnAnswer[i];
-                answerBtn.transform.DOScale(Vector3.one, 0.5f);
-
-            }
-        },false);
-        SetSkinSideQuestCurrent(skinRandom.gender,skinRandom.skin,skinRandom.color);
-        for (int i = 0; i < currentQuiz.answer.Length; i++)
-        {
-            var answerBtn = answerPrefab.Spawn(answerPrefab.transform.parent);
-            answerBtn.gameObject.SetActive(true);
-            answerBtn.transform.localScale = Vector3.zero;
-            answerBtn.Init(i, currentQuiz.answer[i]);
-            listBtnAnswer.Add(answerBtn);
+            DoneQuest();
 
         }
-        listBtnAnswer = listBtnAnswer.OrderBy(x => UnityEngine.Random.value).ToList();
-        
-
-
-
     }
-    public void AnswerQuest(AnswerQuizQuest answer)
+    public void DoneQuest()
     {
-        answerPrefab.RecycleAll();
-        quizQuestParent.Hide();
-
-        if (answer.currentIndexAnswer == currentQuiz.rightAnswerIndex)
-        {
-            Observer.Notify(EventList.Network.COMPLETE_SIDEQUEST,this);
+        SayDialogManager.Instance.ShowDialog(nameChar, gender, skins, color, currentQuest.CompleteSideQuest, null, null, () => {
+            currentQuest.QuestDone();
             // Fake Reward
-            SayDialogManager.Instance.ShowDialog("Người thần bí", gender, skins, color, correctDialog,null,null,() =>{
+            Pool.Get<EventRewardPanel>().InitShowEventReward(new RewardSnapshot { MoneyVip = 50 }, $"{currentQuest.CompleteSideQuest[currentQuest.CompleteSideQuest.Count - 1]}");
+            currentQuest = null;
 
-                Pool.Get<EventRewardPanel>().InitShowEventReward(new RewardSnapshot { MoneyVip = 50 }, "Đây là phần thưởng xứng đáng dành cho ngộ tính đỉnh cao của ngươi!");
-
-
-            });
-
-        }
-        else
-        {
-            SayDialogManager.Instance.ShowDialog("Người thần bí",gender,skins,color, wrongDialog);
-
-        }
-
-        
-    }
-
-    public void SuccessCompleteSideQuest(int moneyVip)
-    {
-        SayDialogManager.Instance.ShowDialog("Người thần bí", gender, skins, color, correctDialog, null, null, () => {
-
-            Pool.Get<EventRewardPanel>().InitShowEventReward(new RewardSnapshot { MoneyVip = moneyVip }, "Đây là phần thưởng xứng đáng dành cho ngộ tính đỉnh cao của ngươi!");
 
 
         });
     }
-
-    public void FailCompleteSideQuest(string message)
+    public void InitShowQuestRandomSkin(Action actionComplete, List<string> startDialog)
     {
+        var skinRandom = SayDialogManager.Instance.ShowDialogRandomSkin(nameChar, startDialog, null, null, () =>
+        {
+            actionComplete?.Invoke();
+        }, false);
+        CharacterStatsSecure charRandom = new CharacterStatsSecure();
+        foreach (var kvp in skinRandom.skin)
+        {
+            charRandom.skinList.Add(new CharacterStatsSecure.SkinData { key = kvp.Key, value = kvp.Value });
+        }
+        foreach (var kvp in skinRandom.color)
+        {
+            charRandom.colorList.Add(new CharacterStatsSecure.ColorData { key = kvp.Key, value = kvp.Value });
+        }
+        charRandom.Gender = skinRandom.gender;
+        SetSkinSideQuestCurrent(charRandom);
     }
-
-    public override ActionMapResourceSO GetActionMapResourceSO()
+    public void InitShowQuestHaveChar(Action actionComplete, List<string> startDialog , CharacterStatsSecure character)
     {
-      return  actionMapResourceSOs[UnityEngine.Random.Range(0, actionMapResourceSOs.Length)];
+        nameChar = character.nameUser;
+        SayDialogManager.Instance.ShowDialog(character.nameUser,character.Gender,character.Skins,character.Colors, startDialog, null, null, () =>
+        {
+            actionComplete?.Invoke();
+        });
+
+        SetSkinSideQuestCurrent(character);
     }
+   
 }

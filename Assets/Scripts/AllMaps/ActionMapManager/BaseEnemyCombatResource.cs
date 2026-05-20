@@ -13,13 +13,13 @@ public class BaseEnemyCombatResource : ActionMapResourceSO
     [SerializeField]public EnemyData[] listEnemy;
     public override void ActiveEventMap(Map map)
     {
-        var enemy = GetEnemyWithPlayerLevel();
+        var enemy = GetNPCDataCombatWithPlayerLevel(listEnemy);
         Pool.Get<GameManager>().GoToCombat(new GameManager.CharCombatInit { eTypeVisual = enemy.eTypeVisualChar, charStats = enemy.charStats }, ETypeCombat.AllMaps);
 
     }
-    public EnemyData GetEnemyWithPlayerLevel()
+    public static NPCData GetNPCDataCombatWithTargetLevel(NPCData[] listEnemy,int levelTarget)
     {
-        int playerLevel = Client.Instance.CharacterData.Progression.Level;
+        int playerLevel = levelTarget;
 
         int targetLevel = playerLevel;
         float rand = UnityEngine.Random.value;
@@ -54,10 +54,17 @@ public class BaseEnemyCombatResource : ActionMapResourceSO
         // Chọn ngẫu nhiên 1 con từ danh sách phù hợp
         if (possibleEnemies.Count > 0)
         {
-            EnemyData randomEnemy = possibleEnemies[UnityEngine.Random.Range(0, possibleEnemies.Count)];
+            NPCData randomEnemy = possibleEnemies[UnityEngine.Random.Range(0, possibleEnemies.Count)];
             return randomEnemy;
         }
         return null;
+    }
+    public static NPCData GetNPCDataCombatWithPlayerLevel(NPCData[] listEnemy)
+    {
+        int playerLevel = Client.Instance.CharacterData.Progression.Level;
+
+      
+        return GetNPCDataCombatWithTargetLevel(listEnemy, playerLevel);
     }
     [Button]
     private void OnUpdateDataEnemyData()
