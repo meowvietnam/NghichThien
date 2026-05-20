@@ -1558,7 +1558,7 @@ public class CharacterCombat : MonoBehaviour
 
     public virtual bool CheckDie()
     {
-        if (characterStatsTemp.hp > 0)
+        if (characterStatsTemp.hp <= 0)
         {
             Die();
             return true;

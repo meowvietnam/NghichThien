@@ -16,7 +16,14 @@ public abstract class ActionEnterMapManager : ActionMapManager
     {
         base.Start();
         LoadData();
+        Observer.AddObserver(EventList.GamePlay.ACTIVE_EVENT_MAP,RemoveMap);
     }
+    private void OnDestroy()
+    {
+        Observer.RemoveObserver(EventList.GamePlay.ACTIVE_EVENT_MAP, RemoveMap);
+
+    }
+
     public abstract override int TimeMonthRandom { get ;  }
     public abstract override string fileSaveTime { get ;   }
 
@@ -25,7 +32,11 @@ public abstract class ActionEnterMapManager : ActionMapManager
     {
         var mapManager = Pool.Get<MapManager>();
         var mapExcept = mapManager.maps.Where(x => x.IsEmptyAction && !(x is Stronghold)).ToList();
-
+        foreach (var item in currentMapRandom)
+        {
+            item.ResetDataAction();
+        }
+        currentMapRandom.Clear();
         for (int i = 0; i < CountRandom; i++)
         {
             int randomMapId = mapExcept[UnityEngine.Random.Range(0, mapExcept.Count)].Id;
@@ -63,6 +74,13 @@ public abstract class ActionEnterMapManager : ActionMapManager
         }
     }
     public abstract ActionMapResourceSO GetActionMapResourceSO();
+    private void RemoveMap(params object[] data)
+    {
+        Map map = (Map)data[0];
+        
+        currentMapRandom.Remove(map);
+        SaveRandom();
+    }
     private void SetActionOnMap(int id)
     {
         var mapManager = Pool.Get<MapManager>();

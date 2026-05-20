@@ -39,6 +39,8 @@ public class PrepareCombatPanel : Popup , IUISingleton
             Pool.Get<UIManager>().panelGroup.SetActive(false);
             Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
             this.Hide();
+            Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
+
             SceneManager.LoadScene("Combat");
 
         });

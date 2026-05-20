@@ -70,24 +70,51 @@ public class CharacterVisualControl : MonoBehaviour
         currentCharGender.gameObject.SetActive(true);
         AnimIdle();
     }
+    private bool HasAnimation(string animName)
+    {
+        if (currentCharGender == null || currentCharGender.Skeleton == null || currentCharGender.Skeleton.Data == null)
+            return false;
+
+        return currentCharGender.Skeleton.Data.FindAnimation(animName) != null;
+    }
+
     public void AnimDie()
     {
-        currentCharGender.AnimationState.SetAnimation(0, ANIM_DIE, false);
-
+        if (HasAnimation(ANIM_DIE))
+        {
+            currentCharGender.AnimationState.SetAnimation(0, ANIM_DIE, false);
+        }
+        else
+        {
+            Debug.LogWarning($"[Spine] Không tìm thấy animation {ANIM_DIE}, tự động chuyển về trạng thái ẩn/xóa.");
+        }
     }
+
     public void AnimIdle()
     {
-        currentCharGender.AnimationState.SetAnimation(0, ANIM_IDLE, true);
-
+        if (HasAnimation(ANIM_IDLE))
+        {
+            currentCharGender.AnimationState.SetAnimation(0, ANIM_IDLE, true);
+        }
+        else
+        {
+            Debug.LogWarning($"[Spine] Không tìm thấy animation {ANIM_IDLE}!");
+        }
     }
+
     public void AnimHit()
     {
-        currentCharGender.AnimationState.SetAnimation(0, ANIM_HIT, false);
-
+        if (HasAnimation(ANIM_HIT))
+        {
+            currentCharGender.AnimationState.SetAnimation(0, ANIM_HIT, false);
+        }
     }
+
     public void AnimPunch()
     {
-        currentCharGender.AnimationState.SetAnimation(0, ANIM_PUNCH, false);
-
+        if (HasAnimation(ANIM_PUNCH))
+        {
+            currentCharGender.AnimationState.SetAnimation(0, ANIM_PUNCH, false);
+        }
     }
 }

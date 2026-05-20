@@ -22,7 +22,7 @@ public class SayDialogManager : BaseBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private Text textContent;
     private Coroutine typingCoroutine;
-    private Transform panel => textContent.transform.parent;
+    private Popup panel => textContent.transform.parent.GetComponent<Popup>();
     public Button btnPanel;
     private bool isTyping = false; // Đang chạy chữ
     private bool isDone = false;   // Đã hiện full chữ
@@ -67,6 +67,7 @@ public class SayDialogManager : BaseBehaviour
     [Button]
     public void ShowDialog(string name, Gender gender, Dictionary<string, string> skins, Dictionary<string, Color> colors, List<string> contents, Sprite spriteContent = null, List<AudioClip> voices = null, Action actionEndThisDialog = null , bool isAutoHideAfterDoneDialog = true)
     {
+        
         // Lưu trữ danh sách dữ liệu truyền vào
         dialogContents = contents ?? new List<string>();
         dialogVoices = voices ?? new List<AudioClip>();
@@ -80,7 +81,10 @@ public class SayDialogManager : BaseBehaviour
 
         // Thiết lập Image Content (Sprite phụ nếu có)
         imgContent.gameObject.SetActive(false);
-        panel.gameObject.SetActive(true);
+        if(!panel.gameObject.activeSelf)
+        {
+            panel.Show();
+        }    
 
         if (spriteContent != null)
         {
@@ -192,7 +196,7 @@ public class SayDialogManager : BaseBehaviour
     }
     public void HideDialog()
     {
-        panel.gameObject.SetActive(false);
+        panel.Hide();
         imgContent.gameObject.SetActive(false);
     }    
 

@@ -32,16 +32,17 @@ public class NPCManager : ActionMapManager
     private void OnUpdateDataNPCData()
     {
 #if UNITY_EDITOR
-        // Tìm tất cả GUID của các asset có type là CongPhap
+        // Tìm tất cả GUID của các asset có type là NPCData (bao gồm cả class con kế thừa nó)
         string[] guids = AssetDatabase.FindAssets("t:NPCData");
 
         npcDatas = guids
             .Select(guid => AssetDatabase.LoadAssetAtPath<NPCData>(AssetDatabase.GUIDToAssetPath(guid)))
-            .Where(asset => asset != null)
+            .Where(asset => asset != null && !(asset is EnemyData)) // KIỂM TRA: Nếu KHÔNG PHẢI EnemyData thì mới lấy
             .ToArray();
 
         EditorUtility.SetDirty(this);
-        Debug.Log($"Đã cập nhật {npcDatas.Length} NPC vào mảng.");
+        AssetDatabase.SaveAssets(); // Nên thêm dòng này để Unity lưu hẳn thay đổi xuống ổ cứng
+        Debug.Log($"Đã cập nhật {npcDatas.Length} NPC thuần túy vào mảng (Đã loại bỏ Enemy).");
 #endif
     }
 }

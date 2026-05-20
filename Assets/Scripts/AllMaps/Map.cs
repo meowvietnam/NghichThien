@@ -60,10 +60,11 @@ namespace AllMaps
         {
             if(actionMap != null)
             {
+                Observer.Notify(EventList.GamePlay.ACTIVE_EVENT_MAP,this);
                 actionMap.ActiveEventMap(this);
+                ResetDataAction();
 
             }
-            ResetDataAction();
 
         }
         public virtual void OnPlayerExit()

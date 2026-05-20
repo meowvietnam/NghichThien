@@ -316,6 +316,7 @@ public class GameManager : BaseBehaviour
 
         string backScene = listSceneLoaded[index - 1];
         listSceneLoaded.Remove(currentScene);
+        Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         SceneManager.LoadScene(backScene);
     }
 
@@ -338,7 +339,7 @@ public class GameManager : BaseBehaviour
             EMapType eMap = (EMapType)data[1];
             currentEMapType = eMap;
         }
-
+        Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         var sceneManger = Client.Instance.CoreModule.GetHandler<Network.Core.SceneManager>();
         sceneManger.ChangeScene(nameScene, OnChangeSceneResult);
     }
@@ -389,15 +390,15 @@ public class GameManager : BaseBehaviour
 
     public void BackAllMapFromCombat(ECombatResult eCombatResult)
     {
+        Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         Pool.Get<UIManager>().panelGroup.SetActive(true);
         currentECombatResult = eCombatResult;
         SceneManager.LoadScene(listSceneLoaded[0]);
-        Pool.Get<SideQuestManager>().QuestCombatTrigger(enemyCombat,currentETypeCombat, currentECombatResult);
-
+        Pool.Get<SideQuestManager>().QuestCombatTrigger(enemyCombat, currentETypeCombat, currentECombatResult);
 
 
     }
-
+   
     public static CharacterStatsSecure ConvertCharServerDataToCharClientData()
     {
         var charData = Client.Instance.CharacterData;

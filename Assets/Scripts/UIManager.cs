@@ -1,15 +1,17 @@
-﻿using Base;
+﻿using AllMaps.ItemProvider;
+using Base;
 using CreateCharacter;
 using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using LuyenKhi;
 using Network;
+using Network.Core;
 using Sirenix.OdinInspector;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using AllMaps.ItemProvider;
 
 public interface IUISingleton
 {
@@ -23,7 +25,8 @@ public class UIManager : BaseBehaviour
     [SerializeField] private Sprite spriteTTInven;
     [SerializeField] private Sprite spriteCPInven;
     [SerializeField] private Sprite spriteRecipeInven;
-    
+    [SerializeField] public GameObject loadScene;
+
     /// <summary>
     /// Abstract Factory để lấy equipment từ các collection khác nhau
     /// </summary>
@@ -161,10 +164,14 @@ public class UIManager : BaseBehaviour
         // Nếu chưa có, mình là "trùm", đăng ký vào Pool và giữ lại
         Pool.Set(this);
         DontDestroyOnLoad(gameObject);
-        
+        // Đăng ký sự kiện mỗi khi load scene mới
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        loadScene.gameObject.SetActive(false);
     }
 
-   
     private void Start()
     {
         var listPanel = transform.GetComponentsInChildren<PanelGroup>(true);

@@ -21,7 +21,7 @@ public class EventRewardPanel : Popup , IUISingleton
     {
         InitShow(rewardData, contentText);
         imgBGTilte.sprite = spriteEvent;
-       
+        this.InitActionClose(null);
     }
     public void InitShowCombatReward(RewardSnapshot rewardData, string contentText)
     {
@@ -78,8 +78,13 @@ public class EventRewardPanel : Popup , IUISingleton
     }
     private void SetReward()
     {
+        for (int i = 0; i < itemRewardPrefab.transform.parent.childCount; i++)
+        {
+            itemRewardPrefab.transform.parent.GetChild(i).gameObject.SetActive(false);
+        }
         if (this.rewardDataCurrent == null) return;
         var itemReward = itemRewardPrefab.Spawn(itemRewardPrefab.transform.parent);
+        itemReward.gameObject.SetActive(true);
         itemReward.transform.localScale = Vector3.one;
         ItemInventory itemInventory = itemReward.transform.GetChild(0).GetComponent<ItemInventory>();
         Text textCountReward = itemReward.transform.GetChild(1).GetComponent<Text>();

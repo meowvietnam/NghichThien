@@ -157,6 +157,8 @@ public class CombatManager : BaseBehaviour
         Observer.AddObserver(EventList.Combat.UPDATE_AMKINH_THANTHONG, SetUIAmKinh);
 
         Observer.AddObserver(EventList.Combat.CHARACTER_ADJUST_HP, SetUIHpBar);
+        Observer.AddObserver(EventList.Combat.CHARACTER_ADJUST_HP, CheckDie);
+
         if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
         if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
         // test 
