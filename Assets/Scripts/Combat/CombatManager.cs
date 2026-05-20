@@ -38,7 +38,7 @@ public class CombatManager : BaseBehaviour
     
     }
     [SerializeField]
-    private List<BuffOrDebuffIcon> buffOrDebuffIcons;
+    public List<BuffOrDebuffIcon> buffOrDebuffIcons;
     private Dictionary<CharacterCombat.AmKinhEntry,ItemUI> dictAmKinhItemUI = new Dictionary<CharacterCombat.AmKinhEntry, ItemUI>();
 
     [SerializeField] public CharacterCombat char1;
