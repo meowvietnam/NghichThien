@@ -11,18 +11,12 @@ public class Popup : BaseBehaviour
     [SerializeField] protected float scaleBase =1f;
     [SerializeField]
     protected Action actionClose;
-  public virtual void Show(float delay = 0.5f,Action actionComplete = null)
+    public virtual void Show(float delay = 0.5f,Action actionComplete = null)
     {
-        if(commonMask == null)
-        {
-            commonMask =  Pool.Get<UIManager>().commonMask;
-        }
+       
         gameObject.SetActive(true);
         transform.localScale = Vector3.zero;
-        if(commonMask != null)
-        {
-            commonMask?.gameObject.SetActive(true);
-        }
+        
         transform.DOScale(Vector3.one * scaleBase, delay).OnComplete(() =>
         {
             actionComplete?.Invoke();
@@ -31,6 +25,7 @@ public class Popup : BaseBehaviour
         {
             ActionBtnClose();
         });
+        Pool.Get<UIManager>().RegisterOpenPopup();
     }
     public void InitActionClose(Action action)
     {
@@ -47,10 +42,7 @@ public class Popup : BaseBehaviour
         actionComplete?.Invoke();
         gameObject.SetActive(false);
 
-        if (commonMask != null)
-        {
-            commonMask?.gameObject.SetActive(false);
-        }
+        Pool.Get<UIManager>().RegisterClosePopup();
     }
 
 }

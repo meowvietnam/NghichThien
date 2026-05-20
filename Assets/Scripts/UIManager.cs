@@ -185,8 +185,29 @@ public class UIManager : BaseBehaviour
             item.Init();
         }
     }
-    [Button]
-    private void ShowShop()
+    private int activePopupCount = 0; // Biến đếm số lượng popup đang mở
+
+    public void RegisterOpenPopup()
     {
-    }    
+        activePopupCount++;
+        if (commonMask != null)
+        {
+            commonMask.gameObject.SetActive(true);
+        }
+    }
+
+    public void RegisterClosePopup()
+    {
+        activePopupCount--;
+
+        // Chỉ khi KHÔNG CÒN popup nào mở (count <= 0) thì mới được tắt mask
+        if (activePopupCount <= 0)
+        {
+            activePopupCount = 0; // Đảm bảo không bị âm số
+            if (commonMask != null)
+            {
+                commonMask.gameObject.SetActive(false);
+            }
+        }
+    }
 }
