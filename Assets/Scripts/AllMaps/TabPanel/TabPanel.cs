@@ -15,6 +15,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using CongPhap = Skill.CongPhap;
@@ -50,6 +51,15 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     [SerializeField] private Button btnClose;
     [SerializeField] private ButtonWithPanel currentBtnWithPanel;
     [SerializeField] public ToolTipItems toolTipItems => ToolTipItems.Instance;
+    [ContextMenu(nameof(Get))]
+    public void Get()
+    {
+        var q = CoreConfig.Instance.Qualities;
+        spriteQualityFulls = q.Select(x => x.Background).ToArray();
+        spriteFrames = q.Select(x => x.IconUp).ToArray();
+        colorQualitys = q.Select(x => x.Color).ToArray();
+        EditorUtility.SetDirty(this);
+    }
     void SelectFilter()
     {
         lianziAnim.SetTrigger("Hide");

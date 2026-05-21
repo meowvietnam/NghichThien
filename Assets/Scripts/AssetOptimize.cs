@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -107,6 +108,7 @@ public class AssetOptimize
                 Debug.Log($"Add to {item.name}", item);
             }
         }
+
         foreach (var item in sprites)
         {
             var renderData = item.GetComponent<RenderData>();
@@ -119,6 +121,7 @@ public class AssetOptimize
             }
         }
     }
+
     // [MenuItem("Tools/InjectRenderData")]
     public static void InjectRenderData()
     {
@@ -172,8 +175,10 @@ public class AssetOptimize
             AssetDatabase.SaveAssets();
         }
     }
+
     // [MenuItem("Tools/ReplaceRefPrefabs")]
-    public static void ReplaceRefPrefabs() {
+    public static void ReplaceRefPrefabs()
+    {
         var prefabs = GetAllPrefabs();
         foreach (var (path, prefab) in prefabs)
         {
@@ -184,11 +189,13 @@ public class AssetOptimize
             {
                 // renderData.OnValidate();
             }
+
             PrefabUtility.SaveAsPrefabAsset(root, path);
             PrefabUtility.UnloadPrefabContents(root);
             AssetDatabase.SaveAssets();
         }
     }
+
     public static void InjectRenderDatas()
     {
         var guids = AssetDatabase.FindAssets("t:Scene");
@@ -200,6 +207,7 @@ public class AssetOptimize
             InjectRenderData();
         }
     }
+
     // [MenuItem("Tools/DeleteRenderDatas")]
     public static void DeleteRenderDatas()
     {
@@ -213,6 +221,7 @@ public class AssetOptimize
             {
                 Object.DestroyImmediate(renderData);
             }
+
             Debug.Log(scene.name);
             EditorSceneManager.MarkSceneDirty(
                 scene
@@ -222,8 +231,10 @@ public class AssetOptimize
             );
         }
     }
+
     // [MenuItem("Tools/DeleteRenderDataPrefabs")]
-    public static void DeleteRenderDataPrefabs() {
+    public static void DeleteRenderDataPrefabs()
+    {
         var prefabs = GetAllPrefabs();
         foreach (var (path, prefab) in prefabs)
         {
@@ -234,17 +245,20 @@ public class AssetOptimize
             {
                 Object.DestroyImmediate(renderData);
             }
+
             PrefabUtility.SaveAsPrefabAsset(root, path);
             PrefabUtility.UnloadPrefabContents(root);
             AssetDatabase.SaveAssets();
         }
     }
+
     public static RenderData[] GetRenderDatas(Scene scene)
     {
         var gameObjects = scene.GetRootGameObjects();
         var renderDatas = gameObjects.SelectMany(x => x.GetComponentsInChildren<RenderData>(true));
         return renderDatas.ToArray();
     }
+
     public static Sprite[] GetOriginalSprites(Texture2D texture)
     {
         string path = AssetDatabase.GetAssetPath(texture);
@@ -255,12 +269,14 @@ public class AssetOptimize
             .ToArray();
         return sprites;
     }
+
     public static void ReplaceSprite(
         AnimationClip clip, Dictionary<Texture2D, Sprite[]> dict)
     {
+        var path = AssetDatabase.GetAssetPath(clip);
         var bindings =
             AnimationUtility.GetObjectReferenceCurveBindings(clip);
-
+        List<(Sprite, Sprite)> kv = new List<(Sprite, Sprite)>();
         foreach (var binding in bindings)
         {
             if (binding.propertyName != "m_Sprite")
@@ -269,7 +285,6 @@ public class AssetOptimize
                 AnimationUtility.GetObjectReferenceCurve(
                     clip,
                     binding);
-            bool changed = false;
             for (int i = 0; i < frames.Length; i++)
             {
                 var frame = frames[i];
@@ -284,30 +299,55 @@ public class AssetOptimize
                     Debug.Log(clip.name + $" has no texture {sprite.name}", sprite);
                     continue;
                 }
-                if(IsOriginalSprite(sprite)) continue;
+
+                if (IsOriginalSprite(sprite)) continue;
                 if (!dict.TryGetValue(sprite.texture, out Sprite[] sprites))
                 {
                     sprites = GetOriginalSprites(sprite.texture);
                     dict.Add(sprite.texture, sprites);
                 }
+
                 var newSprite = sprites.FirstOrDefault(x => x.name == sprite.name);
                 if (newSprite != null)
                 {
-                    frame.value = newSprite;
-                    changed = true;
+                    kv.Add((sprite, newSprite));
+                }
+                else
+                {
+                    Debug.Log(clip.name + $" has no sprite {sprite.name}", sprite.texture);
                 }
             }
-            if (changed)
-            {
-                AnimationUtility.SetObjectReferenceCurve(
-                    clip,
-                    binding,
-                    frames);
-            }
         }
-        EditorUtility.SetDirty(clip);
-        AssetDatabase.SaveAssets();
+
+        var r = kv.Select(x =>
+        {
+            AssetDatabase.TryGetGUIDAndLocalFileIdentifier(
+                x.Item1,
+                out string guid,
+                out long fileId);
+            var source = $"{{fileID: {fileId}, guid: {guid}, type: 2}}";
+            AssetDatabase.TryGetGUIDAndLocalFileIdentifier(
+                x.Item2,
+                out  guid,
+                out  fileId);
+            var target = $"{{fileID: {fileId}, guid: {guid}, type: 3}}";
+            return new
+            {
+                source,
+                target,
+            };
+        }).ToList();
+        var assetPath = Path.GetFullPath(path);
+        var text = File.ReadAllText(assetPath);
+        foreach (var u in r)
+        {
+            text = text.Replace(u.source, u.target);
+        }
+        File.WriteAllText(assetPath, text);
+        AssetDatabase.ImportAsset(path);
+        AssetDatabase.Refresh();
     }
+
     // [MenuItem("Tools/ValidateRenderDatas")]
     public static void ValidateRenderDatas()
     {
@@ -321,6 +361,7 @@ public class AssetOptimize
             {
                 // renderData.OnValidate();
             }
+
             EditorSceneManager.MarkSceneDirty(
                 scene
             );
@@ -328,6 +369,7 @@ public class AssetOptimize
                 scene
             );
         }
+
         Debug.Log("Complete");
     }
 
@@ -342,7 +384,9 @@ public class AssetOptimize
             var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(path);
             ReplaceSprite(clip, dict);
         }
+
         AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
         Debug.Log("Complete");
     }
 }
