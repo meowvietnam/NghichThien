@@ -50,7 +50,7 @@ public class Test : MonoBehaviour
             }
         }
     }
-
+    
     public void Rescale(Sprite source, float scale)
     {
         SerializedObject so = new SerializedObject(source);
@@ -135,6 +135,26 @@ public class Test : MonoBehaviour
         return sprites;
     }
 
+    [Button]
+    public void NewCheck()
+    {
+        var sprites = GetAllSprites();
+        var dict = sprites.GroupBy(x => x.texture).ToDictionary(x => x.Key, x => x.ToHashSet());
+        foreach (var pair in dict)
+        {
+            var originalSprites = GetOriginalSprites(pair.Key);
+            var value = pair.Value;
+            value.ExceptWith(originalSprites);
+            var a = originalSprites.Select(x => x.name).ToHashSet();
+            var b =  value.Select(x => x.name).ToHashSet();
+            b.ExceptWith(a);
+            foreach (var se in b)
+            {
+                Debug.Log($"Missing {se}",pair.Key);
+            }
+        }
+
+    }
     [Button]
     public void Optimize()
     {

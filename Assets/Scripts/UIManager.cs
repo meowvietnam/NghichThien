@@ -9,6 +9,7 @@ using Network;
 using Network.Core;
 using Sirenix.OdinInspector;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -19,7 +20,7 @@ public interface IUISingleton
 }
 public class UIManager : BaseBehaviour
 {
-    [SerializeField] public Sprite[] spriteQualityFulls;
+    [SerializeField] public Sprite[] spriteQualityFulls ;
     [SerializeField] public Sprite[] spriteFrames;
     [SerializeField] public Color[] colorQualitys;
     [SerializeField] private Sprite spriteTTInven;
@@ -30,8 +31,15 @@ public class UIManager : BaseBehaviour
     /// <summary>
     /// Abstract Factory để lấy equipment từ các collection khác nhau
     /// </summary>
-
-
+    [Button]
+    public void GetQualities()
+    {
+        var qualities = CoreConfig.Instance.Qualities;
+        spriteQualityFulls = qualities.Select(x => x.Background).ToArray();
+        colorQualitys = qualities.Select(x => x.Color).ToArray();
+        spriteFrames = qualities.Select(x => x.IconUp).ToArray();
+        EditorUtility.SetDirty(this);
+    }
     public (Sprite,Sprite,Color) GetFrameAndQualityFullAndColorNameSkill(BaseSkill data)
     {
         if (data == null) return (default, default, default);
