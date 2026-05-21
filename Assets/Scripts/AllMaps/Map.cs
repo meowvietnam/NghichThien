@@ -65,7 +65,10 @@ namespace AllMaps
                 actionMap.ActiveEventMap(this);
 
             }
-            ResetDataAction();
+            if(!(actionMap is MainQuestResource))
+            {
+                ResetDataAction();
+            }
 
 
         }

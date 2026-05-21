@@ -78,6 +78,7 @@ public static partial class EventList
         public const string EQUIP_EQUIPMENT = "Network.EQUIP_EQUIPMENT";
         public const string UNEQUIP_EQUIPMENT = "Network.EQUIP_EQUIPMENT";
         public const string COMPLETE_SIDEQUEST = "Network.COMPLETE_SIDEQUEST";
+        public const string JOIN_MONPHAI = "Network.JOIN_MONPHAI";
 
     }
 }

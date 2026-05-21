@@ -117,6 +117,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         {
             gameObject.SetActive(false);
         });
+        InitOnlyNgoDao();
     }
     private void OnEnable()
     {
@@ -226,7 +227,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     private NgoDaoToolTip ngoDaoToolTip;
     [SerializeField]
     public SecureInt indexThisPage;
-    public void InitNgoDao()
+    public void InitOnlyNgoDao()
     {
         // INit ngộ đạo skill
         Vector2 posStart = new Vector2(-500, 362);
@@ -287,6 +288,10 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
         }
         
+    
+    }
+    public void InitNgoDao()
+    {
         // INit ngộ đạo level
         for (int i = 0; i < levelNgoDao.Count; i++)
         {
@@ -303,7 +308,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         }
         SetNgoDaoDiem();
         dictBtnWithNgoDaos.Keys.ElementAt(0).onClick?.Invoke();
-    }
+    }    
     public void SetNgoDaoDiem()
     {
         ngoDaoDiemText.text = CharData.Progression.NgoDaoDiem.ToString();

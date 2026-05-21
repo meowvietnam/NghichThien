@@ -32,7 +32,7 @@ public class GameManager : BaseBehaviour
         "AllMaps",
     };
 
-    [SerializeField] public EMapType currentEMapType = EMapType.None;
+    [SerializeField] public EMapType currentEMapType => Pool.Get<MapManager>().FindMap(Client.Instance.CharacterData.Progression.IdCurrentNode) is Stronghold strongHold ? strongHold.eCurrentMapType : EMapType.None;
     public EMonPhai CurrentEMonPhai => ConvertEMapToEMonPhai(currentEMapType);
 
     public static Dictionary<EMapType, string> dictMapTypeWithSceneName = new Dictionary<EMapType, string>()
@@ -310,7 +310,6 @@ public class GameManager : BaseBehaviour
         int index = listSceneLoaded.IndexOf(currentScene);
         if (index == 0)
         {
-            currentEMapType = EMapType.None;
             return;
         }
 
@@ -325,23 +324,26 @@ public class GameManager : BaseBehaviour
         string nameScene = (string)data[0];
         if (string.IsNullOrEmpty(nameScene))
         {
-            System.Random _random = new System.Random();
-            Array values = Enum.GetValues(typeof(Gender));
-            Gender randomGender = (Gender)values.GetValue(_random.Next(values.Length));
-            var xungHo = XungHoText(6, randomGender);
-            SayDialogManager.Instance.ShowDialogRandomSkin("Người Gác Cổng",
-               new List<string> { $"{xungHo.targetCallMe} xin dừng bước hiện tại nơi này chưa thể vào hãy kiên nhẫn chờ bản cập nhật tiếp theo !" });
+            SetDialogGacCong("xin dừng bước hiện tại nơi này chưa thể vào hãy kiên nhẫn chờ bản cập nhật tiếp theo!");
             return;
         }
 
         if (data.Length > 1)
         {
             EMapType eMap = (EMapType)data[1];
-            currentEMapType = eMap;
         }
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         var sceneManger = Client.Instance.CoreModule.GetHandler<Network.Core.SceneManager>();
         sceneManger.ChangeScene(nameScene, OnChangeSceneResult);
+    }
+    public static void SetDialogGacCong(string content , System.Action action = null,bool isAutoHide=true)
+    {
+        System.Random _random = new System.Random();
+        Array values = Enum.GetValues(typeof(Gender));
+        Gender randomGender = (Gender)values.GetValue(_random.Next(values.Length));
+        var xungHo = XungHoText(6, randomGender);
+        SayDialogManager.Instance.ShowDialogRandomSkin("Người Gác Cổng", randomGender,
+           new List<string> { $"{xungHo.targetCallMe} {content}" },null,null,action,isAutoHide);
     }
 
     private void OnChangeSceneResult(ChangeSceneResult result)

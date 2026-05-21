@@ -115,5 +115,9 @@ public class INetworkEvent
         void SuccessCompleteSideQuest(int moneyVip);
         void FailCompleteSideQuest(string message);
     }
-   
+    public interface IJoinMonPhai// Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessJoinMonPhai();
+        void FailJoinMonPhai(string message);
+    }
 }
