@@ -13,11 +13,11 @@ public class BaseEnemyCombatResource : ActionMapResourceSO
     [SerializeField]public EnemyData[] listEnemy;
     public override void ActiveEventMap(Map map)
     {
-        var enemy = GetNPCDataCombatWithPlayerLevel(listEnemy);
+        var enemy = GetEnemyDataCombatWithPlayerLevel(listEnemy);
         Pool.Get<GameManager>().GoToCombat(new GameManager.CharCombatInit { eTypeVisual = enemy.eTypeVisualChar, charStats = enemy.charStats }, ETypeCombat.AllMaps);
 
     }
-    public static NPCData GetNPCDataCombatWithTargetLevel(NPCData[] listEnemy,int levelTarget)
+    public NPCData GetEnemyDataCombatWithTargetLevel(NPCData[] listEnemy,int levelTarget)
     {
         int playerLevel = levelTarget;
 
@@ -59,12 +59,12 @@ public class BaseEnemyCombatResource : ActionMapResourceSO
         }
         return null;
     }
-    public static NPCData GetNPCDataCombatWithPlayerLevel(NPCData[] listEnemy)
+    public NPCData GetEnemyDataCombatWithPlayerLevel(NPCData[] listEnemy)
     {
         int playerLevel = Client.Instance.CharacterData.Progression.Level;
 
       
-        return GetNPCDataCombatWithTargetLevel(listEnemy, playerLevel);
+        return GetEnemyDataCombatWithTargetLevel(listEnemy, playerLevel);
     }
     [Button]
     private void OnUpdateDataEnemyData()

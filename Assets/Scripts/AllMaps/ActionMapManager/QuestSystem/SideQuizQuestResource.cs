@@ -18,6 +18,7 @@ using UnityEditor;
 public class SideQuizQuestResource : SideQuestResource
 {
     public override ETypeSideQuest Type =>  ETypeSideQuest.Quiz;
+    public override List<CharacterStatsSecure> listNPCInteractive => new List<CharacterStatsSecure> { Pool.Get<SideQuestManager>().characterProviderQuest};
     [Serializable]
     public class Quiz {
 
@@ -48,12 +49,7 @@ public class SideQuizQuestResource : SideQuestResource
     public override void ActiveEventMap(Map map)
     {
         base.ActiveEventMap(map);
-        Pool.Get<SideQuestManager>().nameChar = "Người thần bí";
         Pool.Get<SideQuestManager>().QuizQuestInitShow(quizDatas[UnityEngine.Random.Range(0,quizDatas.Length)]);
-    }
-    public override void QuestDone()
-    {
-        Observer.Notify(EventList.Network.COMPLETE_SIDEQUEST, this, Type);
     }
 
 #if UNITY_EDITOR

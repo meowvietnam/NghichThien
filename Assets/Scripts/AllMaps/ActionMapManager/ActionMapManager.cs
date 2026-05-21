@@ -8,7 +8,7 @@ public abstract class ActionMapManager : MonoBehaviour
     public abstract int TimeMonthRandom { get;  }
     public abstract string fileSaveTime { get;  }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         Pool.Set(this.GetType(), this);
         Observer.AddObserver(EventList.GamePlay.TIME_ADJUST, OnTimeAdjust);

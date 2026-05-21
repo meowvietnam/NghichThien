@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 
@@ -19,11 +20,11 @@ public class SideQuestManager : QuestManager
    
     public override string fileSaveMapNode => "SaveSideQuestMap";
 
-    public override int TimeMonthRandom => 5;
+    public override int TimeMonthRandom => 10;
 
     public override string fileSaveTime => "OldTimeRandomSideQuest";
 
-    public override int CountRandom => 3 - Client.Instance.CharacterData.QuestManager.CurrentCountSideQuest;
+    public override int CountRandom => 10 - Client.Instance.CharacterData.QuestManager.CurrentCountSideQuest;
 
  
     [Header("Quiz Side Quest Visual")]
@@ -34,8 +35,47 @@ public class SideQuestManager : QuestManager
     // Thay vì khai báo biến List, hãy viết thành hàm trả về List
    
     [SerializeField] private Popup quizQuestParent;
-    
-   
+    [Header("Delivery Side Quest Visual")]
+    public CharacterStatsSecure characterStatsTakeDeliver;
+    public Map mapTakeDeliver;
+    protected override void Awake()
+    {
+        base.Awake();
+        Observer.AddObserver(EventList.GamePlay.USER_ENTER_MAP, USER_ENTER_MAP);
+    }
+    public void USER_ENTER_MAP(params object[] data)
+    {
+        Debug.Log("Reset");
+        Map map = (Map)data[0];
+
+        if (map.actionMap != null && map.actionMap is SideQuestResource)
+        {
+            currentQuest = null;
+            characterProviderQuest = null;
+           
+        }
+        if (mapTakeDeliver == null) return;
+        if(map.actionMap != null && map.actionMap is SideQuestResource)
+        {
+            mapTakeDeliver.ResetDataAction();
+            characterStatsTakeDeliver = null;
+        }    
+
+
+        Debug.Log(" vào QuestDeliveryTrigger 2");
+
+        if (map.Id == mapTakeDeliver.Id)
+        {
+            Debug.Log(" vào QuestDeliveryTrigger 3");
+
+            characterStatsTakeDeliver.idNode = mapTakeDeliver.Id;
+            Pool.Get<UINPCJiaoHu>().OnReloadNpcThisNode();           
+            DoneQuest(characterStatsTakeDeliver, () => { characterProviderQuest = null; characterStatsTakeDeliver = null; mapTakeDeliver = null;});
+        }    
+     
+
+    }
+
     public void QuizQuestInitShow(SideQuizQuestResource.Quiz quiz)
     {
         if(currentQuest is SideQuizQuestResource quizQuestResource)
@@ -43,7 +83,7 @@ public class SideQuestManager : QuestManager
             quizQuestParent.Show();
             currentQuiz = quiz;
             List<AnswerQuizQuest> listBtnAnswer = new List<AnswerQuizQuest>();
-            InitShowQuestRandomSkin(() =>
+            InitShowQuestHaveChar(() =>
             {
                 for (int i = 0; i < listBtnAnswer.Count; i++)
                 {
@@ -51,7 +91,7 @@ public class SideQuestManager : QuestManager
                     answerBtn.transform.DOScale(Vector3.one, 0.5f);
 
                 }
-            }, quizQuestResource.GetQuizDialogs(currentQuiz.quiz));
+            }, quizQuestResource.GetQuizDialogs(currentQuiz.quiz),characterProviderQuest,false);
            
             for (int i = 0; i < currentQuiz.answer.Length; i++)
             {
@@ -79,7 +119,7 @@ public class SideQuestManager : QuestManager
         {
             if (answer.currentIndexAnswer == currentQuiz.rightAnswerIndex)
             {
-                DoneQuest();
+                DoneQuest(characterProviderQuest, () => { characterProviderQuest = null; });
               
 
 

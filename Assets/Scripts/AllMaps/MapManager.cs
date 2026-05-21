@@ -49,7 +49,11 @@ namespace AllMaps
             Map map = FindMap(nodeId);
           
             map.SetData(Data, SetIconEvent(map, Data.prefabIcon));
-        }    
+        }
+        public void SetDataOnMap(GameObject prefabIcon, Map map)
+        {
+            map.SetData(null, SetIconEvent(map, prefabIcon));
+        }
         public Map FindMap(int id)
         {
             return maps.FirstOrDefault(map => map.Id == id);

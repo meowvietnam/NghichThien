@@ -14,9 +14,11 @@ public class NPCLeftSVItem : BaseBehaviour
     [SerializeField] private Text textMonPhai;
     [SerializeField]
     private Button btn;
+    public CharacterStatsSecure characterStats;
 
    public void Init(CharacterStatsSecure charStats)
    {
+        this.characterStats = charStats;
         var social = Client.Instance.CharacterData.Social;
         var npcId = charStats.idChar;
         var relationshipValue = social.GetRelationshipWithNPC(npcId);

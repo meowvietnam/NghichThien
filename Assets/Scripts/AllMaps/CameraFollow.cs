@@ -4,14 +4,19 @@ namespace AllMaps
 {
     public class CameraFollow : MonoBehaviour
     {
-        [SerializeField] private Transform target;
+        [SerializeField] public Transform target;
         [SerializeField] private Camera cam;
         [SerializeField] private Vector3 offset;
         [SerializeField] private float followSpeed;
         [SerializeField] private BoxCollider2D boundsBox;
         [SerializeField]
-        private Transform camTransform;
+        public Transform camTransform;
         private Vector3 velocity;
+        public static CameraFollow Instance;
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         private void FixedUpdate()
         {

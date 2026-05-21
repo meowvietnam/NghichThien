@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2939952697311564532}
   - component: {fileID: 131572788160591968}
   m_Layer: 5
-  m_Name: QuestManager
+  m_Name: SideQuestManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,172 +50,173 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestManager
   actionMapResourceSOs:
+  - {fileID: 11400000, guid: 89cc584327bf72a4eb2d10319a24ece0, type: 2}
   - {fileID: 11400000, guid: 54c8cc2b41db77e499a69f553c101ebf, type: 2}
   - {fileID: 11400000, guid: ddcbf44e65cd12c48bc2ded7f96cd49f, type: 2}
   - {fileID: 11400000, guid: 36087c872c887b046a173826ecaa60e0, type: 2}
   currentMapRandom: []
   currentQuest: {fileID: 0}
   nameChar: 
-  characterStats:
+  characterProviderQuest:
     idChar:
-      encA: 33852
-      encB: -81958
-      keyA: 33881
-      keyB: 81985
+      encA: 90801
+      encB: -39297
+      keyA: 90835
+      keyB: 39393
       fakeValue: 0
     percentKim:
-      encA: 1144590554
-      encB: -1002952491
-      keyA: 47940
-      keyB: 99147
+      encA: 1132260534
+      encB: -1015209688
+      keyA: 60632
+      keyB: 74054
       fakeValue: 0
     percentMoc:
-      encA: 1126925234
-      encB: -1020589642
-      keyA: 41936
-      keyB: 10708
+      encA: 1116730725
+      encB: -1030874224
+      keyA: 49441
+      keyB: 77780
       fakeValue: 0
     percentThuy:
-      encA: 1143968696
-      encB: -1003615779
-      keyA: 39585
-      keyB: 65732
+      encA: 1141859336
+      encB: -1005704828
+      keyA: 66570
+      keyB: 18822
       fakeValue: 0
     percentHoa:
-      encA: -1018627053
-      encB: 1128818488
-      keyA: 14041
-      keyB: 44530
+      encA: 1137042993
+      encB: -1010495384
+      keyA: 22163
+      keyB: 41162
       fakeValue: 0
     percentTho:
-      encA: -1000284450
-      encB: 1147252372
-      keyA: 99174
-      keyB: 62252
+      encA: -1003995182
+      encB: 1143521196
+      keyA: 31566
+      keyB: 64304
       fakeValue: 0
     percentMa:
-      encA: -1036187676
-      encB: 1111294071
-      keyA: 75582
-      keyB: 73901
+      encA: 1138447208
+      encB: -1009040113
+      keyA: 69596
+      keyB: 72123
       fakeValue: 0
     tuChat:
-      encA: -35511
-      encB: 99614
-      keyA: 35667
-      keyB: 99576
+      encA: 23696
+      encB: -97835
+      keyA: 23896
+      keyB: 98285
       fakeValue: 0
     ngoTinh:
-      encA: 64881
-      encB: -44539
-      keyA: 65017
-      keyB: 44413
+      encA: 11025
+      encB: -18391
+      keyA: 10325
+      keyB: 17557
       fakeValue: 0
     thanThuc:
-      encA: 47985
-      encB: -73051
-      keyA: 48083
-      keyB: 73211
+      encA: 69541
+      encB: -92905
+      keyA: 69114
+      keyB: 92342
       fakeValue: 0
     tocDoBay:
-      encA: -44528
-      encB: 84443
-      keyA: 44626
-      keyB: 84581
+      encA: 97369
+      encB: -75062
+      keyA: 97581
+      keyB: 74822
       fakeValue: 0
     linhThach:
-      encA: -92962
-      encB: 18856
-      keyA: 92228
-      keyB: 19150
+      encA: 54965
+      encB: -42484
+      keyA: 55153
+      keyB: 42032
       fakeValue: 0
     hp:
-      encA: 51599
-      encB: -83428
-      keyA: 52007
-      keyB: 83780
+      encA: 44460
+      encB: -65496
+      keyA: 44305
+      keyB: 65387
       fakeValue: 0
     hpMax:
-      encA: -86753
-      encB: 45759
-      keyA: 86070
-      keyB: 45160
+      encA: -62509
+      encB: 51164
+      keyA: 62489
+      keyB: 51178
       fakeValue: 0
     thoNguyen:
-      encA: -52336
-      encB: 74868
-      keyA: 52626
-      keyB: 75146
+      encA: 61724
+      encB: -53374
+      keyA: 62065
+      keyB: 54033
       fakeValue: 0
     tamCanh:
-      encA: 73363
-      encB: -19575
-      keyA: 72929
-      keyB: 19975
+      encA: 27948
+      encB: -12675
+      keyA: 28321
+      keyB: 12814
       fakeValue: 0
     idLinhCan:
-      encA: -93436
-      encB: 43017
-      keyA: 94129
-      keyB: 43842
+      encA: 72427
+      encB: 44993
+      keyA: 72427
+      keyB: 44993
       fakeValue: 0
     ability: 0
     ngoDaoDiem:
-      encA: 58129
-      encB: -30872
-      keyA: 57408
-      keyB: 31687
+      encA: -17321
+      encB: 23113
+      keyA: 17260
+      keyB: 23180
       fakeValue: 0
     danDoc:
-      encA: 15532
-      encB: -88793
-      keyA: 16159
-      keyB: 88426
+      encA: -50020
+      encB: 51138
+      keyA: 49246
+      keyB: 50428
       fakeValue: 0
     nameUser: 
     level:
-      encA: -95471
-      encB: 84852
-      keyA: 95922
-      keyB: 84266
+      encA: -43695
+      encB: 36625
+      keyA: 43621
+      keyB: 36828
       fakeValue: 1
     tuoiTac:
-      encA: -63319
-      encB: 24564
-      keyA: 62803
-      keyB: 24033
+      encA: -69352
+      encB: 36339
+      keyA: 69466
+      keyB: 35902
       fakeValue: 15
     currentExp:
-      encA: -71099
-      encB: 68211
-      keyA: 71344
-      keyB: 67960
+      encA: 63394
+      encB: -80571
+      keyA: 63270
+      keyB: 80441
       fakeValue: 0
     ngoDaoSaves: []
     vuKhi:
       id:
-        encA: 40914
-        encB: 5318
-        keyA: 40885
-        keyB: 60254
+        encA: -30371
+        encB: 103583
+        keyA: 30335
+        keyB: 37954
         fakeValue: 65535
       nameEquip: 
       listEffectEquip: []
     phongCu:
       id:
-        encA: 91904
-        encB: 30340
-        keyA: 91200
-        keyB: 35387
+        encA: 38847
+        encB: 45657
+        keyA: 38113
+        keyB: 20216
         fakeValue: 65535
       nameEquip: 
       listEffectEquip: []
     trangSuc:
       id:
-        encA: -41279
-        encB: 19253
-        keyA: 41796
-        keyB: 84303
+        encA: 12908
+        encB: 115886
+        keyA: 12913
+        keyB: 80716
         fakeValue: 65535
       nameEquip: 
       listEffectEquip: []
@@ -223,55 +224,55 @@ MonoBehaviour:
     thanThongOwner: []
     thanThongEquip: []
     donThuatUsed:
-      encA: 38316
-      encB: 10284
-      keyA: 38083
-      keyB: 54972
+      encA: -11720
+      encB: 102632
+      keyA: 11371
+      keyB: 37188
       fakeValue: 65535
     phuTu1Used:
-      encA: 63929
-      encB: 32404
-      keyA: 63620
-      keyB: 32854
+      encA: -72799
+      encB: 101172
+      keyA: 73507
+      keyB: 34889
       fakeValue: 65535
     phuTu2Used:
-      encA: -17862
-      encB: 82109
-      keyA: 18282
-      keyB: 16914
+      encA: -10970
+      encB: 2480
+      keyA: 10511
+      keyB: 68198
       fakeValue: 65535
     phuTu3Used:
-      encA: 73679
-      encB: 13694
-      keyA: 73119
-      keyB: 51409
+      encA: -80900
+      encB: 88168
+      keyA: 81013
+      keyB: 22558
       fakeValue: 65535
     phuTu4Used:
-      encA: 10935
-      encB: 11714
-      keyA: 10582
-      keyB: 53724
+      encA: 64780
+      encB: 125614
+      keyA: 65093
+      keyB: 71192
       fakeValue: 65535
     chuTu1Used:
-      encA: 42462
-      encB: 116268
-      keyA: 42649
-      keyB: 80532
+      encA: -25317
+      encB: 113699
+      keyA: 25335
+      keyB: 48176
       fakeValue: 65535
     chuTu2Used:
-      encA: 79790
-      encB: 111390
-      keyA: 79644
-      keyB: 85075
+      encA: -94743
+      encB: 99478
+      keyA: 94256
+      keyB: 34480
       fakeValue: 65535
     Gender: 0
     skinList: []
     colorList: []
     idNode:
-      encA: -62450
-      encB: 35606
-      keyA: 62081
-      keyB: 35431
+      encA: 68596
+      encB: -75685
+      keyA: 67940
+      keyB: 75051
       fakeValue: 0
   answerPrefab: {fileID: 1283915725242064484}
   currentQuiz:
@@ -279,6 +280,224 @@ MonoBehaviour:
     answer: []
     rightAnswerIndex: 0
   quizQuestParent: {fileID: 3786121703771372575}
+  characterStatsTakeDeliver:
+    idChar:
+      encA: 31781
+      encB: -54024
+      keyA: 32634
+      keyB: 53337
+      fakeValue: 0
+    percentKim:
+      encA: 1147557213
+      encB: -999942721
+      keyA: 28651
+      keyB: 12041
+      fakeValue: 0
+    percentMoc:
+      encA: 1143634633
+      encB: -1003874339
+      keyA: 46226
+      keyB: 55686
+      fakeValue: 0
+    percentThuy:
+      encA: -1008366311
+      encB: 1139024471
+      keyA: 37526
+      keyB: 81368
+      fakeValue: 0
+    percentHoa:
+      encA: -1000343543
+      encB: 1147118146
+      keyA: 53573
+      keyB: 35598
+      fakeValue: 0
+    percentTho:
+      encA: -1002934340
+      encB: 1144634833
+      keyA: 74220
+      keyB: 62337
+      fakeValue: 0
+    percentMa:
+      encA: 1138764738
+      encB: -1008655947
+      keyA: 29022
+      keyB: 97065
+      fakeValue: 0
+    tuChat:
+      encA: 100116
+      encB: -65050
+      keyA: 99711
+      keyB: 64627
+      fakeValue: 0
+    ngoTinh:
+      encA: 92573
+      encB: -65454
+      keyA: 92929
+      keyB: 64822
+      fakeValue: 0
+    thanThuc:
+      encA: -50431
+      encB: 19271
+      keyA: 50707
+      keyB: 18857
+      fakeValue: 0
+    tocDoBay:
+      encA: -81417
+      encB: 16395
+      keyA: 81664
+      keyB: 16642
+      fakeValue: 0
+    linhThach:
+      encA: -35046
+      encB: 79723
+      keyA: 35245
+      keyB: 79394
+      fakeValue: 0
+    hp:
+      encA: 92124
+      encB: -31967
+      keyA: 91664
+      keyB: 32021
+      fakeValue: 0
+    hpMax:
+      encA: -26053
+      encB: 68378
+      keyA: 26589
+      keyB: 67840
+      fakeValue: 0
+    thoNguyen:
+      encA: -83118
+      encB: 28102
+      keyA: 83511
+      keyB: 28509
+      fakeValue: 0
+    tamCanh:
+      encA: -67868
+      encB: 57002
+      keyA: 68072
+      keyB: 56926
+      fakeValue: 0
+    idLinhCan:
+      encA: 84313
+      encB: -85245
+      keyA: 84077
+      keyB: 85455
+      fakeValue: 0
+    ability: 0
+    ngoDaoDiem:
+      encA: -69266
+      encB: 64102
+      keyA: 69134
+      keyB: 64198
+      fakeValue: 0
+    danDoc:
+      encA: -39471
+      encB: 96212
+      keyA: 39462
+      keyB: 96221
+      fakeValue: 0
+    nameUser: 
+    level:
+      encA: -36494
+      encB: 41961
+      keyA: 35841
+      keyB: 41319
+      fakeValue: 1
+    tuoiTac:
+      encA: 76713
+      encB: -65466
+      keyA: 76673
+      keyB: 65441
+      fakeValue: 15
+    currentExp:
+      encA: 27857
+      encB: -66473
+      keyA: 27822
+      keyB: 66518
+      fakeValue: 0
+    ngoDaoSaves: []
+    vuKhi:
+      id:
+        encA: 21281
+        encB: 27364
+        keyA: 21123
+        keyB: 38073
+        fakeValue: 65535
+      nameEquip: 
+      listEffectEquip: []
+    phongCu:
+      id:
+        encA: 24241
+        encB: 40679
+        keyA: 23855
+        keyB: 25222
+        fakeValue: 65535
+      nameEquip: 
+      listEffectEquip: []
+    trangSuc:
+      id:
+        encA: -95221
+        encB: 112399
+        keyA: 94886
+        keyB: 46685
+        fakeValue: 65535
+      nameEquip: 
+      listEffectEquip: []
+    monPhai: 0
+    thanThongOwner: []
+    thanThongEquip: []
+    donThuatUsed:
+      encA: 48016
+      encB: 48980
+      keyA: 47216
+      keyB: 17227
+      fakeValue: 65535
+    phuTu1Used:
+      encA: -94814
+      encB: 17989
+      keyA: 94350
+      keyB: 83094
+      fakeValue: 65535
+    phuTu2Used:
+      encA: 41011
+      encB: 46391
+      keyA: 41618
+      keyB: 18537
+      fakeValue: 65535
+    phuTu3Used:
+      encA: -52517
+      encB: 17638
+      keyA: 52644
+      keyB: 83046
+      fakeValue: 65535
+    phuTu4Used:
+      encA: -25733
+      encB: 130717
+      keyA: 26440
+      keyB: 64849
+      fakeValue: 65535
+    chuTu1Used:
+      encA: 29129
+      encB: 40398
+      keyA: 28790
+      keyB: 25486
+      fakeValue: 65535
+    chuTu2Used:
+      encA: -37444
+      encB: 98705
+      keyA: 37338
+      keyB: 33288
+      fakeValue: 65535
+    Gender: 0
+    skinList: []
+    colorList: []
+    idNode:
+      encA: -86292
+      encB: 29030
+      keyA: 86883
+      keyB: 29463
+      fakeValue: 0
+  mapTakeDeliver: {fileID: 0}
 --- !u!1 &2311364898698780942
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,7 +536,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -450}
   m_SizeDelta: {x: 1000, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2036120346995254589

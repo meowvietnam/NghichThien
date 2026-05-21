@@ -16,11 +16,11 @@ public abstract class ActionEnterMapManager : ActionMapManager
     {
         base.Start();
         LoadData();
-        Observer.AddObserver(EventList.GamePlay.ACTIVE_EVENT_MAP,RemoveMap);
+        Observer.AddObserver(EventList.GamePlay.USER_ENTER_MAP,RemoveMap);
     }
     private void OnDestroy()
     {
-        Observer.RemoveObserver(EventList.GamePlay.ACTIVE_EVENT_MAP, RemoveMap);
+        Observer.RemoveObserver(EventList.GamePlay.USER_ENTER_MAP, RemoveMap);
 
     }
 

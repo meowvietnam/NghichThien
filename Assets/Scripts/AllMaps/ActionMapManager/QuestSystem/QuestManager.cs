@@ -8,14 +8,14 @@ public abstract class QuestManager : ActionEnterMapManager
 {
     [SerializeField] protected QuestResource currentQuest;
     public string nameChar;
-    public CharacterStatsSecure characterStats;
-    public void SetSkinSideQuestCurrent(CharacterStatsSecure characterStats)
+    public CharacterStatsSecure characterProviderQuest;
+    public void SetCharProviderQuest(CharacterStatsSecure characterStats)
     {
-       this.characterStats = characterStats;
+       this.characterProviderQuest = characterStats;
     }
-    [SerializeField] public Dictionary<string, string> skins => characterStats.Skins;
-    [SerializeField] public Dictionary<string, Color> color => characterStats.Colors;
-    [SerializeField] public Gender gender => characterStats.Gender;
+    [SerializeField] public Dictionary<string, string> skins => characterProviderQuest.Skins;
+    [SerializeField] public Dictionary<string, Color> color => characterProviderQuest.Colors;
+    [SerializeField] public Gender gender => characterProviderQuest.Gender;
     public virtual void InitQuest(QuestResource quest)
     {
         this.currentQuest = quest;
@@ -24,49 +24,35 @@ public abstract class QuestManager : ActionEnterMapManager
     {
         if (typeCombat == ETypeCombat.AllMaps && result == ECombatResult.Win)
         {
-            DoneQuest();
+            DoneQuest(characterProviderQuest , () =>
+            {
+                characterProviderQuest = null;
+            });
 
         }
     }
-    public void DoneQuest()
+   
+    public void DoneQuest(CharacterStatsSecure characterShow , Action actionDoneDialog)
     {
-        SayDialogManager.Instance.ShowDialog(nameChar, gender, skins, color, currentQuest.CompleteSideQuest, null, null, () => {
+        SayDialogManager.Instance.ShowDialog(characterShow.nameUser, characterShow.Gender, characterShow.Skins, characterShow.Colors, currentQuest.CompleteSideQuest, null, null, () => {
             currentQuest.QuestDone();
             // Fake Reward
             Pool.Get<EventRewardPanel>().InitShowEventReward(new RewardSnapshot { MoneyVip = 50 }, $"{currentQuest.CompleteSideQuest[currentQuest.CompleteSideQuest.Count - 1]}");
             currentQuest = null;
-
+            actionDoneDialog?.Invoke();
 
 
         });
     }
-    public void InitShowQuestRandomSkin(Action actionComplete, List<string> startDialog)
-    {
-        var skinRandom = SayDialogManager.Instance.ShowDialogRandomSkin(nameChar, startDialog, null, null, () =>
-        {
-            actionComplete?.Invoke();
-        }, false);
-        CharacterStatsSecure charRandom = new CharacterStatsSecure();
-        foreach (var kvp in skinRandom.skin)
-        {
-            charRandom.skinList.Add(new CharacterStatsSecure.SkinData { key = kvp.Key, value = kvp.Value });
-        }
-        foreach (var kvp in skinRandom.color)
-        {
-            charRandom.colorList.Add(new CharacterStatsSecure.ColorData { key = kvp.Key, value = kvp.Value });
-        }
-        charRandom.Gender = skinRandom.gender;
-        SetSkinSideQuestCurrent(charRandom);
-    }
-    public void InitShowQuestHaveChar(Action actionComplete, List<string> startDialog , CharacterStatsSecure character)
+ 
+    public void InitShowQuestHaveChar(Action actionComplete, List<string> startDialog , CharacterStatsSecure character , bool isHide = true)
     {
         nameChar = character.nameUser;
         SayDialogManager.Instance.ShowDialog(character.nameUser,character.Gender,character.Skins,character.Colors, startDialog, null, null, () =>
         {
             actionComplete?.Invoke();
-        });
+        }, isHide);
 
-        SetSkinSideQuestCurrent(character);
     }
    
 }

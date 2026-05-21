@@ -58,13 +58,15 @@ namespace AllMaps
            
         public virtual void OnPlayerEnter()
         {
-            if(actionMap != null)
+            Observer.Notify(EventList.GamePlay.USER_ENTER_MAP, this);
+
+            if (actionMap != null)
             {
-                Observer.Notify(EventList.GamePlay.ACTIVE_EVENT_MAP,this);
                 actionMap.ActiveEventMap(this);
-                ResetDataAction();
 
             }
+            ResetDataAction();
+
 
         }
         public virtual void OnPlayerExit()

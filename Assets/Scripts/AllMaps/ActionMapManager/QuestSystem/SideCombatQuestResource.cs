@@ -11,10 +11,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = nameof(SideCombatQuestResource), menuName = "Action Map/Side Quest/" + nameof(SideCombatQuestResource))]
 public class SideCombatQuestResource : SideQuestResource
 {
+    public override List<CharacterStatsSecure> listNPCInteractive => new List<CharacterStatsSecure> { Pool.Get<SideQuestManager>().characterProviderQuest };
+
     public override ETypeSideQuest Type => ETypeSideQuest.Combat;
 
     [SerializeField] public EnemyData[] listEnemy;
-    [SerializeField] public NPCData[] npcDatas;
     [SerializeField] public bool isSideCombatQuest2;
     public override List<string> CompleteSideQuest => GetCompleteSideQuest();
     public List<string> GetCompleteSideQuest()
@@ -55,22 +56,14 @@ public class SideCombatQuestResource : SideQuestResource
     public override void ActiveEventMap(Map map)
     {
         base.ActiveEventMap(map);
-     
-        var targetLevel = Client.Instance.CharacterData.Progression.Level -1;
-        targetLevel = Mathf.Clamp(targetLevel, 1, int.MaxValue);
-        var charRandom = BaseEnemyCombatResource.GetNPCDataCombatWithTargetLevel(npcDatas, targetLevel);
-        var enemyRandom = isSideCombatQuest2 ? BaseEnemyCombatResource.GetNPCDataCombatWithTargetLevel(listEnemy,charRandom.charStats.level) : BaseEnemyCombatResource.GetNPCDataCombatWithTargetLevel(npcDatas, charRandom.charStats.level);
 
+
+        var charProvider = Pool.Get<SideQuestManager>().characterProviderQuest;
+        var enemyRandom = isSideCombatQuest2 ? GetNPCDataSideQuestWithTargetLevel(listEnemy, charProvider.level) : GetNPCDataSideQuestWithTargetLevel(npcDatas, charProvider.level);
         Pool.Get<SideQuestManager>().InitShowQuestHaveChar(() =>
         {
             Pool.Get<GameManager>().GoToCombat(new GameManager.CharCombatInit { eTypeVisual = enemyRandom.eTypeVisualChar, charStats = enemyRandom.charStats }, ETypeCombat.AllMaps);
-        }, GetStartSideQuest(),charRandom.charStats );    
-    }
-    public override void QuestDone()
-    {
-        var character = Pool.Get<SideQuestManager>().characterStats;
-        Observer.Notify(EventList.Network.COMPLETE_SIDEQUEST, this, Type , character.idChar);
-        NotifyGroup.Instance.Show($"Hảo cảm của {character.nameUser} tăng thêm 10");
+        }, GetStartSideQuest(), charProvider);    
     }
     [Button]
     private void OnUpdateDataEnemyData()
@@ -88,23 +81,7 @@ public class SideCombatQuestResource : SideQuestResource
         Debug.Log($"Đã cập nhật {listEnemy.Length} NPC vào mảng.");
 #endif
     }
-    [Button]
-    private void OnUpdateDataNPCData()
-    {
-#if UNITY_EDITOR
-        // Tìm tất cả GUID của các asset có type là NPCData (bao gồm cả class con kế thừa nó)
-        string[] guids = AssetDatabase.FindAssets("t:NPCData");
-
-        npcDatas = guids
-            .Select(guid => AssetDatabase.LoadAssetAtPath<NPCData>(AssetDatabase.GUIDToAssetPath(guid)))
-            .Where(asset => asset != null && !(asset is EnemyData)) // KIỂM TRA: Nếu KHÔNG PHẢI EnemyData thì mới lấy
-            .ToArray();
-
-        EditorUtility.SetDirty(this);
-        AssetDatabase.SaveAssets(); // Nên thêm dòng này để Unity lưu hẳn thay đổi xuống ổ cứng
-        Debug.Log($"Đã cập nhật {npcDatas.Length} NPC thuần túy vào mảng (Đã loại bỏ Enemy).");
-#endif
-    }
+   
 
 
 }

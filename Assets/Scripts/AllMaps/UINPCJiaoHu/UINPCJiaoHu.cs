@@ -212,7 +212,44 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         });
         textHaoCamPopTangQua.text = Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar).ToString();
     }
+    public void OnReloadNpcThisNode()
+    {
+        List<CharacterStatsSecure> listCharStats = new List<CharacterStatsSecure>();
+        Transform uiParent = prefabNPCLeftItem.transform.parent;
 
+        // 1. Thu thập tất cả Id của NPC hiện đang có trên UI (tránh trùng lặp khi reload)
+        HashSet<int> existingNpcIds = new HashSet<int>();
+        for (int i = 0; i < uiParent.childCount; i++)
+        {
+            var itemComponent = uiParent.GetChild(i).GetComponent<NPCLeftSVItem>();
+            if (itemComponent != null && itemComponent.characterStats != null)
+            {
+                existingNpcIds.Add(itemComponent.characterStats.idChar);
+            }
+        }
+
+        // 2. Lọc danh sách NPC thuộc Node hiện tại VÀ chưa xuất hiện trên UI (chưa có Id trong existingNpcIds)
+        List<NPCData> npcOnCurrentMap = Pool.Get<NPCManager>().npcDatas
+            .Where(x => x.charStats.idNode == Client.Instance.CharacterData.Progression.IdCurrentNode
+                     && !existingNpcIds.Contains(x.charStats.idChar)) // Điều kiện check chưa tồn tại ở đây
+            .ToList();
+
+        // 3. Nạp stats của các NPC mới vào list xử lý
+        foreach (var character in npcOnCurrentMap)
+        {
+            listCharStats.Add(character.charStats);
+        }
+
+        // 4. Sinh UI Item mới cho các NPC mới được thêm
+        foreach (var item in listCharStats)
+        {
+            var itemNpc = GameManager.GetItemPool(prefabNPCLeftItem);
+            itemNpc.Init(item);
+        }
+
+        // 5. Cập nhật số lượng hiển thị (Trừ đi 1 nếu prefab gốc của bạn đang ẩn nằm trong parent này)
+        countCharText.text = $"{uiParent.childCount - 1}";
+    }
     public void ShowNPCList(List<CharacterStatsSecure> listCharStats)
     {
         npcPop.Hide();
