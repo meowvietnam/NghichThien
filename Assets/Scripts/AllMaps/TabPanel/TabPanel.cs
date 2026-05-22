@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using UnityEditor;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 using CongPhap = Skill.CongPhap;
@@ -715,7 +716,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         var GameConfig = Pool.Get<GameManager>();
 
         // load data 
-        var thanThongEquips = CharacterDatas.EquipmentManager.ThanThongEquips.Select(x => x.Id).ToList();
+        var thanThongEquips = CharacterDatas.EquipmentManager.ThanThongEquips;
         for (int i = 0; i < listItemSlotThanThongs.Count; i++)
         {
             var item = listItemSlotThanThongs[i];
@@ -723,7 +724,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             
             if(i < thanThongEquips.Count)
             {
-                thanThongData = GameConfig.GetThanThongWithId(thanThongEquips[i]);
+                thanThongData = GameConfig.GetThanThongWithId(thanThongEquips.FirstOrDefault(x=>x.SlotIndex == (byte)i).Id);
             }    
 
             Pool.Get<UIManager>().InitVisualItemSkill(item, thanThongData);
@@ -787,8 +788,8 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                             //equip
                             //congPhap.EquipCongPhap();
                             //save player thần thông equip id
-                            Observer.Notify(EventList.Network.EQUIP_THANTHONG, this, thanThong.Id ,
-                                listItemSlotThanThongs.IndexOf(itemSlot));
+                            Observer.Notify(EventList.Network.EQUIP_THANTHONG, this, (ushort)thanThong.Id ,
+                                (byte)listItemSlotThanThongs.IndexOf(itemSlot));
                             // Cách viết chuẩn
 
 
@@ -926,7 +927,8 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     }
 
     public void SuccessUnEquipThanThong()
-    {       // reload lại tab thanThong
+    {       
+        Debug.Log("unequip ThanThong");
 
     }
 
@@ -937,7 +939,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
     public void SuccessEquipThanThong()
     {
-        // reload lại tab thanThong
+        Debug.Log("EquipThanThong");
     }
 
     public void FailEquipThanThong(string message)
