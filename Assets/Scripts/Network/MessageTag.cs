@@ -53,7 +53,10 @@ namespace Network
         SetNgoDaoDiemResult = 231,
         SetCamNgo = 232,
         SetCamNgoResult = 233,
-
+        AddThanThong = 234,
+        AddThanThongResult = 235,
+        
+        
         ChangeScene = 256,
         ChangeSceneResult = 257,
         LuyenKhi = 310,

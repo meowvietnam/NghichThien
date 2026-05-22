@@ -9,6 +9,7 @@ using Network.Extensions;
 using Sirenix.OdinInspector;
 using Skill;
 using UnityEngine;
+using ThanThong = Skill.ThanThong;
 
 namespace Network
 {
@@ -40,7 +41,6 @@ namespace Network
             return Client.CharacterData != null;
         }
 
-        [Button]
         private HashSet<ThanThongEquip> GetFullIdThanThongWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
             // 1. Tìm combo
@@ -68,7 +68,6 @@ namespace Network
             return result;
         }
 
-        [Button]
         private List<int> GetFullIdNgoDaoWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
             var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
@@ -78,7 +77,6 @@ namespace Network
                 .ToList();
         }
 
-        [Button]
         private List<int> GetFullIdCongPhapWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
             var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
@@ -189,6 +187,13 @@ namespace Network
             Client.Send(MessageTag.SetCamNgo, camNgo);
         }
 
+        [Button]
+        [ShowIf(nameof(IsReady))]
+        public void AddThanThong(ThanThong thanThong)
+        {
+            Client.Send(MessageTag.AddThanThong,(ushort)thanThong.Id);
+        }
+
         public void StartListen()
         {
             var module = Client.CoreModule;
@@ -227,6 +232,11 @@ namespace Network
                 var camNgo = reader.Read<CamNgo>();
                 Client.CharacterData.InventoryManager.AddOrUpdate(camNgo);
             }
+            else if (tag == MessageTag.AddThanThongResult)
+            {
+                var id = reader.Read<ushort>();
+                Client.CharacterData.InventoryManager.EquipThanThong(id);
+            }
         }
 
         public void OnLeave()
@@ -238,7 +248,10 @@ namespace Network
         }
 
         private static readonly MessageTag[] handler =
-            { MessageTag.AddItemsResult, MessageTag.SetNgoDaoDiemResult, MessageTag.SetCamNgoResult };
+        {
+            MessageTag.AddItemsResult, MessageTag.SetNgoDaoDiemResult, MessageTag.SetCamNgoResult,
+            MessageTag.AddThanThongResult
+        };
 
         public MessageTag[] HandleTag => handler;
     }
