@@ -197,7 +197,7 @@ public class PlayerUICombat : BaseBehaviour
         {
             item1.Init(() =>
             {
-                if (item1.count <= 0 || item1.isLock || (currentNodes.Any(x => x.eLinhKhi == item1.eLinhKhi && x.isLock == false && x.countRequire <= 0) && eStateControl == EStateControl.UseSkill)) return;
+                if (item1.count <= 0 || item1.isLock || currentNodes.All(x => x.isLock == true)) return;
                 Debug.Log("lmm" + currentNodes.Count);
 
                 if (CurrentLinhKhi <= maxLinhKhi && eStateControl == EStateControl.DeleteLinhKhi) return;

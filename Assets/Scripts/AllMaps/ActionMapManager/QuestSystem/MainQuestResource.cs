@@ -23,13 +23,16 @@ public class MainQuestResource : QuestResource, INetworkEvent.ICompleteMainQuest
     public string nameCharDialog;
     public float scaleThisChar = 3;
     public int idNode;
+    public string descDoneQuest;
 
     public override void QuestDoneData()
     {
         Observer.Notify(EventList.Network.COMPLETE_MAINQUEST, this, Pool.Get<MainQuestManager>().currentMainQuest.Value);
         SayDialogManager.Instance.ShowDialogWithAvatar(nameCharDialog, spriteListAvatarDone, completeQuest, spriteDoneQuest, voiceComplete, () =>
         {
-            Pool.Get<EventRewardPanel>().InitShowEventReward(rewardRef, $"Hoàn thành chương {id + 1}");
+            string detailedDesc = !string.IsNullOrEmpty(descDoneQuest) ? $"\n{descDoneQuest}" : "";
+
+            Pool.Get<EventRewardPanel>().InitShowEventReward(rewardRef, $"Hoàn thành chương {id + 1}{detailedDesc}");
         }, true, scaleThisChar);
     }
 

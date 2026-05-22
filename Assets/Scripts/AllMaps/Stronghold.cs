@@ -39,7 +39,7 @@ namespace AllMaps
                 {
                     Observer.Notify(EventList.GamePlay.LOAD_SCENE, nameSceneLoad, eCurrentMapType);
                 }
-                else if(gameManager.CurrentEMonPhai != Base.EMonPhai.None && Client.Instance.CharacterData.MonPhai == Base.EMonPhai.None)
+                else if(gameManager.CurrentEMonPhai != Base.EMonPhai.None && Client.Instance.CharacterData.MonPhai == Base.EMonPhai.None && Pool.Get<MainQuestManager>().currentMainQuest>0)
                 {
                     GameManager.SetDialogGacCong($"phải chăng ngươi muốn gia nhập {GameManager.monPhaiText.GetValueOrDefault(gameManager.CurrentEMonPhai)}?", () =>
                     {
