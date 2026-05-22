@@ -64,5 +64,25 @@ namespace CreateCharacter
             writer.Write(PhongCu);
             writer.Write(TrangSuc);
         }
+
+        public void UnEquipThanThong(ushort id)
+        {
+            var thanThong = new ThanThongEquip()
+            {
+                Id = id,
+            };
+            ThanThongEquips.Remove(thanThong);
+        }
+
+        public ThanThongEquip EquipThanThong(ThanThongEquip thanThong)
+        {
+            var old = ThanThongEquips.FirstOrDefault(x => x.SlotIndex == thanThong.SlotIndex);
+            if (old != null)
+            {
+                ThanThongEquips.Remove(old);
+            }
+            ThanThongEquips.Add(thanThong);
+            return old;
+        }
     }
 }

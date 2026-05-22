@@ -271,5 +271,23 @@ namespace CreateCharacter
         {
             m.Apply(this);
         }
+
+        public void EquipThanThong(ushort id)
+        {
+            var thanThong = new ThanThong()
+            {
+                Id = id,
+            };
+            ThanThongOwners.Add(thanThong);
+        }
+
+        public void UnEquipThanThong(ushort id)
+        {
+            var thanThong = new ThanThong()
+            {
+                Id = id,
+            };
+            ThanThongOwners.Remove(thanThong);
+        }
     }
 }

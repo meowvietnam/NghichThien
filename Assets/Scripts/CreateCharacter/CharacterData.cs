@@ -149,11 +149,23 @@ namespace CreateCharacter
                     break;
                 case NgoDaoBuffStats.EBuffStats.HP:
                     Stats.SinhMenh += buffValue;
+                    Stats.Hp += buffValue;
                     break;
                 case NgoDaoBuffStats.EBuffStats.DonToc:
                     Stats.TocDoBay += buffValue;
                     break;
             }
+        }
+
+        public void EquipThanThong(EquipThanThongResult result)
+        {
+            var thanThong = result.ThanThong;
+            var old = EquipmentManager.EquipThanThong(thanThong);
+            if (old != null)
+            {
+                InventoryManager.EquipThanThong(old.Id);
+            }
+            InventoryManager.EquipThanThong(thanThong.Id);
         }
     }
 }

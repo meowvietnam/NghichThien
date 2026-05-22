@@ -787,7 +787,8 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                             //equip
                             //congPhap.EquipCongPhap();
                             //save player thần thông equip id
-                            Observer.Notify(EventList.Network.EQUIP_THANTHONG, this, thanThong.Id , listItemSlotThanThongs.IndexOf(itemSlot));
+                            Observer.Notify(EventList.Network.EQUIP_THANTHONG, this, thanThong.Id ,
+                                listItemSlotThanThongs.IndexOf(itemSlot));
                             // Cách viết chuẩn
 
 
