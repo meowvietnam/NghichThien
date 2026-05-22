@@ -32,6 +32,8 @@ public class SayDialogManager : BaseBehaviour
     public static SayDialogManager Instance;
     private List<string> dialogContents = new List<string>();
     private List<AudioClip> dialogVoices = new List<AudioClip>();
+    private List<Sprite> dialogAvatar = new List<Sprite>();
+
     private int currentDialogIndex = 0;
     private Action onDialogComplete; // Lưu lại action cuối cùng
     private bool isAutoHideAfterDoneDialog = true;
@@ -43,7 +45,7 @@ public class SayDialogManager : BaseBehaviour
     {
        
         var skinRandom = characterGraphic.RandomSkin(gender, false);
-        ShowDialog(name, gender, skinRandom.skins, skinRandom.colors, contents, spriteContent, voices, actionEndThisDialog, isAutoHideAfterDoneDialog);
+        ShowDialogWithSkin(name, gender, skinRandom.skins, skinRandom.colors, contents, spriteContent, voices, actionEndThisDialog, isAutoHideAfterDoneDialog);
     }
     // 1. Hàm ShowDialog với danh sách ngẫu nhiên Skin
     public (Gender gender,Dictionary<string,string> skin ,Dictionary<string,Color> color) ShowDialogRandomSkin(string name, List<string> contents, Sprite spriteContent = null, List<AudioClip> voices = null, Action actionEndThisDialog = null, bool isAutoHideAfterDoneDialog = true)
@@ -52,7 +54,7 @@ public class SayDialogManager : BaseBehaviour
         Array values = Enum.GetValues(typeof(Gender));
         Gender randomGender = (Gender)values.GetValue(_random.Next(values.Length));
         var skinRandom = characterGraphic.RandomSkin(randomGender, false);
-        ShowDialog(name, randomGender, skinRandom.skins, skinRandom.colors, contents, spriteContent, voices, actionEndThisDialog,isAutoHideAfterDoneDialog);
+        ShowDialogWithSkin(name, randomGender, skinRandom.skins, skinRandom.colors, contents, spriteContent, voices, actionEndThisDialog,isAutoHideAfterDoneDialog);
         return (randomGender,skinRandom.skins,skinRandom.colors);
     }
 
@@ -60,14 +62,36 @@ public class SayDialogManager : BaseBehaviour
     public void ShowDialogForUser(List<string> contents, Sprite spriteContent = null, List<AudioClip> voices = null, Action actionEndThisDialog = null, bool isAutoHideAfterDoneDialog = true)
     {
         var charData = Client.Instance.CharacterData;
-        ShowDialog(charData.Name, charData.Gender, charData.Appearance.Skins, charData.Appearance.Colors, contents, spriteContent, voices, actionEndThisDialog , isAutoHideAfterDoneDialog);
+        ShowDialogWithSkin(charData.Name, charData.Gender, charData.Appearance.Skins, charData.Appearance.Colors, contents, spriteContent, voices, actionEndThisDialog , isAutoHideAfterDoneDialog);
     }
 
     // 3. Hàm chạy Dialog chính (Nhận List)
     [Button]
-    public void ShowDialog(string name, Gender gender, Dictionary<string, string> skins, Dictionary<string, Color> colors, List<string> contents, Sprite spriteContent = null, List<AudioClip> voices = null, Action actionEndThisDialog = null , bool isAutoHideAfterDoneDialog = true)
+    public void ShowDialogWithSkin(string name, Gender gender, Dictionary<string, string> skins, Dictionary<string, Color> colors, List<string> contents, Sprite spriteContent = null, List<AudioClip> voices = null, Action actionEndThisDialog = null , bool isAutoHideAfterDoneDialog = true)
     {
-        
+
+        imgChar.gameObject.SetActive(false);
+        characterGraphic.gameObject.SetActive(true);
+        characterGraphic.SetGender(gender);
+        characterGraphic.SetSkin(skins, colors);
+
+        ShowDialog(name, contents, spriteContent, voices, actionEndThisDialog, isAutoHideAfterDoneDialog);
+
+
+    }
+    public void ShowDialogWithAvatar(string name, List<Sprite> avatars, List<string> contents, Sprite spriteContent = null, List<AudioClip> voices = null, Action actionEndThisDialog = null, bool isAutoHideAfterDoneDialog = true , float scale =1)
+    {
+        characterGraphic.gameObject.SetActive(false);
+
+        imgChar.gameObject.SetActive(true);
+        imgChar.transform.localScale = Vector3.one*scale;
+        dialogAvatar = avatars;
+        ShowDialog(name, contents, spriteContent, voices, actionEndThisDialog, isAutoHideAfterDoneDialog);
+
+    }
+    public void ShowDialog(string name, List<string> contents, Sprite spriteContent = null, List<AudioClip> voices = null, Action actionEndThisDialog = null, bool isAutoHideAfterDoneDialog = true)
+    {
+
         // Lưu trữ danh sách dữ liệu truyền vào
         dialogContents = contents ?? new List<string>();
         dialogVoices = voices ?? new List<AudioClip>();
@@ -76,24 +100,23 @@ public class SayDialogManager : BaseBehaviour
         this.isAutoHideAfterDoneDialog = isAutoHideAfterDoneDialog;
         // Thiết lập thông tin nhân vật
         textName.text = name;
-        characterGraphic.SetGender(gender);
-        characterGraphic.SetSkin(skins, colors);
+     
 
         // Thiết lập Image Content (Sprite phụ nếu có)
         imgContent.gameObject.SetActive(false);
-        if(!panel.gameObject.activeSelf)
+        if (!panel.gameObject.activeSelf)
         {
             panel.Show();
-        }    
+        }
 
         if (spriteContent != null)
         {
             imgContent.gameObject.SetActive(true);
-            imgContent.sprite = spriteContent;
-            Color c = imgContent.color;
-            c.a = 0;
-            imgContent.color = c;
-            imgContent.DOFade(1, 1.5f);
+            //imgContent.sprite = spriteContent;
+            //Color c = imgContent.color;
+            //c.a = 0;
+            //imgContent.color = c;
+            //imgContent.DOFade(1, 1.5f);
         }
 
         // Đăng ký sự kiện Click cho Button Panel (Chỉ đăng ký 1 lần duy nhất ở đây)
@@ -103,7 +126,6 @@ public class SayDialogManager : BaseBehaviour
         DisplayCurrentSubDialog();
 
     }
-
     // Hàm bổ trợ: Xử lý hiển thị từng câu thoại dựa vào currentDialogIndex
     private void DisplayCurrentSubDialog()
     {
@@ -125,7 +147,11 @@ public class SayDialogManager : BaseBehaviour
         {
             currentVoice = dialogVoices[currentDialogIndex];
         }
-
+        if(dialogAvatar != null && currentDialogIndex < dialogAvatar.Count)
+        {
+            imgChar.sprite = dialogAvatar[currentDialogIndex];
+            imgChar.SetNativeSize();
+        }    
         float duration = (currentVoice != null) ? currentVoice.length : 1.5f;
         if (currentVoice != null)
         {

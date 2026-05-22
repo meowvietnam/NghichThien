@@ -14,7 +14,7 @@ using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 
-public class SideQuestManager : QuestManager
+public class SideQuestManager : ActionEnterMapManager
 {
    
    
@@ -25,8 +25,9 @@ public class SideQuestManager : QuestManager
     public override string fileSaveTime => "OldTimeRandomSideQuest";
 
     public override int CountRandom => 10 - Client.Instance.CharacterData.QuestManager.CurrentCountSideQuest;
+    
 
- 
+
     [Header("Quiz Side Quest Visual")]
     [SerializeField] private AnswerQuizQuest answerPrefab;
     [SerializeField] private SideQuizQuestResource.Quiz currentQuiz;
@@ -38,10 +39,49 @@ public class SideQuestManager : QuestManager
     [Header("Delivery Side Quest Visual")]
     public CharacterStatsSecure characterStatsTakeDeliver;
     public Map mapTakeDeliver;
-    protected override void Awake()
+    public override void Init()
     {
-        base.Awake();
+        base.Init();
         Observer.AddObserver(EventList.GamePlay.USER_ENTER_MAP, USER_ENTER_MAP);
+
+    }
+
+    public string nameChar;
+    public CharacterStatsSecure characterProviderQuest;
+    public void SetCharProviderQuest(CharacterStatsSecure characterStats)
+    {
+        this.characterProviderQuest = characterStats;
+    }
+    [SerializeField] public Dictionary<string, string> skins => characterProviderQuest.Skins;
+    [SerializeField] public Dictionary<string, Color> color => characterProviderQuest.Colors;
+    [SerializeField] public Gender gender => characterProviderQuest.Gender;
+   
+
+    public void DoneQuest()
+    {
+        Pool.Get<QuestManager>().QuestDone();
+    }
+    public void DoneQuest(CharacterStatsSecure characterShow, Action actionDoneDialog)
+    {
+        SayDialogManager.Instance.ShowDialogWithSkin(characterShow.nameUser, characterShow.Gender, characterShow.Skins, characterShow.Colors, Pool.Get<QuestManager>().currentQuest.CompleteQuest, null, null, () => {
+            Pool.Get<QuestManager>().currentQuest.QuestDoneData();
+            // Fake Reward
+            Pool.Get<EventRewardPanel>().InitShowEventReward(new RewardSnapshot { MoneyVip = 50 }, $"{Pool.Get<QuestManager>().currentQuest.CompleteQuest[Pool.Get<QuestManager>().currentQuest.CompleteQuest.Count - 1]}");
+            Pool.Get<QuestManager>().currentQuest = null;
+            actionDoneDialog?.Invoke();
+
+
+        });
+    }
+
+    public void InitShowQuestHaveChar(Action actionComplete, List<string> startDialog, CharacterStatsSecure character, bool isHide = true)
+    {
+        nameChar = character.nameUser;
+        SayDialogManager.Instance.ShowDialogWithSkin(character.nameUser, character.Gender, character.Skins, character.Colors, startDialog, null, null, () =>
+        {
+            actionComplete?.Invoke();
+        }, isHide);
+
     }
     public void USER_ENTER_MAP(params object[] data)
     {
@@ -50,7 +90,7 @@ public class SideQuestManager : QuestManager
 
         if (map.actionMap != null && map.actionMap is SideQuestResource)
         {
-            currentQuest = null;
+            Pool.Get<QuestManager>().currentQuest = null;
             characterProviderQuest = null;
            
         }
@@ -69,16 +109,16 @@ public class SideQuestManager : QuestManager
             Debug.Log(" vào QuestDeliveryTrigger 3");
 
             characterStatsTakeDeliver.idNode = mapTakeDeliver.Id;
-            Pool.Get<UINPCJiaoHu>().OnReloadNpcThisNode();           
-            DoneQuest(characterStatsTakeDeliver, () => { characterProviderQuest = null; characterStatsTakeDeliver = null; mapTakeDeliver = null;});
-        }    
-     
+            Pool.Get<UINPCJiaoHu>().OnReloadNpcThisNode();
+            DoneQuest();
+        }
+
 
     }
 
     public void QuizQuestInitShow(SideQuizQuestResource.Quiz quiz)
     {
-        if(currentQuest is SideQuizQuestResource quizQuestResource)
+        if(Pool.Get<QuestManager>().currentQuest is SideQuizQuestResource quizQuestResource)
         {
             quizQuestParent.Show();
             currentQuiz = quiz;
@@ -115,18 +155,18 @@ public class SideQuestManager : QuestManager
     {
         answerPrefab.RecycleAll();
         quizQuestParent.Hide();
-        if (currentQuest is SideQuizQuestResource quizQuestResource)
+        if (Pool.Get<QuestManager>().currentQuest is SideQuizQuestResource quizQuestResource)
         {
             if (answer.currentIndexAnswer == currentQuiz.rightAnswerIndex)
             {
-                DoneQuest(characterProviderQuest, () => { characterProviderQuest = null; });
-              
+                DoneQuest();
+
 
 
             }
             else
             {
-                SayDialogManager.Instance.ShowDialog(nameChar, gender, skins, color, quizQuestResource.wrongDialog);
+                SayDialogManager.Instance.ShowDialogWithSkin(nameChar, gender, skins, color, quizQuestResource.wrongDialog);
 
             }
         }
@@ -138,6 +178,32 @@ public class SideQuestManager : QuestManager
 
     public override ActionMapResourceSO GetActionMapResourceSO()
     {
-        return actionMapResourceSOs[UnityEngine.Random.Range(0, actionMapResourceSOs.Length)];
+        // 1. Tạo bản sao danh sách để lọc mà không ảnh hưởng data gốc
+        List<ActionMapResourceSO> resourceSideQuest = new List<ActionMapResourceSO>(actionMapResourceSOs);
+
+        // 2. Vòng lặp chạy cho đến khi cạn kiệt danh sách tạm
+        while (resourceSideQuest.Count > 0)
+        {
+            // Bốc ngẫu nhiên 1 phần tử theo số lượng còn lại trong list
+            int randomIndex = UnityEngine.Random.Range(0, resourceSideQuest.Count);
+            var resourceRandom = resourceSideQuest[randomIndex];
+
+            // Kiểm tra xem có đúng loại SideQuestResource không
+            if (resourceRandom is SideQuestResource sideQuest)
+            {
+                // Điều kiện ĐẠT: Trả về kết quả ngay lập tức
+                if (sideQuest.CanActiveEventMap())
+                {
+                    return resourceRandom;
+                }
+            }
+
+            // Điều kiện XẤU (Không phải SideQuest hoặc không CanActive): 
+            // Xóa thẳng tay phần tử tại vị trí index này để vòng sau không bốc trùng lại nữa
+            resourceSideQuest.RemoveAt(randomIndex);
+        }
+
+        // Nếu đã duyệt hết sạch sành sanh danh sách mà không ai thỏa mãn
+        return null;
     }
 }

@@ -37,62 +37,89 @@ public class NPCDataGenerator : EditorWindow
     {
         EnsureFolderExists(basePath);
 
-        // 1. Quét toàn bộ NPC hiện có để lấy Max ID và các Type đã tồn tại
+        // 1. Thay đổi cấu trúc: Lưu lại danh sách Level đã tồn tại cho TỪNG loại Combo
+        // Key: Combo Type, Value: Bộ danh sách các Level đã có file NPCData
+        Dictionary<ComboSkillResource.ETypeCombo, HashSet<int>> existingComboLevels = new Dictionary<ComboSkillResource.ETypeCombo, HashSet<int>>();
         int maxId = 0;
-        HashSet<ComboSkillResource.ETypeCombo> existingTypes = new HashSet<ComboSkillResource.ETypeCombo>();
 
-        // Tìm tất cả NPCData trong toàn bộ thư mục gốc và thư mục con
+        // Tìm tất cả NPCData hiện có trong thư mục
         string[] allNpcGuids = AssetDatabase.FindAssets("t:NPCData", new[] { basePath });
         foreach (string guid in allNpcGuids)
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
             NPCData npc = AssetDatabase.LoadAssetAtPath<NPCData>(path);
+
             if (npc != null && npc.charStatsCreateRef != null)
             {
-                // Cập nhật Max ID
-                if (npc.charStatsCreateRef.idChar.Value > maxId) maxId = npc.charStatsCreateRef.idChar.Value;
+                // Cập nhật Max ID để tránh trùng ID nhân vật
+                if (npc.charStatsCreateRef.idChar.Value > maxId)
+                    maxId = npc.charStatsCreateRef.idChar.Value;
 
-                // Thu thập Type đã tồn tại từ dữ liệu bên trong file
-                if (npc.comboChar != null)
+                // Thu thập dữ liệu loại Combo và Cấp độ để kiểm tra trùng lặp
+                if (npc.comboChar != null && npc.charStatsCreateRef.level != null)
                 {
-                    existingTypes.Add(npc.comboChar.typeCombo);
+                    var type = npc.comboChar.typeCombo;
+                    int lv = npc.charStatsCreateRef.level; // Giả định trường lấy Level của bạn là kiểu int
+
+                    if (!existingComboLevels.ContainsKey(type))
+                    {
+                        existingComboLevels[type] = new HashSet<int>();
+                    }
+                    existingComboLevels[type].Add(lv);
                 }
             }
         }
 
         int currentMaxId = maxId;
 
+        // Định nghĩa danh sách các bộ Level cần sinh theo đúng yêu cầu của bạn:
+        // 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 1, 1, 12, 13, 14, 15
+        // LƯU Ý: Đoạn chuỗi bạn ghi "1 1 12" tôi hiểu là bạn gõ nhầm số 11 thành số 1, nên mảng dưới đây sẽ sửa lại chuẩn từ 1 đến 15 nhé.
+        int[] levelsToGenerate = new int[] { 1, 2, 3,  4,  5,  6,  7, 8,  9,  10, 11, 12, 13, 14, 15 };
+
         // 2. Duyệt qua danh sách Combo từ Resource
         foreach (var comboType in comboResource.comboNPC)
         {
             if (string.IsNullOrEmpty(comboType.nameCombo)) continue;
 
-            // KIỂM TRA: Nếu Type này đã tồn tại trong bất kỳ folder nào rồi thì bỏ qua
-            if (existingTypes.Contains(comboType.typeCombo))
-            {
-                Debug.Log($"<color=yellow>Skip:</color> Combo Type <b>{comboType.typeCombo}</b> đã được tạo trước đó. Bỏ qua.");
-                continue;
-            }
-
-            // Tạo folder cho loại Combo mới
             string folderPath = $"{basePath}/{comboType.nameCombo}";
             EnsureFolderExists(folderPath);
 
-            // Tạo các Batch Level và truyền ID hiện tại vào để tăng tiến
-            currentMaxId = CreateNPCBatch(folderPath, comboType, 2, 13, 15, currentMaxId);
-            currentMaxId = CreateNPCBatch(folderPath, comboType, 3, 10, 12, currentMaxId);
-            currentMaxId = CreateNPCBatch(folderPath, comboType, 4, 7, 9, currentMaxId);
-            currentMaxId = CreateNPCBatch(folderPath, comboType, 5, 4, 6, currentMaxId);
-            currentMaxId = CreateNPCBatch(folderPath, comboType, 6, 1, 3, currentMaxId);
+            int countCreatedInBatch = 0;
 
-            Debug.Log($"<color=green>Success:</color> Đã tạo xong 20 NPC cho Type: {comboType.typeCombo}");
+            // VÒNG LẶP ĐỘNG: Duyệt qua danh sách level quy định ở trên
+            // Quét ngược từ Level cao xuống Level thấp (hoặc từ đầu tới cuối mảng tùy bạn, ở đây tôi duyệt từ cuối mảng lên giống code cũ của bạn)
+            for (int i = levelsToGenerate.Length - 1; i >= 0; i--)
+            {
+                int targetLv = levelsToGenerate[i];
+
+                // 🔍 KIỂM TRA ĐIỀU KIỆN: 
+                // Nếu Type này đã từng được tạo NPC có level tương ứng -> BỎ QUA KHÔNG TẠO TRÙNG
+                if (existingComboLevels.ContainsKey(comboType.typeCombo) &&
+                    existingComboLevels[comboType.typeCombo].Contains(targetLv))
+                {
+                    continue;
+                }
+
+                // Nếu chưa có file cho Level này, tiến hành tạo mới và cập nhật ID tăng tiến
+                currentMaxId = CreateNPCBatch(folderPath, comboType, 3, targetLv, targetLv, currentMaxId);
+                countCreatedInBatch++;
+            }
+
+            if (countCreatedInBatch > 0)
+            {
+                Debug.Log($"<color=green>Success:</color> Đã cập nhật bổ sung {countCreatedInBatch} NPC mới cho Type: {comboType.typeCombo}");
+            }
+            else
+            {
+                Debug.Log($"<color=cyan>Skip:</color> Combo Type <b>{comboType.typeCombo}</b> đã có đầy đủ các file level từ trước. Không tạo thêm.");
+            }
         }
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-        EditorUtility.DisplayDialog("Success", "NPC Generation Completed!", "OK");
+        EditorUtility.DisplayDialog("Success", "NPC Generation/Update Completed!", "OK");
     }
-
     private int CreateNPCBatch(string path, ComboSkillResource.ComboWithType comboType, int count, int minLv, int maxLv, int startId)
     {
         int runningId = startId;

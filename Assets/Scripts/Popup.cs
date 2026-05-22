@@ -1,6 +1,7 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using LongDH.LongDHModules;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,7 +42,13 @@ public class Popup : BaseBehaviour
 
         actionComplete?.Invoke();
         gameObject.SetActive(false);
+        Pool.Get<UIManager>().RegisterClosePopup();
 
+    }
+    // Coroutine này giờ không cần nằm trong Popup nữa (hoặc giữ lại nhưng chạy ké qua UI Manager)
+    private IEnumerator DelayFrameOnUIManager()
+    {
+        yield return null;
         Pool.Get<UIManager>().RegisterClosePopup();
     }
 

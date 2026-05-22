@@ -35,13 +35,7 @@ public class PrepareCombatPanel : Popup , IUISingleton
         SetEventButton(btnAttack, () =>
         {
             var gameManager =  Pool.Get<GameManager>();
-            if (gameManager.enemyCombat == null) return;
-            Pool.Get<UIManager>().panelGroup.SetActive(false);
-            Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
-            this.Hide();
-            Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
-
-            SceneManager.LoadScene("Combat");
+            gameManager.GoToCombat();
 
         });
         SetEventButton(btnPrepare, () =>

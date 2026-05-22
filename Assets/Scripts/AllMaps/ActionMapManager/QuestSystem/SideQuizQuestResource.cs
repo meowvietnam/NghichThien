@@ -37,7 +37,7 @@ public class SideQuizQuestResource : SideQuestResource
         $"{quizQuestion}" // Truyền thẳng câu hỏi vào đây, không gọi qua Pool nữa
     };
     }
-    public override List<string> CompleteSideQuest => new List<string>
+    public override List<string> CompleteQuest => new List<string>
     {
             "Ha ha ha! Khá khen cho câu trả lời của ngươi! Không hổ danh là đứa con của trời.",
             "Đây là phần thưởng xứng đáng dành cho ngộ tính đỉnh cao của ngươi. Cầm lấy đi!"
@@ -51,7 +51,12 @@ public class SideQuizQuestResource : SideQuestResource
         base.ActiveEventMap(map);
         Pool.Get<SideQuestManager>().QuizQuestInitShow(quizDatas[UnityEngine.Random.Range(0,quizDatas.Length)]);
     }
+    public override void QuestDoneUI()
+    {
+        var sideQManager = Pool.Get<SideQuestManager>();
 
+        sideQManager.DoneQuest(sideQManager.characterProviderQuest, () => { sideQManager.characterProviderQuest = null; });
+    }
 #if UNITY_EDITOR
     // Sử dụng [Button] của Odin để tạo nút bấm tùy chỉnh siêu nhanh
     [Button("IMPORT QUIZ FROM EXCEL", ButtonSizes.Large, ButtonStyle.Box)]
@@ -127,5 +132,8 @@ public class SideQuizQuestResource : SideQuestResource
 
    
 
+
+
 #endif
+
 }

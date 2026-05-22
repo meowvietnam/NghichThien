@@ -14,7 +14,7 @@ public class BaseEnemyCombatResource : ActionMapResourceSO
     public override void ActiveEventMap(Map map)
     {
         var enemy = GetEnemyDataCombatWithPlayerLevel(listEnemy);
-        Pool.Get<GameManager>().GoToCombat(new GameManager.CharCombatInit { eTypeVisual = enemy.eTypeVisualChar, charStats = enemy.charStats }, ETypeCombat.AllMaps);
+        Pool.Get<GameManager>().GoToPrepareCombat(new GameManager.CharCombatInit { eTypeVisual = enemy.eTypeVisualChar, charStats = enemy.charStats }, ETypeCombat.AllMaps);
 
     }
     public NPCData GetEnemyDataCombatWithTargetLevel(NPCData[] listEnemy,int levelTarget)
@@ -23,17 +23,21 @@ public class BaseEnemyCombatResource : ActionMapResourceSO
 
         int targetLevel = playerLevel;
         float rand = UnityEngine.Random.value;
+        int maxTarget75Percent = playerLevel + 1;
+        int maxTarget25Percent = playerLevel + 3;
 
+        maxTarget75Percent = maxTarget75Percent > Pool.Get<GameManager>().inforLevels.Length ? Pool.Get<GameManager>().inforLevels.Length : maxTarget75Percent;
+        maxTarget25Percent = maxTarget25Percent > Pool.Get<GameManager>().inforLevels.Length ? Pool.Get<GameManager>().inforLevels.Length : maxTarget25Percent;
         // Xác định level mục tiêu cho vị trí này
         if (rand <= 0.25f)
         {
             // 25% vượt cấp (+1 hoặc +2)
-            targetLevel = UnityEngine.Random.Range(playerLevel + 1, playerLevel + 3);
+            targetLevel = UnityEngine.Random.Range(maxTarget75Percent, maxTarget25Percent);
         }
         else
         {
             // 75% cùng hoặc dưới cảnh giới (1 -> playerLevel)
-            targetLevel = UnityEngine.Random.Range(1, playerLevel + 1);
+            targetLevel = UnityEngine.Random.Range(1, maxTarget75Percent);
         }
 
         // 3. Tìm danh sách enemy phù hợp với level này
@@ -70,8 +74,11 @@ public class BaseEnemyCombatResource : ActionMapResourceSO
     private void OnUpdateDataEnemyData()
     {
 #if UNITY_EDITOR
-        // Tìm tất cả GUID của các asset có type là CongPhap
-        string[] guids = AssetDatabase.FindAssets("t:EnemyData");
+        // 1. Điền CHÍNH XÁC đường dẫn thư mục chứa Enemy của bạn tại đây (Bắt đầu bằng Assets/...)
+        string[] searchFolders = new string[] { "Assets/Scripts/ComboSkillResource/EnemyData" };
+
+        // 2. Truyền searchFolders vào làm tham số thứ 2 để giới hạn vùng tìm kiếm
+        string[] guids = AssetDatabase.FindAssets("t:EnemyData", searchFolders);
 
         listEnemy = guids
             .Select(guid => AssetDatabase.LoadAssetAtPath<EnemyData>(AssetDatabase.GUIDToAssetPath(guid)))
@@ -79,7 +86,9 @@ public class BaseEnemyCombatResource : ActionMapResourceSO
             .ToArray();
 
         EditorUtility.SetDirty(this);
-        Debug.Log($"Đã cập nhật {listEnemy.Length} NPC vào mảng.");
+        AssetDatabase.SaveAssets(); // Lưu lại thay đổi xuống ổ cứng ngay lập tức
+
+        Debug.Log($"Đã cập nhật {listEnemy.Length} Enemy từ folder chỉ định vào mảng.");
 #endif
     }
 }

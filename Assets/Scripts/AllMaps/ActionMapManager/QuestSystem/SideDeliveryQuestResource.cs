@@ -27,10 +27,27 @@ public class SideDeliveryQuestResource : SideQuestResource
     }
 
     // Lời thoại lúc HOÀN THÀNH (Người nhận đồ cảm ơn và phát thưởng)
-    public override List<string> CompleteSideQuest => new List<string>
+    public override List<string> CompleteQuest => new List<string>
     {
         "Đường xa vất vả, đây là chút tiên ngọc coi như lộ phí ta gửi tặng. Xin hãy nhận lấy!"
     };
+    public override bool CanActiveEventMap()
+    {
+        var mapManager = Pool.Get<MapManager>();
+
+        var validNPCs = npcDatas.Where(npc =>
+        {
+            if (npc == null || npc.charStats == null) return false;
+
+            // Tìm map dựa trên idNode của NPC
+            var mapOfNPC = mapManager.FindMap(npc.charStats.idNode);
+
+            // Điều kiện: Tìm thấy map và map đó phải thoả mãn IsEmptyAction
+            return mapOfNPC != null && mapOfNPC.IsEmptyAction;
+        }).ToArray();
+        var charRandomActive = GetNPCDataSideQuestWithTargetLevel(validNPCs, Client.Instance.CharacterData.Progression.Level);
+        return charRandomActive != null;
+    }
     public override void ActiveEventMap(Map map)
     {
         base.ActiveEventMap(map);
@@ -62,5 +79,11 @@ public class SideDeliveryQuestResource : SideQuestResource
             });
         }, GetStartDialogs(), charRandom);
     }
-  
+    public override void QuestDoneUI()
+    {
+        var sideQManager = Pool.Get<SideQuestManager>();
+        sideQManager.DoneQuest(sideQManager.characterStatsTakeDeliver, () => { sideQManager.characterProviderQuest = null; sideQManager.characterStatsTakeDeliver = null; sideQManager.mapTakeDeliver = null; });
+
+    }
+
 }

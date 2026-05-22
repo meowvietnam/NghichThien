@@ -32,17 +32,21 @@ public class NPCManager : ActionMapManager
     private void OnUpdateDataNPCData()
     {
 #if UNITY_EDITOR
-        // Tìm tất cả GUID của các asset có type là NPCData (bao gồm cả class con kế thừa nó)
-        string[] guids = AssetDatabase.FindAssets("t:NPCData");
+        // Điền chính xác đường dẫn folder bạn muốn quét tại đây
+        string[] searchFolders = new string[] { "Assets/Scripts/ComboSkillResource/NPCData" };
+
+        // Truyền mảng searchFolders vào làm tham số thứ 2 của FindAssets
+        string[] guids = AssetDatabase.FindAssets("t:NPCData", searchFolders);
 
         npcDatas = guids
             .Select(guid => AssetDatabase.LoadAssetAtPath<NPCData>(AssetDatabase.GUIDToAssetPath(guid)))
-            .Where(asset => asset != null && !(asset is EnemyData)) // KIỂM TRA: Nếu KHÔNG PHẢI EnemyData thì mới lấy
+            .Where(asset => asset != null && !(asset is EnemyData))
             .ToArray();
 
         EditorUtility.SetDirty(this);
-        AssetDatabase.SaveAssets(); // Nên thêm dòng này để Unity lưu hẳn thay đổi xuống ổ cứng
-        Debug.Log($"Đã cập nhật {npcDatas.Length} NPC thuần túy vào mảng (Đã loại bỏ Enemy).");
+        AssetDatabase.SaveAssets();
+
+        Debug.Log($"Đã cập nhật {npcDatas.Length} NPC từ folder chỉ định.");
 #endif
     }
 }

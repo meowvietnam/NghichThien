@@ -178,6 +178,7 @@ public class UIManager : BaseBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         loadScene.gameObject.SetActive(false);
+      
     }
 
     private void Start()
@@ -193,7 +194,7 @@ public class UIManager : BaseBehaviour
             item.Init();
         }
     }
-    private int activePopupCount = 0; // Biến đếm số lượng popup đang mở
+    [SerializeField]private int activePopupCount = 0; // Biến đếm số lượng popup đang mở
 
     public void RegisterOpenPopup()
     {

@@ -12,11 +12,17 @@ public abstract class ActionEnterMapManager : ActionMapManager
     [SerializeField] public List<Map> currentMapRandom;
     public abstract string fileSaveMapNode { get; }
 
-    protected override void Start()
+    public override void LoadAfterBackAllMaps()
     {
-        base.Start();
+        base.LoadAfterBackAllMaps();
+        currentMapRandom.Clear();
         LoadData();
-        Observer.AddObserver(EventList.GamePlay.USER_ENTER_MAP,RemoveMap);
+    }
+    public override void Init()
+    {
+        base.Init();
+        Observer.AddObserver(EventList.GamePlay.USER_ENTER_MAP, RemoveMap);
+        LoadAfterBackAllMaps();
     }
     private void OnDestroy()
     {
@@ -34,6 +40,7 @@ public abstract class ActionEnterMapManager : ActionMapManager
         var mapExcept = mapManager.maps.Where(x => x.IsEmptyAction && !(x is Stronghold)).ToList();
         foreach (var item in currentMapRandom)
         {
+            if(item == null) continue; 
             item.ResetDataAction();
         }
         currentMapRandom.Clear();
@@ -64,7 +71,7 @@ public abstract class ActionEnterMapManager : ActionMapManager
 
 
             }
-            Debug.Log("Đã load dữ liệu thành công!");
+            Debug.Log($"Đã load dữ liệu thành công! {data.Count}");
         }
         else
         {
@@ -91,11 +98,12 @@ public abstract class ActionEnterMapManager : ActionMapManager
     }
     public virtual void SaveRandom()
     { // Lọc trùng và chỉ lấy ra danh sách các Id (int)
+        if (currentMapRandom.All(x => x == null)) return;
         List<int> dataSaveNode = currentMapRandom
-            .GroupBy(x => x.Id)
-            .Select(group => group.Key) // Lấy ra cái Id đại diện của nhóm
+            .Where(x => x != null)          // ĐIỀU KIỆN: Nếu x == null thì "continue" (bỏ qua không xử lý)
+            .GroupBy(x => x.Id)             // Gom nhóm theo Id
+            .Select(group => group.Key)     // Lấy ra cái Id đại diện của nhóm
             .ToList();
-
         string json = JsonConvert.SerializeObject(dataSaveNode);
         File.WriteAllText(Application.persistentDataPath + $"/{fileSaveMapNode}.json", json);
 

@@ -17,7 +17,7 @@ public class SideCombatQuestResource : SideQuestResource
 
     [SerializeField] public EnemyData[] listEnemy;
     [SerializeField] public bool isSideCombatQuest2;
-    public override List<string> CompleteSideQuest => GetCompleteSideQuest();
+    public override List<string> CompleteQuest => GetCompleteSideQuest();
     public List<string> GetCompleteSideQuest()
     {
         if (isSideCombatQuest2)
@@ -60,17 +60,21 @@ public class SideCombatQuestResource : SideQuestResource
 
         var charProvider = Pool.Get<SideQuestManager>().characterProviderQuest;
         var enemyRandom = isSideCombatQuest2 ? GetNPCDataSideQuestWithTargetLevel(listEnemy, charProvider.level) : GetNPCDataSideQuestWithTargetLevel(npcDatas, charProvider.level);
+        Pool.Get<QuestManager>().enemyCombats = new List<NPCData> { enemyRandom};
         Pool.Get<SideQuestManager>().InitShowQuestHaveChar(() =>
         {
-            Pool.Get<GameManager>().GoToCombat(new GameManager.CharCombatInit { eTypeVisual = enemyRandom.eTypeVisualChar, charStats = enemyRandom.charStats }, ETypeCombat.AllMaps);
+            Pool.Get<GameManager>().GoToPrepareCombat(new GameManager.CharCombatInit { eTypeVisual = enemyRandom.eTypeVisualChar, charStats = enemyRandom.charStats }, ETypeCombat.AllMaps);
         }, GetStartSideQuest(), charProvider);    
     }
     [Button]
     private void OnUpdateDataEnemyData()
     {
 #if UNITY_EDITOR
-        // Tìm tất cả GUID của các asset có type là CongPhap
-        string[] guids = AssetDatabase.FindAssets("t:EnemyData");
+        // 1. Điền CHÍNH XÁC đường dẫn thư mục chứa Enemy của bạn tại đây (Bắt đầu bằng Assets/...)
+        string[] searchFolders = new string[] { "Assets/Scripts/ComboSkillResource/EnemyData" };
+
+        // 2. Truyền searchFolders vào làm tham số thứ 2 để giới hạn vùng tìm kiếm
+        string[] guids = AssetDatabase.FindAssets("t:EnemyData", searchFolders);
 
         listEnemy = guids
             .Select(guid => AssetDatabase.LoadAssetAtPath<EnemyData>(AssetDatabase.GUIDToAssetPath(guid)))
@@ -78,10 +82,17 @@ public class SideCombatQuestResource : SideQuestResource
             .ToArray();
 
         EditorUtility.SetDirty(this);
-        Debug.Log($"Đã cập nhật {listEnemy.Length} NPC vào mảng.");
+        AssetDatabase.SaveAssets(); // Lưu lại thay đổi xuống ổ cứng ngay lập tức
+
+        Debug.Log($"Đã cập nhật {listEnemy.Length} Enemy từ folder chỉ định vào mảng.");
 #endif
     }
-   
-
-
+    public override void QuestDoneUI()
+    {
+        var sideQManager = Pool.Get<SideQuestManager>();
+        sideQManager.DoneQuest(sideQManager.characterProviderQuest, () =>
+        {
+            sideQManager.characterProviderQuest = null;
+        });
+    }
 }

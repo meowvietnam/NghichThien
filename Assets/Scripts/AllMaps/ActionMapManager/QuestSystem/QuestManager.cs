@@ -1,58 +1,91 @@
 ﻿using Base;
+using DG.Tweening;
+using DG.Tweening.Core.Easing;
 using LongDH.LongDHModules;
-using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public abstract class QuestManager : ActionEnterMapManager
+public class QuestManager : BaseBehaviour , IUISingleton
 {
-    [SerializeField] protected QuestResource currentQuest;
-    public string nameChar;
-    public CharacterStatsSecure characterProviderQuest;
-    public void SetCharProviderQuest(CharacterStatsSecure characterStats)
-    {
-       this.characterProviderQuest = characterStats;
-    }
-    [SerializeField] public Dictionary<string, string> skins => characterProviderQuest.Skins;
-    [SerializeField] public Dictionary<string, Color> color => characterProviderQuest.Colors;
-    [SerializeField] public Gender gender => characterProviderQuest.Gender;
+    public List<NPCData> enemyCombats;
+    [SerializeField] public QuestResource currentQuest;
+   
+   
     public virtual void InitQuest(QuestResource quest)
     {
         this.currentQuest = quest;
     }
-    public void QuestCombatTrigger(GameManager.CharCombatInit charCombat, ETypeCombat typeCombat, ECombatResult result)
+    private void OnCheckSceneToTrigger(Scene scene, LoadSceneMode mode)
     {
-        if (typeCombat == ETypeCombat.AllMaps && result == ECombatResult.Win)
+        // Kiểm tra xem ĐÂY CÓ PHẢI là scene bạn muốn hay không (Ví dụ tên scene là "MainMap")
+        if (scene.name == "AllMaps")
         {
-            DoneQuest(characterProviderQuest , () =>
-            {
-                characterProviderQuest = null;
-            });
+            Debug.Log($"Đã vào đúng scene: {scene.name}. Tiến hành kích hoạt logic!");
 
+            // Thực hiện logic của bạn tại đây
+            // Pool.Get<QuestManager>().QuestCombatTrigger(...);
+
+            // Hủy đăng ký ngay sau khi xử lý xong (nếu chỉ muốn chạy 1 lần)
+            LoadAfterBackAllMaps();
+        }
+        else
+        {
+            Debug.Log($"Vào scene {scene.name}, không phải scene MainMap nên bỏ qua.");
         }
     }
-   
-    public void DoneQuest(CharacterStatsSecure characterShow , Action actionDoneDialog)
+    public virtual void LoadAfterBackAllMaps()
     {
-        SayDialogManager.Instance.ShowDialog(characterShow.nameUser, characterShow.Gender, characterShow.Skins, characterShow.Colors, currentQuest.CompleteSideQuest, null, null, () => {
-            currentQuest.QuestDone();
-            // Fake Reward
-            Pool.Get<EventRewardPanel>().InitShowEventReward(new RewardSnapshot { MoneyVip = 50 }, $"{currentQuest.CompleteSideQuest[currentQuest.CompleteSideQuest.Count - 1]}");
-            currentQuest = null;
-            actionDoneDialog?.Invoke();
+        StartCoroutine(DelayTime(0.01f));
 
-
-        });
     }
- 
-    public void InitShowQuestHaveChar(Action actionComplete, List<string> startDialog , CharacterStatsSecure character , bool isHide = true)
+    private IEnumerator DelayTime(float time)
     {
-        nameChar = character.nameUser;
-        SayDialogManager.Instance.ShowDialog(character.nameUser,character.Gender,character.Skins,character.Colors, startDialog, null, null, () =>
+        yield return new WaitForSeconds(time);
+        var gameManager = Pool.Get<GameManager>();
+        QuestCombatTrigger(gameManager.enemyCombat, gameManager.currentETypeCombat, gameManager.currentECombatResult);
+    }    
+    
+    public void QuestCombatTrigger(GameManager.CharCombatInit charCombat, ETypeCombat typeCombat, ECombatResult result)
+    {
+        Debug.Log(" vào QuestCombatTrigger");
+        if (typeCombat == ETypeCombat.AllMaps && result == ECombatResult.Win)
         {
-            actionComplete?.Invoke();
-        }, isHide);
+            if (enemyCombats.Any(x => x.charStats.idChar == charCombat.charStats.idChar))
+            {
+                enemyCombats.Remove(enemyCombats.FirstOrDefault(x => x.charStats.idChar == charCombat.charStats.idChar));
+                if (enemyCombats.Count <= 0)
+                {
+                    QuestDone();
+
+                    enemyCombats.Clear();
+
+                }
+                else
+                {
+                    Pool.Get<GameManager>().GoToPrepareCombat(new GameManager.CharCombatInit { eTypeVisual = enemyCombats[0].eTypeVisualChar, charStats = enemyCombats[0].charStats }, ETypeCombat.AllMaps);
+
+
+                }
+            }
+               
+        }
+        
+    }
+    public void QuestDone()
+    {
+        if (currentQuest != null)
+        {
+            currentQuest.QuestDoneUI();
+        }
+    }
+
+    public void Init()
+    {
+        Pool.Set(this);
+        SceneManager.sceneLoaded += OnCheckSceneToTrigger;
 
     }
-   
 }

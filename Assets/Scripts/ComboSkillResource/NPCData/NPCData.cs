@@ -77,7 +77,7 @@ public class NPCData : ScriptableObject
         for (int i = 0; i < charStats.level; i++)
         {
             charStats.hpMax += gameConfig.inforLevels[i].hpMaxBuff;
-            charStats.hp = charStats.hpMax;
+            charStats.hp = new SecureInt(charStats.hpMax);
             charStats.thanThuc += gameConfig.inforLevels[i].thanThucBuff;
             charStats.tocDoBay += gameConfig.inforLevels[i].donTocBuff;
             charStats.thoNguyen += gameConfig.inforLevels[i].thoNguyenBuff;

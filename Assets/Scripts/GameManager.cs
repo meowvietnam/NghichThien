@@ -19,6 +19,8 @@ using Network.Models;
 using Newtonsoft.Json.Linq;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
+using DG.Tweening.Core.Easing;
+
 
 
 #if UNITY_EDITOR
@@ -302,7 +304,7 @@ public class GameManager : BaseBehaviour
     public static string GetChucVuText(EMonPhai monPhai, int level)
     {
         return monPhaiText[monPhai] + " " + chucVuText[ThanThong.GetDaiCanhGioi(level)];
-    }
+    }   
 
     public void OnBackScene()
     {
@@ -380,8 +382,18 @@ public class GameManager : BaseBehaviour
     public ETypeCombat currentETypeCombat = ETypeCombat.None;
     public ECombatResult currentECombatResult = ECombatResult.None;
 
- 
-    public void GoToCombat(CharCombatInit enemyCombat , ETypeCombat eTypeCombat)
+
+    public void GoToCombat()
+    {
+        if (enemyCombat == null) return;
+        Pool.Get<UIManager>().panelGroup.SetActive(false);
+        Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
+        Pool.Get<PrepareCombatPanel>().Hide();
+        Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
+
+        SceneManager.LoadScene("Combat");
+    }
+    public void GoToPrepareCombat(CharCombatInit enemyCombat, ETypeCombat eTypeCombat)
     {
         this.enemyCombat = enemyCombat;
         if (enemyCombat == null) return;
@@ -389,18 +401,16 @@ public class GameManager : BaseBehaviour
         Pool.Get<PrepareCombatPanel>().Show();
         currentECombatResult = ECombatResult.None;
     }
-
     public void BackAllMapFromCombat(ECombatResult eCombatResult)
     {
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         Pool.Get<UIManager>().panelGroup.SetActive(true);
         currentECombatResult = eCombatResult;
         SceneManager.LoadScene(listSceneLoaded[0]);
-        Pool.Get<SideQuestManager>().QuestCombatTrigger(enemyCombat, currentETypeCombat, currentECombatResult);
-
 
     }
-   
+  
+
     public static CharacterStatsSecure ConvertCharServerDataToCharClientData()
     {
         var charData = Client.Instance.CharacterData;

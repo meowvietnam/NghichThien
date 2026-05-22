@@ -331,7 +331,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         SetEventButton(btnLuanBan, () =>
         {
             HideAllPop();
-            Pool.Get<GameManager>().GoToCombat(new GameManager.CharCombatInit
+            Pool.Get<GameManager>().GoToPrepareCombat(new GameManager.CharCombatInit
             {
                 charStats = characterStatsTarget,
                 eTypeVisual = ETypeVisualChar.Character,

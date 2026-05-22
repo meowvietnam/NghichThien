@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CreateCharacter;
+﻿using CreateCharacter;
 using LongDH.LongDHModules;
 using LongDH.Script.ObjectPool;
 using Network;
@@ -10,6 +7,10 @@ using Network.ClientState;
 using Network.Extensions;
 using Network.Models;
 using Sirenix.OdinInspector;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,7 +27,8 @@ namespace AllMaps
         [SerializeField] private Player player;
         private Map current;
         private Dictionary<Map, List<Map>> graph;
-       
+
+        public bool isDelayAfterLoadScene = true;
 
         private GameObject SetIconEvent(Map map , GameObject prefabIcon)
         {
@@ -44,11 +46,13 @@ namespace AllMaps
             }
             return iconAction;
         }
-        public void SetDataOnMap(ActionMapResourceSO Data,int nodeId)
+        public Map SetDataOnMap(ActionMapResourceSO Data,int nodeId)
         {
             Map map = FindMap(nodeId);
           
             map.SetData(Data, SetIconEvent(map, Data.prefabIcon));
+
+            return map;
         }
         public void SetDataOnMap(GameObject prefabIcon, Map map)
         {
@@ -88,10 +92,20 @@ namespace AllMaps
         private void Start()
         {
             Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
+            isDelayAfterLoadScene = true;
+            StartCoroutine(DelayTime(0.01f));
+
         }
 
+        private IEnumerator DelayTime(float time)
+        {
+            yield return new WaitForSeconds(time);
+            isDelayAfterLoadScene = false;
+
+        }
         public void PlayerMoveTo(Map map)
         {
+            if (isDelayAfterLoadScene) return;
             if (map == current) return;
             if (player.IsMoving) return;
             Client.Instance.Send(MessageTag.MoveToMap, map.Id);

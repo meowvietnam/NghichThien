@@ -120,4 +120,9 @@ public class INetworkEvent
         void SuccessJoinMonPhai();
         void FailJoinMonPhai(string message);
     }
+    public interface ICompleteMainQuest// Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessCompleteMainQuest();
+        void FailMainQuest(string message);
+    }
 }

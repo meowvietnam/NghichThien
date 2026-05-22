@@ -2,21 +2,36 @@
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public abstract class ActionMapManager : MonoBehaviour
+public abstract class ActionMapManager : MonoBehaviour , IUISingleton
 {
     public abstract int TimeMonthRandom { get;  }
     public abstract string fileSaveTime { get;  }
 
-    protected virtual void Awake()
+    
+    private void OnCheckSceneToTrigger(Scene scene, LoadSceneMode mode)
     {
-        Pool.Set(this.GetType(), this);
-        Observer.AddObserver(EventList.GamePlay.TIME_ADJUST, OnTimeAdjust);
+        // Kiểm tra xem ĐÂY CÓ PHẢI là scene bạn muốn hay không (Ví dụ tên scene là "MainMap")
+        if (scene.name == "AllMaps")
+        {
+            Debug.Log($"Đã vào đúng scene: {scene.name}. Tiến hành kích hoạt logic!");
 
+            // Thực hiện logic của bạn tại đây
+            // Pool.Get<QuestManager>().QuestCombatTrigger(...);
+
+            // Hủy đăng ký ngay sau khi xử lý xong (nếu chỉ muốn chạy 1 lần)
+            LoadAfterBackAllMaps();
+        }
+        else
+        {
+            Debug.Log($"Vào scene {scene.name}, không phải scene MainMap nên bỏ qua.");
+        }
     }
-    protected virtual void Start()
+    public virtual void LoadAfterBackAllMaps()
     {
         OnTimeAdjust();
+
     }
     private void OnTimeAdjust()
     {
@@ -50,6 +65,11 @@ public abstract class ActionMapManager : MonoBehaviour
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save(); // Đảm bảo dữ liệu được ghi xuống đĩa ngay lập tức
     }
-    
 
+    public virtual void Init()
+    {
+        Pool.Set(this.GetType(), this);
+        Observer.AddObserver(EventList.GamePlay.TIME_ADJUST, OnTimeAdjust);
+        SceneManager.sceneLoaded += OnCheckSceneToTrigger;
+    }
 }
