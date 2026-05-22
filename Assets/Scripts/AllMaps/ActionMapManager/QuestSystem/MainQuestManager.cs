@@ -28,14 +28,27 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
             {
                 if(mainQuestResource.id != CurrentMainQuest.id)
                 {
-                    currentMapMainQuest.ResetDataAction();
-                    currentMapMainQuest = null;
+                    ResetDataMap();
                     CheckSpawnQuest();
                 }    
             }    
-        }    
+        }
 
+    }
+    private void ResetDataMap()
+    {
+        currentMapMainQuest.ResetDataAction();
+        currentMapMainQuest = null;
     }    
+    private void RemoveMap(params object[] data)
+    {
+        Map map = (Map)data[0];
+        if (currentMapMainQuest == null) return;
+        if(map.Id == currentMapMainQuest.Id)
+        {
+            ResetDataMap();
+        }
+    }
     public void QuestDoneCombat()
     {
         Pool.Get<QuestManager>().currentQuest.QuestDoneData();
@@ -48,6 +61,7 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
     {
         Pool.Set(this);
         Observer.AddObserver(EventList.GamePlay.MOVE_MAP_SUCCESS, CheckSpawnQuest);
+        Observer.AddObserver(EventList.GamePlay.USER_ENTER_MAP, RemoveMap);
         currentMainQuest = Client.Instance.CharacterData.QuestManager.CurrentMainQuest;
         CheckSpawnQuest();
 
