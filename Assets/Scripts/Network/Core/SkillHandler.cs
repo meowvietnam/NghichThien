@@ -84,7 +84,6 @@ namespace Network.Core
                     var charData = Client.Instance.CharacterData;
                     charData.EquipThanThong(result);
                 }
-
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -105,9 +104,7 @@ namespace Network.Core
                     var id = result.Id;
                     var charData = Client.Instance.CharacterData;
                     charData.EquipmentManager.UnEquipThanThong(id);
-                    charData.InventoryManager.EquipThanThong(id);
                 }
-
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)

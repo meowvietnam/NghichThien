@@ -160,12 +160,7 @@ namespace CreateCharacter
         public void EquipThanThong(EquipThanThongResult result)
         {
             var thanThong = result.ThanThong;
-            var old = EquipmentManager.EquipThanThong(thanThong);
-            if (old != null)
-            {
-                InventoryManager.EquipThanThong(old.Id);
-            }
-            InventoryManager.EquipThanThong(thanThong.Id);
+            EquipmentManager.EquipThanThong(thanThong);
         }
     }
 }
