@@ -112,7 +112,7 @@ public class SayDialogManager : BaseBehaviour
         if (spriteContent != null)
         {
             imgContent.gameObject.SetActive(true);
-            //imgContent.sprite = spriteContent;
+            imgContent.sprite = spriteContent;
             //Color c = imgContent.color;
             //c.a = 0;
             //imgContent.color = c;

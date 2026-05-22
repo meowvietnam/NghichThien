@@ -28,25 +28,23 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
             {
                 if(mainQuestResource.id != CurrentMainQuest.id)
                 {
-                    ResetDataMap();
+
+                    currentMapMainQuest.ResetDataAction();
+                    currentMapMainQuest = null;
                     CheckSpawnQuest();
                 }    
             }    
         }
 
     }
-    private void ResetDataMap()
-    {
-        currentMapMainQuest.ResetDataAction();
-        currentMapMainQuest = null;
-    }    
+   
     private void RemoveMap(params object[] data)
     {
         Map map = (Map)data[0];
         if (currentMapMainQuest == null) return;
         if(map.Id == currentMapMainQuest.Id)
         {
-            ResetDataMap();
+            currentMapMainQuest = null;
         }
     }
     public void QuestDoneCombat()
