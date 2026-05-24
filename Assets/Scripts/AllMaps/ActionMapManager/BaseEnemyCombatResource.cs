@@ -11,10 +11,13 @@ using UnityEngine;
 public class BaseEnemyCombatResource : ActionMapResourceSO
 {
     [SerializeField]public EnemyData[] listEnemy;
+    public Sprite[] spriteCombat;
+
     public override void ActiveEventMap(Map map)
     {
         var enemy = GetEnemyDataCombatWithPlayerLevel(listEnemy);
         Pool.Get<GameManager>().GoToPrepareCombat(new GameManager.CharCombatInit { eTypeVisual = enemy.eTypeVisualChar, charStats = enemy.charStats }, ETypeCombat.AllMaps);
+        Pool.Get<GameManager>().SetBGCombat(spriteCombat[Random.Range(0, spriteCombat.Length)]);
 
     }
     public NPCData GetEnemyDataCombatWithTargetLevel(NPCData[] listEnemy,int levelTarget)

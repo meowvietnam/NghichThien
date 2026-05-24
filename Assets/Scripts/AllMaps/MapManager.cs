@@ -30,6 +30,18 @@ namespace AllMaps
 
         public bool isDelayAfterLoadScene = true;
 
+        public Map FindMap(EMapType eMap)
+        {
+            foreach (Map map in maps)
+            {
+                if(map is Stronghold strongHold && strongHold.eCurrentMapType == eMap)
+                {
+                    return map;
+                }    
+            } 
+            return null;
+                
+        }    
         private GameObject SetIconEvent(Map map , GameObject prefabIcon)
         {
             GameObject iconAction = null;

@@ -1,5 +1,6 @@
 ﻿using LongDH.LongDHModules;
 using Network;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -32,20 +33,25 @@ namespace AllMaps
 
         private void Awake()
         {
+           
+        }
+        public void SetEventBtnEnterStrongHold(Action eventBase)
+        {
             SetEventButton(btnEnter, () =>
             {
                 var gameManager = Pool.Get<GameManager>();
-                if(gameManager.CurrentEMonPhai == Client.Instance.CharacterData.MonPhai || gameManager.CurrentEMonPhai == Base.EMonPhai.None)
+                if (gameManager.CurrentEMonPhai == Client.Instance.CharacterData.MonPhai || gameManager.CurrentEMonPhai == Base.EMonPhai.None)
                 {
-                    Observer.Notify(EventList.GamePlay.LOAD_SCENE, nameSceneLoad, eCurrentMapType);
+                    LoadToMapStrongHold();
                 }
-                else if(gameManager.CurrentEMonPhai != Base.EMonPhai.None && Client.Instance.CharacterData.MonPhai == Base.EMonPhai.None && Pool.Get<MainQuestManager>().currentMainQuest>0)
+                else if (gameManager.CurrentEMonPhai != Base.EMonPhai.None && Client.Instance.CharacterData.MonPhai == Base.EMonPhai.None && Pool.Get<MainQuestManager>().currentMainQuest > 0)
                 {
                     GameManager.SetDialogGacCong($"phải chăng ngươi muốn gia nhập {GameManager.monPhaiText.GetValueOrDefault(gameManager.CurrentEMonPhai)}?", () =>
                     {
                         Pool.Get<PopupConfirmAction>().ShowPopConfirmAction($"Xác nhận gia nhập {GameManager.monPhaiText.GetValueOrDefault(gameManager.CurrentEMonPhai)}", () =>
                         {
-                            Observer.Notify(EventList.Network.JOIN_MONPHAI,this,gameManager.CurrentEMonPhai);
+                            Observer.Notify(EventList.Network.JOIN_MONPHAI, this, gameManager.CurrentEMonPhai);
+                            LoadToMapStrongHold();
 
                         });
                     });
@@ -58,9 +64,18 @@ namespace AllMaps
                 }
 
             });
-        }
+            void LoadToMapStrongHold()
+            {
+                Observer.Notify(EventList.GamePlay.LOAD_SCENE, nameSceneLoad, eCurrentMapType,this);
+                eventBase?.Invoke();
+            }
+        }    
         public override void OnPlayerEnter()
         {
+            SetEventBtnEnterStrongHold(() =>
+            {
+                base.OnPlayerEnter();
+            });
             enter.SetActive(true);
         }
         public override void OnPlayerExit()
@@ -70,7 +85,6 @@ namespace AllMaps
 
         public void SuccessJoinMonPhai()
         {
-            Observer.Notify(EventList.GamePlay.LOAD_SCENE, nameSceneLoad, eCurrentMapType);
 
         }
 
