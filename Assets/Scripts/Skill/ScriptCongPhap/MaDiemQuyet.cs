@@ -18,7 +18,7 @@ public class MaDiemQuyet : CongPhap, IMemorySerializable<MaDiemQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Thọ nguyên {GetColoredText($"-{thoNguyens[level - 1]}", "red")} năm";
+        return $"Thọ nguyên {GetColoredText($"-{thoNguyens[level - 1]}", "red")} năm nhưng tốc độ tu luyện tăng mạnh";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)
