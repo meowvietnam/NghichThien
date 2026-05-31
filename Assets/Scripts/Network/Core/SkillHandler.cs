@@ -10,7 +10,8 @@ namespace Network.Core
     public class SkillHandler : IClientHandler
     {
         private static MessageTag[] handler =
-            { MessageTag.LearnNgoDaoResult, MessageTag.EquipThanThongResult, MessageTag.UnequipThanThongResult, MessageTag.EquipThanThongResult, MessageTag.UnequipThanThongResult, };
+            { MessageTag.LearnNgoDaoResult, MessageTag.EquipThanThongResult, MessageTag.UnequipThanThongResult, MessageTag.EquipThanThongResult,
+                MessageTag.EquipCongPhapResult, MessageTag.UnequipThanThongResult};
 
         public MessageTag[] HandleTag => handler;
         private INetworkEvent.ILearnNgoDao learnNgoDaoCallback;
