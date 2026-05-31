@@ -46,7 +46,6 @@ namespace AllMaps.ItemProvider
         public virtual void Display(ToolTipContext ctx)
         {
             ctx.SetPriceText?.Invoke(GetPrice(ctx));
-
         }
 
         public int GetPrice(ToolTipContext ctx)
@@ -56,7 +55,6 @@ namespace AllMaps.ItemProvider
                 : GetPriceItemBuy(ctx.ItemRef.Id);
         }
         public abstract int GetPriceItemSell(ushort id);
-       
 
         public virtual int GetPriceItemBuy(ushort id)
         {

@@ -20,7 +20,6 @@ namespace Start
         [SerializeField] private string username;
         [SerializeField] private string loggedIn;
         [SerializeField] private StartScene startScene;
-
         public void Login()
         {
             startScene.SetStatusText(loggedIn);

@@ -30,9 +30,5 @@ namespace AllMaps.ItemProvider
             FurnaceData FurnaceData = GetDataItemById(Id);
             return FurnaceData.Durability * GameManager.PriceFurnaceWithTierPerDurability[LuyenDanResources.Instance.FindItem(FurnaceData).Tier];
         }
-
-     
-
-       
     }
 }
