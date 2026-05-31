@@ -4,6 +4,7 @@ using Base;
 using CreateCharacter;
 using CreateCharacter.CharStats;
 using LongDH.LongDHModules;
+using LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using LuyenKhi;
@@ -15,7 +16,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using LongDHModules;
 using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEngine;
@@ -663,7 +663,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                             //equip
                             //congPhap.EquipCongPhap();
                             //save player cong phap equip id
-                            Observer.Notify(EventList.Network.EQUIP_CONGPHAP, this, GetTypeSlotCP(resultRect), congPhap.Id);
+                            Observer.Notify(EventList.Network.EQUIP_CONGPHAP, this, GetTypeSlotCP(resultRect), (ushort)congPhap.Id);
                             // Cách viết chuẩn
 
 
@@ -918,6 +918,8 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     public void SuccessUnEquipCongPhap()
     {
         Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
+        Debug.Log("equip success");
+
     }
 
     public void FailUnEquipCongPhap(string message)
