@@ -46,6 +46,7 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
         if(spriteIcon != null)
         {
             icon.sprite = spriteIcon;
+            icon.SetNativeSize();
         }    
         if(frameSprite != null)
         {

@@ -14,6 +14,7 @@ public class KiemKhi : NgoDaoCombat, IMemorySerializable<KiemKhi>
     private int percent = 50;
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
+        if(caster.thanThongOldUse == null || caster.thanThongCurrentUse == null) return;
         if (caster.thanThongCurrentUse.thanThong == caster.thanThongOldUse.thanThong && BaseSkill.CheckIsEqualETypeSkill(caster, eTypeRequire))
         {
             if (CombatStatic.IsActiveWithPercent(percent))

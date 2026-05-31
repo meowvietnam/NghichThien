@@ -243,7 +243,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         // 4. Sinh UI Item mới cho các NPC mới được thêm
         foreach (var item in listCharStats)
         {
-            var itemNpc = GameManager.GetItemPool(prefabNPCLeftItem);
+            var itemNpc = GameManager.GetItemPoolWithPrefabInParent(prefabNPCLeftItem);
             itemNpc.Init(item);
         }
 
@@ -264,7 +264,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         });
         foreach (var item in listCharStats)
         {
-            var itemNpc = GameManager.GetItemPool(prefabNPCLeftItem);
+            var itemNpc = GameManager.GetItemPoolWithPrefabInParent(prefabNPCLeftItem);
             itemNpc.Init(item);
 
         }
@@ -453,7 +453,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         var categorize = CategorizeSlot(listBaseSkillData);
         foreach (var item in categorize.Item1)
         {
-            var itemInventory = GameManager.GetItemPool(prefabSlotThinhGiaoSlot1);
+            var itemInventory = GameManager.GetItemPoolWithPrefabInParent(prefabSlotThinhGiaoSlot1);
             itemInventory.InitAction(null, null, null);
 
             Pool.Get<UIManager>().InitVisualItemSkill(itemInventory, item);
@@ -465,7 +465,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         }
         foreach (var item in categorize.Item2)
         {
-            var itemInventory = GameManager.GetItemPool(prefabSlotThinhGiaoSlot2);
+            var itemInventory = GameManager.GetItemPoolWithPrefabInParent(prefabSlotThinhGiaoSlot2);
             itemInventory.InitAction(null, null, null);
 
             Pool.Get<UIManager>().InitVisualItemSkill(itemInventory, item);
@@ -477,7 +477,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         }
         foreach (var item in categorize.Item3)
         {
-            var itemInventory = GameManager.GetItemPool(prefabSlotThinhGiaoSlot3);
+            var itemInventory = GameManager.GetItemPoolWithPrefabInParent(prefabSlotThinhGiaoSlot3);
             itemInventory.InitAction(null, null,null);
 
             Pool.Get<UIManager>().InitVisualItemSkill(itemInventory, item);

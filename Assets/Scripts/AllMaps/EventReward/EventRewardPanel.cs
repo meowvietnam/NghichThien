@@ -56,25 +56,38 @@ public class EventRewardPanel : Popup , IUISingleton
         SetReward();
         txtDesc.text = contentText;
     }
-    private void SetVisualRewardMoney(ItemInventory itemInventory , Text textCount)
+    private void SetVisualRewardMoney()
     {
-        itemInventory.InitIcon(spriteMoney,null);
-        itemInventory.textName.text = "Linh Thạch";
-        textCount.text = rewardDataCurrent.Money.ToString();
+        var itemReward = GetComponentItemReward();
+
+        itemReward.itemInventory.InitIcon(spriteMoney,null);
+        itemReward.itemInventory.textName.text = "Linh Thạch";
+        itemReward.textCount.text = rewardDataCurrent.Money.ToString();
 
     }
-    private void SetVisualRewardMoneyVip(ItemInventory itemInventory, Text textCount)
+    private void SetVisualRewardMoneyVip()
     {
-        itemInventory.InitIcon(spriteMoneyVip, null);
-        itemInventory.textName.text = "Tiên Ngọc";
-        textCount.text = rewardDataCurrent.MoneyVip.ToString();
+        var itemReward = GetComponentItemReward();
+
+        itemReward.itemInventory.InitIcon(spriteMoneyVip, null);
+        itemReward.itemInventory.textName.text = "Tiên Ngọc";
+        itemReward.textCount.text = rewardDataCurrent.MoneyVip.ToString();
 
     }
    
-    private void SetVisualRewardItem(ItemInventory itemInventory, Text textCount, ItemRef itemRef)
+    private void SetVisualRewardItem( ItemRef itemRef)
     {
-        ItemTypeHandlerBagFactory.Create(itemRef.Type).Handle(itemInventory,itemRef,false);
-        textCount.text = itemRef.Count.ToString();    
+        var itemReward = GetComponentItemReward();
+        ItemTypeHandlerBagFactory.Create(itemRef.Type).Handle(itemReward.itemInventory, itemRef,false);
+        itemReward.textCount.text = itemRef.Count.ToString();    
+    }
+    (ItemInventory itemInventory , Text textCount) GetComponentItemReward()
+    {
+        var itemReward = GameManager.GetItemPoolWithPrefabInParent(itemRewardPrefab.transform);
+        itemReward.transform.localScale = Vector3.one;
+        ItemInventory itemInventory = itemReward.transform.GetChild(0).GetComponent<ItemInventory>();
+        Text textCountReward = itemReward.transform.GetChild(1).GetComponent<Text>();
+        return (itemInventory, textCountReward);
     }
     private void SetReward()
     {
@@ -82,25 +95,21 @@ public class EventRewardPanel : Popup , IUISingleton
         {
             itemRewardPrefab.transform.parent.GetChild(i).gameObject.SetActive(false);
         }
+
         if (this.rewardDataCurrent == null) return;
-        var itemReward = itemRewardPrefab.Spawn(itemRewardPrefab.transform.parent);
-        itemReward.gameObject.SetActive(true);
-        itemReward.transform.localScale = Vector3.one;
-        ItemInventory itemInventory = itemReward.transform.GetChild(0).GetComponent<ItemInventory>();
-        Text textCountReward = itemReward.transform.GetChild(1).GetComponent<Text>();
         if(rewardDataCurrent.Money > 0)
         {
-            SetVisualRewardMoney(itemInventory, textCountReward);
+            SetVisualRewardMoney();
 
         }
         if (rewardDataCurrent.MoneyVip > 0)
         {
-            SetVisualRewardMoneyVip(itemInventory, textCountReward);
+            SetVisualRewardMoneyVip();
 
         }
         foreach (var item in this.rewardDataCurrent.ItemRefs)
         {
-            SetVisualRewardItem(itemInventory, textCountReward , item);
+            SetVisualRewardItem(item);
 
         }
 

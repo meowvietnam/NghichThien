@@ -19,6 +19,11 @@ public class CharacterVisualControl : MonoBehaviour
             {
                 return "Idle_0";
             }
+            else if(skeletonData.FindAnimation("idle_0") != null)
+            {
+                return "idle_0";
+
+            }
             return "stand_0";
         }
     }

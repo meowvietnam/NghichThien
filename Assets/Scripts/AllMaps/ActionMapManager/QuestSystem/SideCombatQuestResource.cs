@@ -12,6 +12,7 @@ using UnityEngine;
 public class SideCombatQuestResource : SideQuestResource
 {
     public override List<CharacterStatsSecure> listNPCInteractive => new List<CharacterStatsSecure> { Pool.Get<SideQuestManager>().characterProviderQuest };
+    public Sprite[] spriteCombat;
 
     public override ETypeSideQuest Type => ETypeSideQuest.Combat;
 
@@ -64,7 +65,9 @@ public class SideCombatQuestResource : SideQuestResource
         Pool.Get<SideQuestManager>().InitShowQuestHaveChar(() =>
         {
             Pool.Get<GameManager>().GoToPrepareCombat(new GameManager.CharCombatInit { eTypeVisual = enemyRandom.eTypeVisualChar, charStats = enemyRandom.charStats }, ETypeCombat.AllMaps);
-        }, GetStartSideQuest(), charProvider);    
+        }, GetStartSideQuest(), charProvider);
+        Pool.Get<GameManager>().SetBGCombat(spriteCombat[Random.Range(0, spriteCombat.Length)]);
+
     }
     [Button]
     private void OnUpdateDataEnemyData()

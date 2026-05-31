@@ -84,6 +84,8 @@ public class CombatManager : BaseBehaviour
     public Camera cameraEffectSkillLock50;
     public Camera cameraEffectSkillLock5;
     [SerializeField] private Button backCombat;
+    [SerializeField] private Image bgCombat;
+
     public Text GetTextDame()
     {
         return prefabTextDame.Spawn(this.transform);
@@ -205,6 +207,8 @@ public class CombatManager : BaseBehaviour
                 Pool.Get<GameManager>().BackAllMapFromCombat(ECombatResult.GiveUp);
             });
         });
+        bgCombat.sprite = Pool.Get<GameManager>().spriteBGCombat;
+
     }
 
     public static bool IsTuongDong(List<LinhKhiTieuTan> linhKhiTieuTan)
@@ -815,6 +819,7 @@ public class CombatManager : BaseBehaviour
         StartTurn();
         NewTurn();
     }
+  
     public void ExcuteWeapon()
     {
         if(!currentTurn.isCooldownWeapon)

@@ -130,7 +130,7 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
         for (int i = 0; i < currentLoad; i++)
         {// TẠO BIẾN TẠM Ở ĐÂY
             int index = i + startIndex;
-            var currentItem = GameManager.GetItemPool(prefabItemBag);
+            var currentItem = GameManager.GetItemPoolWithPrefabInParent(prefabItemBag);
             ItemRef itemRef = null;
             if (index >= itemDataShows.Count)
             {

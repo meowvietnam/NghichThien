@@ -196,7 +196,20 @@ public class GameManager : BaseBehaviour
 
         return EMonPhai.None;
     }
-
+    public static EMapType ConvertEMonPhaiToEMap(EMonPhai eMonPhai)
+    {
+        return eMonPhai switch
+        {
+            EMonPhai.None => EMapType.None,
+            EMonPhai.KimHongKiemPhai => EMapType.KimHongKiemPhai,
+            EMonPhai.TrucSonTong => EMapType.TrucSonTong,
+            EMonPhai.TinhHaKiemPhai => EMapType.TinhHaKiemPhai,
+            EMonPhai.LyHoaMon => EMapType.LyHoaMon,
+            EMonPhai.HoaTranGiao => EMapType.HoaTranGiao,
+            EMonPhai.BachDeLau => EMapType.BachDeLau,
+            _ => EMapType.None // Dấu gạch dưới '_' thay thế cho 'default' nếu truyền vào một giá trị lạ
+        };
+    }
     public static Dictionary<BaseSkill.ETierSkill, int> tierSkillWithLevel = new Dictionary<BaseSkill.ETierSkill, int>
     {
         { BaseSkill.ETierSkill.NhanGiaiHa, 1 },
@@ -326,7 +339,17 @@ public class GameManager : BaseBehaviour
         string nameScene = (string)data[0];
         if (string.IsNullOrEmpty(nameScene))
         {
+            if (data.Length > 2)
+            {
+                Map currentMapLoad = (Map)data[2];
+                if(!currentMapLoad.IsEmptyAction)
+                {
+                    return;
+                }    
+            }
+            
             SetDialogGacCong("xin dừng bước hiện tại nơi này chưa thể vào hãy kiên nhẫn chờ bản cập nhật tiếp theo!");
+
             return;
         }
 
@@ -381,8 +404,12 @@ public class GameManager : BaseBehaviour
     public CharCombatInit enemyCombat = null;
     public ETypeCombat currentETypeCombat = ETypeCombat.None;
     public ECombatResult currentECombatResult = ECombatResult.None;
+    public Sprite spriteBGCombat;
 
-
+    public void SetBGCombat(Sprite  sprite)
+    {
+        this.spriteBGCombat = sprite;
+    }    
     public void GoToCombat()
     {
         if (enemyCombat == null) return;
@@ -799,7 +826,7 @@ public class GameManager : BaseBehaviour
         op.allowSceneActivation = true;
     }
 
-    public static T GetItemPool<T>(T prefabItem) where T : Component
+    public static T GetItemPoolWithPrefabInParent<T>(T prefabItem) where T : Component
     {
         // Lấy Transform của cha để duyệt qua các con
         Transform parent = prefabItem.transform.parent;

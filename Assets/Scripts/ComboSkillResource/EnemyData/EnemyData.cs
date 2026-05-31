@@ -6,7 +6,9 @@ using UnityEngine;
 
 public class EnemyData : NPCData
 {
-    public override ETypeVisualChar eTypeVisualChar => GameManager.levelWithVisualChar[charStats.level];
+    public override ETypeVisualChar eTypeVisualChar => eTypeVisualCharEnemy  == ETypeVisualChar.Character ? GameManager.levelWithVisualChar[charStats.level] : eTypeVisualCharEnemy;
+    public ETypeVisualChar eTypeVisualCharEnemy = ETypeVisualChar.Character;
+
     // Tiền tố: Chỉ thuộc tính/màu sắc (Hệ)
     protected override string[] Surnames => new[] {
         "Hắc", "Bạch", "Xích", "Thanh", "Kim", "Tử", "U", "Huyết", "Ma", "Lôi",

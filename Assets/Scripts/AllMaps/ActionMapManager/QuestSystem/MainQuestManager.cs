@@ -2,6 +2,7 @@
 using Base;
 using LongDH.LongDHModules;
 using Network;
+using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,27 +14,41 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
     public SecureInt currentMainQuest = new SecureInt(0);
     public MainQuestResource CurrentMainQuest => currentMainQuest.Value < mainQuestResources.Count ?mainQuestResources[currentMainQuest.Value] : null;
    
-    public Map currentMapMainQuest = null;
+    public List<Map> currentMapMainQuests = new();
     public void CheckSpawnQuest()
     {
         if (CurrentMainQuest == null) return;
-        if(currentMapMainQuest == null)
+        if (currentMapMainQuests.Count <= 0)
         {
-            currentMapMainQuest = Pool.Get<MapManager>().SetDataOnMap(CurrentMainQuest, CurrentMainQuest.idNode);
-
+            var mapManager = Pool.Get<MapManager>();
+            foreach (var item in CurrentMainQuest.IdNode)
+            {
+                currentMapMainQuests.Add(mapManager.SetDataOnMap(CurrentMainQuest, item));
+            }
         }
         else
         {
-            if(currentMapMainQuest.actionMap is MainQuestResource mainQuestResource)
+            if(currentMapMainQuests.All(x=>x == null))
             {
-                if(mainQuestResource.id != CurrentMainQuest.id)
-                {
-
-                    currentMapMainQuest.ResetDataAction();
-                    currentMapMainQuest = null;
-                    CheckSpawnQuest();
-                }    
+                currentMapMainQuests.Clear();
             }    
+            // Tìm ngay thằng MainQuest đầu tiên xuất hiện trong danh sách Map hiện tại
+            var firstMainQuest = currentMapMainQuests
+                .Select(x => x.actionMap as MainQuestResource)
+                .FirstOrDefault(quest => quest != null);
+
+            // KIỂM TRA ĐỔI QUEST: Nếu tìm thấy Main Quest cũ trên map, mà ID của nó đã khác với ID Quest hiện tại của Player
+            if (firstMainQuest != null && firstMainQuest.id != CurrentMainQuest.id)
+            {
+                Debug.Log($"[Quest System] Phát hiện đổi Main Quest từ ID: {firstMainQuest.id} sang ID mới: {CurrentMainQuest.id}. Tiến hành dọn dẹp Map cũ.");
+
+                // Xóa dữ liệu quest cũ trên các node map
+                currentMapMainQuests.ForEach(x => x?.ResetDataAction());
+                currentMapMainQuests.Clear();
+
+                // Sinh quest mới (Lưu ý: Đảm bảo trong CheckSpawnQuest() sẽ nạp lại data vào currentMapMainQuests để tránh lặp vô hạn)
+                CheckSpawnQuest();
+            }
         }
 
     }
@@ -41,17 +56,14 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
     private void RemoveMap(params object[] data)
     {
         Map map = (Map)data[0];
-        if (currentMapMainQuest == null) return;
-        if(map.Id == currentMapMainQuest.Id)
-        {
-            currentMapMainQuest = null;
-        }
+        if (currentMapMainQuests.Count<=0) return;
+        currentMapMainQuests.RemoveAll(x => x != null && x.Id == map.Id);
     }
-    public void QuestDoneCombat()
+    public void MainQuestDone()
     {
         Pool.Get<QuestManager>().currentQuest.QuestDoneData();
         Pool.Get<QuestManager>().currentQuest = null;
-        currentMapMainQuest = null;
+        currentMapMainQuests.Clear();
         currentMainQuest++;
     }
 
