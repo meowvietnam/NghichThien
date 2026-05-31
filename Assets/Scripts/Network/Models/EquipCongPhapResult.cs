@@ -9,7 +9,6 @@ namespace Network.Models
         public string Message { get; set; }
         public ETypeSlotCP Slot { get; set; }
         public ushort Id { get; set; }
-        public ushort Value { get; set; }
 
         public void Deserialize(IReader reader, ref EquipCongPhapResult value)
         {
@@ -23,14 +22,13 @@ namespace Network.Models
             {
                 value.Slot = reader.Read<ETypeSlotCP>();
                 value.Id = reader.Read<ushort>();
-                value.Value = reader.Read<ushort>();
             }
         }
 
         public int ByteSize()
         {
             var baseSize = Success.ByteSize();
-            var exSize = !Success ? Message.ByteSize() : Slot.ByteSize() + Id.ByteSize() + Value.ByteSize();
+            var exSize = !Success ? Message.ByteSize() : Slot.ByteSize() + Id.ByteSize() ;
             return baseSize + exSize;
         }
 
@@ -45,7 +43,6 @@ namespace Network.Models
             {
                 writer.Write(Slot);
                 writer.Write(Id);
-                writer.Write(Value);
             }
         }
     }
