@@ -11,7 +11,7 @@ namespace Network.Core
     {
         private static MessageTag[] handler =
             { MessageTag.LearnNgoDaoResult, MessageTag.EquipThanThongResult, MessageTag.UnequipThanThongResult,
-                MessageTag.EquipCongPhapResult, MessageTag.UnequipThanThongResult};
+                MessageTag.EquipCongPhapResult, MessageTag.UnequipCongPhapResult};
 
         public MessageTag[] HandleTag => handler;
         private INetworkEvent.ILearnNgoDao learnNgoDaoCallback;
