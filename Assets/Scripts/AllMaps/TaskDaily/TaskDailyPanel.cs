@@ -1,5 +1,6 @@
 ﻿using LongDH.LongDHModules;
 using System.Collections.Generic;
+using LongDHModules;
 using UnityEngine;
 using UnityEngine.UI;
 public enum ETaskDaily

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Base;
 using Network;
 using Network.Extensions;
 using Sirenix.OdinInspector;
@@ -24,6 +25,58 @@ namespace CreateCharacter
         [field: SerializeField] public ushort PhongCu { get; set; } = ushort.MaxValue;
         [field: SerializeField] public ushort TrangSuc { get; set; } = ushort.MaxValue;
 
+        public ushort GetSlotCP(ETypeSlotCP slot)
+        {
+            switch (slot)
+            {
+                case ETypeSlotCP.ChuTu1:
+                    return ChuTu1Used;
+                case ETypeSlotCP.ChuTu2:
+                    return ChuTu2Used;
+                case ETypeSlotCP.DonThuat:
+                    return DonThuatUsed;
+                case ETypeSlotCP.PhuTu1:
+                    return PhuTu1Used;
+                case ETypeSlotCP.PhuTu2:
+                    return PhuTu2Used;
+                case ETypeSlotCP.PhuTu3:
+                    return PhuTu3Used;
+                case ETypeSlotCP.PhuTu4:
+                    return PhuTu4Used;
+                default:
+                    return 0;
+            }
+        }
+
+        public void SetSlotCP(ETypeSlotCP slot, ushort value)
+        {
+            switch (slot)
+            {
+                case ETypeSlotCP.ChuTu1:
+                    ChuTu1Used = value;
+                    break;
+                case ETypeSlotCP.ChuTu2:
+                    ChuTu2Used = value;
+                    break;
+                case ETypeSlotCP.DonThuat:
+                    DonThuatUsed = value;
+                    break;
+                case ETypeSlotCP.PhuTu1:
+                    PhuTu1Used = value;
+                    break;
+                case ETypeSlotCP.PhuTu2:
+                    PhuTu2Used = value;
+                    break;
+                case ETypeSlotCP.PhuTu3:
+                    PhuTu3Used = value;
+                    break;
+                case ETypeSlotCP.PhuTu4:
+                    PhuTu4Used = value;
+                    break;
+                default:
+                    break;
+            }
+        }
         public void Deserialize(IReader reader, ref EquipmentManager value)
         {
             value.ThanThongEquips = reader.ReadArray<ThanThongEquip>().ToHashSet();

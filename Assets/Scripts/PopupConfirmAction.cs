@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using LongDH.LongDHModules;
+using LongDHModules;
 
 public class PopupConfirmAction : Popup,IUISingleton
 {

@@ -267,6 +267,25 @@ namespace CreateCharacter
         {
             CamNgos.Add(camNgo);
         }
+        public void AddOrUpdate(CongPhap congPhap)
+        {
+            if (CongPhapOwners.TryGetValue(congPhap, out var congPhapOwner))
+            {
+                Update(congPhapOwner, congPhap);
+            }
+            else
+            {
+                Add(congPhap);
+            }
+        }
+        public void Update(CongPhap oldValue, CongPhap newValue)
+        {
+            oldValue.Level = newValue.Level;
+        }
+        public void Add(CongPhap congPhap)
+        {
+            CongPhapOwners.Add(congPhap);
+        }
         public void ApplyModify(InventoryModify m)
         {
             m.Apply(this);

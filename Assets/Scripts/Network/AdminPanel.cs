@@ -2,6 +2,7 @@
 using System.Linq;
 using CreateCharacter;
 using LongDH.LongDHModules;
+using LongDHModules;
 using LuyenDan;
 using LuyenKhi;
 using Network.Core;
@@ -9,6 +10,7 @@ using Network.Extensions;
 using Sirenix.OdinInspector;
 using Skill;
 using UnityEngine;
+using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
 
 namespace Network
@@ -43,26 +45,19 @@ namespace Network
 
         private HashSet<ThanThongEquip> GetFullIdThanThongWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
-            // 1. Tìm combo
             var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
             if (combo == null) return new HashSet<ThanThongEquip>();
 
-            // 2. Tính toán Index đại cảnh giới
             int daiCanhGioiIndex = Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1;
 
-            // SỬA LỖI: Thay .Count bằng .Length vì đây là Mảng (Array)
             if (daiCanhGioiIndex < 0 || daiCanhGioiIndex >= combo.comboWithDaiCanhGioi.Length)
                 return new HashSet<ThanThongEquip>();
 
-            // 3. Lấy danh sách ThanThong nguồn
             var listThanThong = combo.comboWithDaiCanhGioi[daiCanhGioiIndex].thanThongs;
 
-            // 4. Convert sang HashSet<ThanThongEquip>
             var result = listThanThong.Select(x => new ThanThongEquip
             {
-                // SỬA LỖI: Ép kiểu từ int sang ushort để khớp với ThanThongEquip
                 Id = (ushort)x.Id,
-                // Các trường khác nếu cần...
             }).ToHashSet();
 
             return result;
@@ -73,7 +68,7 @@ namespace Network
             var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
             return combo
                 .comboWithDaiCanhGioi[Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1]
-                .ngoDaos.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
+                .ngoDaos.Select(x => x.Id) 
                 .ToList();
         }
 
@@ -82,7 +77,7 @@ namespace Network
             var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
             return combo
                 .comboWithDaiCanhGioi[Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1]
-                .congPhaps.Select(x => x.Id) // Giả sử trong class ThanThong của bạn biến là ID hoặc id
+                .congPhaps.Select(x => x.Id)
                 .ToList();
         }
 
@@ -208,6 +203,18 @@ namespace Network
             Observer.Notify(EventList.GamePlay.LOAD_SCENE, "LuyenKhi");
         }
 
+        [Button]
+        [ShowIf(nameof(IsReady))]
+        public void AddCongPhap(CongPhap congPhap, ushort level)
+        {
+            if(level == 0) return;
+            var cp = new CreateCharacter.CongPhap()
+            {
+                Id = (ushort)congPhap.Id,
+                Level = level,
+            };
+            Client.Send(MessageTag.AddCongPhap, cp);
+        }
         public void OnEnter()
         {
         }
@@ -237,6 +244,11 @@ namespace Network
                 var id = reader.Read<ushort>();
                 Client.CharacterData.InventoryManager.EquipThanThong(id);
             }
+            else if (tag == MessageTag.AddCongPhapResult)
+            {
+                var congPhap = reader.Read<CreateCharacter.CongPhap>();
+                Client.CharacterData.InventoryManager.AddOrUpdate(congPhap);
+            }
         }
 
         public void OnLeave()
@@ -250,7 +262,7 @@ namespace Network
         private static readonly MessageTag[] handler =
         {
             MessageTag.AddItemsResult, MessageTag.SetNgoDaoDiemResult, MessageTag.SetCamNgoResult,
-            MessageTag.AddThanThongResult
+            MessageTag.AddThanThongResult, MessageTag.AddCongPhapResult
         };
 
         public MessageTag[] HandleTag => handler;

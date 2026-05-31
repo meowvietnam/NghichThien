@@ -6,6 +6,7 @@ using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LongDHModules;
 using UnityEngine;
 
 public class MainQuestManager : BaseBehaviour , IUISingleton

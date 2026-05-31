@@ -9,6 +9,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using AllMaps.ItemProvider;
+using LongDHModules;
 
 public class TaskDaily : BaseBehaviour
 {

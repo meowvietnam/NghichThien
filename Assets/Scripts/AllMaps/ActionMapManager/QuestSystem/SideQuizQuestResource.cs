@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using ExcelDataReader; // Hãy đảm bảo bạn đã import thư viện này qua DLL hoặc UPM
 using Sirenix.OdinInspector; // Thêm thư viện Odin
 using System.Drawing;
+using LongDHModules;
 
 
 #if UNITY_EDITOR

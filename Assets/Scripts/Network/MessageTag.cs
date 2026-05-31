@@ -55,7 +55,8 @@ namespace Network
         SetCamNgoResult = 233,
         AddThanThong = 234,
         AddThanThongResult = 235,
-        
+        AddCongPhap = 236,
+        AddCongPhapResult = 237,
         
         ChangeScene = 256,
         ChangeSceneResult = 257,
@@ -72,5 +73,10 @@ namespace Network
         EquipThanThongResult = 341,
         UnequipThanThong = 342,
         UnequipThanThongResult = 343,
+        
+        EquipCongPhap = 352,
+        EquipCongPhapResult = 353,
+        UnequipCongPhap = 354,
+        UnequipCongPhapResult = 355,
     }
 }

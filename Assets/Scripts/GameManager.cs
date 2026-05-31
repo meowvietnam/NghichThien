@@ -20,7 +20,7 @@ using Newtonsoft.Json.Linq;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
 using DG.Tweening.Core.Easing;
-
+using LongDHModules;
 
 
 #if UNITY_EDITOR

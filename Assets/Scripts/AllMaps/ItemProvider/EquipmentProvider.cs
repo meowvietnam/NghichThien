@@ -6,6 +6,7 @@ using LuyenKhi;
 using Network;
 using System.Collections.Generic;
 using System.Linq;
+using LongDHModules;
 using UnityEngine;
 
 public abstract class EquipmentProvider : ItemProvider<CreateCharacter.Equipment> , IUseItemProvider

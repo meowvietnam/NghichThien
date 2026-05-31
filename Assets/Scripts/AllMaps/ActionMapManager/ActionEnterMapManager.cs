@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using LongDHModules;
 using UnityEngine;
 
 public abstract class ActionEnterMapManager : ActionMapManager

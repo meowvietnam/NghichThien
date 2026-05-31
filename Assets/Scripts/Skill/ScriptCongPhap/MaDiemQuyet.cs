@@ -1,9 +1,10 @@
 using Newtonsoft.Json;
-using Skill;
 using UnityEngine;
 using System;
+using CreateCharacter;
 using Network;
 using Network.Extensions;
+using CongPhap = Skill.CongPhap;
 
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(MaDiemQuyet))]
 public class MaDiemQuyet : CongPhap, IMemorySerializable<MaDiemQuyet>
@@ -33,6 +34,19 @@ public class MaDiemQuyet : CongPhap, IMemorySerializable<MaDiemQuyet>
     public override void UnEquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
         statsCurrent.thoNguyen += thoNguyens[daiCanhGioiCongPhap - 1];
+    }
+    public override void EquipCongPhap(CharacterData statsCurrent, int level)
+    {
+        var stats = statsCurrent.Stats;
+        var thoNguyen = stats.ThoNguyen + thoNguyens[level - 1];
+        stats.ThoNguyen =  thoNguyen;
+    }
+
+    public override void UnEquipCongPhap(CharacterData statsCurrent, int level)
+    {
+        var stats = statsCurrent.Stats;
+        var thoNguyen = stats.ThoNguyen - thoNguyens[level - 1];
+        stats.ThoNguyen =  thoNguyen;
     }
 
     public override int ByteSize()

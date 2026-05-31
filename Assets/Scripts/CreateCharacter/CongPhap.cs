@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Base;
 using Network;
 using Network.Extensions;
@@ -44,6 +45,12 @@ namespace CreateCharacter
                 Id = Id,
                 Level = Level
             };
+        }
+
+        public Skill.CongPhap GetCongPhap()
+        {
+            var gameManager = LongDHModules.Pool.Get<GameManager>();
+            return gameManager.congPhaps.FirstOrDefault(x => x.Id == Id);
         }
     }
 }

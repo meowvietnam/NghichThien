@@ -15,6 +15,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using LongDHModules;
 using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEngine;
@@ -907,7 +908,6 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     public void SuccessEquipCongPhap()
     {
         Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
-
     }
 
     public void FailEquipCongPhap(string message)
@@ -918,7 +918,6 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     public void SuccessUnEquipCongPhap()
     {
         Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
-
     }
 
     public void FailUnEquipCongPhap(string message)

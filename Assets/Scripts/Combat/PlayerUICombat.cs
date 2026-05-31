@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using LongDHModules;
 using UnityEngine;
 using UnityEngine.UI;
 using ThanThong = Skill.ThanThong;

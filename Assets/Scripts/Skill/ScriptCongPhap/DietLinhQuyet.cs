@@ -1,11 +1,12 @@
 using LongDH.LongDHModules;
 using System.Collections.Generic;
 using System.Linq;
-using Skill;
 using UnityEngine;
 using System;
+using CreateCharacter;
 using Network;
 using Network.Extensions;
+using CongPhap = Skill.CongPhap;
 
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(DietLinhQuyet))]
 public class DietLinhQuyet : CongPhap, IMemorySerializable<DietLinhQuyet>
@@ -25,7 +26,19 @@ public class DietLinhQuyet : CongPhap, IMemorySerializable<DietLinhQuyet>
     {
         statsCurrent.thanThuc -= buffValues[daiCanhGioiCongPhap - 1];
     }
+    public override void EquipCongPhap(CharacterData statsCurrent, int level)
+    {
+        var stats = statsCurrent.Stats;
+        var thanThuc = stats.ThanThuc + buffValues[level - 1];
+        stats.ThanThuc = thanThuc;
+    }
 
+    public override void UnEquipCongPhap(CharacterData statsCurrent, int level)
+    {
+        var stats = statsCurrent.Stats;
+        var thanThuc = stats.ThanThuc - buffValues[level - 1];
+        stats.ThanThuc = thanThuc;
+    }
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         RemoveCongPhap(caster);

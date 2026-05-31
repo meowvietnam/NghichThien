@@ -1,11 +1,12 @@
 using LongDH.LongDHModules;
 using System.Collections.Generic;
 using System.Linq;
-using Skill;
 using UnityEngine;
 using System;
+using CreateCharacter;
 using Network;
 using Network.Extensions;
+using CongPhap = Skill.CongPhap;
 
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(PhiVanKinh))]
 public class PhiVanKinh : CongPhap, IMemorySerializable<PhiVanKinh>
@@ -21,7 +22,19 @@ public class PhiVanKinh : CongPhap, IMemorySerializable<PhiVanKinh>
     {
         statsCurrent.tocDoBay -= buffValues[daiCanhGioiCongPhap - 1];
     }
+    public override void EquipCongPhap(CharacterData statsCurrent, int level)
+    {
+        var stats = statsCurrent.Stats;
+        var tocDoBay = stats.ThanThuc + buffValues[level - 1];
+        stats.TocDoBay = tocDoBay;
+    }
 
+    public override void UnEquipCongPhap(CharacterData statsCurrent, int level)
+    {
+        var stats = statsCurrent.Stats;
+        var tocDoBay = stats.ThanThuc - buffValues[level - 1];
+        stats.TocDoBay = tocDoBay;
+    }
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
     }

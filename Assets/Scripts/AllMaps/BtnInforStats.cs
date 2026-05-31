@@ -2,6 +2,7 @@ using Base;
 using CreateCharacter.CharStats;
 using LongDH.LongDHModules;
 using System.Collections;
+using LongDHModules;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;

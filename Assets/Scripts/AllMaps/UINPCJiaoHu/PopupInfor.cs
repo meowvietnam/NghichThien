@@ -3,12 +3,13 @@ using LongDH.LongDHModules;
 using Network;
 using Skill;
 using System.Collections.Generic;
+using LongDHModules;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PopupInfor : Popup
 {
-    [Header("--- Pop Dò Xét ---")]
+    [Header("--- Pop Dï¿½ Xï¿½t ---")]
     [SerializeField] public CharacterGraphic charVisualPopXemXet;
     [SerializeField] public CharacterVisualControl charVisualControl;
     [SerializeField] private Text textThanThuc;

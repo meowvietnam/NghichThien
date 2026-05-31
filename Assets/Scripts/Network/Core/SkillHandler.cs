@@ -1,3 +1,5 @@
+using Base;
+using CreateCharacter;
 using LongDH.LongDHModules;
 using Network.Extensions;
 using Network.Models;
@@ -8,18 +10,41 @@ namespace Network.Core
     public class SkillHandler : IClientHandler
     {
         private static MessageTag[] handler =
-            { MessageTag.LearnNgoDaoResult, MessageTag.EquipThanThongResult, MessageTag.UnequipThanThongResult };
+            { MessageTag.LearnNgoDaoResult, MessageTag.EquipThanThongResult, MessageTag.UnequipThanThongResult, MessageTag.EquipThanThongResult, MessageTag.UnequipThanThongResult, };
 
         public MessageTag[] HandleTag => handler;
         private INetworkEvent.ILearnNgoDao learnNgoDaoCallback;
         private INetworkEvent.IEquipThanThong equipThanThongCallback;
         private INetworkEvent.IUnEquipThanThong unequipThanThongCallback;
-
+        private INetworkEvent.IEquipCongPhap equipCongPhapCallback;
+        private INetworkEvent.IUnEquipCongPhap unequipCongPhapCallback;
         public void OnEnter()
         {
             Observer.AddObserver(EventList.Network.LEARN_NGODAO, LearnNgoDaoRequest);
             Observer.AddObserver(EventList.Network.EQUIP_THANTHONG, EquipThanThong);
             Observer.AddObserver(EventList.Network.UNEQUIP_THANTHONG, UnEquipThanThong);
+            Observer.AddObserver(EventList.Network.EQUIP_CONGPHAP,EquipCongPhap);
+            Observer.AddObserver(EventList.Network.UNEQUIP_CONGPHAP,UnEquipCongPhap);
+        }
+
+        private void UnEquipCongPhap(object[] data)
+        {
+            unequipCongPhapCallback = data[0] as INetworkEvent.IUnEquipCongPhap;
+            var slot = (ETypeSlotCP) data[1];
+            Client.Instance.Send(MessageTag.UnequipCongPhap, slot);
+        }
+
+        private void EquipCongPhap(object[] data)
+        {
+            equipCongPhapCallback = data[0] as INetworkEvent.IEquipCongPhap;
+            var slot = (ETypeSlotCP) data[1];
+            var id = (ushort)data[2];
+            var request = new EquipCongPhap()
+            {
+                Slot = slot,
+                Id = id,
+            };
+            Client.Instance.Send(MessageTag.EquipCongPhap, request);
         }
 
         private void UnEquipThanThong(object[] data)
@@ -63,7 +88,6 @@ namespace Network.Core
                     charData.ApplyBuff(result.Buff);
                     charData.Progression.NgoDaoDiem = result.NewNgoDaoDiem;
                 }
-
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -114,6 +138,66 @@ namespace Network.Core
                     else
                     {
                         unequipThanThongCallback.FailUnEquipThanThong(result.Message);
+                    }
+                });
+            }
+            else if (tag == MessageTag.EquipCongPhapResult)
+            {
+                var result = reader.Read<EquipCongPhapResult>();
+                if (result.Success)
+                {
+                    var charData = Client.Instance.CharacterData;
+                    charData.EquipmentManager.SetSlotCP(result.Slot, result.Id);
+                    var cpRef = new CongPhap()
+                    {
+                        Id = result.Id,
+                    };
+                    if (!charData.InventoryManager.CongPhapOwners.TryGetValue(cpRef, out var congPhapOwner))
+                    {
+                        return;
+                    }
+                    congPhapOwner.GetCongPhap().EquipCongPhap(charData, congPhapOwner.Level);
+                }
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    if (result.Success)
+                    {
+                        equipCongPhapCallback.SuccessEquipCongPhap();
+                    }
+                    else
+                    {
+                        equipCongPhapCallback.FailEquipCongPhap(result.Message);
+                    }
+                });
+            }
+            else if (tag == MessageTag.UnequipCongPhapResult)
+            {
+                var result = reader.Read<UnequipCongPhapResult>();
+                if (result.Success)
+                {
+                    var charData = Client.Instance.CharacterData;
+                    var congPhapId = charData.EquipmentManager.GetSlotCP(result.Slot);
+                    charData.EquipmentManager.SetSlotCP(result.Slot, ushort.MaxValue);
+                    var cpRef = new CongPhap()
+                    {
+                        Id = congPhapId
+                    };
+                    if (!charData.InventoryManager.CongPhapOwners.TryGetValue(cpRef, out var congPhapOwner))
+                    {
+                        return;
+                    }
+                    congPhapOwner.GetCongPhap().UnEquipCongPhap(charData, congPhapOwner.Level);
+                }
+
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    if (result.Success)
+                    {
+                        unequipCongPhapCallback.SuccessUnEquipCongPhap();
+                    }
+                    else
+                    {
+                        unequipCongPhapCallback.FailUnEquipCongPhap(result.Message);
                     }
                 });
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System;
+using CreateCharacter;
 using Network;
 using Network.Extensions;
 
@@ -22,7 +23,19 @@ public class SiMiQuyQuyen : CPTieuHaoThoNguyen, IMemorySerializable<SiMiQuyQuyen
     {
         statsCurrent.tocDoBay -= donTocs[daiCanhGioiCongPhap - 1];
     }
+    public override void EquipCongPhap(CharacterData statsCurrent, int level)
+    {
+        var stats = statsCurrent.Stats;
+        var tocDoBay = stats.ThanThuc + donTocs[level - 1];
+        stats.TocDoBay = tocDoBay;
+    }
 
+    public override void UnEquipCongPhap(CharacterData statsCurrent, int level)
+    {
+        var stats = statsCurrent.Stats;
+        var tocDoBay = stats.ThanThuc - donTocs[level - 1];
+        stats.TocDoBay = tocDoBay;
+    }
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
     }

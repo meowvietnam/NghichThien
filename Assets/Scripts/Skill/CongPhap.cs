@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CreateCharacter;
 using Network;
 using Network.Extensions;
 using UnityEngine;
@@ -33,6 +34,23 @@ namespace Skill
         public virtual void LearnCongPhapSuccess(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
         {
 
+        }
+        public virtual void EquipCongPhap(CharacterData statsCurrent , int level)
+        {
+
+        }
+        public virtual void UnEquipCongPhap(CharacterData statsCurrent, int level)
+        {
+
+        }
+        public virtual void UpgradeCongPhapSuccess(CharacterData statsCurrent, int level)
+        {
+            UnEquipCongPhap(statsCurrent, level - 1);
+            EquipCongPhap(statsCurrent, level);
+        }
+        public virtual void LearnCongPhapSuccess(CharacterData statsCurrent, int level)
+        {
+        
         }
         public virtual int GetTocDoTuLuyen(int levelCP)
         {

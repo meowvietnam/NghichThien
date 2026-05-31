@@ -6,6 +6,7 @@ using Network;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using System.Linq;
+using LongDHModules;
 using UnityEditor;
 using UnityEngine;
 [CreateAssetMenu(fileName = nameof(SideCombatQuestResource), menuName = "Action Map/Side Quest/" + nameof(SideCombatQuestResource))]

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using LongDH.Script.ObjectPool;
 using LongDH.LongDHModules;
+using LongDHModules;
 
 public class EventRewardPanel : Popup , IUISingleton 
 {

@@ -5,6 +5,7 @@ using Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LongDHModules;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = nameof(MainQuestResource), menuName = "Action Map/Main Quest/" + nameof(MainQuestResource))]

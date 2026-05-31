@@ -14,6 +14,7 @@ using static UnityEngine.Analytics.IAnalytic;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
 using AllMaps.ItemProvider;
+using LongDHModules;
 
 public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.ILinhNgo, INetworkEvent.IDotPhaCongPhap
 {

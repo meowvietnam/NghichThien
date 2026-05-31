@@ -1,8 +1,9 @@
-using Skill;
 using UnityEngine;
 using System;
+using CreateCharacter;
 using Network;
 using Network.Extensions;
+using CongPhap = Skill.CongPhap;
 
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(BangTamQuyet))]
 public class BangTamQuyet : CongPhap, IMemorySerializable<BangTamQuyet>
@@ -17,6 +18,19 @@ public class BangTamQuyet : CongPhap, IMemorySerializable<BangTamQuyet>
     public override void UnEquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
         statsCurrent.tamCanh -= buffValues[daiCanhGioiCongPhap - 1];
+    }
+    public override void EquipCongPhap(CharacterData statsCurrent, int level)
+    {
+        var stats = statsCurrent.Stats;
+        var tamCanh = stats.TamCanh + buffValues[level-1];
+        stats.TamCanh = tamCanh;
+    }
+
+    public override void UnEquipCongPhap(CharacterData statsCurrent, int level)
+    {
+        var stats = statsCurrent.Stats;
+        var tamCanh = stats.TamCanh - buffValues[level-1];
+        stats.TamCanh = tamCanh;
     }
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
