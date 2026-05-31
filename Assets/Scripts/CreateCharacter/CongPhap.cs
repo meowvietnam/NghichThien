@@ -8,7 +8,7 @@ using UnityEngine;
 namespace CreateCharacter
 {
     [Serializable]
-    public class CongPhap : IMemorySerializable<CongPhap>, IDeepClone<CongPhap>
+    public class CongPhap : IMemorySerializable<CongPhap>, IDeepClone<CongPhap>, IEquatable<CongPhap>
     {
         [field: SerializeField]
         public ushort Id { get; set; }
