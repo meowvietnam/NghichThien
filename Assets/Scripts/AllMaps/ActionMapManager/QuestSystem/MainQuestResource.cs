@@ -15,7 +15,7 @@ public class MainQuestResource : QuestResource, INetworkEvent.ICompleteMainQuest
     public override List<string> CompleteQuest => completeQuest;
     public List<string> completeQuest;
     public List<string> startQuest;
-    public virtual string RequireActive { get; }
+    public virtual string RequireActive => $"Tu vi đạt tới {GameManager.levelWithText.GetValueOrDefault(levelRequire)} mới có thể tiếp tục cốt truyện.";
     public List<AudioClip> voiceStartQuest;
     public List<AudioClip> voiceComplete;
     public List<Sprite> spriteListAvatarStart;
@@ -31,6 +31,11 @@ public class MainQuestResource : QuestResource, INetworkEvent.ICompleteMainQuest
     public string descDoneQuest;
     public Sprite spriteCombat;
     public int tipLevel => enemyNeedCombat.Length<=0 ? 1 : enemyNeedCombat.Max(x=>x.charStats.level.Value);
+    public int levelRequire = 1;
+    public override bool CanActiveEventMap()
+    {
+        return Client.Instance.CharacterData.Progression.Level >= levelRequire;
+    }
     public override void QuestDoneData()
     {
         Debug.Log("Quest done data");
@@ -39,7 +44,7 @@ public class MainQuestResource : QuestResource, INetworkEvent.ICompleteMainQuest
         {
             string detailedDesc = !string.IsNullOrEmpty(descDoneQuest) ? $"\n{descDoneQuest}" : "";
 
-            Pool.Get<EventRewardPanel>().InitShowEventReward(rewardRef, $"Hoàn thành chương {id + 1}{detailedDesc}");
+            Pool.Get<EventRewardPanel>().InitShowEventReward(rewardRef, $"Hoàn thành chương {id}{detailedDesc}");
         },completeQuest,spriteListAvatarDone,voiceComplete,spriteDoneQuest);
       
     }
