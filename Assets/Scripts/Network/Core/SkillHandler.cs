@@ -1,3 +1,4 @@
+using System;
 using Base;
 using CreateCharacter;
 using LongDH.LongDHModules;
@@ -11,7 +12,9 @@ namespace Network.Core
     {
         private static MessageTag[] handler =
             { MessageTag.LearnNgoDaoResult, MessageTag.EquipThanThongResult, MessageTag.UnequipThanThongResult,
-                MessageTag.EquipCongPhapResult, MessageTag.UnequipCongPhapResult};
+                MessageTag.EquipCongPhapResult, MessageTag.UnequipCongPhapResult,
+                MessageTag.TuLuyenResult
+            };
 
         public MessageTag[] HandleTag => handler;
         private INetworkEvent.ILearnNgoDao learnNgoDaoCallback;
@@ -19,6 +22,7 @@ namespace Network.Core
         private INetworkEvent.IUnEquipThanThong unequipThanThongCallback;
         private INetworkEvent.IEquipCongPhap equipCongPhapCallback;
         private INetworkEvent.IUnEquipCongPhap unequipCongPhapCallback;
+        private INetworkEvent.ITuLuyen tuLuyenCallback;
         public void OnEnter()
         {
             Observer.AddObserver(EventList.Network.LEARN_NGODAO, LearnNgoDaoRequest);
@@ -26,6 +30,14 @@ namespace Network.Core
             Observer.AddObserver(EventList.Network.UNEQUIP_THANTHONG, UnEquipThanThong);
             Observer.AddObserver(EventList.Network.EQUIP_CONGPHAP,EquipCongPhap);
             Observer.AddObserver(EventList.Network.UNEQUIP_CONGPHAP,UnEquipCongPhap);
+            Observer.AddObserver(EventList.Network.TU_LUYEN, TuLuyen);
+        }
+
+        private void TuLuyen(object[] data)
+        {
+            tuLuyenCallback = data[0] as INetworkEvent.ITuLuyen;
+            var time = (TimeSpan)data[1];
+            Client.Instance.Send(MessageTag.TuLuyen, time);
         }
 
         private void UnEquipCongPhap(object[] data)
@@ -199,6 +211,32 @@ namespace Network.Core
                     else
                     {
                         unequipCongPhapCallback.FailUnEquipCongPhap(result.Message);
+                    }
+                });
+            }
+            else if (tag == MessageTag.TuLuyenResult)
+            {
+                var result = reader.Read<TuLuyenResult>();
+                if (result.Success)
+                {
+                    if (result.HasLevelUpdated)
+                    {
+                        result.LevelUpdated.ApplyTo(Client.Instance.CharacterData);
+                    }
+                    else
+                    {
+                        Client.Instance.CharacterData.Progression.CurrentExp = result.CurrentExp;
+                    }
+                }
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    if (result.Success)
+                    {
+                        tuLuyenCallback.SuccessTuLuyen();
+                    }
+                    else
+                    {
+                        tuLuyenCallback.FailTuLuyen(result.Message);
                     }
                 });
             }

@@ -78,5 +78,9 @@ namespace Network
         EquipCongPhapResult = 353,
         UnequipCongPhap = 354,
         UnequipCongPhapResult = 355,
+        
+        
+        TuLuyen = 370,
+        TuLuyenResult = 371,
     }
 }

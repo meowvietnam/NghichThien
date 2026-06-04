@@ -164,7 +164,6 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 total *= (1 + item / 100f);
             }    
             return (int)total;
-                
         }
         tuChatText.text = GameManager.tuChatWithText[charData.Stats.LinhCan];
         tamCanhText.text = getTamCanh.name;
@@ -239,7 +238,6 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
             {
                 btnUnTuLuyen.gameObject.SetActive(false);
                 btnTuLuyen.gameObject.SetActive(true);
-
             }
         }
     }

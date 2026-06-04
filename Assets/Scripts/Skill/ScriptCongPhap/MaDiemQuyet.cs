@@ -38,14 +38,14 @@ public class MaDiemQuyet : CongPhap, IMemorySerializable<MaDiemQuyet>
     public override void EquipCongPhap(CharacterData statsCurrent, int level)
     {
         var stats = statsCurrent.Stats;
-        var thoNguyen = stats.ThoNguyen + thoNguyens[level - 1];
+        var thoNguyen = stats.ThoNguyen - thoNguyens[level - 1];
         stats.ThoNguyen =  thoNguyen;
     }
 
     public override void UnEquipCongPhap(CharacterData statsCurrent, int level)
     {
         var stats = statsCurrent.Stats;
-        var thoNguyen = stats.ThoNguyen - thoNguyens[level - 1];
+        var thoNguyen = stats.ThoNguyen + thoNguyens[level - 1];
         stats.ThoNguyen =  thoNguyen;
     }
 
