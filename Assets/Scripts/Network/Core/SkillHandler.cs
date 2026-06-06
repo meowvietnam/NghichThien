@@ -1,13 +1,21 @@
 using System;
+using System.Collections.Generic;
 using Base;
 using CreateCharacter;
 using LongDH.LongDHModules;
+using MemoryPack;
 using Network.Extensions;
 using Network.Models;
 using Spine;
 
 namespace Network.Core
 {
+    [MemoryPackable]
+    public partial class Test
+    {
+        public string Message { get; set; }
+        public Dictionary<int,string[]> Hellos { get; set; }
+    }
     public class SkillHandler : IClientHandler
     {
         private static MessageTag[] handler =

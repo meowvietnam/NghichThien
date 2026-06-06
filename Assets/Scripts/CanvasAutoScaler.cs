@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using MemoryPack;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+
 public class CanvasAutoScaler : MonoBehaviour
 {
-    [Header("Settings")]
-    public Vector2 referenceResolution = new Vector2(1920, 1080);
+    [Header("Settings")] public Vector2 referenceResolution = new Vector2(1920, 1080);
 
     void Awake()
     {
@@ -55,7 +56,8 @@ public class CanvasAutoScaler : MonoBehaviour
             scaler.matchWidthOrHeight = targetMatch;
         }
 
-        Debug.Log($"<color=green>Canvas Scaler updated!</color> Screen Ratio: {screenRatio}, Match set to: {targetMatch}");
+        Debug.Log(
+            $"<color=green>Canvas Scaler updated!</color> Screen Ratio: {screenRatio}, Match set to: {targetMatch}");
     }
 
     void OnDestroy()
