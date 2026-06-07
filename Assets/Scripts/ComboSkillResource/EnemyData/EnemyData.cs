@@ -48,8 +48,8 @@ public class EnemyData : NPCData
             charStats.thoNguyen += gameConfig.inforLevels[i].thoNguyenBuff;
 
         }
-        charStats.hp *= charStats.level;
-        charStats.hpMax *= charStats.level;
+        charStats.hp *= 2;
+        charStats.hpMax *= 2;
         
         int daiCanhGioi = ThanThong.GetDaiCanhGioi(charStats.level);
         int minRandom = 0;
