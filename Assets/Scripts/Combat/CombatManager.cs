@@ -709,7 +709,16 @@ public class CombatManager : BaseBehaviour
     }
     private CharacterCombat.PlaySkillData ThanThongAutoUse()
     {
-        List<ThanThong> thanThongTemp = new List<ThanThong>(currentTurn.thanThongEquip);
+        List<ThanThong> thanThongTemp = new List<ThanThong>();
+        foreach(var item in currentTurn.thanThongEquip)
+        {
+            if(item.IsCanUse(currentTurn,targetTurn))
+            {
+                thanThongTemp.Add(item);
+            }    
+        }
+        if(thanThongTemp.Count<=0) return null;
+            
         CharacterCombat.PlaySkillData playSkillData = new();
 
         if (currentTurn.thanThongCurrentUse != null)
