@@ -12,13 +12,14 @@ public class BtnInforStats : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 {
     [SerializeField] private string infoName;
     [SerializeField] private StatType statType;
+    [SerializeField] protected virtual string Infor => info;
     [SerializeField, TextArea] private string info;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         var tooltip = Pool.Get<TabPanel>().toolTipBtnStats;
         tooltip.SetActive(true);
-        tooltip.SetTextInfo(infoName, info);
+        tooltip.SetTextInfo(infoName, Infor);
         tooltip.SetScale(Vector2.one);
         tooltip.SetPosition(eventData.position - new Vector2(100, -40));
     }

@@ -335,11 +335,32 @@ public class CombatManager : BaseBehaviour
             CombatStatic.TrienNhieu(target, caster);
             Observer.Notify(EventList.Combat.BEFORE_EXCUTE_SKILL , caster, target);
 
+            if (caster.IsDebuffTuoiTac || caster.CurrentIndexDanDoc ==4)
+            {
+                if(CombatStatic.IsActiveWithPercent(50))
+                {
+                    return;
+
+                }
+
+            }
             if (caster.skillVoHieuHoa.Count > 0)
             {
                 target.RemoveAllThanThongImpactAfterPlaySkill(target.specialThanThongImpactAfterPlaySkill.FirstOrDefault(x=>x is AmDuongDong));
                 caster.skillVoHieuHoa.Clear();
                 return;
+
+            }
+            if (caster.IsDebuffTuoiTac)
+            {
+                caster.TakeDameByStatic(null, new List<int> { (int) (0.1f * caster.characterStatsTemp.hpMax)  }, false);
+
+
+            }
+            if (caster.CurrentIndexDanDoc == 4)
+            {
+                caster.TakeDameByStatic(null, new List<int> { 30 }, false);
+
 
             }
             ThanThong thanThongOldUse = caster.thanThongOldUse != null ? caster.thanThongOldUse.thanThong : null;

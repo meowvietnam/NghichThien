@@ -467,7 +467,10 @@ public class CharacterCombat : MonoBehaviour
     public SecureInt khiTho;
     public SecureInt khiMa;
 
-   
+    public bool IsDebuffTuoiTac => characterStatsBase.tuoiTac.Value > characterStatsBase.thoNguyen.Value;
+    public int CurrentIndexDanDoc => GameManager.GetDanDocValue(characterStatsBase.danDoc).index;
+
+
     public Dictionary<BaseData, SecureInt> skillTichLuy = new Dictionary<BaseData, SecureInt>();
 
     public CharacterStatsSecure characterStatsBase; // khi end combat thì characterStatsBase sẽ lấy hp từ hp của stats Temp
@@ -727,6 +730,30 @@ public class CharacterCombat : MonoBehaviour
         characterVisualControl.AnimIdle();
         thanThongUseThisComBat.Clear();
         InitTotalKhi();
+
+        var getDanDoc = GameManager.GetDanDocValue(characterStatsBase.danDoc.Value);
+
+        if (CurrentIndexDanDoc == 2)
+        {
+            totalKhiRandom -= 1;
+        }
+        else if (CurrentIndexDanDoc == 3)
+        {
+            totalKhiRandom -= 2;
+
+        }
+        else if (CurrentIndexDanDoc == 4)
+        {
+            totalKhiRandom -= 2;
+
+        }
+
+        if(IsDebuffTuoiTac)
+        {
+            totalKhiRandom -= 2;
+
+        }
+
         congPhapDynamic.Clear();
         skillTichLuy.Clear();
         foreach (var cp in congPhapEquip)

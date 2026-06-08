@@ -448,12 +448,13 @@ public class GameManager : BaseBehaviour
 
         return new CharacterStatsSecure
         {
+            tuoiTac = new SecureInt(GetIntTuoiTac(charData.Stats.TuoiTac)),
             nameUser = charData.Name,
             level = charData.Progression.Level,
             hp = stat.Hp,
             hpMax = stat.SinhMenh,
             ability = stat.Ability,
-            percentKim = stat.Kim,  
+            percentKim = stat.Kim,
             percentMoc = stat.Moc,
             percentThuy = stat.Thuy,
             percentHoa = stat.Hoa,
@@ -473,9 +474,9 @@ public class GameManager : BaseBehaviour
             danDoc = stat.DanDoc,
             ngoDaoSaves = charData.InventoryManager.NgoDaos.Select(x => new SecureInt(x.Id)).ToList(),
             skinList = charData.Appearance.Skins.Select(kvp => new CharacterStatsSecure.SkinData
-                { key = kvp.Key, value = kvp.Value }).ToList(),
+            { key = kvp.Key, value = kvp.Value }).ToList(),
             colorList = charData.Appearance.Colors.Select(kvp => new CharacterStatsSecure.ColorData
-                { key = kvp.Key, value = kvp.Value }).ToList(),
+            { key = kvp.Key, value = kvp.Value }).ToList(),
 
             // Nếu vuKhiData null, nguyên cả cụm vukhi sẽ là null
             vuKhi = EquipmentClientBuilder.FromEquipment(vuKhiData),
@@ -485,7 +486,7 @@ public class GameManager : BaseBehaviour
 
             // Tương tự cho trangSuc
             trangSuc = EquipmentClientBuilder.FromEquipment(trangSucData),
-            danDuocCombat = charData.EquipmentManager.DanCombatUseds.Select(x=> new CharacterStatsSecure.DataSave { id = new SecureInt(x.Id),value = new SecureInt(x.Count) }).ToList(),
+            danDuocCombat = charData.EquipmentManager.DanCombatUseds.Select(x => new CharacterStatsSecure.DataSave { id = new SecureInt(x.Id), value = new SecureInt(x.Count) }).ToList(),
         };
     }
 
@@ -692,21 +693,20 @@ public class GameManager : BaseBehaviour
 
     public static string[] danDocText = new string[]
     {
-        "Thân thể khỏe mạnh",
-        "Thân thể không ngại",
-        "Có chút khó chịu",
-        "Gân mạch ngưng trệ",
-        "Bệnh nguy kịch",
-        "Độc phát thân vong",
+        "Thân thể khỏe mạnh",  // i = 0
+        "Thân thể không ngại", // i = 1
+        "Có chút khó chịu",    // i = 2
+        "Gân mạch ngưng trệ",  // i = 3
+        "Bệnh nguy kịch",      // i = 4
     };
 
     public static int[] danDocRequireEnd = new int[]
     {
-        20,
-        50,
-        70,
-        100,
-        120,
+        20,  // Tương ứng với "Thân thể khỏe mạnh" (<= 20)
+        50,  // Tương ứng với "Thân thể không ngại" (21 - 50)
+        70,  // Tương ứng với "Có chút khó chịu" (51 - 70)
+        100, // Tương ứng với "Gân mạch ngưng trệ" (71 - 100)
+             // Đã xóa mốc 120
     };
 
     public static (string text, int nextMilestone, int index) GetDanDocValue(int currentDanDoc)
@@ -718,7 +718,8 @@ public class GameManager : BaseBehaviour
                 return (danDocText[i], danDocRequireEnd[i], i);
             }
         }
-        return (danDocText[danDocText.Length - 1], (int)currentDanDoc, danDocText.Length - 1);
+        // Khi vượt quá 100 điểm, trả về "Bệnh nguy kịch"
+        return (danDocText[danDocText.Length - 1], currentDanDoc, danDocText.Length - 1);
     }
     public static (string name, int nextMilestone, int index) GetTamCanhValue(int currentPoint)
     {
@@ -744,7 +745,7 @@ public class GameManager : BaseBehaviour
         }
 
         // Trường hợp cuối cùng: Lớn hơn mốc cao nhất (> 1999)
-        return (tamCanh[tamCanh.Length - 1], (int)currentPoint, tamCanh.Length - 1);
+        return (tamCanh[tamCanh.Length - 1], (int)danDocRequireEnd[danDocRequireEnd.Length-1], tamCanh.Length - 1);
     }
 
     public static int GetTimeWorldIntPlayer()

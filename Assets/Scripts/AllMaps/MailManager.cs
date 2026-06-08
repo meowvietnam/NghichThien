@@ -15,7 +15,7 @@ namespace AllMaps
 {
     public class MailManager : BaseBehaviour, IMailCallback
     {
-        [SerializeField] private MailPanel mailPanel;
+        [SerializeField] private MailPanel mailPanel => Pool.Get<MailPanel>();
         [SerializeField] private MailButton mailButton => Pool.Get<UIHeadPanel>().mailBtn;
 
         private void Start()
