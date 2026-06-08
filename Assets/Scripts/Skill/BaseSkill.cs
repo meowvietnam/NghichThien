@@ -96,7 +96,10 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
     [SerializeField] public int baseTimeLearn;
 
     [Button]
-    public abstract void SetBaseTimeLearn();
+    public virtual void SetBaseTimeLearn()
+    {
+        
+    }
     public enum ETierSkill
     {
 
