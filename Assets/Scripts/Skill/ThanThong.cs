@@ -490,7 +490,7 @@ namespace Skill
 
         public void Deserialize(IReader reader, ref ThanThong value)
         {
-            BaseData baseValue = value;
+            BaseSkill baseValue = value;
             baseValue.Deserialize(reader, ref baseValue);
         }
     }

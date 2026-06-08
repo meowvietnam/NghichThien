@@ -4,6 +4,8 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Network;
+using Network.Extensions;
 using UnityEngine;
 
 public enum EBuffAndDeBuff
@@ -89,12 +91,15 @@ public enum EBuffAndDeBuff
 
 }
 
-public abstract class BaseSkill : BaseItemData
+public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
 {
     [SerializeField] public int baseTimeLearn;
 
     [Button]
-    public abstract void SetBaseTimeLearn();
+    public virtual void SetBaseTimeLearn()
+    {
+        
+    }
     public enum ETierSkill
     {
 
@@ -146,7 +151,7 @@ public abstract class BaseSkill : BaseItemData
     public static List<EBuffAndDeBuff> eBuffs = Enum.GetValues(typeof(EBuffAndDeBuff))
     .Cast<EBuffAndDeBuff>()
     .Where(e => e != EBuffAndDeBuff.None)
-    .Where(e => !BaseSkill.eDebuffs.Contains(e) && !BaseSkill.eNoneBuff.Contains(e))
+    .Where(e => !eDebuffs.Contains(e) && !eNoneBuff.Contains(e))
     .ToList();
     public enum ETypeSkill
     {
@@ -183,7 +188,7 @@ public abstract class BaseSkill : BaseItemData
 
     [SerializeField]private EKeyWord[] eKeywordSkillHave;
     [SerializeField]private EBuffAndDeBuff[] eKeywordBuffSkillHave;
-
+    
     public virtual EKeyWord[] GetEKeywordSkillHave()
     {
         return eKeywordSkillHave;
@@ -194,7 +199,7 @@ public abstract class BaseSkill : BaseItemData
     }    
 
 
-    public abstract void Execute(CharacterCombat caster, CharacterCombat target, params object[] data);
+    public virtual void Execute(CharacterCombat caster, CharacterCombat target, params object[] data) {}
    
     public interface LienKich
     {
@@ -224,7 +229,11 @@ public abstract class BaseSkill : BaseItemData
         public abstract void ExecuteThanThuc(CharacterCombat caster, CharacterCombat target);
 
     }
-    public abstract string GetDesc(int daiCanhGioi);
+
+    public virtual string GetDesc(int daiCanhGioi)
+    {
+        return string.Empty;
+    }
 
     
     public static string GetKeyWordBuffOrDeBuff(EBuffAndDeBuff eKeyWord , int level = 1)
@@ -1046,6 +1055,31 @@ public abstract class BaseSkill : BaseItemData
             default:
                 break;
         }
-        return BaseSkill.ETypeSkill.None;
+        return ETypeSkill.None;
+    }
+
+    public override int ByteSize()
+    {
+        return base.ByteSize() + eTierSkill.ByteSize() + eTypeSkill.ByteSize()
+               + eKeywordSkillHave.ByteSize() + eKeywordBuffSkillHave.ByteSize();
+    }
+
+    public void Deserialize(IReader reader, ref BaseSkill value)
+    {
+        BaseData baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+        value.eTierSkill = reader.Read<ETierSkill>();
+        value.eTypeSkill = reader.ReadArray<ETypeSkill>();
+        value.eKeywordSkillHave = reader.ReadArray<EKeyWord>();
+        value.eKeywordBuffSkillHave = reader.ReadArray<EBuffAndDeBuff>();
+    }
+
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+        writer.Write(eTierSkill);
+        writer.WriteArray(eTypeSkill);
+        writer.WriteArray(eKeywordSkillHave);
+        writer.WriteArray(eKeywordBuffSkillHave);
     }
 }

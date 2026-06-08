@@ -12,6 +12,7 @@ using CreateCharacter.CharStats;
 using LuyenDan.Inventory;
 using Network;
 using System.Collections;
+using System.IO;
 using Sirenix.Utilities;
 using LuyenKhi;
 using AllMaps;
@@ -21,6 +22,7 @@ using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
 using DG.Tweening.Core.Easing;
 using LongDHModules;
+using Network.Extensions;
 
 
 #if UNITY_EDITOR
@@ -509,8 +511,8 @@ public class GameManager : BaseBehaviour
         Observer.AddObserver(EventList.GamePlay.BACK_SCENE, OnBackScene);
     }
 
-    public ThanThong[] thanThongs => SkillResource.Instance.thanThongs;
-    public CongPhap[] congPhaps => SkillResource.Instance.congPhaps;
+    public ThanThong[] thanThongs;
+    public CongPhap[] congPhaps;
     public AllMaps.NgoDao.NgoDao[] ngoDaos;
     public BaseDanDuocCombat[] danDuocs;
 
@@ -630,6 +632,40 @@ public class GameManager : BaseBehaviour
   
 
    
+    [Button]
+    private void OnUpdateDataThanThong()
+    {
+#if UNITY_EDITOR
+        // Tìm tất cả GUID của các asset có type là ThanThong
+        string[] guids = AssetDatabase.FindAssets("t:ThanThong");
+
+        thanThongs = guids
+            .Select(guid => AssetDatabase.LoadAssetAtPath<ThanThong>(AssetDatabase.GUIDToAssetPath(guid)))
+            .Where(asset => asset != null)
+            .ToArray();
+
+        EditorUtility.SetDirty(this); // Đánh dấu object đã thay đổi để Unity lưu lại
+        Debug.Log($"Đã cập nhật {thanThongs.Length} ThanThong vào mảng.");
+#endif
+    }
+
+    [Button]
+    private void OnUpdateDataCongPhap()
+    {
+#if UNITY_EDITOR
+        // Tìm tất cả GUID của các asset có type là CongPhap
+        string[] guids = AssetDatabase.FindAssets("t:CongPhap");
+
+        congPhaps = guids
+            .Select(guid => AssetDatabase.LoadAssetAtPath<CongPhap>(AssetDatabase.GUIDToAssetPath(guid)))
+            .Where(asset => asset != null)
+            .ToArray();
+
+        EditorUtility.SetDirty(this);
+        Debug.Log($"Đã cập nhật {congPhaps.Length} CongPhap vào mảng.");
+#endif
+    }
+
     [Button]
     private void OnUpdateDataNgoDao()
     {
@@ -762,6 +798,11 @@ public class GameManager : BaseBehaviour
         return totalMonths - 180;
     }
 
+    public static TimeSpan GetTimeWorldTimeSpan()
+    {
+        return ConvertMonthToTimeSpan(GetTimeWorldIntPlayer());
+    }
+
  
     public static int GetIntTuoiTac(TimeSpan timeSpanTuoiTac)
     {
@@ -788,6 +829,7 @@ public class GameManager : BaseBehaviour
         // 4. Gán Text
         return $"{years} năm {months} tháng {days} ngày";
     }    
+
     // Hàm bổ trợ
     public static IEnumerator LoadSceneWithDelay(string sceneName, float delay)
     {
@@ -1064,6 +1106,47 @@ public class GameManager : BaseBehaviour
             .ToHashSet();
         var size = AssetSize.CalculateSize(sprites);
         Debug.Log(size);
+    }
+
+    [Button]
+    public void ExportNDTTCP()
+    {
+        var guids = AssetDatabase.FindAssets("t:BaseData");
+        var assets = guids.Select(x => AssetDatabase.GUIDToAssetPath(x))
+            .Select(x => AssetDatabase.LoadAssetAtPath<BaseData>(x))
+            .OrderBy(x => x.GetType().Name)
+            .ToList();
+
+        var thanThongs = assets.OfType<ThanThong>().ToList();
+        var ngoDaos = assets.OfType<AllMaps.NgoDao.NgoDao>().ToList();
+        var congPhaps = assets.OfType<CongPhap>().ToList();
+        this.thanThongs = thanThongs.ToArray();
+        this.ngoDaos = ngoDaos.ToArray();
+        this.congPhaps = congPhaps.ToArray();
+        var ndttcp = new NDCPTTManager()
+        {
+            ThanThongs = thanThongs.ToList(),
+            NgoDaos = ngoDaos.ToList(),
+            CongPhaps = congPhaps.ToList(),
+        };
+        var writer = new Writer(ndttcp.ByteSize());
+        writer.Write(ndttcp);
+        var path = Path.Combine(Application.dataPath, "Exports", "NDCPTTManager.bin");
+        File.WriteAllBytes(path, writer.Buffer);
+    }
+
+    [Button]
+    public void ExportNDResources()
+    {
+        var guids = AssetDatabase.FindAssets("t:NgoDaoResource");
+        var assets = guids.Select(x => AssetDatabase.GUIDToAssetPath(x))
+            .Select(x => AssetDatabase.LoadAssetAtPath<NgoDaoResource>(x))
+            .ToList();
+        var writer = new Writer(assets.ByteSize());
+        writer.WriteArray(assets);
+        var path = Path.Combine(Application.dataPath, "Exports", "NgoDaoManager.bin");
+        File.WriteAllBytes(path, writer.Buffer);
+        Debug.Log(path);
     }
     
 }
