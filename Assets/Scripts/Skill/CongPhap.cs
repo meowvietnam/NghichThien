@@ -139,7 +139,7 @@ namespace Skill
 
         public void Deserialize(IReader reader, ref CongPhap value)
         {
-            BaseData baseValue = value;
+            BaseSkill baseValue = value;
             baseValue.Deserialize(reader, ref baseValue);
             value.tocDoTuLuyenBase = reader.Read<int>();
             value.isDonThuat = reader.Read<bool>();

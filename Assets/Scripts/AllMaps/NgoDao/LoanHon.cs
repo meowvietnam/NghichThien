@@ -1,10 +1,7 @@
 using LongDH.LongDHModules;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 using Network;
-using Network.Extensions;
-
 [CreateAssetMenu(fileName = nameof(LoanHon), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(LoanHon))]
 public class LoanHon : NgoDaoCombat, IMemorySerializable<LoanHon>
 {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Network;
 using Network.Extensions;
 using Sirenix.OdinInspector;
@@ -42,14 +43,13 @@ namespace CreateCharacter.CharStats
                 }
             }
         }
-
-        // [Button]
-        // public void ToBinary()
-        // {
-        //     var path = Path.Combine(Application.dataPath, "Exports", "StepConfig.bin");
-        //     var writer = new Writer(ByteSize());
-        //     writer.Write(this);
-        //     File.WriteAllBytes(path,writer.Buffer);
-        // }
+        [Button]
+        public void ToBinary()
+        {
+            var path = Path.Combine(Application.dataPath, "Exports", "step-config.bin");
+            var writer = new Writer(ByteSize());
+            writer.Write(this);
+            File.WriteAllBytes(path,writer.Buffer);
+        }
     }
 }
