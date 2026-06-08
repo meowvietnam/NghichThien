@@ -29,49 +29,24 @@ namespace CreateCharacter.CharStats
             Instance = null;
         }
         
-        public void SetText(string effective, string description)
+        public virtual void SetText(string effective, string description)
         {
             var text = $"<color=#6495ED>Hiệu quả: </color>{effective}\n\n<color=#FF7F50>Mô tả: </color>{description}";
             this.text.text = text;
-            FixVisual();
         }
-        public void SetText(string des)
+        public virtual void SetText(string des)
         {
 
             this.text.text = des;
-            FixVisual();
         }
 
-        public void SetTextInfo(string infoName, string info)
+        public virtual void SetTextInfo(string infoName, string info)
         {
 
             var text = $"<color=#6495ED>{infoName}: </color>{info}";
             this.text.text = text;
-            FixVisual();
         }
-        void FixVisual()
-        {
-            float signX = thisTransform.parent.transform.localScale.x;
-            if (signX > 0)
-            {
-                thisTransform.pivot = new Vector2(0, 1f);
-            }
-            else
-            {
-                thisTransform.pivot = new Vector2(1, 1f);
-
-            }
-            Canvas.ForceUpdateCanvases();
-            var contenSize = GetComponent<ContentSizeFitter>();
-            for (int i = 0; i < 3; i++)
-            {
-
-                contenSize.enabled = false;
-                contenSize.enabled = true;
-            }
-            thisTransform.localPosition = new Vector3(0, -45, 0);
-
-        }
+        
         public void DoShow()
         {
             tween?.Kill();
