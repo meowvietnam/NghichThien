@@ -18,10 +18,14 @@ namespace Skill
             public ELinhKhi linhKhiRequire;
             public int count;
         }
-
+        
         [SerializeField] protected List<RequireActive> requireActives;
         public List<RequireActive> BaseRequireActive => requireActives;
 
+        public override void SetBaseTimeLearn()
+        {
+            baseTimeLearn = 165 * (int)eTierSkill;
+        }
         public virtual List<RequireActive> GetRequireActive(CharacterCombat caster)
         {
             return requireActives;

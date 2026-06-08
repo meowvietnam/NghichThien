@@ -316,6 +316,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         var listItemRefSkill = new List<ItemRef>();
        listItemRefSkill.AddRange(filteredThanThong);
        listItemRefSkill.AddRange(filteredCongPhap);
+
         bagLinhHoi.filterControl.InitFilterType(new List<ItemType> { ItemType.ThanThong, ItemType.CongPhap });
 
         bagLinhHoi.InitDataItem(listItemRefSkill, (item) => {
@@ -327,29 +328,33 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 textNameLinhHoi.text = data.nameItem;
                 textNameLinhHoi.transform.parent.gameObject.SetActive(true);
                 Debug.Log("co event linh hoi2");
-
                 var provider = ItemProviderFactory.GetProvider(item.itemRef.Type);
                 int cost = provider.GetPriceItemBuy(item.itemRef.Id);
                 priceTextLinhHoi.text = $"{cost}";
-                if (itemRef.Type == ItemType.ThanThong)
+                if(data is BaseSkill skill)
                 {
-                    ThanThong thanThong = (ThanThong)data;
-                    textInfor.text = thanThong.GetDesc(ThanThong.GetDaiCanhGioi(charData.Progression.Level));
-                }
-                else if (itemRef.Type == ItemType.CongPhap)
-                {
-                    CongPhap cp = (CongPhap)data;
-                    var cpOwners = charData.InventoryManager.CongPhapOwners;
-                    var r = new CreateCharacter.CongPhap()
+                    if (itemRef.Type == ItemType.ThanThong)
                     {
-                        Id = itemRef.Id
-                    };
-                    int daiCanhGioiCP = 1;
-                    if (cpOwners.TryGetValue(r, out var c))
-                    {
-                        daiCanhGioiCP = c.Level;
+                        ThanThong thanThong = (ThanThong)data;
+                        textInfor.text = thanThong.GetDesc(ThanThong.GetDaiCanhGioi(charData.Progression.Level));
                     }
-                    textInfor.text = cp.GetDesc(daiCanhGioiCP);
+                    else if (itemRef.Type == ItemType.CongPhap)
+                    {
+                        CongPhap cp = (CongPhap)data;
+                        var cpOwners = charData.InventoryManager.CongPhapOwners;
+                        var r = new CreateCharacter.CongPhap()
+                        {
+                            Id = itemRef.Id
+                        };
+                        int daiCanhGioiCP = 1;
+                        if (cpOwners.TryGetValue(r, out var c))
+                        {
+                            daiCanhGioiCP = c.Level;
+                        }
+                        textInfor.text = cp.GetDesc(daiCanhGioiCP);
+                    }
+                    textTimer.text = GameManager.GetTimeWorldText(skill.baseTimeLearn/(30*Client.Instance.CharacterData.Stats.NgoTinh));
+
                 }
                 SetEventButton(btnLinhHoi, () =>
                 {
@@ -455,26 +460,32 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 priceItemCongPhap.SetQualityFull(item.qualityFull.sprite);
 
                 priceItemCongPhap.transform.parent.GetComponent<Text>().text = $"x{cost2}";
-                if (itemRef.Type == ItemType.CongPhap)
+                if(data is BaseSkill skill)
                 {
-                    CongPhap cp = (CongPhap)data;
-                    for (int i = 0; i < textInforUpdateCongPhap.Length; i++)
+                    if (itemRef.Type == ItemType.CongPhap)
                     {
-                        textInforUpdateCongPhap[i].text = cp.GetDesc(i + 1);
-                        if (i + 1 <= daiCanhGioiCP)
+                        CongPhap cp = (CongPhap)data;
+                        for (int i = 0; i < textInforUpdateCongPhap.Length; i++)
                         {
-                            textInforUpdateCongPhap[i].transform.GetChild(1).gameObject.SetActive(true);
+                            textInforUpdateCongPhap[i].text = cp.GetDesc(i + 1);
+                            if (i + 1 <= daiCanhGioiCP)
+                            {
+                                textInforUpdateCongPhap[i].transform.GetChild(1).gameObject.SetActive(true);
 
 
-                        }
-                        else
-                        {
-                            textInforUpdateCongPhap[i].transform.GetChild(1).gameObject.SetActive(false);
+                            }
+                            else
+                            {
+                                textInforUpdateCongPhap[i].transform.GetChild(1).gameObject.SetActive(false);
 
 
+                            }
                         }
                     }
+                    textTimerUpdateCongPhap.text = GameManager.GetTimeWorldText(skill.baseTimeLearn / (30 * Client.Instance.CharacterData.Stats.NgoTinh));
+
                 }
+               
                 SetEventButton(btnUpdateCongPhap, () =>
                 {
                     if (charData.Stats.LinhThach >= cost && charData.InventoryManager.CongPhaps.Count(x => x.Id == itemRef.Id) >= cost2)

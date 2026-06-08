@@ -1,5 +1,6 @@
 ﻿using CreateCharacter;
 using NUnit.Framework;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,6 +93,10 @@ public enum EBuffAndDeBuff
 
 public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
 {
+    [SerializeField] public int baseTimeLearn;
+
+    [Button]
+    public abstract void SetBaseTimeLearn();
     public enum ETierSkill
     {
 
