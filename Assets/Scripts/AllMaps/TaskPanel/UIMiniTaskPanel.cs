@@ -27,19 +27,8 @@ public class UIMiniTaskPanel : PanelGroup
     }    
     private void InitTimer()
     {
-        // 1. Lấy giá trị TimeSpan gốc
-        TimeSpan originalAge = GameManager.GetTimeWorldTimeSpan();
-
-        // 2. Tạo một mốc thời gian cơ sở (Base) và cộng tuổi vào, sau đó trừ đi 15 năm
-        // Giả sử tính từ mốc 01/01/0001
-        DateTime baseDate = new DateTime(1, 1, 1).Add(originalAge);
-
-        // 3. Tính toán các thành phần (Trừ đi 1 để về đúng số năm/tháng/ngày đã trôi qua)
-        int years = baseDate.Year - 1;
-        int months = baseDate.Month - 1;
-        int days = baseDate.Day - 1;
 
         // 4. Gán Text
-        timerText.text = $"{years} năm {months} tháng {days} ngày";
+        timerText.text = GameManager.GetTimeWorldText(GameManager.GetTimeWorldIntPlayer());
     }    
 }

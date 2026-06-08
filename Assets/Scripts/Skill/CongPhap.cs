@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CreateCharacter;
+﻿using CreateCharacter;
 using Network;
 using Network.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Skill
@@ -17,7 +18,10 @@ namespace Skill
     {
         [SerializeField] private int tocDoTuLuyenBase;
         [SerializeField] public bool isDonThuat = false;
-
+        public override void SetBaseTimeLearn()
+        {
+            baseTimeLearn = 1702 * (int)eTierSkill;
+        }
         public virtual void EquipCongPhap(CharacterStatsSecure statsCurrent , int daiCanhGioiCongPhap)
         {
 

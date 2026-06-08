@@ -508,8 +508,8 @@ public class GameManager : BaseBehaviour
         Observer.AddObserver(EventList.GamePlay.BACK_SCENE, OnBackScene);
     }
 
-    public ThanThong[] thanThongs;
-    public CongPhap[] congPhaps;
+    public ThanThong[] thanThongs => SkillResource.Instance.thanThongs;
+    public CongPhap[] congPhaps => SkillResource.Instance.congPhaps;
     public AllMaps.NgoDao.NgoDao[] ngoDaos;
     public BaseDanDuocCombat[] danDuocs;
 
@@ -628,39 +628,7 @@ public class GameManager : BaseBehaviour
 
   
 
-    [Button]
-    private void OnUpdateDataThanThong()
-    {
-#if UNITY_EDITOR
-        // Tìm tất cả GUID của các asset có type là ThanThong
-        string[] guids = AssetDatabase.FindAssets("t:ThanThong");
-
-        thanThongs = guids
-            .Select(guid => AssetDatabase.LoadAssetAtPath<ThanThong>(AssetDatabase.GUIDToAssetPath(guid)))
-            .Where(asset => asset != null)
-            .ToArray();
-
-        EditorUtility.SetDirty(this); // Đánh dấu object đã thay đổi để Unity lưu lại
-        Debug.Log($"Đã cập nhật {thanThongs.Length} ThanThong vào mảng.");
-#endif
-    }
-
-    [Button]
-    private void OnUpdateDataCongPhap()
-    {
-#if UNITY_EDITOR
-        // Tìm tất cả GUID của các asset có type là CongPhap
-        string[] guids = AssetDatabase.FindAssets("t:CongPhap");
-
-        congPhaps = guids
-            .Select(guid => AssetDatabase.LoadAssetAtPath<CongPhap>(AssetDatabase.GUIDToAssetPath(guid)))
-            .Where(asset => asset != null)
-            .ToArray();
-
-        EditorUtility.SetDirty(this);
-        Debug.Log($"Đã cập nhật {congPhaps.Length} CongPhap vào mảng.");
-#endif
-    }
+   
     [Button]
     private void OnUpdateDataNgoDao()
     {
@@ -779,7 +747,7 @@ public class GameManager : BaseBehaviour
         return (tamCanh[tamCanh.Length - 1], (int)currentPoint, tamCanh.Length - 1);
     }
 
-    public static int GetTimeWorldInt()
+    public static int GetTimeWorldIntPlayer()
     {
         // 1. Lấy giá trị TimeSpan gốc
         TimeSpan originalTime = Client.Instance.CharacterData.Stats.TuoiTac;
@@ -793,10 +761,7 @@ public class GameManager : BaseBehaviour
         return totalMonths - 180;
     }
 
-    public static TimeSpan GetTimeWorldTimeSpan()
-    {
-        return ConvertMonthToTimeSpan(GetTimeWorldInt());
-    }
+ 
     public static int GetIntTuoiTac(TimeSpan timeSpanTuoiTac)
     {
         return (int)(timeSpanTuoiTac.TotalDays / 365);
@@ -805,6 +770,23 @@ public class GameManager : BaseBehaviour
     {
         return TimeSpan.FromDays(months * 30);
     }
+    public static String GetTimeWorldText(int monthsRef)
+    {
+        // 1. Lấy giá trị TimeSpan gốc
+        TimeSpan originalAge = ConvertMonthToTimeSpan(monthsRef);
+
+        // 2. Tạo một mốc thời gian cơ sở (Base) và cộng tuổi vào, sau đó trừ đi 15 năm
+        // Giả sử tính từ mốc 01/01/0001
+        DateTime baseDate = new DateTime(1, 1, 1).Add(originalAge);
+
+        // 3. Tính toán các thành phần (Trừ đi 1 để về đúng số năm/tháng/ngày đã trôi qua)
+        int years = baseDate.Year - 1;
+        int months = baseDate.Month - 1;
+        int days = baseDate.Day - 1;
+
+        // 4. Gán Text
+        return $"{years} năm {months} tháng {days} ngày";
+    }    
     // Hàm bổ trợ
     public static IEnumerator LoadSceneWithDelay(string sceneName, float delay)
     {
@@ -1082,4 +1064,5 @@ public class GameManager : BaseBehaviour
         var size = AssetSize.CalculateSize(sprites);
         Debug.Log(size);
     }
+    
 }

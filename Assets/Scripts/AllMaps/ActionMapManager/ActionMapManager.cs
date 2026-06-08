@@ -37,7 +37,7 @@ public abstract class ActionMapManager : MonoBehaviour , IUISingleton
     private void OnTimeAdjust()
     {
         // 1. Lấy tổng số tháng hiện tại của thế giới
-        int timeWordCurrent = GameManager.GetTimeWorldInt();
+        int timeWordCurrent = GameManager.GetTimeWorldIntPlayer();
 
         // 2. Lấy thời điểm thực hiện random lần cuối từ PlayerPrefs
         // Nếu là lần đầu tiên (giá trị -1), ta coi như cần random ngay lập tức
@@ -56,7 +56,7 @@ public abstract class ActionMapManager : MonoBehaviour , IUISingleton
     }
     public virtual void RandomAction()
     {
-        PlayerPrefs.SetInt(fileSaveTime, GameManager.GetTimeWorldInt());
+        PlayerPrefs.SetInt(fileSaveTime, GameManager.GetTimeWorldIntPlayer());
         PlayerPrefs.Save();
     }
 
