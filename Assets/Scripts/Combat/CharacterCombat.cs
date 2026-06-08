@@ -1165,6 +1165,10 @@ public class CharacterCombat : MonoBehaviour
     [Button]   
     public void EndTurn()
     {
+        if (characterStatsBase.ability.HasFlag(CreateCharacter.CharStats.Ability.LongTocHuyetMach))
+        {
+            Healing((int)(0.05f * characterStatsTemp.hpMax));
+        }
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChayMau, 1);
 
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DeTonThuong, out SecureInt value))
@@ -1298,7 +1302,7 @@ public class CharacterCombat : MonoBehaviour
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.PhanTonThuong, PhanTonThuong);
         }
         isSkipTieuTanLinhKhi = false;
-
+       
     }
 
   
@@ -1346,13 +1350,24 @@ public class CharacterCombat : MonoBehaviour
     [Button]
     public void CaculateDameByThanThong(CharacterCombat sender, List<int> dames, BaseSkill.ETypeSkill[] eTypeSkils, bool isCongDon = false)
     {
-
+        
         var listNewDames = CaculateDame(sender, dames, isCongDon, eTypeSkils);
-      
+       
         listDameTaked[listDameTaked.Count - 1] += listNewDames.Sum();
 
         Observer.Notify(EventList.Combat.CACULATE_DAME_BY_THANTHONG, sender, this, listNewDames);
+        if (sender.characterStatsBase.ability.HasFlag(CreateCharacter.CharStats.Ability.TuyetAmDocThe))
+        {
+            Debug.Log("sender có TuyetAmDocThe");
+            if (sender.characterStatsTemp.danDoc > 50)
+            {
 
+                int dameBuff = (int)(allDamages[0] * 0.2f);
+                Debug.Log(allDamages[0] + " co vao buff dame " + dameBuff);
+                AddDamageData(new List<int> { dameBuff });
+               
+            }
+        }
 
     }
     private List<int> CaculateDame(CharacterCombat sender, List<int> dames, bool isCongDon = false, BaseSkill.ETypeSkill[] eTypeSkils = null)
@@ -1408,6 +1423,7 @@ public class CharacterCombat : MonoBehaviour
 
                 dames[i] = finalDame;
             }
+            
         }
         AddDamageData(dames, isCongDon);
         return dames;
@@ -1440,6 +1456,7 @@ public class CharacterCombat : MonoBehaviour
                 sender.TakeDameByStatic(this, new List<int> { phanTonThuong }, false);
 
             }
+           
         }
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TichKim, out SecureInt TichKim))
         {

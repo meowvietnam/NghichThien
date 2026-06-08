@@ -13,9 +13,13 @@ namespace CreateCharacter.CharStats
         [SerializeField] public RectTransform thisTransform;
         private Tween tween;
         public static Tooltip Instance { get; private set; }
-        private void Start()
+        protected virtual void Awake()
         {
             Instance = this;
+
+        }
+        private void Start()
+        {
             closeButton?.onClick.AddListener(DoHide);
             SetActive(false);
         }

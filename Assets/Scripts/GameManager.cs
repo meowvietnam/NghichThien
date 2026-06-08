@@ -450,6 +450,7 @@ public class GameManager : BaseBehaviour
 
         return new CharacterStatsSecure
         {
+            
             tuoiTac = new SecureInt(GetIntTuoiTac(charData.Stats.TuoiTac)),
             nameUser = charData.Name,
             level = charData.Progression.Level,
