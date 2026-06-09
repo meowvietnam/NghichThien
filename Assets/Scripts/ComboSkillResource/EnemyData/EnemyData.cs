@@ -48,10 +48,24 @@ public class EnemyData : NPCData
             charStats.thoNguyen += gameConfig.inforLevels[i].thoNguyenBuff;
 
         }
-        charStats.hp *= 2;
-        charStats.hpMax *= 2;
-        
+        float baseHp = charStats.hpMax * 0.5f;
+
         int daiCanhGioi = ThanThong.GetDaiCanhGioi(charStats.level);
+
+        float levelModifier = 1.0f + (charStats.level - 1) * 0.15f;
+
+        // 4. Tính hệ số đột biến khi tăng Đại Cảnh Giới
+        // Mỗi đại cảnh giới quái sẽ mạnh lên hẳn (ví dụ: nhân thêm 1.5 lần, 2.0 lần...)
+        float canhGioiModifier = Mathf.Pow(1.5f, daiCanhGioi);
+
+        // 5. Áp dụng công thức tổng
+        int finalHp = Mathf.RoundToInt(baseHp * levelModifier * canhGioiModifier);
+
+        // Gán lại cho Enemy
+        charStats.hpMax = finalHp;
+        charStats.hp = finalHp;
+
+
         int minRandom = 0;
         int maxRandom = 0;
         if (daiCanhGioi == 1)

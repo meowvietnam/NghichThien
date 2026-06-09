@@ -16,7 +16,10 @@ public class SkillTip : Tooltip
     [SerializeField] private Transform requireLinhKhiParent; // trong này gôm ảnh => text => ảnh => text =>...
     [SerializeField] private Sprite[] spriteLinhKhiTip; // trong này gôm ảnh => text => ảnh => text =>...
 
-
+    protected override void Awake()
+    {
+        
+    }
     public void ShowSkillTip(string nameTip,string desTip,string typeTip, List<ThanThong.RequireActive> requireLinhKhi,ThanThong thanThong, int level)
     {
         for (int i = 0; i < requireLinhKhiParent.transform.childCount; i++)

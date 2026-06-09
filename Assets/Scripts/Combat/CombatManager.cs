@@ -334,7 +334,36 @@ public class CombatManager : BaseBehaviour
             caster.PlaySkill(thanThong, linhKhiTieuTan);
             CombatStatic.TrienNhieu(target, caster);
             Observer.Notify(EventList.Combat.BEFORE_EXCUTE_SKILL , caster, target);
+            if (caster.IsDebuffTuoiTac)
+            {
+                caster.TakeDameByStatic(null, new List<int> { (int)(0.1f * caster.characterStatsTemp.hpMax) }, false);
 
+
+            }
+            if (caster.CurrentIndexDanDoc == 4)
+            {
+                caster.TakeDameByStatic(null, new List<int> { 30 }, false);
+
+
+            }
+            if (caster.IsDebuffTuoiTac || caster.CurrentIndexDanDoc ==4)
+            {
+                if(CombatStatic.IsActiveWithPercent(50))
+                {
+                    return;
+
+                }
+
+            }
+            if (target.characterStatsBase.ability.HasFlag(CreateCharacter.CharStats.Ability.ThienSinhDiDong))
+            {
+                if (caster.GetThanThuc() < target.GetThanThuc() &&CombatStatic.IsActiveWithPercent(10))
+                {
+                    return;
+
+                }
+
+            }
             if (caster.skillVoHieuHoa.Count > 0)
             {
                 target.RemoveAllThanThongImpactAfterPlaySkill(target.specialThanThongImpactAfterPlaySkill.FirstOrDefault(x=>x is AmDuongDong));
@@ -342,6 +371,7 @@ public class CombatManager : BaseBehaviour
                 return;
 
             }
+           
             ThanThong thanThongOldUse = caster.thanThongOldUse != null ? caster.thanThongOldUse.thanThong : null;
             thanThong.Execute(caster, target, data);
             if (thanThong is BaseSkill.LienKich thanThongLienKich && thanThongOldUse != null)
@@ -351,6 +381,10 @@ public class CombatManager : BaseBehaviour
                     Debug.Log("Liên kích!");
                     thanThongLienKich.ExecuteLienKich(caster, target);
                     Observer.Notify(EventList.Combat.LIEN_KICH, caster, target, thanThong, linhKhiTieuTan);
+                    if (caster.characterStatsBase.ability.HasFlag(CreateCharacter.CharStats.Ability.NguKhiTrieuNguyen))
+                    {
+                        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TuKhi,1);
+                    }
                 }
             }
             if (thanThong is BaseSkill.TuongSinh thanThongTuongSinh && GetETuongQuan(linhKhiTieuTan) == ETuongQuan.TuongSinh)
