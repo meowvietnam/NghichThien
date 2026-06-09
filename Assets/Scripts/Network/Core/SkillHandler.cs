@@ -250,18 +250,18 @@ namespace Network.Core
             else if (tag == MessageTag.TuLuyenResult)
             {
                 var result = reader.Read<TuLuyenResult>();
+                var charData = Client.Instance.CharacterData;
                 if (result.Success)
                 {
                     if (result.HasLevelUpdated)
                     {
-                        result.LevelUpdated.ApplyTo(Client.Instance.CharacterData);
+                        result.LevelUpdated.ApplyTo(charData);
                     }
                     else
                     {
-                        Client.Instance.CharacterData.Progression.CurrentExp = result.CurrentExp;
+                        charData.Progression.CurrentExp = result.CurrentExp;
                     }
-
-                    Client.Instance.CharacterData.Stats.LinhThach = result.RemainingMoney;
+                    charData.Stats.LinhThach = result.RemainingMoney;
                 }
 
                 NetworkManager.Instance.Invoke(() =>
@@ -283,6 +283,11 @@ namespace Network.Core
                 {
                     var type = result.Type;
                     var id = result.Id;
+                    var itemRef = new ItemRef()
+                    {
+                        Id = id,
+                        Type = type,
+                    };
                     var remainingMoney = result.RemainingMoney;
                     var newTuoiTac = result.NewTuoiTac;
                     var charData = Client.Instance.CharacterData;
@@ -293,7 +298,16 @@ namespace Network.Core
                             Id = id,
                             Level = 1
                         };
-                        charData.InventoryManager.Add(congPhap);
+                        var inventory = charData.InventoryManager;
+                        if (inventory.CongPhaps.TryGetValue(itemRef, out var cpRef))
+                        {
+                            cpRef.Count -= 1;
+                            if (cpRef.Count < 1)
+                            {
+                                inventory.CongPhaps.Remove(itemRef);
+                            }
+                        }
+                        inventory.Add(congPhap);
                     }
                     else if (type == ItemType.ThanThong)
                     {
@@ -301,7 +315,16 @@ namespace Network.Core
                         {
                             Id = id,
                         };
-                        charData.InventoryManager.Add(thanThong);
+                        var inventory = charData.InventoryManager;
+                        if (inventory.ThanThongs.TryGetValue(itemRef, out var ttRef))
+                        {
+                            ttRef.Count -= 1;
+                            if (ttRef.Count < 1)
+                            {
+                                inventory.ThanThongs.Remove(itemRef);
+                            }
+                        }
+                        inventory.Add(thanThong);
                     }
                     charData.Stats.LinhThach = remainingMoney;
                     charData.Stats.TuoiTac = newTuoiTac;
