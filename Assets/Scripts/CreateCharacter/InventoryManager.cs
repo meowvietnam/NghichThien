@@ -286,6 +286,11 @@ namespace CreateCharacter
         {
             CongPhapOwners.Add(congPhap);
         }
+
+        public void Add(ThanThong thanThong)
+        {
+            ThanThongOwners.Add(thanThong);
+        }
         public void ApplyModify(InventoryModify m)
         {
             m.Apply(this);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Base;
 using CreateCharacter;
 using LongDH.LongDHModules;
+using LuyenDan;
 using MemoryPack;
 using Network.Extensions;
 using Network.Models;
@@ -14,15 +15,17 @@ namespace Network.Core
     public partial class Test
     {
         public string Message { get; set; }
-        public Dictionary<int,string[]> Hellos { get; set; }
+        public Dictionary<int, string[]> Hellos { get; set; }
     }
+
     public class SkillHandler : IClientHandler
     {
         private static MessageTag[] handler =
-            { MessageTag.LearnNgoDaoResult, MessageTag.EquipThanThongResult, MessageTag.UnequipThanThongResult,
-                MessageTag.EquipCongPhapResult, MessageTag.UnequipCongPhapResult,
-                MessageTag.TuLuyenResult
-            };
+        {
+            MessageTag.LearnNgoDaoResult, MessageTag.EquipThanThongResult, MessageTag.UnequipThanThongResult,
+            MessageTag.EquipCongPhapResult, MessageTag.UnequipCongPhapResult,
+            MessageTag.TuLuyenResult, MessageTag.LinhNgoResult
+        };
 
         public MessageTag[] HandleTag => handler;
         private INetworkEvent.ILearnNgoDao learnNgoDaoCallback;
@@ -31,14 +34,30 @@ namespace Network.Core
         private INetworkEvent.IEquipCongPhap equipCongPhapCallback;
         private INetworkEvent.IUnEquipCongPhap unequipCongPhapCallback;
         private INetworkEvent.ITuLuyen tuLuyenCallback;
+        private INetworkEvent.ILinhNgo linhNgoCallback;
+
         public void OnEnter()
         {
             Observer.AddObserver(EventList.Network.LEARN_NGODAO, LearnNgoDaoRequest);
             Observer.AddObserver(EventList.Network.EQUIP_THANTHONG, EquipThanThong);
             Observer.AddObserver(EventList.Network.UNEQUIP_THANTHONG, UnEquipThanThong);
-            Observer.AddObserver(EventList.Network.EQUIP_CONGPHAP,EquipCongPhap);
-            Observer.AddObserver(EventList.Network.UNEQUIP_CONGPHAP,UnEquipCongPhap);
+            Observer.AddObserver(EventList.Network.EQUIP_CONGPHAP, EquipCongPhap);
+            Observer.AddObserver(EventList.Network.UNEQUIP_CONGPHAP, UnEquipCongPhap);
             Observer.AddObserver(EventList.Network.TU_LUYEN, TuLuyen);
+            Observer.AddObserver(EventList.Network.LINH_NGO, LinhNgo);
+        }
+
+        private void LinhNgo(object[] data)
+        {
+            linhNgoCallback = data[0] as INetworkEvent.ILinhNgo;
+            var id = (int)data[1];
+            var type = (ItemType)data[2];
+            var linhNgo = new LinhNgo()
+            {
+                Id = id,
+                Type = type,
+            };
+            Client.Instance.Send(MessageTag.LinhNgo, linhNgo);
         }
 
         private void TuLuyen(object[] data)
@@ -51,14 +70,14 @@ namespace Network.Core
         private void UnEquipCongPhap(object[] data)
         {
             unequipCongPhapCallback = data[0] as INetworkEvent.IUnEquipCongPhap;
-            var slot = (ETypeSlotCP) data[1];
+            var slot = (ETypeSlotCP)data[1];
             Client.Instance.Send(MessageTag.UnequipCongPhap, slot);
         }
 
         private void EquipCongPhap(object[] data)
         {
             equipCongPhapCallback = data[0] as INetworkEvent.IEquipCongPhap;
-            var slot = (ETypeSlotCP) data[1];
+            var slot = (ETypeSlotCP)data[1];
             var id = (ushort)data[2];
             var request = new EquipCongPhap()
             {
@@ -109,6 +128,7 @@ namespace Network.Core
                     charData.ApplyBuff(result.Buff);
                     charData.Progression.NgoDaoDiem = result.NewNgoDaoDiem;
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -129,6 +149,7 @@ namespace Network.Core
                     var charData = Client.Instance.CharacterData;
                     charData.EquipThanThong(result);
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -150,6 +171,7 @@ namespace Network.Core
                     var charData = Client.Instance.CharacterData;
                     charData.EquipmentManager.UnEquipThanThong(id);
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -177,8 +199,10 @@ namespace Network.Core
                     {
                         return;
                     }
+
                     congPhapOwner.GetCongPhap().EquipCongPhap(charData, congPhapOwner.Level);
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -207,6 +231,7 @@ namespace Network.Core
                     {
                         return;
                     }
+
                     congPhapOwner.GetCongPhap().UnEquipCongPhap(charData, congPhapOwner.Level);
                 }
 
@@ -235,7 +260,10 @@ namespace Network.Core
                     {
                         Client.Instance.CharacterData.Progression.CurrentExp = result.CurrentExp;
                     }
+
+                    Client.Instance.CharacterData.Stats.LinhThach = result.RemainingMoney;
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -245,6 +273,48 @@ namespace Network.Core
                     else
                     {
                         tuLuyenCallback.FailTuLuyen(result.Message);
+                    }
+                });
+            }
+            else if (tag == MessageTag.LinhNgoResult)
+            {
+                var result = reader.Read<LinhNgoResult>();
+                if (result.Success)
+                {
+                    var type = result.Type;
+                    var id = result.Id;
+                    var remainingMoney = result.RemainingMoney;
+                    var newTuoiTac = result.NewTuoiTac;
+                    var charData = Client.Instance.CharacterData;
+                    if (type == ItemType.CongPhap)
+                    {
+                        var congPhap = new CongPhap()
+                        {
+                            Id = id,
+                            Level = 1
+                        };
+                        charData.InventoryManager.Add(congPhap);
+                    }
+                    else if (type == ItemType.ThanThong)
+                    {
+                        var thanThong = new ThanThong()
+                        {
+                            Id = id,
+                        };
+                        charData.InventoryManager.Add(thanThong);
+                    }
+                    charData.Stats.LinhThach = remainingMoney;
+                    charData.Stats.TuoiTac = newTuoiTac;
+                }
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    if (result.Success)
+                    {
+                        linhNgoCallback.SuccessLinhNgo();
+                    }
+                    else
+                    {
+                        linhNgoCallback.FailLinhNgo(result.Message);
                     }
                 });
             }

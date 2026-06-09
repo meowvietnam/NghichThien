@@ -20,7 +20,7 @@ namespace CreateCharacter.CharStats
         [field: SerializeField] public int NgoTinh { get; private set; }
         [field: SerializeField] public int ThanThuc { get; set; }
         [field: SerializeField] public int TocDoBay { get; set; }
-        [field: SerializeField] public int LinhThach { get; private set; }
+        [field: SerializeField] public int LinhThach { get; set; }
         [field: SerializeField] public int Hp { get; set; }
         [field: SerializeField] public int SinhMenh { get; set; }
         [field: SerializeField] public int ThoNguyen { get; set; }

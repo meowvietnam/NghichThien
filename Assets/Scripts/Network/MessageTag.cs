@@ -82,5 +82,8 @@ namespace Network
         
         TuLuyen = 370,
         TuLuyenResult = 371,
+        
+        LinhNgo = 382,
+        LinhNgoResult = 383,
     }
 }
