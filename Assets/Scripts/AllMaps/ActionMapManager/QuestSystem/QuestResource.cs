@@ -59,7 +59,7 @@ public abstract class SideQuestResource : QuestResource,INetworkEvent.ICompleteS
     }
     public override void QuestDoneData()
     {
-        Observer.Notify(EventList.Network.COMPLETE_SIDEQUEST, this, Type, listIdNPCInteractive);
+        Observer.Notify(EventList.Network.COMPLETE_SIDEQUEST, this, listIdNPCInteractive);
         foreach (var item in listNPCInteractive)
         {
             NotifyGroup.Instance.Show($"Hảo cảm của {item.nameUser} tăng thêm 10");
