@@ -27,7 +27,15 @@ public class Popup : BaseBehaviour
         {
             ActionBtnClose();
         });
-        Pool.Get<UIManager>().RegisterOpenPopup();
+        if(commonMask == null)
+        {
+            Pool.Get<UIManager>().RegisterOpenPopup();
+        }    
+        else
+        {
+            commonMask.gameObject.SetActive(true);
+        }    
+
     }
     public void InitActionClose(Action action)
     {
@@ -43,7 +51,14 @@ public class Popup : BaseBehaviour
 
         actionComplete?.Invoke();
         gameObject.SetActive(false);
-        Pool.Get<UIManager>().RegisterClosePopup();
+        if (commonMask == null)
+        {
+            Pool.Get<UIManager>().RegisterClosePopup();
+        }
+        else
+        {
+            commonMask.gameObject.SetActive(false);
+        }
 
     }
     // Coroutine này giờ không cần nằm trong Popup nữa (hoặc giữ lại nhưng chạy ké qua UI Manager)
