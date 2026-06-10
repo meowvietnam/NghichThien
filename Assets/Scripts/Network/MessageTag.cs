@@ -82,5 +82,11 @@ namespace Network
         
         TuLuyen = 370,
         TuLuyenResult = 371,
+
+
+
+        JoinMonPhai = 392,
+        JoinMonPhaiResult = 393,
+
     }
 }
