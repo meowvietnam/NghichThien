@@ -94,7 +94,6 @@ public enum EBuffAndDeBuff
 public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
 {
     [SerializeField] public int baseTimeLearn;
-
     [Button]
     public virtual void SetBaseTimeLearn()
     {
@@ -1061,7 +1060,8 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
     public override int ByteSize()
     {
         return base.ByteSize() + eTierSkill.ByteSize() + eTypeSkill.ByteSize()
-               + eKeywordSkillHave.ByteSize() + eKeywordBuffSkillHave.ByteSize();
+               + eKeywordSkillHave.ByteSize() + eKeywordBuffSkillHave.ByteSize()
+               + baseTimeLearn.ByteSize();
     }
 
     public void Deserialize(IReader reader, ref BaseSkill value)
@@ -1072,6 +1072,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
         value.eTypeSkill = reader.ReadArray<ETypeSkill>();
         value.eKeywordSkillHave = reader.ReadArray<EKeyWord>();
         value.eKeywordBuffSkillHave = reader.ReadArray<EBuffAndDeBuff>();
+        value.baseTimeLearn = reader.Read<int>();
     }
 
     public override void Serialize(IWriter writer)
@@ -1081,5 +1082,6 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
         writer.WriteArray(eTypeSkill);
         writer.WriteArray(eKeywordSkillHave);
         writer.WriteArray(eKeywordBuffSkillHave);
+        writer.Write(baseTimeLearn);
     }
 }

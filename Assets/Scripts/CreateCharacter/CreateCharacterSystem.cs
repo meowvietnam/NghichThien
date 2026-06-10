@@ -114,14 +114,7 @@ namespace CreateCharacter
                 {
                     var characterData = result.CharacterData;
                     Client.Instance.SetChar(characterData);
-                    var module = Client.Instance.CoreModule;
-                    var sceneManager = new Network.Core.SceneManager();
-                    module.RemoveHandler<Network.Core.SceneManager>();
-                    module.AddHandler(sceneManager);
-                    var skillHandler = new Network.Core.SkillHandler();
-                    module.RemoveHandler<Network.Core.SkillHandler>();
-                    module.AddHandler(skillHandler);
-                    AdminPanel.Instance.StartListen();
+                    Client.Instance.OnSelectedCharacter();
                     Debug.Log("Load");
                     var op = SceneManager.LoadSceneAsync("AllMaps");
                     if (op != null)

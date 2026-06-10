@@ -55,5 +55,17 @@ namespace Network
         {
             CharacterData = characterData;
         }
+
+        public void OnSelectedCharacter()
+        {
+            var module = CoreModule;
+            var sceneManager = new Core.SceneManager();
+            module.RemoveHandler<Core.SceneManager>();
+            module.AddHandler(sceneManager);
+            var skillHandler = new Core.SkillHandler();
+            module.RemoveHandler<Core.SkillHandler>();
+            module.AddHandler(skillHandler);
+            AdminPanel.Instance.StartListen();
+        }
     }
 }
