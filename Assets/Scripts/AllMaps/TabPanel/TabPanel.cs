@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 using CongPhap = Skill.CongPhap;

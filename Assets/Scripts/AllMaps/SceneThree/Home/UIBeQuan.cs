@@ -1,6 +1,8 @@
-﻿using Base;
+﻿using AllMaps.ItemProvider;
+using Base;
 using CreateCharacter;
 using LongDH.LongDHModules;
+using LongDHModules;
 using LuyenDan;
 using Network;
 using System;
@@ -13,8 +15,6 @@ using UnityEngine.UI;
 using static UnityEngine.Analytics.IAnalytic;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
-using AllMaps.ItemProvider;
-using LongDHModules;
 
 public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.ILinhNgo, INetworkEvent.IDotPhaCongPhap
 {
@@ -353,14 +353,22 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                         }
                         textInfor.text = cp.GetDesc(daiCanhGioiCP);
                     }
-                    textTimer.text = GameManager.GetTimeWorldText(skill.baseTimeLearn/(30*Client.Instance.CharacterData.Stats.NgoTinh));
-
+                    textTimer.text = GameManager.GetTimeWorldText(skill.baseTimeLearn / (30f * Client.Instance.CharacterData.Stats.NgoTinh));
                 }
                 SetEventButton(btnLinhHoi, () =>
                 {
+                    Debug.Log("btnLinhHoi");
                     if (charData.Stats.LinhThach >= cost)
                     {
-                        Observer.Notify(EventList.Network.LINH_NGO, this, itemRef.Id, itemRef.Type);
+                        Debug.Log("Xác nhận lĩnh ngộ");
+
+                        Pool.Get<PopupConfirmAction>().ShowPopConfirmAction($"Xác nhận lĩnh ngộ {data.nameItem}", () =>
+                        {
+                            item.gameObject.SetActive(false);
+                            textNameLinhHoi.transform.parent.gameObject.SetActive(false);
+                            Observer.Notify(EventList.Network.LINH_NGO, this, (int)itemRef.Id, itemRef.Type);
+
+                        });
                     }
                 });
                 SetEventButton(btnUnLinhHoi, () =>
@@ -482,7 +490,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                             }
                         }
                     }
-                    textTimerUpdateCongPhap.text = GameManager.GetTimeWorldText(skill.baseTimeLearn / (30 * Client.Instance.CharacterData.Stats.NgoTinh));
+                    textTimerUpdateCongPhap.text = GameManager.GetTimeWorldText(skill.baseTimeLearn / (30f * Client.Instance.CharacterData.Stats.NgoTinh));
 
                 }
                
@@ -490,7 +498,12 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 {
                     if (charData.Stats.LinhThach >= cost && charData.InventoryManager.CongPhaps.Count(x => x.Id == itemRef.Id) >= cost2)
                     {
-                        Observer.Notify(EventList.Network.DOT_PHA_CONGPHAP, this, itemRef.Id, itemRef.Type);
+                        Pool.Get<PopupConfirmAction>().ShowPopConfirmAction($"Xác nhận đột phá {data.nameItem}", () =>
+                        {
+                            item.actionPointerDown?.Invoke();
+                            Observer.Notify(EventList.Network.DOT_PHA_CONGPHAP, this, (int)itemRef.Id, itemRef.Type);
+
+                        });
                     }
                 });
                 SetEventButton(btnUnUpdateCongPhap, () =>
@@ -528,7 +541,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
 
     public void SuccessTuLuyen()
     {
-        throw new NotImplementedException();
+        Observer.Notify(EventList.GamePlay.TIME_ADJUST);
     }
 
     public void FailTuLuyen(string message)
@@ -538,17 +551,19 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
 
     public void SuccessLinhNgo()
     {
-        throw new NotImplementedException();
+        NotifyGroup.Instance.Show("Lĩnh ngộ thành công");
+        Observer.Notify(EventList.GamePlay.TIME_ADJUST);
+
     }
 
     public void FailLinhNgo(string message)
     {
-        throw new NotImplementedException();
+        NotifyGroup.Instance.Show(message);
     }
 
     public void SuccessDotPhaCongPhap()
     {
-        throw new NotImplementedException();
+        Observer.Notify(EventList.GamePlay.TIME_ADJUST);
     }
 
     public void FailDotPhaCongPhap(string message)

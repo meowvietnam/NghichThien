@@ -8,6 +8,7 @@ using MemoryPack;
 using Network.Extensions;
 using Network.Models;
 using Spine;
+using UnityEngine;
 
 namespace Network.Core
 {
@@ -278,9 +279,12 @@ namespace Network.Core
             }
             else if (tag == MessageTag.LinhNgoResult)
             {
+                Debug.Log("Receive LinhNgoResult");
                 var result = reader.Read<LinhNgoResult>();
                 if (result.Success)
                 {
+                    Debug.Log("Success LinhNgoResult");
+
                     var type = result.Type;
                     var id = result.Id;
                     var itemRef = new ItemRef()

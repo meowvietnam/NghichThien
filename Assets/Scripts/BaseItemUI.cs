@@ -15,9 +15,9 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
     [SerializeField] public Image frame;
     [SerializeField] protected Image progressHold;
     [SerializeField] public BaseItemData itemData;
-    [SerializeField] protected Action actionHolder;
-    [SerializeField] protected Action actionPointerUp;
-    [SerializeField] protected Action actionPointerDown;
+    [SerializeField] public Action actionHolder;
+    [SerializeField] public Action actionPointerUp;
+    [SerializeField] public Action actionPointerDown;
     [SerializeField] protected Image selectHighLight;
     public void SetSelectHighlight(bool isActive)
     {

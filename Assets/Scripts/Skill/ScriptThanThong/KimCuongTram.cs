@@ -27,7 +27,7 @@ public class KimCuongTram : ThanThong, BaseSkill.LienKich, IMemorySerializable<K
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{dame[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} nếu trước đó dùng Thổ hệ kĩ năng thì hấp thụ {GetColoredText($"+{hapThu}", "red")} điểm linh khí";
+        return $"Tạo thành {GetColoredText($"{dame[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} nếu trước đó dùng Thổ hệ kĩ năng thì hấp thụ {GetColoredText($"+{hapThu[level-1]}", "red")} điểm linh khí";
     }
 
     public override int ByteSize()

@@ -31,7 +31,7 @@ using UnityEditor;
 
 public class GameManager : BaseBehaviour
 {
-    [SerializeField] private List<string> listSceneLoaded = new List<string>
+    [SerializeField] public List<string> listSceneLoaded = new List<string>
     {
         "AllMaps",
     };
@@ -809,11 +809,11 @@ public class GameManager : BaseBehaviour
     {
         return (int)(timeSpanTuoiTac.TotalDays / 365);
     }
-    public static TimeSpan ConvertMonthToTimeSpan(int months)
+    public static TimeSpan ConvertMonthToTimeSpan(float months)
     {
         return TimeSpan.FromDays(months * 30);
     }
-    public static String GetTimeWorldText(int monthsRef)
+    public static String GetTimeWorldText(float monthsRef)
     {
         // 1. Lấy giá trị TimeSpan gốc
         TimeSpan originalAge = ConvertMonthToTimeSpan(monthsRef);

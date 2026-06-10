@@ -36,6 +36,10 @@ public abstract class ActionMapManager : MonoBehaviour , IUISingleton
     }
     private void OnTimeAdjust()
     {
+        if (SceneManager.GetActiveScene().name != Pool.Get<GameManager>().listSceneLoaded[0])
+        {
+            return;
+        }
         // 1. Lấy tổng số tháng hiện tại của thế giới
         int timeWordCurrent = GameManager.GetTimeWorldIntPlayer();
 
