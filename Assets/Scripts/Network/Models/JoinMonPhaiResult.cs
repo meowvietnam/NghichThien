@@ -3,7 +3,7 @@ using MemoryPack;
 using System.Collections;
 using UnityEngine;
 
-namespace Assets.Scripts.Network.Models
+namespace Network.Models
 {
     [MemoryPackable]
     public partial class JoinMonPhaiResult

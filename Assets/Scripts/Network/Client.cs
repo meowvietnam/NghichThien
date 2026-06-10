@@ -65,6 +65,11 @@ namespace Network
             var skillHandler = new Core.SkillHandler();
             module.RemoveHandler<Core.SkillHandler>();
             module.AddHandler(skillHandler);
+
+            var monPhaiHandler = new Core.MonPhaiHandler();
+            module.RemoveHandler<Core.MonPhaiHandler>();
+            module.AddHandler(monPhaiHandler);
+
             AdminPanel.Instance.StartListen();
         }
     }

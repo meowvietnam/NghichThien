@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Network.Models;
-using Base;
+﻿using Base;
 using LongDH.LongDHModules;
 using Network;
 using Network.Core;
@@ -10,7 +9,7 @@ using System.Collections;
 using UnityEngine;
 using static INetworkEvent;
 
-namespace Assets.Scripts.Network.Core
+namespace Network.Core
 {
     public class MonPhaiHandler : IClientHandler
     {
