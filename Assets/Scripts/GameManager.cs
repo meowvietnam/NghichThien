@@ -1149,5 +1149,38 @@ public class GameManager : BaseBehaviour
         File.WriteAllBytes(path, writer.Buffer);
         Debug.Log(path);
     }
-    
+
+    [Button]
+    public void SetTimeLearnSkill()
+    {
+        foreach (var item in thanThongs)
+        {
+            item.SetBaseTimeLearn();
+#if UNITY_EDITOR
+            // Đánh dấu file Thần Thông này đã bị sửa đổi
+            EditorUtility.SetDirty(item);
+#endif
+        }
+        foreach (var item in congPhaps)
+        {
+            item.SetBaseTimeLearn();
+#if UNITY_EDITOR
+            // Đánh dấu file Công Pháp này đã bị sửa đổi
+            EditorUtility.SetDirty(item);
+#endif
+
+        }
+#if UNITY_EDITOR
+        // Đánh dấu file tổng này thay đổi (để lưu danh sách nếu có thay đổi)
+        EditorUtility.SetDirty(this);
+
+        // Ép Unity ghi toàn bộ các file đã đánh dấu ở trên xuống ổ cứng
+        AssetDatabase.SaveAssets();
+
+        // Buộc Editor vẽ lại giao diện ngay lập tức để cập nhật số liệu mới hiển thị
+        AssetDatabase.Refresh();
+
+        Debug.Log("Đã lưu data thành công cho từng Thần Thông và Công Pháp!");
+#endif
+    }
 }

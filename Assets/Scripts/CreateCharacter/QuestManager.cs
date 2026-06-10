@@ -10,7 +10,7 @@ namespace CreateCharacter
     public class QuestManager : IMemorySerializable<QuestManager>
     {
         [field: SerializeField]
-        public int CurrentMainQuest { get; private set; } = 0;
+        public int CurrentMainQuest { get; set; } = 0;
         [field: SerializeField]
         public int CurrentCountSideQuest { get; private set; } = 0;
         public void Deserialize(IReader reader, ref QuestManager value)

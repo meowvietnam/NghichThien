@@ -1,12 +1,16 @@
 ﻿using AllMaps;
 using Base;
 using LongDH.LongDHModules;
+using LongDHModules;
 using Network;
+using Network.Extensions;
+using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using LongDHModules;
+using UnityEditor;
 using UnityEngine;
 
 public class MainQuestManager : BaseBehaviour , IUISingleton
@@ -39,9 +43,9 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
                 .FirstOrDefault(quest => quest != null);
 
             // KIỂM TRA ĐỔI QUEST: Nếu tìm thấy Main Quest cũ trên map, mà ID của nó đã khác với ID Quest hiện tại của Player
-            if (firstMainQuest != null && firstMainQuest.id != CurrentMainQuest.id)
+            if (firstMainQuest != null && firstMainQuest.Id != CurrentMainQuest.Id)
             {
-                Debug.Log($"[Quest System] Phát hiện đổi Main Quest từ ID: {firstMainQuest.id} sang ID mới: {CurrentMainQuest.id}. Tiến hành dọn dẹp Map cũ.");
+                Debug.Log($"[Quest System] Phát hiện đổi Main Quest từ ID: {firstMainQuest.Id} sang ID mới: {CurrentMainQuest.Id}. Tiến hành dọn dẹp Map cũ.");
 
                 // Xóa dữ liệu quest cũ trên các node map
                 currentMapMainQuests.ForEach(x => x?.ResetDataAction());
@@ -62,10 +66,10 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
     }
     public void MainQuestDone()
     {
-        Pool.Get<QuestManager>().currentQuest.QuestDoneData();
+        Pool.Get<QuestManager>().currentQuest.QuestDoneData(); // gửi lên sv quest id cũ
         Pool.Get<QuestManager>().currentQuest = null;
         currentMapMainQuests.Clear();
-        currentMainQuest++;
+        currentMainQuest++; // + luôn id 
     }
 
     public void Init()
@@ -77,4 +81,26 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
         CheckSpawnQuest();
 
     }
+    [Button]
+    public void ExportMainQuestRS()
+    {
+        var guids = AssetDatabase.FindAssets("t:BaseData");
+        var assets = guids.Select(x => AssetDatabase.GUIDToAssetPath(x))
+            .Select(x => AssetDatabase.LoadAssetAtPath<BaseData>(x))
+            .OrderBy(x => x.GetType().Name)
+            .ToList();
+
+        var mainQuests = assets.OfType<MainQuestResource>().ToList();
+        this.mainQuestResources = mainQuests;
+       
+        var mainQuestRS = new MainQuestManagerModel()
+        {
+            MainQuestResource = mainQuests,
+        };
+        var writer = new Writer(mainQuestRS.ByteSize());
+        writer.Write(mainQuestRS);
+        var path = Path.Combine(Application.dataPath, "Exports", "MainQuestManagerModel.bin");
+        File.WriteAllBytes(path, writer.Buffer);
+    }
+
 }

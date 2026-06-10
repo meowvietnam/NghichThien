@@ -1,17 +1,18 @@
 ﻿using AllMaps;
 using DG.Tweening;
 using LongDH.LongDHModules;
+using LongDHModules;
 using Network;
+using Network.Extensions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LongDHModules;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = nameof(MainQuestResource), menuName = "Action Map/Main Quest/" + nameof(MainQuestResource))]
-public class MainQuestResource : QuestResource, INetworkEvent.ICompleteMainQuest
+public class MainQuestResource : QuestResource, INetworkEvent.ICompleteMainQuest , IMemorySerializable<MainQuestResource>
 {
-    public int id;
     public override List<string> CompleteQuest => completeQuest;
     public List<string> completeQuest;
     public List<string> startQuest;
@@ -44,7 +45,7 @@ public class MainQuestResource : QuestResource, INetworkEvent.ICompleteMainQuest
         {
             string detailedDesc = !string.IsNullOrEmpty(descDoneQuest) ? $"\n{descDoneQuest}" : "";
 
-            Pool.Get<EventRewardPanel>().InitShowEventReward(rewardRef, $"Hoàn thành chương {id}{detailedDesc}");
+            Pool.Get<EventRewardPanel>().InitShowEventReward(rewardRef, $"Hoàn thành chương {Id}{detailedDesc}");
         },completeQuest,spriteListAvatarDone,voiceComplete,spriteDoneQuest);
       
     }
@@ -145,5 +146,24 @@ public class MainQuestResource : QuestResource, INetworkEvent.ICompleteMainQuest
     public override void QuestDoneUI()
     {
         Pool.Get<MainQuestManager>().MainQuestDone();
+    }
+
+    public void Deserialize(IReader reader, ref MainQuestResource value)
+    {
+        BaseData baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+        value.levelRequire = reader.Read<int>();
+        value.rewardRef = reader.Read<RewardSnapshot>();
+    }
+    public override int ByteSize()
+    {
+        var byteSize = base.ByteSize();
+        return byteSize + levelRequire.ByteSize() + rewardRef.ByteSize();
+    }
+    public override void Serialize(IWriter writer)
+    {
+        base.Serialize(writer);
+        writer.Write(levelRequire);
+        writer.Write(rewardRef);
     }
 }
