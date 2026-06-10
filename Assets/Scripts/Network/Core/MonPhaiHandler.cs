@@ -18,7 +18,7 @@ namespace Network.Core
             };
 
         public MessageTag[] HandleTag => handler;
-        private INetworkEvent.IJoinMonPhai joinMonPhaiCallback;
+        private IJoinMonPhai joinMonPhaiCallback;
 
         public void Handle(Message<MessageTag> message)
         {

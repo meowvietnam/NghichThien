@@ -215,6 +215,13 @@ namespace Network
             };
             Client.Send(MessageTag.AddCongPhap, cp);
         }
+
+        [Button]
+        [ShowIf(nameof(IsReady))]
+        public void SetMoneyVip(int money)
+        {
+            Client.Send(MessageTag.SetMoneyVip, money);
+        }
         public void OnEnter()
         {
         }
@@ -249,6 +256,11 @@ namespace Network
                 var congPhap = reader.Read<CreateCharacter.CongPhap>();
                 Client.CharacterData.InventoryManager.AddOrUpdate(congPhap);
             }
+            else if (tag == MessageTag.SetMoneyVipResult)
+            {
+                var money = reader.Read<int>();
+                Client.CharacterData.MoneyVip = money;
+            }
         }
 
         public void OnLeave()
@@ -262,7 +274,7 @@ namespace Network
         private static readonly MessageTag[] handler =
         {
             MessageTag.AddItemsResult, MessageTag.SetNgoDaoDiemResult, MessageTag.SetCamNgoResult,
-            MessageTag.AddThanThongResult, MessageTag.AddCongPhapResult
+            MessageTag.AddThanThongResult, MessageTag.AddCongPhapResult, MessageTag.SetMoneyVipResult,
         };
 
         public MessageTag[] HandleTag => handler;

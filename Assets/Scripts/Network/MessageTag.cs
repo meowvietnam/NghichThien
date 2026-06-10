@@ -57,6 +57,8 @@ namespace Network
         AddThanThongResult = 235,
         AddCongPhap = 236,
         AddCongPhapResult = 237,
+        SetMoneyVip = 238,
+        SetMoneyVipResult = 239,
         
         ChangeScene = 256,
         ChangeSceneResult = 257,
