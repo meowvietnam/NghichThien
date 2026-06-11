@@ -195,7 +195,7 @@ public class UIManager : BaseBehaviour
             item.Init();
         }
     }
-    [SerializeField]private int activePopupCount = 0; // Biến đếm số lượng popup đang mở
+    [SerializeField]public int activePopupCount = 0; // Biến đếm số lượng popup đang mở
 
     public void RegisterOpenPopup()
     {

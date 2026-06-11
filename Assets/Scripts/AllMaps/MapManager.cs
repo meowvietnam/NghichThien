@@ -118,6 +118,7 @@ namespace AllMaps
         }
         public void PlayerMoveTo(Map map)
         {
+            if (CameraFollow.Instance.target != player.transform) return;
             if (isDelayAfterLoadScene) return;
             if (map == current) return;
             if (player.IsMoving) return;

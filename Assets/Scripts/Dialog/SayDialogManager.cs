@@ -22,7 +22,7 @@ public class SayDialogManager : BaseBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private Text textContent;
     private Coroutine typingCoroutine;
-    private Popup panel => textContent.transform.parent.GetComponent<Popup>();
+    public Popup panel => textContent.transform.parent.GetComponent<Popup>();
     public Button btnPanel;
     private bool isTyping = false; // Đang chạy chữ
     private bool isDone = false;   // Đã hiện full chữ

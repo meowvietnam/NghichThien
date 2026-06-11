@@ -1,5 +1,6 @@
 ﻿using AllMaps;
 using Base;
+using DG.Tweening;
 using LongDH.LongDHModules;
 using LongDHModules;
 using Network;
@@ -7,6 +8,7 @@ using Network.Extensions;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,6 +32,8 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
             {
                 currentMapMainQuests.Add(mapManager.SetDataOnMap(CurrentMainQuest, item));
             }
+            StartCameraCinematic();
+
         }
         else
         {
@@ -57,7 +61,39 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
         }
 
     }
-   
+    // Gọi hàm này để bắt đầu chuỗi sự kiện camera
+    public void StartCameraCinematic()
+    {
+        StartCoroutine(FollowItemsOneByOneRoutine());
+    }
+
+    private IEnumerator FollowItemsOneByOneRoutine()
+    {
+        var player = Pool.Get<Player>();    
+        while (player.IsMoving || Pool.Get<UIManager>().activePopupCount > 0)
+        {
+            yield return null; // Chờ đến frame tiếp theo và kiểm tra lại trạng thái di chuyển của player
+            yield return null; // Chờ đến frame tiếp theo và kiểm tra lại trạng thái di chuyển của player
+
+        }
+        // 1. Duyệt qua từng quest item
+        foreach (var item in currentMapMainQuests)
+        {
+            if (item == null) continue;
+
+            // Tập trung camera vào item hiện tại
+            CameraFollow.Instance.target = item.transform;
+
+            // Chờ 2 giây trước khi tiếp tục vòng lặp
+            yield return new WaitForSeconds(1f);
+        }
+
+        // 2. Sau khi đã đi qua hết tất cả các item, quay lại follow Player
+        if (player != null)
+        {
+            CameraFollow.Instance.target = player.transform;
+        }
+    }
     private void RemoveMap(params object[] data)
     {
         Map map = (Map)data[0];
@@ -69,7 +105,6 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
         Pool.Get<QuestManager>().currentQuest.QuestDoneData(); // gửi lên sv quest id cũ
         Pool.Get<QuestManager>().currentQuest = null;
         currentMapMainQuests.Clear();
-        currentMainQuest++; // + luôn id 
     }
 
     public void Init()

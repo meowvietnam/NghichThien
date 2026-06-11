@@ -1,8 +1,10 @@
-﻿using LongDH.LongDHModules;
+﻿using CreateCharacter;
+using DG.Tweening.Core.Easing;
+using LongDH.LongDHModules;
+using LongDHModules;
 using Network;
 using System;
 using System.Collections.Generic;
-using LongDHModules;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -86,11 +88,13 @@ namespace AllMaps
 
         public void SuccessJoinMonPhai()
         {
-
+            NotifyGroup.Instance.Show($"Thành công gia nhập {GameManager.monPhaiText.GetValueOrDefault(Pool.Get<GameManager>().CurrentEMonPhai)}");
         }
 
         public void FailJoinMonPhai(string message)
         {
+            Debug.Log("FailJoinMonPhai + " + message);
+
         }
     }
 }
