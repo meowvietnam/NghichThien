@@ -53,6 +53,7 @@ namespace Network.Core
                 {
                     var charData = Client.Instance.CharacterData;
                     charData.MoneyVip += result.MoneyVipRandom;
+                    charData.QuestManager.CurrentCountSideQuest = result.CurrentSideQuest;
                 }
                 NetworkManager.Instance.Invoke(() =>
                 {

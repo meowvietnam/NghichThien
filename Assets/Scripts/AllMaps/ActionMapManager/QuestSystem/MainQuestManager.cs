@@ -87,7 +87,7 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
         var guids = AssetDatabase.FindAssets("t:BaseData");
         var assets = guids.Select(x => AssetDatabase.GUIDToAssetPath(x))
             .Select(x => AssetDatabase.LoadAssetAtPath<BaseData>(x))
-            .OrderBy(x => x.GetType().Name)
+            .OrderBy(x => x.Id)
             .ToList();
 
         var mainQuests = assets.OfType<MainQuestResource>().ToList();

@@ -12,7 +12,7 @@ namespace CreateCharacter
         [field: SerializeField]
         public int CurrentMainQuest { get; set; } = 0;
         [field: SerializeField]
-        public int CurrentCountSideQuest { get; private set; } = 0;
+        public int CurrentCountSideQuest { get; set; } = 0;
         public void Deserialize(IReader reader, ref QuestManager value)
         {
             value.CurrentMainQuest = reader.Read<int>();
