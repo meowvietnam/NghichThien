@@ -67,7 +67,6 @@ public class SideQuestManager : ActionEnterMapManager
         SayDialogManager.Instance.ShowDialogWithSkin(characterShow.nameUser, characterShow.Gender, characterShow.Skins, characterShow.Colors, Pool.Get<QuestManager>().currentQuest.CompleteQuest, null, null, () => {
             Pool.Get<QuestManager>().currentQuest.QuestDoneData();
             // Fake Reward
-            Pool.Get<EventRewardPanel>().InitShowEventReward(new RewardSnapshot { MoneyVip = 50 }, $"{Pool.Get<QuestManager>().currentQuest.CompleteQuest[Pool.Get<QuestManager>().currentQuest.CompleteQuest.Count - 1]}");
             Pool.Get<QuestManager>().currentQuest = null;
             actionDoneDialog?.Invoke();
 

@@ -1,6 +1,7 @@
 using System;
 using CreateCharacter;
 using Network.ClientState;
+using Network.Core;
 using Network.Extensions;
 using UnityEngine;
 
@@ -69,6 +70,10 @@ namespace Network
             var monPhaiHandler = new Core.MonPhaiHandler();
             module.RemoveHandler<Core.MonPhaiHandler>();
             module.AddHandler(monPhaiHandler);
+
+            var questHandler = new QuestHandler();
+            module.RemoveHandler<QuestHandler>();
+            module.AddHandler(questHandler);
 
             AdminPanel.Instance.StartListen();
         }

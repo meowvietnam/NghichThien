@@ -123,5 +123,6 @@ public abstract class SideQuestResource : QuestResource,INetworkEvent.ICompleteS
 
     public void FailCompleteSideQuest(string message)
     {
+        NotifyGroup.Instance.Show(message);
     }
 }
