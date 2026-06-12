@@ -81,5 +81,7 @@ public static partial class EventList
         public const string JOIN_MONPHAI = "Network.JOIN_MONPHAI";
         public const string COMPLETE_MAINQUEST = "Network.COMPLETE_MAINQUEST";
 
+        public const string WIN_COMBAT_BASE = "Network.WIN_COMBAT_BASE";
+
     }
 }

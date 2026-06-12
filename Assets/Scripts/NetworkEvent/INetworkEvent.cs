@@ -125,4 +125,10 @@ public class INetworkEvent
         void SuccessCompleteMainQuest();
         void FailMainQuest(string message);
     }
+    public interface IWinCombatBase// Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessWinCombatBase(RewardSnapshot rewardSnapshot);
+        void FailWinCombatBase(string message);
+    }
+   
 }

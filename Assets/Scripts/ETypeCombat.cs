@@ -6,7 +6,7 @@ public enum ETypeCombat
     AllMaps,
     LuanBan,
     DauTruong,
-    
+    Boss,
 }
 public enum ECombatResult
 {

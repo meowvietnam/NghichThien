@@ -75,6 +75,10 @@ namespace Network
             module.RemoveHandler<QuestHandler>();
             module.AddHandler(questHandler);
 
+            var combatHandler = new CombatHandler();
+            module.RemoveHandler<CombatHandler>();
+            module.AddHandler(combatHandler);
+
             AdminPanel.Instance.StartListen();
         }
     }

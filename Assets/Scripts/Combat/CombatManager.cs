@@ -29,7 +29,7 @@ public enum ETuongQuan
     None,
 }
 
-public class CombatManager : BaseBehaviour
+public class CombatManager : BaseBehaviour , INetworkEvent.IWinCombatBase
 {
     [System.Serializable]   
     public class BuffOrDebuffIcon {
@@ -134,8 +134,14 @@ public class CombatManager : BaseBehaviour
             Observer.Notify(EventList.Combat.END_COMBAT, characterWin, characterDie);// thằng đầu là thằng win thằng sau là thằng die
             if(characterWin == char1)
             {
-                // Fake Data
-                Pool.Get<EventRewardPanel>().InitShowCombatReward(new RewardSnapshot {ItemRefs = new(),Money = 20, MoneyVip = 30},"Thắng làm vua, thua làm giặc!");
+                var gameManager = Pool.Get<GameManager>();
+                List<int> allThanThongIds = char1.thanThongUseThisComBat
+                   .SelectMany(innerList => innerList)     // San phẳng List<List<PlaySkillData>> thành List<PlaySkillData>
+                   .Where(data => data?.thanThong != null)  // Lọc bỏ các dữ liệu null để tránh lỗi NullReferenceException
+                   .Select(data => data.thanThong.Id)       // Chọn ra id (Giả sử id của ThanThong có kiểu dữ liệu là int/string)
+                   .ToList();
+                Observer.Notify(EventList.Network.WIN_COMBAT_BASE, this,gameManager.currentETypeCombat, char1.characterStatsTemp.hp.Value, allThanThongIds, char2.characterStatsBase.level.Value);// thằng đầu là thằng win thằng sau là thằng die
+
 
             }
             else
@@ -1257,5 +1263,15 @@ public class CombatManager : BaseBehaviour
     private void OnDestroy()
     {
         EventList.Combat.RemoveAllCombatObservers();
+    }
+
+    public void SuccessWinCombatBase(RewardSnapshot rewardSnapshot)
+    {
+        Pool.Get<EventRewardPanel>().InitShowCombatReward(rewardSnapshot, "Thắng làm vua thua làm giặc!");
+    }
+
+    public void FailWinCombatBase(string message)
+    {
+        Debug.Log(message);
     }
 }
