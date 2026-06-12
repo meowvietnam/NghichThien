@@ -23,7 +23,6 @@ public abstract class QuestResource : ActionMapResourceSO
         {
             Pool.Get<QuestManager>().InitQuest(this);
 
-
         }
     }
     public abstract void QuestDoneData();
