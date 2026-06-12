@@ -9,7 +9,7 @@ using System.Linq;
 using LongDHModules;
 using UnityEngine;
 
-public abstract class EquipmentProvider : ItemProvider<CreateCharacter.Equipment> , IUseItemProvider
+public abstract class EquipmentProvider : ItemProvider<CreateCharacter.Equipment> , INetworkEvent.IEquipEquipment , IUseItemProvider
 {
     public override abstract  ItemType SupportedType { get; }
     public abstract EquipmentType EquipemtType { get; }
@@ -138,6 +138,16 @@ public abstract class EquipmentProvider : ItemProvider<CreateCharacter.Equipment
 
         Observer.Notify(EventList.Network.EQUIP_EQUIPMENT, this, itemInventory.itemRef.Id, equipmentType); // id equipment này là self id
 
+    }
+
+    public void SuccessEquipEquipment()
+    {
+        NotifyGroup.Instance.Show("Trang bị thành công");
+    }
+
+    public void FailEquipEquipment(string message)
+    {
+        NotifyGroup.Instance.Show(message);
     }
 }
 

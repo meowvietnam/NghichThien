@@ -4,6 +4,7 @@ using System.Linq;
 using Base;
 using Network;
 using Network.Extensions;
+using Network.Models;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -136,6 +137,25 @@ namespace CreateCharacter
             }
             ThanThongEquips.Add(thanThong);
             return old;
+        }
+        public void EquipEquipment(EquipEquipmentResult result)
+        {
+            switch (result.TypeEquipment)
+            {
+                case LuyenKhi.EquipmentType.Weapon:
+                    VuKhi = result.Id;
+                    break;
+                case LuyenKhi.EquipmentType.Armor:
+                    PhongCu = result.Id;
+
+                    break;
+                case LuyenKhi.EquipmentType.Jewelry:
+                    TrangSuc = result.Id;
+
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

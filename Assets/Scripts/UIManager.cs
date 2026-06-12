@@ -66,8 +66,9 @@ public class UIManager : BaseBehaviour
         }
 
         item.Init(data, frame);
-
         item.InitInventory(itemRef, null);
+        item.InitIcon(item.icon.sprite, item.frame.sprite);
+
 
 
     }
@@ -115,9 +116,9 @@ public class UIManager : BaseBehaviour
             item.SetColorName(inforVisualEquipment.Item3);
             item.SetQualityFull(inforVisualEquipment.Item2);
         }
-
         item.Init(data, frame);
         item.InitInventory(itemRef, null);
+        item.InitIcon(item.icon.sprite,item.frame.sprite);
     }
     public void InitVisualItemInventory(ItemInventory item, IItemData data, ItemRef itemRef , bool isIconSkillBase = false)
     {

@@ -273,10 +273,27 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
         if (spriteIcon != null)
         {
             icon.sprite = spriteIcon;
+            icon.SetNativeSize();
         }
         if (frameSprite != null)
         {
             frame.sprite = frameSprite;
+        }
+        if (itemRef != null)
+        {
+            if (itemRef.Type == ItemType.VuKhi)
+            {
+                icon.rectTransform.localScale = new Vector3(1f / 3f, 1f / 3f, 1f);
+            }
+            else if (itemRef.Type == ItemType.PhongCu || itemRef.Type == ItemType.TrangSuc)
+            {
+                icon.rectTransform.localScale = new Vector3(1f / 2.5f, 1f / 2.5f, 1f);
+            }
+            else
+            {
+                icon.rectTransform.localScale = Vector3.one;
+
+            }
         }
     }
     public void SetColorName(Color color)

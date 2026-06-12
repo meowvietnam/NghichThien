@@ -22,7 +22,7 @@ namespace AllMaps
 
         public GameObject iconVisualAction;
 
-        public bool IsEmptyAction => actionMap == null || iconVisualAction == null; 
+        public bool IsEmptyAction => actionMap == null && iconVisualAction == null; 
         public Node[] Nodes => nodes;
         public Node FindNodeByMap(Map map)
         {

@@ -102,14 +102,10 @@ public class INetworkEvent
     }
     public interface IEquipEquipment// Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessEquipEquipment(List<TaskDailySnapshot> listTask);
+        void SuccessEquipEquipment();
         void FailEquipEquipment(string message);
     }
-    public interface IUnEquipEquipment// Check đủ ngộ đạo điểm mới learn được
-    {
-        void SuccessUnEquipEquipment();
-        void FailUnEquipEquipment(string message);
-    }
+   
     public interface ICompleteSideQuest// Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessCompleteSideQuest(int moneyVip);

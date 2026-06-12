@@ -19,6 +19,27 @@ public class ItemInventory : BaseItemUI
     [SerializeField] public int count;
     [SerializeField] public int countRequire;
 
+    public override void InitIcon(Sprite spriteIcon, Sprite frameSprite)
+    {
+        base.InitIcon(spriteIcon, frameSprite);
+        if(itemRef != null)
+        {
+            if (itemRef.Type == ItemType.VuKhi)
+            {
+                icon.rectTransform.localScale = new Vector3(1f / 3f, 1f / 3f, 1f);
+            }
+            else if (itemRef.Type == ItemType.PhongCu || itemRef.Type == ItemType.TrangSuc)
+            {
+                icon.rectTransform.localScale = new Vector3(1f / 2.5f, 1f / 2.5f, 1f);
+            }
+            else
+            {
+                icon.rectTransform.localScale = Vector3.one;
+
+            }
+        }
+    }
+
     private void OnEnable()
     {
         if (selectHighLight == null) return;

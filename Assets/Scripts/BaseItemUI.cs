@@ -41,7 +41,7 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
         }    
         InitIcon(this.itemData.spriteItem, frameSprite);
     }
-    public  void InitIcon(Sprite spriteIcon, Sprite frameSprite)
+    public virtual void InitIcon(Sprite spriteIcon, Sprite frameSprite)
     {
         if(spriteIcon != null)
         {

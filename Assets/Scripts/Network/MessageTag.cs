@@ -43,6 +43,8 @@ namespace Network
         NewMail = 119,
         GetInventory = 195,
         GetInventoryResult = 196,
+        EquipEquipment = 197,
+        EquipEquipmentResult = 198,
         LuyenDan = 201,
         LuyenDanResult = 202,
 

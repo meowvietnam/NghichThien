@@ -23,7 +23,7 @@ using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
 
 
-public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEvent.IUnEquipCongPhap,INetworkEvent.IEquipThanThong, INetworkEvent.IUnEquipThanThong , INetworkEvent.IUseDan , INetworkEvent.IEquipEquipment , INetworkEvent.IUnEquipEquipment
+public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEvent.IUnEquipCongPhap,INetworkEvent.IEquipThanThong, INetworkEvent.IUnEquipThanThong , INetworkEvent.IUseDan , INetworkEvent.IEquipEquipment
 {
     public enum ETypePanel { 
         
@@ -847,7 +847,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             }
             EquipmentType equipmentType = GameManager.ItemTypeToEquipemtType.GetValueOrDefault(currentItem.itemRef.Type);
 
-            Observer.Notify(EventList.Network.UNEQUIP_EQUIPMENT, this, currentItem.itemRef.Id, equipmentType); // id equipment này là self id
+            Observer.Notify(EventList.Network.EQUIP_EQUIPMENT, this, ushort.MaxValue, equipmentType); // id equipment này là self id
             Pool.Get<UIManager>().InitVisualEquipment(currentItem, null);
 
         });
@@ -892,9 +892,14 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         {
             ItemInventory.InitAction(null,  () =>
             {
-                ItemProviderFactory.GetUseItemProvider(ItemInventory.itemRef.Type).UseItem(ItemInventory);
-               
-             
+                var ItemCanUse = ItemProviderFactory.GetUseItemProvider(ItemInventory.itemRef.Type);
+                if(ItemCanUse != null)
+                {
+                    ItemCanUse.UseItem(ItemInventory);
+
+                }
+
+
             },null);
         });
         bag.InitBag(false);
@@ -957,19 +962,16 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     {
     }
 
-    public void SuccessEquipEquipment(List<TaskDailySnapshot> listTask)
+    public void SuccessEquipEquipment()
     {
+        NotifyGroup.Instance.Show("Gỡ trang bị thành công"); 
     }
 
     public void FailEquipEquipment(string message)
     {
+        NotifyGroup.Instance.Show(message);
+
     }
 
-    public void SuccessUnEquipEquipment()
-    {
-    }
 
-    public void FailUnEquipEquipment(string message)
-    {
-    }
 }
