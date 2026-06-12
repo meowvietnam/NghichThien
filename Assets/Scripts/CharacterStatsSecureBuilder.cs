@@ -264,7 +264,7 @@ public class CharacterStatsSecureBuilder
                    Type = e.Type,
                    Value = new SecureInt(e.Value)
                }).ToList()
-           } : null)
+           } : new EquipmentClient())
 
             .WithPhongCu(character.PhongCu != null ? new EquipmentClient
             {
@@ -275,7 +275,7 @@ public class CharacterStatsSecureBuilder
                     Type = e.Type,
                     Value = new SecureInt(e.Value)
                 }).ToList()
-            } : null)
+            } : new EquipmentClient())
 
             .WithTrangSuc(character.TrangSuc != null ? new EquipmentClient
             {
@@ -286,7 +286,7 @@ public class CharacterStatsSecureBuilder
                     Type = e.Type,
                     Value = new SecureInt(e.Value)
                 }).ToList()
-            } : null)
+            } : new EquipmentClient())
             .WithDanDuocCombat(character.DanCombatUseds?.Select(x => new CharacterStatsSecure.DataSave { id = new SecureInt(x.Id), value = new SecureInt(x.Count) }).ToList())
             .Build();
     }

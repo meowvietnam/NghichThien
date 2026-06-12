@@ -353,7 +353,7 @@ public class PlayerUICombat : BaseBehaviour
             skill.SetFullQuality(inforVisualSkill.Item2);
         }
         skillTip.DoHide();
-        if(player.characterStatsBase.vuKhi.Item != null)
+        if(player.characterStatsBase.vuKhi.Item != null )
         {
             equipmentWeapon.gameObject.SetActive(true);
 

@@ -17,5 +17,4 @@ public class EquipmentClient
     public List<EffectClient> listEffectEquip= new List<EffectClient>();
     public LuyenKhiRewardItem Item => LuyenKhiResources.Instance.RewardItems.FirstOrDefault(x => x.Id == id);
 
-
 }
