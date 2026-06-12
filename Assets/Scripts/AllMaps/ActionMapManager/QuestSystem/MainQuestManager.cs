@@ -127,7 +127,6 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
 
         var mainQuests = assets.OfType<MainQuestResource>().ToList();
         this.mainQuestResources = mainQuests;
-       
         var mainQuestRS = new MainQuestManagerModel()
         {
             MainQuestResource = mainQuests,
