@@ -1272,6 +1272,6 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IWinCombatBase
 
     public void FailWinCombatBase(string message)
     {
-        Debug.Log(message);
+        Debug.Log("chỉ có thể là chó hack"+message);
     }
 }

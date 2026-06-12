@@ -4,6 +4,7 @@ using LongDH.LongDHModules;
 using Network.Extensions;
 using Network.Models;
 using System.Collections.Generic;
+using UnityEngine;
 using static INetworkEvent;
 
 namespace Network.Core
@@ -25,7 +26,7 @@ namespace Network.Core
             var reader = message.Reader;
             if (tag == MessageTag.WinCombatResult)
             {
-
+                Debug.Log("WinCombatResult");
                 var result = reader.Read<WinCombatResult>();
                 if (result.Success)
                 {
@@ -85,7 +86,7 @@ namespace Network.Core
                 ListIdThanThong = ListThanThongUse,
                 CurrentLevelEnemy = LevelEnemy
             };
-            Client.Instance.Send(MessageTag.CompleteMainQuest, winCombat);
+            Client.Instance.Send(MessageTag.WinCombat, winCombat);
         }
       
         public void OnLeave()
