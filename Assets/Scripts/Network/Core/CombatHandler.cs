@@ -13,10 +13,11 @@ namespace Network.Core
     {
 
         private IWinCombatBase winCombatCallBack;
+        private ILoadCharCombat loadCharCallBack;
 
         private static MessageTag[] handler =
         {
-                      MessageTag.WinCombatResult
+                      MessageTag.WinCombatResult , MessageTag.LoadCharCombatResult
         };
 
         public MessageTag[] HandleTag => handler;
@@ -60,6 +61,23 @@ namespace Network.Core
                 });
 
             }
+            else if (tag == MessageTag.LoadCharCombatResult)
+            {
+                var result = reader.Read<LoadCharCombatResult>();
+               
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    if (result.Success)
+                    {
+                        loadCharCallBack.SuccessLoadCharCombat(result.Client);
+                    }
+                    else
+                    {
+                        loadCharCallBack.FailLoadCharCombat(result.Message);
+                    }
+
+                });
+            }
          
         }
 
@@ -70,6 +88,7 @@ namespace Network.Core
         public void OnEnter()
         {
             Observer.AddObserver(EventList.Network.WIN_COMBAT_BASE, WinCombat);
+            Observer.AddObserver(EventList.Network.LOAD_CHAR_COMBAT, LoadCharCombat);
 
         }
         private void WinCombat(object[] data)
@@ -88,7 +107,11 @@ namespace Network.Core
             };
             Client.Instance.Send(MessageTag.WinCombat, winCombat);
         }
-      
+        private void LoadCharCombat(object[] data)
+        {
+            loadCharCallBack = data[0] as INetworkEvent.ILoadCharCombat;
+            Client.Instance.Send(MessageTag.LoadCharCombat);
+        }
         public void OnLeave()
         {
         }

@@ -130,5 +130,9 @@ public class INetworkEvent
         void SuccessWinCombatBase(RewardSnapshot rewardSnapshot);
         void FailWinCombatBase(string message);
     }
-   
+    public interface ILoadCharCombat// Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessLoadCharCombat(CharacterSnapshot user);
+        void FailLoadCharCombat(string message);
+    }
 }

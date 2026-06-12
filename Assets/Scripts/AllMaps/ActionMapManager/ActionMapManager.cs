@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using LongDHModules;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Network;
 
 public abstract class ActionMapManager : MonoBehaviour , IUISingleton
 {
     public abstract int TimeMonthRandom { get;  }
     public abstract string fileSaveTime { get;  }
+    public string FileSaveTime => $"{Client.Instance.CharacterData.Name}_{fileSaveTime}";
 
-    
+
     private void OnCheckSceneToTrigger(Scene scene, LoadSceneMode mode)
     {
         // Kiểm tra xem ĐÂY CÓ PHẢI là scene bạn muốn hay không (Ví dụ tên scene là "MainMap")
@@ -45,7 +47,7 @@ public abstract class ActionMapManager : MonoBehaviour , IUISingleton
 
         // 2. Lấy thời điểm thực hiện random lần cuối từ PlayerPrefs
         // Nếu là lần đầu tiên (giá trị -1), ta coi như cần random ngay lập tức
-        int oldTimeRandomInt = PlayerPrefs.GetInt($"{fileSaveTime}", -1);
+        int oldTimeRandomInt = PlayerPrefs.GetInt($"{FileSaveTime}", -1);
 
         // --- XỬ LÝ RANDOM NPC (Mỗi 5 tháng) ---
         if (oldTimeRandomInt == -1 || (timeWordCurrent - oldTimeRandomInt) >= TimeMonthRandom)
@@ -60,7 +62,7 @@ public abstract class ActionMapManager : MonoBehaviour , IUISingleton
     }
     public virtual void RandomAction()
     {
-        PlayerPrefs.SetInt(fileSaveTime, GameManager.GetTimeWorldIntPlayer());
+        PlayerPrefs.SetInt(FileSaveTime, GameManager.GetTimeWorldIntPlayer());
         PlayerPrefs.Save();
     }
 

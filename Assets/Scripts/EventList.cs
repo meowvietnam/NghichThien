@@ -82,6 +82,7 @@ public static partial class EventList
         public const string COMPLETE_MAINQUEST = "Network.COMPLETE_MAINQUEST";
 
         public const string WIN_COMBAT_BASE = "Network.WIN_COMBAT_BASE";
+        public const string LOAD_CHAR_COMBAT = "Network.LOAD_CHAR_COMBAT";
 
     }
 }

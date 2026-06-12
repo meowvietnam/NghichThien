@@ -29,7 +29,7 @@ using Network.Extensions;
 using UnityEditor;
 #endif
 
-public class GameManager : BaseBehaviour
+public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
 {
     [SerializeField] public List<string> listSceneLoaded = new List<string>
     {
@@ -404,6 +404,7 @@ public class GameManager : BaseBehaviour
         public CharacterStatsSecure charStats;
     }
     public CharCombatInit enemyCombat = null;
+    public CharCombatInit user = null;
     public ETypeCombat currentETypeCombat = ETypeCombat.None;
     public ECombatResult currentECombatResult = ECombatResult.None;
     public Sprite spriteBGCombat;
@@ -419,8 +420,9 @@ public class GameManager : BaseBehaviour
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
         Pool.Get<PrepareCombatPanel>().Hide();
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
+        Observer.Notify(EventList.Network.LOAD_CHAR_COMBAT, this);
 
-        SceneManager.LoadScene("Combat");
+
     }
     public void GoToPrepareCombat(CharCombatInit enemyCombat, ETypeCombat eTypeCombat)
     {
@@ -440,58 +442,7 @@ public class GameManager : BaseBehaviour
     }
   
 
-    public static CharacterStatsSecure ConvertCharServerDataToCharClientData()
-    {
-        var charData = Client.Instance.CharacterData;
-        var stat = charData.Stats;
-        var vuKhiData = charData.InventoryManager.VuKhis.FirstOrDefault();
-        var phongCuData = charData.InventoryManager.PhongCus.FirstOrDefault();
-        var trangSucData = charData.InventoryManager.TrangSucs.LastOrDefault(); // Dùng LastOrDefault cho gọn
-
-        return new CharacterStatsSecure
-        {
-            Gender = charData.Gender,
-            tuoiTac = new SecureInt(GetIntTuoiTac(charData.Stats.TuoiTac)),
-            nameUser = charData.Name,
-            level = charData.Progression.Level,
-            hp = stat.Hp,
-            hpMax = stat.SinhMenh,
-            ability = stat.Ability,
-            percentKim = stat.Kim,
-            percentMoc = stat.Moc,
-            percentThuy = stat.Thuy,
-            percentHoa = stat.Hoa,
-            percentTho = stat.Tho,
-            percentMa = stat.Ma,
-            tocDoBay = stat.TocDoBay,
-            thanThuc = stat.ThanThuc,
-            thoNguyen = stat.ThoNguyen,
-            thanThongEquip = charData.EquipmentManager.ThanThongEquips.Select(x => new SecureInt(x.Id)).ToList(),
-            chuTu1Used = charData.EquipmentManager.ChuTu1Used,
-            chuTu2Used = charData.EquipmentManager.ChuTu2Used,
-            phuTu1Used = charData.EquipmentManager.PhuTu1Used,
-            phuTu2Used = charData.EquipmentManager.PhuTu2Used,
-            phuTu3Used = charData.EquipmentManager.PhuTu3Used,
-            phuTu4Used = charData.EquipmentManager.PhuTu4Used,
-            monPhai = charData.MonPhai,
-            danDoc = stat.DanDoc,
-            ngoDaoSaves = charData.InventoryManager.NgoDaos.Select(x => new SecureInt(x.Id)).ToList(),
-            skinList = charData.Appearance.Skins.Select(kvp => new CharacterStatsSecure.SkinData
-            { key = kvp.Key, value = kvp.Value }).ToList(),
-            colorList = charData.Appearance.Colors.Select(kvp => new CharacterStatsSecure.ColorData
-            { key = kvp.Key, value = kvp.Value }).ToList(),
-
-            // Nếu vuKhiData null, nguyên cả cụm vukhi sẽ là null
-            vuKhi = EquipmentClientBuilder.FromEquipment(vuKhiData),
-
-            // Tương tự cho phongCu
-            phongCu = EquipmentClientBuilder.FromEquipment(phongCuData),
-
-            // Tương tự cho trangSuc
-            trangSuc = EquipmentClientBuilder.FromEquipment(trangSucData),
-            danDuocCombat = charData.EquipmentManager.DanCombatUseds.Select(x => new CharacterStatsSecure.DataSave { id = new SecureInt(x.Id), value = new SecureInt(x.Count) }).ToList(),
-        };
-    }
+   
 
     private void Awake()
     {
@@ -1182,5 +1133,21 @@ public class GameManager : BaseBehaviour
 
         Debug.Log("Đã lưu data thành công cho từng Thần Thông và Công Pháp!");
 #endif
+    }
+
+    public void SuccessLoadCharCombat(CharacterSnapshot user)
+    {
+        this.user = new CharCombatInit
+        {
+            eTypeVisual = ETypeVisualChar.Character,
+            charStats = CharacterStatsSecureBuilder.FromCharacterSnapshot(user),
+        };
+      
+        SceneManager.LoadScene("Combat");
+    }
+
+    public void FailLoadCharCombat(string message)
+    {
+        Debug.Log(message);
     }
 }
