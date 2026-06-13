@@ -110,5 +110,8 @@ namespace Network
 
         LoadCharCombat = 415,
         LoadCharCombatResult = 416,
+
+        WatchAdsForEnergy = 420,
+        WatchAdsForEnergyResult = 421,
     }
 }
