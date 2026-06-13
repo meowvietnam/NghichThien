@@ -48,12 +48,28 @@ public class AdsService : SingletonMonoDontDestroy<AdsService>
         //} 
         adsProvider.ShowInterstitial(location, closeCallback2, failCallback2);
     }
-    [Button]
     public void ShowRewardVideoAds(string location, string buttonName,
-   Action rewardedCallback, Action closeCallback, Action loadFailCallback)
+    Action rewardedCallback, Action closeCallback, Action loadFailCallback)
     {
+        // 1. Ghi lại thời gian bắt đầu bấm nút xem Ads
+        float startTime = Time.realtimeSinceStartup;
+
         Action closeCallback2 = new Action(() =>
         {
+            // Tính xem quảng cáo đã hiển thị được bao nhiêu giây rồi
+            float duration = Time.realtimeSinceStartup - startTime;
+
+            // Nếu thời gian mở ads quá ngắn (dưới 5 giây) chứng tỏ bấm phát tắt luôn hoặc dùng tool skip
+            if (duration < 5f)
+            {
+                NetworkManager.Instance.Invoke(() => {
+                    // Đóng giao diện, cảnh báo và KHÔNG phát thưởng
+                    loadFailCallback?.Invoke();
+                    Debug.LogWarning("Xem quảng cáo quá nhanh, nghi vấn hack/skip!");
+                });
+                return;
+            }
+
             closeCallback?.Invoke();
         });
 
@@ -64,24 +80,34 @@ public class AdsService : SingletonMonoDontDestroy<AdsService>
 
         Action failCallback2 = new Action(() =>
         {
-            // Vì game online, nếu User còn ở trong hàm này tức là mạng của họ vẫn đang thông suốt!
-            // Lỗi load fail lúc này 99% là do Server Google bận hoặc hết quảng cáo (No Fill)
-
-            bool isSystemError = true; // Gán luôn bằng true cho máu, vì rớt mạng là game đã văng rồi
-
-            if (isSystemError)
+            NetworkManager.Instance.Invoke(() =>
             {
-                // Tự động kích hoạt phát thưởng gửi request lên Server luôn
-                rewardCallback2.Invoke();
-                return;
-            }
+                // Tính thời gian từ lúc bấm đến lúc báo Fail
+                float duration = Time.realtimeSinceStartup - startTime;
 
-            loadFailCallback?.Invoke();
+                // NẾU BỊ FAIL QUÁ NHANH (Dưới 3 giây): Chắc chắn do AdBlocker chặn DNS hoặc mất mạng hẳn
+                if (duration < 3f)
+                {
+                    // Cứ báo lỗi mạng/hệ thống bận, KHÔNG phát thưởng đền bù gì hết!
+                    loadFailCallback?.Invoke();
+                    Debug.Log("Quảng cáo bị chặn đứng ngay lập tức -> Nghi vấn dùng AdBlocker");
+                    return;
+                }
+
+                // NẾU FAIL CHẬM (Quá 3 giây): Có thể do mạng quay xoay xoay một lúc rồi mới fail, 
+                // hoặc lỗi Server bận thật, lúc này mới kích hoạt đền bù phát quà cho user ngoan ngoãn
+                bool isRealSystemError = true;
+
+                if (isRealSystemError)
+                {
+                    rewardCallback2.Invoke();
+                    return;
+                }
+
+                loadFailCallback?.Invoke();
+            });
         });
 
-        // Nếu dòng dưới này vẫn báo lỗi đỏ "cannot convert from Action to Action<AdError>"
-        // Chứng tỏ hàm adsProvider.ShowRewardVideo của bạn CHỈ NHẬN Action thuần túy không tham số.
-        // Lúc này code truyền failCallback2 như bên dưới là khít 100%, không bị lỗi argument nữa!
         adsProvider.ShowRewardVideo(location, buttonName, rewardCallback2, closeCallback2, failCallback2);
     }
     [Button]
