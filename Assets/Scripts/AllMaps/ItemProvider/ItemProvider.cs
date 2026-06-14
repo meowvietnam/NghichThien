@@ -24,6 +24,7 @@ namespace AllMaps.ItemProvider
         public EActionShowItemInfor ActionShowItem;
         public System.Action<int> SetPriceText;
         public BaseItemData BaseItemData { get; set; }
+        public Text PriceText { get; set; }
 
     }
     public interface IItemProvider

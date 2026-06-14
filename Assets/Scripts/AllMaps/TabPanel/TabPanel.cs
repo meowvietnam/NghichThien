@@ -50,7 +50,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
     [SerializeField] private ButtonWithPanel[] btns;
     [SerializeField] private Button btnClose;
-    [SerializeField] private ButtonWithPanel currentBtnWithPanel;
+    [SerializeField] public ButtonWithPanel currentBtnWithPanel;
     [SerializeField] public ToolTipItems toolTipItems => ToolTipItems.Instance;
     [ContextMenu(nameof(Get))]
     public void Get()

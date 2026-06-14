@@ -141,21 +141,7 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
     {
         yield return null;
     }
-    void SetTextKeyword(Image prefabKeyword, int i, string content)
-    {
-        Image itemInfor = null;
-        if (i < prefabKeyword.transform.parent.childCount)
-        {
-            itemInfor = prefabKeyword.transform.parent.GetChild(i).GetComponent<Image>();
-        }
-        else
-        {
-            itemInfor = Instantiate(prefabKeyword, prefabKeyword.transform.parent);
-
-        }
-        itemInfor.gameObject.SetActive(true);
-        itemInfor.transform.GetChild(0).GetComponent<Text>().text = $"{content}";
-    }
+   
     void ResetKeyword(Image prefabKeyword)
     {
         for (int i = 0; i < prefabKeyword.transform.parent.childCount; i++)
@@ -163,56 +149,7 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
             prefabKeyword.transform.parent.GetChild(i).gameObject.SetActive(false);
         }
     }
-    private void InitInforSkill()
-    {
-        if (itemData is BaseSkill skill)
-        {
-            qualityText.text = BaseSkill.GetTextTierSkill(skill.eTierSkill);
-            typeText.text = skill.GetTextTypeSkill();
-            if(skill is ThanThong)
-            {
-                descriptionText.text = skill.GetDesc(ThanThong.GetDaiCanhGioi(CharData.Progression.Level));
-            }
-            else if(skill is CongPhap)
-            {
-                descriptionText.text = skill.GetDesc(5);
-            }
-            var listEKeyword = skill.GetEKeywordSkillHave();
-            var listEBuffKeyword = skill.GetEKeywordBuffSkillHave(1);
-            for (int i = 0; i < listEKeyword.Length; i++)
-            {
-                SetTextKeyword(prefabLeftInfor, i, BaseSkill.GetDescKeyWord(listEKeyword[i]));
-            }
-            for (int i = 0; i < listEBuffKeyword.Length; i++)
-            {
-                SetTextKeyword(prefabRightInfor, i, BaseSkill.GetDescBuffOrDeBuff(listEBuffKeyword[i]));
-            }
-        }
-        if (itemData is ThanThong thanThong)
-        {
-            prefabIconRequire.transform.parent.parent.gameObject.SetActive(true);
-            for (int i = 0; i < thanThong.BaseRequireActive.Count; i++)
-            {
-                Image itemRequire = null;
-                if (i < prefabIconRequire.transform.parent.childCount)
-                {
-                    itemRequire = prefabIconRequire.transform.parent.GetChild(i).GetComponent<Image>();
-                }
-                else
-                {
-                    itemRequire = Instantiate(prefabIconRequire, prefabIconRequire.transform.parent);
-                }
-                itemRequire.gameObject.SetActive(true);
-                itemRequire.sprite = spriteLinhKhis[(int)thanThong.BaseRequireActive[i].linhKhiRequire];
-                itemRequire.SetNativeSize();
-                itemRequire.transform.GetChild(0).GetComponent<Text>().text = $"x{thanThong.BaseRequireActive[i].count}";
-            }
-        }
-        else
-        {
-            prefabIconRequire.transform.parent.parent.gameObject.SetActive(false);
-        }
-    }
+   
     public void SetPriceText(int price)
     {
         priceText.transform.parent.gameObject.SetActive(true);
@@ -228,10 +165,7 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
     }    
     private void InitInforItem()
     {
-        if (itemData is BaseSkill)
-        {
-            InitInforSkill();
-        }
+       
 
         if (itemRef == null) return;
         var disPlayer = ItemProviderFactory.GetProvider(itemRef.Type);
@@ -266,6 +200,7 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
             BaseItemData = itemData,
             ActionShowItem  = eActionShowItem,
             SetPriceText    = SetPriceText,
+            PriceText = priceText,
         };
     }
     private void InitIcon(Sprite spriteIcon, Sprite frameSprite)

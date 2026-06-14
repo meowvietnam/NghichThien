@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AllMaps.ItemProvider;
+using LongDHModules;
 using LuyenDan;
 using Network;
 
@@ -38,6 +39,7 @@ namespace AllMaps.ItemProvider
         }
         private static object GetRawProvider(ItemType itemType)
         {
+            var tabPanel = Pool.Get<TabPanel>();
             return itemType switch
             {
                 ItemType.VuKhi => new VuKhiEquipmentProvider(),
@@ -48,8 +50,8 @@ namespace AllMaps.ItemProvider
                 ItemType.LinhDan => new LinhDanProvider(),
                 ItemType.Recipe => new RecipeProvider(),
                 ItemType.Material => new MaterialProvider(),
-                ItemType.ThanThong => new ThanThongBooProvider(),
-                ItemType.CongPhap => new CongPhapBookProvider(),
+                ItemType.ThanThong => tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.ThanThong? new ThanThongProvider()  :new ThanThongBookProvider(),
+                ItemType.CongPhap => tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.CongPhap ? new CongPhapProvider() :new CongPhapBookProvider(),
 
                 _ => null,
             };
