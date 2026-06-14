@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AllMaps.NgoDao;
 using CreateCharacter;
@@ -12,6 +12,7 @@ using UnityEditor;
 using UnityEngine.SceneManagement;
 using CongPhap = Skill.CongPhap;
 using NgoDao = AllMaps.NgoDao.NgoDao;
+using Network.Core;
 
 namespace Start
 {
@@ -34,7 +35,8 @@ namespace Start
                 if (result.Success)
                 {
                     Client.Instance.SetUserData(result.UserData);
-                    SceneManager.LoadSceneAsync("CreateCharacter");
+                    UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("CreateCharacter");
+                    
                 }
             });
         }

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
-//using GooglePlayServices;
+using GooglePlayServices;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 

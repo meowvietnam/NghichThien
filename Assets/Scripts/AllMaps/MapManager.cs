@@ -15,6 +15,7 @@ using LongDHModules;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using Network.Core;
 
 namespace AllMaps
 {
@@ -107,7 +108,7 @@ namespace AllMaps
             Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
             isDelayAfterLoadScene = true;
             StartCoroutine(DelayTime(0.01f));
-
+            
         }
 
         private IEnumerator DelayTime(float time)

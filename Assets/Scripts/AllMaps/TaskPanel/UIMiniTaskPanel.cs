@@ -23,7 +23,15 @@ public class UIMiniTaskPanel : PanelGroup
 
     private void InitEnergy()
     {
-        energyText.text = $"{Client.Instance.CharacterData.Progression.CurrentEnergy}/100";
+        if(!Client.Instance.UserData.IsInfiniteEnergy)
+        {
+            energyText.text = $"{Client.Instance.CharacterData.Progression.CurrentEnergy}/100";
+        }   
+        else
+        {
+            energyText.text = $"Vô hạn";
+
+        }
     }    
     private void InitTimer()
     {
