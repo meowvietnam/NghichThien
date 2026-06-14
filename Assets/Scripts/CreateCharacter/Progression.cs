@@ -1,33 +1,10 @@
 using System;
-using MemoryPack;
 using Network;
 using Network.Extensions;
 using UnityEngine;
 
 namespace CreateCharacter
 {
-    [MemoryPackable]
-    public partial class LevelUpdated
-    {
-        public int Level { get; set; }
-        public int CurrentExp { get; set; }
-        public int HpMax { get; set; }
-        public int ThanThuc { get; set; }
-        public int DonToc { get; set; }
-        public int ThoNguyen { get; set; }
-
-        public void ApplyTo(CharacterData charData)
-        {
-            var progression = charData.Progression;
-            progression.Level = Level;
-            progression.CurrentExp = CurrentExp;
-            var stats = charData.Stats;
-            stats.SinhMenh = HpMax;
-            stats.ThanThuc = ThanThuc;
-            stats.TocDoBay = DonToc;
-            stats.ThoNguyen = ThoNguyen;
-        }
-    }
     [Serializable]
     public class Progression : IMemorySerializable<Progression>
     {

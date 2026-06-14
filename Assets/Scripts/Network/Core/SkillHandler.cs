@@ -262,7 +262,9 @@ namespace Network.Core
                     {
                         charData.Progression.CurrentExp = result.CurrentExp;
                     }
-                    charData.Stats.LinhThach = result.RemainingMoney;
+                    var stats = charData.Stats;
+                    stats.LinhThach = result.RemainingMoney;
+                    stats.TamCanh = result.NewTamCanh;
                 }
 
                 NetworkManager.Instance.Invoke(() =>

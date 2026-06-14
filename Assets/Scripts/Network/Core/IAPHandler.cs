@@ -6,50 +6,48 @@ using Network.Models;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.UI;
+
 namespace Network.Core
 {
-
     public class IAPHandler : PanelGroup, IClientHandler, IStoreListener
     {
         private IStoreController m_StoreController;
+
         private IExtensionProvider m_StoreExtensionProvider;
+
         // Khai báo các ID sản phẩm
         // CÁC GÓI TIÊN NGỌC ĐỒNG BỘ TỪ UI THỰC TẾ
-        public const string PRODUCT_100_TIEN_NGOC = "100_tien_ngoc";       // Sơ Cấp (10.000 VND)
-        public const string PRODUCT_550_TIEN_NGOC = "550_tien_ngoc";       // Tích Lũy (50.000 VND)
-        public const string PRODUCT_1150_TIEN_NGOC = "1150_tien_ngoc";     // Phú Hộ (100.000 VND)
-        public const string PRODUCT_2550_TIEN_NGOC = "2550_tien_ngoc";     // Hào Phú (200.000 VND)
-        public const string PRODUCT_6550_TIEN_NGOC = "6550_tien_ngoc";     // Đại Gia (500.000 VND)
-        public const string PRODUCT_13550_TIEN_NGOC = "13550_tien_ngoc";   // Thần Tài (1.000.000 VND)
+        public const string PRODUCT_100_TIEN_NGOC = "100_tien_ngoc"; // Sơ Cấp (10.000 VND)
+        public const string PRODUCT_550_TIEN_NGOC = "550_tien_ngoc"; // Tích Lũy (50.000 VND)
+        public const string PRODUCT_1150_TIEN_NGOC = "1150_tien_ngoc"; // Phú Hộ (100.000 VND)
+        public const string PRODUCT_2550_TIEN_NGOC = "2550_tien_ngoc"; // Hào Phú (200.000 VND)
+        public const string PRODUCT_6550_TIEN_NGOC = "6550_tien_ngoc"; // Đại Gia (500.000 VND)
+        public const string PRODUCT_13550_TIEN_NGOC = "13550_tien_ngoc"; // Thần Tài (1.000.000 VND)
 
         // GÓI QUÀ ĐẶC BIỆT (GIỮ LẠI THEO CODE CŨ CỦA BABE)
         public const string PRODUCT_START_PACK = "start_pack";
         [SerializeField] private Popup popupMain;
-        [SerializeField]
-        private Button btnStartPack;
-        [SerializeField]
-        private Button btn100TienNgoc;
-        [SerializeField]
-        private Button btn550TienNgoc;
-        [SerializeField]
-        private Button btn1150TienNgoc;
-        [SerializeField]
-        private Button btn2550TienNgoc;
-        [SerializeField]
-        private Button btn6550TienNgoc;
-        [SerializeField]
-        private Button btn13550TienNgoc;
+        [SerializeField] private Button btnStartPack;
+        [SerializeField] private Button btn100TienNgoc;
+        [SerializeField] private Button btn550TienNgoc;
+        [SerializeField] private Button btn1150TienNgoc;
+        [SerializeField] private Button btn2550TienNgoc;
+        [SerializeField] private Button btn6550TienNgoc;
+        [SerializeField] private Button btn13550TienNgoc;
+
         private static MessageTag[] handler =
         {
-                      MessageTag.IAPResult
+            MessageTag.IAPResult
         };
 
         public MessageTag[] HandleTag => handler;
+
         public override void Init()
         {
             base.Init();
             InitIAP();
         }
+
         public void InitIAP()
         {
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
@@ -63,44 +61,24 @@ namespace Network.Core
             builder.AddProduct(PRODUCT_START_PACK, ProductType.Consumable);
             UnityPurchasing.Initialize(this, builder);
 
-            SetEventButton(btnStartPack, () =>
-            {
-                BuyProduct(PRODUCT_START_PACK);
-            });
-            SetEventButton(btn100TienNgoc, () =>
-            {
-                BuyProduct(PRODUCT_100_TIEN_NGOC);
-            });
-            SetEventButton(btn550TienNgoc, () =>
-            {
-                BuyProduct(PRODUCT_550_TIEN_NGOC);
-            });
-            SetEventButton(btn1150TienNgoc, () =>
-            {
-                BuyProduct(PRODUCT_1150_TIEN_NGOC);
-            });
-            SetEventButton(btn2550TienNgoc, () =>
-            {
-                BuyProduct(PRODUCT_2550_TIEN_NGOC);
-            });
-            SetEventButton(btn6550TienNgoc, () =>
-            {
-                BuyProduct(PRODUCT_6550_TIEN_NGOC);
-            });
-            SetEventButton(btn13550TienNgoc, () =>
-            {
-                BuyProduct(PRODUCT_13550_TIEN_NGOC);
-            });
-            if(Client.Instance.UserData.IsInfiniteEnergy)
+            SetEventButton(btnStartPack, () => { BuyProduct(PRODUCT_START_PACK); });
+            SetEventButton(btn100TienNgoc, () => { BuyProduct(PRODUCT_100_TIEN_NGOC); });
+            SetEventButton(btn550TienNgoc, () => { BuyProduct(PRODUCT_550_TIEN_NGOC); });
+            SetEventButton(btn1150TienNgoc, () => { BuyProduct(PRODUCT_1150_TIEN_NGOC); });
+            SetEventButton(btn2550TienNgoc, () => { BuyProduct(PRODUCT_2550_TIEN_NGOC); });
+            SetEventButton(btn6550TienNgoc, () => { BuyProduct(PRODUCT_6550_TIEN_NGOC); });
+            SetEventButton(btn13550TienNgoc, () => { BuyProduct(PRODUCT_13550_TIEN_NGOC); });
+            var charData = Client.Instance.CharacterData;
+            if (charData.IsInfiniteEnergy)
             {
                 btnStartPack.transform.parent.gameObject.SetActive(false);
-            }    
+            }
             else
             {
                 btnStartPack.transform.parent.gameObject.SetActive(true);
-
             }
-        }// HÀM KÍCH HOẠT MUA ĐỒ (Gắn vào nút Bấm Mua trên UI)
+        } // HÀM KÍCH HOẠT MUA ĐỒ (Gắn vào nút Bấm Mua trên UI)
+
         public void BuyProduct(string productId)
         {
             if (m_StoreController != null)
@@ -111,7 +89,8 @@ namespace Network.Core
                     m_StoreController.InitiatePurchase(product);
                 }
             }
-        }// HÀM CHẠY KHI GOOGLE KHỞI TẠO IAP THÀNH CÔNG (Bắt buộc phải gán biến ở đây)
+        } // HÀM CHẠY KHI GOOGLE KHỞI TẠO IAP THÀNH CÔNG (Bắt buộc phải gán biến ở đây)
+
         public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
         {
             m_StoreController = controller;
@@ -129,10 +108,10 @@ namespace Network.Core
                 ProductId = productId,
                 ReceiptId = receipt
             };
-            NetworkManager.Instance.Invoke(() => {
+            NetworkManager.Instance.Invoke(() =>
+            {
                 // Gửi gói tin lên Server kiểm tra
                 Client.Instance.Send(MessageTag.IAP, iapModel);
-
             });
 
 
@@ -194,23 +173,23 @@ namespace Network.Core
                     foreach (var item in listItemRef)
                     {
                         charData.InventoryManager.Add(item);
-
                     }
+
                     OnServerResponseIapSuccess(result.ProductId);
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
                     {
-                        Pool.Get<EventRewardPanel>().InitShowEventReward(result.RewardSnapshot,"Cảm ơn đạo hữu đã góp gạo nuôi Admin");
+                        Pool.Get<EventRewardPanel>().InitShowEventReward(result.RewardSnapshot,
+                            "Cảm ơn đạo hữu đã góp gạo nuôi Admin");
                     }
                     else
                     {
                         NotifyGroup.Instance.Show(result.Message);
                     }
-
                 });
-
             }
         }
 
@@ -219,4 +198,3 @@ namespace Network.Core
         }
     }
 }
-    
