@@ -27,6 +27,16 @@ namespace CreateCharacter
 
         [field: SerializeField, TabGroup("Basic")]
         public int MoneyVip { get; set; }
+
+        [field: SerializeField, TabGroup("Basic")]
+        public bool IsInfiniteEnergy { get; set; }
+
+        [field: SerializeField, TabGroup("Basic")]
+        public bool IsNoAds { get; set; }
+
+        [field: ShowInInspector, TabGroup("Basic")]
+        public bool CanFly { get; set; }
+
         [field: ShowInInspector, TabGroup("Basic")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
@@ -35,7 +45,6 @@ namespace CreateCharacter
 
         [field: SerializeField, TabGroup("Stats")]
         public CharacterStats Stats { get; set; } = new();
-
 
         [field: SerializeField, TabGroup("Appearance")]
         public Appearance Appearance { get; set; } = new();
@@ -48,8 +57,10 @@ namespace CreateCharacter
 
         [field: SerializeField, TabGroup("Social")]
         public Social Social { get; set; } = new();
+
         [field: SerializeField, TabGroup("Quest")]
         public QuestManager QuestManager { get; set; } = new();
+
         public event Action<InventoryManager> OnInventoryUpdated;
 
         public CharacterData()
@@ -63,6 +74,9 @@ namespace CreateCharacter
             Name = clone.Name;
             MonPhai = clone.MonPhai;
             MoneyVip = clone.MoneyVip;
+            IsInfiniteEnergy = clone.IsInfiniteEnergy;
+            IsNoAds = clone.IsNoAds;
+            CanFly = clone.CanFly;
             CreatedAt = clone.CreatedAt;
         }
 
@@ -76,6 +90,9 @@ namespace CreateCharacter
                    + EquipmentManager.ByteSize()
                    + MonPhai.ByteSize()
                    + MoneyVip.ByteSize()
+                   + IsInfiniteEnergy.ByteSize()
+                   + IsNoAds.ByteSize()
+                   + CanFly.ByteSize()
                    + InventoryManager.ByteSize()
                    + CreatedAt.ByteSize()
                    + Social.ByteSize()
@@ -93,6 +110,9 @@ namespace CreateCharacter
             writer.Write(EquipmentManager);
             writer.Write(MonPhai);
             writer.Write(MoneyVip);
+            writer.Write(IsInfiniteEnergy);
+            writer.Write(IsNoAds);
+            writer.Write(CanFly);
             writer.Write(InventoryManager);
             writer.Write(CreatedAt);
             writer.Write(Social);
@@ -110,6 +130,9 @@ namespace CreateCharacter
             value.EquipmentManager = reader.Read<EquipmentManager>();
             value.MonPhai = reader.Read<EMonPhai>();
             value.MoneyVip = reader.Read<int>();
+            value.IsInfiniteEnergy = reader.Read<bool>();
+            value.IsNoAds = reader.Read<bool>();
+            value.CanFly = reader.Read<bool>();
             value.InventoryManager = reader.Read<InventoryManager>();
             value.CreatedAt = reader.Read<DateTime>();
             value.Social = reader.Read<Social>();

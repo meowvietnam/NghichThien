@@ -264,6 +264,7 @@ namespace AllMaps
             typeof(NguHanhKiemQuyet),
             typeof(NguHanhThienCuong),
             typeof(NguKiemCuuQuyet),
+            typeof(NguKiemPhiHanh),
             typeof(NguKiemThuat),
             typeof(NguKimMocThuyHoaTho),
             typeof(NguLinhDien),

@@ -11,6 +11,7 @@ namespace Network
         public bool HasLevelUpdated { get; set; }
         public int CurrentExp { get; set; }
         public int RemainingMoney { get; set; }
+        public int NewTamCanh { get; set; }
         public LevelUpdated LevelUpdated { get; set; }
     }
 }

@@ -20,14 +20,16 @@ public class BaseData : ScriptableObject, IMemorySerializable<BaseData>
     public void Deserialize(IReader reader, ref BaseData value)
     {
         value.Id = reader.Read<int>();
+        value.nameItem = reader.Read();
     }
     public virtual int ByteSize()
     {
-        return Id.ByteSize();
+        return Id.ByteSize() + nameItem.ByteSize();
     }
 
     public virtual void Serialize(IWriter writer)
     {
         writer.Write(Id);
+        writer.Write(nameItem);
     }
 }

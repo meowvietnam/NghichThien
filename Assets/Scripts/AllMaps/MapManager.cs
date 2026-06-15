@@ -91,14 +91,15 @@ namespace AllMaps
 
         private void Awake()
         {
-            Client.Instance.ChangeState(new Network.ClientState.AllMaps(this));
+            var state = new Network.ClientState.AllMaps(this);
+            Client.Instance.ChangeState(state);
             SetUpGraph();
             var characterData = Client.Instance.CharacterData;
             var entryMapId = characterData.Progression.IdCurrentNode;
             var map = FindMap(entryMapId);
             current = map;
             player.SetPosition(map.PlayerPosition);
-            player.Init(characterData.Gender, false);
+            player.Init(characterData.Gender, characterData.CanFly);
             current.OnPlayerEnter();
             Pool.Set(this);
         }
