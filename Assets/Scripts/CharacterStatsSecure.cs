@@ -1,5 +1,5 @@
+using System;
 using Base;
-using CreateCharacter;
 using CreateCharacter.CharStats;
 using NUnit.Framework;
 using Sirenix.OdinInspector;

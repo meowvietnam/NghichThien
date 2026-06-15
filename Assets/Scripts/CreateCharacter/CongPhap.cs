@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Base;
+using MemoryPack;
 using Network;
 using Network.Extensions;
 using UnityEngine;
@@ -8,17 +9,14 @@ using UnityEngine;
 namespace CreateCharacter
 {
     [Serializable]
-    public class CongPhap : IMemorySerializable<CongPhap>, IDeepClone<CongPhap>, IEquatable<CongPhap>
+    [MemoryPackable]
+    public partial class CongPhap : IDeepClone<CongPhap>, IEquatable<CongPhap>
     {
         [field: SerializeField]
         public ushort Id { get; set; }
         [field: SerializeField]
         public ushort Level { get; set; }
-        public void Deserialize(IReader reader, ref CongPhap value)
-        {
-            value.Id = reader.Read<ushort>();
-            value.Level = reader.Read<ushort>();
-        }
+
         public override int GetHashCode()
         {
             return Id;
@@ -28,15 +26,6 @@ namespace CreateCharacter
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
             return Id == other.Id;
-        }
-        public int ByteSize()
-        {
-            return Id.ByteSize() + Level.ByteSize();
-        }
-        public void Serialize(IWriter writer)
-        {
-            writer.Write(Id);
-            writer.Write(Level);
         }
         public CongPhap DeepClone()
         {

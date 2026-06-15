@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Base;
+using ComboSkillResource.NPCData;
 using CreateCharacter;
 
 public class NPCDataGenerator : EditorWindow
 {
-    private ComboSkillResource comboResource;
+    private ComboSkillResource.ComboSkillResource comboResource;
     private string basePath = "Assets/Scripts/ComboSkillResource/NPCData";
 
     [MenuItem("Tools/NPC/Generate NPC Data")]
@@ -20,7 +21,7 @@ public class NPCDataGenerator : EditorWindow
     private void OnGUI()
     {
         GUILayout.Label("NPC Generation Settings", EditorStyles.boldLabel);
-        comboResource = (ComboSkillResource)EditorGUILayout.ObjectField("Combo Resource", comboResource, typeof(ComboSkillResource), false);
+        comboResource = (ComboSkillResource.ComboSkillResource)EditorGUILayout.ObjectField("Combo Resource", comboResource, typeof(ComboSkillResource.ComboSkillResource), false);
 
         if (GUILayout.Button("Generate NPCs (Check Type & Auto ID)"))
         {
@@ -120,7 +121,7 @@ public class NPCDataGenerator : EditorWindow
         AssetDatabase.Refresh();
         EditorUtility.DisplayDialog("Success", "NPC Generation/Update Completed!", "OK");
     }
-    private int CreateNPCBatch(string path, ComboSkillResource.ComboWithType comboType, int count, int minLv, int maxLv, int startId)
+    private int CreateNPCBatch(string path, ComboSkillResource.ComboSkillResource.ComboWithType comboType, int count, int minLv, int maxLv, int startId)
     {
         int runningId = startId;
         for (int i = 0; i < count; i++)
@@ -131,7 +132,7 @@ public class NPCDataGenerator : EditorWindow
             if (AssetDatabase.LoadAssetAtPath<NPCData>(assetPath) != null) continue;
 
             NPCData npc = ScriptableObject.CreateInstance<NPCData>();
-            npc.comboChar = new ComboSkillResource.ComboWithType
+            npc.comboChar = new ComboSkillResource.ComboSkillResource.ComboWithType
             {
                 nameCombo = comboType.nameCombo,
                 typeCombo = comboType.typeCombo,

@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ComboSkillResource.NPCData;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = nameof(MainQuestResource), menuName = "Action Map/Main Quest/" + nameof(MainQuestResource))]

@@ -7,7 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ComboSkillResource.NPCData;
 using LongDHModules;
+using MemoryPack;
+using Snapshot;
 using UnityEditor;
 using UnityEngine;
 
@@ -49,5 +52,16 @@ public class NPCManager : ActionMapManager
 
         Debug.Log($"Đã cập nhật {npcDatas.Length} NPC từ folder chỉ định.");
 #endif
+    }
+
+    [Button]
+    public void Export()
+    {
+        var npcDatas = this.npcDatas.Select(x => new NpcData(x)).ToArray();
+        var bytes = MemoryPackSerializer.Serialize(npcDatas);
+        var path = Path.Combine(Application.dataPath, "Exports", "npc-datas.bin");
+        File.WriteAllBytes(path, bytes);
+        AssetDatabase.Refresh();
+        Debug.Log(path);
     }
 }

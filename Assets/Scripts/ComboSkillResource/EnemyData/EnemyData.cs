@@ -1,10 +1,11 @@
 ﻿using AllMaps;
+using ComboSkillResource.NPCData;
 using LongDH.LongDHModules;
 using LongDH.Script.ObjectPool;
+using MemoryPack;
 using Skill;
 using UnityEngine;
-
-public class EnemyData : NPCData
+public partial class EnemyData : NPCData
 {
     public override ETypeVisualChar eTypeVisualChar => eTypeVisualCharEnemy  == ETypeVisualChar.Character ? GameManager.levelWithVisualChar[charStats.level] : eTypeVisualCharEnemy;
     public ETypeVisualChar eTypeVisualCharEnemy = ETypeVisualChar.Character;

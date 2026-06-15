@@ -11,6 +11,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ComboSkillResource.NPCData;
 using LongDHModules;
 using UnityEditor;
 using UnityEngine;

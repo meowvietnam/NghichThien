@@ -45,7 +45,7 @@ namespace Network
 
         private HashSet<ThanThongEquip> GetFullIdThanThongWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
-            var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
+            var combo = ComboSkillResource.ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
             if (combo == null) return new HashSet<ThanThongEquip>();
 
             int daiCanhGioiIndex = Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1;
@@ -65,7 +65,7 @@ namespace Network
 
         private List<int> GetFullIdNgoDaoWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
-            var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
+            var combo = ComboSkillResource.ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
             return combo
                 .comboWithDaiCanhGioi[Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1]
                 .ngoDaos.Select(x => x.Id) 
@@ -74,7 +74,7 @@ namespace Network
 
         private List<int> GetFullIdCongPhapWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
-            var combo = ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
+            var combo = ComboSkillResource.ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
             return combo
                 .comboWithDaiCanhGioi[Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1]
                 .congPhaps.Select(x => x.Id)
