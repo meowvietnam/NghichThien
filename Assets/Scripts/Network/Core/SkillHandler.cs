@@ -262,6 +262,7 @@ namespace Network.Core
                     {
                         charData.Progression.CurrentExp = result.CurrentExp;
                     }
+
                     var stats = charData.Stats;
                     stats.LinhThach = result.RemainingMoney;
                     stats.TamCanh = result.NewTamCanh;
@@ -296,7 +297,9 @@ namespace Network.Core
                     };
                     var remainingMoney = result.RemainingMoney;
                     var newTuoiTac = result.NewTuoiTac;
+                    var camNgos = result.CamNgos;
                     var charData = Client.Instance.CharacterData;
+                    var inventory = charData.InventoryManager;
                     if (type == ItemType.CongPhap)
                     {
                         var congPhap = new CongPhap()
@@ -304,7 +307,6 @@ namespace Network.Core
                             Id = id,
                             Level = 1
                         };
-                        var inventory = charData.InventoryManager;
                         if (inventory.CongPhaps.TryGetValue(itemRef, out var cpRef))
                         {
                             cpRef.Count -= 1;
@@ -313,6 +315,7 @@ namespace Network.Core
                                 inventory.CongPhaps.Remove(itemRef);
                             }
                         }
+
                         inventory.Add(congPhap);
                     }
                     else if (type == ItemType.ThanThong)
@@ -321,7 +324,6 @@ namespace Network.Core
                         {
                             Id = id,
                         };
-                        var inventory = charData.InventoryManager;
                         if (inventory.ThanThongs.TryGetValue(itemRef, out var ttRef))
                         {
                             ttRef.Count -= 1;
@@ -330,11 +332,18 @@ namespace Network.Core
                                 inventory.ThanThongs.Remove(itemRef);
                             }
                         }
+
                         inventory.Add(thanThong);
                     }
+
                     charData.Stats.LinhThach = remainingMoney;
                     charData.Stats.TuoiTac = newTuoiTac;
+                    foreach (var camNgo in camNgos)
+                    {
+                        inventory.AddOrUpdate(camNgo);
+                    }
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
