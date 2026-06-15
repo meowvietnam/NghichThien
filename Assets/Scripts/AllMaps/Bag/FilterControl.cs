@@ -109,7 +109,8 @@ public class FilterControl : BaseBehaviour
     public void Init()
     {
         filtersRight[0].transform.GetChild(0).GetComponent<Text>().text = "Toàn bộ";
-
+        isAllFilterA = true;
+        isAllFilterB = false;
         SetEventButton(filterLeftA, () =>
         {
             Observer.Notify(SELECT_FILTER);

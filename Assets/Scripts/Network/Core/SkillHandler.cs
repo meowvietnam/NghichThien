@@ -25,7 +25,7 @@ namespace Network.Core
         {
             MessageTag.LearnNgoDaoResult, MessageTag.EquipThanThongResult, MessageTag.UnequipThanThongResult,
             MessageTag.EquipCongPhapResult, MessageTag.UnequipCongPhapResult,
-            MessageTag.TuLuyenResult, MessageTag.LinhNgoResult
+            MessageTag.TuLuyenResult, MessageTag.LinhNgoResult , MessageTag.DotPhaCongPhapResult,
         };
 
         public MessageTag[] HandleTag => handler;
@@ -36,6 +36,7 @@ namespace Network.Core
         private INetworkEvent.IUnEquipCongPhap unequipCongPhapCallback;
         private INetworkEvent.ITuLuyen tuLuyenCallback;
         private INetworkEvent.ILinhNgo linhNgoCallback;
+        private INetworkEvent.IDotPhaCongPhap dotPhaCallback;
 
         public void OnEnter()
         {
@@ -46,8 +47,15 @@ namespace Network.Core
             Observer.AddObserver(EventList.Network.UNEQUIP_CONGPHAP, UnEquipCongPhap);
             Observer.AddObserver(EventList.Network.TU_LUYEN, TuLuyen);
             Observer.AddObserver(EventList.Network.LINH_NGO, LinhNgo);
-        }
+            Observer.AddObserver(EventList.Network.DOT_PHA_CONGPHAP, DotPhaCongPhap);
 
+        }
+        private void DotPhaCongPhap(object[] data)
+        {
+            dotPhaCallback = data[0] as INetworkEvent.IDotPhaCongPhap;
+            var id = (int)data[1];
+            Client.Instance.Send(MessageTag.DotPhaCongPhap, id);
+        }
         private void LinhNgo(object[] data)
         {
             linhNgoCallback = data[0] as INetworkEvent.ILinhNgo;
@@ -353,6 +361,67 @@ namespace Network.Core
                     else
                     {
                         linhNgoCallback.FailLinhNgo(result.Message);
+                    }
+                });
+            }
+            else if (tag == MessageTag.DotPhaCongPhapResult)
+            {
+                var result = reader.Read<DotPhaCongPhapResult>();
+                if (result.Success)
+                {
+                    Debug.Log("Success DotPhaCongPhapResult");
+
+                    var id = result.Id;
+                  
+                    var remainingMoney = result.RemainingMoney;
+                    var newTuoiTac = result.NewTuoiTac;
+                    var camNgos = result.CamNgos;
+                    var charData = Client.Instance.CharacterData;
+                    var inventory = charData.InventoryManager;
+
+                    var itemRef = new ItemRef()
+                    {
+                        Id = id,
+                        Type = ItemType.CongPhap,
+                    };
+                    var cpOwnerRef = new CongPhap()
+                    {
+                        Id = id,
+                    };
+                    if (inventory.CongPhapOwners.TryGetValue(cpOwnerRef, out var cpOwner))
+                    {
+                        int require = cpOwner.Level + 1;
+                        if (inventory.CongPhaps.TryGetValue(itemRef, out var cpRef))
+                        {
+                            cpRef.Count -= (ushort)require;
+                            if (cpRef.Count < 1)
+                            {
+                                inventory.CongPhaps.Remove(itemRef);
+                            }
+                        }
+                        cpOwner.Level += 1;
+                        inventory.AddOrUpdate(cpOwner);
+
+                        charData.Stats.LinhThach = remainingMoney;
+                        charData.Stats.TuoiTac = newTuoiTac;
+                        foreach (var camNgo in camNgos)
+                        {
+                            inventory.AddOrUpdate(camNgo);
+                        }
+                    }
+                    
+                 
+                }
+
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    if (result.Success)
+                    {
+                        dotPhaCallback.SuccessDotPhaCongPhap();
+                    }
+                    else
+                    {
+                        dotPhaCallback.FailDotPhaCongPhap(result.Message);
                     }
                 });
             }

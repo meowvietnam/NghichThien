@@ -1,5 +1,6 @@
 ﻿using Base;
 using LongDH.LongDHModules;
+using LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using Sirenix.OdinInspector;
@@ -105,7 +106,14 @@ public class ItemInventory : BaseItemUI
         }    
         textName.text = itemData.nameItem;
 
-        textCount.gameObject.SetActive(false);
+        if(Pool.Get<TabPanel>().gameObject.activeSelf)
+        {
+            textCount.gameObject.SetActive(true);
+        }
+        else
+        {
+            textCount.gameObject.SetActive(false);
+        }    
         leftUpMask.gameObject.SetActive(false);
         if (itemRef != null)
         {

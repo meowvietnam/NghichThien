@@ -353,7 +353,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                         }
                         textInfor.text = cp.GetDesc(daiCanhGioiCP);
                     }
-                    textTimer.text = GameManager.GetTimeWorldText(skill.baseTimeLearn / (30f * Client.Instance.CharacterData.Stats.NgoTinh));
+                    textTimer.text = GameManager.GetDateTimeText(skill.baseTimeLearn / (Client.Instance.CharacterData.Stats.NgoTinh));
                 }
                 SetEventButton(btnLinhHoi, () =>
                 {
@@ -462,8 +462,9 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 }
                 var provider = ItemProviderFactory.GetProvider(item.itemRef.Type);
                 int cost = provider.GetPriceItemBuy(item.itemRef.Id);
-                int cost2 = (daiCanhGioiCP + 1) * 2;
-                priceTextUpdateCongPhap.text = $"x{cost}";
+                int cost2 = (daiCanhGioiCP + 1);
+                int costLinhThach = cost * cost2;
+                priceTextUpdateCongPhap.text = $"x{costLinhThach}";
                 priceItemCongPhap.Init(item.itemData, item.frame.sprite);
                 priceItemCongPhap.SetQualityFull(item.qualityFull.sprite);
 
@@ -490,25 +491,25 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                             }
                         }
                     }
-                    textTimerUpdateCongPhap.text = GameManager.GetTimeWorldText(skill.baseTimeLearn / (30f * Client.Instance.CharacterData.Stats.NgoTinh));
+                    textTimerUpdateCongPhap.text = GameManager.GetDateTimeText(skill.baseTimeLearn / Client.Instance.CharacterData.Stats.NgoTinh);
 
                 }
                
                 SetEventButton(btnUpdateCongPhap, () =>
                 {
-                    if (charData.Stats.LinhThach >= cost && charData.InventoryManager.CongPhaps.Count(x => x.Id == itemRef.Id) >= cost2)
+                    if (charData.Stats.LinhThach >= costLinhThach && charData.InventoryManager.CongPhaps.Count(x => x.Id == itemRef.Id) >= cost2)
                     {
                         Pool.Get<PopupConfirmAction>().ShowPopConfirmAction($"Xác nhận đột phá {data.nameItem}", () =>
                         {
                             item.actionPointerDown?.Invoke();
-                            Observer.Notify(EventList.Network.DOT_PHA_CONGPHAP, this, (int)itemRef.Id, itemRef.Type);
+                            Observer.Notify(EventList.Network.DOT_PHA_CONGPHAP, this, (int)itemRef.Id);
 
                         });
                     }
                 });
                 SetEventButton(btnUnUpdateCongPhap, () =>
                 {
-                    if (charData.Stats.LinhThach < cost)
+                    if (charData.Stats.LinhThach < costLinhThach)
                     {
                         NotifyGroup.Instance.Show("Không đủ linh thạch");
                     }
@@ -522,7 +523,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 SetUpBtnUpdate();
                 void SetUpBtnUpdate()
                 {
-                    if (charData.Stats.LinhThach < cost || charData.InventoryManager.CongPhaps.Count(x => x.Id == itemRef.Id) < cost2)
+                    if (charData.Stats.LinhThach < costLinhThach || charData.InventoryManager.CongPhaps.FirstOrDefault(x => x.Id == itemRef.Id).Count < cost2)
                     {
                         btnUnUpdateCongPhap.gameObject.SetActive(true);
                         btnUpdateCongPhap.gameObject.SetActive(false);
@@ -568,7 +569,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
 
     public void FailDotPhaCongPhap(string message)
     {
-        throw new NotImplementedException();
+        NotifyGroup.Instance.Show(message);
     }
 }
 

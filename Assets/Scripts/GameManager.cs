@@ -736,25 +736,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         return (tamCanh[tamCanh.Length - 1], (int)danDocRequireEnd[danDocRequireEnd.Length-1], tamCanh.Length - 1);
     }
 
-    public static int GetTimeWorldIntPlayer()
-    {
-        // 1. Lấy giá trị TimeSpan gốc
-        TimeSpan originalTime = Client.Instance.CharacterData.Stats.TuoiTac;
-
-        // 2. Chuyển đổi tổng số ngày sang đơn vị tháng
-        // Giả sử quy ước: 1 tháng = 30 ngày
-        int totalDays = (int)originalTime.TotalDays;
-        int totalMonths = totalDays / 30;
-
-        // 3. Trừ đi 15 năm gốc (15 năm * 12 tháng = 180 tháng)
-        return totalMonths - 180;
-    }
-
-    public static TimeSpan GetTimeWorldTimeSpan()
-    {
-        return ConvertMonthToTimeSpan(GetTimeWorldIntPlayer());
-    }
-
+  
  
     public static int GetIntTuoiTac(TimeSpan timeSpanTuoiTac)
     {
@@ -764,23 +746,43 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     {
         return TimeSpan.FromDays(months * 30);
     }
-    public static String GetTimeWorldText(float monthsRef)
+    // Quy ước tu tiên
+    private const int DAYS_IN_MONTH = 30;
+    private const int MONTHS_IN_YEAR = 12;
+
+    // 1. Hàm tính tổng số tháng (vẫn giữ nguyên để babe làm logic khác nếu cần)
+    public static int GetDayTimeWorldIntPlayer()
     {
-        // 1. Lấy giá trị TimeSpan gốc
-        TimeSpan originalAge = ConvertMonthToTimeSpan(monthsRef);
+        TimeSpan originalTime = Client.Instance.CharacterData.Stats.TuoiTac;
+        int totalDays = (int)originalTime.TotalDays;
+        return totalDays - (15 * MONTHS_IN_YEAR * DAYS_IN_MONTH); // Trừ 15 tuổi gốc
+    }
+    public static float GetMonthTimeWorldIntPlayer()
+    {
+        return (float)GetDayTimeWorldIntPlayer()/(float)DAYS_IN_MONTH; // Trừ 15 tuổi gốc
+    }
+    // 2. HÀM SHOW TEXT MỚI: Truyền thẳng TimeSpan tuổi vào để bóc tách
+    public static string GetDateTimeText(int day)
+    {
+        // Tổng số ngày tuổi hiện tại của người chơi
 
-        // 2. Tạo một mốc thời gian cơ sở (Base) và cộng tuổi vào, sau đó trừ đi 15 năm
-        // Giả sử tính từ mốc 01/01/0001
-        DateTime baseDate = new DateTime(1, 1, 1).Add(originalAge);
+        // Tính số ngày của thế giới (Trừ đi 15 tuổi gốc = 15 * 360 = 5400 ngày)
+        int totalWorldDays = day;
 
-        // 3. Tính toán các thành phần (Trừ đi 1 để về đúng số năm/tháng/ngày đã trôi qua)
-        int years = baseDate.Year - 1;
-        int months = baseDate.Month - 1;
-        int days = baseDate.Day - 1;
+        // Nếu nhân vật chưa đủ 15 tuổi (đề phòng lỗi)
+        if (totalWorldDays < 0) totalWorldDays = 0;
 
-        // 4. Gán Text
+        // Tiến hành bổ nhỏ ngày thế giới ra Năm / Tháng / Ngày theo quy ước 30 ngày
+        int DAYS_IN_YEAR = DAYS_IN_MONTH * MONTHS_IN_YEAR; // 360
+
+        int years = totalWorldDays / DAYS_IN_YEAR;
+        int remainingDaysAfterYears = totalWorldDays % DAYS_IN_YEAR;
+
+        int months = remainingDaysAfterYears / DAYS_IN_MONTH;
+        int days = remainingDaysAfterYears % DAYS_IN_MONTH; // Lấy phần dư ngày lẻ cuối cùng
+
         return $"{years} năm {months} tháng {days} ngày";
-    }    
+    }
 
     // Hàm bổ trợ
     public static IEnumerator LoadSceneWithDelay(string sceneName, float delay)

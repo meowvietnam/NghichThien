@@ -43,17 +43,17 @@ public abstract class ActionMapManager : MonoBehaviour , IUISingleton
             return;
         }
         // 1. Lấy tổng số tháng hiện tại của thế giới
-        int timeWordCurrent = GameManager.GetTimeWorldIntPlayer();
+        float monthTimeWordCurrent = GameManager.GetMonthTimeWorldIntPlayer();
 
         // 2. Lấy thời điểm thực hiện random lần cuối từ PlayerPrefs
         // Nếu là lần đầu tiên (giá trị -1), ta coi như cần random ngay lập tức
-        int oldTimeRandomInt = PlayerPrefs.GetInt($"{FileSaveTime}", -1);
+        float oldTimeRandomInt = PlayerPrefs.GetFloat($"{FileSaveTime}", -1);
 
         // --- XỬ LÝ RANDOM NPC (Mỗi 5 tháng) ---
-        if (oldTimeRandomInt == -1 || (timeWordCurrent - oldTimeRandomInt) >= TimeMonthRandom)
+        if (oldTimeRandomInt == -1 || (monthTimeWordCurrent - oldTimeRandomInt) >= TimeMonthRandom)
         {
             RandomAction();            // Lưu lại mốc thời gian mới
-            Debug.Log($"<color=cyan>NPC Spawned</color> at month: {timeWordCurrent}");
+            Debug.Log($"<color=cyan>NPC Spawned</color> at month: {monthTimeWordCurrent}");
         }
 
      
@@ -62,7 +62,7 @@ public abstract class ActionMapManager : MonoBehaviour , IUISingleton
     }
     public virtual void RandomAction()
     {
-        PlayerPrefs.SetInt(FileSaveTime, GameManager.GetTimeWorldIntPlayer());
+        PlayerPrefs.SetFloat(FileSaveTime, GameManager.GetMonthTimeWorldIntPlayer());
         PlayerPrefs.Save();
     }
 

@@ -38,6 +38,6 @@ public class UIMiniTaskPanel : PanelGroup
     {
 
         // 4. Gán Text
-        timerText.text = GameManager.GetTimeWorldText(GameManager.GetTimeWorldIntPlayer());
+        timerText.text = GameManager.GetDateTimeText(GameManager.GetDayTimeWorldIntPlayer());
     }    
 }

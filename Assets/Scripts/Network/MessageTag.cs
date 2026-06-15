@@ -92,7 +92,8 @@ namespace Network
         
         LinhNgo = 382,
         LinhNgoResult = 383,
-
+        DotPhaCongPhap = 384,
+        DotPhaCongPhapResult = 385,
 
 
         JoinMonPhai = 392,
