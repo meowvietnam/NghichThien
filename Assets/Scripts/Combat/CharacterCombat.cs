@@ -27,27 +27,22 @@ public enum ETypeVisualChar
 {
     Character,
 
-    // --- Nhóm Luyện Khí ---
     EnemyLuyenKhiSoKi,
     EnemyLuyenKhiTrungKi ,
     EnemyLuyenKhiHauKi ,
 
-    // --- Nhóm Trúc Cơ ---
     EnemyTrucCoSoKi ,
     EnemyTrucCoTrungKi,
     EnemyTrucCoHauKi,
 
-    // --- Nhóm Kết Đan ---
     EnemyKetDanSoKi,
     EnemyKetDanTrungKi,
     EnemyKetDanHauKi,
 
-    // --- Nhóm Nguyên Anh ---
     EnemyNguyenAnhSoKi,
     EnemyNguyenAnhTrungKi,
     EnemyNguyenAnhHauKi,
 
-    // --- Nhóm Story (Ví dụ đại diện) ---
     EnemyStory0_1,
     EnemyStory0_2,
     EnemyStory0_3,
@@ -62,7 +57,6 @@ public enum ETypeVisualChar
     EnemyStory7,
     EnemyStory8,
     EnemyStory9_1,
-
 }
 public class CharacterCombat : MonoBehaviour
 {

@@ -5,6 +5,7 @@ using LongDH.LongDHModules;
 using Network;
 using System.Collections.Generic;
 using System.Linq;
+using ComboSkillResource.NPCData;
 using LongDHModules;
 using UnityEngine;
 using UnityEngine.TextCore.Text;

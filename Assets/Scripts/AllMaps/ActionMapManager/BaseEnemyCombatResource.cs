@@ -4,6 +4,7 @@ using Network;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using System.Linq;
+using ComboSkillResource.NPCData;
 using LongDHModules;
 using UnityEditor;
 using UnityEngine;

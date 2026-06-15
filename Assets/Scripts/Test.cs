@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
-using Unity.EditorCoroutines.Editor;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;

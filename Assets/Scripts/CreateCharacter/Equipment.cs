@@ -3,6 +3,7 @@ using System.Linq;
 using Base;
 using LuyenDan;
 using LuyenKhi;
+using MemoryPack;
 using Network;
 using Network.Extensions;
 using UnityEngine;
@@ -11,15 +12,19 @@ using Material = LuyenKhi.Material;
 namespace CreateCharacter
 {
     [Serializable]
-    public class Equipment : IMemorySerializable<Equipment>, IEquatable<Equipment>, IDeepClone<Equipment>
+    [MemoryPackable]
+    public partial class Equipment : IEquatable<Equipment>, IDeepClone<Equipment>
     {
         [field: SerializeField] public ushort SelfId { get; set; }
         [field: SerializeField] public ushort Id { get; set; }
         [field: SerializeField] public string Name { get; set; }
         [field: SerializeField] public Effect[] Effects { get; set; }
+        [field: SerializeField] public ushort[] MaterialIds { get; set; }
+        [MemoryPackIgnore]
         public LuyenKhiRewardItem Item => LuyenKhiResources.Instance.RewardItems.FirstOrDefault(x => x.Id == Id);
-        public ushort[] MaterialIds { get; set; }
+        [MemoryPackIgnore]
         public Material[] Materials => LuyenKhiResources.Instance.Materials.Where(x => MaterialIds.Contains((ushort)x.Id)).ToArray();
+        [MemoryPackIgnore]
         public EquipmentGradeConfig GradeConfig => LuyenKhiResources.Instance.EquipmentGrades.FirstOrDefault(x=>x.Grade == GetGrade());
 
         public Material[] GetMaterialsWithEffectType(EffectType effectType)
@@ -58,14 +63,6 @@ namespace CreateCharacter
             int minValue = Mathf.RoundToInt(0.5f * maxValue);
             return (minValue, maxValue);
         }
-        public void Deserialize(IReader reader, ref Equipment value)
-        {
-            value.SelfId = reader.Read<ushort>();
-            value.Id = reader.Read<ushort>();
-            value.Name = reader.Read();
-            value.Effects = reader.ReadArray<Effect>();
-            value.MaterialIds = reader.ReadArray<ushort>();
-        }
         public ItemRef CreateRef()
         {
             var itemType = GetItemType();
@@ -89,19 +86,7 @@ namespace CreateCharacter
 
             };
         }
-        public int ByteSize()
-        {
-            return SelfId.ByteSize() + Id.ByteSize() + Name.ByteSize() + Effects.ByteSize() +  MaterialIds.ByteSize();
-        }
 
-        public void Serialize(IWriter writer)
-        {
-            writer.Write(SelfId);
-            writer.Write(Id);
-            writer.Write(Name);
-            writer.WriteArray(Effects);
-            writer.WriteArray(MaterialIds);
-        }
 
         public EquipmentType GetEquipmentType()
         {

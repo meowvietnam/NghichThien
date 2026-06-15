@@ -10,14 +10,14 @@ namespace CreateCharacter.CharStats
     [Serializable]
     public class CharacterStats : IMemorySerializable<CharacterStats>
     {
-        [field: SerializeField] public float Kim { get; private set; }
-        [field: SerializeField] public float Moc { get; private set; }
-        [field: SerializeField] public float Thuy { get; private set; }
-        [field: SerializeField] public float Hoa { get; private set; }
-        [field: SerializeField] public float Tho { get; private set; }
-        [field: SerializeField] public float Ma { get; private set; }
-        [field: SerializeField] public int TuChat { get; private set; }
-        [field: SerializeField] public int NgoTinh { get; private set; }
+        [field: SerializeField] public float Kim { get; set; }
+        [field: SerializeField] public float Moc { get; set; }
+        [field: SerializeField] public float Thuy { get; set; }
+        [field: SerializeField] public float Hoa { get; set; }
+        [field: SerializeField] public float Tho { get; set; }
+        [field: SerializeField] public float Ma { get; set; }
+        [field: SerializeField] public int TuChat { get; set; }
+        [field: SerializeField] public int NgoTinh { get; set; }
         [field: SerializeField] public int ThanThuc { get; set; }
         [field: SerializeField] public int TocDoBay { get; set; }
         [field: SerializeField] public int LinhThach { get; set; }
