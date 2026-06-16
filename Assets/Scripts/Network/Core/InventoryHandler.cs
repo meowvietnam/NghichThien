@@ -49,6 +49,10 @@ namespace Network.Core
                     var charData = Client.Instance.CharacterData;
                     charData.SetInventory(result.InventoryManager);
                 }
+                else
+                {
+                    Debug.LogError(result.Message);
+                }
             }
             else if (tag == MessageTag.EquipEquipmentResult)
             {
