@@ -7,7 +7,6 @@ using Network.Callback;
 using Network.ClientState;
 using Network.Models;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using UnityEngine;
 
 namespace Network
