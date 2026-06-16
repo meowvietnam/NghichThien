@@ -497,11 +497,13 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                
                 SetEventButton(btnUpdateCongPhap, () =>
                 {
-                    if (charData.Stats.LinhThach >= costLinhThach && charData.InventoryManager.CongPhaps.Count(x => x.Id == itemRef.Id) >= cost2)
+                    var cpRef = charData.InventoryManager.CongPhaps.FirstOrDefault(x => x.Id == itemRef.Id);
+
+                    if (charData.Stats.LinhThach >= costLinhThach && cpRef != null && cpRef.Count >= cost2)
                     {
                         Pool.Get<PopupConfirmAction>().ShowPopConfirmAction($"Xác nhận đột phá {data.nameItem}", () =>
                         {
-                            item.actionPointerDown?.Invoke();
+                            textNameLinhHoi.transform.parent.gameObject.SetActive(false);
                             Observer.Notify(EventList.Network.DOT_PHA_CONGPHAP, this, (int)itemRef.Id);
 
                         });
@@ -523,7 +525,8 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 SetUpBtnUpdate();
                 void SetUpBtnUpdate()
                 {
-                    if (charData.Stats.LinhThach < costLinhThach || charData.InventoryManager.CongPhaps.FirstOrDefault(x => x.Id == itemRef.Id).Count < cost2)
+                    var cpRef = charData.InventoryManager.CongPhaps.FirstOrDefault(x => x.Id == itemRef.Id);
+                    if (charData.Stats.LinhThach < costLinhThach || (cpRef != null && cpRef.Count < cost2))
                     {
                         btnUnUpdateCongPhap.gameObject.SetActive(true);
                         btnUpdateCongPhap.gameObject.SetActive(false);

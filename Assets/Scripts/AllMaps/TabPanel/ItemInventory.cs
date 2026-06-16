@@ -105,8 +105,8 @@ public class ItemInventory : BaseItemUI
             });
         }    
         textName.text = itemData.nameItem;
-
-        if(Pool.Get<TabPanel>().gameObject.activeSelf)
+        var tabPanel = Pool.Get<TabPanel>();
+        if (tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.VatPham )
         {
             textCount.gameObject.SetActive(true);
         }
