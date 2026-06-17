@@ -413,9 +413,12 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     [SerializeField] private Text textNameDotPha;
     [SerializeField] private Bag1ItemPrefabInventory bagCongPhap;
 
-
+    [SerializeField]
+    private int idCpUpdate;
+    [SerializeField]
+    private ETypeSlotCP typeSlot = ETypeSlotCP.None;
     private void InitPageUpdate()
-    {
+   {
       
         textNameDotPha.transform.parent.gameObject.SetActive(false);
         var charData = CharData;
@@ -503,7 +506,15 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                     {
                         Pool.Get<PopupConfirmAction>().ShowPopConfirmAction($"Xác nhận đột phá {data.nameItem}", () =>
                         {
-                            textNameLinhHoi.transform.parent.gameObject.SetActive(false);
+                            var typeSlotRef = Pool.Get<TabPanel>().GetTypeSlotCP(itemRef.Id);
+                            if (typeSlotRef != ETypeSlotCP.None)
+                            {
+                                typeSlot = typeSlotRef;
+                                idCpUpdate = itemRef.Id;
+                                Observer.Notify(EventList.Network.UNEQUIP_CONGPHAP, Pool.Get<TabPanel>(), typeSlotRef);
+
+                            }
+                            textNameDotPha.transform.parent.gameObject.SetActive(false);
                             Observer.Notify(EventList.Network.DOT_PHA_CONGPHAP, this, (int)itemRef.Id);
 
                         });
@@ -567,11 +578,22 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
 
     public void SuccessDotPhaCongPhap()
     {
+        NotifyGroup.Instance.Show("Đột phá thành công");
+        if(typeSlot != ETypeSlotCP.None)
+        {
+            Observer.Notify(EventList.Network.EQUIP_CONGPHAP, Pool.Get<TabPanel>(), typeSlot, (ushort)idCpUpdate);
+            typeSlot = ETypeSlotCP.None;
+        }
         Observer.Notify(EventList.GamePlay.TIME_ADJUST);
     }
 
     public void FailDotPhaCongPhap(string message)
     {
+        if (typeSlot != ETypeSlotCP.None)
+        {
+            Observer.Notify(EventList.Network.EQUIP_CONGPHAP, Pool.Get<TabPanel>(), typeSlot, (ushort)idCpUpdate);
+            typeSlot = ETypeSlotCP.None;
+        }
         NotifyGroup.Instance.Show(message);
     }
 }

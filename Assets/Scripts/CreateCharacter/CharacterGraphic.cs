@@ -1,4 +1,4 @@
-using Base;
+﻿using Base;
 using Spine;
 using Spine.Unity;
 using System.Collections.Generic;
@@ -14,6 +14,20 @@ namespace CreateCharacter
         [SerializeField] protected SkinResources skinResources;
         private Dictionary<string, string> currentSkins = new Dictionary<string, string>();
         private Dictionary<string, Color> currentColors = new Dictionary<string, Color>();
+        public Vector3 refLocalPos; // lấy male làm chuẩn
+        public float addLocalY = 30f; // lấy male làm chuẩn
+
+        private void OnEnable()
+        {
+            if (refLocalPos == Vector3.zero)
+            {
+                refLocalPos = this.transform.localPosition;
+            }
+        }
+        private void Awake()
+        {
+           refLocalPos = this.transform.localPosition;
+        }
         public void SetGender(Gender gender)
         {
             var skeletonDataAsset = skinResources.GenderSkinGroups.FirstOrDefault(skinResource => skinResource.Gender == gender)?.SkeletonDataAsset;
@@ -22,6 +36,15 @@ namespace CreateCharacter
             currentColors.Clear();
             graphic.Initialize(true);
             graphic.AnimationState.SetAnimation(0, "Idle_0", true);
+            // lấy localpos male làm chuẩn
+            if(gender == Gender.Female)
+            {
+                this.transform.localPosition = refLocalPos + new Vector3(0, addLocalY, 0);
+            }    
+            else
+            {
+                this.transform.localPosition = refLocalPos;
+            }    
         }
         public void SetSkin(Dictionary<string, string> combines, Dictionary<string, Color> colors = null)
         {

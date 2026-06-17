@@ -571,6 +571,39 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         // ... thêm các ô khác tương tự
         return ETypeSlotCP.None;
     }
+    public ETypeSlotCP GetTypeSlotCP(int idCp)
+    {
+
+        // 1. Đơn Thuật
+        if (donThuat.itemData != null && idCp == donThuat.itemData.Id)
+            return ETypeSlotCP.DonThuat;
+
+        // 2. Phụ Tử 1
+        if (phuTu1.itemData != null  && idCp == phuTu1.itemData.Id)
+            return ETypeSlotCP.PhuTu1;
+
+        // 3. Phụ Tử 2
+        if (phuTu2.itemData != null && idCp == phuTu2.itemData.Id)
+            return ETypeSlotCP.PhuTu2;
+
+        // 4. Phụ Tử 3
+        if (phuTu3.itemData != null  && idCp == phuTu3.itemData.Id)
+            return ETypeSlotCP.PhuTu3;
+
+        // 5. Phụ Tử 4
+        if (phuTu4.itemData != null  && idCp == phuTu4.itemData.Id)
+            return ETypeSlotCP.PhuTu4;
+
+        // 6. Chủ Tử 1 (Chủ Từ)
+        if (chuTu.itemData != null  && idCp == chuTu.itemData.Id)
+            return ETypeSlotCP.ChuTu1;
+
+        // 7. Chủ Tử 2 (Nguyên Ảnh)
+        if (nguyenAnh.itemData != null && idCp == nguyenAnh.itemData.Id)
+            return ETypeSlotCP.ChuTu2;
+
+        return ETypeSlotCP.None;
+    }
     public void InitCongPhap(int countDelay = 10)
     {
         Observer.RemoveObserver(FilterControl.SELECT_FILTER,SelectFilter);

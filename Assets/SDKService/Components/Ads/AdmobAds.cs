@@ -24,27 +24,69 @@ public class AdmobAds : IAdsProvider
     private string GetBannerId()
     {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD || !BUILD_RELEASE
-        return "ca-app-pub-3940256099942544/6300978111"; // TEST ID
+        // BANNER TEST ID
+#if UNITY_ANDROID
+        return "ca-app-pub-3940256099942544/6300978111"; // Test Android
+#elif UNITY_IOS
+        return "ca-app-pub-3940256099942544/2934735716"; // Test iOS
 #else
-        return "ca-app-pub-6144347258558138/5003556107"; // REAL BANNER ID
+        return "ca-app-pub-3940256099942544/6300978111";
+#endif
+#else
+    // BANNER REAL ID
+#if UNITY_ANDROID
+        return "ca-app-pub-6144347258558138/5003556107"; // Real Android
+#elif UNITY_IOS
+        return ""; // Điền ID Banner Real iOS vào đây nếu có ghen babe
+#else
+        return "";
+#endif
 #endif
     }
 
     private string GetInterstitialId()
     {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD || !BUILD_RELEASE
-        return "ca-app-pub-3940256099942544/1033173712"; // TEST ID
+        // INTERSTITIAL TEST ID
+#if UNITY_ANDROID
+        return "ca-app-pub-3940256099942544/1033173712"; // Test Android
+#elif UNITY_IOS
+        return "ca-app-pub-3940256099942544/4411468910"; // Test iOS
 #else
-        return "ca-app-pub-6144347258558138/4467554150"; // REAL INTERSTITIAL ID
+        return "ca-app-pub-3940256099942544/1033173712";
+#endif
+#else
+    // INTERSTITIAL REAL ID
+#if UNITY_ANDROID
+        return "ca-app-pub-6144347258558138/5728248630"; // Real Android
+#elif UNITY_IOS
+        return "ca-app-pub-6144347258558138/1789003629"; // Real iOS chuẩn đét
+#else
+        return "";
+#endif
 #endif
     }
 
     private string GetRewardedId()
     {
-#if UNITY_EDITOR || DEVELOPMENT_BUILD|| !BUILD_RELEASE
-        return "ca-app-pub-3940256099942544/5224354917"; // TEST ID
+#if UNITY_EDITOR || DEVELOPMENT_BUILD || !BUILD_RELEASE
+        // REWARDED TEST ID
+#if UNITY_ANDROID
+        return "ca-app-pub-3940256099942544/5224354917"; // Test Android
+#elif UNITY_IOS
+        return "ca-app-pub-3940256099942544/1712485313"; // Test iOS
 #else
-        return "ca-app-pub-6144347258558138/3154472482"; // REAL REWARDED ID
+        return "ca-app-pub-3940256099942544/5224354917";
+#endif
+#else
+    // REWARDED REAL ID
+#if UNITY_ANDROID
+        return "ca-app-pub-6144347258558138/6749349559"; // Real Android
+#elif UNITY_IOS
+        return "ca-app-pub-6144347258558138/8162840282"; // Real iOS chuẩn đét
+#else
+        return "";
+#endif
 #endif
     }
     #endregion

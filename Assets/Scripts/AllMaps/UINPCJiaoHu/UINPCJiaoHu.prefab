@@ -17366,8 +17366,8 @@ RectTransform:
   - {fileID: 224787551412956602}
   m_Father: {fileID: 224290399854480384}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 136, y: 167}
   m_Pivot: {x: 0, y: 1}
@@ -22406,8 +22406,8 @@ RectTransform:
   - {fileID: 224540683447265495}
   m_Father: {fileID: 224635363602633369}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 136, y: 167}
   m_Pivot: {x: 0, y: 1}
@@ -42633,8 +42633,8 @@ RectTransform:
   - {fileID: 224947448953679363}
   m_Father: {fileID: 224303131624853226}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 136, y: 167}
   m_Pivot: {x: 0, y: 1}
@@ -54278,9 +54278,9 @@ RectTransform:
   - {fileID: 7155279675192680932}
   m_Father: {fileID: 224609834910334132}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -735}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -785}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5773784998093169528
@@ -54395,6 +54395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CreateCharacter.CharacterGraphic
   graphic: {fileID: 2930407829860652672}
   skinResources: {fileID: 11400000, guid: eb63df279467d0e4a9ccdb13556e6fa9, type: 2}
+  refLocalPos: {x: 0, y: 0, z: 0}
 --- !u!1 &3765644957535763579
 GameObject:
   m_ObjectHideFlags: 0
@@ -58412,6 +58413,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CreateCharacter.CharacterGraphic
   graphic: {fileID: 6122526913068374079}
   skinResources: {fileID: 11400000, guid: eb63df279467d0e4a9ccdb13556e6fa9, type: 2}
+  refLocalPos: {x: 0, y: 0, z: 0}
 --- !u!1 &7760541357865651107
 GameObject:
   m_ObjectHideFlags: 0
@@ -61276,6 +61278,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3141353775108608067, guid: 81502a36a78c2a34b93bd798d2fada86,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3141353775108608067, guid: 81502a36a78c2a34b93bd798d2fada86,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3141353775108608067, guid: 81502a36a78c2a34b93bd798d2fada86,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -350
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
