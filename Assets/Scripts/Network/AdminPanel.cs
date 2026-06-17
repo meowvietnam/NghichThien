@@ -7,6 +7,7 @@ using LuyenDan;
 using LuyenKhi;
 using Network.Core;
 using Network.Extensions;
+using Network.Models;
 using Sirenix.OdinInspector;
 using Skill;
 using UnityEngine;
@@ -251,8 +252,10 @@ namespace Network
             }
             else if (tag == MessageTag.SetCamNgoResult)
             {
-                var camNgo = reader.Read<CamNgo>();
-                Client.CharacterData.InventoryManager.AddOrUpdate(camNgo);
+                var result = reader.Read<SetCamNgoResult>();
+                var charData = Client.CharacterData;
+                charData.InventoryManager.AddOrUpdate(result.CamNgo);
+                charData.Progression.NgoDaoDiem = result.NewNgoDaoDiem;
             }
             else if (tag == MessageTag.AddThanThongResult)
             {

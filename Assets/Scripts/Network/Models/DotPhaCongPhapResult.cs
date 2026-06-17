@@ -15,5 +15,6 @@ namespace Network.Models
         public int RemainingMoney { get; set; }
         public TimeSpan NewTuoiTac { get; set; }
         public List<CamNgo> CamNgos { get; set; }
+        public int NewNgoDaoDiem { get; set; }
     }
 }

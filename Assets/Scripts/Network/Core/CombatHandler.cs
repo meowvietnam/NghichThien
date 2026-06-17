@@ -27,13 +27,13 @@ namespace Network.Core
             var reader = message.Reader;
             if (tag == MessageTag.WinCombatResult)
             {
-                Debug.Log("WinCombatResult");
                 var result = reader.Read<WinCombatResult>();
                 if (result.Success)
                 {
                     var charData = Client.Instance.CharacterData;
                     charData.MoneyVip += result.Reward.MoneyVip;
                     charData.Stats.LinhThach += result.Reward.Money;
+                    charData.Progression.NgoDaoDiem = result.NewNgoDaoDiem;
                     var listItemRef = result.Reward.ItemRefs;
                     foreach (var item in listItemRef)
                     {
@@ -75,7 +75,6 @@ namespace Network.Core
                     {
                         loadCharCallBack.FailLoadCharCombat(result.Message);
                     }
-
                 });
             }
          

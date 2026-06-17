@@ -1,34 +1,16 @@
-using LuyenDan;
-using Network;
-using Network.Extensions;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using LuyenDan;
+using MemoryPack;
 
-[System.Serializable]
-public class RewardSnapshot : IMemorySerializable<RewardSnapshot>
+namespace AllMaps.EventReward
 {
-    public List<ItemRef> ItemRefs = new(); // voi count item ref la count user reward 
-    public int Money = 0;
-    public int MoneyVip = 0;
-
-    public int ByteSize()
+    [System.Serializable]
+    [MemoryPackable]
+    public partial class RewardSnapshot
     {
-        return Money.ByteSize() + MoneyVip.ByteSize() + ItemRefs.ByteSize();
-    }
-
-    public void Deserialize(IReader reader, ref RewardSnapshot value)
-    {
-        value.Money = reader.Read<int>();
-        value.MoneyVip = reader.Read<int>();
-        value.ItemRefs = reader.ReadArray<ItemRef>().ToList();
-    }
-
-    public void Serialize(IWriter writer)
-    {
-        writer.Write(Money);
-        writer.Write(MoneyVip);
-        writer.WriteArray(ItemRefs);
+        public List<ItemRef> ItemRefs = new();
+        public int Money = 0;
+        public int MoneyVip = 0;
     }
 }

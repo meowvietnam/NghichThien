@@ -290,12 +290,9 @@ namespace Network.Core
             }
             else if (tag == MessageTag.LinhNgoResult)
             {
-                Debug.Log("Receive LinhNgoResult");
                 var result = reader.Read<LinhNgoResult>();
                 if (result.Success)
                 {
-                    Debug.Log("Success LinhNgoResult");
-
                     var type = result.Type;
                     var id = result.Id;
                     var itemRef = new ItemRef()
@@ -306,6 +303,7 @@ namespace Network.Core
                     var remainingMoney = result.RemainingMoney;
                     var newTuoiTac = result.NewTuoiTac;
                     var camNgos = result.CamNgos;
+                    var newNgoDaoDiem = result.NewNgoDaoDiem;
                     var charData = Client.Instance.CharacterData;
                     var inventory = charData.InventoryManager;
                     if (type == ItemType.CongPhap)
@@ -343,9 +341,9 @@ namespace Network.Core
 
                         inventory.Add(thanThong);
                     }
-
                     charData.Stats.LinhThach = remainingMoney;
                     charData.Stats.TuoiTac = newTuoiTac;
+                    charData.Progression.NgoDaoDiem = newNgoDaoDiem;
                     foreach (var camNgo in camNgos)
                     {
                         inventory.AddOrUpdate(camNgo);
@@ -369,16 +367,13 @@ namespace Network.Core
                 var result = reader.Read<DotPhaCongPhapResult>();
                 if (result.Success)
                 {
-                    Debug.Log("Success DotPhaCongPhapResult");
-
                     var id = result.Id;
-                  
                     var remainingMoney = result.RemainingMoney;
                     var newTuoiTac = result.NewTuoiTac;
                     var camNgos = result.CamNgos;
+                    var newNgoDaoDiem = result.NewNgoDaoDiem;
                     var charData = Client.Instance.CharacterData;
                     var inventory = charData.InventoryManager;
-
                     var itemRef = new ItemRef()
                     {
                         Id = id,
@@ -401,16 +396,14 @@ namespace Network.Core
                         }
                         cpOwner.Level += 1;
                         inventory.AddOrUpdate(cpOwner);
-
                         charData.Stats.LinhThach = remainingMoney;
                         charData.Stats.TuoiTac = newTuoiTac;
+                        charData.Progression.NgoDaoDiem = newNgoDaoDiem;
                         foreach (var camNgo in camNgos)
                         {
                             inventory.AddOrUpdate(camNgo);
                         }
                     }
-                    
-                 
                 }
 
                 NetworkManager.Instance.Invoke(() =>

@@ -1,21 +1,24 @@
 using System;
-using System.Collections.Generic;
 using Base;
-using Network;
-using Network.Extensions;
-using Sirenix.OdinInspector;
+using MemoryPack;
 using UnityEngine;
 
 namespace LuyenDan
 {
     [Serializable]
-    public class ItemRef : IMemorySerializable<ItemRef>,IEquatable<ItemRef>, IDeepClone<ItemRef>
+    [MemoryPackable]
+    public partial class ItemRef : IEquatable<ItemRef>, IDeepClone<ItemRef>
     {
         [field: SerializeField] public ushort Id { get; set; }
         [field: SerializeField] public ItemType Type { get; set; }
         [field: SerializeField] public ushort Count { get; set; }
-        public Action<int> OnCountChanged { get; set; }
-        public ItemRef() {}
+        [MemoryPackIgnore] public Action<int> OnCountChanged { get; set; }
+
+        [MemoryPackConstructor]
+        public ItemRef()
+        {
+        }
+
         public ItemRef(ushort id, ItemType type, int count)
         {
             Id = id;
@@ -28,26 +31,10 @@ namespace LuyenDan
             Count = (ushort)count;
             OnCountChanged?.Invoke(count);
         }
-   
+
         public bool IsFurnace()
         {
             return Type == ItemType.Furnace;
-        }
-        public int ByteSize()
-        {
-            return Id.ByteSize() + Type.ByteSize() + Count.ByteSize() ;
-        }
-        public void Serialize(IWriter writer)
-        {
-            writer.Write(Id);
-            writer.Write(Type);
-            writer.Write(Count);
-        }
-        public void Deserialize(IReader reader, ref ItemRef value)
-        {
-            value.Id = reader.Read<ushort>();
-            value.Type = reader.Read<ItemType>();
-            value.Count = reader.Read<ushort>();
         }
 
         public override int GetHashCode()

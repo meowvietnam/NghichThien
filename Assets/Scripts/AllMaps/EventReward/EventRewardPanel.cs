@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using AllMaps.EventReward;
 using LongDH.Script.ObjectPool;
 using LongDH.LongDHModules;
 using LongDHModules;

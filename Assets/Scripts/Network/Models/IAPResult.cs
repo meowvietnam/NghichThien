@@ -3,6 +3,7 @@ using CreateCharacter;
 using MemoryPack;
 using Network.Extensions;
 using System.Collections.Generic;
+using AllMaps.EventReward;
 
 namespace Network.Models
 {
