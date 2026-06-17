@@ -6,7 +6,7 @@ namespace Network.Extensions
 {
     public static class MemoryUtils3
     {
-        public static int ByteSize<T>(this IMemoryPackable<T> @this)
+        public static int ByteSize<T>(this T @this) where T: IMemoryPackable<T>
         {
             var bytes = MemoryPackSerializer.Serialize(@this);
             return bytes.ByteSize();
