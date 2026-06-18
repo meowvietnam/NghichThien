@@ -1,8 +1,8 @@
 using MemoryPack;
 
-namespace Network.Extensions
+namespace Network.Extensions.MemoryPack
 {
-    public static class ReaderUtils5 
+    public static class ReaderUtils2 
     {
         public static T[] ReadArray<T>(this IReader @this) where T : IMemoryPackable<T>
         {

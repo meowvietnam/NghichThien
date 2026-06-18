@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CreateCharacter;
 using LongDH.LongDHModules;
@@ -7,9 +8,9 @@ using LuyenDan;
 using LuyenKhi;
 using Network.Core;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
 using Network.Models;
 using Sirenix.OdinInspector;
-using Skill;
 using UnityEngine;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
@@ -46,7 +47,8 @@ namespace Network
 
         private HashSet<ThanThongEquip> GetFullIdThanThongWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
-            var combo = ComboSkillResource.ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
+            var combo = ComboSkillResource.ComboSkillResource.Instance.comboNPC.FirstOrDefault(x =>
+                x.typeCombo == eCombo);
             if (combo == null) return new HashSet<ThanThongEquip>();
 
             int daiCanhGioiIndex = Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1;
@@ -66,16 +68,18 @@ namespace Network
 
         private List<int> GetFullIdNgoDaoWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
-            var combo = ComboSkillResource.ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
+            var combo = ComboSkillResource.ComboSkillResource.Instance.comboNPC.FirstOrDefault(x =>
+                x.typeCombo == eCombo);
             return combo
                 .comboWithDaiCanhGioi[Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1]
-                .ngoDaos.Select(x => x.Id) 
+                .ngoDaos.Select(x => x.Id)
                 .ToList();
         }
 
         private List<int> GetFullIdCongPhapWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
-            var combo = ComboSkillResource.ComboSkillResource.Instance.comboNPC.FirstOrDefault(x => x.typeCombo == eCombo);
+            var combo = ComboSkillResource.ComboSkillResource.Instance.comboNPC.FirstOrDefault(x =>
+                x.typeCombo == eCombo);
             return combo
                 .comboWithDaiCanhGioi[Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1]
                 .congPhaps.Select(x => x.Id)
@@ -187,7 +191,7 @@ namespace Network
         [ShowIf(nameof(IsReady))]
         public void AddThanThong(ThanThong thanThong)
         {
-            Client.Send(MessageTag.AddThanThong,(ushort)thanThong.Id);
+            Client.Send(MessageTag.AddThanThong, (ushort)thanThong.Id);
         }
 
         public void StartListen()
@@ -208,7 +212,7 @@ namespace Network
         [ShowIf(nameof(IsReady))]
         public void AddCongPhap(CongPhap congPhap, ushort level)
         {
-            if(level == 0) return;
+            if (level == 0) return;
             var cp = new CreateCharacter.CongPhap()
             {
                 Id = (ushort)congPhap.Id,
@@ -216,21 +220,22 @@ namespace Network
             };
             Client.Send(MessageTag.AddCongPhap, cp);
         }
-        
+
         [Button]
         [ShowIf(nameof(IsReady))]
         public void SetMoney(int money)
         {
             Client.Send(MessageTag.SetMoney, money);
         }
-        
+
         [Button]
         [ShowIf(nameof(IsReady))]
         public void SetMoneyVip(int money)
         {
             Client.Send(MessageTag.SetMoneyVip, money);
         }
-        
+
+
         public void OnEnter()
         {
         }

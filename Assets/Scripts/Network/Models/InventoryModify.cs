@@ -3,6 +3,7 @@ using System.Linq;
 using CreateCharacter;
 using LuyenDan;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
 using MemoryPack;
 
 namespace Network.Models

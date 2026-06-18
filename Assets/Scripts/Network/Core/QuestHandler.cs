@@ -2,6 +2,7 @@
 using Base;
 using LongDH.LongDHModules;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
 using Network.Models;
 using System.Collections.Generic;
 using static INetworkEvent;

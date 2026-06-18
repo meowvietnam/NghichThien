@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
 using MemoryPack;
 
-namespace Network.Extensions
+namespace Network.Extensions.MemoryPack
 {
-    public static class MemoryUtils3
+    public static class MemoryUtils1
     {
         public static int ByteSize<T>(this T @this) where T: IMemoryPackable<T>
         {

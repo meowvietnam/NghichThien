@@ -3,6 +3,7 @@ using LongDH.LongDHModules;
 using Network;
 using Network.Core;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
 using Network.Models;
 using System;
 using System.Collections;

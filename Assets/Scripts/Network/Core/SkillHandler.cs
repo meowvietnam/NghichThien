@@ -6,6 +6,7 @@ using LongDH.LongDHModules;
 using LuyenDan;
 using MemoryPack;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
 using Network.Models;
 using Spine;
 using UnityEngine;

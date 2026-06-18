@@ -1,8 +1,6 @@
-using Base;
-using CreateCharacter;
-using MemoryPack;
+
 using Network.Extensions;
-using System.Collections.Generic;
+using Network.Extensions.MemoryPack;
 using AllMaps.EventReward;
 
 namespace Network.Models

@@ -5,6 +5,7 @@ using LongDH.LongDHModules;
 using LongDHModules;
 using Network;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

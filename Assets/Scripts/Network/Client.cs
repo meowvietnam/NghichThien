@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Network
 {
-    public class Client : ClientConnection, ISender<MessageTag>
+    public class Client : ClientConnection, ISender<MessageTag>, IRequester<MessageTag>
     {
         public static Client Instance { get; private set; }
         private MessageStateHandler<MessageTag, MessageState> stateModule;
@@ -35,11 +35,6 @@ namespace Network
         public void ChangeState(IClientState state)
         {
             stateModule.ChangeState(state);
-        }
-
-        public void Request(MessageTag tag, Action<IReader> callback, int timeoutMilliseconds = 0)
-        {
-            AddRequest(TcpClient, tag, callback, timeoutMilliseconds);
         }
 
         protected override void OnError(IProtocol<MessageTag> protocol, Exception ex)
@@ -80,6 +75,10 @@ namespace Network
             module.AddHandler(combatHandler);
 
             AdminPanel.Instance.StartListen();
+        }
+        public void AddRequest(MessageTag tag, Action<IReader> response, int timeoutMilliseconds = 0, Action<Exception> onError = null)
+        {
+            AddRequest(TcpClient ,tag, response, timeoutMilliseconds, onError);
         }
     }
 }

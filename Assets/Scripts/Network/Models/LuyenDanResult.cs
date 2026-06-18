@@ -4,6 +4,7 @@ using System.Linq;
 using CreateCharacter;
 using LuyenDan;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
 
 namespace Network.Models
 {

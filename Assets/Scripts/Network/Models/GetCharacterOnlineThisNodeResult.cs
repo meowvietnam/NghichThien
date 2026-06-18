@@ -1,5 +1,5 @@
 using Network.Extensions;
-using NUnit.Framework;
+using Network.Extensions.MemoryPack;
 
 namespace Network.Models
 {

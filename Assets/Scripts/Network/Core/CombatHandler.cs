@@ -2,11 +2,11 @@
 using Base;
 using LongDH.LongDHModules;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
 using Network.Models;
 using System.Collections.Generic;
 using UnityEngine;
 using static INetworkEvent;
-
 namespace Network.Core
 {
     public class CombatHandler : IClientHandler
