@@ -1159,6 +1159,7 @@ GameObject:
   - component: {fileID: 210111403}
   - component: {fileID: 210111404}
   - component: {fileID: 210111405}
+  - component: {fileID: 210111406}
   m_Layer: 0
   m_Name: Network
   m_TagString: Untagged
@@ -1234,6 +1235,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e43d953cffe808741bb82722cecf8a9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Network.Core.IAPHandler
+  popupMain: {fileID: 0}
+  btnStartPack: {fileID: 0}
+  btn100TienNgoc: {fileID: 0}
+  btn550TienNgoc: {fileID: 0}
+  btn1150TienNgoc: {fileID: 0}
+  btn2550TienNgoc: {fileID: 0}
+  btn6550TienNgoc: {fileID: 0}
+  btn13550TienNgoc: {fileID: 0}
+--- !u!114 &210111406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210111400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80613d4e60d8eb74b8cd42ebeb6d8500, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FirebaseService
 --- !u!1 &397025178
 GameObject:
   m_ObjectHideFlags: 0
