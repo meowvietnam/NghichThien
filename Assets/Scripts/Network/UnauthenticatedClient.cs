@@ -70,7 +70,6 @@ namespace Network
                     if (result.Success)
                     {
                         client.ChangeState(new CheckVersionState(client));
-                        AdsService.Instance.Init();
                     }
                 }
                 else if (tag == MessageTag.ReconnectResult)

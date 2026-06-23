@@ -36,8 +36,12 @@ namespace CreateCharacter
             currentColors.Clear();
             graphic.Initialize(true);
             graphic.AnimationState.SetAnimation(0, "Idle_0", true);
+            if (refLocalPos == Vector3.zero)
+            {
+                refLocalPos = this.transform.localPosition;
+            }
             // lấy localpos male làm chuẩn
-            if(gender == Gender.Female)
+            if (gender == Gender.Female)
             {
                 this.transform.localPosition = refLocalPos + new Vector3(0, addLocalY, 0);
             }    

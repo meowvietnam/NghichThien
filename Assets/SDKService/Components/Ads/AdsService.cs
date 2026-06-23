@@ -17,7 +17,10 @@ public class AdsService : SingletonMonoDontDestroy<AdsService>
     private DateTime lastTimeCloseInter;
     private bool isShowingOther = false;
 
-
+    private void Awake()
+    {
+        Init();
+    }
     public void Init()
     {
         if (adsProvider == null)

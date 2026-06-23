@@ -6,6 +6,7 @@ using AllMaps.EventReward;
 using LongDH.Script.ObjectPool;
 using LongDH.LongDHModules;
 using LongDHModules;
+using Sirenix.OdinInspector;
 
 public class EventRewardPanel : Popup , IUISingleton 
 {
@@ -19,6 +20,7 @@ public class EventRewardPanel : Popup , IUISingleton
     [SerializeField] private Sprite spriteMoney;
     [SerializeField] private Sprite spriteMoneyVip;
     [SerializeField] private RewardSnapshot rewardDataCurrent;
+    [Button]
     public void InitShowEventReward(RewardSnapshot rewardData, string contentText)
     {
         InitShow(rewardData, contentText);

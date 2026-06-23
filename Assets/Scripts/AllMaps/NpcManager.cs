@@ -20,7 +20,11 @@ public class NPCManager : ActionMapManager
     public override int TimeMonthRandom => 5;
     public override string fileSaveTime => "OldTimeRandomNPC";
 
-
+    public override void Init()
+    {
+        base.Init();
+        RandomAction();
+    }
     public override void RandomAction()
     {
         var mapManager = Pool.Get<MapManager>();
