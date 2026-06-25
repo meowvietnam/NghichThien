@@ -60,14 +60,14 @@ namespace LuyenDan
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(SelfId, Id, Durability);
+            return SelfId;
         }
 
         public bool Equals(FurnaceData other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
-            return SelfId == other.SelfId && Id == other.Id && Durability == other.Durability;
+            return SelfId == other.SelfId;
         }
 
         public override bool Equals(object obj)

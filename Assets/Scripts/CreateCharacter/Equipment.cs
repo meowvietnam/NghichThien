@@ -124,7 +124,7 @@ namespace CreateCharacter
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
-            return SelfId == other.SelfId && Id == other.Id;
+            return SelfId == other.SelfId;
         }
 
         public Equipment DeepClone()
@@ -140,7 +140,7 @@ namespace CreateCharacter
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(SelfId, Id);
+            return SelfId;
         }
     }
 }
