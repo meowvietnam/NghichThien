@@ -36,7 +36,7 @@ namespace AllMaps.ItemProvider
         int GetPriceItemSell(ushort id);
 
         int GetPriceItemBuy(ushort id);
-        int ValueTangQuaNPCWithItem(ushort id, int npcLevel);
+        (int, int) ValueTangQuaNPCWithItem(ushort id, int npcLevel);
     }
     public interface IUseItemProvider
     {
@@ -64,26 +64,29 @@ namespace AllMaps.ItemProvider
             return GetPriceItemSell(id) * 3;
         }
         public virtual int BaseValueLevelWithTier => 0;
-        public virtual int ValueTangQuaNPCWithItem(ushort id , int npcLevel)
+        public virtual (int,int) ValueTangQuaNPCWithItem(ushort id , int npcLevel)
         {
             var data = GetDataItemByIdRef(id);
             int levelWithTier = BaseValueLevelWithTier;
+            int indexTier = 1;
             if(data is IItemData itemData)
             {
                 levelWithTier += GameManager.tierItemWithLevel.GetValueOrDefault(itemData.Tier);
-               
+                indexTier = (int)itemData.Tier;
             }
             else if(data is BaseSkill baseSkill)
             {
                 levelWithTier += GameManager.tierSkillWithLevel.GetValueOrDefault(baseSkill.eTierSkill);
+                indexTier = (int)baseSkill.eTierSkill;
 
             }
             else if(data is Equipment equipment)
             {
                 levelWithTier += GameManager.tierEquipmentWithLevel.GetValueOrDefault(equipment.GradeConfig.Tier);
+                indexTier = (int)equipment.GradeConfig.Tier;
 
             }
-            return levelWithTier - npcLevel;
+            return (levelWithTier - npcLevel,indexTier);
         }
              
 

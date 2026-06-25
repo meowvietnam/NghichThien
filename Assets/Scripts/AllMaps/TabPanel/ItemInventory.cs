@@ -11,7 +11,7 @@ public class ItemInventory : BaseItemUI
 {
     [SerializeField] private GameObject hasItem;
     [SerializeField] public Image qualityFull;
-    [SerializeField] private Text textCount;
+    [SerializeField] public Text textCount;
     [SerializeField] public Text textName;
     [SerializeField] private GameObject leftUpMask;
     [SerializeField] private Button btnShowInfor;
@@ -71,11 +71,11 @@ public class ItemInventory : BaseItemUI
     {
         this.count += count;
         textCount.text = this.count.ToString();
-        if(count<= 0 && this.gameObject.activeSelf)
+        if(this.count <= 0 && this.gameObject.activeSelf)
         {
             this.gameObject.SetActive(false);
         }
-        else if (count > 0 && !this.gameObject.activeSelf)
+        else if (this.count > 0 && !this.gameObject.activeSelf)
         {
             this.gameObject.SetActive(true);
         }

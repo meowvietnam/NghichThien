@@ -55,6 +55,10 @@ namespace CreateCharacter
             {
                 return relationship;
             }
+            if (!Relationships.Contains(relationshipRef))
+            {
+                Relationships.Add(relationshipRef);
+            }
             return relationshipRef;
         }
         public void RemoveRelationship(Relationship relationship)
@@ -70,6 +74,7 @@ namespace CreateCharacter
         {
             var relationship = GetRelationship(npcId);
             relationship.Points = (ushort)value;
+         
         }
         public void RelationshipAddValue(ushort npcId, int value)
         {

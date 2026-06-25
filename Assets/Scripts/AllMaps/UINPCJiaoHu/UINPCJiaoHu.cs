@@ -3,6 +3,7 @@ using Base;
 using ComboSkillResource.NPCData;
 using CreateCharacter;
 using DG.Tweening;
+using GoogleMobileAds.Api;
 using LongDH.LongDHModules;
 using LongDHModules;
 using LuyenDan;
@@ -13,7 +14,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Policy;
-using UnityEditor.VersionControl;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.UI;
 using CongPhap = Skill.CongPhap;
@@ -145,6 +146,12 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
     [SerializeField]
     private Bag1ItemPrefabInventory bag;
 
+     private void ResetItemBag()
+     {
+        var oldItem = bag.InventoryUIFacade.listItemUI.FirstOrDefault(x => x.itemRef.Id == slotItemGift.itemRef.Id);
+        oldItem.gameObject.SetActive(true);
+        oldItem.InitCount(oldItem.itemRef.Count);
+     }    
      public void InitPopTangQua()
      {
         Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, null, null);
@@ -175,12 +182,18 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
             {
 
 
-                if (slotItemGift.itemRef.Id != ItemInventory.itemRef.Id)
+                if (slotItemGift.itemData == null || (slotItemGift.itemRef != null && slotItemGift.itemRef.Id != ItemInventory.itemRef.Id))
                 {
-                    ItemTypeHandlerBagFactory.Create(ItemInventory.itemRef.Type).Handle(slotItemGift, ItemInventory.itemRef,false);
-                    
+                    if (slotItemGift.itemRef != null && slotItemGift.itemRef.Id != ItemInventory.itemRef.Id)
+                    {
+                        ResetItemBag();
+                    }
+                    ItemTypeHandlerBagFactory.Create(ItemInventory.itemRef.Type).Handle(slotItemGift, ItemInventory.itemRef, false);
                     slotItemGift.InitCount(1);
+                    ItemInventory.AddCount(-1);
+
                 }
+
                 else
                 {
                     if (ItemInventory.count > 0)
@@ -201,6 +214,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         });
         slotItemGift.InitAction(null, null, () =>
         {
+            ResetItemBag();
             Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, null, null);
         });
         bag.InitBag(false);
@@ -209,11 +223,13 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         visualChar.SetSkin(characterData.Appearance.Skins, characterData.Appearance.Colors);
         textMoney.text = characterData.Stats.LinhThach.ToString();
         textNameUser.text = characterData.Name;
+        bag.ShowTextCount(true);
         SetEventButton(btnConfirmTangQua, () =>
         {
+            if(slotItemGift.itemRef == null) return;
             var value = ItemProviderFactory.GetProvider(slotItemGift.itemRef.Type).ValueTangQuaNPCWithItem(slotItemGift.itemRef.Id, characterStatsTarget.level);
             var xungHo = GameManager.XungHoText(characterStatsTarget.level,characterStatsTarget.Gender);
-            if(value < 0)
+            if(value.Item1 < 0)
             {
                 SayDialogManager.Instance.ShowDialogWithSkin(characterStatsTarget.nameUser,characterStatsTarget.Gender,characterStatsTarget.Skins,characterStatsTarget.Colors, new List<string> { $"{xungHo.targetCallMe}, ta không cần thứ này!" });
             }
@@ -221,10 +237,30 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
             {
                 if (slotItemGift.itemRef != null && slotItemGift.count > 0)
                 {
+
                     SayDialogManager.Instance.ShowDialogWithSkin(characterStatsTarget.nameUser, characterStatsTarget.Gender, characterStatsTarget.Skins, characterStatsTarget.Colors, new List<string> { $"{xungHo.targetCallMe}, sảng khoái" });
-                    NotifyGroup.Instance.Show($"Mối quan hệ giữa bạn và {characterStatsTarget.nameUser} tăng thêm {value}");
                     slotItemGift.itemRef.Count = (ushort)slotItemGift.count;
+                    int valueAdd = value.Item1 * slotItemGift.itemRef.Count * value.Item2;
+                    NotifyGroup.Instance.Show($"Mối quan hệ giữa bạn và {characterStatsTarget.nameUser} tăng thêm {valueAdd}");
+
                     Observer.Notify(EventList.Network.TANG_QUA_NPC, this, characterStatsTarget.idChar.Value, slotItemGift.itemRef);
+                    var InventoryManager = Client.Instance.CharacterData.InventoryManager;
+                    if (slotItemGift.itemRef.Type == ItemType.Furnace)
+                    {
+                        InventoryManager.RemoveFurnace((ushort)slotItemGift.itemRef.Id);
+
+                    }
+                    else if (slotItemGift.itemRef.Type == ItemType.VuKhi || slotItemGift.itemRef.Type == ItemType.PhongCu || slotItemGift.itemRef.Type == ItemType.TrangSuc)
+                    {
+                        InventoryManager.RemoveEquipment((ushort)slotItemGift.itemRef.Id);
+
+                    }
+                    else
+                    {
+                        InventoryManager.Add(slotItemGift.itemRef, -slotItemGift.itemRef.Count);
+
+                    }
+
                     Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, null, null);
                     slotItemGift.InitCount(0);
                 }
@@ -245,6 +281,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
             if (itemComponent != null && itemComponent.characterStats != null)
             {
                 existingNpcIds.Add(itemComponent.characterStats.idChar);
+                itemComponent.Init(itemComponent.characterStats);
             }
         }
 
@@ -369,7 +406,9 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
     }
     private void SetSliderVisual(ETypeSkillRelationShip eType)
     {
-        float amount = relatetionshipValue / (eType == ETypeSkillRelationShip.CongPhap?relationShipRequireCongPhap[currentRelationShip] : relationShipRequireThanThong[currentRelationShip]);
+        float amount = relatetionshipValue / (float)(eType == ETypeSkillRelationShip.CongPhap
+            ? relationShipRequireCongPhap.Last().Value
+            : relationShipRequireThanThong.Last().Value);
         float final = amount + amount * 0.25f;
         sliderRelationship.fillAmount = final;
        
@@ -694,6 +733,8 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         NotifyGroup.Instance.Show("Tặng quà thành công");
 
         textHaoCamPopTangQua.text = Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar).ToString();
+        OnReloadNpcThisNode();
+
     }
 
     public void FailTangQuaNpc(string message)
@@ -705,7 +746,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
     {
         NotifyGroup.Instance.Show("Thỉnh giáo thành công vui lòng kiểm tra kho đ");
         Pool.Get<EventRewardPanel>().InitShowEventReward(new AllMaps.EventReward.RewardSnapshot { ItemRefs = new List<ItemRef> { itemRef }, Money = 0 , MoneyVip = 0 },"Chăm chỉ ắt thành tài!");
-        
+        OnReloadNpcThisNode();
     }
 
     public void FailThinhGiaoNpc(string message)

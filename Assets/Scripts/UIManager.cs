@@ -123,6 +123,7 @@ public class UIManager : BaseBehaviour
     public void InitVisualItemInventory(ItemInventory item, IItemData data, ItemRef itemRef , bool isIconSkillBase = false)
     {
         Sprite frame = null;
+        BaseItemData baseItemData = null;
         if (data != null)
         {
             var quality = CoreConfig.Instance.FindQuality(data.Tier);
@@ -130,7 +131,7 @@ public class UIManager : BaseBehaviour
 
             item.SetColorName(quality.Color);
             item.SetQualityFull(quality.Background);
-            item.Init(new BaseItemData { nameItem = data.Name, spriteItem = data.Icon }, frame);
+            baseItemData = new BaseItemData { nameItem = data.Name, spriteItem = data.Icon };
         }
         if (itemRef != null && itemRef.Type == ItemType.Recipe)
         {
@@ -149,6 +150,7 @@ public class UIManager : BaseBehaviour
             }
            
         }
+        item.Init(baseItemData, frame);
 
 
         item.InitInventory(itemRef, data);

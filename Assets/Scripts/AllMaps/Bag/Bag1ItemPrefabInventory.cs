@@ -27,7 +27,7 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
     public FilterControl filterControl;
 
     private InventoryUIFacade inventoryUIFacade;
-    private InventoryUIFacade InventoryUIFacade => inventoryUIFacade ?? (inventoryUIFacade = new InventoryUIFacade());
+    public InventoryUIFacade InventoryUIFacade => inventoryUIFacade ?? (inventoryUIFacade = new InventoryUIFacade());
     void OnScrollChanged(Vector2 value, Action<bool> loadBagFunc)
     {
         Debug.Log("co vao onscrooll change");
@@ -85,7 +85,16 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
         this.itemDataShows = itemDatas;
         this.actionItemInventory = actionItemInventory;
         this.isIconSkillBase = isIconSkillBase;
+        this.InventoryUIFacade.listItemUI.Clear();
+
     }
+    public void ShowTextCount(bool isShow)
+    {
+        foreach (var item in this.InventoryUIFacade.listItemUI)
+        {
+            item.textCount.gameObject.SetActive(isShow);
+        }    
+    }    
     public void InitBag(bool isAdd=false)
     {
         var gameConfig = Pool.Get<GameManager>();

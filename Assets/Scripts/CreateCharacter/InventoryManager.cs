@@ -159,7 +159,39 @@ namespace CreateCharacter
                 Add(Materials, itemRef);
             }
         }
-
+        public bool RemoveFurnace(ushort selfId)
+        {
+            var furnace = new FurnaceData()
+            {
+                SelfId = selfId
+            };
+            return Furnaces.Remove(furnace);
+        }
+        public bool RemoveEquipment(ushort seldId)
+        {
+            var equipment = new Equipment()
+            {
+                SelfId = seldId,
+            };
+            return Remove(equipment);
+        }
+        public void Add(ItemRef itemRef, int count)
+        {
+            var array = new[] { Herbs, LinhDans, ThanThongs, CongPhaps, Recipes, Materials };
+            foreach (var itemRefse in array)
+            {
+                if (itemRefse.TryGetValue(itemRef, out var item))
+                {
+                    item.Count = (ushort)(itemRef.Count + count);
+                    if (item.Count == 0)
+                    {
+                        itemRefse.Remove(item);
+                    }
+                   
+                    return;
+                }
+            }
+        }
         private void Add(HashSet<ItemRef> inventory, ItemRef itemRef)
         {
             if (inventory.TryGetValue(itemRef, out var item))

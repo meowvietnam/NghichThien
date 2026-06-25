@@ -67,6 +67,8 @@ public abstract class SideQuestResource : QuestResource,INetworkEvent.ICompleteS
             NotifyGroup.Instance.Show($"Hảo cảm của {item.nameUser} tăng thêm 10");
 
         }
+        Pool.Get<UINPCJiaoHu>().OnReloadNpcThisNode();
+
 
     }
     public NPCData GetNPCDataSideQuestWithTargetLevel(NPCData[] listEnemy, int levelTarget)
