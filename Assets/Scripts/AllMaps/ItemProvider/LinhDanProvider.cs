@@ -10,8 +10,9 @@ namespace AllMaps.ItemProvider
 {
     public class LinhDanProvider : ItemProvider<LinhDan> , IUseItemProvider
     {
+        public override int BaseValueLevelWithTier => 6;
         public override ItemType SupportedType => ItemType.LinhDan;
-
+        
         public override void Display(ToolTipContext ctx)
         {
             base.Display(ctx);
@@ -38,7 +39,7 @@ namespace AllMaps.ItemProvider
             ctx.QualityText.text = GameManager.TextWithTier[ctx.IItemData.Tier];
         }
 
-        public override LinhDan GetDataItemById(ushort Id)
+        public override LinhDan GetDataItemByIdRef(ushort Id)
         {
             return LuyenDanResources.Instance.FindLinhDan(Id);
 
@@ -46,7 +47,7 @@ namespace AllMaps.ItemProvider
 
         public override int GetPriceItemSell(ushort Id)
         {
-            var data = GetDataItemById(Id);
+            var data = GetDataItemByIdRef(Id);
             if (data != null && data is LinhDan linhDan)
             {
                 return linhDan.PriceV130;

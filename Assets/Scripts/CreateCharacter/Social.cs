@@ -44,5 +44,37 @@ namespace CreateCharacter
             }
             return 0;
         }
+      
+        public Relationship GetRelationship(ushort npcId)
+        {
+            var relationshipRef = new Relationship()
+            {
+                Npc = npcId,
+            };
+            if (Relationships.TryGetValue(relationshipRef, out var relationship))
+            {
+                return relationship;
+            }
+            return relationshipRef;
+        }
+        public void RemoveRelationship(Relationship relationship)
+        {
+            Relationships.Remove(relationship);
+        }
+        public void RelationshipAddValue(Relationship relationship, int value)
+        {
+            var newValue = relationship.Points + value;
+            relationship.Points = (ushort)newValue;
+        }
+        public void RelationshipSetValue(ushort npcId, int value)
+        {
+            var relationship = GetRelationship(npcId);
+            relationship.Points = (ushort)value;
+        }
+        public void RelationshipAddValue(ushort npcId, int value)
+        {
+            var relationship = GetRelationship(npcId);
+            RelationshipAddValue(relationship, value);
+        }
     }
 }

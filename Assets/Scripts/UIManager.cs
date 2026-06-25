@@ -91,7 +91,7 @@ public class UIManager : BaseBehaviour
             //    equipment = Client.Instance.CharacterData.InventoryManager.BiKhis.FirstOrDefault(...);
             // ...
             // Sử dụng Abstract Factory thay vì if-else chain
-            equipment = ItemProviderFactory.GetProvider<CreateCharacter.Equipment>(typeCurrent).GetDataItemById(itemRef.Id);
+            equipment = ItemProviderFactory.GetProvider<CreateCharacter.Equipment>(typeCurrent).GetDataItemByIdRef(itemRef.Id);
 
         }    
 
@@ -132,7 +132,7 @@ public class UIManager : BaseBehaviour
             item.SetQualityFull(quality.Background);
             item.Init(new BaseItemData { nameItem = data.Name, spriteItem = data.Icon }, frame);
         }
-        if (itemRef.Type == ItemType.Recipe)
+        if (itemRef != null && itemRef.Type == ItemType.Recipe)
         {
             item.InitIcon(spriteRecipeInven, frame);
         }

@@ -22,7 +22,7 @@ namespace AllMaps.ItemProvider
 
             return $"Trang Sức {base.GetTextNameEquipment(artifactType)}";
         }
-        public override CreateCharacter.Equipment GetDataItemById(ushort equipmentId)
+        public override CreateCharacter.Equipment GetDataItemByIdRef(ushort equipmentId)
         {
             return _inventoryManager.TrangSucs.FirstOrDefault(x => x.SelfId == equipmentId);
         }

@@ -11,12 +11,14 @@ using UnityEngine;
 
 public abstract class EquipmentProvider : ItemProvider<CreateCharacter.Equipment> , INetworkEvent.IEquipEquipment , IUseItemProvider
 {
+    public override int BaseValueLevelWithTier => 6;
+
     public override abstract  ItemType SupportedType { get; }
     public abstract EquipmentType EquipemtType { get; }
 
     protected InventoryManager _inventoryManager => Client.Instance.CharacterData.InventoryManager;
 
-    public abstract override CreateCharacter.Equipment GetDataItemById(ushort Id);
+    public abstract override CreateCharacter.Equipment GetDataItemByIdRef(ushort Id);
 
     public override  void Display(ToolTipContext ctx)
     {
@@ -82,7 +84,7 @@ public abstract class EquipmentProvider : ItemProvider<CreateCharacter.Equipment
 
     public override int GetPriceItemSell(ushort id)
     {
-        var equipmentData = GetDataItemById(id);
+        var equipmentData = GetDataItemByIdRef(id);
         if (equipmentData == null) return 0;
 
         int totalPrice = 0;

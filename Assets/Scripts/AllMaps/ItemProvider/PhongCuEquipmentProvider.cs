@@ -24,7 +24,7 @@ namespace AllMaps.ItemProvider
             return $"Phòng Cụ {base.GetTextNameEquipment(artifactType)}";
         }
 
-        public override CreateCharacter.Equipment GetDataItemById(ushort equipmentId)
+        public override CreateCharacter.Equipment GetDataItemByIdRef(ushort equipmentId)
         {
             return _inventoryManager.PhongCus.FirstOrDefault(x => x.SelfId == equipmentId);
         }

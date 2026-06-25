@@ -859,9 +859,9 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     [SerializeField] public SelectNum selectNum;
     public void LoadEquipment(ItemInventory currentItem, ItemType itemType, ushort id)
     {
-        var equipment = ItemProviderFactory.GetProvider<CreateCharacter.Equipment>(itemType).GetDataItemById(id);
+        var equipment = ItemProviderFactory.GetProvider<CreateCharacter.Equipment>(itemType).GetDataItemByIdRef(id);
         if (equipment == null) return;
-        Pool.Get<UIManager>().InitVisualEquipment(currentItem, null, equipment.CreateRef());
+        Pool.Get<UIManager>().InitVisualEquipment(currentItem, null, equipment.CreateRefSelfId());
         SetActionUnEquipEquipment(itemWeapon);
         SetActionUnEquipEquipment(itemPhongCu);
         SetActionUnEquipEquipment(itemTrangSuc);
@@ -918,9 +918,9 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
         // Thêm danh sách Ref vừa lấy được vào itemDatas
         itemDatas.AddRange(furnaceRefs);
-        itemDatas.AddRange(characterData.InventoryManager.VuKhis.Select(f => f.CreateRef()).ToList());
-        itemDatas.AddRange(characterData.InventoryManager.PhongCus.Select(f => f.CreateRef()).ToList());
-        itemDatas.AddRange(characterData.InventoryManager.TrangSucs.Select(f => f.CreateRef()).ToList());
+        itemDatas.AddRange(characterData.InventoryManager.VuKhis.Select(f => f.CreateRefSelfId()).ToList());
+        itemDatas.AddRange(characterData.InventoryManager.PhongCus.Select(f => f.CreateRefSelfId()).ToList());
+        itemDatas.AddRange(characterData.InventoryManager.TrangSucs.Select(f => f.CreateRefSelfId()).ToList());
         bag.InitDataItem(itemDatas, (ItemInventory) =>
         {
             ItemInventory.InitAction(null,  () =>

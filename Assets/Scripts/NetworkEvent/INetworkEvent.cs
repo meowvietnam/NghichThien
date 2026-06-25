@@ -68,7 +68,7 @@ public class INetworkEvent
     }
     public interface IThinhGiaoNPC // Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessThinhGiaoNpc();
+        void SuccessThinhGiaoNpc(ItemRef itemRef);
         void FailThinhGiaoNpc(string message);
     }
     public interface ILoadShop// Check đủ ngộ đạo điểm mới learn được

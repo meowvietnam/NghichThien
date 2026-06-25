@@ -11,6 +11,8 @@ namespace AllMaps.ItemProvider
 {
     public abstract class SkillProvider : ItemProvider<BaseSkill>
     {
+        public override int BaseValueLevelWithTier => 3;
+
         protected void SetTextKeyword(Image prefabKeyword, int i, string content)
         {
             Image itemInfor = GameManager.GetItemPoolWithPrefabInParent<Image>(prefabKeyword);
@@ -44,7 +46,7 @@ namespace AllMaps.ItemProvider
 
         public override int GetPriceItemSell(ushort Id)
         {
-            var data = GetDataItemById(Id);
+            var data = GetDataItemByIdRef(Id);
             if (data)
             {
                 return GameManager.PriceTTWithTier[data.eTierSkill];
@@ -82,7 +84,7 @@ namespace AllMaps.ItemProvider
             
 
         }
-        public override BaseSkill GetDataItemById(ushort Id)
+        public override BaseSkill GetDataItemByIdRef(ushort Id)
         {
             return Pool.Get<GameManager>().GetThanThongWithId(Id);
         }
@@ -125,7 +127,7 @@ namespace AllMaps.ItemProvider
         }
         public abstract void SetDisplay(ToolTipContext ctx,CongPhap cp);
        
-        public override BaseSkill GetDataItemById(ushort Id)
+        public override BaseSkill GetDataItemByIdRef(ushort Id)
         {
             return Pool.Get<GameManager>().GetCongPhapWithId(Id);
         }

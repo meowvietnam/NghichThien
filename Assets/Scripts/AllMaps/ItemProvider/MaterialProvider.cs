@@ -17,7 +17,7 @@ namespace AllMaps.ItemProvider
             ctx.DescTextItem.text = material.Desc2;
         }
 
-        public override LuyenKhi.Material GetDataItemById(ushort Id)
+        public override LuyenKhi.Material GetDataItemByIdRef(ushort Id)
         {
             return LuyenKhiResources.Instance.FindMaterial(Id);
 
@@ -25,7 +25,7 @@ namespace AllMaps.ItemProvider
 
         public override int GetPriceItemSell(ushort Id)
         {
-            return  GameManager.PriceVatLieuWithTier[GetDataItemById(Id).Tier];
+            return  GameManager.PriceVatLieuWithTier[GetDataItemByIdRef(Id).Tier];
 
         }
     }

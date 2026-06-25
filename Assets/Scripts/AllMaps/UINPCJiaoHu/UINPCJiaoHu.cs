@@ -1,7 +1,10 @@
-﻿using Base;
+﻿using AllMaps.ItemProvider;
+using Base;
+using ComboSkillResource.NPCData;
 using CreateCharacter;
 using DG.Tweening;
 using LongDH.LongDHModules;
+using LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using Network;
@@ -10,8 +13,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Policy;
-using ComboSkillResource.NPCData;
-using LongDHModules;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 using CongPhap = Skill.CongPhap;
@@ -144,7 +146,9 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
     private Bag1ItemPrefabInventory bag;
 
      public void InitPopTangQua()
-    {
+     {
+        Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, null, null);
+
         var characterData = Client.Instance.CharacterData;
         var gameConfig = Pool.Get<GameManager>();
         List<ItemRef> itemDatas = new List<ItemRef>();
@@ -161,9 +165,9 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
 
         // Thêm danh sách Ref vừa lấy được vào itemDatas
         itemDatas.AddRange(furnaceRefs);
-        itemDatas.AddRange(characterData.InventoryManager.VuKhis.Select(f => f.CreateRef()).ToList());
-        itemDatas.AddRange(characterData.InventoryManager.PhongCus.Select(f => f.CreateRef()).ToList());
-        itemDatas.AddRange(characterData.InventoryManager.TrangSucs.Select(f => f.CreateRef()).ToList());
+        itemDatas.AddRange(characterData.InventoryManager.VuKhis.Select(f => f.CreateRefSelfId()).ToList());
+        itemDatas.AddRange(characterData.InventoryManager.PhongCus.Select(f => f.CreateRefSelfId()).ToList());
+        itemDatas.AddRange(characterData.InventoryManager.TrangSucs.Select(f => f.CreateRefSelfId()).ToList());
         bag.filterControl.InitAllFilterType();
         bag.InitDataItem(itemDatas, (ItemInventory) =>
         {
@@ -173,20 +177,16 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
 
                 if (slotItemGift.itemRef.Id != ItemInventory.itemRef.Id)
                 {
-                    if (ItemInventory.itemRef.Type == ItemType.ThanThong || ItemInventory.itemRef.Type == ItemType.CongPhap)
-                    {
-                        Pool.Get<UIManager>().InitVisualItemSkill(slotItemGift, (BaseSkill)ItemInventory.itemData);
-
-
-                    }
-                    Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, ItemInventory.iItemData, ItemInventory.itemRef);
+                    ItemTypeHandlerBagFactory.Create(ItemInventory.itemRef.Type).Handle(slotItemGift, ItemInventory.itemRef,false);
+                    
                     slotItemGift.InitCount(1);
                 }
                 else
                 {
-                    if (slotItemGift.count < ItemInventory.count)
+                    if (ItemInventory.count > 0)
                     {
                         slotItemGift.AddCount(1);
+                        ItemInventory.AddCount(-1);
                     }
                 }
 
@@ -199,6 +199,10 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
                 //}
             });
         });
+        slotItemGift.InitAction(null, null, () =>
+        {
+            Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, null, null);
+        });
         bag.InitBag(false);
         //reset 
         visualChar.SetGender(characterData.Gender);
@@ -207,13 +211,27 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         textNameUser.text = characterData.Name;
         SetEventButton(btnConfirmTangQua, () =>
         {
-            if (slotItemGift.itemRef != null && slotItemGift.count > 0)
+            var value = ItemProviderFactory.GetProvider(slotItemGift.itemRef.Type).ValueTangQuaNPCWithItem(slotItemGift.itemRef.Id, characterStatsTarget.level);
+            var xungHo = GameManager.XungHoText(characterStatsTarget.level,characterStatsTarget.Gender);
+            if(value < 0)
             {
-                Observer.Notify(EventList.Network.TANG_QUA_NPC, this, characterStatsTarget.idChar, slotItemGift.itemRef.Id, slotItemGift.count);
+                SayDialogManager.Instance.ShowDialogWithSkin(characterStatsTarget.nameUser,characterStatsTarget.Gender,characterStatsTarget.Skins,characterStatsTarget.Colors, new List<string> { $"{xungHo.targetCallMe}, ta không cần thứ này!" });
             }
+            else
+            {
+                if (slotItemGift.itemRef != null && slotItemGift.count > 0)
+                {
+                    SayDialogManager.Instance.ShowDialogWithSkin(characterStatsTarget.nameUser, characterStatsTarget.Gender, characterStatsTarget.Skins, characterStatsTarget.Colors, new List<string> { $"{xungHo.targetCallMe}, sảng khoái" });
+                    NotifyGroup.Instance.Show($"Mối quan hệ giữa bạn và {characterStatsTarget.nameUser} tăng thêm {value}");
+                    slotItemGift.itemRef.Count = (ushort)slotItemGift.count;
+                    Observer.Notify(EventList.Network.TANG_QUA_NPC, this, characterStatsTarget.idChar.Value, slotItemGift.itemRef);
+                    Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, null, null);
+                    slotItemGift.InitCount(0);
+                }
+            }
+           
         });
-        textHaoCamPopTangQua.text = Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar).ToString();
-    }
+     }
     public void OnReloadNpcThisNode()
     {
         List<CharacterStatsSecure> listCharStats = new List<CharacterStatsSecure>();
@@ -400,7 +418,55 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         }
 
     }
-  
+    private (List<int>, List<int>, List<int>) CategorizeSlotWithId(List<BaseSkill> listThanThongData)
+    {
+        // Giả sử listThanThongData là danh sách các đối tượng có thuộc tính eTierSkill
+
+        List<int> list1 = new List<int>();
+        List<int> list2 = new List<int>();
+        List<int> list3 = new List<int>();
+        // 1. Kiểm tra list có null hoặc trống không
+        if (listThanThongData == null || listThanThongData.Count == 0)
+            return (list1, list2, list3);
+
+        // 2. Lọc bỏ các phần tử null bên trong list trước khi tìm Max
+        // và đảm bảo x không null khi truy cập eTierSkill
+        var validItems = listThanThongData.Where(x => x != null).ToList();
+
+        if (validItems.Count == 0)
+            return (list1, list2, list3);
+
+        var maxTier = validItems.Max(x => x.eTierSkill);
+
+        foreach (var item in validItems)
+        {
+            var tier = item.eTierSkill;
+
+            // TRƯỜNG HỢP 1: Có Thiên Giai (Bất kể Hạ/Trung/Thượng)
+            if (maxTier >= BaseSkill.ETierSkill.ThienGiaiHa)
+            {
+                if (tier >= BaseSkill.ETierSkill.ThienGiaiHa) list3.Add(item.Id);
+                else if (tier >= BaseSkill.ETierSkill.DiaGiaiHa) list2.Add(item.Id);
+                else if (tier >= BaseSkill.ETierSkill.NhanGiaiHa) list1.Add(item.Id);
+            }
+            // TRƯỜNG HỢP 2: Cao nhất là Địa Giai
+            else if (maxTier >= BaseSkill.ETierSkill.DiaGiaiHa)
+            {
+                if (tier >= BaseSkill.ETierSkill.DiaGiaiTrung) list3.Add(item.Id); // Địa Thượng + Trung
+                else if (tier == BaseSkill.ETierSkill.DiaGiaiHa) list2.Add(item.Id); // Địa Hạ
+                else if (tier >= BaseSkill.ETierSkill.NhanGiaiHa) list1.Add(item.Id); // Nhân Giai
+            }
+            // TRƯỜNG HỢP 3: Cao nhất chỉ có Nhân Giai
+            else if (maxTier >= BaseSkill.ETierSkill.NhanGiaiHa)
+            {
+                if (tier == BaseSkill.ETierSkill.NhanGiaiThuong) list3.Add(item.Id);
+                else if (tier == BaseSkill.ETierSkill.NhanGiaiTrung) list2.Add(item.Id);
+                else if (tier == BaseSkill.ETierSkill.NhanGiaiHa) list1.Add(item.Id);
+            }
+        }
+
+        return (list1, list2, list3);
+    }
     private (List<BaseSkill>,List<BaseSkill>,List<BaseSkill>) CategorizeSlot(List<BaseSkill> listThanThongData)
     {
         // Giả sử listThanThongData là danh sách các đối tượng có thuộc tính eTierSkill
@@ -499,6 +565,17 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
                     Pool.Get<PopupConfirmAction>().ShowPopConfirmAction($"Xác nhận tiêu hao {require} điểm hảo cảm thỉnh giáo {item.itemData.nameItem}", () =>
                     {
                         Observer.Notify(EventList.Network.THINH_GIAO_NPC,this,characterStatsTarget.idChar,item.itemRef.Id,item.itemRef.Type);
+                        Client.Instance.CharacterData.Social.RelationshipAddValue((ushort)characterStatsTarget.idChar,-require);
+                        if (item.itemRef.Type == ItemType.ThanThong)
+                        {
+                            InitThanThongTab();
+                        }
+                        else if (item.itemRef.Type == ItemType.CongPhap)
+                        {
+                            InitCongPhapTab();
+
+                        }
+
                     });
                 }    
             });
@@ -614,21 +691,25 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
 
     public void SuccessTangQuaNpc()
     {
-        throw new NotImplementedException();
+        NotifyGroup.Instance.Show("Tặng quà thành công");
+
+        textHaoCamPopTangQua.text = Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar).ToString();
     }
 
     public void FailTangQuaNpc(string message)
     {
-        throw new NotImplementedException();
+       NotifyGroup.Instance.Show(message);
     }
 
-    public void SuccessThinhGiaoNpc()
+    public void SuccessThinhGiaoNpc(ItemRef itemRef)
     {
-        throw new NotImplementedException();
+        NotifyGroup.Instance.Show("Thỉnh giáo thành công vui lòng kiểm tra kho đ");
+        Pool.Get<EventRewardPanel>().InitShowEventReward(new AllMaps.EventReward.RewardSnapshot { ItemRefs = new List<ItemRef> { itemRef }, Money = 0 , MoneyVip = 0 },"Chăm chỉ ắt thành tài!");
+        
     }
 
     public void FailThinhGiaoNpc(string message)
     {
-        throw new NotImplementedException();
+        NotifyGroup.Instance.Show(message);
     }
 }

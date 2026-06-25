@@ -117,5 +117,10 @@ namespace Network
 
         IAP = 520,
         IAPResult = 521,
+
+        ThinhGiaoKyNang = 610,
+        ThinhGiaoKyNangResult = 611,
+        TangQuaNpc = 612,
+        TangQuaNpcResult = 613,
     }
 }

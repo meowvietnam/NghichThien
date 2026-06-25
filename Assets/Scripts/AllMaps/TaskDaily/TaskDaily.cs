@@ -31,7 +31,7 @@ public class TaskDaily : BaseBehaviour
         imgDone.gameObject.SetActive(false);
         imgGap.gameObject.SetActive(isGap);
         var provider = ItemProviderFactory.GetProvider<IItemData>(itemRef.Type);
-        var iItemData = provider.GetDataItemById(itemRef.Id);
+        var iItemData = provider.GetDataItemByIdRef(itemRef.Id);
         linhThachText.text = $"{provider.GetPriceItemBuy(itemRef.Id) * itemRef.Count}";
         if (isGap )
         {

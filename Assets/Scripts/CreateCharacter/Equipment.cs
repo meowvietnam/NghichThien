@@ -63,7 +63,7 @@ namespace CreateCharacter
             int minValue = Mathf.RoundToInt(0.5f * maxValue);
             return (minValue, maxValue);
         }
-        public ItemRef CreateRef()
+        public ItemRef CreateRefSelfId()
         {
             var itemType = GetItemType();
             Debug.Log($"[ItemRef] Created: ID={SelfId}, Type={itemType}");

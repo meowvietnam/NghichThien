@@ -63,6 +63,7 @@ public abstract class SideQuestResource : QuestResource,INetworkEvent.ICompleteS
         Observer.Notify(EventList.Network.COMPLETE_SIDEQUEST, this, listIdNPCInteractive);
         foreach (var item in listNPCInteractive)
         {
+            Client.Instance.CharacterData.Social.RelationshipAddValue((ushort)item.idChar,10);
             NotifyGroup.Instance.Show($"Hảo cảm của {item.nameUser} tăng thêm 10");
 
         }

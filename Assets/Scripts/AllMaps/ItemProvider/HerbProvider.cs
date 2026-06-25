@@ -24,14 +24,14 @@ namespace AllMaps.ItemProvider
             ctx.QualityText.text = GameManager.TextWithTier[ctx.IItemData.Tier];
         }
 
-        public override HerbData GetDataItemById(ushort Id)
+        public override HerbData GetDataItemByIdRef(ushort Id)
         {
             return LuyenDanResources.Instance.FindHerb(Id);
         }
 
         public override int GetPriceItemSell(ushort Id)
         {
-            return GameManager.PriceHerbWithTier[GetDataItemById(Id).Tier];
+            return GameManager.PriceHerbWithTier[GetDataItemByIdRef(Id).Tier];
         }
 
      

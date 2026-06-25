@@ -50,10 +50,22 @@ public class ItemInventory : BaseItemUI
     {
         this.count = count;
         textCount.text = count.ToString();
-        if (count >0 && !this.gameObject.activeSelf)
+        if (count >0)
         {
-            this.gameObject.SetActive(true);
+            if (!this.gameObject.activeSelf)
+            {
+                this.gameObject.SetActive(true);
+
+            }    
+            textCount.gameObject.SetActive(true);
+
         }
+        else
+        {
+            textCount.gameObject.SetActive(false);
+
+        }
+
     }
     public void AddCount(int count)
     {
@@ -85,7 +97,7 @@ public class ItemInventory : BaseItemUI
         if(itemData == null)
         {
             btnShowInfor?.gameObject.SetActive(false);
-            textCount.gameObject.SetActive(false);
+            InitCount(0);
             textName.gameObject.SetActive(false);
             hasItem.SetActive(false);
             return;
