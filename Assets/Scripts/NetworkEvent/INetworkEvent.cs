@@ -48,7 +48,7 @@ public class INetworkEvent
     }
     public interface ITuLuyen // Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessTuLuyen();
+        void SuccessTuLuyen(int valueAdd);
         void FailTuLuyen(string message);
     }
     public interface ILinhNgo // Check đủ ngộ đạo điểm mới learn được

@@ -261,6 +261,7 @@ namespace Network.Core
             {
                 var result = reader.Read<TuLuyenResult>();
                 var charData = Client.Instance.CharacterData;
+                int oldExp = charData.Progression.CurrentExp;
                 if (result.Success)
                 {
                     if (result.HasLevelUpdated)
@@ -281,7 +282,7 @@ namespace Network.Core
                 {
                     if (result.Success)
                     {
-                        tuLuyenCallback.SuccessTuLuyen();
+                        tuLuyenCallback.SuccessTuLuyen(result.CurrentExp - oldExp);
                     }
                     else
                     {

@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Analytics.IAnalytic;
@@ -57,10 +58,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         {
             SetEventButton(item.btn, () =>
             {
-                if (currentBtnWithPage.typePage == item.typePage)
-                {
-                    return;
-                }
+              
                 currentBtnWithPage = item;
                 foreach (var item2 in btns)
                 {
@@ -212,8 +210,28 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
             }
             if (charData.Stats.LinhThach >= CostPriceTieuHao1Month * currentTuLuyenTimeInt)
             {
-                Observer.Notify(EventList.Network.TU_LUYEN,this, currentTuLuyenTimeSpan);
-            }    
+                if(percentTamCanh >= 0 )
+                {
+                    ActionTuLuyen();
+                }   
+                else if(percentTamCanh<0)
+                {
+                    Pool.Get<PopupConfirmAction>().ShowPopConfirmAction($"Tâm cảnh của bạn đang thấp hơn tu vi dẫn tới hiệu quả tu luyện giảm đi 50% vẫn tiếp tục tu luyện chứ?", () =>
+                    {
+                        ActionTuLuyen();
+                    });
+                }    
+                
+               
+            }   
+            void ActionTuLuyen()
+            {
+                Pool.Get<PopupConfirmAction>().ShowPopConfirmAction($"Xác nhận tiêu hao {CostPriceTieuHao1Month * currentTuLuyenTimeInt} linh thạch để tu luyện trong {textNam.text} năm {textThang.text} tháng", () =>
+                {
+                    Observer.Notify(EventList.Network.TU_LUYEN, this, currentTuLuyenTimeSpan);
+                    popBeQuan.Hide();
+                });
+            }
         });
         SetEventButton(btnUnTuLuyen, () =>
         {
@@ -554,20 +572,24 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         bagCongPhap.InitBag();
     }
 
-    public void SuccessTuLuyen()
+    public void SuccessTuLuyen(int valueAdd)
     {
         Observer.Notify(EventList.GamePlay.TIME_ADJUST);
+        NotifyGroup.Instance.Show($"Tu luyện thành công {textNam.text} năm {textThang.text} tháng nhận được {valueAdd} tu vi");
+        Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
+
     }
 
     public void FailTuLuyen(string message)
     {
-        throw new NotImplementedException();
+        NotifyGroup.Instance.Show(message);
     }
 
     public void SuccessLinhNgo()
     {
         NotifyGroup.Instance.Show("Lĩnh ngộ thành công");
         Observer.Notify(EventList.GamePlay.TIME_ADJUST);
+
 
     }
 
