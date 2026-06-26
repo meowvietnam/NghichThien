@@ -71,7 +71,8 @@ namespace CreateCharacter
             {
                 Id = SelfId,
                 Type = itemType,
-                Count = 1
+                Count = 1,
+                TempId = Id,
             };
         }
         public ItemType GetItemType()
