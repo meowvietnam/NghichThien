@@ -13,6 +13,7 @@ using MemoryPack;
 using Snapshot;
 using UnityEditor;
 using UnityEngine;
+using Base;
 
 public class NPCManager : ActionMapManager
 {
@@ -28,10 +29,102 @@ public class NPCManager : ActionMapManager
     public override void RandomAction()
     {
         var mapManager = Pool.Get<MapManager>();
+        List<int> GetIdMapNodeWithMonPhai(EMonPhai monPhai)
+        {
+            var mapManager = Pool.Get<MapManager>();
+            var MapWithMonPhai = mapManager.FindMap(GameManager.ConvertEMonPhaiToEMap(monPhai));
+
+            List<int> idMapNode = new List<int>();
+            if (MapWithMonPhai == null) return idMapNode;
+
+            // Sử dụng HashSet để lưu các map đã check, tránh trường hợp map A nối với map B rồi map B lại nối ngược về map A
+            HashSet<int> visitedMaps = new HashSet<int>();
+
+            // Độ sâu ngẫu nhiên từ 1 đến 3 bước di chuyển xung quanh môn phái
+            int maxDepth = UnityEngine.Random.Range(1, 4);
+
+            // Truyền thêm tham số currentDepth để kiểm soát độ sâu chính xác của từng nhánh
+            FindMapInMap(MapWithMonPhai, 1);
+
+            void FindMapInMap(Map map, int currentDepth)
+            {
+                // Điều kiện dừng 1: Vượt quá độ sâu cho phép
+                if (currentDepth > maxDepth) return;
+
+                // Điều kiện dừng 2: Map này đã được duyệt qua rồi (Chống tràn Stack hoàn toàn)
+                if (visitedMaps.Contains(map.Id)) return;
+
+                // Đánh dấu map đã duyệt và thêm vào danh sách kết quả
+                visitedMaps.Add(map.Id);
+                idMapNode.Add(map.Id);
+
+                // Duyệt các map liên kết xung quanh
+                if (map.Nodes != null)
+                {
+                    foreach (var item in map.Nodes)
+                    {
+                        if (item != null && item.NextMap != null)
+                        {
+                            // Đi tiếp vào map con, tăng độ sâu lên +1 cho riêng nhánh đó
+                            FindMapInMap(item.NextMap, currentDepth + 1);
+                        }
+                    }
+                }
+            }
+
+            return idMapNode;
+        }
+        var kimPhai = GetIdMapNodeWithMonPhai(EMonPhai.KimHongKiemPhai);
+        var mocPhai = GetIdMapNodeWithMonPhai(EMonPhai.TrucSonTong);
+        var thuyPhai = GetIdMapNodeWithMonPhai(EMonPhai.TinhHaKiemPhai);
+        var hoaPhai = GetIdMapNodeWithMonPhai(EMonPhai.LyHoaMon);
+        var thoPhai = GetIdMapNodeWithMonPhai(EMonPhai.HoaTranGiao);
+        var kiemPhai = GetIdMapNodeWithMonPhai(EMonPhai.BachDeLau);
+
         foreach (var npc in npcDatas)
         {
-            int randomMapId = mapManager.maps[UnityEngine.Random.Range(0, mapManager.maps.Length)].Id;
-            npc.charStats.idNode = randomMapId;
+            if(npc.charStats.monPhai == Base.EMonPhai.None)
+            {
+
+                int randomMapId = mapManager.maps[UnityEngine.Random.Range(0, mapManager.maps.Length)].Id;
+                npc.charStats.idNode = randomMapId;
+            }
+            else
+            {
+
+                switch (npc.charStats.monPhai)
+                {
+                    case EMonPhai.None:
+                        break;
+                    case EMonPhai.BachDeLau:
+                        npc.charStats.idNode = kiemPhai[UnityEngine.Random.Range(0,kiemPhai.Count)];
+                        break;
+                    case EMonPhai.KimHongKiemPhai:
+                        npc.charStats.idNode = kimPhai[UnityEngine.Random.Range(0, kimPhai.Count)];
+
+                        break;
+                    case EMonPhai.TrucSonTong:
+                        npc.charStats.idNode = mocPhai[UnityEngine.Random.Range(0, mocPhai.Count)];
+
+                        break;
+                    case EMonPhai.TinhHaKiemPhai:
+                        npc.charStats.idNode = thuyPhai[UnityEngine.Random.Range(0, thuyPhai.Count)];
+
+                        break;
+                    case EMonPhai.LyHoaMon:
+                        npc.charStats.idNode = hoaPhai[UnityEngine.Random.Range(0, hoaPhai.Count)];
+
+                        break;
+                    case EMonPhai.HoaTranGiao:
+                        npc.charStats.idNode = thoPhai[UnityEngine.Random.Range(0, thoPhai.Count)];
+
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+
 
         }
         base.RandomAction();
