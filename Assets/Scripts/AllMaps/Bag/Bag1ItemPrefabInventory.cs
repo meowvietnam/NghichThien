@@ -1,12 +1,14 @@
 ﻿using Base;
 using LongDH.LongDHModules;
+using LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using LuyenKhi;
+using Network;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using LongDHModules;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -82,7 +84,25 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
     public void InitDataItem(List<ItemRef> itemDatas , Action<ItemInventory> actionItemInventory , bool isIconSkillBase = false)
     {
         this.itemFullDatas = itemDatas;
-        this.itemDataShows = itemDatas;
+        int vuKhiEquip = (int)Client.Instance.CharacterData.EquipmentManager.VuKhi;
+        int phongCuEquip = (int)Client.Instance.CharacterData.EquipmentManager.PhongCu;
+        int trangSucEquip = (int)Client.Instance.CharacterData.EquipmentManager.TrangSuc;
+
+        this.itemDataShows = itemDatas.Where(item =>
+        {
+            // Nếu là Vũ Khí và trùng ID đang mặc -> Loại bỏ
+            if (item.Type == ItemType.VuKhi && item.Id == vuKhiEquip) return false;
+
+            // Nếu là Phòng Cụ và trùng ID đang mặc -> Loại bỏ
+            if (item.Type == ItemType.PhongCu && item.Id == phongCuEquip) return false;
+
+            // Nếu là Trang Sức và trùng ID đang mặc -> Loại bỏ
+            if (item.Type == ItemType.TrangSuc && item.Id == trangSucEquip) return false;
+
+            // Các item khác hoặc không trùng ID thì giữ lại
+            return true;
+        }).ToList();
+
         this.actionItemInventory = actionItemInventory;
         this.isIconSkillBase = isIconSkillBase;
         this.InventoryUIFacade.listItemUI.Clear();
