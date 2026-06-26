@@ -329,7 +329,7 @@ public class FilterControl : BaseBehaviour
                 eTierSkillCurrent,
                 eTierEquipmentCurrent);
 
-            bag.itemDataShows = itemDataShows;
+            bag.SetItemDataShow(itemDataShows);
             bag.InitBag();
             // Sau khi lọc xong, bạn có thể gọi hàm cập nhật UI tại đây
             // UpdateInventoryUI(); 

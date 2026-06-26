@@ -81,13 +81,11 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
         isLoadingMore = false;
     }
   
-    public void InitDataItem(List<ItemRef> itemDatas , Action<ItemInventory> actionItemInventory , bool isIconSkillBase = false)
+    public void SetItemDataShow(List<ItemRef> itemDatas)
     {
-        this.itemFullDatas = itemDatas;
-        int vuKhiEquip = (int)Client.Instance.CharacterData.EquipmentManager.VuKhi;
-        int phongCuEquip = (int)Client.Instance.CharacterData.EquipmentManager.PhongCu;
-        int trangSucEquip = (int)Client.Instance.CharacterData.EquipmentManager.TrangSuc;
-
+        ushort vuKhiEquip = Client.Instance.CharacterData.EquipmentManager.VuKhi;
+        ushort phongCuEquip = Client.Instance.CharacterData.EquipmentManager.PhongCu;
+        ushort trangSucEquip = Client.Instance.CharacterData.EquipmentManager.TrangSuc;
         this.itemDataShows = itemDatas.Where(item =>
         {
             // Nếu là Vũ Khí và trùng ID đang mặc -> Loại bỏ
@@ -102,6 +100,14 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             // Các item khác hoặc không trùng ID thì giữ lại
             return true;
         }).ToList();
+    }
+    public void InitDataItem(List<ItemRef> itemDatas , Action<ItemInventory> actionItemInventory , bool isIconSkillBase = false)
+    {
+        this.itemFullDatas = itemDatas;
+
+
+        SetItemDataShow(itemDatas);
+
 
         this.actionItemInventory = actionItemInventory;
         this.isIconSkillBase = isIconSkillBase;
