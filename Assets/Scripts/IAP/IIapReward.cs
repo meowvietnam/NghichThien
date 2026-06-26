@@ -1,31 +1,24 @@
 using CreateCharacter;
 using MemoryPack;
+using Network.Core;
+using Network.Models;
+using UnityEngine;
 
 namespace IAP
 {
     public class IapUIContext
     {
-        
+        public IapHandler IapHandler { get; init; }
+        public StartPackUI StartPackUIPrefab { get; init; }
+        public MoneyVipPackUI MoneyVipPackUIPrefab { get; init; }
+        public OwnerIapProduct OwnerIapProduct { get; init; }
+        public IapProduct IapProduct => OwnerIapProduct.Product;
+        public Sprite[] MoneyVipSprites { get; init; }
+        public RectTransform IapProductContainer { get; init; }
     }
     [MemoryPackable]
-    public partial class IapRewardTest : IIapReward
-    {
-        public void Execute(CharacterData charData)
-        {
-        }
-        public void Refund(CharacterData charData)
-        {
-        }
-
-        public void ShowUISuccess(IapUIContext context)
-        {
-        }
-        public void InitUI(IapUIContext context)
-        {
-        }
-    }
-    [MemoryPackable]
-    [MemoryPackUnion(100, typeof(IapRewardTest))]
+    [MemoryPackUnion(0, typeof(StartPack))]
+    [MemoryPackUnion(1, typeof(MoneyVipPack))]
     public partial interface IIapReward
     {
         void Execute(CharacterData charData);

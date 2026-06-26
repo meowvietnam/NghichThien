@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using CreateCharacter;
+using DG.Tweening;
 using IAP;
 using LongDHModules;
 using Network;
@@ -31,6 +33,11 @@ namespace Network.Core
 
         public const string PRODUCT_START_PACK = "start_pack";
         [SerializeField] private Popup popupMain;
+        [SerializeField] private StartPackUI startPackUIPrefab;
+        [SerializeField] private MoneyVipPackUI moneyVipUIPrefab;
+        [SerializeField] private Sprite[] moneyVipSprites;
+        [SerializeField] private RectTransform iapProductContainer;
+        [SerializeField] private RectTransform mainIapProductContainer;
         // [SerializeField] private Button btnStartPack;
         // [SerializeField] private Button btn100TienNgoc;
         // [SerializeField] private Button btn550TienNgoc;
@@ -55,8 +62,14 @@ namespace Network.Core
             InitIAP();
         }
 
+        private void OnEnable()
+        {
+            StartCoroutine(RefreshUI());
+        }
+
         public async void InitIAP()
         {
+            Debug.Log($"[IapHandler] GetProducts Request");
             var reader = await Client.Instance.RequestWait(MessageTag.GetProductsRequest);
             ownerIapProducts = reader.MemRead<List<OwnerIapProduct>>();
             NetworkManager.Instance.Invoke(() =>
@@ -71,10 +84,25 @@ namespace Network.Core
                 UnityPurchasing.Initialize(this, builder);
                 foreach (var ownerIapProduct in ownerIapProducts)
                 {
-                    var uiContext = new IapUIContext();
+                    var uiContext = new IapUIContext()
+                    {
+                        IapHandler = this,
+                        StartPackUIPrefab =  startPackUIPrefab,
+                        MoneyVipPackUIPrefab =  moneyVipUIPrefab,
+                        MoneyVipSprites = moneyVipSprites,
+                        OwnerIapProduct = ownerIapProduct,
+                        IapProductContainer = iapProductContainer
+                    };
                     ownerIapProduct.Product.Reward.InitUI(uiContext);
                 }
             });
+        }
+
+        private IEnumerator RefreshUI()
+        {
+            yield return null;
+            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(mainIapProductContainer);
         }
         public void BuyProduct(string productId)
         {
@@ -98,6 +126,7 @@ namespace Network.Core
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
         {
             string receipt = args.purchasedProduct.receipt; 
+            Debug.Log(receipt);
             var purchaseToken = ExtractGooglePurchaseToken(receipt);
             string productId = args.purchasedProduct.definition.id;
             var iapModel = new IapModel
@@ -162,7 +191,10 @@ namespace Network.Core
                 {
                     if (result.Success)
                     {
-                        var uiContext = new IapUIContext();
+                        var uiContext = new IapUIContext()
+                        {
+                            IapHandler = this,
+                        };
                         result.Reward.ShowUISuccess(uiContext);
                     }
                     else

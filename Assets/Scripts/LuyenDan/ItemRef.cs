@@ -13,7 +13,6 @@ namespace LuyenDan
         [field: SerializeField] public ItemType Type { get; set; }
         [field: SerializeField] public ushort Count { get; set; }
         [MemoryPackIgnore] public Action<int> OnCountChanged { get; set; }
-
         [MemoryPackConstructor]
         public ItemRef()
         {

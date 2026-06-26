@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Skill
 {
-    [System.Serializable]
+    [Serializable]
     public class CongPhapMono
     {
         public CongPhap congPhap;

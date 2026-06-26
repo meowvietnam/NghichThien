@@ -1,0 +1,51 @@
+using System;
+using System.Globalization;
+using System.Linq;
+using Base;
+using LongDHModules;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace IAP
+{
+    public class StartPackUI : BaseBehaviour
+    {
+        [SerializeField] private Text moneyVipText;
+        [SerializeField] private Text moneyText;
+        [SerializeField] private Text congPhapText;
+        [SerializeField] private Image congPhapIcon;
+        [SerializeField] private Button purchaseButton;
+
+        public void SetMoneyVipText(int moneyVip)
+        {
+            var text = $"{Utils.FormatMoney(moneyVip)} Tiên ngọc";
+            moneyText.text = text;
+        }
+
+        public void SetMoneyText(int money)
+        {
+            var text = $"{Utils.FormatMoney(money)} Linh thạch";
+            moneyText.text = text;
+        }
+
+        public void SetCongPhap(ushort id)
+        {
+            var gameManager = Pool.Get<GameManager>();
+            var congPhap = gameManager.congPhaps.FirstOrDefault(x => x.Id == id);
+            if (congPhap == null)
+            {
+                Debug.Log($"Null congphap {id}");
+                return;
+            }
+            congPhapText.text = congPhap.nameItem;
+            congPhapIcon.sprite = congPhap.spriteItem;
+        }
+
+        public void SetPurchaseAction(Action action)
+        {
+            purchaseButton.onClick.RemoveAllListeners();
+            SetEventButton(purchaseButton, action);
+        }
+    }
+}
