@@ -1,12 +1,14 @@
 ﻿using Base;
 using LongDH.LongDHModules;
+using LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using LuyenKhi;
+using Network;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using LongDHModules;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +30,8 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
 
     private InventoryUIFacade inventoryUIFacade;
     public InventoryUIFacade InventoryUIFacade => inventoryUIFacade ?? (inventoryUIFacade = new InventoryUIFacade());
+
+    private bool isTriggerShowTextCount = false;
     void OnScrollChanged(Vector2 value, Action<bool> loadBagFunc)
     {
         Debug.Log("co vao onscrooll change");
@@ -79,22 +83,40 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
         isLoadingMore = false;
     }
   
-    public void InitDataItem(List<ItemRef> itemDatas , Action<ItemInventory> actionItemInventory , bool isIconSkillBase = false)
+    public void SetItemDataShow(List<ItemRef> itemDatas)
+    {
+        ushort vuKhiEquip = Client.Instance.CharacterData.EquipmentManager.VuKhi;
+        ushort phongCuEquip = Client.Instance.CharacterData.EquipmentManager.PhongCu;
+        ushort trangSucEquip = Client.Instance.CharacterData.EquipmentManager.TrangSuc;
+        this.itemDataShows = itemDatas.Where(item =>
+        {
+            // Nếu là Vũ Khí và trùng ID đang mặc -> Loại bỏ
+            if (item.Type == ItemType.VuKhi && item.Id == vuKhiEquip) return false;
+
+            // Nếu là Phòng Cụ và trùng ID đang mặc -> Loại bỏ
+            if (item.Type == ItemType.PhongCu && item.Id == phongCuEquip) return false;
+
+            // Nếu là Trang Sức và trùng ID đang mặc -> Loại bỏ
+            if (item.Type == ItemType.TrangSuc && item.Id == trangSucEquip) return false;
+
+            // Các item khác hoặc không trùng ID thì giữ lại
+            return true;
+        }).ToList();
+    }
+    public void InitDataItem(List<ItemRef> itemDatas , Action<ItemInventory> actionItemInventory , bool isIconSkillBase = false , bool isShowTextCount = false)
     {
         this.itemFullDatas = itemDatas;
-        this.itemDataShows = itemDatas;
+
+
+        SetItemDataShow(itemDatas);
+
+
         this.actionItemInventory = actionItemInventory;
         this.isIconSkillBase = isIconSkillBase;
         this.InventoryUIFacade.listItemUI.Clear();
-
+        this.isTriggerShowTextCount = isShowTextCount;
     }
-    public void ShowTextCount(bool isShow)
-    {
-        foreach (var item in this.InventoryUIFacade.listItemUI)
-        {
-            item.textCount.gameObject.SetActive(isShow);
-        }    
-    }    
+   
     public void InitBag(bool isAdd=false)
     {
         var gameConfig = Pool.Get<GameManager>();
@@ -150,10 +172,14 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             {
                 itemRef = itemDataShows[index];
             }
-
+            
             InventoryUIFacade.RenderBagItem(currentItem, itemRef, isIconSkillBase);
+            if (isTriggerShowTextCount)
+            {
+                currentItem.textCount.gameObject.SetActive(true);
+            }
             actionItemInventory?.Invoke(currentItem);
-
+                
 
         }
     }

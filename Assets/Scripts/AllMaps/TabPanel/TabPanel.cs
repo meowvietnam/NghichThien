@@ -934,7 +934,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
 
             },null);
-        });
+        }, false, true);
         bag.InitBag(false);
 
         charPageInventory.SetGender(CharData.Gender);

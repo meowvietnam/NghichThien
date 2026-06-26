@@ -26,7 +26,8 @@ namespace LuyenDan
             {
                 Id = SelfId,
                 Type = ItemType.Furnace,
-                Count = 1
+                Count = 1,
+                TempId = Id,
             };
         }
         public ItemRef CreateRef()

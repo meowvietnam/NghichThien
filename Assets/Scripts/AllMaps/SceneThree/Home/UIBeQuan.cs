@@ -396,7 +396,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 }
             });
            
-        });
+        },false,true);
         bagLinhHoi.InitBag(false);
       
 

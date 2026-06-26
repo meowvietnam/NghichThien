@@ -54,7 +54,7 @@ namespace LuyenDan
         {
             if (itemRef.Type == ItemType.Furnace)
             {
-                return TempFurnaceDatas.FirstOrDefault(x => x.Id == itemRef.Id);
+                return TempFurnaceDatas.FirstOrDefault(x => x.Id == itemRef.TempId);
             }
 
             if (itemRef.Type == ItemType.Herb)

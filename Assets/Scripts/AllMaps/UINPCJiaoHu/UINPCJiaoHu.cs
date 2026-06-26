@@ -149,12 +149,15 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
      private void ResetItemBag()
      {
         var oldItem = bag.InventoryUIFacade.listItemUI.FirstOrDefault(x => x.itemRef.Id == slotItemGift.itemRef.Id);
-        oldItem.gameObject.SetActive(true);
-        oldItem.InitCount(oldItem.itemRef.Count);
+        if(oldItem != null)
+        {
+            oldItem.gameObject.SetActive(true);
+            oldItem.InitCount(oldItem.itemRef.Count);
+        }    
      }    
      public void InitPopTangQua()
      {
-        Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, null, null);
+        slotItemGift.Init(null, null);
 
         var characterData = Client.Instance.CharacterData;
         var gameConfig = Pool.Get<GameManager>();
@@ -211,11 +214,11 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
                 //    }
                 //}
             });
-        });
+        }, false, true);
         slotItemGift.InitAction(null, null, () =>
         {
             ResetItemBag();
-            Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, null, null);
+            slotItemGift.Init(null, null);
         });
         bag.InitBag(false);
         //reset 
@@ -223,7 +226,6 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         visualChar.SetSkin(characterData.Appearance.Skins, characterData.Appearance.Colors);
         textMoney.text = characterData.Stats.LinhThach.ToString();
         textNameUser.text = characterData.Name;
-        bag.ShowTextCount(true);
         SetEventButton(btnConfirmTangQua, () =>
         {
             if(slotItemGift.itemRef == null) return;
@@ -240,7 +242,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
 
                     SayDialogManager.Instance.ShowDialogWithSkin(characterStatsTarget.nameUser, characterStatsTarget.Gender, characterStatsTarget.Skins, characterStatsTarget.Colors, new List<string> { $"{xungHo.targetCallMe}, sảng khoái" });
                     slotItemGift.itemRef.Count = (ushort)slotItemGift.count;
-                    int valueAdd = value.Item1 * slotItemGift.itemRef.Count * value.Item2;
+                    int valueAdd = value.Item1 * slotItemGift.itemRef.Count * value.Item2 * 2;
                     NotifyGroup.Instance.Show($"Mối quan hệ giữa bạn và {characterStatsTarget.nameUser} tăng thêm {valueAdd}");
 
                     Observer.Notify(EventList.Network.TANG_QUA_NPC, this, characterStatsTarget.idChar.Value, slotItemGift.itemRef);
@@ -261,7 +263,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
 
                     }
 
-                    Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, null, null);
+                    slotItemGift.Init(null, null);
                     slotItemGift.InitCount(0);
                 }
             }
@@ -564,7 +566,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
             itemInventory.InitAction(null, null, null);
 
             Pool.Get<UIManager>().InitVisualItemSkill(itemInventory, item);
-            if(eTypeRelationShip  == ERelationShip.Quen)
+            if((int)eTypeRelationShip  >= (int)ERelationShip.Quen)
             {
                 CallActionThinhGiao(itemInventory);
 
@@ -576,7 +578,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
             itemInventory.InitAction(null, null, null);
 
             Pool.Get<UIManager>().InitVisualItemSkill(itemInventory, item);
-            if (eTypeRelationShip == ERelationShip.BanBe)
+            if ((int)eTypeRelationShip >= (int)ERelationShip.BanBe)
             {
                 CallActionThinhGiao(itemInventory);
 
@@ -588,7 +590,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
             itemInventory.InitAction(null, null,null);
 
             Pool.Get<UIManager>().InitVisualItemSkill(itemInventory, item);
-            if (eTypeRelationShip == ERelationShip.ThanThiet)
+            if ((int)eTypeRelationShip >= (int)ERelationShip.ThanThiet)
             {
                 CallActionThinhGiao(itemInventory);
 
@@ -598,12 +600,28 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         {
             item.InitAction(null, null, () =>
             {
-                int require = CurrentPageTypeRelationShip == ETypeSkillRelationShip.ThanThong? relationShipRequireThanThong[eTypeRelationShip] : relationShipRequireCongPhap[eTypeRelationShip];
+                var categorizeCurrent = categorize;
+                ERelationShip indexThinhGiao = ERelationShip.Quen;
+                if(categorizeCurrent.Item1.FirstOrDefault(x=>x.Id == item.itemRef.Id) != null )
+                {
+                    indexThinhGiao = ERelationShip.Quen;
+                }    
+                else if (categorizeCurrent.Item2.FirstOrDefault(x => x.Id == item.itemRef.Id) != null)
+                {
+                    indexThinhGiao = ERelationShip.BanBe;
+
+                }
+                else if (categorizeCurrent.Item3.FirstOrDefault(x => x.Id == item.itemRef.Id) != null)
+                {
+                    indexThinhGiao = ERelationShip.ThanThiet;
+
+                }
+                int require = CurrentPageTypeRelationShip == ETypeSkillRelationShip.ThanThong? relationShipRequireThanThong[indexThinhGiao] : relationShipRequireCongPhap[indexThinhGiao];
                 if(relatetionshipValue >= require)
                 {
                     Pool.Get<PopupConfirmAction>().ShowPopConfirmAction($"Xác nhận tiêu hao {require} điểm hảo cảm thỉnh giáo {item.itemData.nameItem}", () =>
                     {
-                        Observer.Notify(EventList.Network.THINH_GIAO_NPC,this,characterStatsTarget.idChar,item.itemRef.Id,item.itemRef.Type);
+                        Observer.Notify(EventList.Network.THINH_GIAO_NPC,this,characterStatsTarget.idChar.Value,item.itemRef.Id,item.itemRef.Type);
                         Client.Instance.CharacterData.Social.RelationshipAddValue((ushort)characterStatsTarget.idChar,-require);
                         if (item.itemRef.Type == ItemType.ThanThong)
                         {
@@ -644,6 +662,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         SetSliderVisual(ETypeSkillRelationShip.CongPhap);
         SetVisualBtnThinhGiao(btnTabCongPhap, colorTextSelect, spriteIconCongPhapSelect);
         CurrentPageTypeRelationShip = ETypeSkillRelationShip.CongPhap;
+        textRelationshipValue.text = relatetionshipValue.ToString();
 
     }
 
@@ -667,6 +686,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         SetSliderVisual(ETypeSkillRelationShip.ThanThong);
         SetVisualBtnThinhGiao(btnTabThanThong, colorTextSelect, spriteIconThanThongSelect);
         CurrentPageTypeRelationShip = ETypeSkillRelationShip.ThanThong;
+        textRelationshipValue.text = relatetionshipValue.ToString();
 
     }
     private void ResetVisual(Transform prefab)
@@ -691,7 +711,6 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
     private void InitPopThinhGiao()
     {
         var relatetionshipValue = Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar);
-        textRelationshipValue.text = relatetionshipValue.ToString();
         InitCongPhapTab();
         SetEventButton(btnTabCongPhap, () =>
         {
@@ -744,7 +763,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
 
     public void SuccessThinhGiaoNpc(ItemRef itemRef)
     {
-        NotifyGroup.Instance.Show("Thỉnh giáo thành công vui lòng kiểm tra kho đ");
+        NotifyGroup.Instance.Show("Thỉnh giáo thành công vui lòng kiểm tra kho đồ");
         Pool.Get<EventRewardPanel>().InitShowEventReward(new AllMaps.EventReward.RewardSnapshot { ItemRefs = new List<ItemRef> { itemRef }, Money = 0 , MoneyVip = 0 },"Chăm chỉ ắt thành tài!");
         OnReloadNpcThisNode();
     }
