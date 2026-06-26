@@ -30,6 +30,8 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
 
     private InventoryUIFacade inventoryUIFacade;
     public InventoryUIFacade InventoryUIFacade => inventoryUIFacade ?? (inventoryUIFacade = new InventoryUIFacade());
+
+    private bool isTriggerShowTextCount = false;
     void OnScrollChanged(Vector2 value, Action<bool> loadBagFunc)
     {
         Debug.Log("co vao onscrooll change");
@@ -101,7 +103,7 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             return true;
         }).ToList();
     }
-    public void InitDataItem(List<ItemRef> itemDatas , Action<ItemInventory> actionItemInventory , bool isIconSkillBase = false)
+    public void InitDataItem(List<ItemRef> itemDatas , Action<ItemInventory> actionItemInventory , bool isIconSkillBase = false , bool isShowTextCount = false)
     {
         this.itemFullDatas = itemDatas;
 
@@ -112,15 +114,9 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
         this.actionItemInventory = actionItemInventory;
         this.isIconSkillBase = isIconSkillBase;
         this.InventoryUIFacade.listItemUI.Clear();
-
+        this.isTriggerShowTextCount = isShowTextCount;
     }
-    public void ShowTextCount(bool isShow)
-    {
-        foreach (var item in this.InventoryUIFacade.listItemUI)
-        {
-            item.textCount.gameObject.SetActive(isShow);
-        }    
-    }    
+   
     public void InitBag(bool isAdd=false)
     {
         var gameConfig = Pool.Get<GameManager>();
@@ -176,10 +172,14 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             {
                 itemRef = itemDataShows[index];
             }
-
+            
             InventoryUIFacade.RenderBagItem(currentItem, itemRef, isIconSkillBase);
+            if (isTriggerShowTextCount)
+            {
+                currentItem.textCount.gameObject.SetActive(true);
+            }
             actionItemInventory?.Invoke(currentItem);
-
+                
 
         }
     }

@@ -52,12 +52,12 @@ namespace Network.Core
             thinhGiaoCallBack = data[0] as INetworkEvent.IThinhGiaoNPC;
          
             var idNpc = (int)data[1];
-            var idSkill = (int)data[2];
+            var idSkill = (ushort)data[2];
             var typeSkill = (ItemType)data[3];
             var thinhGiao = new ThinhGiaoKyNang()
             {
-                IdChar = idNpc,
-                IdSkill = idSkill,
+                IdChar = (int)idNpc,
+                IdSkill = (int)idSkill,
                 TypeSkill = typeSkill,
                
             };
@@ -73,6 +73,7 @@ namespace Network.Core
                 if (result.Success)
                 {
                     Client.Instance.CharacterData.Social.RelationshipSetValue((ushort)result.IdChar,result.NewValueRelationship);
+                    Client.Instance.CharacterData.InventoryManager.Add(result.ItemRefSkill);
                 }
                 NetworkManager.Instance.Invoke(() =>
                 {

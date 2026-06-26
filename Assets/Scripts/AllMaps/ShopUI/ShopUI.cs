@@ -202,7 +202,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
                 //    }
                 //}
             });
-        });
+        }, false, true);
         bagUserList.InitBag(false);
     }
 
