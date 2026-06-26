@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CreateCharacter;
 using IAP;
 using LongDHModules;
@@ -21,23 +22,23 @@ namespace Network.Core
 
         // Khai báo các ID sản phẩm
         // CÁC GÓI TIÊN NGỌC ĐỒNG BỘ TỪ UI THỰC TẾ
-        public const string PRODUCT_100_TIEN_NGOC = "100_tien_ngoc"; // Sơ Cấp (10.000 VND)
-        public const string PRODUCT_550_TIEN_NGOC = "550_tien_ngoc"; // Tích Lũy (50.000 VND)
-        public const string PRODUCT_1150_TIEN_NGOC = "1150_tien_ngoc"; // Phú Hộ (100.000 VND)
-        public const string PRODUCT_2550_TIEN_NGOC = "2550_tien_ngoc"; // Hào Phú (200.000 VND)
-        public const string PRODUCT_6550_TIEN_NGOC = "6550_tien_ngoc"; // Đại Gia (500.000 VND)
-        public const string PRODUCT_13550_TIEN_NGOC = "13550_tien_ngoc"; // Thần Tài (1.000.000 VND)
+        // public const string PRODUCT_100_TIEN_NGOC = "100_tien_ngoc"; // Sơ Cấp (10.000 VND)
+        // public const string PRODUCT_550_TIEN_NGOC = "550_tien_ngoc"; // Tích Lũy (50.000 VND)
+        // public const string PRODUCT_1150_TIEN_NGOC = "1150_tien_ngoc"; // Phú Hộ (100.000 VND)
+        // public const string PRODUCT_2550_TIEN_NGOC = "2550_tien_ngoc"; // Hào Phú (200.000 VND)
+        // public const string PRODUCT_6550_TIEN_NGOC = "6550_tien_ngoc"; // Đại Gia (500.000 VND)
+        // public const string PRODUCT_13550_TIEN_NGOC = "13550_tien_ngoc"; // Thần Tài (1.000.000 VND)
 
         public const string PRODUCT_START_PACK = "start_pack";
         [SerializeField] private Popup popupMain;
-        [SerializeField] private Button btnStartPack;
-        [SerializeField] private Button btn100TienNgoc;
-        [SerializeField] private Button btn550TienNgoc;
-        [SerializeField] private Button btn1150TienNgoc;
-        [SerializeField] private Button btn2550TienNgoc;
-        [SerializeField] private Button btn6550TienNgoc;
-        [SerializeField] private Button btn13550TienNgoc;
-
+        // [SerializeField] private Button btnStartPack;
+        // [SerializeField] private Button btn100TienNgoc;
+        // [SerializeField] private Button btn550TienNgoc;
+        // [SerializeField] private Button btn1150TienNgoc;
+        // [SerializeField] private Button btn2550TienNgoc;
+        // [SerializeField] private Button btn6550TienNgoc;
+        // [SerializeField] private Button btn13550TienNgoc;
+        private List<OwnerIapProduct> ownerIapProducts;
         private static MessageTag[] handler =
         {
             MessageTag.PurchaseIapResult
@@ -48,39 +49,33 @@ namespace Network.Core
         public override void Init()
         {
             base.Init();
+            var coreModule = Client.Instance.CoreModule;
+            coreModule.RemoveHandler<IapHandler>();
+            coreModule.AddHandler(this);
             InitIAP();
         }
 
-        public void InitIAP()
+        public async void InitIAP()
         {
-            var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-            builder.AddProduct(PRODUCT_100_TIEN_NGOC, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_550_TIEN_NGOC, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_1150_TIEN_NGOC, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_2550_TIEN_NGOC, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_6550_TIEN_NGOC, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_13550_TIEN_NGOC, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_START_PACK, ProductType.Consumable);
-            UnityPurchasing.Initialize(this, builder);
-
-            SetEventButton(btnStartPack, () => { BuyProduct(PRODUCT_START_PACK); });
-            SetEventButton(btn100TienNgoc, () => { BuyProduct(PRODUCT_100_TIEN_NGOC); });
-            SetEventButton(btn550TienNgoc, () => { BuyProduct(PRODUCT_550_TIEN_NGOC); });
-            SetEventButton(btn1150TienNgoc, () => { BuyProduct(PRODUCT_1150_TIEN_NGOC); });
-            SetEventButton(btn2550TienNgoc, () => { BuyProduct(PRODUCT_2550_TIEN_NGOC); });
-            SetEventButton(btn6550TienNgoc, () => { BuyProduct(PRODUCT_6550_TIEN_NGOC); });
-            SetEventButton(btn13550TienNgoc, () => { BuyProduct(PRODUCT_13550_TIEN_NGOC); });
-            var charData = Client.Instance.CharacterData;
-            if (charData.IsInfiniteEnergy)
+            var reader = await Client.Instance.RequestWait(MessageTag.GetProductsRequest);
+            ownerIapProducts = reader.MemRead<List<OwnerIapProduct>>();
+            NetworkManager.Instance.Invoke(() =>
             {
-                btnStartPack.transform.parent.gameObject.SetActive(false);
-            }
-            else
-            {
-                btnStartPack.transform.parent.gameObject.SetActive(true);
-            }
+                var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
+                foreach (var ownerIapProduct in ownerIapProducts)
+                {
+                    var productId = ownerIapProduct.Product.StoreProductId;
+                    var productType = (ProductType)ownerIapProduct.Product.ProductType;
+                    builder.AddProduct(productId, productType);
+                }
+                UnityPurchasing.Initialize(this, builder);
+                foreach (var ownerIapProduct in ownerIapProducts)
+                {
+                    var uiContext = new IapUIContext();
+                    ownerIapProduct.Product.Reward.InitUI(uiContext);
+                }
+            });
         }
-
         public void BuyProduct(string productId)
         {
             if (m_StoreController != null)
@@ -167,7 +162,8 @@ namespace Network.Core
                 {
                     if (result.Success)
                     {
-                        result.Reward.ShowUISuccess();
+                        var uiContext = new IapUIContext();
+                        result.Reward.ShowUISuccess(uiContext);
                     }
                     else
                     {

@@ -3,6 +3,10 @@ using MemoryPack;
 
 namespace IAP
 {
+    public class IapUIContext
+    {
+        
+    }
     [MemoryPackable]
     public partial class IapRewardTest : IIapReward
     {
@@ -13,7 +17,10 @@ namespace IAP
         {
         }
 
-        public void ShowUISuccess()
+        public void ShowUISuccess(IapUIContext context)
+        {
+        }
+        public void InitUI(IapUIContext context)
         {
         }
     }
@@ -23,6 +30,7 @@ namespace IAP
     {
         void Execute(CharacterData charData);
         void Refund(CharacterData charData);
-        void ShowUISuccess();
+        void ShowUISuccess(IapUIContext context);
+        void InitUI(IapUIContext context);
     }
 }
