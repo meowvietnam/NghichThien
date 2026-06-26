@@ -154,7 +154,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
      }    
      public void InitPopTangQua()
      {
-        Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, null, null);
+        slotItemGift.Init(null, null);
 
         var characterData = Client.Instance.CharacterData;
         var gameConfig = Pool.Get<GameManager>();
@@ -215,7 +215,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         slotItemGift.InitAction(null, null, () =>
         {
             ResetItemBag();
-            Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, null, null);
+            slotItemGift.Init(null, null);
         });
         bag.InitBag(false);
         //reset 
@@ -261,7 +261,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
 
                     }
 
-                    Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, null, null);
+                    slotItemGift.Init(null, null);
                     slotItemGift.InitCount(0);
                 }
             }

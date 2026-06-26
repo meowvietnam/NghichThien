@@ -25,7 +25,8 @@ public class InventoryUIFacade
 
         if (itemRef == null)
         {
-            uiManager.InitVisualItemInventory(currentItem, null, null, isIconSkillBase);
+            currentItem.Init(null, null);
+            currentItem.gameObject.SetActive(false);
             return;
         }
         listItemUI.Add(currentItem);

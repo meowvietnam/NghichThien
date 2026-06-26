@@ -1,6 +1,5 @@
 ﻿using AllMaps.ItemProvider;
 using Base;
-using CreateCharacter;
 using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
@@ -14,6 +13,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Skill;
 
 public interface IUISingleton
 {
@@ -62,8 +62,29 @@ public class UIManager : BaseBehaviour
 
             item.SetColorName(inforVisualSkill.Item3);
             item.SetQualityFull(inforVisualSkill.Item2);
-
+            if (itemRef == null || itemRef.Type != ItemType.ThanThong && itemRef.Type != ItemType.CongPhap)
+            {
+                if(data is ThanThong thanThong)
+                {
+                    itemRef = new ItemRef
+                    {
+                        Id = (ushort)data.Id,
+                        Type = ItemType.ThanThong,
+                        Count = 1,
+                    };
+                }
+                else if (data is CongPhap congPhap)
+                {
+                    itemRef = new ItemRef
+                    {
+                        Id = (ushort)data.Id,
+                        Type = ItemType.CongPhap,
+                        Count = 1,
+                    };
+                }
+            }
         }
+      
 
         item.Init(data, frame);
         item.InitInventory(itemRef, null);
@@ -132,6 +153,8 @@ public class UIManager : BaseBehaviour
             item.SetColorName(quality.Color);
             item.SetQualityFull(quality.Background);
             baseItemData = new BaseItemData { nameItem = data.Name, spriteItem = data.Icon };
+            item.Init(baseItemData, frame);
+
         }
         if (itemRef != null && itemRef.Type == ItemType.Recipe)
         {
@@ -150,7 +173,6 @@ public class UIManager : BaseBehaviour
             }
            
         }
-        item.Init(baseItemData, frame);
 
 
         item.InitInventory(itemRef, data);
