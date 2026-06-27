@@ -9,6 +9,8 @@ public class PlayerUICombatItem : BaseItemUI
     [SerializeField] private Image fullQuality;
 
     public bool isLock => maskCoolDown.gameObject.activeSelf || cdText.transform.parent.gameObject.activeSelf;
+    public override bool IsSetNativeIcon => false;
+
     public override void InitItemData(BaseItemData itemData, Sprite frameSprite)
     {
         base.InitItemData(itemData, frameSprite);

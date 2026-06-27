@@ -1,6 +1,7 @@
 ﻿using CreateCharacter.CharStats;
 using TMPro;
 using UnityEngine;
+using LongDHModules;
 
 namespace LuyenKhi
 {
@@ -46,7 +47,7 @@ namespace LuyenKhi
                 effectDetailUI.SetText(text);
                 effectDetailUI.actionPointerDown = (eventData) =>
                 {
-                    var tooltip = Tooltip.Instance;
+                    var tooltip = Pool.Get<UIManager>().transform.GetComponentInChildren<Tooltip>(true);
                     tooltip.SetActive(true);
                     Debug.Log("effect text luyện khí hoạt động");
 

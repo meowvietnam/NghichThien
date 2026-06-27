@@ -5,6 +5,7 @@ public class ItemUI : BaseItemUI
 {
     [SerializeField] public int count = 0;
     [SerializeField] private Text countText;
+    public override bool IsSetNativeIcon => false;
 
     public void AddCount(int count)
     {

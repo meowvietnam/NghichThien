@@ -19,6 +19,7 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
     [SerializeField] public Action actionPointerUp;
     [SerializeField] public Action actionPointerDown;
     [SerializeField] protected Image selectHighLight;
+    public virtual bool IsSetNativeIcon => true;
     public void SetSelectHighlight(bool isActive)
     {
         if(selectHighLight != null)
@@ -46,7 +47,10 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
         if(spriteIcon != null)
         {
             icon.sprite = spriteIcon;
-            icon.SetNativeSize();
+            if(IsSetNativeIcon)
+            {
+                icon.SetNativeSize();
+            }    
         }    
         if(frameSprite != null)
         {
