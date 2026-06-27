@@ -16,6 +16,7 @@ namespace IAP
         [SerializeField] private Text congPhapText;
         [SerializeField] private Image congPhapIcon;
         [SerializeField] private Button purchaseButton;
+        [SerializeField] public Popup ThisPopup => transform.GetComponent<Popup>();
 
         public void SetMoneyVipText(int moneyVip)
         {

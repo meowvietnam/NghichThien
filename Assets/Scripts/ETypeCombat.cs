@@ -8,10 +8,11 @@ public enum ETypeCombat
     DauTruong,
     Boss,
 }
-public enum ECombatResult
+public enum ETypeResultCombat
 {
     None,
     Win,
-    Lose,
-    GiveUp,
+    LoseByTime,
+    LoseByRun,
+    LoseByDied
 }

@@ -319,7 +319,12 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
 
     public static string GetChucVuText(EMonPhai monPhai, int level)
     {
-        return monPhaiText[monPhai] + " " + chucVuText[ThanThong.GetDaiCanhGioi(level)];
+        string textChucVu = monPhaiText[monPhai];
+        if(monPhai != EMonPhai.None)
+        {
+            textChucVu += " " + chucVuText[ThanThong.GetDaiCanhGioi(level)];
+        }
+        return textChucVu;
     }   
 
     public void OnBackScene()
@@ -407,7 +412,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     public CharCombatInit enemyCombat = null;
     public CharCombatInit user = null;
     public ETypeCombat currentETypeCombat = ETypeCombat.None;
-    public ECombatResult currentECombatResult = ECombatResult.None;
+    public ETypeResultCombat currentECombatResult = ETypeResultCombat.None;
     public Sprite spriteBGCombat;
 
     public void SetBGCombat(Sprite  sprite)
@@ -419,6 +424,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         if (enemyCombat == null) return;
         Pool.Get<UIManager>().panelGroup.SetActive(false);
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
+        Pool.Get<UIManager>().ListIcon.gameObject.SetActive(false);
         Pool.Get<PrepareCombatPanel>().Hide();
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         Observer.Notify(EventList.Network.LOAD_CHAR_COMBAT, this);
@@ -431,12 +437,13 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         if (enemyCombat == null) return;
         currentETypeCombat = eTypeCombat;
         Pool.Get<PrepareCombatPanel>().Show();
-        currentECombatResult = ECombatResult.None;
+        currentECombatResult = ETypeResultCombat.None;
     }
-    public void BackAllMapFromCombat(ECombatResult eCombatResult)
+    public void BackAllMapFromCombat(ETypeResultCombat eCombatResult)
     {
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         Pool.Get<UIManager>().panelGroup.SetActive(true);
+        Pool.Get<UIManager>().ListIcon.gameObject.SetActive(true);
         currentECombatResult = eCombatResult;
         SceneManager.LoadScene(listSceneLoaded[0]);
 

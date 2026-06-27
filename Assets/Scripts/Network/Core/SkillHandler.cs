@@ -262,6 +262,7 @@ namespace Network.Core
                 var result = reader.Read<TuLuyenResult>();
                 var charData = Client.Instance.CharacterData;
                 int oldExp = charData.Progression.CurrentExp;
+                int oldHp = charData.Stats.Hp;
                 if (result.Success)
                 {
                     if (result.HasLevelUpdated)
@@ -276,13 +277,14 @@ namespace Network.Core
                     var stats = charData.Stats;
                     stats.LinhThach = result.RemainingMoney;
                     stats.TamCanh = result.NewTamCanh;
+                    stats.Hp = result.NewHp;
                 }
 
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
                     {
-                        tuLuyenCallback.SuccessTuLuyen(result.CurrentExp - oldExp);
+                        tuLuyenCallback.SuccessTuLuyen(result.CurrentExp - oldExp,result.NewHp - oldHp);
                     }
                     else
                     {

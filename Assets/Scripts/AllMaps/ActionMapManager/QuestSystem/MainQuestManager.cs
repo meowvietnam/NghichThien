@@ -70,7 +70,7 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
     private IEnumerator FollowItemsOneByOneRoutine()
     {
         var player = Pool.Get<Player>();    
-        while (player.IsMoving || Pool.Get<UIManager>().activePopupCount > 0)
+        while (player.IsMoving)
         {
             yield return null; // Chờ đến frame tiếp theo và kiểm tra lại trạng thái di chuyển của player
             yield return null; // Chờ đến frame tiếp theo và kiểm tra lại trạng thái di chuyển của player

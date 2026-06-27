@@ -1,6 +1,8 @@
 using CreateCharacter;
 using LuyenDan;
 using MemoryPack;
+using Network;
+using UnityEngine;
 
 namespace IAP
 {
@@ -68,6 +70,14 @@ namespace IAP
             {
                 context.IapHandler.BuyProduct(context.IapProduct.StoreProductId);
             });
+            if(!Client.Instance.CharacterData.IsInfiniteEnergy)
+            {
+                startPackUI.ThisPopup.Show();
+            }
+            else
+            {
+                startPackUI.ThisPopup.Hide();
+            }
         }
     }
 }

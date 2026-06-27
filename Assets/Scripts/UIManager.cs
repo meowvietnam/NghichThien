@@ -14,6 +14,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Skill;
+using IAP;
 
 public interface IUISingleton
 {
@@ -28,7 +29,14 @@ public class UIManager : BaseBehaviour
     [SerializeField] private Sprite spriteCPInven;
     [SerializeField] private Sprite spriteRecipeInven;
     [SerializeField] public GameObject loadScene;
+    [SerializeField]
+    public Button btnBXH;
+    [SerializeField]
+    public Button btnThuongHoi;
+    [SerializeField]
+    public Button btnStartPack;
 
+    public Transform ListIcon => btnBXH.transform.parent;
     /// <summary>
     /// Abstract Factory để lấy equipment từ các collection khác nhau
     /// </summary>
@@ -200,6 +208,24 @@ public class UIManager : BaseBehaviour
         DontDestroyOnLoad(gameObject);
         // Đăng ký sự kiện mỗi khi load scene mới
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+        SetEventButton(btnThuongHoi, () =>
+        {
+           var iapHandler =  Pool.Get<IapHandler>();
+           iapHandler.popupMain.Show();
+             
+
+        });
+        SetEventButton(btnBXH, () =>
+        {
+            Pool.Get<RankPanel>().mainPopup.Show();
+        });
+        SetEventButton(btnStartPack, () =>
+        {
+            var iapHandler = Pool.Get<IapHandler>();
+            iapHandler.transform.GetComponentInChildren<StartPackUI>(true).ThisPopup.Show();
+        });
+        btnStartPack.gameObject.SetActive(!Client.Instance.CharacterData.IsInfiniteEnergy);
+
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -220,11 +246,16 @@ public class UIManager : BaseBehaviour
             item.Init();
         }
     }
-    [SerializeField]public int activePopupCount = 0; // Biến đếm số lượng popup đang mở
-
-    public void RegisterOpenPopup()
+    [SerializeField]
+    public Popup currentPopup;
+    public void RegisterOpenPopup(Popup popup)
     {
-        activePopupCount++;
+        if (currentPopup != null && currentPopup != popup)
+        {
+            currentPopup.Hide();
+        }
+
+        this.currentPopup = popup;
         if (commonMask != null)
         {
             commonMask.gameObject.SetActive(true);
@@ -233,16 +264,6 @@ public class UIManager : BaseBehaviour
 
     public void RegisterClosePopup()
     {
-        activePopupCount--;
-
-        // Chỉ khi KHÔNG CÒN popup nào mở (count <= 0) thì mới được tắt mask
-        if (activePopupCount <= 0)
-        {
-            activePopupCount = 0; // Đảm bảo không bị âm số
-            if (commonMask != null)
-            {
-                commonMask.gameObject.SetActive(false);
-            }
-        }
+        commonMask.gameObject.SetActive(false);
     }
 }

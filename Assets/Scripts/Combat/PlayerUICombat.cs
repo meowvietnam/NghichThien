@@ -118,7 +118,7 @@ public class PlayerUICombat : BaseBehaviour
     {
         SetEventButton(btnConfirm, () =>
         {
-            if (CombatManager.IsDelayEffectSkill) return;
+            if (CombatManager.IsDelayGame) return;
             if (player.isAutoCastSkill) return;
            
             switch (eStateControl)
@@ -148,7 +148,7 @@ public class PlayerUICombat : BaseBehaviour
         });
         SetEventButton(btnCancel, () =>
         {
-            if (CombatManager.IsDelayEffectSkill) return;
+            if (CombatManager.IsDelayGame) return;
             if (player.isAutoCastSkill) return;
 
             foreach (var item in currentNodes)
@@ -170,7 +170,7 @@ public class PlayerUICombat : BaseBehaviour
 
         SetEventButton(btnEndRound, () =>
         {
-            if (CombatManager.IsDelayEffectSkill) return;
+            if (CombatManager.IsDelayGame) return;
             if (player.isAutoCastSkill) return;
 
             SetStateControl(EStateControl.DeleteLinhKhi);
@@ -466,7 +466,7 @@ public class PlayerUICombat : BaseBehaviour
         foreach (var item in fightSkills)
         {
             item.ShowRecommentHighlight(false);
-            if (item.ThanThongData == null || CombatManager.IsDelayEffectSkill) continue;
+            if (item.ThanThongData == null || CombatManager.IsDelayGame) continue;
             if (item.isLock == false)
             {
                 if(player.thanThongCurrentUse != null && item.ThanThongData is BaseSkill.LienKich)

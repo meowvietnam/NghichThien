@@ -29,7 +29,7 @@ public class Popup : BaseBehaviour
         });
         if(commonMask == null)
         {
-            Pool.Get<UIManager>().RegisterOpenPopup();
+            Pool.Get<UIManager>().RegisterOpenPopup(this);
         }    
         else
         {

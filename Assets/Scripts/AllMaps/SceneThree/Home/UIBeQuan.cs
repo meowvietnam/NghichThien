@@ -572,10 +572,12 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         bagCongPhap.InitBag();
     }
 
-    public void SuccessTuLuyen(int valueAdd)
+    public void SuccessTuLuyen(int valueAdd , int valueAddHp)
     {
         Observer.Notify(EventList.GamePlay.TIME_ADJUST);
         NotifyGroup.Instance.Show($"Tu luyện thành công {textNam.text} năm {textThang.text} tháng nhận được {valueAdd} tu vi");
+        NotifyGroup.Instance.Show($"Khôi phục +{valueAddHp} khí huyết");
+
         Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
 
     }

@@ -11671,6 +11671,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224813555134254305}
   - component: {fileID: 114525917089396087}
+  - component: {fileID: 693076408063983571}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -11696,7 +11697,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -139.99998, y: 0.0000041529784}
-  m_SizeDelta: {x: 280, y: 798}
+  m_SizeDelta: {x: 280, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &114525917089396087
 MonoBehaviour:
@@ -11714,7 +11715,7 @@ MonoBehaviour:
     m_Left: 0
     m_Right: 0
     m_Top: 0
-    m_Bottom: 0
+    m_Bottom: 35
   m_ChildAlignment: 0
   m_Spacing: 5
   m_ChildForceExpandWidth: 1
@@ -11724,6 +11725,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &693076408063983571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235129530294546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &1236462018492724
 GameObject:
   m_ObjectHideFlags: 0
@@ -52106,6 +52121,7 @@ MonoBehaviour:
     <Id>k__BackingField: 0
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
+    <TempId>k__BackingField: 0
   count: 0
   countRequire: 0
 --- !u!1 &1698175939849132115
@@ -54145,6 +54161,7 @@ MonoBehaviour:
     <Id>k__BackingField: 0
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
+    <TempId>k__BackingField: 0
   count: 0
   countRequire: 0
 --- !u!1 &3528202377915438421
@@ -54396,6 +54413,7 @@ MonoBehaviour:
   graphic: {fileID: 2930407829860652672}
   skinResources: {fileID: 11400000, guid: eb63df279467d0e4a9ccdb13556e6fa9, type: 2}
   refLocalPos: {x: 0, y: 0, z: 0}
+  addLocalY: 30
 --- !u!1 &3765644957535763579
 GameObject:
   m_ObjectHideFlags: 0
@@ -55611,6 +55629,7 @@ MonoBehaviour:
     <Id>k__BackingField: 0
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
+    <TempId>k__BackingField: 0
   count: 0
   countRequire: 0
 --- !u!1 &5467637971690194044
@@ -58414,6 +58433,7 @@ MonoBehaviour:
   graphic: {fileID: 6122526913068374079}
   skinResources: {fileID: 11400000, guid: eb63df279467d0e4a9ccdb13556e6fa9, type: 2}
   refLocalPos: {x: 0, y: 0, z: 0}
+  addLocalY: 30
 --- !u!1 &7760541357865651107
 GameObject:
   m_ObjectHideFlags: 0
@@ -58808,6 +58828,7 @@ MonoBehaviour:
     <Id>k__BackingField: 0
     <Type>k__BackingField: 0
     <Count>k__BackingField: 0
+    <TempId>k__BackingField: 0
   count: 0
   countRequire: 0
 --- !u!1 &8375444127782365520
@@ -61278,6 +61299,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1507349888881122158, guid: 81502a36a78c2a34b93bd798d2fada86,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2672185091331948175, guid: 81502a36a78c2a34b93bd798d2fada86,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3141353775108608067, guid: 81502a36a78c2a34b93bd798d2fada86,
         type: 3}

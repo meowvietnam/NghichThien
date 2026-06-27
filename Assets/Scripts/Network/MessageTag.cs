@@ -105,8 +105,8 @@ namespace Network
         CompleteSideQuest = 403,
         CompleteSideQuestResult = 404,
 
-        WinCombat = 413,
-        WinCombatResult = 414,
+        ResultCombat = 413,
+        ResultCombatResult = 414,
 
 
         LoadCharCombat = 415,

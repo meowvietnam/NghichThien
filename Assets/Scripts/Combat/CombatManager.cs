@@ -1,9 +1,12 @@
-﻿using AllMaps.NgoDao;
+﻿using AllMaps.EventReward;
+using AllMaps.NgoDao;
 using Base;
 using CreateCharacter.CharStats;
 using DG.Tweening;
+using DG.Tweening.Core.Easing;
 using LongDH.LongDHModules;
 using LongDH.Script.ObjectPool;
+using LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using LuyenKhi;
@@ -14,8 +17,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using AllMaps.EventReward;
-using LongDHModules;
 using UnityEngine;
 using UnityEngine.UI;
 public class LinhKhiTieuTan
@@ -30,7 +31,7 @@ public enum ETuongQuan
     None,
 }
 
-public class CombatManager : BaseBehaviour , INetworkEvent.IWinCombatBase
+public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
 {
     [System.Serializable]   
     public class BuffOrDebuffIcon {
@@ -80,13 +81,38 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IWinCombatBase
     [SerializeField] private Tooltip buffInfor;
     [SerializeField] public Transform parentUIFight => buffInfor.transform.parent;
 
-    public SecureBool IsDelayEffectSkill;
+    public SecureBool IsDelayGame => char1.CheckDie() || char2.CheckDie();
+    public SecureBool isDelayEffectSkill;
 
     public Camera cameraEffectSkillDynamic;
     public Camera cameraEffectSkillLock50;
     public Camera cameraEffectSkillLock5;
     [SerializeField] private Button backCombat;
     [SerializeField] private Image bgCombat;
+    [SerializeField] private Text txtTurn;
+    public int TurnLinhKhiBaoLoan => 15;
+    public void SetUITextTurn()
+    {
+        // Giả sử turnMgr là bộ quản lý lượt, và turnMgr.CurrentChar là nhân vật đang đi
+        string textTurn = $"Hiệp thứ {currentTurn.CurrentTurn+1} ";
+
+        if (currentTurn == char1)
+        {
+            textTurn += "<color=#32CD32>(Của bạn)</color>\n";
+        }
+        else if (currentTurn == char2)
+        {
+            textTurn += "<color=#FF4500>(Đối thủ)</color>\n";
+        }
+
+        // Từ lượt 15 trở đi kích hoạt trạng thái bạo loạn
+        if (currentTurn.CurrentTurn >= 15)
+        {
+            textTurn += "<color=red><b>Linh Khí Bạo Loạn!</b></color>\n<size=80%>(Kết thúc hiệp tổn hao 10% Khí Huyết tối đa)</size>";
+        }
+
+        txtTurn.text = textTurn;
+    }    
 
     public Text GetTextDame()
     {
@@ -114,7 +140,12 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IWinCombatBase
             }    
         }
         return null;
-    }    
+    }
+    private List<int> allThanThongIds => char1.thanThongUseThisComBat
+               .SelectMany(innerList => innerList)     // San phẳng List<List<PlaySkillData>> thành List<PlaySkillData>
+               .Where(data => data?.thanThong != null)  // Lọc bỏ các dữ liệu null để tránh lỗi NullReferenceException
+               .Select(data => data.thanThong.Id)       // Chọn ra id (Giả sử id của ThanThong có kiểu dữ liệu là int/string)
+               .ToList();
     public void CheckDie()
     {
         CharacterCombat characterDie = null;
@@ -133,22 +164,18 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IWinCombatBase
         if(characterDie != null)
         {
             Observer.Notify(EventList.Combat.END_COMBAT, characterWin, characterDie);// thằng đầu là thằng win thằng sau là thằng die
-            if(characterWin == char1)
+            var gameManager = Pool.Get<GameManager>();
+            
+            if (characterWin == char1)
             {
-                var gameManager = Pool.Get<GameManager>();
-                List<int> allThanThongIds = char1.thanThongUseThisComBat
-                   .SelectMany(innerList => innerList)     // San phẳng List<List<PlaySkillData>> thành List<PlaySkillData>
-                   .Where(data => data?.thanThong != null)  // Lọc bỏ các dữ liệu null để tránh lỗi NullReferenceException
-                   .Select(data => data.thanThong.Id)       // Chọn ra id (Giả sử id của ThanThong có kiểu dữ liệu là int/string)
-                   .ToList();
-                Observer.Notify(EventList.Network.WIN_COMBAT_BASE, this,gameManager.currentETypeCombat, char1.characterStatsTemp.hp.Value, allThanThongIds, char2.characterStatsBase.level.Value);// thằng đầu là thằng win thằng sau là thằng die
+            
+                Observer.Notify(EventList.Network.RESULT_COMBAT, this,gameManager.currentETypeCombat, char1.characterStatsTemp.hp.Value, allThanThongIds, char2.characterStatsBase.level.Value , ETypeResultCombat.Win);// thằng 1 luoon la user thằng 2 là thằng enemy
 
 
             }
             else
             {
-                
-                Pool.Get<EventRewardPanel>().InitShowCombatReward(null,"Thất bại là mẹ thành công!");
+                Observer.Notify(EventList.Network.RESULT_COMBAT, this, gameManager.currentETypeCombat, char1.characterStatsTemp.hp.Value, allThanThongIds, char2.characterStatsBase.level.Value, ETypeResultCombat.LoseByDied);// thằng 1 luoon la user thằng 2 là thằng enemy
 
 
             }
@@ -212,7 +239,8 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IWinCombatBase
         {
             Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Xác nhận bỏ chạy khỏi trận chiến này?", () =>
             {
-                Pool.Get<GameManager>().BackAllMapFromCombat(ECombatResult.GiveUp);
+                Observer.Notify(EventList.Network.RESULT_COMBAT, this, Pool.Get<GameManager>().currentETypeCombat, char1.characterStatsTemp.hp.Value, allThanThongIds, char2.characterStatsBase.level.Value, ETypeResultCombat.LoseByRun);// thằng 1 luoon la user thằng 2 là thằng enemy
+
             });
         });
         bgCombat.sprite = Pool.Get<GameManager>().spriteBGCombat;
@@ -319,7 +347,7 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IWinCombatBase
     }
     public void PlaySkill(params object[] data)
     {
-        //if (IsDelayEffectSkill) return;
+        if (IsDelayGame) return;
         CharacterCombat caster = data[0] as CharacterCombat;
         CharacterCombat target = data[1] as CharacterCombat;
 
@@ -417,11 +445,11 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IWinCombatBase
             target.TakeDame(caster,!thanThong.GetEKeywordSkillHave().Contains(BaseSkill.EKeyWord.ChanThucTonThuong));
             if(thanThong.timeDelayTakeDame > 0)
             {
-                IsDelayEffectSkill = true;
+                isDelayEffectSkill = true;
                 parentUIFight.gameObject.SetActive(false);
                 DOVirtual.DelayedCall(thanThong.timeDelayTakeDame, () =>
                 {
-                    IsDelayEffectSkill = false;
+                    isDelayEffectSkill = false;
                     parentUIFight.gameObject.SetActive(true);
 
                 });
@@ -447,6 +475,8 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IWinCombatBase
     }
     public void EndTurn(params object[] data)
     {
+        if (IsDelayGame) return;
+
         if (data[2] is List<LinhKhiTieuTan> linhKhiTieuTan)
         {
 
@@ -464,13 +494,32 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IWinCombatBase
         // swap turn
         if (currentTurn == char1)
         {
+            // nếu user 
+            LinhKhiBaoLoan(currentTurn);
+
             currentTurn = char2;
         } 
         else
         {
+            var gameManager = Pool.Get<GameManager>();
+            // nếu enemy 
+            if (gameManager.currentETypeCombat == ETypeCombat.AllMaps || gameManager.currentETypeCombat == ETypeCombat.LuanBan || gameManager.currentETypeCombat == ETypeCombat.DauTruong)
+            {
+                LinhKhiBaoLoan(currentTurn);
+
+            }
             currentTurn = char1;
         }
+
     }
+    void LinhKhiBaoLoan(CharacterCombat character) // kết thúc lượt giảm 10% hp nếu turn hiện tại >= 15 tăng tốc độ game
+    {
+        if (character.CurrentTurn >= TurnLinhKhiBaoLoan)
+        {
+            character.TakeDameByStatic(null, new List<int> { (int)(10f * character.characterStatsTemp.hpMax) }, false,null,false);
+
+        }
+    }    
    
     public (bool isHave,ItemUI buffIcon) SetUIEffectStatic(CharacterCombat characterCombat , bool isCreate , Func<ScrollRect,(bool isHave, ItemUI buffIcon)> actionCheckHave,Sprite spriteIcon,string descIcon , int currentValue)
     {
@@ -705,6 +754,8 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IWinCombatBase
     [Button]
     public void NewTurn()
     {
+        if (IsDelayGame) return;
+        SetUITextTurn();
         currentTurn.listDameTaked.Add(0);
         targetTurn.listDameTaked.Add(0);
 
@@ -1266,9 +1317,24 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IWinCombatBase
         EventList.Combat.RemoveAllCombatObservers();
     }
 
-    public void SuccessWinCombatBase(RewardSnapshot rewardSnapshot)
+    public void SuccessWinCombatBase(RewardSnapshot rewardSnapshot , ETypeResultCombat resultCombaType)
     {
-        Pool.Get<EventRewardPanel>().InitShowCombatReward(rewardSnapshot, "Thắng làm vua thua làm giặc!");
+        if(resultCombaType == ETypeResultCombat.Win)
+        {
+            Pool.Get<EventRewardPanel>().InitShowCombatReward(rewardSnapshot, "Thắng làm vua thua làm giặc!", ETypeResultCombat.Win);
+
+        }
+        else if(resultCombaType == ETypeResultCombat.LoseByDied)
+        {
+            Pool.Get<EventRewardPanel>().InitShowCombatReward(new(), "Chiến đấu tới hơi thở cuối cùng!", ETypeResultCombat.LoseByDied);
+
+        }
+        else if(resultCombaType == ETypeResultCombat.LoseByRun)
+        {
+            Pool.Get<EventRewardPanel>().InitShowCombatReward(new(), "Ngươi thiêu đốt tinh huyết để bỏ chạy!", ETypeResultCombat.LoseByRun);
+
+        }
+
     }
 
     public void FailWinCombatBase(string message)

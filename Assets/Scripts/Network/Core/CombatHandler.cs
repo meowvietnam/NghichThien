@@ -1,4 +1,4 @@
-
+﻿
 using Base;
 using LongDH.LongDHModules;
 using Network.Extensions;
@@ -12,12 +12,12 @@ namespace Network.Core
     public class CombatHandler : IClientHandler
     {
 
-        private IWinCombatBase winCombatCallBack;
+        private IResultCombat resultCombatCallBack;
         private ILoadCharCombat loadCharCallBack;
 
         private static MessageTag[] handler =
         {
-                      MessageTag.WinCombatResult , MessageTag.LoadCharCombatResult
+                      MessageTag.ResultCombatResult , MessageTag.LoadCharCombatResult
         };
 
         public MessageTag[] HandleTag => handler;
@@ -25,21 +25,23 @@ namespace Network.Core
         {
             var tag = message.Tag;
             var reader = message.Reader;
-            if (tag == MessageTag.WinCombatResult)
+            if (tag == MessageTag.ResultCombatResult)
             {
-                var result = reader.Read<WinCombatResult>();
+                var result = reader.Read<ResultCombatResult>();
                 if (result.Success)
                 {
                     var charData = Client.Instance.CharacterData;
                     charData.MoneyVip += result.Reward.MoneyVip;
                     charData.Stats.LinhThach += result.Reward.Money;
                     charData.Progression.NgoDaoDiem = result.NewNgoDaoDiem;
-                    var listItemRef = result.Reward.ItemRefs;
-                    foreach (var item in listItemRef)
+                    if (result.Reward?.ItemRefs != null) // Check nhanh cả Reward và ItemRefs
                     {
-                        charData.InventoryManager.Add(item);
-
+                        foreach (var item in result.Reward.ItemRefs)
+                        {
+                            charData.InventoryManager.Add(item);
+                        }
                     }
+
                     charData.Stats.Hp = result.NewHP;
                     foreach (var item in result.NewCamNgo)
                     {
@@ -51,11 +53,11 @@ namespace Network.Core
                 {
                     if (result.Success)
                     {
-                        winCombatCallBack.SuccessWinCombatBase(result.Reward);
+                        resultCombatCallBack.SuccessWinCombatBase(result.Reward , result.TypeResultCombat);
                     }
                     else
                     {
-                        winCombatCallBack.FailWinCombatBase(result.Message);
+                        resultCombatCallBack.FailWinCombatBase(result.Message);
                     }
 
                 });
@@ -86,25 +88,27 @@ namespace Network.Core
 
         public void OnEnter()
         {
-            Observer.AddObserver(EventList.Network.WIN_COMBAT_BASE, WinCombat);
+            Observer.AddObserver(EventList.Network.RESULT_COMBAT, ResultCombat);
             Observer.AddObserver(EventList.Network.LOAD_CHAR_COMBAT, LoadCharCombat);
 
         }
-        private void WinCombat(object[] data)
+        private void ResultCombat(object[] data)
         {
-            winCombatCallBack = data[0] as INetworkEvent.IWinCombatBase;
+            resultCombatCallBack = data[0] as INetworkEvent.IResultCombat;
             var ETypeCombat = (ETypeCombat)data[1];
             var CurrentHpUser = (int)data[2];
             var ListThanThongUse = (List<int>)data[3];
             var LevelEnemy = (int)data[4];
-            var winCombat = new WinCombat()
+            var TypeResultCombat = (ETypeResultCombat)data[5];
+            var ResultCombat = new ResultCombat()
             {
                 TypeCombat = ETypeCombat,
                 CurrentHPUser = CurrentHpUser,
                 ListIdThanThong = ListThanThongUse,
-                CurrentLevelEnemy = LevelEnemy
+                CurrentLevelEnemy = LevelEnemy,
+                TypeResultCombat = TypeResultCombat
             };
-            Client.Instance.Send(MessageTag.WinCombat, winCombat);
+            Client.Instance.Send(MessageTag.ResultCombat, ResultCombat);
         }
         private void LoadCharCombat(object[] data)
         {

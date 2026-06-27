@@ -2,5 +2,5 @@ using UnityEngine;
 
 public class RankPanel : PanelGroup
 {
-    [SerializeField] private Popup mainPopup;
+    [SerializeField] public Popup mainPopup;
 }

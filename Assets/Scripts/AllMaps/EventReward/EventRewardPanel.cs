@@ -27,15 +27,15 @@ public class EventRewardPanel : Popup , IUISingleton
         imgBGTilte.sprite = spriteEvent;
         this.InitActionClose(null);
     }
-    public void InitShowCombatReward(RewardSnapshot rewardData, string contentText)
+    public void InitShowCombatReward(RewardSnapshot rewardData, string contentText,ETypeResultCombat resultCombat)
     {
         InitShow(rewardData, contentText);
-        if(rewardData != null)
+        if(resultCombat == ETypeResultCombat.Win)
         {
             imgBGTilte.sprite = spriteWin;
             this.InitActionClose(() =>
             {
-                Pool.Get<GameManager>().BackAllMapFromCombat(ECombatResult.Win);
+                Pool.Get<GameManager>().BackAllMapFromCombat(resultCombat);
             });
         }
         else
@@ -43,7 +43,7 @@ public class EventRewardPanel : Popup , IUISingleton
             imgBGTilte.sprite = spriteLose;
             this.InitActionClose(() =>
             {
-                Pool.Get<GameManager>().BackAllMapFromCombat(ECombatResult.Lose);
+                Pool.Get<GameManager>().BackAllMapFromCombat(resultCombat);
             });
 
         }
@@ -111,12 +111,16 @@ public class EventRewardPanel : Popup , IUISingleton
             SetVisualRewardMoneyVip();
 
         }
-        foreach (var item in this.rewardDataCurrent.ItemRefs)
+       
+        if (this.rewardDataCurrent?.ItemRefs != null) // Check nhanh cả Reward và ItemRefs
         {
-            SetVisualRewardItem(item);
+            foreach (var item in this.rewardDataCurrent.ItemRefs)
+            {
+                SetVisualRewardItem(item);
 
+            }
+            
         }
-
 
     }
 

@@ -50,10 +50,10 @@ public class QuestManager : BaseBehaviour , IUISingleton
         QuestCombatTrigger(gameManager.enemyCombat, gameManager.currentETypeCombat, gameManager.currentECombatResult);
     }    
     
-    public void QuestCombatTrigger(GameManager.CharCombatInit charCombat, ETypeCombat typeCombat, ECombatResult result)
+    public void QuestCombatTrigger(GameManager.CharCombatInit charCombat, ETypeCombat typeCombat, ETypeResultCombat result)
     {
         Debug.Log(" vào QuestCombatTrigger");
-        if (typeCombat == ETypeCombat.AllMaps && result == ECombatResult.Win)
+        if (typeCombat == ETypeCombat.AllMaps && result == ETypeResultCombat.Win)
         {
             if (enemyCombats.Any(x => x.charStats.idChar == charCombat.charStats.idChar))
             {

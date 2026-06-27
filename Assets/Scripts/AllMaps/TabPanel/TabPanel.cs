@@ -179,7 +179,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
     [SerializeField] private Sprite[] listSpriteIconDanDoc;
     [SerializeField] private Color[] listColorDanDoc;
-    [SerializeField] public Tooltip toolTipBtnStats => Tooltip.Instance;
+    [SerializeField] public Tooltip toolTipBtnStats => Pool.Get<UIManager>().transform.GetComponentInChildren<Tooltip>();
     private CharacterData CharData => Client.Instance.CharacterData;
     private void UpdatePlayerStats()
     {

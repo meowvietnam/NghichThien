@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using CreateCharacter;
 using DG.Tweening;
 using IAP;
@@ -32,7 +33,7 @@ namespace Network.Core
         // public const string PRODUCT_13550_TIEN_NGOC = "13550_tien_ngoc"; // Thần Tài (1.000.000 VND)
 
         public const string PRODUCT_START_PACK = "start_pack";
-        [SerializeField] private Popup popupMain;
+        [SerializeField] public Popup popupMain;
         [SerializeField] private StartPackUI startPackUIPrefab;
         [SerializeField] private MoneyVipPackUI moneyVipUIPrefab;
         [SerializeField] private Sprite[] moneyVipSprites;
@@ -95,6 +96,26 @@ namespace Network.Core
                     };
                     ownerIapProduct.Product.Reward.InitUI(uiContext);
                 }
+                popupMain.Show();
+                var fitter = this.transform.GetComponentsInChildren<ContentSizeFitter>();
+                if (fitter != null)
+                {
+                    foreach (var item in fitter)
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            Canvas.ForceUpdateCanvases();
+                            LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
+                            item.enabled = false;
+                            item.enabled = true;
+                        }
+                    }
+                }
+                DOVirtual.DelayedCall(0,() =>
+                {
+                    popupMain.Hide();
+                });
+
             });
         }
 

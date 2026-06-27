@@ -48,7 +48,7 @@ public class INetworkEvent
     }
     public interface ITuLuyen // Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessTuLuyen(int valueAdd);
+        void SuccessTuLuyen(int valueAdd,int valueAddHp);
         void FailTuLuyen(string message);
     }
     public interface ILinhNgo // Check đủ ngộ đạo điểm mới learn được
@@ -109,7 +109,7 @@ public class INetworkEvent
    
     public interface ICompleteSideQuest// Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessCompleteSideQuest(int moneyVip);
+        void SuccessCompleteSideQuest(int moneyVip,int linhThach);
         void FailCompleteSideQuest(string message);
     }
     public interface IJoinMonPhai// Check đủ ngộ đạo điểm mới learn được
@@ -122,9 +122,9 @@ public class INetworkEvent
         void SuccessCompleteMainQuest();
         void FailMainQuest(string message);
     }
-    public interface IWinCombatBase// Check đủ ngộ đạo điểm mới learn được
+    public interface IResultCombat// Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessWinCombatBase(RewardSnapshot rewardSnapshot);
+        void SuccessWinCombatBase(RewardSnapshot rewardSnapshot, ETypeResultCombat resultCombaType);
         void FailWinCombatBase(string message);
     }
     public interface ILoadCharCombat// Check đủ ngộ đạo điểm mới learn được

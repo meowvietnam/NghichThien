@@ -54,6 +54,7 @@ namespace Network.Core
                 {
                     var charData = Client.Instance.CharacterData;
                     charData.MoneyVip += result.MoneyVipRandom;
+                    charData.Stats.LinhThach += result.LinhThachRandom;
                     charData.QuestManager.CurrentCountSideQuest = result.CurrentSideQuest;
                 }
                 NetworkManager.Instance.Invoke(() =>
@@ -61,7 +62,7 @@ namespace Network.Core
 
                     if (result.Success)
                     {
-                        completeSideQuestCallBack.SuccessCompleteSideQuest(result.MoneyVipRandom);
+                        completeSideQuestCallBack.SuccessCompleteSideQuest(result.MoneyVipRandom,result.LinhThachRandom);
                     }
                     else
                     {
