@@ -17,6 +17,8 @@ public class EventRewardPanel : Popup , IUISingleton
     [SerializeField] private Sprite spriteLose;
     [SerializeField] private Image imgBGTilte;
     [SerializeField] private GameObject itemRewardPrefab;
+    private ItemInventory itemInventoryPrefab => itemRewardPrefab.transform.GetChild(0).GetComponent<ItemInventory>();
+
     [SerializeField] private Sprite spriteMoney;
     [SerializeField] private Sprite spriteMoneyVip;
     [SerializeField] private RewardSnapshot rewardDataCurrent;
@@ -64,26 +66,28 @@ public class EventRewardPanel : Popup , IUISingleton
     {
         var itemReward = GetComponentItemReward();
 
-        itemReward.itemInventory.InitIcon(spriteMoney,null);
+        itemReward.itemInventory.InitIcon(spriteMoney,itemInventoryPrefab.frame.sprite);
+        itemReward.itemInventory.SetQualityFull(itemInventoryPrefab.qualityFull.sprite);
         itemReward.itemInventory.textName.text = "Linh Thạch";
-        itemReward.textCount.text = rewardDataCurrent.Money.ToString();
+        itemReward.textCount.text = $"x{rewardDataCurrent.Money}";
 
     }
     private void SetVisualRewardMoneyVip()
     {
         var itemReward = GetComponentItemReward();
 
-        itemReward.itemInventory.InitIcon(spriteMoneyVip, null);
+        itemReward.itemInventory.InitIcon(spriteMoneyVip, itemInventoryPrefab.frame.sprite);
+        itemReward.itemInventory.SetQualityFull(itemInventoryPrefab.qualityFull.sprite);
         itemReward.itemInventory.textName.text = "Tiên Ngọc";
-        itemReward.textCount.text = rewardDataCurrent.MoneyVip.ToString();
+        itemReward.textCount.text = $"x{rewardDataCurrent.MoneyVip}";
 
     }
-   
+
     private void SetVisualRewardItem( ItemRef itemRef)
     {
         var itemReward = GetComponentItemReward();
         ItemTypeHandlerBagFactory.Create(itemRef.Type).Handle(itemReward.itemInventory, itemRef,false);
-        itemReward.textCount.text = itemRef.Count.ToString();    
+        itemReward.textCount.text = $"x{itemRef.Count.ToString()}";    
     }
     (ItemInventory itemInventory , Text textCount) GetComponentItemReward()
     {

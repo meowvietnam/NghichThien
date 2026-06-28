@@ -264,6 +264,9 @@ public class UIManager : BaseBehaviour
 
     public void RegisterClosePopup()
     {
-        commonMask.gameObject.SetActive(false);
+        if(currentPopup == null || (currentPopup != null && !currentPopup.gameObject.activeSelf))
+        {
+            commonMask.gameObject.SetActive(false);
+        }    
     }
 }

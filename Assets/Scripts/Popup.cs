@@ -13,6 +13,7 @@ public class Popup : BaseBehaviour
     [SerializeField] protected float scaleBase =1f;
     [SerializeField]
     protected Action actionClose;
+    public bool isIgnoreOtherPopup = false;
     public virtual void Show(float delay = 0.5f,Action actionComplete = null)
     {
        
@@ -29,7 +30,19 @@ public class Popup : BaseBehaviour
         });
         if(commonMask == null)
         {
-            Pool.Get<UIManager>().RegisterOpenPopup(this);
+            var uiManager = Pool.Get<UIManager>();
+            if (!isIgnoreOtherPopup)
+            {
+
+                uiManager.RegisterOpenPopup(this);
+
+            }
+            else
+            {
+                uiManager.commonMask.gameObject.SetActive(true);
+            }    
+
+
         }    
         else
         {
@@ -54,6 +67,7 @@ public class Popup : BaseBehaviour
         if (commonMask == null)
         {
             Pool.Get<UIManager>().RegisterClosePopup();
+
         }
         else
         {
