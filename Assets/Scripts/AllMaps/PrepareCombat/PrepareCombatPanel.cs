@@ -15,6 +15,7 @@ public class PrepareCombatPanel : Popup , IUISingleton
     [SerializeField] private PopupInfor popupInfor;
     [SerializeField] private Button btnAttack;
     [SerializeField] private Button btnPrepare;
+    [SerializeField] private Button btnNotPrepare;
     [SerializeField] private Button btnXemXet;
     [SerializeField] private Text txtNameUser;
     [SerializeField] private Text txtTarget;
@@ -47,6 +48,11 @@ public class PrepareCombatPanel : Popup , IUISingleton
         });
 
     }
+    public void CanActiveButtonPrepare(bool isActive)
+    {
+        btnPrepare.gameObject.SetActive(isActive);
+        btnNotPrepare.gameObject.SetActive(!isActive);
+    }    
     public override void Show(float delay = 0.5F, Action actionComplete = null)
     {
         base.Show(delay, actionComplete);

@@ -14,10 +14,11 @@ namespace Network.Core
 
         private IResultCombat resultCombatCallBack;
         private ILoadCharCombat loadCharCallBack;
+        private ILoadCharCombatArena loadCharArenaCallBack;
 
         private static MessageTag[] handler =
         {
-                      MessageTag.ResultCombatResult , MessageTag.LoadCharCombatResult
+                      MessageTag.ResultCombatResult , MessageTag.LoadCharCombatResult , MessageTag.LoadCharCombatArenaResult ,
         };
 
         public MessageTag[] HandleTag => handler;
@@ -79,7 +80,22 @@ namespace Network.Core
                     }
                 });
             }
-         
+            else if (tag == MessageTag.LoadCharCombatArenaResult)
+            {
+                var result = reader.Read<LoadCharCombatResult>();
+
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    if (result.Success)
+                    {
+                        loadCharArenaCallBack.SuccessLoadCharCombatArena(result.Client,result.Enemy);
+                    }
+                    else
+                    {
+                        loadCharArenaCallBack.FailLoadCharCombatArena(result.Message);
+                    }
+                });
+            }
         }
 
         public void OnDisconnect(IProtocol<MessageTag> protocol)
@@ -90,6 +106,7 @@ namespace Network.Core
         {
             Observer.AddObserver(EventList.Network.RESULT_COMBAT, ResultCombat);
             Observer.AddObserver(EventList.Network.LOAD_CHAR_COMBAT, LoadCharCombat);
+            Observer.AddObserver(EventList.Network.LOAD_CHAR_COMBAT_ARENA, LoadCharCombatArena);
 
         }
         private void ResultCombat(object[] data)
@@ -114,6 +131,11 @@ namespace Network.Core
         {
             loadCharCallBack = data[0] as INetworkEvent.ILoadCharCombat;
             Client.Instance.Send(MessageTag.LoadCharCombat);
+        }
+        private void LoadCharCombatArena(object[] data)
+        {
+            loadCharArenaCallBack = data[0] as INetworkEvent.ILoadCharCombatArena;
+            Client.Instance.Send(MessageTag.LoadCharCombatArena);
         }
         public void OnLeave()
         {

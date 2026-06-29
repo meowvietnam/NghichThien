@@ -217,7 +217,16 @@ public class CharacterStatsSecureBuilder
     {
         return _stats;
     }
-
+    public static CharacterStatsSecure ArenaFromCharacterSnapshot(CharacterSnapshot character)
+    {
+        var stats = FromCharacterSnapshot(character);
+        if (stats != null)
+        {
+            // Vì Arena luôn lấy Hp = HpMax (SinhMenh)
+            stats.hp = stats.hpMax;
+        }
+        return stats;
+    }
     public static CharacterStatsSecure FromCharacterSnapshot(CharacterSnapshot character)
     {
         if (character == null) return null;

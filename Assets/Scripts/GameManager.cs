@@ -1,29 +1,30 @@
-﻿using Base;
+﻿using AllMaps;
+using Base;
 using CreateCharacter;
-using LongDH.LongDHModules;
-using LuyenDan;
-using Sirenix.OdinInspector;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using CreateCharacter.CharStats;
+using DG.Tweening.Core.Easing;
+using LongDH.LongDHModules;
+using LongDHModules;
+using LuyenDan;
 using LuyenDan.Inventory;
-using Network;
-using System.Collections;
-using System.IO;
-using Sirenix.Utilities;
 using LuyenKhi;
-using AllMaps;
+using Network;
+using Network.Extensions;
 using Network.Models;
 using Newtonsoft.Json.Linq;
+using Sirenix.OdinInspector;
+using Sirenix.Utilities;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
-using DG.Tweening.Core.Easing;
-using LongDHModules;
-using Network.Extensions;
-using UnityEditor;
 
 
 #if UNITY_EDITOR
@@ -335,7 +336,8 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         {
             return;
         }
-
+        Pool.Get<UIManager>().panelGroup.SetActive(true);
+        Pool.Get<UIManager>().ListIcon.gameObject.SetActive(true);
         string backScene = listSceneLoaded[index - 1];
         listSceneLoaded.Remove(currentScene);
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
@@ -418,7 +420,18 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     public void SetBGCombat(Sprite  sprite)
     {
         this.spriteBGCombat = sprite;
-    }    
+    }
+    public void GoToCombatArena()
+    {
+        if (enemyCombat == null) return;
+        Pool.Get<UIManager>().panelGroup.SetActive(false);
+        Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
+        Pool.Get<UIManager>().ListIcon.gameObject.SetActive(false);
+        Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
+        SceneManager.LoadScene("Combat");
+
+
+    }
     public void GoToCombat()
     {
         if (enemyCombat == null) return;
@@ -430,6 +443,34 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         Observer.Notify(EventList.Network.LOAD_CHAR_COMBAT, this);
 
 
+    }
+    public void GoToPrepareCombatArena(CharacterSnapshot user,CharacterSnapshot enemy)
+    {
+        this.user = new CharCombatInit
+        {
+            eTypeVisual = ETypeVisualChar.Character,
+            charStats = CharacterStatsSecureBuilder.ArenaFromCharacterSnapshot(user),
+        };
+        enemy = null;
+        if(enemy != null)
+        {
+            this.enemyCombat = new CharCombatInit
+            {
+                eTypeVisual = ETypeVisualChar.Character,
+                charStats = CharacterStatsSecureBuilder.ArenaFromCharacterSnapshot(enemy),
+            };
+        }
+        else
+        {
+            this.enemyCombat = new CharCombatInit
+            {
+                eTypeVisual = ETypeVisualChar.Character,
+                charStats = Pool.Get<NPCManager>().npcDatas.FirstOrDefault(x=>x.charStats.level.Value == user.Level).charStats,
+            };
+        }
+        if (enemyCombat == null) return;
+        currentETypeCombat = ETypeCombat.DauTruong;
+        currentECombatResult = ETypeResultCombat.None;
     }
     public void GoToPrepareCombat(CharCombatInit enemyCombat, ETypeCombat eTypeCombat)
     {
@@ -445,7 +486,8 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         Pool.Get<UIManager>().panelGroup.SetActive(true);
         Pool.Get<UIManager>().ListIcon.gameObject.SetActive(true);
         currentECombatResult = eCombatResult;
-        SceneManager.LoadScene(listSceneLoaded[0]);
+        string backScene = listSceneLoaded[listSceneLoaded.Count-1];
+        SceneManager.LoadScene(backScene);
 
     }
   

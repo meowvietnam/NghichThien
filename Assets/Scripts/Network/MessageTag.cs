@@ -111,6 +111,8 @@ namespace Network
 
         LoadCharCombat = 415,
         LoadCharCombatResult = 416,
+        LoadCharCombatArena = 417,
+        LoadCharCombatArenaResult = 418,
 
         WatchAdsForEnergy = 420,
         WatchAdsForEnergyResult = 421,
