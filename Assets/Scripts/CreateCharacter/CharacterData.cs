@@ -38,6 +38,12 @@ namespace CreateCharacter
         public bool CanFly { get; set; }
 
         [field: ShowInInspector, TabGroup("Basic")]
+        public int CurrentArenaCount { get; set; }
+
+        [field: ShowInInspector, TabGroup("Basic")]
+        public int CurrentFreeAdsMoneyVipCount { get; set; }
+
+        [field: ShowInInspector, TabGroup("Basic")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [field: ShowInInspector, TabGroup("Progression")]
@@ -77,13 +83,16 @@ namespace CreateCharacter
             IsInfiniteEnergy = clone.IsInfiniteEnergy;
             IsNoAds = clone.IsNoAds;
             CanFly = clone.CanFly;
+            CurrentArenaCount = clone.CurrentArenaCount;
+            CurrentFreeAdsMoneyVipCount = clone.CurrentFreeAdsMoneyVipCount;
             CreatedAt = clone.CreatedAt;
         }
 
         public int ByteSize()
         {
             return Id.ByteSize()
-                   + Gender.ByteSize() + Name.ByteSize()
+                   + Gender.ByteSize()
+                   + Name.ByteSize()
                    + Stats.ByteSize()
                    + Progression.ByteSize()
                    + Appearance.ByteSize()
@@ -93,6 +102,8 @@ namespace CreateCharacter
                    + IsInfiniteEnergy.ByteSize()
                    + IsNoAds.ByteSize()
                    + CanFly.ByteSize()
+                   + CurrentArenaCount.ByteSize()
+                   + CurrentFreeAdsMoneyVipCount.ByteSize()
                    + InventoryManager.ByteSize()
                    + CreatedAt.ByteSize()
                    + Social.ByteSize()
@@ -113,6 +124,8 @@ namespace CreateCharacter
             writer.Write(IsInfiniteEnergy);
             writer.Write(IsNoAds);
             writer.Write(CanFly);
+            writer.Write(CurrentArenaCount);
+            writer.Write(CurrentFreeAdsMoneyVipCount);
             writer.Write(InventoryManager);
             writer.Write(CreatedAt);
             writer.Write(Social);
@@ -133,6 +146,8 @@ namespace CreateCharacter
             value.IsInfiniteEnergy = reader.Read<bool>();
             value.IsNoAds = reader.Read<bool>();
             value.CanFly = reader.Read<bool>();
+            value.CurrentArenaCount = reader.Read<int>();
+            value.CurrentFreeAdsMoneyVipCount = reader.Read<int>();
             value.InventoryManager = reader.Read<InventoryManager>();
             value.CreatedAt = reader.Read<DateTime>();
             value.Social = reader.Read<Social>();
