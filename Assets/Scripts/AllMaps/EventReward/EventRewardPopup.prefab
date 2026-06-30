@@ -602,6 +602,7 @@ MonoBehaviour:
   commonMask: {fileID: 0}
   btnClose: {fileID: 8672506013266729338}
   scaleBase: 1
+  isIgnoreOtherPopup: 0
 --- !u!1 &1751674040649452
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,6 +731,7 @@ MonoBehaviour:
   commonMask: {fileID: 0}
   btnClose: {fileID: 8672506013266729338}
   scaleBase: 1
+  isIgnoreOtherPopup: 0
   txtDesc: {fileID: 114765777129574543}
   spriteEvent: {fileID: 21300000, guid: 908a351e7ef176347b4c2d8c3d788ef0, type: 2}
   spriteWin: {fileID: 21300000, guid: a167eced24e1abe4f986693169ac2432, type: 2}
@@ -991,7 +993,6 @@ GameObject:
   - component: {fileID: 3640536466704333340}
   - component: {fileID: 3642623482824278071}
   - component: {fileID: 3462304208927671364}
-  - component: {fileID: 5100896619600853937}
   m_Layer: 5
   m_Name: ItemRewardPrefab
   m_TagString: Untagged
@@ -1058,38 +1059,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5100896619600853937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3575351019538698150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 630d12c37ef87454086bd1d454694a46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemInventory
-  timeHolder: 1
-  isHolder: 0
-  icon: {fileID: 0}
-  frame: {fileID: 0}
-  progressHold: {fileID: 0}
-  itemData: {fileID: 0}
-  selectHighLight: {fileID: 0}
-  hasItem: {fileID: 0}
-  qualityFull: {fileID: 0}
-  textCount: {fileID: 0}
-  textName: {fileID: 0}
-  leftUpMask: {fileID: 0}
-  btnShowInfor: {fileID: 0}
-  itemRef:
-    <Id>k__BackingField: 0
-    <Type>k__BackingField: 0
-    <Count>k__BackingField: 0
-    <TempId>k__BackingField: 0
-  count: 0
-  countRequire: 0
 --- !u!1 &6440133593182657341
 GameObject:
   m_ObjectHideFlags: 0

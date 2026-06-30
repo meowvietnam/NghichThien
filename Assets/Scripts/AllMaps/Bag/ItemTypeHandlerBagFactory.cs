@@ -76,6 +76,10 @@ public class LuyenDanBagItemTypeHandler : IBagItemTypeHandler
     public void Handle(ItemInventory currentItem, ItemRef itemRef, bool isIconSkillBase)
     {
         var uiManager = Pool.Get<UIManager>();
+        if(itemRef.Type == ItemType.Furnace && itemRef.TempId == 0)
+        {
+            itemRef = new ItemRef { TempId = itemRef.Id, Count = itemRef.Count , Type = ItemType.Furnace };
+        }    
         var data = LuyenDanResources.Instance.FindItem(itemRef);
         uiManager.InitVisualItemInventory(currentItem, data, itemRef, isIconSkillBase);
     }
