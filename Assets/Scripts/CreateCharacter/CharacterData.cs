@@ -3,6 +3,7 @@ using System;
 using CreateCharacter.CharStats;
 using Network;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
 using Network.Models;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -36,10 +37,6 @@ namespace CreateCharacter
 
         [field: ShowInInspector, TabGroup("Basic")]
         public bool CanFly { get; set; }
-
-        [field: ShowInInspector, TabGroup("Basic")]
-        public int CurrentArenaCount { get; set; }
-
         [field: ShowInInspector, TabGroup("Basic")]
         public int CurrentFreeAdsMoneyVipCount { get; set; }
 
@@ -67,6 +64,9 @@ namespace CreateCharacter
         [field: SerializeField, TabGroup("Quest")]
         public QuestManager QuestManager { get; set; } = new();
 
+        [field: SerializeField, TabGroup("Arena")]
+        public ArenaManager ArenaManager { get; set; } = new();
+
         public event Action<InventoryManager> OnInventoryUpdated;
 
         public CharacterData()
@@ -83,7 +83,6 @@ namespace CreateCharacter
             IsInfiniteEnergy = clone.IsInfiniteEnergy;
             IsNoAds = clone.IsNoAds;
             CanFly = clone.CanFly;
-            CurrentArenaCount = clone.CurrentArenaCount;
             CurrentFreeAdsMoneyVipCount = clone.CurrentFreeAdsMoneyVipCount;
             CreatedAt = clone.CreatedAt;
         }
@@ -102,12 +101,12 @@ namespace CreateCharacter
                    + IsInfiniteEnergy.ByteSize()
                    + IsNoAds.ByteSize()
                    + CanFly.ByteSize()
-                   + CurrentArenaCount.ByteSize()
-                   + CurrentFreeAdsMoneyVipCount.ByteSize()
+                    + CurrentFreeAdsMoneyVipCount.ByteSize()
                    + InventoryManager.ByteSize()
                    + CreatedAt.ByteSize()
                    + Social.ByteSize()
-                   + QuestManager.ByteSize();
+                   + QuestManager.ByteSize()
+                   + ArenaManager.ByteSize();
         }
 
         public void Serialize(IWriter writer)
@@ -124,12 +123,12 @@ namespace CreateCharacter
             writer.Write(IsInfiniteEnergy);
             writer.Write(IsNoAds);
             writer.Write(CanFly);
-            writer.Write(CurrentArenaCount);
             writer.Write(CurrentFreeAdsMoneyVipCount);
             writer.Write(InventoryManager);
             writer.Write(CreatedAt);
             writer.Write(Social);
             writer.Write(QuestManager);
+            writer.Write(ArenaManager);
         }
 
         public void Deserialize(IReader reader, ref CharacterData value)
@@ -146,12 +145,12 @@ namespace CreateCharacter
             value.IsInfiniteEnergy = reader.Read<bool>();
             value.IsNoAds = reader.Read<bool>();
             value.CanFly = reader.Read<bool>();
-            value.CurrentArenaCount = reader.Read<int>();
             value.CurrentFreeAdsMoneyVipCount = reader.Read<int>();
             value.InventoryManager = reader.Read<InventoryManager>();
             value.CreatedAt = reader.Read<DateTime>();
             value.Social = reader.Read<Social>();
             value.QuestManager = reader.Read<QuestManager>();
+            value.ArenaManager = reader.Read<ArenaManager>();
         }
 
         public void SetInventory(InventoryManager inventory)
