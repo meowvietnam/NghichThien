@@ -6,6 +6,7 @@ using CreateCharacter;
 using DG.Tweening;
 using IAP;
 using LongDHModules;
+using LuyenDan;
 using Network;
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
@@ -23,30 +24,16 @@ namespace Network.Core
 
         private IExtensionProvider m_StoreExtensionProvider;
 
-        // Khai báo các ID sản phẩm
-        // CÁC GÓI TIÊN NGỌC ĐỒNG BỘ TỪ UI THỰC TẾ
-        // public const string PRODUCT_100_TIEN_NGOC = "100_tien_ngoc"; // Sơ Cấp (10.000 VND)
-        // public const string PRODUCT_550_TIEN_NGOC = "550_tien_ngoc"; // Tích Lũy (50.000 VND)
-        // public const string PRODUCT_1150_TIEN_NGOC = "1150_tien_ngoc"; // Phú Hộ (100.000 VND)
-        // public const string PRODUCT_2550_TIEN_NGOC = "2550_tien_ngoc"; // Hào Phú (200.000 VND)
-        // public const string PRODUCT_6550_TIEN_NGOC = "6550_tien_ngoc"; // Đại Gia (500.000 VND)
-        // public const string PRODUCT_13550_TIEN_NGOC = "13550_tien_ngoc"; // Thần Tài (1.000.000 VND)
-
-        public const string PRODUCT_START_PACK = "start_pack";
         [SerializeField] public Popup popupMain;
         [SerializeField] private StartPackUI startPackUIPrefab;
         [SerializeField] private MoneyVipPackUI moneyVipUIPrefab;
         [SerializeField] private Sprite[] moneyVipSprites;
         [SerializeField] private RectTransform iapProductContainer;
         [SerializeField] private RectTransform mainIapProductContainer;
-        // [SerializeField] private Button btnStartPack;
-        // [SerializeField] private Button btn100TienNgoc;
-        // [SerializeField] private Button btn550TienNgoc;
-        // [SerializeField] private Button btn1150TienNgoc;
-        // [SerializeField] private Button btn2550TienNgoc;
-        // [SerializeField] private Button btn6550TienNgoc;
-        // [SerializeField] private Button btn13550TienNgoc;
+        [SerializeField] private Button showExchangePopup;
+        [SerializeField] private SelectNum selectNum;
         private List<OwnerIapProduct> ownerIapProducts;
+
         private static MessageTag[] handler =
         {
             MessageTag.PurchaseIapResult
@@ -60,9 +47,44 @@ namespace Network.Core
             var coreModule = Client.Instance.CoreModule;
             coreModule.RemoveHandler<IapHandler>();
             coreModule.AddHandler(this);
+            InitExchangeMoneyVip();
             InitIAP();
         }
 
+        private void InitExchangeMoneyVip()
+        {
+            SetEventButton(showExchangePopup, ShowExchangePopup);
+            selectNum.ValueChanged += (value) =>
+            {
+                selectNum.SetText(GetExchangeText(value));
+            };
+            selectNum.confirmAction.AddListener(OnConfirmExchange);
+        }
+
+        private void OnConfirmExchange()
+        {
+            var amount = selectNum.GetValue();
+            selectNum.Hide(0.5f);
+            ExchangeMoneyVip(amount);
+        }
+
+        private string GetExchangeText(int value)
+        {
+            return $"Quy đổi {value} Tiên ngọc - {value * 100} Linh thạch";
+        }
+
+        private void ShowExchangePopup()
+        {
+            var charData = Client.Instance.CharacterData;
+            var min = Math.Min(1, charData.MoneyVip);
+            var max = charData.MoneyVip;
+            selectNum.SetMin(min);
+            selectNum.SetMax(max);
+            selectNum.SetValue(min);
+            selectNum.SetText(GetExchangeText(min));
+            selectNum.Show(0.5f);
+        }
+        
         private void OnEnable()
         {
             StartCoroutine(RefreshUI());
@@ -82,20 +104,22 @@ namespace Network.Core
                     var productType = (ProductType)ownerIapProduct.Product.ProductType;
                     builder.AddProduct(productId, productType);
                 }
+
                 UnityPurchasing.Initialize(this, builder);
                 foreach (var ownerIapProduct in ownerIapProducts)
                 {
                     var uiContext = new IapUIContext()
                     {
                         IapHandler = this,
-                        StartPackUIPrefab =  startPackUIPrefab,
-                        MoneyVipPackUIPrefab =  moneyVipUIPrefab,
+                        StartPackUIPrefab = startPackUIPrefab,
+                        MoneyVipPackUIPrefab = moneyVipUIPrefab,
                         MoneyVipSprites = moneyVipSprites,
                         OwnerIapProduct = ownerIapProduct,
                         IapProductContainer = iapProductContainer
                     };
                     ownerIapProduct.Product.Reward.InitUI(uiContext);
                 }
+
                 popupMain.Show();
                 var fitter = this.transform.GetComponentsInChildren<ContentSizeFitter>();
                 if (fitter != null)
@@ -111,11 +135,28 @@ namespace Network.Core
                         }
                     }
                 }
-                DOVirtual.DelayedCall(0,() =>
-                {
-                    popupMain.Hide();
-                });
 
+                DOVirtual.DelayedCall(0, () => { popupMain.Hide(); });
+            });
+        }
+
+        public async void ExchangeMoneyVip(int amount)
+        {
+            var reader = await Client.Instance.RequestWait(MessageTag.ExchangeMoneyVipRequest);
+            var result = reader.MemRead<ExchangeMoneyVipResult>();
+            if (result.Success)
+            {
+                var charData = Client.Instance.CharacterData;
+                charData.MoneyVip = result.MoneyVip;
+                charData.Stats.LinhThach = result.LinhThach;
+            }
+
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (!result.Success)
+                {
+                    Debug.Log(result.Message);
+                }
             });
         }
 
@@ -125,6 +166,7 @@ namespace Network.Core
             Canvas.ForceUpdateCanvases();
             LayoutRebuilder.ForceRebuildLayoutImmediate(mainIapProductContainer);
         }
+
         public void BuyProduct(string productId)
         {
             if (m_StoreController != null)
@@ -135,7 +177,7 @@ namespace Network.Core
                     m_StoreController.InitiatePurchase(product);
                 }
             }
-        } 
+        }
 
         public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
         {
@@ -146,7 +188,7 @@ namespace Network.Core
 
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
         {
-            string receipt = args.purchasedProduct.receipt; 
+            string receipt = args.purchasedProduct.receipt;
             Debug.Log(receipt);
             var purchaseToken = ExtractGooglePurchaseToken(receipt);
             string productId = args.purchasedProduct.definition.id;
@@ -208,6 +250,7 @@ namespace Network.Core
                     result.Reward.Execute(Client.Instance.CharacterData);
                     OnServerResponseIapSuccess(result.ProductId);
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -229,6 +272,7 @@ namespace Network.Core
         public void OnLeave()
         {
         }
+
         private string ExtractGooglePurchaseToken(string receiptJson)
         {
             try
@@ -251,14 +295,14 @@ namespace Network.Core
 
         private class UnityIAPReceipt
         {
-            [JsonProperty("Store")]         public string Store         { get; set; }
+            [JsonProperty("Store")] public string Store { get; set; }
             [JsonProperty("TransactionID")] public string TransactionID { get; set; }
-            [JsonProperty("Payload")]       public string Payload       { get; set; }
+            [JsonProperty("Payload")] public string Payload { get; set; }
         }
 
         private class GooglePlayPayload
         {
-            [JsonProperty("json")]      public string Json      { get; set; }
+            [JsonProperty("json")] public string Json { get; set; }
             [JsonProperty("signature")] public string Signature { get; set; }
         }
 

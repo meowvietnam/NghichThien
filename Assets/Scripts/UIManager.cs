@@ -35,6 +35,8 @@ public class UIManager : BaseBehaviour
     public Button btnThuongHoi;
     [SerializeField]
     public Button btnStartPack;
+    [SerializeField]
+    public Button btnGacha;
 
     public Transform ListIcon => btnBXH.transform.parent;
     /// <summary>
@@ -225,7 +227,10 @@ public class UIManager : BaseBehaviour
             iapHandler.transform.GetComponentInChildren<StartPackUI>(true).ThisPopup.Show();
         });
         btnStartPack.gameObject.SetActive(!Client.Instance.CharacterData.IsInfiniteEnergy);
-
+        SetEventButton(btnGacha, () =>
+        {
+            Pool.Get<GachaPanel>().SetActive();
+        });
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {

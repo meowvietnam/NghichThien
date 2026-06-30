@@ -15,10 +15,11 @@ namespace Network.Core
     {
         private IThinhGiaoNPC thinhGiaoCallBack;
         private ITangQuaNPC tangQuaCallBack;
+        private IGacha gachaCallBack;
 
         private static MessageTag[] handler =
         {
-              MessageTag.ThinhGiaoKyNangResult , MessageTag.TangQuaNpcResult
+              MessageTag.ThinhGiaoKyNangResult , MessageTag.TangQuaNpcResult , MessageTag.GachaResult ,
         };
       
         public MessageTag[] HandleTag => handler;
@@ -31,7 +32,21 @@ namespace Network.Core
         {
             Observer.AddObserver(EventList.Network.THINH_GIAO_NPC, ThinhGiaoKyNang);
             Observer.AddObserver(EventList.Network.TANG_QUA_NPC, TangQuaNpc);
+            Observer.AddObserver(EventList.Network.GACHA, Gacha);
 
+        }
+        private void Gacha(object[] data)
+        {
+            gachaCallBack = data[0] as INetworkEvent.IGacha;
+            var typeGacha = (ETypeGacha)data[1];
+            bool isGacha10 = (bool)data[2];
+            var gacha = new GachaModel()
+            {
+                TypeGacha = typeGacha,
+                IsGacha10 = isGacha10,
+
+            };
+            Client.Instance.Send(MessageTag.Gacha, gacha);
         }
         private void TangQuaNpc(object[] data)
         {
@@ -108,7 +123,31 @@ namespace Network.Core
 
                 });
             }
+            else if (tag == MessageTag.GachaResult)
+            {
+                var result = reader.Read<GachaResult>();
+                if (result.Success)
+                {
+                    Client.Instance.CharacterData.MoneyVip = result.NewTienNgoc;
+                    foreach (var item in result.Reward.ItemRefs)
+                    {
+                        Client.Instance.CharacterData.InventoryManager.Add(item);
 
+                    }
+                }
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    if (result.Success)
+                    {
+                        gachaCallBack.SuccessGacha(result.Reward);
+                    }
+                    else
+                    {
+                        gachaCallBack.FailGacha(result.Message);
+                    }
+
+                });
+            }
         }
 
         public void OnLeave()

@@ -137,4 +137,10 @@ public class INetworkEvent
         void SuccessLoadCharCombatArena(CharacterSnapshot user , CharacterSnapshot enemy);
         void FailLoadCharCombatArena(string message);
     }
+    public interface IGacha// Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessGacha(RewardSnapshot rewardGacha);
+        void FailGacha(string message);
+    }
+    
 }

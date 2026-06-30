@@ -34,6 +34,7 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
     [Button]
     public virtual void InitItemData(BaseItemData itemData , Sprite frameSprite)
     {
+        this.itemData = null;
         this.itemData = itemData;
 
         if (itemData == null)

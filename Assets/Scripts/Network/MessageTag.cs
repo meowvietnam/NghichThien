@@ -120,10 +120,14 @@ namespace Network
         GetProductsRequest = 511,
         IapPurchase = 520,
         PurchaseIapResult = 521,
+        ExchangeMoneyVipRequest = 522,
 
         ThinhGiaoKyNang = 610,
         ThinhGiaoKyNangResult = 611,
         TangQuaNpc = 612,
         TangQuaNpcResult = 613,
+
+        Gacha = 614,
+        GachaResult = 615,
     }
 }
