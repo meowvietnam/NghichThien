@@ -130,5 +130,6 @@ namespace Network
         GachaResult = 615,
         LoadShopRequest = 635,
         ReloadShopRequest = 636,
+        BuyAndSellRequest = 637,
     }
 }

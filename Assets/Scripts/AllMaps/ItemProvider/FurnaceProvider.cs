@@ -23,16 +23,28 @@ namespace AllMaps.ItemProvider
             ctx.QualityText.text = GameManager.TextWithTier[ctx.IItemData.Tier];
         }
 
-        public override FurnaceData GetDataItemByIdRef(ushort Id)
+        public override FurnaceData GetDataItemByIdRef(ushort id)
         {
-            return Client.Instance.CharacterData.InventoryManager.Furnaces.FirstOrDefault(x => x.SelfId == Id);
+            var inventoryManager = Client.Instance.CharacterData.InventoryManager;
+            var furnaceData = new FurnaceData()
+            {
+                SelfId = id
+            };
+            if (inventoryManager.Furnaces.TryGetValue(furnaceData, out var furnace))
+            {
+                return furnace;
+            }
+
+            return null;
         }
 
         public override int GetPriceItemSell(ushort Id)
         {
-            FurnaceData FurnaceData = GetDataItemByIdRef(Id);
-            return FurnaceData.Durability * GameManager.PriceFurnaceWithTierPerDurability[LuyenDanResources.Instance.FindItem(FurnaceData).Tier];
+            FurnaceData furnaceData = GetDataItemByIdRef(Id);
+            return furnaceData.Durability *
+                   GameManager.PriceFurnaceWithTierPerDurability[LuyenDanResources.Instance.FindItem(furnaceData).Tier];
         }
+
         public override (int, int) ValueTangQuaNPCWithItem(ushort id, int npcLevel)
         {
             int currentDurability = GetDataItemByIdRef(id).Durability;
@@ -41,7 +53,8 @@ namespace AllMaps.ItemProvider
             // Cứ mỗi 25 điểm mất đi thì tính là 1 điểm phạt
             int penalty = lostDurability / 25;
 
-            return (base.ValueTangQuaNPCWithItem(id, npcLevel).Item1 - penalty, base.ValueTangQuaNPCWithItem(id, npcLevel).Item2);
+            return (base.ValueTangQuaNPCWithItem(id, npcLevel).Item1 - penalty,
+                base.ValueTangQuaNPCWithItem(id, npcLevel).Item2);
         }
     }
 }

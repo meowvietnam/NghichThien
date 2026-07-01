@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using MemoryPack;
 
 namespace Network.Models
 {
-    public class Modify<T> where T : class
+    [MemoryPackable]
+    public partial class Modify<T> where T : class
     {
         public HashSet<T> Adds { get; set; } = new();
         public HashSet<T> Updates { get; set; }  = new();

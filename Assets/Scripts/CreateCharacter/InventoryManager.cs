@@ -228,7 +228,6 @@ namespace CreateCharacter
                 {
                     return true;
                 }
-
                 return false;
             });
         }
