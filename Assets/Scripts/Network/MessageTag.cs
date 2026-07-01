@@ -126,10 +126,8 @@ namespace Network
         ThinhGiaoKyNangResult = 611,
         TangQuaNpc = 612,
         TangQuaNpcResult = 613,
-        
-        
-        
-        
+        Gacha = 614,
+        GachaResult = 615,
         LoadShopRequest = 635,
         ReloadShopRequest = 636,
     }
