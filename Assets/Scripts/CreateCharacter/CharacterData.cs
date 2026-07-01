@@ -1,5 +1,6 @@
 using Base;
 using System;
+using AllMaps;
 using CreateCharacter.CharStats;
 using Network;
 using Network.Extensions;
@@ -66,7 +67,8 @@ namespace CreateCharacter
 
         [field: SerializeField, TabGroup("Arena")]
         public ArenaManager ArenaManager { get; set; } = new();
-
+        [field: SerializeField, TabGroup("ShopManager")]
+        public ShopManager ShopManager { get; set; } = new();
         public event Action<InventoryManager> OnInventoryUpdated;
 
         public CharacterData()
@@ -106,7 +108,8 @@ namespace CreateCharacter
                    + CreatedAt.ByteSize()
                    + Social.ByteSize()
                    + QuestManager.ByteSize()
-                   + ArenaManager.ByteSize();
+                   + ArenaManager.ByteSize()
+                   + ShopManager.ByteSize();
         }
 
         public void Serialize(IWriter writer)
@@ -129,6 +132,7 @@ namespace CreateCharacter
             writer.Write(Social);
             writer.Write(QuestManager);
             writer.Write(ArenaManager);
+            writer.Write(ShopManager);
         }
 
         public void Deserialize(IReader reader, ref CharacterData value)
@@ -151,6 +155,7 @@ namespace CreateCharacter
             value.Social = reader.Read<Social>();
             value.QuestManager = reader.Read<QuestManager>();
             value.ArenaManager = reader.Read<ArenaManager>();
+            value.ShopManager = reader.Read<ShopManager>();
         }
 
         public void SetInventory(InventoryManager inventory)

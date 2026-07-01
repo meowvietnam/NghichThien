@@ -19,7 +19,7 @@ public enum EShopType
     Skill,
 }
 
-public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEvent.ILoadShop, INetworkEvent.IReLoadShop
+public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEvent.ILoadShop, INetworkEvent.IReloadShop
 {
     public EShopType eShopType;
     public EMonPhai eMonPhai => Pool.Get<GameManager>().CurrentEMonPhai;
@@ -254,7 +254,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         Hide();
     }
 
-    public void SuccessReLoadShop(List<ItemRef> itemRefs)
+    public void SuccessReloadShop(List<ItemRef> itemRefs)
     {
         InitBagNPC(itemRefs);
     }

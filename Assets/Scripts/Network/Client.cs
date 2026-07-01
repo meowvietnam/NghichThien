@@ -55,15 +55,15 @@ namespace Network
         public void OnSelectedCharacter()
         {
             var module = CoreModule;
-            var sceneManager = new Core.SceneManager();
-            module.RemoveHandler<Core.SceneManager>();
+            var sceneManager = new SceneManager();
+            module.RemoveHandler<SceneManager>();
             module.AddHandler(sceneManager);
-            var skillHandler = new Core.SkillHandler();
-            module.RemoveHandler<Core.SkillHandler>();
+            var skillHandler = new SkillHandler();
+            module.RemoveHandler<SkillHandler>();
             module.AddHandler(skillHandler);
 
-            var monPhaiHandler = new Core.MonPhaiHandler();
-            module.RemoveHandler<Core.MonPhaiHandler>();
+            var monPhaiHandler = new MonPhaiHandler();
+            module.RemoveHandler<MonPhaiHandler>();
             module.AddHandler(monPhaiHandler);
 
             var questHandler = new QuestHandler();
@@ -77,6 +77,11 @@ namespace Network
             var socialHandler = new SocialHandler();
             module.RemoveHandler<SocialHandler>();
             module.AddHandler(socialHandler);
+            
+            var shopHandler = new ShopHandler();
+            module.RemoveHandler<ShopHandler>();
+            module.AddHandler(shopHandler);
+            
             AdminPanel.Instance.StartListen();
         }
         public void AddRequest(MessageTag tag, Action<IReader> response, int timeoutMilliseconds = 0, Action<Exception> onError = null)

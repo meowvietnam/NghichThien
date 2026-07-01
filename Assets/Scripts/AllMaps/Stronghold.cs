@@ -24,8 +24,6 @@ namespace AllMaps
         DatPhongThanh,
         QuangLangThanh,
         ThienCoCac,
-        
-
     }
     public class Stronghold : Map , INetworkEvent.IJoinMonPhai
     {
@@ -55,17 +53,13 @@ namespace AllMaps
                         {
                             Observer.Notify(EventList.Network.JOIN_MONPHAI, this, gameManager.CurrentEMonPhai);
                             LoadToMapStrongHold();
-
                         });
                     });
-
                 }
                 else
                 {
                     GameManager.SetDialogGacCong("xin dừng bước nơi này người ngoài không thể tiến vào");
-
                 }
-
             });
             void LoadToMapStrongHold()
             {
@@ -94,7 +88,6 @@ namespace AllMaps
         public void FailJoinMonPhai(string message)
         {
             Debug.Log("FailJoinMonPhai + " + message);
-
         }
     }
 }
