@@ -341,7 +341,8 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         string backScene = listSceneLoaded[index - 1];
         listSceneLoaded.Remove(currentScene);
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
-        SceneManager.LoadScene(backScene);
+        var sceneManger = Client.Instance.CoreModule.GetHandler<Network.Core.SceneManager>();
+        sceneManger.ChangeScene(backScene, OnChangeSceneResult);
     }
 
     public void OnLoadScene(params object[] data)
@@ -396,6 +397,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
                 {
                     notify.Show(result.Message);
                 }
+                Pool.Get<UIManager>().loadScene.gameObject.SetActive(false);
             }
         });
     }

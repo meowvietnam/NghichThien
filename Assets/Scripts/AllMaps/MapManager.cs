@@ -7,7 +7,6 @@ using Network.ClientState;
 using Network.Extensions;
 using Network.Models;
 using Sirenix.OdinInspector;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +15,6 @@ using LongDHModules;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using Network.Core;
 
 namespace AllMaps
 {
@@ -110,7 +108,6 @@ namespace AllMaps
             Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
             isDelayAfterLoadScene = true;
             StartCoroutine(DelayTime(0.01f));
-            
         }
 
         private IEnumerator DelayTime(float time)
@@ -121,11 +118,17 @@ namespace AllMaps
         }
         public void PlayerMoveTo(Map map)
         {
+            Debug.Log($"{map.Id} move to {map.PlayerPosition}");
             if (CameraFollow.Instance.target != player.transform) return;
+            Debug.Log($"Camera follow {CameraFollow.Instance.target}");
             if (isDelayAfterLoadScene) return;
+            Debug.Log($"isDelayAfterLoadScene {isDelayAfterLoadScene}");
             if (map == current) return;
+            Debug.Log($"map is not currentMap {map.Id}");
             if (player.IsMoving) return;
+            Debug.Log($"player.IsMoving {player.IsMoving}");
             Client.Instance.Send(MessageTag.MoveToMap, map.Id);
+            Debug.Log($"Send");
         }
 
         private void Move(int[] path)

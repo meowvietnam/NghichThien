@@ -14,6 +14,7 @@ namespace Network
         public CoreMessageHandler<MessageTag> CoreModule { get; private set; }
         public UserData UserData { get; private set; }
         public CharacterData CharacterData { get; private set; }
+        public IClientState State => stateModule.State as IClientState;
 
         public Client(UnauthenticatedClient client)
         {
