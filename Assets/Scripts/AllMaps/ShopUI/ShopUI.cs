@@ -230,7 +230,6 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
     {
         var characterData = Client.Instance.CharacterData;
         var gameConfig = Pool.Get<GameManager>();
-
         InitBagLogic(bagNpcList, listItemUserBuy, itemDatas);
     }
 
@@ -246,6 +245,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
 
     public void SuccessLoadShop(List<ItemRef> itemRefs)
     {
+        Debug.Log($"SuccessLoadShop {string.Join(", ", itemRefs.Select(i => i.Id))}");
         InitBagNPC(itemRefs);
     }
 
