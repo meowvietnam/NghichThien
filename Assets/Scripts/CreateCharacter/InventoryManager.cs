@@ -57,7 +57,7 @@ namespace CreateCharacter
             writer.WriteArray(ThanThongOwners);
             writer.WriteArray(Materials);
         }
-
+        
         public void Deserialize(IReader reader, ref InventoryManager value)
         {
             value.Furnaces = reader.ReadArray<FurnaceData>().ToHashSet();
@@ -130,7 +130,66 @@ namespace CreateCharacter
                 Add(itemRef);
             }
         }
-        
+
+        public object GetCollection(ItemType type)
+        {
+            switch (type)
+            {
+                case ItemType.Furnace:
+                    return Furnaces;
+                case ItemType.Recipe:
+                    return Recipes;
+                case ItemType.Herb:
+                    return Herbs;
+                case ItemType.ThanThong:
+                    return ThanThongs;
+                case ItemType.CongPhap:
+                    return CongPhaps;
+                case ItemType.LinhDan:
+                    return LinhDans;
+                case ItemType.NgoDao:
+                    return NgoDaos;
+                case ItemType.CamNgo:
+                    return CamNgos;
+                case ItemType.CongPhapOwner:
+                    return CongPhapOwners;
+                case ItemType.ThanThongOwner:
+                    return ThanThongOwners;
+                case ItemType.Material:
+                    return Materials;
+                case ItemType.VuKhi:
+                    return VuKhis;
+                case ItemType.PhongCu:
+                    return PhongCus;
+                case ItemType.TrangSuc:
+                    return TrangSucs;
+                default:
+                    return null;
+            }
+        }
+
+        public void Decrease(ItemRef itemRef)
+        {
+            var type = itemRef.Type;
+            var collection = GetCollection(type);
+            if (collection is HashSet<ItemRef> c)
+            {
+                if (!c.TryGetValue(itemRef, out var item))
+                {
+                    throw new();
+                }
+                var remaining = item.Count - itemRef.Count;
+                if (remaining < 0)
+                {
+                    throw new();
+                }
+                item.Count = (ushort)remaining;
+                if (remaining == 0)
+                {
+                    c.Remove(item);
+                }
+            }
+        }
         public void Add(ItemRef itemRef)
         {
             var type = itemRef.Type;

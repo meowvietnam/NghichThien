@@ -38,19 +38,23 @@ namespace AllMaps.ItemProvider
         int GetPriceItemBuy(ushort id);
         (int, int) ValueTangQuaNPCWithItem(ushort id, int npcLevel);
     }
+
+    public interface IItemProvider<out T> : IItemProvider
+    {
+        T GetDataItemByIdRef(ushort id);
+    }
     public interface IUseItemProvider
     {
         void UseItem(ItemInventory itemInventory);
     }
-    public abstract class ItemProvider<T> : IItemProvider
+    public abstract class ItemProvider<T> : IItemProvider<T>
     {
-        public abstract T GetDataItemByIdRef(ushort Id);
+        public abstract T GetDataItemByIdRef(ushort id);
         public abstract ItemType SupportedType { get; }
         public virtual void Display(ToolTipContext ctx)
         {
             ctx.SetPriceText?.Invoke(GetPrice(ctx));
         }
-
         public int GetPrice(ToolTipContext ctx)
         {
             return ctx.ActionShowItem == EActionShowItemInfor.None || ctx.ActionShowItem == EActionShowItemInfor.Sell

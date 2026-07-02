@@ -101,10 +101,12 @@ namespace Network
 
         CompleteMainQuest = 401,
         CompleteMainQuestResult = 402,
-
         CompleteSideQuest = 403,
         CompleteSideQuestResult = 404,
-
+        GetDailyQuestRequest = 406,
+        DoneDailyQuestRequest = 407,
+        ReloadDailyQuestRequest = 408,
+        
         ResultCombat = 413,
         ResultCombatResult = 414,
 

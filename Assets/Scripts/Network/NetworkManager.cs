@@ -87,12 +87,6 @@ namespace Network
             }
         }
 
-        [Button]
-        public void ShowState()
-        {
-            Debug.Log($"{GetClientState()}");
-        }
-
         private IClientState GetClientState()
         {
             if(client == null) return null;

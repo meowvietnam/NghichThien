@@ -52,13 +52,13 @@ namespace Network.Core
         private void InitExchangeMoneyVip()
         {
             SetEventButton(showExchangePopup, ShowExchangePopup);
-            selectNum.ValueChanged += (value) =>
-            {
-                selectNum.SetText(GetExchangeText(value));
-            };
             selectNum.confirmAction.AddListener(OnConfirmExchange);
         }
 
+        private void SetExchangeText(int value)
+        {
+            selectNum.SetText(GetExchangeText(value));
+        }
         private void OnConfirmExchange()
         {
             var amount = selectNum.GetValue();
@@ -79,10 +79,11 @@ namespace Network.Core
             selectNum.SetMin(min);
             selectNum.SetMax(max);
             selectNum.SetValue(min);
+            selectNum.ValueChanged += SetExchangeText;
             selectNum.SetText(GetExchangeText(min));
             selectNum.Show(0.5f);
         }
-        
+
         private void OnEnable()
         {
             StartCoroutine(RefreshUI());
@@ -140,7 +141,8 @@ namespace Network.Core
 
         public async void ExchangeMoneyVip(int amount)
         {
-            var reader = await Client.Instance.RequestWait(MessageTag.ExchangeMoneyVipRequest);
+            var reader = await Client.Instance
+                .RequestWait(MessageTag.ExchangeMoneyVipRequest, amount, 20000);
             var result = reader.MemRead<ExchangeMoneyVipResult>();
             if (result.Success)
             {

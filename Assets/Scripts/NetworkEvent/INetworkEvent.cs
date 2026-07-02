@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AllMaps;
 using AllMaps.EventReward;
 using CreateCharacter;
 using LuyenDan;
@@ -88,12 +89,12 @@ public class INetworkEvent
     }
     public interface ILoadTask// Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessLoadTask(List<TaskDailySnapshot> listTask);
+        void SuccessLoadTask(List<DailyQuest> listTask);
         void FailLoadTask(string message);
     }
     public interface IReLoadTask// Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessReLoadTask(List<TaskDailySnapshot> listTask);
+        void SuccessReLoadTask(List<DailyQuest> listTask);
         void FailReLoadTask(string message);
     }
     public interface IDoneTask// Check đủ ngộ đạo điểm mới learn được

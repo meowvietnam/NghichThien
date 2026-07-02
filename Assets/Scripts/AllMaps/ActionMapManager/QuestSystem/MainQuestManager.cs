@@ -41,7 +41,7 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
             {
                 currentMapMainQuests.Clear();
             }    
-            // Tìm ngay thằng MainQuest đầu tiên xuất hiện trong danh sách Map hiện tại
+            // Tìm ngay thằng DailyQuest đầu tiên xuất hiện trong danh sách Map hiện tại
             var firstMainQuest = currentMapMainQuests
                 .Select(x => x.actionMap as MainQuestResource)
                 .FirstOrDefault(quest => quest != null);

@@ -1,9 +1,10 @@
 ﻿using LongDH.LongDHModules;
 using System.Collections.Generic;
+using AllMaps;
 using LongDHModules;
 using UnityEngine;
 using UnityEngine.UI;
-public enum ETaskDaily
+public enum EDailyQuest
 {
     TongMon,
     VanTichThanh,
@@ -11,7 +12,6 @@ public enum ETaskDaily
     ThienTinhThanh,
     QuangLangThanh,
     ThienCoCac,
-    
 } 
 public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetworkEvent.IReLoadTask , INetworkEvent.IDoneTask
 {
@@ -26,14 +26,12 @@ public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetwork
     private void OnEnable()
     {
         textNameTask.text = GameManager.dictMapTypeWithName.GetValueOrDefault(Pool.Get<GameManager>().currentEMapType);
-
-
     }
-    public static ETaskDaily GetTaskType()
+    public static EDailyQuest GetTaskType()
     {
         if (Pool.Get<GameManager>().CurrentEMonPhai != Base.EMonPhai.None)
         {
-            return ETaskDaily.TongMon;
+            return EDailyQuest.TongMon;
         }
         else
         {
@@ -41,20 +39,19 @@ public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetwork
             {
                 
                 case AllMaps.EMapType.VanTichThanh:
-                    return ETaskDaily.VanTichThanh;
+                    return EDailyQuest.VanTichThanh;
 
                 case AllMaps.EMapType.ThienTinhThanh:
-                    return ETaskDaily.ThienTinhThanh;
+                    return EDailyQuest.ThienTinhThanh;
 
                 case AllMaps.EMapType.DatPhongThanh:
-                    return ETaskDaily.DatPhongThanh;
+                    return EDailyQuest.DatPhongThanh;
 
                 case AllMaps.EMapType.QuangLangThanh:
-                    return ETaskDaily.QuangLangThanh;
+                    return EDailyQuest.QuangLangThanh;
 
                 case AllMaps.EMapType.ThienCoCac:
-                    return ETaskDaily.ThienCoCac;
-
+                    return EDailyQuest.ThienCoCac;
                 default:
                     break;
             }
@@ -75,41 +72,31 @@ public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetwork
             Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Xác nhận xem quảng cáo để làm mới các nhiệm vụ chưa làm !", () =>
             {
                 Observer.Notify(EventList.Network.RELOAD_TASK, this, GetTaskType());
-
             });
         });
         SetEventButton(btnTaskShow, () =>
         {
             Observer.Notify(EventList.Network.LOAD_TASK, this, GetTaskType());
             popupTaskDaily.Show();
-
         });
-
-
-
     }
     public void DoneTask(TaskDaily task)
     {
         if (taskDaily != null) return;
         taskDaily = task;
-        Observer.Notify(EventList.Network.DONE_TASK, this, taskDaily.taskDailySnapshot);
-
+        Observer.Notify(EventList.Network.DONE_TASK, this, taskDaily.DailyQuest.Id);
     }    
-    private void InitTask(List<TaskDailySnapshot> listTask)
+    private void InitTask(List<DailyQuest> listQuests)
     {
-        for (int i = 0; i < listTaskDaily.Count; i++)
+        for (var i = 0; i < listQuests.Count; i++)
         {
-            listTaskDaily[i].InitTask(listTask[i]);
+            listTaskDaily[i].InitTask(listQuests[i]);
         }
-
     }
-    public void SuccessLoadTask(List<TaskDailySnapshot> listTask)
+    public void SuccessLoadTask(List<DailyQuest> listTask)
     {
         popupTaskDaily.Show();
         InitTask(listTask);
-
-
-
     }
 
     public void FailLoadTask(string message)
@@ -117,11 +104,9 @@ public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetwork
         popupTaskDaily.Hide();
     }
 
-    public void SuccessReLoadTask(List<TaskDailySnapshot> listTask)
+    public void SuccessReLoadTask(List<DailyQuest> listTask)
     {
         InitTask(listTask);
-
-
     }
 
     public void FailReLoadTask(string message)
@@ -134,7 +119,6 @@ public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetwork
     {
         taskDaily=null;
     }
-
     public void FailDoneTask(string message)
     {
     }

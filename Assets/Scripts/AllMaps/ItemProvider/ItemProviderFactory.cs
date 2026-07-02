@@ -25,17 +25,13 @@ namespace AllMaps.ItemProvider
                 ItemType.VuKhi => new VuKhiEquipmentProvider(),
                 ItemType.PhongCu => new PhongCuEquipmentProvider(),
                 ItemType.TrangSuc => new TrangSucEquipmentProvider(),
-               
                 ItemType.LinhDan => new LinhDanProvider(),
-               
-
                 _ => null,
             };
         }
-        // 2. Hàm dành cho việc lấy Data cụ thể (Cần truyền <T>)
-        public static ItemProvider<T> GetProvider<T>(ItemType itemType)
+        public static IItemProvider<T> GetProvider<T>(ItemType itemType)
         {
-            return GetRawProvider(itemType) as ItemProvider<T>;
+            return GetRawProvider(itemType) as IItemProvider<T>;
         }
         private static object GetRawProvider(ItemType itemType)
         {
@@ -52,7 +48,6 @@ namespace AllMaps.ItemProvider
                 ItemType.Material => new MaterialProvider(),
                 ItemType.ThanThong => tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.ThanThong? new ThanThongProvider()  :new ThanThongBookProvider(),
                 ItemType.CongPhap => tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.CongPhap ? new CongPhapProvider() :new CongPhapBookProvider(),
-
                 _ => null,
             };
         }

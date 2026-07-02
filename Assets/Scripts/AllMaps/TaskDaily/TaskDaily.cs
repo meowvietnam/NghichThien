@@ -6,6 +6,7 @@ using Network;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using System.Linq;
+using AllMaps;
 using UnityEngine;
 using UnityEngine.UI;
 using AllMaps.ItemProvider;
@@ -20,52 +21,44 @@ public class TaskDaily : BaseBehaviour
     [SerializeField] private Button btnConfirm;
     [SerializeField] private Image btnCantConfirm;
     [SerializeField] private Image imgDone;
-    [SerializeField] public TaskDailySnapshot taskDailySnapshot;
-
-    [Button]
-    public void InitTask(TaskDailySnapshot taskDailySnapshot)
+    public DailyQuest DailyQuest { get; private set; }
+    public void InitTask(DailyQuest quest)
     {
-        this.taskDailySnapshot = taskDailySnapshot;
-        var itemRef = taskDailySnapshot.ItemRef;
-        var isGap = taskDailySnapshot.IsGap;
+        DailyQuest = quest;
+        var itemRef = quest.QuestReward.Target;
+        var isDone = quest.IsRewardClaimed;
+        var money = 0;
+        var moneyVip = 0;
+        var isGap = false;
+        if (quest.QuestReward is QuestMoneyVipReward moneyVipReward)
+        {
+            money = moneyVipReward.Money;
+            moneyVip = moneyVipReward.MoneyVip;
+            isGap = true;
+        }
+        else if (quest.QuestReward is QuestMoneyReward moneyReward)
+        {
+            money = moneyReward.Money;
+            moneyVip = 0;
+            isGap = false;
+        }
         imgDone.gameObject.SetActive(false);
         imgGap.gameObject.SetActive(isGap);
         var provider = ItemProviderFactory.GetProvider<IItemData>(itemRef.Type);
         var iItemData = provider.GetDataItemByIdRef(itemRef.Id);
-        linhThachText.text = $"{provider.GetPriceItemBuy(itemRef.Id) * itemRef.Count}";
-        if (isGap )
-        {
-            tienNgocText.text = $"{PriceTienNgocVatLieuAndHerbTask.GetValueOrDefault(iItemData.Tier) * itemRef.Count}";
-
-        }
-        else
-        {
-            tienNgocText.text = "0";
-        }
+        linhThachText.text = $"{money}";
+        tienNgocText.text = $"{moneyVip}";
         Pool.Get<UIManager>().InitVisualItemInventory(itemRequire,iItemData,itemRef);
+        
         var characterData = Client.Instance.CharacterData;
-        List<ItemRef> itemDatas = new List<ItemRef>();
-        itemDatas.AddRange(characterData.InventoryManager.Herbs.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.Recipes.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.ThanThongs.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.CongPhaps.ToList());
-        // itemDatas.AddRange(characterData.InventoryManager.VuKhis.ToList());
-        // itemDatas.AddRange(characterData.InventoryManager.PhongCus.ToList());
-        // itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.LinhDans.ToList());
-
-        var itemUserHave = itemDatas.FirstOrDefault(x => x == itemRef);
-
-        if(itemUserHave == null)
+        var collection = characterData.InventoryManager.GetCollection(itemRef.Type) as HashSet<ItemRef>;
+        if(!collection.TryGetValue(itemRef, out var itemUserHave))
         {
             itemRequire.InitCount(0);
-
         }
         else
         {
             itemRequire.InitCount(itemUserHave.Count);
-
-
         }
         itemRequire.InitCountRequire(itemRef.Count);
         bool isConfirm = itemRequire.count >= itemRequire.countRequire;
@@ -79,18 +72,16 @@ public class TaskDaily : BaseBehaviour
                 Pool.Get<TaskDailyPanel>().DoneTask(this);
             }
         });
-        if(taskDailySnapshot.IsDone)
+        if(isDone)
         {
             DoneTask();
-        }    
-
+        }
     }
     public void DoneTask()
     {
         imgDone.gameObject.SetActive(true);
         btnConfirm.gameObject.SetActive(false);
         btnCantConfirm.gameObject.SetActive(false);
-
     }
     public static Dictionary<Tier, int> PriceTienNgocVatLieuAndHerbTask = new Dictionary<Tier, int>
     {
@@ -102,5 +93,9 @@ public class TaskDaily : BaseBehaviour
         { Tier.LucPham, 70 },
     };
 
+    private void OnDestroy()
+    {
+        
+    }
 }
 

@@ -1,31 +1,22 @@
 using System;
+using System.Collections.Generic;
+using AllMaps;
+using LuyenDan;
+using MemoryPack;
 using Network;
 using Network.Extensions;
 using Newtonsoft.Json;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace CreateCharacter
 {
+    [MemoryPackable]
     [Serializable]
-    public class QuestManager : IMemorySerializable<QuestManager>
+    public partial class QuestManager
     {
-        [field: SerializeField]
-        public int CurrentMainQuest { get; set; } = 0;
-        [field: SerializeField]
-        public int CurrentCountSideQuest { get; set; } = 0;
-        public void Deserialize(IReader reader, ref QuestManager value)
-        {
-            value.CurrentMainQuest = reader.Read<int>();
-            value.CurrentCountSideQuest = reader.Read<int>();
-        }
-        public int ByteSize()
-        {
-            return CurrentMainQuest.ByteSize() + CurrentCountSideQuest.ByteSize();
-        }
-        public void Serialize(IWriter writer)
-        {
-            writer.Write(CurrentMainQuest);
-            writer.Write(CurrentCountSideQuest);
-        }
+        [field: SerializeField] public int CurrentMainQuest { get; set; } = 0;
+        [field: SerializeField] public int CurrentCountSideQuest { get; set; } = 0;
+        [ShowInInspector] public Dictionary<EDailyQuest, List<DailyQuest>> DailyQuests { get; set; } = new();
     }
 }
