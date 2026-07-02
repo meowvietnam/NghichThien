@@ -68,21 +68,11 @@ namespace Network.Core
             var client = Client.Instance;
             var shopManager = client.CharacterData.ShopManager;
             var reader = await client.RequestWait(MessageTag.LoadShopRequest, shopType);
-            var result = reader.MemRead<ReloadShopResult>();
-            if (result.Success)
-            {
-                shopManager.SetShop(result.Shop);
-            }
+            var shop = reader.MemRead<Shop>();
+            shopManager.SetShop(shop);
             NetworkManager.Instance.Invoke(() =>
             {
-                if (result.Success)
-                {
-                    callback.SuccessLoadShop(result.Shop.Items.ToList());
-                }
-                else
-                {
-                    callback.FailLoadShop(result.Message);
-                }
+                callback?.SuccessLoadShop(shop.Items.ToList());
             });
         }
         private async void ReloadShop(object[] data)
@@ -92,11 +82,21 @@ namespace Network.Core
             var client = Client.Instance;
             var shopManager = client.CharacterData.ShopManager;
             var reader = await client.RequestWait(MessageTag.ReloadShopRequest, shopType);
-            var shop = reader.MemRead<Shop>();
-            shopManager.SetShop(shop);
+            var result = reader.MemRead<ReloadShopResult>();
+            if (result.Success)
+            {
+                shopManager.SetShop(result.Shop);
+            }
             NetworkManager.Instance.Invoke(() =>
             {
-                callback.SuccessReloadShop(shop.Items.ToList());
+                if (result.Success)
+                {
+                    callback?.SuccessReloadShop(result.Shop.Items.ToList());
+                }
+                else
+                {
+                    callback?.FailReLoadShop(result.Message);
+                }
             });
         }
         
