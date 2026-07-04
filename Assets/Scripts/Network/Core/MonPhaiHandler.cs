@@ -15,8 +15,9 @@ namespace Network.Core
     public class MonPhaiHandler : IClientHandler
     {
         private static MessageTag[] handler =
-                    { MessageTag.JoinMonPhaiResult
-            };
+        {
+            MessageTag.JoinMonPhaiResult
+        };
 
         public MessageTag[] HandleTag => handler;
         private IJoinMonPhai joinMonPhaiCallback;
@@ -33,9 +34,9 @@ namespace Network.Core
                     var charData = Client.Instance.CharacterData;
                     charData.MonPhai = result.TypeMonPhai;
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
-
                     if (result.Success)
                     {
                         joinMonPhaiCallback.SuccessJoinMonPhai();
@@ -56,6 +57,7 @@ namespace Network.Core
         {
             Observer.AddObserver(EventList.Network.JOIN_MONPHAI, JoinMonPhai);
         }
+
         private void JoinMonPhai(object[] data)
         {
             joinMonPhaiCallback = data[0] as INetworkEvent.IJoinMonPhai;
@@ -65,9 +67,6 @@ namespace Network.Core
 
         public void OnLeave()
         {
-
         }
-
-       
     }
 }

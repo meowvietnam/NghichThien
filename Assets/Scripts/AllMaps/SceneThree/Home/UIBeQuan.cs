@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
+using Network.Models;
 using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,41 +18,40 @@ using static UnityEngine.Analytics.IAnalytic;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
 
-public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.ILinhNgo, INetworkEvent.IDotPhaCongPhap , INetworkEvent.ISpecialLevelUp
+public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILinhNgo, INetworkEvent.IDotPhaCongPhap,
+    INetworkEvent.ISpecialLevelUp
 {
     public enum ETypePage
     {
-
         None,
         TuLuyen,
         LinhNgo,
         Update,
-
-
-
     }
+
     [System.Serializable]
     public class ButtonWithPage
     {
         [SerializeField] public Button btn;
         [SerializeField] public GameObject page;
         [SerializeField] public ETypePage typePage;
-
-
     }
+
     [SerializeField] private ButtonWithPage[] btns;
     [SerializeField] private ButtonWithPage currentBtnWithPage;
     [SerializeField] private Button btnShowPopBeQuan;
     [SerializeField] private Popup popBeQuan;
     [SerializeField] private Popup popDotPha;
     [SerializeField] private LevelUpPopup popLevelUp;
-    [Header("InforDotPha")]
-    [SerializeField] private ItemInventory prefabItemRequireDotPha;
+
+    [Header("InforDotPha")] [SerializeField]
+    private ItemInventory prefabItemRequireDotPha;
+
     [SerializeField] private ItemInventory prefabItemThienDaoDotPha;
     [SerializeField] private Button btnConfirmDotPha;
     [SerializeField] private Button btnShowPopDotPha;
 
-    private void SetupPopupDotPha(List<ItemRef> itemRefs , ItemInventory prefab)
+    private void SetupPopupDotPha(List<ItemRef> itemRefs, ItemInventory prefab)
     {
         foreach (var item in itemRefs)
         {
@@ -61,11 +61,13 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
             itemInventory.InitCount(ItemProviderFactory.GetProvider(item.Type).GetCountOwner(item.Id));
             itemInventory.InitCountRequire(item.Count);
         }
-    }    
+    }
+
     private void Awake()
     {
         Init();
     }
+
     public void Init()
     {
         SetEventButton(btnShowPopBeQuan, () =>
@@ -77,31 +79,31 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         {
             SetEventButton(item.btn, () =>
             {
-              
                 currentBtnWithPage = item;
                 foreach (var item2 in btns)
                 {
                     item2.page.gameObject.SetActive(false);
                 }
+
                 currentBtnWithPage.page.gameObject.SetActive(true);
-               
+
                 if (item.typePage == ETypePage.TuLuyen)
                 {
                     InitPageTuLuyen();
                 }
+
                 if (item.typePage == ETypePage.LinhNgo)
                 {
                     InitPageLinhNgo();
-                   
                 }
+
                 if (item.typePage == ETypePage.Update)
                 {
                     InitPageUpdate();
-                  
                 }
-
             });
         }
+
         SetEventButton(btnConfirmDotPha, () =>
         {
             popDotPha.Hide();
@@ -110,14 +112,12 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         SetEventButton(btnShowPopDotPha, () =>
         {
             popDotPha.Show();
-            SetupPopupDotPha(new(),prefabItemRequireDotPha);
+            SetupPopupDotPha(new(), prefabItemRequireDotPha);
             SetupPopupDotPha(new(), prefabItemThienDaoDotPha);
-
         });
     }
-   
-    [Header("Tu Luyện")]
-    [SerializeField] private Text nameCP;
+
+    [Header("Tu Luyện")] [SerializeField] private Text nameCP;
     [SerializeField] private Text valueTuLuyenForCPText;
     [SerializeField] private Text percentTuChatText;
     [SerializeField] private Text percentTamCanhText;
@@ -131,25 +131,27 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     [SerializeField] private Button btnTuLuyen;
     [SerializeField] private Text textNam;
     [SerializeField] private Text textThang;
+
     [SerializeField]
     private TimeSpan currentTuLuyenTimeSpan => GameManager.ConvertMonthToTimeSpan(currentTuLuyenTimeInt);
+
     private SecureInt currentTuLuyenTimeInt; // month
     [SerializeField] private Text textPriceTieuHao;
     [SerializeField] private Button btnUnTuLuyen;
 
-    [Header("Cấu hình chi phí")]
-    public double baseCost = 100f;    // Chi phí tại Lv1
-    public float r = 0.2f;           // Tỉ lệ tăng mỗi cấp (10%)
-    public float m = 5f;           // Hệ số nhảy vọt mỗi 3 cấp
+    [Header("Cấu hình chi phí")] public double baseCost = 100f; // Chi phí tại Lv1
+    public float r = 0.2f; // Tỉ lệ tăng mỗi cấp (10%)
+    public float m = 5f; // Hệ số nhảy vọt mỗi 3 cấp
     private CharacterData CharData => Client.Instance.CharacterData;
     public double CostPriceTieuHao1Month => CalculateCost(CharData.Progression.Level);
+
     private void InitPageTuLuyen()
     {
         var charData = CharData;
-        
+
         var cpChuTu = Pool.Get<GameManager>().GetCongPhapWithId(charData.EquipmentManager.ChuTu1Used);
         string nameCPstr = "Không";
-      
+
         int tocDoTuLuyenCP = 0;
         if (cpChuTu != null)
         {
@@ -163,15 +165,17 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
             {
                 level = congPhap.Level;
             }
+
             tocDoTuLuyenCP = cpChuTu.GetTocDoTuLuyen(level);
         }
+
         nameCP.text = $"《{nameCPstr}》";
         valueTuLuyenForCPText.text = tocDoTuLuyenCP.ToString();
         int percentTuChat = charData.Stats.TuChat;
         percentTuChatText.text = $"{percentTuChat}%";
         var getTamCanh = GameManager.GetTamCanhValue(charData.Stats.TamCanh);
 
-        int percentTamCanh =  0;
+        int percentTamCanh = 0;
         tamCanhValueText.text = "Tăng lên";
         if (getTamCanh.index > ThanThong.GetDaiCanhGioi(charData.Progression.Level))
         {
@@ -182,23 +186,28 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         {
             percentTamCanh = -50;
             tamCanhValueText.text = "Giảm xuống";
-
         }
+
         percentTamCanhText.text = $"{percentTamCanh}%";
-        int GetTotalValueBuffWithMultiplier(List<float>percent)
+
+        int GetTotalValueBuffWithMultiplier(List<float> percent)
         {
             float total = tocDoTuLuyenCP;
             foreach (var item in percent)
             {
                 total *= (1 + item / 100f);
-            }    
+            }
+
             return (int)total;
         }
+
         tuChatText.text = GameManager.tuChatWithText[charData.Stats.LinhCan];
         tamCanhText.text = getTamCanh.name;
-        totalValueTuLuyenText.text = $"{GetTotalValueBuffWithMultiplier(new List<float> { percentTuChat,100,percentTamCanh})}";
-        sliderTuLuyen.minValue = 0 ;
-        sliderTuLuyen.maxValue = (int)(charData.Stats.ThoNguyen - GameManager.GetIntTuoiTac(charData.Stats.TuoiTac)) * 10 * 12 / 100;
+        totalValueTuLuyenText.text =
+            $"{GetTotalValueBuffWithMultiplier(new List<float> { percentTuChat, 100, percentTamCanh })}";
+        sliderTuLuyen.minValue = 0;
+        sliderTuLuyen.maxValue = (int)(charData.Stats.ThoNguyen - GameManager.GetIntTuoiTac(charData.Stats.TuoiTac)) *
+            10 * 12 / 100;
         sliderTuLuyen.onValueChanged.RemoveAllListeners();
         sliderTuLuyen.onValueChanged.AddListener((value) =>
         {
@@ -231,7 +240,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 // Khi gán .value, onValueChanged sẽ tự chạy
             }
         });
-       
+
         SetEventButton(btnTuLuyen, () =>
         {
             if (cpChuTu == null)
@@ -239,29 +248,30 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 NotifyGroup.Instance.Show("Trang bị công pháp chủ tu mới có thể bế quan");
                 return;
             }
+
             if (charData.Stats.LinhThach >= CostPriceTieuHao1Month * currentTuLuyenTimeInt)
             {
-                if(percentTamCanh >= 0 )
+                if (percentTamCanh >= 0)
                 {
                     ActionTuLuyen();
-                }   
-                else if(percentTamCanh<0)
+                }
+                else if (percentTamCanh < 0)
                 {
-                    Pool.Get<PopupConfirmAction>().ShowPopConfirmAction($"Tâm cảnh của bạn đang thấp hơn tu vi dẫn tới hiệu quả tu luyện giảm đi 50% vẫn tiếp tục tu luyện chứ?", () =>
-                    {
-                        ActionTuLuyen();
-                    });
-                }    
-                
-               
-            }   
+                    Pool.Get<PopupConfirmAction>().ShowPopConfirmAction(
+                        $"Tâm cảnh của bạn đang thấp hơn tu vi dẫn tới hiệu quả tu luyện giảm đi 50% vẫn tiếp tục tu luyện chứ?",
+                        () => { ActionTuLuyen(); });
+                }
+            }
+
             void ActionTuLuyen()
             {
-                Pool.Get<PopupConfirmAction>().ShowPopConfirmAction($"Xác nhận tiêu hao {CostPriceTieuHao1Month * currentTuLuyenTimeInt} linh thạch để tu luyện trong {textNam.text} năm {textThang.text} tháng", () =>
-                {
-                    Observer.Notify(EventList.Network.TU_LUYEN, this, currentTuLuyenTimeSpan);
-                    popBeQuan.Hide();
-                });
+                Pool.Get<PopupConfirmAction>().ShowPopConfirmAction(
+                    $"Xác nhận tiêu hao {CostPriceTieuHao1Month * currentTuLuyenTimeInt} linh thạch để tu luyện trong {textNam.text} năm {textThang.text} tháng",
+                    () =>
+                    {
+                        Observer.Notify(EventList.Network.TU_LUYEN, this, currentTuLuyenTimeSpan);
+                        popBeQuan.Hide();
+                    });
             }
         });
         SetEventButton(btnUnTuLuyen, () =>
@@ -270,12 +280,14 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
             {
                 NotifyGroup.Instance.Show("Trang bị công pháp chủ tu mới có thể bế quan");
             }
+
             if (charData.Stats.LinhThach < CostPriceTieuHao1Month * currentTuLuyenTimeInt)
             {
                 NotifyGroup.Instance.Show("Không đủ linh thạch");
             }
         });
         SetUpBtnTuLuyen();
+
         void SetUpBtnTuLuyen()
         {
             if (cpChuTu == null || charData.Stats.LinhThach < CostPriceTieuHao1Month * currentTuLuyenTimeInt)
@@ -290,6 +302,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
             }
         }
     }
+
     public double CalculateCost(int level)
     {
         if (level < 1) return 0;
@@ -302,6 +315,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
 
         return Math.Round(finalCost);
     }
+
     void UpdateTuLuyenTimeUI()
     {
         // Lấy giá trị int từ SecureInt
@@ -315,17 +329,15 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         textNam.text = nam.ToString();
         textThang.text = thang.ToString();
     }
+
     [SerializeField] private Sprite[] spriteQualityFulls;
     [SerializeField] private Sprite[] spriteFrames;
     [SerializeField] private Color[] colorQualitys;
-    
-    public bool isLoadingMore = false;
-  
-    
-   
-    [Header("Lĩnh Hội")]
 
-    [SerializeField] private Text priceTextLinhHoi;
+    public bool isLoadingMore = false;
+
+
+    [Header("Lĩnh Hội")] [SerializeField] private Text priceTextLinhHoi;
     [SerializeField] private Text textTimer;
     [SerializeField] private Text textInfor;
     [SerializeField] private Button btnLinhHoi;
@@ -333,11 +345,11 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     [SerializeField] private Text textNameLinhHoi;
     [SerializeField] private Bag1ItemPrefabInventory bagLinhHoi;
 
- 
+
     private void InitPageLinhNgo()
     {
         //reset 
-     
+
         textNameLinhHoi.transform.parent.gameObject.SetActive(false);
         var charData = CharData;
         // Lấy dữ liệu gốc
@@ -361,14 +373,15 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
 
         // 1. Tạo danh sách chứa cặp (SkillData và ItemRef)
 
-       
+
         var listItemRefSkill = new List<ItemRef>();
-       listItemRefSkill.AddRange(filteredThanThong);
-       listItemRefSkill.AddRange(filteredCongPhap);
+        listItemRefSkill.AddRange(filteredThanThong);
+        listItemRefSkill.AddRange(filteredCongPhap);
 
         bagLinhHoi.filterControl.InitFilterType(new List<ItemType> { ItemType.ThanThong, ItemType.CongPhap });
 
-        bagLinhHoi.InitDataItem(listItemRefSkill, (item) => {
+        bagLinhHoi.InitDataItem(listItemRefSkill, (item) =>
+        {
             item.InitAction(null, null, () =>
             {
                 Debug.Log("co event linh hoi");
@@ -380,7 +393,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 var provider = ItemProviderFactory.GetProvider(item.itemRef.Type);
                 int cost = provider.GetPriceItemBuy(item.itemRef.Id);
                 priceTextLinhHoi.text = $"{cost}";
-                if(data is BaseSkill skill)
+                if (data is BaseSkill skill)
                 {
                     if (itemRef.Type == ItemType.ThanThong)
                     {
@@ -400,10 +413,15 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                         {
                             daiCanhGioiCP = c.Level;
                         }
+
                         textInfor.text = cp.GetDesc(daiCanhGioiCP);
                     }
-                    textTimer.text = GameManager.GetDateTimeText(skill.baseTimeLearn / (Client.Instance.CharacterData.Stats.NgoTinh));
+
+                    textTimer.text =
+                        GameManager.GetDateTimeText(skill.baseTimeLearn /
+                                                    (Client.Instance.CharacterData.Stats.NgoTinh));
                 }
+
                 SetEventButton(btnLinhHoi, () =>
                 {
                     Debug.Log("btnLinhHoi");
@@ -416,7 +434,6 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                             item.gameObject.SetActive(false);
                             textNameLinhHoi.transform.parent.gameObject.SetActive(false);
                             Observer.Notify(EventList.Network.LINH_NGO, this, (int)itemRef.Id, itemRef.Type);
-
                         });
                     }
                 });
@@ -426,9 +443,9 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                     {
                         NotifyGroup.Instance.Show("Không đủ linh thạch");
                     }
-
                 });
                 SetUpBtnLinhHoi();
+
                 void SetUpBtnLinhHoi()
                 {
                     if (charData.Stats.LinhThach < cost)
@@ -440,20 +457,16 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                     {
                         btnUnLinhHoi.gameObject.SetActive(false);
                         btnLinhHoi.gameObject.SetActive(true);
-
                     }
                 }
             });
-           
-        },false,true);
+        }, false, true);
         bagLinhHoi.InitBag(false);
-      
-
-
     }
-    [Header("Nâng cấp Công Pháp")]
 
-    [SerializeField] private Text priceTextUpdateCongPhap;
+    [Header("Nâng cấp Công Pháp")] [SerializeField]
+    private Text priceTextUpdateCongPhap;
+
     [SerializeField] private ItemInventory priceItemCongPhap;
     [SerializeField] private Text textTimerUpdateCongPhap;
     [SerializeField] private Text[] textInforUpdateCongPhap;
@@ -462,23 +475,20 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     [SerializeField] private Text textNameDotPha;
     [SerializeField] private Bag1ItemPrefabInventory bagCongPhap;
 
-    [SerializeField]
-    private int idCpUpdate;
-    [SerializeField]
-    private ETypeSlotCP typeSlot = ETypeSlotCP.None;
+    [SerializeField] private int idCpUpdate;
+    [SerializeField] private ETypeSlotCP typeSlot = ETypeSlotCP.None;
+
     private void InitPageUpdate()
-   {
-      
+    {
+        Observer.RemoveObserver(EventList.Network.LEVEL_UP);
+        Observer.AddObserver(EventList.Network.LINH_NGO, OnLevelUp);
         textNameDotPha.transform.parent.gameObject.SetActive(false);
         var charData = CharData;
         var cpOwners = charData.InventoryManager.CongPhapOwners;
-
         var gameConfig = Pool.Get<GameManager>();
-
         // 1. Tạo danh sách chứa cặp (SkillData và ItemRef)
         List<CongPhap> listSkillsWithRef = new List<CongPhap>();
         List<ItemRef> listSkillsWithItemRef = new List<ItemRef>();
-
         foreach (var item in cpOwners)
         {
             CongPhap skill = gameConfig.GetCongPhapWithId(item.Id);
@@ -486,15 +496,12 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
             listSkillsWithItemRef.Add(new ItemRef { Id = (ushort)skill.Id, Count = 1, Type = ItemType.CongPhap });
         }
 
-
-
         bagCongPhap.filterControl.InitFilterType(new List<ItemType> { ItemType.CongPhap });
-
         bagCongPhap.InitDataItem(listSkillsWithItemRef, (item) =>
         {
             item.InitAction(null, null, () =>
             {
-                var data=item.itemData;
+                var data = item.itemData;
                 var itemRef = item.itemRef;
 
                 textNameDotPha.transform.parent.gameObject.SetActive(true);
@@ -512,6 +519,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 {
                     daiCanhGioiCP = c.Level;
                 }
+
                 var provider = ItemProviderFactory.GetProvider(item.itemRef.Type);
                 int cost = provider.GetPriceItemBuy(item.itemRef.Id);
                 int cost2 = (daiCanhGioiCP + 1);
@@ -519,9 +527,8 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                 priceTextUpdateCongPhap.text = $"x{costLinhThach}";
                 priceItemCongPhap.Init(item.itemData, item.frame.sprite);
                 priceItemCongPhap.SetQualityFull(item.qualityFull.sprite);
-
                 priceItemCongPhap.transform.parent.GetComponent<Text>().text = $"x{cost2}";
-                if(data is BaseSkill skill)
+                if (data is BaseSkill skill)
                 {
                     if (itemRef.Type == ItemType.CongPhap)
                     {
@@ -532,21 +539,18 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                             if (i + 1 <= daiCanhGioiCP)
                             {
                                 textInforUpdateCongPhap[i].transform.GetChild(1).gameObject.SetActive(true);
-
-
                             }
                             else
                             {
                                 textInforUpdateCongPhap[i].transform.GetChild(1).gameObject.SetActive(false);
-
-
                             }
                         }
                     }
-                    textTimerUpdateCongPhap.text = GameManager.GetDateTimeText(skill.baseTimeLearn / Client.Instance.CharacterData.Stats.NgoTinh);
 
+                    textTimerUpdateCongPhap.text =
+                        GameManager.GetDateTimeText(skill.baseTimeLearn / Client.Instance.CharacterData.Stats.NgoTinh);
                 }
-               
+
                 SetEventButton(btnUpdateCongPhap, () =>
                 {
                     var cpRef = charData.InventoryManager.CongPhaps.FirstOrDefault(x => x.Id == itemRef.Id);
@@ -561,11 +565,10 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                                 typeSlot = typeSlotRef;
                                 idCpUpdate = itemRef.Id;
                                 Observer.Notify(EventList.Network.UNEQUIP_CONGPHAP, Pool.Get<TabPanel>(), typeSlotRef);
-
                             }
+
                             textNameDotPha.transform.parent.gameObject.SetActive(false);
                             Observer.Notify(EventList.Network.DOT_PHA_CONGPHAP, this, (int)itemRef.Id);
-
                         });
                     }
                 });
@@ -578,11 +581,10 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                     else if (charData.InventoryManager.CongPhaps.Count(x => x.Id == itemRef.Id) < cost2)
                     {
                         NotifyGroup.Instance.Show("Không đủ số lượng công pháp yêu cầu");
-
                     }
-
                 });
                 SetUpBtnUpdate();
+
                 void SetUpBtnUpdate()
                 {
                     var cpRef = charData.InventoryManager.CongPhaps.FirstOrDefault(x => x.Id == itemRef.Id);
@@ -595,27 +597,30 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
                     {
                         btnUnUpdateCongPhap.gameObject.SetActive(false);
                         btnUpdateCongPhap.gameObject.SetActive(true);
-
                     }
                 }
             });
-        },true);
+        }, true);
         bagCongPhap.InitBag();
     }
 
-    public void SuccessTuLuyen(int valueAdd , int valueAddHp , bool hasLevelUp, int oldHpMax , int oldThoNguyen,int oldThanThuc,int oldDontoc)
+    public void SuccessTuLuyen(int valueAdd, int valueAddHp)
     {
         Observer.Notify(EventList.GamePlay.TIME_ADJUST);
-        NotifyGroup.Instance.Show($"Tu luyện thành công {textNam.text} năm {textThang.text} tháng nhận được {valueAdd} tu vi");
+        NotifyGroup.Instance.Show(
+            $"Tu luyện thành công {textNam.text} năm {textThang.text} tháng nhận được {valueAdd} tu vi");
         NotifyGroup.Instance.Show($"Khôi phục +{valueAddHp} khí huyết");
-        if(hasLevelUp)
-        {
-            popLevelUp.InitShow(oldHpMax,oldThoNguyen,oldThanThuc,oldDontoc);
-
-
-        }    
         Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
-        
+    }
+
+    public void OnLevelUp(object[] datas)
+    {
+        var snapshot = (CharacterSnapshot)datas[0];
+        var oldHpMax = snapshot.SinhMenh;
+        var oldThoNguyen = snapshot.ThoNguyen;
+        var oldThanThuc = snapshot.ThanThuc;
+        var oldDonToc = snapshot.TocDoBay;
+        popLevelUp.InitShow(oldHpMax, oldThoNguyen, oldThanThuc, oldDonToc);
     }
 
     public void FailTuLuyen(string message)
@@ -627,8 +632,6 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     {
         NotifyGroup.Instance.Show("Lĩnh ngộ thành công");
         Observer.Notify(EventList.GamePlay.TIME_ADJUST);
-
-
     }
 
     public void FailLinhNgo(string message)
@@ -639,11 +642,12 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     public void SuccessDotPhaCongPhap()
     {
         NotifyGroup.Instance.Show("Đột phá thành công");
-        if(typeSlot != ETypeSlotCP.None)
+        if (typeSlot != ETypeSlotCP.None)
         {
             Observer.Notify(EventList.Network.EQUIP_CONGPHAP, Pool.Get<TabPanel>(), typeSlot, (ushort)idCpUpdate);
             typeSlot = ETypeSlotCP.None;
         }
+
         Observer.Notify(EventList.GamePlay.TIME_ADJUST);
     }
 
@@ -654,6 +658,7 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
             Observer.Notify(EventList.Network.EQUIP_CONGPHAP, Pool.Get<TabPanel>(), typeSlot, (ushort)idCpUpdate);
             typeSlot = ETypeSlotCP.None;
         }
+
         NotifyGroup.Instance.Show(message);
     }
 
@@ -668,4 +673,3 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         NotifyGroup.Instance.Show(message);
     }
 }
-

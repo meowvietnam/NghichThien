@@ -316,8 +316,6 @@ namespace Network.Core
             {
                 var result = reader.Read<TuLuyenResult>();
                 var charData = Client.Instance.CharacterData;
-                int oldExp = charData.Progression.CurrentExp;
-                int oldHp = charData.Stats.Hp;
                 if (result.Success)
                 {
                     charData.Progression.CurrentExp = result.CurrentExp;
@@ -330,7 +328,7 @@ namespace Network.Core
                 {
                     if (result.Success)
                     {
-                        tuLuyenCallback.SuccessTuLuyen(result.CurrentExp - oldExp, result.NewHp - oldHp);
+                        tuLuyenCallback.SuccessTuLuyen(result.DeltaExp, result.DeltaHp);
                     }
                     else
                     {

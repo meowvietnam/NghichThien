@@ -1,6 +1,8 @@
 using CreateCharacter;
+using LongDH.LongDHModules;
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
+using Network.Models;
 
 namespace Network.Core
 {
@@ -18,7 +20,12 @@ namespace Network.Core
             if (tag == MessageTag.LevelUpdated)
             {
                 var levelUpdated = reader.MemRead<LevelUpdated>();
+                var snapshot = new CharacterSnapshot(charData);
                 levelUpdated.ApplyTo(charData);
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    Observer.Notify(EventList.Network.LEVEL_UP, snapshot);
+                });
             }
         }
 

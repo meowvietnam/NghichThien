@@ -12,6 +12,7 @@ namespace Network
         public int RemainingMoney { get; set; }
         public int NewTamCanh { get; set; }
         public int NewHp { get; set; }
-
+        public int DeltaExp { get; set; }
+        public int DeltaHp { get; set; }
     }
 }

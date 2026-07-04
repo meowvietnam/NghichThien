@@ -81,6 +81,17 @@ namespace LongDH.LongDHModules
             }
         }
 
+        public static void RemoveObserver(string eventName)
+        {
+            if (CallbackPara.TryGetValue(eventName, out var list))
+            {
+                list.Clear();
+            }
+            if (CallbackVoid.TryGetValue(eventName, out var voidList))
+            {
+                voidList.Clear();
+            }
+        }
         public static void RemoveAllObserver()
         {
             CallbackPara.Clear();
