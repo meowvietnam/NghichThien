@@ -147,6 +147,8 @@ namespace Network.Core
             if (result.Success)
             {
                 var charData = Client.Instance.CharacterData;
+                var addLinhThach = charData.Stats.LinhThach - result.LinhThach;
+                NotifyGroup.Instance.Show($"Thu hoạch được {addLinhThach}");
                 charData.MoneyVip = result.MoneyVip;
                 charData.Stats.LinhThach = result.LinhThach;
             }

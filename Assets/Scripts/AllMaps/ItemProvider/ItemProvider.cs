@@ -37,6 +37,7 @@ namespace AllMaps.ItemProvider
 
         int GetPriceItemBuy(ushort id);
         (int, int) ValueTangQuaNPCWithItem(ushort id, int npcLevel);
+        int GetCountOwner(ushort id);
     }
 
     public interface IItemProvider<out T> : IItemProvider
@@ -92,8 +93,12 @@ namespace AllMaps.ItemProvider
             }
             return (levelWithTier - npcLevel,indexTier);
         }
-             
 
+        public virtual int GetCountOwner(ushort id)
+        {
+            return 0;
+        }
+      
     }
 
 }

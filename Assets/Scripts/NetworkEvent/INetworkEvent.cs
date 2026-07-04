@@ -49,7 +49,7 @@ public class INetworkEvent
     }
     public interface ITuLuyen // Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessTuLuyen(int valueAdd,int valueAddHp);
+        void SuccessTuLuyen(int valueAdd,int valueAddHp , bool hasLevelUp, int oldHpMax, int oldThoNguyen, int oldThanThuc, int oldDontoc);
         void FailTuLuyen(string message);
     }
     public interface ILinhNgo // Check đủ ngộ đạo điểm mới learn được
@@ -143,5 +143,9 @@ public class INetworkEvent
         void SuccessGacha(RewardSnapshot rewardGacha);
         void FailGacha(string message);
     }
-    
+    public interface ISpecialLevelUp// Check đủ ngộ đạo điểm mới learn được
+    {
+        void SuccessSpecialLevelUp(int oldHpMax, int oldThoNguyen, int oldThanThuc, int oldDontoc);
+        void FailSpecialLevelUp(string message);
+    }
 }

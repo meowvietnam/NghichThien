@@ -1,4 +1,6 @@
 using LuyenDan;
+using Network;
+using System.Linq;
 using static UnityEngine.Analytics.IAnalytic;
 
 namespace AllMaps.ItemProvider
@@ -32,6 +34,11 @@ namespace AllMaps.ItemProvider
         public override int GetPriceItemSell(ushort Id)
         {
             return GameManager.PriceHerbWithTier[GetDataItemByIdRef(Id).Tier];
+        }
+        public override int GetCountOwner(ushort id)
+        {
+            var item = Client.Instance.CharacterData.InventoryManager.Herbs.FirstOrDefault(x => x.Id == id);
+            return item != null?item.Count : base.GetCountOwner(id);
         }
 
      

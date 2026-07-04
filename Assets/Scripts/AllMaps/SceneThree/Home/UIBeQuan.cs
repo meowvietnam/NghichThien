@@ -17,7 +17,7 @@ using static UnityEngine.Analytics.IAnalytic;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
 
-public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.ILinhNgo, INetworkEvent.IDotPhaCongPhap
+public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.ILinhNgo, INetworkEvent.IDotPhaCongPhap , INetworkEvent.ISpecialLevelUp
 {
     public enum ETypePage
     {
@@ -43,6 +43,25 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
     [SerializeField] private ButtonWithPage currentBtnWithPage;
     [SerializeField] private Button btnShowPopBeQuan;
     [SerializeField] private Popup popBeQuan;
+    [SerializeField] private Popup popDotPha;
+    [SerializeField] private LevelUpPopup popLevelUp;
+    [Header("InforDotPha")]
+    [SerializeField] private ItemInventory prefabItemRequireDotPha;
+    [SerializeField] private ItemInventory prefabItemThienDaoDotPha;
+    [SerializeField] private Button btnConfirmDotPha;
+    [SerializeField] private Button btnShowPopDotPha;
+
+    private void SetupPopupDotPha(List<ItemRef> itemRefs , ItemInventory prefab)
+    {
+        foreach (var item in itemRefs)
+        {
+            var itemInventory = GameManager.GetItemPoolWithPrefabInParent(prefab);
+            var handler = ItemTypeHandlerBagFactory.Create(item.Type);
+            handler.Handle(itemInventory, item, true);
+            itemInventory.InitCount(ItemProviderFactory.GetProvider(item.Type).GetCountOwner(item.Id));
+            itemInventory.InitCountRequire(item.Count);
+        }
+    }    
     private void Awake()
     {
         Init();
@@ -83,6 +102,18 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
 
             });
         }
+        SetEventButton(btnConfirmDotPha, () =>
+        {
+            popDotPha.Hide();
+            Observer.Notify(EventList.Network.SPECIAL_LEVELUP, this);
+        });
+        SetEventButton(btnShowPopDotPha, () =>
+        {
+            popDotPha.Show();
+            SetupPopupDotPha(new(),prefabItemRequireDotPha);
+            SetupPopupDotPha(new(), prefabItemThienDaoDotPha);
+
+        });
     }
    
     [Header("Tu Luyện")]
@@ -572,14 +603,19 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
         bagCongPhap.InitBag();
     }
 
-    public void SuccessTuLuyen(int valueAdd , int valueAddHp)
+    public void SuccessTuLuyen(int valueAdd , int valueAddHp , bool hasLevelUp, int oldHpMax , int oldThoNguyen,int oldThanThuc,int oldDontoc)
     {
         Observer.Notify(EventList.GamePlay.TIME_ADJUST);
         NotifyGroup.Instance.Show($"Tu luyện thành công {textNam.text} năm {textThang.text} tháng nhận được {valueAdd} tu vi");
         NotifyGroup.Instance.Show($"Khôi phục +{valueAddHp} khí huyết");
+        if(hasLevelUp)
+        {
+            popLevelUp.InitShow(oldHpMax,oldThoNguyen,oldThanThuc,oldDontoc);
 
+
+        }    
         Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
-
+        
     }
 
     public void FailTuLuyen(string message)
@@ -618,6 +654,17 @@ public class UIBeQuan : BaseBehaviour , INetworkEvent.ITuLuyen, INetworkEvent.IL
             Observer.Notify(EventList.Network.EQUIP_CONGPHAP, Pool.Get<TabPanel>(), typeSlot, (ushort)idCpUpdate);
             typeSlot = ETypeSlotCP.None;
         }
+        NotifyGroup.Instance.Show(message);
+    }
+
+    public void SuccessSpecialLevelUp(int oldHpMax, int oldThoNguyen, int oldThanThuc, int oldDontoc)
+    {
+        NotifyGroup.Instance.Show("Đột phá thành công");
+        popLevelUp.InitShow(oldHpMax, oldThoNguyen, oldThanThuc, oldDontoc);
+    }
+
+    public void FailSpecialLevelUp(string message)
+    {
         NotifyGroup.Instance.Show(message);
     }
 }

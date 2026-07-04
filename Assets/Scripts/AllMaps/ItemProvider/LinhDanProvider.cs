@@ -54,7 +54,11 @@ namespace AllMaps.ItemProvider
             }
             return 0;
         }
-
+        public override int GetCountOwner(ushort id)
+        {
+            var item = Client.Instance.CharacterData.InventoryManager.LinhDans.FirstOrDefault(x => x.Id == id);
+            return item != null ? item.Count : base.GetCountOwner(id);
+        }
         public void UseItem(ItemInventory itemInventory)
         {
             if (itemInventory.iItemData is LinhDan danDuoc)

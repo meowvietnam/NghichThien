@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Base;
 using CreateCharacter;
@@ -263,6 +263,12 @@ namespace Network.Core
                 var charData = Client.Instance.CharacterData;
                 int oldExp = charData.Progression.CurrentExp;
                 int oldHp = charData.Stats.Hp;
+                int oldHpMax = charData.Stats.SinhMenh;
+                int oldThoNguyen = charData.Stats.ThoNguyen;    
+                int oldThanThuc = charData.Stats.ThanThuc;
+                int oldDontoc = charData.Stats.TocDoBay;
+                int addNgoDaoDiem = result.LevelUpdated.NewNgoDaoDiem - charData.Progression.NgoDaoDiem;
+
                 if (result.Success)
                 {
                     if (result.HasLevelUpdated)
@@ -284,7 +290,11 @@ namespace Network.Core
                 {
                     if (result.Success)
                     {
-                        tuLuyenCallback.SuccessTuLuyen(result.CurrentExp - oldExp,result.NewHp - oldHp);
+                        if(addNgoDaoDiem > 0)
+                        {
+                            NotifyGroup.Instance.Show($"Thu hoạch được {addNgoDaoDiem}");
+                        }    
+                        tuLuyenCallback.SuccessTuLuyen(result.CurrentExp - oldExp,result.NewHp - oldHp , result.HasLevelUpdated , oldHpMax,oldThoNguyen,oldThanThuc,oldDontoc);
                     }
                     else
                     {
