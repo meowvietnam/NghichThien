@@ -1,8 +1,10 @@
 using AllMaps;
 using LuyenDan;
+using MemoryPack;
 
 namespace Network.Models
 {
+    [MemoryPackable]
     public partial class BuyAndSellResult
     {
         public bool Success { get; set; }

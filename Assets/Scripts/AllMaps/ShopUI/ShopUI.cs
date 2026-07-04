@@ -43,6 +43,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         {
             item.gameObject.SetActive(false);
         }
+
         var charData = Client.Instance.CharacterData;
         textNameUser.text = charData.Name;
         visualUserChar.SetGender(charData.Gender);
@@ -57,18 +58,24 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
                 // Lấy ra danh sách các itemRef (có thể chứa các phần tử trùng nhau)
                 foreach (var item in listItemUserBuy)
                 {
-                    if (!item.gameObject.activeSelf) break;
+                    if (!item.gameObject.activeSelf) continue;
                     item.itemRef.SetCount(item.count);
                 }
 
                 foreach (var item in listItemUserSell)
                 {
-                    if (!item.gameObject.activeSelf) break;
+                    if (!item.gameObject.activeSelf) continue;
                     item.itemRef.SetCount(item.count);
                 }
 
-                List<ItemRef> listItemBuy = listItemUserBuy.Select(x => x.itemRef).ToList();
-                List<ItemRef> listItemSell = listItemUserSell.Select(x => x.itemRef).ToList();
+                List<ItemRef> listItemBuy = listItemUserBuy
+                    .Select(x => x.itemRef)
+                    .Where(x => x.Id != 0)
+                    .ToList();
+                List<ItemRef> listItemSell = listItemUserSell
+                    .Select(x => x.itemRef)
+                    .Where(x => x.Id != 0)
+                    .ToList();
                 Observer.Notify(EventList.Network.BUY_AND_SELL, this, listItemBuy, listItemSell, eShopType, eMonPhai);
             }
         });
@@ -96,31 +103,53 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
 
     private void SetTextMoneyCurrent()
     {
-        int totalMoney = 0;
-
-        foreach (ItemInventory item in listItemUserSell)
+        foreach (var item in listItemUserBuy)
         {
-            if (!item.gameObject.activeSelf)
+            if (!item.gameObject.activeInHierarchy)
             {
-                break;
+                continue;
             }
-            var provider = ItemProviderFactory.GetProvider(item.itemRef.Type);
-            int priceSell = provider.GetPriceItemSell(item.itemRef.Id);
-            totalMoney += priceSell * item.count;
+            item.itemRef.SetCount(item.count);
         }
 
-        foreach (ItemInventory item in listItemUserBuy)
+        foreach (var item in listItemUserSell)
         {
-            if (!item.gameObject.activeSelf)
-            {
-                break;
-            }
-            var provider = ItemProviderFactory.GetProvider(item.itemRef.Type);
-            int priceBuy = provider.GetPriceItemBuy(item.itemRef.Id);
-
-            totalMoney -= priceBuy * item.count;
+            if (!item.gameObject.activeInHierarchy) continue;
+            item.itemRef.SetCount(item.count);
         }
-
+        List<ItemRef> buyItems = listItemUserBuy
+            .Where(x => x.gameObject.activeInHierarchy)
+            .Select(x => x.itemRef)
+            .Where(x => x.Id != 0)
+            .ToList();
+        List<ItemRef> sellItems = listItemUserSell
+            .Where(x => x.gameObject.activeInHierarchy)
+            .Select(x => x.itemRef)
+            .Where(x => x.Id != 0)
+            .ToList();
+        var buyItemsAmount = buyItems.Select(x =>
+        {
+            var provider = ItemProviderFactory.GetProvider(x.Type);
+            return new
+            {
+                Id = x.Id,
+                Count = x.Count,
+                Amount = x.Count * provider.GetPriceItemBuy(x.Id)
+            };
+        }).ToArray();
+        var sellItemsAmount = sellItems.Select(x =>
+        {
+            var provider = ItemProviderFactory.GetProvider(x.Type);
+            return new
+            {
+                Id = x.Id,
+                Count = x.Count,
+                Amount = x.Count * provider.GetPriceItemSell(x.Id)
+            };
+        }).ToArray();
+        Debug.Log($"SellItems: {string.Join(",\n", sellItemsAmount.Select(x => $"Id: {x.Id},Count: {x.Count}, Amount: {x.Amount}"))}");
+        Debug.Log($"BuyItems: {string.Join(",\n", buyItemsAmount.Select(x => $"Id: {x.Id},Count: {x.Count}, Amount: {x.Amount}"))}");
+        var totalMoney = sellItemsAmount.Sum(x => x.Amount) - buyItemsAmount.Sum(x => x.Amount);
         if (totalMoney >= 0)
         {
             textMoneyCurrent.text = $"+{totalMoney}";
@@ -177,7 +206,11 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
                             AddCountItemToItem(ItemInventory, slotItemGift);
                             slotItemGift.InitCount(1);
                             slotItemGift.InitAction(null, null,
-                                () => { AddCountItemToItem(slotItemGift, ItemInventory); });
+                                () =>
+                                {
+                                    AddCountItemToItem(slotItemGift, ItemInventory);
+                                });
+                            SetTextMoneyCurrent();
                             break;
                         }
                     }
@@ -189,7 +222,6 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
                             {
                                 AddCountItemToItem(ItemInventory, slotItemGift);
                             }
-
                             break;
                         }
                     }
@@ -203,7 +235,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
                 //}
             });
         }, false, true);
-        bagUserList.InitBag(false);
+        bagList.InitBag(false);
     }
 
     private void AddCountItemToItem(ItemInventory itemStart, ItemInventory itemEnd, int count = 1)
@@ -221,7 +253,6 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
             {
                 itemStart.gameObject.SetActive(false);
             }
-
             SetTextMoneyCurrent();
         }
     }
@@ -234,12 +265,21 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
 
     public void SuccessBuyAndSell()
     {
-        throw new NotImplementedException();
+        foreach (var item in listItemUserSell)
+        {
+            item.gameObject.SetActive(false);
+        }
+        foreach (var item in listItemUserBuy)
+        {
+            item.gameObject.SetActive(false);
+        }
+        NotifyGroup.Instance.Show($"Giao dịch thành công!");
+        textMoneyCurrent.text = "0";
     }
 
     public void FailBuyAndSell(string message)
     {
-        throw new NotImplementedException();
+        NotifyGroup.Instance.Show(message);
     }
 
     public void SuccessLoadShop(List<ItemRef> itemRefs)
