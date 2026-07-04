@@ -117,7 +117,8 @@ public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetwork
 
     public void SuccessDoneTask()
     {
-        taskDaily=null;
+        taskDaily.InitTask(taskDaily.DailyQuest);
+        taskDaily =null;
     }
     public void FailDoneTask(string message)
     {

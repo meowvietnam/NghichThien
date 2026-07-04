@@ -76,6 +76,7 @@ public class TaskDaily : BaseBehaviour
         {
             DoneTask();
         }
+        itemRequire.textCount.gameObject.SetActive(true);
     }
     public void DoneTask()
     {

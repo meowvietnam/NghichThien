@@ -2,6 +2,7 @@
 using DG.Tweening;
 using LongDH.LongDHModules;
 using LongDHModules;
+using Network;
 using Network.Models;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class ArenaManager : BaseBehaviour , INetworkEvent.ILoadCharCombatArena
     [SerializeField] private Button btnStart;
     [SerializeField] public Sprite[] spriteRefRank;
     [SerializeField] public Sprite[] spriteRefRankName;
-    [SerializeField] private int pointUser; // sau này chuyển cái này thành của player
+    [SerializeField] private int pointUser => Client.Instance.CharacterData.ArenaManager.Points; // sau này chuyển cái này thành của player
     public ETypeArenaRank CurrentTypeRank => GetArenaRankWithPoint(pointUser);
     public static ArenaManager Instance;
     [SerializeField] private PrepareElementArenaCombat userUI;
@@ -23,6 +24,27 @@ public class ArenaManager : BaseBehaviour , INetworkEvent.ILoadCharCombatArena
     [SerializeField]
     private Button btnBackScene;
     [SerializeField] private Sprite spriteCombat;
+    [SerializeField] private Image progressRank;
+    [SerializeField] private Image progressBar;
+    [SerializeField] private Text txtPoint;
+    private void SetProgress()
+    {
+        if(CurrentTypeRank == ETypeArenaRank.ThanhGiai)
+        {
+            progressRank.gameObject.SetActive(false);
+            txtPoint.text = pointUser.ToString();
+            progressBar.fillAmount = 1f;
+        }   
+        else
+        {
+            ETypeArenaRank nextRank = (ETypeArenaRank)((int)CurrentTypeRank+1);
+            int valueNextRank = TypeRankArenaWithValue[nextRank];
+            progressRank.gameObject.SetActive(true);
+            progressRank.sprite= spriteRefRank[(int)nextRank];
+            txtPoint.text =$"{pointUser}/{valueNextRank}";
+            progressBar.fillAmount = (float)(pointUser/valueNextRank);
+        }    
+    }    
     private void Awake()
     {
         Instance = this;
@@ -92,7 +114,7 @@ public class ArenaManager : BaseBehaviour , INetworkEvent.ILoadCharCombatArena
         Pool.Get<UIManager>().panelGroup.SetActive(false);
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
         Pool.Get<UIManager>().ListIcon.gameObject.SetActive(false);
-
+        SetProgress();
     }
     public void SuccessLoadCharCombatArena(CharacterSnapshot user, CharacterSnapshot enemy)
     {

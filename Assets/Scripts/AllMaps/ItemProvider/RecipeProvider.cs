@@ -1,4 +1,6 @@
 using LuyenDan;
+using Network;
+using System.Linq;
 
 namespace AllMaps.ItemProvider
 {
@@ -20,7 +22,11 @@ namespace AllMaps.ItemProvider
         {
            return LuyenDanResources.Instance.FindRecipe(Id);
         }
-
+        public override int GetCountOwner(ushort id)
+        {
+            var item = Client.Instance.CharacterData.InventoryManager.Recipes.FirstOrDefault(x => x.Id == id);
+            return item != null ? item.Count : base.GetCountOwner(id);
+        }
         public override int GetPriceItemSell(ushort Id)
         {
             var data = GetDataItemByIdRef(Id);
