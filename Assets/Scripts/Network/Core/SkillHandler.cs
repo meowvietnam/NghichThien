@@ -26,7 +26,7 @@ namespace Network.Core
         {
             MessageTag.LearnNgoDaoResult, MessageTag.EquipThanThongResult, MessageTag.UnequipThanThongResult,
             MessageTag.EquipCongPhapResult, MessageTag.UnequipCongPhapResult,
-            MessageTag.TuLuyenResult, MessageTag.LinhNgoResult , MessageTag.DotPhaCongPhapResult,
+            MessageTag.TuLuyenResult, MessageTag.LinhNgoResult, MessageTag.DotPhaCongPhapResult,
         };
 
         public MessageTag[] HandleTag => handler;
@@ -49,14 +49,69 @@ namespace Network.Core
             Observer.AddObserver(EventList.Network.TU_LUYEN, TuLuyen);
             Observer.AddObserver(EventList.Network.LINH_NGO, LinhNgo);
             Observer.AddObserver(EventList.Network.DOT_PHA_CONGPHAP, DotPhaCongPhap);
-
+            Observer.AddObserver(EventList.Network.USE_DAN, UseDan);
         }
+
+        private async void UseDan(object[] data)
+        {
+            var callback = data[0] as INetworkEvent.IUseDan;
+            var id = (ushort)data[1];
+            var count = (ushort)data[2];
+            var request = new UseDanRequest()
+            {
+                Id = id,
+                Count = count,
+            };
+            var client = Client.Instance;
+            var reader = await client.MemRequestWait(MessageTag.UseDanRequest, request);
+            var result = reader.MemRead<UseDanResult>();
+            if (result.Success)
+            {
+                var statsSnapshot = result.Stats;
+                if(statsSnapshot != null)
+                {
+                    client.CharacterData.Stats.ApplyFrom(statsSnapshot);
+                }
+                var linhDan = LuyenDanResources.Instance.FindLinhDan(id);
+                var type = linhDan.ETypeDan;
+                if (type == ETypeDan.DanCombat)
+                {
+                    var danCombatRef = new DanCombatUsed()
+                    {
+                        Id = id,
+                        Count = count
+                    };
+                    var danCombatUseds = client.CharacterData.EquipmentManager.DanCombatUseds;
+                    if (danCombatUseds.TryGetValue(danCombatRef, out var danCombatUsed))
+                    {
+                        danCombatUsed.Count += count;
+                    }
+                    else
+                    {
+                        danCombatUseds.Add(danCombatRef);
+                    }
+                }
+            }
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (result.Success)
+                {
+                    callback?.SuccessUseDan();
+                }
+                else
+                {
+                    callback?.FailUseDan(result.Message);
+                }
+            });
+        }
+
         private void DotPhaCongPhap(object[] data)
         {
             dotPhaCallback = data[0] as INetworkEvent.IDotPhaCongPhap;
             var id = (int)data[1];
             Client.Instance.Send(MessageTag.DotPhaCongPhap, id);
         }
+
         private void LinhNgo(object[] data)
         {
             linhNgoCallback = data[0] as INetworkEvent.ILinhNgo;
@@ -265,26 +320,17 @@ namespace Network.Core
                 int oldHp = charData.Stats.Hp;
                 if (result.Success)
                 {
-                    if (result.HasLevelUpdated)
-                    {
-                        result.LevelUpdated.ApplyTo(charData);
-                    }
-                    else
-                    {
-                        charData.Progression.CurrentExp = result.CurrentExp;
-                    }
-
+                    charData.Progression.CurrentExp = result.CurrentExp;
                     var stats = charData.Stats;
                     stats.LinhThach = result.RemainingMoney;
                     stats.TamCanh = result.NewTamCanh;
                     stats.Hp = result.NewHp;
                 }
-
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
                     {
-                        tuLuyenCallback.SuccessTuLuyen(result.CurrentExp - oldExp,result.NewHp - oldHp);
+                        tuLuyenCallback.SuccessTuLuyen(result.CurrentExp - oldExp, result.NewHp - oldHp);
                     }
                     else
                     {
@@ -345,6 +391,7 @@ namespace Network.Core
 
                         inventory.Add(thanThong);
                     }
+
                     charData.Stats.LinhThach = remainingMoney;
                     charData.Stats.TuoiTac = newTuoiTac;
                     charData.Progression.NgoDaoDiem = newNgoDaoDiem;
@@ -398,6 +445,7 @@ namespace Network.Core
                                 inventory.CongPhaps.Remove(itemRef);
                             }
                         }
+
                         cpOwner.Level += 1;
                         inventory.AddOrUpdate(cpOwner);
                         charData.Stats.LinhThach = remainingMoney;

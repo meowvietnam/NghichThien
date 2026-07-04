@@ -83,6 +83,10 @@ namespace Network
             module.RemoveHandler<ShopHandler>();
             module.AddHandler(shopHandler);
             
+            var progressionHandler = new ProgressionHandler();
+            module.RemoveHandler<ProgressionHandler>();
+            module.AddHandler(progressionHandler);
+            
             AdminPanel.Instance.StartListen();
         }
         public void AddRequest(MessageTag tag, Action<IReader> response, int timeoutMilliseconds = 0, Action<Exception> onError = null)

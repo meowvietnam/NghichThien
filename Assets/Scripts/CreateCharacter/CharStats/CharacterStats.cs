@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using LuyenDan;
+using LuyenDan.Inventory;
 using Network;
 using Network.Extensions;
+using Network.Models;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -219,6 +222,25 @@ namespace CreateCharacter.CharStats
             }
         }
 
+        public void ApplyFrom(StatsSnapshot snapshot)
+        {
+            Kim = snapshot.Kim;
+            Moc = snapshot.Moc;
+            Thuy = snapshot.Thuy;
+            Hoa = snapshot.Hoa;
+            Tho = snapshot.Tho;
+            Ma = snapshot.Ma;
+            TuChat = snapshot.TuChat;
+            NgoTinh = snapshot.NgoTinh;
+            ThanThuc = snapshot.ThanThuc;
+            TocDoBay = snapshot.TocDoBay;
+            LinhThach = snapshot.LinhThach;
+            Hp = snapshot.Hp;
+            SinhMenh = snapshot.SinhMenh;
+            ThoNguyen = snapshot.ThoNguyen;
+            TamCanh = snapshot.TamCanh;
+            DanDoc = snapshot.DanDoc;
+        }
         public int ByteSize()
         {
             return Kim.ByteSize() + Moc.ByteSize() + Thuy.ByteSize() + Hoa.ByteSize()

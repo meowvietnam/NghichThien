@@ -1,0 +1,12 @@
+using MemoryPack;
+
+namespace Network.Models
+{
+    [MemoryPackable]
+    public partial class UseDanResult
+    {
+        public bool Success { get; set; }
+        public string? Message { get; set; }
+        public StatsSnapshot? Stats { get; set; }
+    }
+}
