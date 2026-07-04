@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using AllMaps;
+using AllMaps.ItemProvider;
 using CreateCharacter;
 using LongDH.LongDHModules;
 using LuyenDan;
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
 using Network.Models;
+using UnityEngine;
 
 namespace Network.Core
 {
@@ -22,8 +24,8 @@ namespace Network.Core
         private async void BuyAndSell(object[] data)
         {
             var callback = data[0] as INetworkEvent.IBuyAndSell;
-            var sellItems = data[1] as List<ItemRef>;
-            var buyItems = data[2] as List<ItemRef>;
+            var buyItems = data[1] as List<ItemRef>;
+            var sellItems = data[2] as List<ItemRef>;
             var shopType = (EShopType)data[3];
             var client = Client.Instance;
             var request = new BuyAndSell()
@@ -56,6 +58,7 @@ namespace Network.Core
                 }
                 else
                 {
+                    Debug.Log(result.Message);
                     callback.FailBuyAndSell(result.Message);
                 }
             });
