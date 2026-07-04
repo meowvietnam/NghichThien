@@ -259,8 +259,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
 
     private void InitBagNPC(List<ItemRef> itemDatas)
     {
-        var characterData = Client.Instance.CharacterData;
-        var gameConfig = Pool.Get<GameManager>();
+
         InitBagLogic(bagNpcList, listItemUserBuy, itemDatas);
     }
 
