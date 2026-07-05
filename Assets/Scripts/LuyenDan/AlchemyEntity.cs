@@ -37,7 +37,7 @@ namespace LuyenDan
             clearButton.onClick.AddListener(OnClear);
         }
 
-        protected override void SetData(IItemData data)
+        public override void SetData(IItemData data)
         {
             base.SetData(data);
             if (data == null)

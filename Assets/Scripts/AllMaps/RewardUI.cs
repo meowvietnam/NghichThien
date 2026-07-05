@@ -1,3 +1,4 @@
+using CreateCharacter;
 using LuyenDan;
 using TMPro;
 using UnityEngine;
@@ -8,17 +9,25 @@ namespace AllMaps
     {
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private GameObject claimed;
-        public void Init(ItemRef rewardItem, bool claim)
+        public void Init(IMailReward rewardItem, bool claim)
         {
             SetClaim(claim);
-            var data = LuyenDanResources.Instance.FindItem(rewardItem);
-            SetData(data);
+            var context = new MailRewardUIContext()
+            {
+                RewardUI = this
+            };
+            rewardItem.ShowUI(context);
         }
 
         public void SetClaim(bool claim)
         {
             claimed.SetActive(claim);
             canvasGroup.alpha = claim ? 0.65f : 1f;
+        }
+
+        public void DestroyObject()
+        {
+            Destroy(selfObject);
         }
     }
 }

@@ -63,7 +63,7 @@ namespace LuyenDan
             if (itemNameText != null) itemNameText.color = quality.Color;
         }
 
-        protected virtual void SetCount(int count)
+        public virtual void SetCount(int count)
         {
             if (countText != null)
             {
@@ -71,7 +71,7 @@ namespace LuyenDan
             }
         }
 
-        protected virtual void SetData(IItemData data)
+        public virtual void SetData(IItemData data)
         {
             bool hasItem = data != null;
             if (emptySlot != null) emptySlot.SetActive(!hasItem);

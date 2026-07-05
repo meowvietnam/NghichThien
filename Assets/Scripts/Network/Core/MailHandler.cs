@@ -6,6 +6,8 @@ using LuyenDan;
 using Network.Callback;
 using Network.ClientState;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
+using Network.Models;
 using UnityEngine;
 
 namespace Network.Core
@@ -14,15 +16,44 @@ namespace Network.Core
     {
         private IMailCallback callback;
         private Client Client => Client.Instance;
-
+        private long startId;
+        private bool hasNext;
+        private int pageSize;
+        private bool getLock;
+        public long StartId => startId;
+        public int PageSize => pageSize;
+        public bool HasNext => hasNext;
+        public bool GetLock => getLock;
+        
         public MailHandler(IMailCallback callback)
         {
             this.callback = callback;
+            startId = long.MaxValue;
+            hasNext = true;
+            pageSize = 50;
         }
 
+        public void GetMails()
+        {
+            if (getLock) return;
+            if (hasNext)
+            {
+                getLock = true;
+                SendGetMails();
+            }
+        }
+        private void SendGetMails()
+        {
+            var request = new GetMails()
+            {
+                StartId = startId,
+                PageSize = pageSize
+            };
+            Client.Send(MessageTag.GetMails, request);
+        }
         public void OnEnter()
         {
-            Client.Send(MessageTag.GetMails);
+            GetMails();
         }
 
         public void Handle(Message<MessageTag> message)
@@ -35,26 +66,31 @@ namespace Network.Core
                 if (result.Success)
                 {
                     var charData = Client.CharacterData;
-                    charData.Social.Mails = result.Mails;
+                    charData.Social.Mails.AddRange(result.Mails);
+                    startId = result.Mails.Last().Id;
+                    hasNext = result.HasNext;
+                    if (hasNext)
+                    {
+                        pageSize = result.Mails.Count;
+                    }
                 }
-
                 callback.OnGetMails(result);
+                getLock = false;
             }
             else if (tag == MessageTag.MarkMailRead)
             {
-                var id = reader.Read<int>();
+                var id = reader.Read<long>();
                 var mails = Client.CharacterData.Social.Mails;
                 var mail = mails.FirstOrDefault(x => x.Id == id);
                 if (mail != null)
                 {
                     mail.IsRead = true;
                 }
-
                 callback.MarkMailRead(id);
             }
             else if (tag == MessageTag.RemoveMailId)
             {
-                var id = reader.Read<int>();
+                var id = reader.Read<long>();
                 var mails = Client.CharacterData.Social.Mails;
                 var mail = mails.FirstOrDefault(x => x.Id == id);
                 if (mail != null)
@@ -66,7 +102,7 @@ namespace Network.Core
             }
             else if (tag == MessageTag.RemoveAllMailsResult)
             {
-                var removeMails = reader.ReadArray<int>().ToList();
+                var removeMails = reader.ReadArray<long>().ToList();
                 if (removeMails.Any())
                 {
                     var mails = Client.CharacterData.Social.Mails;
@@ -106,8 +142,12 @@ namespace Network.Core
                     mail.IsClaim = true;
                 }
             }
-            var inventory = Client.CharacterData.InventoryManager;
-            inventory.AddToInventory(result.RewardItems);
+            var rewards = result.Rewards;
+            var charData = Client.CharacterData;
+            foreach (var reward in rewards)
+            {
+                reward.ClaimReward(charData);
+            }
         }
 
 
@@ -128,5 +168,20 @@ namespace Network.Core
         };
 
         public MessageTag[] HandleTag => clientHandler;
+
+        public void RemoveAll()
+        {
+            Client.Instance.Send(MessageTag.RemoveAllMails);
+        }
+
+        public void ReadMail(long id)
+        {
+            Client.Instance.Send(MessageTag.ReadMail, id);
+        }
+
+        public void ClaimAll()
+        {
+            Client.Instance.Send(MessageTag.ClaimAllMails);
+        }
     }
 }

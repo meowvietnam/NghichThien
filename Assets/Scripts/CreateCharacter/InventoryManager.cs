@@ -6,7 +6,6 @@ using Base;
 using LuyenDan;
 using LuyenKhi;
 using Network;
-using Network.Extensions;
 using Network.Extensions.MemoryPack;
 using Network.Models;
 using Sirenix.OdinInspector;
@@ -246,7 +245,6 @@ namespace CreateCharacter
                     {
                         itemRefse.Remove(item);
                     }
-                   
                     return;
                 }
             }

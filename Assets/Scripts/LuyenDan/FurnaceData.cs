@@ -1,24 +1,21 @@
 using System;
 using Base;
+using MemoryPack;
 using Network;
 using Network.Extensions;
 using UnityEngine;
 
 namespace LuyenDan
 {
+    [MemoryPackable]
     [Serializable]
-    public class FurnaceData : IMemorySerializable<FurnaceData>, IEquatable<FurnaceData>, IDeepClone<FurnaceData>
+    public partial class FurnaceData : IEquatable<FurnaceData>, IDeepClone<FurnaceData>
     {
         [field: SerializeField] public ushort SelfId { get; set; }
         [field: SerializeField] public ushort Id { get; set; }
         [field: SerializeField] public sbyte Durability { get; set; }
 
         public event Action<int> OnDurabilityChanged;
-
-        public int ByteSize()
-        {
-            return SelfId.ByteSize() + Id.ByteSize() + Durability.ByteSize();
-        }
 
         public ItemRef CreateRefSelfID()
         {
@@ -39,26 +36,12 @@ namespace LuyenDan
                 Count = 1
             };
         }
-        public void Serialize(IWriter writer)
-        {
-            writer.Write(SelfId);
-            writer.Write(Id);
-            writer.Write(Durability);
-        }
 
         public void SetDurability(int durability)
         {
             Durability = (sbyte)durability;
             OnDurabilityChanged?.Invoke(durability);
         }
-
-        public void Deserialize(IReader reader, ref FurnaceData value)
-        {
-            value.SelfId = reader.Read<ushort>();
-            value.Id = reader.Read<ushort>();
-            value.Durability = reader.Read<sbyte>();
-        }
-
         public override int GetHashCode()
         {
             return SelfId;

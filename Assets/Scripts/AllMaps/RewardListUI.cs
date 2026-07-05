@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Security.Claims;
+using CreateCharacter;
 using LuyenDan;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,10 +13,11 @@ namespace AllMaps
         [SerializeField] private Button removeButton;
         [SerializeField] private GameObject rewardObjects;
         [SerializeField] private RewardUI rewardUIPrefab;
-        private List<RewardUI> rewardItems = new List<RewardUI>();
+        private List<RewardUI> rewardItems = new();
         private MailUI mailUI;
-        public void Init(MailUI mailUI,List<ItemRef> rewardItem, bool claim)
+        public void Init(MailUI mailUI,List<IMailReward> rewardItem, bool claim)
         {
+            DestroyAll();
             this.mailUI = mailUI;
             var active = rewardItem.Count > 0;
             rewardObjects.SetActive(active);
@@ -31,6 +33,16 @@ namespace AllMaps
             }
         }
 
+        private void DestroyAll()
+        {
+            claimButton.onClick.RemoveAllListeners();
+            removeButton.onClick.RemoveAllListeners();
+            foreach (var rewardItem in rewardItems)
+            {
+                rewardItem.DestroyObject();
+            }
+            rewardItems.Clear();
+        }
         public void SetClaim(bool claim)
         {
             claimButton.interactable = !claim;
@@ -45,7 +57,6 @@ namespace AllMaps
         {
             mailUI.OnClaim();
         }
-
         private void OnDestroy()
         {
             claimButton.onClick.RemoveAllListeners();

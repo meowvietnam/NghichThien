@@ -2,36 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AllMaps;
+using MemoryPack;
 using Network;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace CreateCharacter
 {
     [Serializable]
-    public class Social : IMemorySerializable<Social>
+    [MemoryPackable]
+    public partial class Social
     {
         [field: SerializeField] public List<Mail> Mails { get; set; } = new();
         [field: ShowInInspector] public HashSet<Relationship> Relationships { get; set; } = new();
-
-        public void Deserialize(IReader reader, ref Social value)
-        {
-            value.Mails = reader.ReadArray<Mail>().ToList();
-            value.Relationships = reader.ReadArray<Relationship>().ToHashSet();
-        }
-
-        public int ByteSize()
-        {
-            return Mails.ByteSize() + Relationships.ByteSize();
-        }
-
-        public void Serialize(IWriter writer)
-        {
-            writer.WriteArray(Mails);
-            writer.WriteArray(Relationships);
-        }
-
         public int GetRelationshipWithNPC(int npcId)
         {
             var r = new Relationship()

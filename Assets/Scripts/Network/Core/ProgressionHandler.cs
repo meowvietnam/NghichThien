@@ -38,6 +38,6 @@ namespace Network.Core
         }
 
         private static MessageTag[] handler = { MessageTag.LevelUpdated };
-        public MessageTag[] HandleTag { get; }
+        public MessageTag[] HandleTag => handler;
     }
 }

@@ -45,7 +45,6 @@ namespace LuyenKhi
             {
                 return Materials.First(x => x.Id == itemRef.Id);
             }
-
             return null;
         }
         public Material FindMaterial(ushort Id)

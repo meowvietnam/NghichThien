@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CreateCharacter;
 using LuyenDan;
+using LuyenDan.Inventory;
 using Network;
 using Network.Callback;
 using Network.Models;

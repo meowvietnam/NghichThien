@@ -12,7 +12,7 @@ namespace LuyenDan
         [SerializeField] private HerbType herbType;
         public int Count { get; private set; }
 
-        protected override void SetCount(int count)
+        public override void SetCount(int count)
         {
             int delta = Count - count;
             Item.ItemRef.SetCount(Item.ItemRef.Count + delta);

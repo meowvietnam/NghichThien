@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Base;
@@ -5,6 +6,7 @@ using DG.Tweening;
 using LongDH.LongDHModules;
 using LongDHModules;
 using Network;
+using Network.Core;
 using UnityEngine;
 using UnityEngine.UI;
 using Network.Extensions;
@@ -19,37 +21,71 @@ namespace AllMaps
         [SerializeField] private Transform mailCellParent;
         [SerializeField] private ToggleGroup toggleGroup;
         private List<MailCell> mailCells = new List<MailCell>();
-        private List<MailUI> mailUIs = new List<MailUI>();
         [SerializeField] private GameObject selfObject;
         [SerializeField] private RectTransform panelTransform;
         [SerializeField] private GameObject mask;
         [SerializeField] private Button close;
         [SerializeField] private Button claimAllBtn;
         [SerializeField] private Button removeAllBtn;
+        [SerializeField] private ScrollRect scrollRect;
+        [SerializeField, Range(0f, 1f)] private float loadMoreThreshold = 0.1f;
         private float time = 0;
-        private MailUI opening;
         [SerializeField] private string removeAllMessage;
+        private MailHandler mailHandler;
+        private MailUI mailUIInstance;
+        private Func<MailCell, bool> filter;
+
+        private Func<MailCell, bool> GetFilter()
+        {
+            if (filter == null)
+            {
+                filter = All;
+            }
+            return filter;
+        }
+
         private void Start()
         {
+            filter = All;
             SetEventButton(close, OnClose);
             SetEventButton(claimAllBtn, ClaimAll);
-            SetEventButton(removeAllBtn,RemoveAll);
+            SetEventButton(removeAllBtn, RemoveAll);
+            mailHandler = Client.Instance.CoreModule.GetHandler<MailHandler>();
+            scrollRect.onValueChanged.AddListener(OnScrollValueChanged);
+        }
+
+        private bool All(MailCell cell)
+        {
+            return true;
+        }
+
+        private bool Unread(MailCell cell)
+        {
+            return !cell.Mail.IsRead;
+        }
+
+        private void OnScrollValueChanged(Vector2 normalizedPosition)
+        {
+            if (normalizedPosition.y <= loadMoreThreshold)
+            {
+                mailHandler.GetMails();
+            }
         }
 
         private void RemoveAll()
         {
             var popup = Pool.Get<PopupConfirmAction>();
-            popup.ShowPopConfirmAction(removeAllMessage,OnRemoveAllConfirm);
+            popup.ShowPopConfirmAction(removeAllMessage, OnRemoveAllConfirm);
         }
 
         private void OnRemoveAllConfirm()
         {
-            Client.Instance.Send(MessageTag.RemoveAllMails);
+            mailHandler.RemoveAll();
         }
 
         private void ClaimAll()
         {
-            Client.Instance.Send(MessageTag.ClaimAllMails);
+            mailHandler.ClaimAll();
         }
 
         private void FixedUpdate()
@@ -68,7 +104,7 @@ namespace AllMaps
             }
         }
 
-        public void Init(List<Mail> mails)
+        public void OnAdd(List<Mail> mails)
         {
             foreach (var mail in mails)
             {
@@ -86,22 +122,18 @@ namespace AllMaps
             close.onClick.RemoveAllListeners();
             claimAllBtn.onClick.RemoveAllListeners();
             removeAllBtn.onClick.RemoveAllListeners();
+            scrollRect.onValueChanged.RemoveListener(OnScrollValueChanged);
         }
 
         public void SelectMail(Mail mail)
         {
             var id = mail.Id;
-            Client.Instance.Send(MessageTag.ReadMail, id);
-            if (opening != null)
+            if (mailUIInstance == null) return;
+            mailUIInstance.Init(mail);
+            mailUIInstance.SetActive(true);
+            if (!mail.IsRead)
             {
-                opening.SetActive(false);
-            }
-
-            var mailUI = mailUIs.FirstOrDefault(x => x.Mail.Id == id);
-            if (mailUI != null)
-            {
-                opening = mailUI;
-                opening.SetActive(true);
+                mailHandler.ReadMail(id);
             }
         }
 
@@ -125,7 +157,7 @@ namespace AllMaps
             }
         }
 
-        public void MarkMailRead(int id)
+        public void MarkMailRead(long id)
         {
             var mailCell = mailCells.FirstOrDefault(x => x.Mail.Id == id);
             if (mailCell != null)
@@ -134,7 +166,7 @@ namespace AllMaps
             }
         }
 
-        public void RemoveMail(int id)
+        public void RemoveMail(long id)
         {
             var mailCell = mailCells.FirstOrDefault(x => x.Mail.Id == id);
             if (mailCell != null)
@@ -143,11 +175,12 @@ namespace AllMaps
                 Destroy(mailCell.gameObject);
             }
 
-            var mailUI = mailUIs.FirstOrDefault(x => x.Mail.Id == id);
-            if (mailUI != null)
+            var mail = mailUIInstance.Mail;
+            if (mail == null) return;
+            var idInstance = mail.Id;
+            if (idInstance == id)
             {
-                mailUIs.Remove(mailUI);
-                Destroy(mailUI.gameObject);
+                mailUIInstance.SetActive(false);
             }
         }
 
@@ -155,22 +188,21 @@ namespace AllMaps
         {
             if (type == MailFilterType.All)
             {
-                foreach (var mailCell in mailCells)
-                {
-                    mailCell.SetActive(true);
-                }
+                filter = All;
             }
-            else if(type == MailFilterType.NeverRead)
+            else if (type == MailFilterType.NeverRead)
             {
-                foreach (var mailCell in mailCells)
-                {
-                    var active = !mailCell.Mail.IsRead;
-                    mailCell.SetActive(active);
-                }
+                filter = Unread;
+            }
+
+            foreach (var mailCell in mailCells)
+            {
+                var active = filter(mailCell);
+                mailCell.SetActive(active);
             }
         }
 
-        public void RemoveAllMail(List<int> removeMails)
+        public void RemoveAllMail(List<long> removeMails)
         {
             removeMails.ForEach(RemoveMail);
         }
@@ -178,23 +210,28 @@ namespace AllMaps
         public void OnClaimMails(RewardResult result)
         {
             var mailIds = result.Mails;
-            foreach (var mailId in mailIds)
+            if (mailUIInstance == null) return;
+            var mail = mailUIInstance.Mail;
+            if (mail == null) return;
+            var id = mail.Id;
+            if (mailIds.Contains(id))
             {
-                var mailUI = mailUIs.FirstOrDefault(x => x.Mail.Id == mailId);
-                if (mailUI != null)
-                {
-                    mailUI.MarkAsClaimed();
-                }
+                mailUIInstance.MarkAsClaimed();
             }
         }
+
         public void AddMail(Mail mail)
         {
-            var mailUI = Instantiate(mailUIPrefab, mailUIParent);
-            mailUI.Init(mail);
-            mailUIs.Add(mailUI);
-            mailUI.SetActive(false);
+            if (mailUIInstance == null)
+            {
+                var mailUI = Instantiate(mailUIPrefab, mailUIParent);
+                mailUI.SetActive(false);
+                mailUIInstance = mailUI;
+            }
             var mailCell = Instantiate(mailCellPrefab, mailCellParent);
             mailCell.Init(this, mail, toggleGroup);
+            var active = GetFilter()(mailCell);
+            mailCell.SetActive(active);
             mailCells.Add(mailCell);
         }
     }

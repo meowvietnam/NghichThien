@@ -27,7 +27,7 @@ namespace AllMaps
             button.onClick.RemoveAllListeners();
         }
 
-        public void Init(List<Mail> mails)
+        public void OnAdd(List<Mail> mails)
         {
             var isNeverRead = mails.Any(x => !x.IsRead);
             redPoint.SetActive(isNeverRead);

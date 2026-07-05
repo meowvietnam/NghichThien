@@ -1,36 +1,19 @@
 using System;
-using Network;
-using Network.Extensions;
+using MemoryPack;
 using UnityEngine;
 
 namespace CreateCharacter
 {
     [Serializable]
-    public class Relationship : IMemorySerializable<Relationship>, IEquatable<Relationship>
+    [MemoryPackable]
+    public partial class Relationship : IEquatable<Relationship>
     {
-        [field: SerializeField]
-        public ushort Npc { get; set; }
-        [field: SerializeField]
-        public ushort Points { get; set; }
+        [field: SerializeField] public ushort Npc { get; set; }
+        [field: SerializeField] public ushort Points { get; set; }
 
-        public void Deserialize(IReader reader, ref Relationship value)
-        {
-            value.Npc = reader.Read<ushort>();
-            value.Points = reader.Read<ushort>();
-        }
         public override int GetHashCode()
         {
             return Npc;
-        }
-        public int ByteSize()
-        {
-            return Npc.ByteSize() + Points.ByteSize();
-        }
-
-        public void Serialize(IWriter writer)
-        {
-            writer.Write(Npc);
-            writer.Write(Points);
         }
         public bool Equals(Relationship? other)
         {
