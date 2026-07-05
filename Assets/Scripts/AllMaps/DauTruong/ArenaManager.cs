@@ -40,7 +40,7 @@ public class ArenaManager : BaseBehaviour , INetworkEvent.ILoadCharCombatArena
             ETypeArenaRank nextRank = (ETypeArenaRank)((int)CurrentTypeRank+1);
             int valueNextRank = TypeRankArenaWithValue[nextRank];
             progressRank.gameObject.SetActive(true);
-            progressRank.sprite= spriteRefRank[(int)nextRank];
+            progressRank.sprite= spriteRefRank[(int)nextRank-1];
             txtPoint.text =$"{pointUser}/{valueNextRank}";
             progressBar.fillAmount = (float)(pointUser/valueNextRank);
         }    
