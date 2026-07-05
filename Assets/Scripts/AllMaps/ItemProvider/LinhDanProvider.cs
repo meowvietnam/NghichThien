@@ -1,10 +1,11 @@
 using CreateCharacter;
 using LongDH.LongDHModules;
+using LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using Network;
+using System;
 using System.Linq;
-using LongDHModules;
 
 namespace AllMaps.ItemProvider
 {
@@ -65,6 +66,24 @@ namespace AllMaps.ItemProvider
             {
                 if (danDuoc.ETypeDan == ETypeDan.DanBuff || danDuoc.ETypeDan == ETypeDan.DanCombat)
                 {
+                    if(danDuoc.ETypeDan == ETypeDan.DanBuff)
+                    {
+                        bool isTuViType = danDuoc.EBuffType switch
+                        {
+                            EDanBuffType.TuVi => true,
+                            EDanBuffType.TuViVaDanDocDuoiTrucCo => true,
+                            EDanBuffType.TuViVaDanDocDuoiKetDan => true,
+                            EDanBuffType.TuViVaDanDocDuoiNguyenAnh => true,
+                            EDanBuffType.TuViVaDanDocDuoiHoaThan => true,
+                            _ => false // Các loại buff không phải tu vi
+                        };
+
+                        if (isTuViType && Client.Instance.CharacterData.Stats.Ability.HasFlag(CreateCharacter.CharStats.Ability.TienThienDiMach))
+                        {
+                           return;
+                        }
+
+                    }    
                     var selectNum = Pool.Get<TabPanel>().selectNum;
                     selectNum.SetMin(0);
                     int maxValue = 0;
