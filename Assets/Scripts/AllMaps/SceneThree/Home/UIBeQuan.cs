@@ -115,9 +115,9 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
             if (inforLevel.IsSpecialLevelUp && Client.Instance.CharacterData.Progression.CurrentExp >= inforLevel.tuviRequireNextLevel)
             {
                 popDotPha.Show();
-                SetupPopupDotPha(inforLevel.requireItems, prefabItemRequireDotPha);
+                SetupPopupDotPha(inforLevel.RequireItem, prefabItemRequireDotPha);
                 var btnGreyConfirmDotPha = btnConfirmDotPha.transform.GetChild(0).GetComponent<Button>();
-                var canDotPha = inforLevel.requireItems.All(x =>
+                var canDotPha = inforLevel.RequireItem.All(x =>
                 ItemProviderFactory.GetProvider(x.Type)?.GetCountOwner(x.Id) >= x.Count);
                 btnGreyConfirmDotPha.gameObject.SetActive(!canDotPha);
                 if (canDotPha)
@@ -137,7 +137,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
                     });
                 }    
                 
-                SetupPopupDotPha(inforLevel.buffItems, prefabItemThienDaoDotPha);
+                SetupPopupDotPha(inforLevel.BuffItem, prefabItemThienDaoDotPha);
             }   
             else
             {
