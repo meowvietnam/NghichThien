@@ -10,9 +10,10 @@ using UnityEngine;
 namespace CreateCharacter.CharStats
 {
     [CreateAssetMenu]
-    public class StepConfig : ScriptableObject , IMemorySerializable<StepConfig>
+    public class StepConfig : ScriptableObject, IMemorySerializable<StepConfig>
     {
         [field: SerializeField] public List<StepData> StepDatas { get; private set; }
+
         public int ByteSize()
         {
             return StepDatas.ByteSize();
@@ -43,13 +44,32 @@ namespace CreateCharacter.CharStats
                 }
             }
         }
+
         [Button]
         public void ToBinary()
         {
             var path = Path.Combine(Application.dataPath, "Exports", "step-config.bin");
             var writer = new Writer(ByteSize());
             writer.Write(this);
-            File.WriteAllBytes(path,writer.Buffer);
+            File.WriteAllBytes(path, writer.Buffer);
+            Debug.Log(path);
+        }
+
+        [Button]
+        public void Check(string name)
+        {
+            var list = StepDatas.OfType<SelectionStepData>().ToList();
+            var option = list.SelectMany(x => x.Groups)
+                .SelectMany(x => x.StatOptions)
+                .FirstOrDefault(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
+            if (option == null)
+            {
+                Debug.Log("null");
+                return;
+            }
+            Debug.Log(option.Id);
+            Debug.Log(option.Name);
+            Debug.Log(option.Modifiers.First().Ability);
         }
     }
 }

@@ -25,6 +25,7 @@ namespace CreateCharacter.CharStats
         CoSoDaoHoa = 1 << 16,
         SoKhuyMonKinh = 1 << 17,
         MacCaKyXao = 1 << 18,
-        GiaTocTuChan = 1 << 19
+        GiaTocTuChan = 1 << 19,
+        TienThienDiMach = 1 << 20,
     }
 }
