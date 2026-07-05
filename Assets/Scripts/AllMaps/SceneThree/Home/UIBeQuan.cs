@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using Network.Models;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Analytics.IAnalytic;
@@ -52,6 +51,10 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
 
     private void SetupPopupDotPha(List<ItemRef> itemRefs, ItemInventory prefab)
     {
+        for (int i = 0; i < prefab.transform.parent.childCount; i++)
+        {
+            prefab.transform.parent.GetChild(i).gameObject.SetActive(false);
+        }
         foreach (var item in itemRefs)
         {
             var itemInventory = GameManager.GetItemPoolWithPrefabInParent(prefab);
@@ -110,9 +113,14 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         });
         SetEventButton(btnShowPopDotPha, () =>
         {
-            popDotPha.Show();
-            SetupPopupDotPha(new(), prefabItemRequireDotPha);
-            SetupPopupDotPha(new(), prefabItemThienDaoDotPha);
+            var inforLevel = LevelResource.Instance.inforLevels[Client.Instance.CharacterData.Progression.Level - 1];
+            if (inforLevel.IsSpecialLevelUp && Client.Instance.CharacterData.Progression.CurrentExp >= inforLevel.tuviRequireNextLevel)
+            {
+                popDotPha.Show();
+                SetupPopupDotPha(inforLevel.RequireItem, prefabItemRequireDotPha);
+                SetupPopupDotPha(inforLevel.BuffItem, prefabItemThienDaoDotPha);
+            }    
+         
         });
     }
 
@@ -663,8 +671,5 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         NotifyGroup.Instance.Show(message);
     }
 
-    public void SuccessSpecialLevelUp(int oldHpMax, int oldThoNguyen, int oldThanThuc, int oldDontoc)
-    {
-        throw new NotImplementedException();
-    }
+  
 }

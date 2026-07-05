@@ -145,7 +145,7 @@ public class INetworkEvent
     }
     public interface ISpecialLevelUp// Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessSpecialLevelUp(int oldHpMax, int oldThoNguyen, int oldThanThuc, int oldDontoc);
+        void SuccessSpecialLevelUp();
         void FailSpecialLevelUp(string message);
     }
 }
