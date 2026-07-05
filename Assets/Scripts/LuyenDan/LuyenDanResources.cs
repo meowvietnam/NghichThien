@@ -15,10 +15,9 @@ namespace LuyenDan
     [CreateAssetMenu(fileName = "LuyenDanResources", menuName = "LuyenDan/Luyen Dan Resources")]
     public class LuyenDanResources : ScriptableObject, IMemorySerializable<LuyenDanResources>
     {
-
         [field: SerializeField, ReadOnly] public List<TempFurnaceData> TempFurnaceDatas { get; private set; }
         [field: SerializeField, ReadOnly] public List<HerbData> HerbDatas { get; private set; }
-        [field: SerializeField,ReadOnly] public List<LinhDan> LinhDans { get; private set; }
+        [field: SerializeField, ReadOnly] public List<LinhDan> LinhDans { get; private set; }
         [field: SerializeField, ReadOnly] public List<RecipeData> Recipes { get; private set; }
         public const string EmptyDetail = "Không";
         private static LuyenDanResources instance;
@@ -39,17 +38,19 @@ namespace LuyenDan
         [Button]
         public void ShowSpriteSize()
         {
-            var sprites = TempFurnaceDatas.Select(x => new [] {x.Icon,x.BigIcon}).SelectMany(x => x)
+            var sprites = TempFurnaceDatas.Select(x => new[] { x.Icon, x.BigIcon }).SelectMany(x => x)
                 .Concat(HerbDatas.Select(x => x.Icon))
                 .Concat(LinhDans.Select(x => x.Icon))
                 .ToHashSet();
             var size = AssetSize.CalculateSize(sprites);
             Debug.Log(size);
         }
+
         public IItemData FindItem(FurnaceData furnace)
         {
             return TempFurnaceDatas.FirstOrDefault(x => x.Id == furnace.Id);
         }
+
         public IItemData FindItem(ItemRef itemRef)
         {
             if (itemRef.Type == ItemType.Furnace)
@@ -80,6 +81,7 @@ namespace LuyenDan
             var herb = HerbDatas.FirstOrDefault(x => x.Id == id);
             return herb;
         }
+
         public LinhDan FindLinhDan(int id)
         {
             var item = LinhDans.FirstOrDefault(x => x.Id == id);
@@ -142,6 +144,5 @@ namespace LuyenDan
             File.WriteAllBytes(path, writer.Buffer);
             Debug.Log(path);
         }
-        
     }
 }
