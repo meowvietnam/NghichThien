@@ -13,9 +13,12 @@ public class XuanThaoQuyet : CongPhap, IMemorySerializable<XuanThaoQuyet>
     private int[] buffValues;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        RemoveCongPhap(caster);
-        int buff = buffValues[CurrentLevelCongPhapInCombat(caster) - 1];
-        caster.Healing(buff);
+        bool isUserWin = (bool)data[2];
+        {
+            RemoveCongPhap(caster);
+            int buff = buffValues[CurrentLevelCongPhapInCombat(caster) - 1];
+            caster.Healing(buff);
+        }
     }
 
     public override string GetDesc(int level)

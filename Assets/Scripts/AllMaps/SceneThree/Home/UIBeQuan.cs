@@ -63,6 +63,8 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
             itemInventory.InitCount(ItemProviderFactory.GetProvider(item.Type).GetCountOwner(item.Id));
             itemInventory.InitCountRequire(item.Count);
         }
+
+        
     }
 
     private void Awake()
@@ -106,11 +108,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
             });
         }
 
-        SetEventButton(btnConfirmDotPha, () =>
-        {
-            popDotPha.Hide();
-            Observer.Notify(EventList.Network.SPECIAL_LEVELUP, this);
-        });
+       
         SetEventButton(btnShowPopDotPha, () =>
         {
             var inforLevel = LevelResource.Instance.inforLevels[Client.Instance.CharacterData.Progression.Level - 1];
@@ -118,8 +116,33 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
             {
                 popDotPha.Show();
                 SetupPopupDotPha(inforLevel.RequireItem, prefabItemRequireDotPha);
+                var btnGreyConfirmDotPha = btnConfirmDotPha.transform.GetChild(0).GetComponent<Button>();
+                var canDotPha = inforLevel.RequireItem.All(x =>
+                ItemProviderFactory.GetProvider(x.Type)?.GetCountOwner(x.Id) >= x.Count);
+                btnGreyConfirmDotPha.gameObject.SetActive(!canDotPha);
+                if (canDotPha)
+                {
+                    SetEventButton(btnConfirmDotPha, () =>
+                    {
+                        popDotPha.Hide();
+                        Observer.Notify(EventList.Network.SPECIAL_LEVELUP, this);
+                    });
+                   
+                }    
+                else
+                {
+                    SetEventButton(btnGreyConfirmDotPha, () =>
+                    {
+                        NotifyGroup.Instance.Show("Không đủ nguyên liệu cần để đột phá");
+                    });
+                }    
+                
                 SetupPopupDotPha(inforLevel.BuffItem, prefabItemThienDaoDotPha);
-            }    
+            }   
+            else
+            {
+                NotifyGroup.Instance.Show("Tu vi của bạn cần đạt tới bình cảnh để có thể đột phá");
+            }
          
         });
     }
