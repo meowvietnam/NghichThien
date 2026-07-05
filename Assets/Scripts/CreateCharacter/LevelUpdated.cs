@@ -19,6 +19,7 @@ namespace CreateCharacter
             progression.CurrentExp = CurrentExp;
             var stats = charData.Stats;
             stats.SinhMenh = HpMax;
+            stats.Hp = HpMax;
             stats.ThanThuc = ThanThuc;
             stats.TocDoBay = DonToc;
             stats.ThoNguyen = ThoNguyen;
