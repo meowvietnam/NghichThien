@@ -101,6 +101,7 @@ namespace AllMaps
             player.Init(characterData.Gender, characterData.CanFly);
             current.OnPlayerEnter();
             Pool.Set(this);
+            SoundManager.Instance.PlayMusicHome();
         }
 
         private void Start()

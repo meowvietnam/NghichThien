@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 212721254698848969}
   - component: {fileID: 95832950431690497}
   - component: {fileID: 1107116707716257584}
+  - component: {fileID: -5304375637097427467}
   m_Layer: 13
   m_Name: xuejishihunshu_00002.png
   m_TagString: Untagged
@@ -159,7 +160,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 0c3290db424432247afbcfa3d4d364fc, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -244,3 +245,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-5304375637097427467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777505477647559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fc1e25f0cbd7bb4f9343038b716c449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaySoundEffect
+  audioSource: {fileID: 0}

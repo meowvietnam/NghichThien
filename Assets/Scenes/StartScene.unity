@@ -1403,6 +1403,63 @@ MonoBehaviour:
   username: test06
   loggedIn: "\u0110ang \u0111\u0103ng nh\u1EADp..."
   startScene: {fileID: 775922832}
+--- !u!1 &1005453928
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1005453929}
+  - component: {fileID: 1005453930}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1005453929
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005453928}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1715.0927, y: 1097.8798, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1005453930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005453928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fab1b10bcadd387448de91cb27bef3dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundManager
+  audioPrefab: {fileID: 5682964070733069728, guid: 2d103f7ff4fc53d46981cc182ee23aed,
+    type: 3}
+  volumeMusic: 1
+  volumeSound: 1
+  sfxOpening: {fileID: 8300000, guid: 9c42a52a0c2f88b4eaccd8f3f452fa9f, type: 3}
+  sfxMap: {fileID: 8300000, guid: 1a5f8a577396c3549a226fc065c046ae, type: 3}
+  sfxCombat:
+  - {fileID: 8300000, guid: 27d4e5e80b64a7d438e41e478b2c61e8, type: 3}
+  - {fileID: 8300000, guid: 9d89f080a51ffc74e90ca1b777ee70a8, type: 3}
+  - {fileID: 8300000, guid: 245eb6a106169774d86d26f11d904695, type: 3}
+  sfxVictory: {fileID: 8300000, guid: cbc0f1a8aaba4b6429be7f33588848b6, type: 3}
+  sfxBtnClick: {fileID: 8300000, guid: c3bfde15f50afb848ab0ef2050e75090, type: 3}
+  sfxLose: {fileID: 8300000, guid: f9cbc88d7eb7c5047ad07b4122911dab, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1412,3 +1469,4 @@ SceneRoots:
   - {fileID: 210111401}
   - {fileID: 775922833}
   - {fileID: 727112482}
+  - {fileID: 1005453929}

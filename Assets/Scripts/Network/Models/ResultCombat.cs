@@ -14,6 +14,8 @@ namespace Network.Models
         public int CurrentHPUser { get; set; }
         public int CurrentLevelEnemy { get; set; }
         public ETypeResultCombat TypeResultCombat { get; set; }
+        public int CurrentThanThuc { get; set; }
+        public int CurrentThoNguyen { get; set; }
 
     }
 }

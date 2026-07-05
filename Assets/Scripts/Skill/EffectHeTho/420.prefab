@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 212485890365484098}
   - component: {fileID: 95635066022796000}
   - component: {fileID: 8006367090139879663}
+  - component: {fileID: -6523310460411643968}
   m_Layer: 13
   m_Name: 145tianxingruoyu_00001.png
   m_TagString: Untagged
@@ -127,7 +128,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 405f2d0fd4b3ed046a4f1c395ad66b0f, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -212,6 +213,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-6523310460411643968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828777716750710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fc1e25f0cbd7bb4f9343038b716c449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaySoundEffect
+  audioSource: {fileID: 0}
 --- !u!1 &1941625767808047
 GameObject:
   m_ObjectHideFlags: 0

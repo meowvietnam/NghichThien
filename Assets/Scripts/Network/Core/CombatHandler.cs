@@ -35,6 +35,7 @@ namespace Network.Core
                     charData.MoneyVip += result.Reward.MoneyVip;
                     charData.Stats.LinhThach += result.Reward.Money;
                     charData.Progression.NgoDaoDiem = result.NewNgoDaoDiem;
+                    charData.ArenaManager.Points = result.NewPointRank;
                     if (result.Reward?.ItemRefs != null) // Check nhanh cả Reward và ItemRefs
                     {
                         foreach (var item in result.Reward.ItemRefs)
@@ -114,16 +115,21 @@ namespace Network.Core
             resultCombatCallBack = data[0] as INetworkEvent.IResultCombat;
             var ETypeCombat = (ETypeCombat)data[1];
             var CurrentHpUser = (int)data[2];
-            var ListThanThongUse = (List<int>)data[3];
-            var LevelEnemy = (int)data[4];
-            var TypeResultCombat = (ETypeResultCombat)data[5];
+            var CurrentThanThuc = (int)data[3];
+            var CurrentThoNguyen = (int)data[4];
+
+            var ListThanThongUse = (List<int>)data[5];
+            var LevelEnemy = (int)data[6];
+            var TypeResultCombat = (ETypeResultCombat)data[7];
             var ResultCombat = new ResultCombat()
             {
                 TypeCombat = ETypeCombat,
                 CurrentHPUser = CurrentHpUser,
                 ListIdThanThong = ListThanThongUse,
                 CurrentLevelEnemy = LevelEnemy,
-                TypeResultCombat = TypeResultCombat
+                TypeResultCombat = TypeResultCombat,
+                CurrentThanThuc = CurrentThanThuc,
+                CurrentThoNguyen = CurrentThoNguyen
             };
             Client.Instance.Send(MessageTag.ResultCombat, ResultCombat);
         }

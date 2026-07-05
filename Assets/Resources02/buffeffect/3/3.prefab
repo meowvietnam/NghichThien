@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 212685456723848339}
   - component: {fileID: 95279682130997334}
   - component: {fileID: 3693287061192170718}
+  - component: {fileID: -2674637052487702662}
   m_Layer: 13
   m_Name: poshi_00000.png
   m_TagString: Untagged
@@ -126,7 +127,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 3cc55195810ad0f47b8be5eb774fb646, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -211,6 +212,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-2674637052487702662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397925286090144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fc1e25f0cbd7bb4f9343038b716c449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaySoundEffect
+  audioSource: {fileID: 0}
 --- !u!1 &1576484559191541
 GameObject:
   m_ObjectHideFlags: 0

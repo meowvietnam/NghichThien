@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 212546424666062763}
   - component: {fileID: 95896565237648831}
   - component: {fileID: 8364728422057865230}
+  - component: {fileID: 1712594280461949370}
   m_Layer: 13
   m_Name: sancunzhenyuanzhang_00005.png
   m_TagString: Untagged
@@ -159,7 +160,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 89ce18b537537714e9c9edc17cc60e1f, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -244,3 +245,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1712594280461949370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1901215806086852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fc1e25f0cbd7bb4f9343038b716c449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaySoundEffect
+  audioSource: {fileID: 0}

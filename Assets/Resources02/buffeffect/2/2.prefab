@@ -59,6 +59,7 @@ GameObject:
   - component: {fileID: 212456103637176105}
   - component: {fileID: 95289099461144138}
   - component: {fileID: 70638848366620165}
+  - component: {fileID: 1903426898397553217}
   m_Layer: 13
   m_Name: zhuoshao_00001.png
   m_TagString: Untagged
@@ -173,7 +174,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 00b9c83253e82fd4f823073df2d22eb8, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -258,3 +259,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1903426898397553217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1776440943518677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fc1e25f0cbd7bb4f9343038b716c449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaySoundEffect
+  audioSource: {fileID: 0}

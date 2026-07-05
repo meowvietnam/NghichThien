@@ -163,22 +163,21 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
         }    
         if(characterDie != null)
         {
-            Observer.Notify(EventList.Combat.END_COMBAT, characterWin, characterDie);// thằng đầu là thằng win thằng sau là thằng die
-            var gameManager = Pool.Get<GameManager>();
             
+            var gameManager = Pool.Get<GameManager>();
             if (characterWin == char1)
             {
-            
-                Observer.Notify(EventList.Network.RESULT_COMBAT, this,gameManager.currentETypeCombat, char1.characterStatsTemp.hp.Value, allThanThongIds, char2.characterStatsBase.level.Value , ETypeResultCombat.Win);// thằng 1 luoon la user thằng 2 là thằng enemy
-
+                Observer.Notify(EventList.Combat.END_COMBAT, char1, char2, true);// thằng đầu là thằng win thằng sau là thằng die
+                Observer.Notify(EventList.Network.RESULT_COMBAT, this,gameManager.currentETypeCombat, char1.characterStatsTemp.hp.Value, char1.characterStatsBase.thanThuc.Value , char1.characterStatsBase.thoNguyen.Value, allThanThongIds, char2.characterStatsBase.level.Value , ETypeResultCombat.Win);// thằng 1 luoon la user thằng 2 là thằng enemy
 
             }
             else
             {
-                Observer.Notify(EventList.Network.RESULT_COMBAT, this, gameManager.currentETypeCombat, char1.characterStatsTemp.hp.Value, allThanThongIds, char2.characterStatsBase.level.Value, ETypeResultCombat.LoseByDied);// thằng 1 luoon la user thằng 2 là thằng enemy
-
+                Observer.Notify(EventList.Combat.END_COMBAT, char1, char2, false);// thằng đầu là thằng win thằng sau là thằng die
+                Observer.Notify(EventList.Network.RESULT_COMBAT, this, gameManager.currentETypeCombat, char1.characterStatsTemp.hp.Value, char1.characterStatsBase.thanThuc.Value, char1.characterStatsBase.thoNguyen.Value, allThanThongIds, char2.characterStatsBase.level.Value, ETypeResultCombat.LoseByDied);// thằng 1 luoon la user thằng 2 là thằng enemy
 
             }
+
             EventList.Combat.RemoveAllCombatObservers();
         } 
             
@@ -244,6 +243,7 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
             });
         });
         bgCombat.sprite = Pool.Get<GameManager>().spriteBGCombat;
+        SoundManager.Instance.PlayMusicCombat();
 
     }
 
