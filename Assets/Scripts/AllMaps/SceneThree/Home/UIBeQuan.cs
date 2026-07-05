@@ -117,8 +117,8 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
             if (inforLevel.IsSpecialLevelUp && Client.Instance.CharacterData.Progression.CurrentExp >= inforLevel.tuviRequireNextLevel)
             {
                 popDotPha.Show();
-                SetupPopupDotPha(inforLevel.RequireItem, prefabItemRequireDotPha);
-                SetupPopupDotPha(inforLevel.BuffItem, prefabItemThienDaoDotPha);
+                SetupPopupDotPha(inforLevel.requireItems, prefabItemRequireDotPha);
+                SetupPopupDotPha(inforLevel.buffItems, prefabItemThienDaoDotPha);
             }    
          
         });

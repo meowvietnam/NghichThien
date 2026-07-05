@@ -265,7 +265,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         { 14, ETypeVisualChar.EnemyNguyenAnhSoKi },
         { 15, ETypeVisualChar.EnemyTrucCoHauKi },
     };
-    public LevelResource.InfoLevel[] inforLevels => LevelResource.Instance.inforLevels;
+    public InfoLevel[] inforLevels => LevelResource.Instance.inforLevels;
 
     public static string GetChucVuText(EMonPhai monPhai, int level)
     {
