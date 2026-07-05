@@ -1,8 +1,10 @@
 using Network;
 using UnityEngine;
 using UnityEngine.UI;
+using Network.Models;
+using LongDH.LongDHModules;
 
-public class LevelUpPopup : Popup
+public class LevelUpPopup : BaseBehaviour
 {
     [SerializeField] private Text txtValueKhiHuyet;
     [SerializeField] private Text txtValueThoNguyen;
@@ -15,8 +17,21 @@ public class LevelUpPopup : Popup
     [SerializeField] private Text txtOldValueDonToc;
 
     [SerializeField] private Text txtLevel;
-
-    public void InitShow(int oldValueKhiHuyet,  int oldValueThoNguyen, int oldValueThanThuc, int oldValueDonToc)
+    [SerializeField] private Popup mainPopup;
+    private void Awake()
+    {
+        Observer.AddObserver(EventList.Network.LEVEL_UP, OnLevelUp);
+    }
+    public void OnLevelUp(object[] datas)
+    {
+        var snapshot = (CharacterSnapshot)datas[0];
+        var oldHpMax = snapshot.SinhMenh;
+        var oldThoNguyen = snapshot.ThoNguyen;
+        var oldThanThuc = snapshot.ThanThuc;
+        var oldDonToc = snapshot.TocDoBay;
+        InitShow(oldHpMax, oldThoNguyen, oldThanThuc, oldDonToc);
+    }
+    private void InitShow(int oldValueKhiHuyet,  int oldValueThoNguyen, int oldValueThanThuc, int oldValueDonToc)
     {
         var stats = Client.Instance.CharacterData.Stats;
         // Set old values
@@ -31,7 +46,7 @@ public class LevelUpPopup : Popup
         txtValueThanThuc.text = stats.ThanThuc.ToString();
         txtValueDonToc.text = stats.TocDoBay.ToString();
         txtLevel.text = GameManager.levelWithText[Client.Instance.CharacterData.Progression.Level];
-        Show();
+        mainPopup.Show();
     }
 
 }

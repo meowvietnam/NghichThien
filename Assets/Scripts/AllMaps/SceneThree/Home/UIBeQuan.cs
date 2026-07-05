@@ -42,7 +42,6 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
     [SerializeField] private Button btnShowPopBeQuan;
     [SerializeField] private Popup popBeQuan;
     [SerializeField] private Popup popDotPha;
-    [SerializeField] private LevelUpPopup popLevelUp;
 
     [Header("InforDotPha")] [SerializeField]
     private ItemInventory prefabItemRequireDotPha;
@@ -480,8 +479,6 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
 
     private void InitPageUpdate()
     {
-        Observer.RemoveObserver(EventList.Network.LEVEL_UP);
-        Observer.AddObserver(EventList.Network.LINH_NGO, OnLevelUp);
         textNameDotPha.transform.parent.gameObject.SetActive(false);
         var charData = CharData;
         var cpOwners = charData.InventoryManager.CongPhapOwners;
@@ -613,15 +610,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
     }
 
-    public void OnLevelUp(object[] datas)
-    {
-        var snapshot = (CharacterSnapshot)datas[0];
-        var oldHpMax = snapshot.SinhMenh;
-        var oldThoNguyen = snapshot.ThoNguyen;
-        var oldThanThuc = snapshot.ThanThuc;
-        var oldDonToc = snapshot.TocDoBay;
-        popLevelUp.InitShow(oldHpMax, oldThoNguyen, oldThanThuc, oldDonToc);
-    }
+   
 
     public void FailTuLuyen(string message)
     {
@@ -662,14 +651,20 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         NotifyGroup.Instance.Show(message);
     }
 
-    public void SuccessSpecialLevelUp(int oldHpMax, int oldThoNguyen, int oldThanThuc, int oldDontoc)
+    public void SuccessSpecialLevelUp()
     {
         NotifyGroup.Instance.Show("Đột phá thành công");
-        popLevelUp.InitShow(oldHpMax, oldThoNguyen, oldThanThuc, oldDontoc);
+        Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
+
     }
 
     public void FailSpecialLevelUp(string message)
     {
         NotifyGroup.Instance.Show(message);
+    }
+
+    public void SuccessSpecialLevelUp(int oldHpMax, int oldThoNguyen, int oldThanThuc, int oldDontoc)
+    {
+        throw new NotImplementedException();
     }
 }
