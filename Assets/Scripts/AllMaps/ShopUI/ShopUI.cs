@@ -156,7 +156,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         }
         else
         {
-            textMoneyCurrent.text = $"-{totalMoney}";
+            textMoneyCurrent.text = $"{totalMoney}";
         }
     }
 
@@ -275,6 +275,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         }
         NotifyGroup.Instance.Show($"Giao dịch thành công!");
         textMoneyCurrent.text = "0";
+        textMoneyUser.text = Client.Instance.CharacterData.Stats.LinhThach.ToString();
     }
 
     public void FailBuyAndSell(string message)

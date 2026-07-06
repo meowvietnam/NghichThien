@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using ArenaManager = AllMaps.DauTruong.ArenaManager;
 
 public class PrepareElementArenaCombat : MonoBehaviour
 {

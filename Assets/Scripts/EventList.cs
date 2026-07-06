@@ -54,6 +54,8 @@ public static partial class EventList
     }
     public static class Network
     {
+        public const string LOAD_RANK ="Network.LOAD_RANK";
+        public const string CLAIM_RANK_REWARD = "Network.CLAIM_RANK_REWARD";
         public const string USE_DAN = "Network.USE_DAN";
         public const string LEARN_NGODAO = "Network.LEARN_NGODAO";
         public const string LEARN_SKILL = "Network.LEARN_SKILL";

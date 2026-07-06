@@ -66,12 +66,17 @@ namespace Network.Core
                 if (result.Success)
                 {
                     var charData = Client.CharacterData;
-                    charData.Social.Mails.AddRange(result.Mails);
-                    startId = result.Mails.Last().Id;
+                    var mails = result.Mails;
+                    if (mails.Count == 0)
+                    {
+                        return;
+                    }
+                    charData.Social.Mails.AddRange(mails);
+                    startId = mails.Last().Id;
                     hasNext = result.HasNext;
                     if (hasNext)
                     {
-                        pageSize = result.Mails.Count;
+                        pageSize = mails.Count;
                     }
                 }
                 callback.OnGetMails(result);

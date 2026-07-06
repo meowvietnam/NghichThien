@@ -1,49 +1,62 @@
 ﻿using CreateCharacter;
+using LongDH.LongDHModules;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RewardRankDauTruong : BaseBehaviour
+namespace AllMaps.DauTruong
 {
-    [SerializeField] private Button btnReward;
-    [SerializeField] private Button btnNotReward;
-    [SerializeField] private Image iconRank;
-    [SerializeField] private Image iconRankName;
-    [SerializeField] private Text rewardTienNgocText;
-    [SerializeField] private Sprite[] spriteRefRank => ArenaManager.Instance.spriteRefRank;
-    [SerializeField] private Sprite[] spriteRefRankName => ArenaManager.Instance.spriteRefRankName;
-
-    [SerializeField] private ETypeArenaRank eTypeArenaRank;
-
-    void Start()
+    public class RewardRankDauTruong : BaseBehaviour
     {
-        InitVisual();
-        if(ArenaManager.Instance.CurrentTypeRank >= eTypeArenaRank)
+        [SerializeField] private Button btnReward;
+        [SerializeField] private Text btnRewardText;
+        [SerializeField] private Image iconRank;
+        [SerializeField] private Image iconRankName;
+        [SerializeField] private Text rewardTienNgocText;
+        [SerializeField] private Sprite[] spriteRefRank => ArenaManager.Instance.spriteRefRank;
+        [SerializeField] private Sprite[] spriteRefRankName => ArenaManager.Instance.spriteRefRankName;
+        public ETypeArenaRank ETypeArenaRank => Reward.Type;
+        public RankReward Reward { get; private set; }
+
+        public void Init(RankReward rankReward)
         {
-            SetCanReward(true);
+            Reward = rankReward;
+            if (ArenaManager.Instance.CurrentTypeRank < ETypeArenaRank)
+            {
+                btnRewardText.text = $"Nhận thưởng";
+                btnReward.interactable = false;
+            }
+            else
+            {
+                UpdateClaim();
+            }
+            InitVisual();
+        }
+
+        public void UpdateClaim()
+        {
+            if (!Reward.IsClaim)
+            {
+                btnRewardText.text = $"Nhận thưởng";
+                btnReward.interactable = true;
+            }
+            else
+            {
+                btnRewardText.text = $"Đã nhận";
+                btnReward.interactable = false;
+            }
+        }
+        public void InitVisual()
+        {
+            SetEventButton(btnReward, () =>
+            {
+                ArenaManager.Instance.Reward(Reward.Id); 
+            });
+            iconRank.sprite = spriteRefRank[(int)ETypeArenaRank - 1];
+            iconRank.SetNativeSize();
+            iconRankName.sprite = spriteRefRankName[(int)ETypeArenaRank - 1];
+            iconRankName.SetNativeSize();
+            rewardTienNgocText.text = ArenaManager.TypeRankArenaWithReward[ETypeArenaRank].ToString();
         }
     }
-    [Button]
-    public void InitVisual()
-    {
-        SetEventButton(btnReward, () =>
-        {
-
-        });
-        SetEventButton(btnNotReward, () =>
-        {
-            NotifyGroup.Instance.Show("Chưa đủ điều kiện nhận thưởng");
-        });
-        iconRank.sprite = spriteRefRank[(int)eTypeArenaRank-1];
-        iconRank.SetNativeSize();
-        iconRankName.sprite = spriteRefRankName[(int)eTypeArenaRank - 1];
-        iconRankName.SetNativeSize();
-        rewardTienNgocText.text = ArenaManager.TypeRankArenaWithReward[eTypeArenaRank].ToString();
-        SetCanReward(false);
-    }
-    public void SetCanReward(bool isCan)
-    {
-        btnReward.gameObject.SetActive(isCan);
-        btnNotReward.gameObject.SetActive(!isCan);
-    }    
 }

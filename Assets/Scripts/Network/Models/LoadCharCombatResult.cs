@@ -11,6 +11,7 @@ namespace Network.Models
         public string? Message { get; set; }
         public CharacterSnapshot Client { get; set; }
         public CharacterSnapshot Enemy { get; set; }
-
+        public int CurrentArenaCount { get; set; }
+        public int NewMoneyVip { get; set; }
     }
 }

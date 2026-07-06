@@ -3,6 +3,8 @@ using CreateCharacter;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using ArenaManager = AllMaps.DauTruong.ArenaManager;
+
 public enum RankType
 {
     RankLevel, // cấp bậc (luyện khí sơ trung hậu ... )

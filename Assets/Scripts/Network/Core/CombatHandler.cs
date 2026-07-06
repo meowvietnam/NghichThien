@@ -1,27 +1,30 @@
-﻿
-using Base;
+﻿using Base;
 using LongDH.LongDHModules;
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
 using Network.Models;
 using System.Collections.Generic;
+using System.Linq;
+using Network.Callback;
 using UnityEngine;
 using static INetworkEvent;
+
 namespace Network.Core
 {
     public class CombatHandler : IClientHandler
     {
-
         private IResultCombat resultCombatCallBack;
         private ILoadCharCombat loadCharCallBack;
         private ILoadCharCombatArena loadCharArenaCallBack;
 
         private static MessageTag[] handler =
         {
-                      MessageTag.ResultCombatResult , MessageTag.LoadCharCombatResult , MessageTag.LoadCharCombatArenaResult ,
+            MessageTag.ResultCombatResult, MessageTag.LoadCharCombatResult,
+            MessageTag.LoadCharCombatArenaResult,
         };
 
         public MessageTag[] HandleTag => handler;
+
         public void Handle(Message<MessageTag> message)
         {
             var tag = message.Tag;
@@ -49,26 +52,26 @@ namespace Network.Core
                     {
                         charData.InventoryManager.AddOrUpdate(item);
                     }
+
                     charData.EquipmentManager.DanCombatUseds.Clear();
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
                     {
-                        resultCombatCallBack.SuccessWinCombatBase(result.Reward , result.TypeResultCombat);
+                        resultCombatCallBack.SuccessWinCombatBase(result.Reward, result.TypeResultCombat);
                     }
                     else
                     {
                         resultCombatCallBack.FailWinCombatBase(result.Message);
                     }
-
                 });
-
             }
             else if (tag == MessageTag.LoadCharCombatResult)
             {
                 var result = reader.Read<LoadCharCombatResult>();
-               
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -84,12 +87,17 @@ namespace Network.Core
             else if (tag == MessageTag.LoadCharCombatArenaResult)
             {
                 var result = reader.Read<LoadCharCombatResult>();
-
+                if (result.Success)
+                {
+                    var charData = Client.Instance.CharacterData;
+                    charData.MoneyVip = result.NewMoneyVip;
+                    charData.ArenaManager.CurrentArenaCount = result.CurrentArenaCount;
+                }
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
                     {
-                        loadCharArenaCallBack.SuccessLoadCharCombatArena(result.Client,result.Enemy);
+                        loadCharArenaCallBack.SuccessLoadCharCombatArena(result.Client, result.Enemy);
                     }
                     else
                     {
@@ -108,8 +116,56 @@ namespace Network.Core
             Observer.AddObserver(EventList.Network.RESULT_COMBAT, ResultCombat);
             Observer.AddObserver(EventList.Network.LOAD_CHAR_COMBAT, LoadCharCombat);
             Observer.AddObserver(EventList.Network.LOAD_CHAR_COMBAT_ARENA, LoadCharCombatArena);
-
+            Observer.AddObserver(EventList.Network.LOAD_RANK, LoadRank);
+            Observer.AddObserver(EventList.Network.CLAIM_RANK_REWARD, ClaimRankReward);
         }
+
+        private async void ClaimRankReward(object[] data)
+        {
+            var callback = data[0] as IClaimRankReward;
+            var id = (long)data[1];
+            var client = Client.Instance;
+            var reader = await client.RequestWait(MessageTag.ClaimRankRewardRequest, id);
+            var result = reader.MemRead<ClaimRankRewardResult>();
+            if (result.Success)
+            {
+                var charData = client.CharacterData;
+                charData.MoneyVip += result.MoneyVip;
+                var reward = charData.ArenaManager.Rewards
+                    .First(x => x.Id == result.Id);
+                reward.IsClaim = true;
+            }
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (result.Success)
+                {
+                    callback?.RewardSuccess(result);
+                }
+                else
+                {
+                    callback?.FailClaimReward(result.Message);
+                }
+            });
+        }
+
+        private async void LoadRank(object[] data)
+        {
+            var callback = data[0] as ILoadRank;
+            var reader = await Client.Instance.RequestWait(MessageTag.LoadRankRequest);
+            var result = reader.MemRead<LoadRankResult>();
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (result.Success)
+                {
+                    callback?.LoadRankSuccess(result);
+                }
+                else
+                {
+                    callback?.LoadRankFailure(result.Message);
+                }
+            });
+        }
+
         private void ResultCombat(object[] data)
         {
             resultCombatCallBack = data[0] as INetworkEvent.IResultCombat;
@@ -133,16 +189,19 @@ namespace Network.Core
             };
             Client.Instance.Send(MessageTag.ResultCombat, ResultCombat);
         }
+
         private void LoadCharCombat(object[] data)
         {
             loadCharCallBack = data[0] as INetworkEvent.ILoadCharCombat;
             Client.Instance.Send(MessageTag.LoadCharCombat);
         }
+
         private void LoadCharCombatArena(object[] data)
         {
             loadCharArenaCallBack = data[0] as INetworkEvent.ILoadCharCombatArena;
             Client.Instance.Send(MessageTag.LoadCharCombatArena);
         }
+
         public void OnLeave()
         {
         }

@@ -115,9 +115,11 @@ namespace Network
         LoadCharCombatResult = 416,
         LoadCharCombatArena = 417,
         LoadCharCombatArenaResult = 418,
-
-        WatchAdsForEnergy = 420,
-        WatchAdsForEnergyResult = 421,
+        LoadRankRequest = 419,     
+        ClaimRankRewardRequest = 420,
+        
+        WatchAdsForEnergy = 450,
+        WatchAdsForEnergyResult = 451,
         
         GetProductsRequest = 511,
         IapPurchase = 520,
@@ -135,5 +137,7 @@ namespace Network
         BuyAndSellRequest = 637,
         
         LevelUpdated = 783,
+        
+        WatchAds = 843,
     }
 }
