@@ -1,7 +1,9 @@
 ﻿using LongDH.LongDHModules;
 using System.Collections.Generic;
 using AllMaps;
+using CreateCharacter;
 using LongDHModules;
+using Network;
 using UnityEngine;
 using UnityEngine.UI;
 public enum EDailyQuest
@@ -67,18 +69,48 @@ public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetwork
     {
         Pool.Set(this);
         popupTaskDaily.Hide();
-        SetEventButton(btnWatchAds, () =>
-        {
-            Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Xác nhận xem quảng cáo để làm mới các nhiệm vụ chưa làm !", () =>
-            {
-                Observer.Notify(EventList.Network.RELOAD_TASK, this, GetTaskType());
-            });
-        });
+        SetEventButton(btnWatchAds,ReloadTask);
         SetEventButton(btnTaskShow, () =>
         {
             Observer.Notify(EventList.Network.LOAD_TASK, this, GetTaskType());
             popupTaskDaily.Show();
         });
+    }
+    private void ReloadTask()
+    {
+        var charData = Client.Instance.CharacterData;
+        if (!charData.IsNoAds)
+        {
+            var popup = Pool.Get<PopupConfirmAction>();
+            popup.ShowPopConfirmAction("Xác nhận xem quảng cáo để làm mới các nhiệm vụ chưa làm!", ConfirmReloadTask);
+        }
+        else
+        {
+            ConfirmReloadTask();
+        }
+    }
+
+    private void ConfirmReloadTask()
+    {
+        void Send()
+        {
+            Observer.Notify(EventList.Network.RELOAD_TASK, this, GetTaskType());
+        }
+        var charData = Client.Instance.CharacterData;
+        if (charData.IsNoAds)
+        {
+            Send();
+        }
+        else
+        {
+            AdsService.Instance.ShowRewardVideoAds(
+                "ReloadTask",
+                "Xem quảng cáo để làm mới nhiệm vụ chưa làm",
+                Send,
+                null,
+                () => NotifyGroup.Instance.Show("Không thể tải quảng cáo")
+            );
+        }
     }
     public void DoneTask(TaskDaily task)
     {
@@ -118,9 +150,10 @@ public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetwork
     public void SuccessDoneTask()
     {
         taskDaily.InitTask(taskDaily.DailyQuest);
-        taskDaily =null;
+        taskDaily = null;
     }
     public void FailDoneTask(string message)
     {
+        NotifyGroup.Instance.Show(message);
     }
 }
