@@ -80,7 +80,12 @@ namespace AllMaps
 
         public void AddMail(Mail mail)
         {
-            NetworkManager.Instance.Invoke(() => { mailPanel.AddMail(mail); });
+            NetworkManager.Instance.Invoke(() =>
+            {
+                var message = "Bạn có 1 thư mới!";
+                NotifyGroup.Instance.Show(message);
+                mailPanel.AddMail(mail);
+            });
         }
     }
 }

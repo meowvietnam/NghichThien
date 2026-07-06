@@ -121,7 +121,7 @@ namespace AllMaps.DauTruong
         {
             if (endTime > TimeSpan.Zero)
             {
-                endTime -= TimeSpan.FromSeconds(Time.fixedDeltaTime);
+                endTime -= TimeSpan.FromSeconds(Time.fixedUnscaledDeltaTime);
             }
 
             UpdateEndTime();
@@ -129,23 +129,9 @@ namespace AllMaps.DauTruong
 
         private void UpdateEndTime()
         {
-            var text = $"Làm mới sau: {GetTime(endTime)}";
+            var text = $"Làm mới sau: {Utils.GetTime(endTime)}";
             resetAfterText.text = text;
         }
-
-        private string GetTime(TimeSpan timeSpan)
-        {
-            if (timeSpan <= TimeSpan.Zero)
-            {
-                return "0 giây";
-            }
-
-            if (timeSpan.Days > 0) return $"{timeSpan.Days} ngày {timeSpan.Hours} giờ";
-            if (timeSpan.Hours > 0) return $"{timeSpan.Hours} giờ {timeSpan.Minutes} phút";
-            if (timeSpan.Minutes > 0) return $"{timeSpan.Minutes} phút {timeSpan.Seconds} giây";
-            return $"{timeSpan.Seconds} giây";
-        }
-
         private void Ready()
         {
             if (state == MatchMakingState.NotFree)
@@ -242,7 +228,6 @@ namespace AllMaps.DauTruong
                     costObject.SetActive(true);
                     break;
             }
-
             Init();
         }
 
