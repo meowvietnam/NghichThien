@@ -142,5 +142,6 @@ namespace Network
         WatchAdsMoneyVipRequest = 854,
         ActiveAdsMoneyVip = 856,
         
+        GetRankRequest = 887,
     }
 }

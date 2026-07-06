@@ -91,6 +91,10 @@ namespace Network
             module.RemoveHandler<AdsHandler>();
             module.AddHandler(adsHandler);
             
+            var rankHandler = new RankHandler();
+            module.RemoveHandler<RankHandler>();
+            module.AddHandler(rankHandler);
+            
             AdminPanel.Instance.StartListen();
         }
         public void AddRequest(MessageTag tag, Action<IReader> response, int timeoutMilliseconds = 0, Action<Exception> onError = null)

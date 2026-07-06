@@ -8,6 +8,7 @@ using Network;
 using Network.Core;
 using Sirenix.OdinInspector;
 using System.Linq;
+using AllMaps.ui_rank;
 using LongDHModules;
 using UnityEditor;
 using UnityEngine;
@@ -20,25 +21,23 @@ public interface IUISingleton
 {
     void Init();
 }
+
 public class UIManager : BaseBehaviour
 {
-    [SerializeField] public Sprite[] spriteQualityFulls ;
+    [SerializeField] public Sprite[] spriteQualityFulls;
     [SerializeField] public Sprite[] spriteFrames;
     [SerializeField] public Color[] colorQualitys;
     [SerializeField] private Sprite spriteTTInven;
     [SerializeField] private Sprite spriteCPInven;
     [SerializeField] private Sprite spriteRecipeInven;
     [SerializeField] public GameObject loadScene;
-    [SerializeField]
-    public Button btnBXH;
-    [SerializeField]
-    public Button btnThuongHoi;
-    [SerializeField]
-    public Button btnStartPack;
-    [SerializeField]
-    public Button btnGacha;
+    [SerializeField] public Button btnBXH;
+    [SerializeField] public Button btnThuongHoi;
+    [SerializeField] public Button btnStartPack;
+    [SerializeField] public Button btnGacha;
 
     public Transform ListIcon => btnBXH.transform.parent;
+
     /// <summary>
     /// Abstract Factory để lấy equipment từ các collection khác nhau
     /// </summary>
@@ -51,18 +50,21 @@ public class UIManager : BaseBehaviour
         spriteFrames = qualities.Select(x => x.IconUp).ToArray();
         EditorUtility.SetDirty(this);
     }
-    public (Sprite,Sprite,Color) GetFrameAndQualityFullAndColorNameSkill(BaseSkill data)
+
+    public (Sprite, Sprite, Color) GetFrameAndQualityFullAndColorNameSkill(BaseSkill data)
     {
         if (data == null) return (default, default, default);
         int index = ((((int)data.eTierSkill - 1) / 3) * 2) + 1;
         return (spriteFrames[index], spriteQualityFulls[index], colorQualitys[index]);
     }
+
     public (Sprite, Sprite, Color) GetFrameAndQualityFullAndColorNameEquipment(EquipmentTier tierEquipment)
     {
         int index = (int)tierEquipment + 1;
         return (spriteFrames[index], spriteQualityFulls[index], colorQualitys[index]);
     }
-    public void InitVisualItemSkill(ItemInventory item, BaseSkill data,ItemRef itemRef = null)
+
+    public void InitVisualItemSkill(ItemInventory item, BaseSkill data, ItemRef itemRef = null)
     {
         Sprite frame = null;
         if (data != null)
@@ -74,7 +76,7 @@ public class UIManager : BaseBehaviour
             item.SetQualityFull(inforVisualSkill.Item2);
             if (itemRef == null || itemRef.Type != ItemType.ThanThong && itemRef.Type != ItemType.CongPhap)
             {
-                if(data is ThanThong thanThong)
+                if (data is ThanThong thanThong)
                 {
                     itemRef = new ItemRef
                     {
@@ -94,20 +96,18 @@ public class UIManager : BaseBehaviour
                 }
             }
         }
-      
+
 
         item.Init(data, frame);
         item.InitInventory(itemRef, null);
         item.InitIcon(item.icon.sprite, item.frame.sprite);
-
-
-
     }
+
     public void InitVisualEquipment(ItemInventory item, BaseItemData data, ItemRef itemRef = null)
     {
         Sprite frame = null;
         CreateCharacter.Equipment equipment = null;
-        if(itemRef != null)
+        if (itemRef != null)
         {
             var typeCurrent = itemRef.Type;
 
@@ -122,23 +122,24 @@ public class UIManager : BaseBehaviour
             //    equipment = Client.Instance.CharacterData.InventoryManager.BiKhis.FirstOrDefault(...);
             // ...
             // Sử dụng Abstract Factory thay vì if-else chain
-            equipment = ItemProviderFactory.GetProvider<CreateCharacter.Equipment>(typeCurrent).GetDataItemByIdRef(itemRef.Id);
+            equipment = ItemProviderFactory.GetProvider<CreateCharacter.Equipment>(typeCurrent)
+                .GetDataItemByIdRef(itemRef.Id);
+        }
 
-        }    
-
-        if(equipment == null)
+        if (equipment == null)
         {
             Debug.Log("equipment null");
-        }    
-        if(data == null && equipment != null)
+        }
+
+        if (data == null && equipment != null)
         {
             data = new BaseItemData
             {
                 nameItem = equipment.Name,
                 spriteItem = equipment.Item.Icon,
             };
-        }    
-        
+        }
+
         if (data != null && equipment != null)
         {
             var inforVisualEquipment = GetFrameAndQualityFullAndColorNameEquipment(equipment.Item.Tier);
@@ -147,11 +148,14 @@ public class UIManager : BaseBehaviour
             item.SetColorName(inforVisualEquipment.Item3);
             item.SetQualityFull(inforVisualEquipment.Item2);
         }
+
         item.Init(data, frame);
         item.InitInventory(itemRef, null);
-        item.InitIcon(item.icon.sprite,item.frame.sprite);
+        item.InitIcon(item.icon.sprite, item.frame.sprite);
     }
-    public void InitVisualItemInventory(ItemInventory item, IItemData data, ItemRef itemRef , bool isIconSkillBase = false)
+
+    public void InitVisualItemInventory(ItemInventory item, IItemData data, ItemRef itemRef,
+        bool isIconSkillBase = false)
     {
         Sprite frame = null;
         BaseItemData baseItemData = null;
@@ -164,12 +168,13 @@ public class UIManager : BaseBehaviour
             item.SetQualityFull(quality.Background);
             baseItemData = new BaseItemData { nameItem = data.Name, spriteItem = data.Icon };
             item.Init(baseItemData, frame);
-
         }
+
         if (itemRef != null && itemRef.Type == ItemType.Recipe)
         {
             item.InitIcon(spriteRecipeInven, frame);
         }
+
         if (itemRef != null && !isIconSkillBase)
         {
             item.InitCount(itemRef.Count);
@@ -177,22 +182,20 @@ public class UIManager : BaseBehaviour
             {
                 item.InitIcon(spriteTTInven, frame);
             }
+
             if (itemRef.Type == ItemType.CongPhap)
             {
                 item.InitIcon(spriteCPInven, frame);
             }
-           
         }
 
 
         item.InitInventory(itemRef, data);
-
-
-
     }
 
-    public Image commonMask ;
+    public Image commonMask;
     public GameObject panelGroup;
+
     private void Awake()
     {
         var existing = Pool.Get<UIManager>();
@@ -201,33 +204,28 @@ public class UIManager : BaseBehaviour
             Destroy(gameObject);
             return;
         }
+
         Pool.Set(this);
         DontDestroyOnLoad(gameObject);
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
         SetEventButton(btnThuongHoi, () =>
         {
-           var iapHandler =  Pool.Get<IapHandler>();
-           iapHandler.popupMain.Show();
+            var iapHandler = Pool.Get<IapHandler>();
+            iapHandler.popupMain.Show();
         });
-        SetEventButton(btnBXH, () =>
-        {
-            Pool.Get<RankPanel>().mainPopup.Show();
-        });
+        SetEventButton(btnBXH, () => { Pool.Get<RankPanel>().DoShow(); });
         SetEventButton(btnStartPack, () =>
         {
             var iapHandler = Pool.Get<IapHandler>();
             iapHandler.transform.GetComponentInChildren<StartPackUI>(true).ThisPopup.Show();
         });
         btnStartPack.gameObject.SetActive(!Client.Instance.CharacterData.IsInfiniteEnergy);
-        SetEventButton(btnGacha, () =>
-        {
-            Pool.Get<GachaPanel>().SetActive();
-        });
+        SetEventButton(btnGacha, () => { Pool.Get<GachaPanel>().SetActive(); });
     }
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         loadScene.gameObject.SetActive(false);
-      
     }
 
     private void Start()
@@ -238,13 +236,15 @@ public class UIManager : BaseBehaviour
         {
             item.Init();
         }
+
         foreach (var item in listSingleTon)
         {
             item.Init();
         }
     }
-    [SerializeField]
-    public Popup currentPopup;
+
+    [SerializeField] public Popup currentPopup;
+
     public void RegisterOpenPopup(Popup popup)
     {
         if (currentPopup != null && currentPopup != popup)
@@ -261,9 +261,9 @@ public class UIManager : BaseBehaviour
 
     public void RegisterClosePopup()
     {
-        if(currentPopup == null || (currentPopup != null && !currentPopup.gameObject.activeSelf))
+        if (currentPopup == null || (currentPopup != null && !currentPopup.gameObject.activeSelf))
         {
             commonMask.gameObject.SetActive(false);
-        }    
+        }
     }
 }

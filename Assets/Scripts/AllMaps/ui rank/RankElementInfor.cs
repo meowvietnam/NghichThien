@@ -1,64 +1,89 @@
-﻿using Base;
+﻿using System.Collections.Generic;
+using Base;
 using CreateCharacter;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using ArenaManager = AllMaps.DauTruong.ArenaManager;
 
-public enum RankType
+namespace AllMaps.ui_rank
 {
-    RankLevel, // cấp bậc (luyện khí sơ trung hậu ... )
-    RankTongNap, // giá trị (200, 300, 400 ... )
-    RankTongTieu,
-    RankArena,
-}
-public class RankElementInfor : BaseBehaviour
-{
-    [SerializeField] private CharacterGraphic graphicChar; // tuổi
-    [SerializeField] private Text txtValue; // tuổi
-    [SerializeField] private Text txtRank;
-    [SerializeField] private Text txtName;
-    [SerializeField] private Text txtValueRank; // level (luyện khí sơ trung hậu ... ) // 200
-    [SerializeField] private List<Sprite> spriteLevel;
-    [SerializeField] private List<Sprite> spriteRank;
-    [SerializeField] private Sprite spriteTienNgoc;
-    public void Init(int tuoitac , int sttRank , string nameUser,int valueRank , Gender gender, Dictionary<string, string> skin, Dictionary<string, Color> colors, RankType rankType)
+    public enum RankType
     {
-        graphicChar.SetGender(gender);
-        graphicChar.SetSkin(skin, colors);
-        txtValue.text = tuoitac.ToString();
-        if(txtRank != null)
-        {
-            txtRank.text = sttRank.ToString();
-        }
-        txtName.text = nameUser;
-        var imageIcon = txtValueRank.transform.GetChild(0).GetComponent<Image>();
-        if (rankType == RankType.RankLevel)
-        {
-            GameManager.levelWithText.TryGetValue(valueRank, out string textLevel);
-            txtValueRank.text = textLevel;
-            imageIcon.sprite = spriteLevel[valueRank - 1];
-            txtValue.transform.parent.gameObject.SetActive(true);
-            imageIcon.transform.localScale = Vector3.one * 0.5f;
+        RankLevel,
+        RankTongNap,
+        RankTongTieu,
+        RankArena,
+    }
 
-        }
-        else if(rankType == RankType.RankTongNap || rankType == RankType.RankTongTieu)
-        {
-            txtValueRank.text = valueRank.ToString(); 
-            imageIcon.sprite = spriteTienNgoc;
-            txtValue.transform.parent.gameObject.SetActive(false);
-            imageIcon.transform.localScale = Vector3.one * 0.5f;
+    public class RankElementInfor : BaseBehaviour
+    {
+        [SerializeField] private CharacterGraphic graphicChar;
+        [SerializeField] private Text txtValue;
+        [SerializeField] private Text txtRank;
+        [SerializeField] private Text txtName;
+        [SerializeField] private Text txtValueRank;
+        [SerializeField] private List<Sprite> spriteLevel;
+        [SerializeField] private List<Sprite> spriteRank;
+        [SerializeField] private Sprite spriteTienNgoc;
 
-        }
-        else if (rankType == RankType.RankArena)
+        public void Init(CharacterData charData, int rank, RankType rankType, int valueRank)
         {
-            txtValueRank.text = valueRank.ToString();
-            var typeRank = ArenaManager.GetArenaRankWithPoint(valueRank);
-            imageIcon.sprite = spriteRank[(int)typeRank-1];
-            txtValue.transform.parent.gameObject.SetActive(false);
-            imageIcon.transform.localScale = Vector3.one * 0.05f;
-
+            var tuoiTac = GameManager.GetIntTuoiTac(charData.Stats.TuoiTac);
+            var name = charData.Name;
+            var gender = charData.Gender;
+            var skin = charData.Appearance.Skins;
+            var color = charData.Appearance.Colors;
+            Init(tuoiTac, rank, name, valueRank, gender, skin, color, rankType);
         }
-        imageIcon.SetNativeSize();
-    }    
+
+        public void Init(int tuoitac, int sttRank, string nameUser, int valueRank, Gender gender,
+            Dictionary<string, string> skin, Dictionary<string, Color> colors, RankType rankType)
+        {
+            graphicChar.SetGender(gender);
+            graphicChar.SetSkin(skin, colors);
+            txtValue.text = tuoitac.ToString();
+            if (txtRank != null)
+            {
+                txtRank.text = sttRank.ToString();
+            }
+
+            txtName.text = nameUser;
+            var imageIcon = txtValueRank.transform.GetChild(0).GetComponent<Image>();
+            if (rankType == RankType.RankLevel)
+            {
+                GameManager.levelWithText.TryGetValue(valueRank, out string textLevel);
+                txtValueRank.text = textLevel;
+                imageIcon.sprite = spriteLevel[valueRank - 1];
+                txtValue.transform.parent.gameObject.SetActive(true);
+                imageIcon.transform.localScale = Vector3.one * 0.5f;
+            }
+            else if (rankType == RankType.RankTongNap || rankType == RankType.RankTongTieu)
+            {
+                txtValueRank.text = valueRank.ToString();
+                imageIcon.sprite = spriteTienNgoc;
+                txtValue.transform.parent.gameObject.SetActive(false);
+                imageIcon.transform.localScale = Vector3.one * 0.5f;
+            }
+            else if (rankType == RankType.RankArena)
+            {
+                txtValueRank.text = valueRank.ToString();
+                var typeRank = ArenaManager.GetArenaRankWithPoint(valueRank);
+                imageIcon.sprite = typeRank == ETypeArenaRank.None ? null : spriteRank[(int)typeRank - 1];
+                txtValue.transform.parent.gameObject.SetActive(false);
+                imageIcon.transform.localScale = Vector3.one * 0.05f;
+            }
+
+            imageIcon.SetNativeSize();
+        }
+
+        public void SetActive(bool active)
+        {
+            gameObject.SetActive(active);
+        }
+
+        public void DestroySelf()
+        {
+            Destroy(gameObject);
+        }
+    }
 }
