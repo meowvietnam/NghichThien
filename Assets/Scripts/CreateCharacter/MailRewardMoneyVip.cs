@@ -17,6 +17,21 @@ namespace CreateCharacter
         {
             Icon = icon;
         }
+
+        public static string GetRichText(int count)
+        {
+            var icon = MoneyResources.Instance.MoneyVipIcon;
+            var item = new MoneyVipItem(icon);
+            var core = CoreConfig.Instance;
+            return
+                $"<color=#{ColorUtility.ToHtmlStringRGBA(core.FindQuality(item.Tier).Color)}>{item.Name} x{count}</color>";
+        }
+        public static void ShowNotification(int count)
+        {
+            var text =
+                $"Bạn nhận được: {GetRichText(count)}";
+            NotifyGroup.Instance.Show(text);
+        }
     }
     [MemoryPackable]
     public partial class MailRewardMoneyVip : IMailReward
@@ -43,9 +58,7 @@ namespace CreateCharacter
         }
         public string GetRichText()
         {
-            var core = CoreConfig.Instance;
-            var item = GetItemData();
-            return $"<color=#{ColorUtility.ToHtmlStringRGBA(core.FindQuality(item.Tier).Color)}>{item.Name} x{MoneyVip}</color>";
+            return MoneyVipItem.GetRichText(MoneyVip);
         }
     }
 }

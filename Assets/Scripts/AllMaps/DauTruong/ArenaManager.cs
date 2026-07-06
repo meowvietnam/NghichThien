@@ -155,7 +155,13 @@ namespace AllMaps.DauTruong
             }
             else
             {
-                SendReady();
+                AdsService.Instance.ShowRewardVideoAds(
+                    "ArenaMatchmaking",
+                    "Xem quảng cáo để tham gia đấu trường",
+                    SendReady,
+                    null,
+                    () => NotifyGroup.Instance.Show("Không thể tải quảng cáo")
+                );
             }
         }
 
@@ -247,12 +253,8 @@ namespace AllMaps.DauTruong
 
         public void RewardSuccess(ClaimRankRewardResult result)
         {
-            var icon = MoneyResources.Instance.MoneyVipIcon;
-            var item = new MoneyVipItem(icon);
-            var core = CoreConfig.Instance;
-            var text =
-                $"Bạn nhận được: <color=#{ColorUtility.ToHtmlStringRGBA(core.FindQuality(item.Tier).Color)}>{item.Name} x{result.MoneyVip}</color>";
-            NotifyGroup.Instance.Show(text);
+            var count = result.MoneyVip;
+            MoneyVipItem.ShowNotification(count);
             var ui = rewardRankDauTruongs.First(x => x.Reward.Id == result.Id);
             ui.UpdateClaim();
         }
