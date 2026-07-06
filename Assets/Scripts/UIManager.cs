@@ -195,27 +195,19 @@ public class UIManager : BaseBehaviour
     public GameObject panelGroup;
     private void Awake()
     {
-        // Kiểm tra nếu trong Pool đã có một Manager loại này rồi
         var existing = Pool.Get<UIManager>();
-
         if (existing != null && existing != this)
         {
-            // Nếu đã có bản cũ (từ Scene trước), xóa bản mới này đi
             Destroy(gameObject);
             return;
         }
-
-        // Nếu chưa có, mình là "trùm", đăng ký vào Pool và giữ lại
         Pool.Set(this);
         DontDestroyOnLoad(gameObject);
-        // Đăng ký sự kiện mỗi khi load scene mới
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
         SetEventButton(btnThuongHoi, () =>
         {
            var iapHandler =  Pool.Get<IapHandler>();
            iapHandler.popupMain.Show();
-             
-
         });
         SetEventButton(btnBXH, () =>
         {

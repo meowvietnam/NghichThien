@@ -10,9 +10,13 @@ namespace Network.Core
     {
         private IAdsCallback adsMoneyVipCallback;
 
-        public AdsHandler(IAdsCallback adsMoneyVipCallback)
+        public AdsHandler()
         {
-            this.adsMoneyVipCallback = adsMoneyVipCallback;
+        }
+
+        public void SetCallback(IAdsCallback adsCallback)
+        {
+            adsMoneyVipCallback = adsCallback;
         }
         public async void GetAdsMoneyVipConfig()
         {
@@ -20,7 +24,7 @@ namespace Network.Core
             var config = reader.Read<AdsMoneyVipConfig>();
             NetworkManager.Instance.Invoke(() =>
             {
-                adsMoneyVipCallback.Init(config);
+                adsMoneyVipCallback?.Init(config);
             });
         }
         
@@ -59,11 +63,11 @@ namespace Network.Core
             {
                 if (result.Success)
                 {
-                    adsMoneyVipCallback.SuccessClaim(result);
+                    adsMoneyVipCallback?.SuccessClaim(result);
                 }
                 else
                 {
-                    adsMoneyVipCallback.FailureClaim(result.Message);
+                    adsMoneyVipCallback?.FailureClaim(result.Message);
                 }
             });
         }
@@ -79,7 +83,7 @@ namespace Network.Core
                 var active = reader.Read<bool>();
                 NetworkManager.Instance.Invoke(() =>
                 {
-                    adsMoneyVipCallback.ActiveAds(active);
+                    adsMoneyVipCallback?.ActiveAds(active);
                 });
             }
         }

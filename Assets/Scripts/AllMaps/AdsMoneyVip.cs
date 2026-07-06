@@ -1,3 +1,4 @@
+using System;
 using CreateCharacter;
 using LongDHModules;
 using Network;
@@ -15,14 +16,22 @@ namespace AllMaps
         [SerializeField] private Button btn;
         private int moneyVip;
         private AdsHandler adsHandler;
+        private static AdsMoneyVip instance;
         private void Start()
         {
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else
+            {
+                return;
+            }
             selfObject.SetActive(false);
             SetEventButton(btn, Claim);
-            adsHandler = new AdsHandler(this);
             var coreModule = Client.Instance.CoreModule;
-            coreModule.RemoveHandler<AdsHandler>();
-            coreModule.AddHandler(adsHandler);
+            adsHandler = coreModule.GetHandler<AdsHandler>();
+            adsHandler.SetCallback(this);
             adsHandler.GetAdsMoneyVipConfig();
         }
 
@@ -47,7 +56,7 @@ namespace AllMaps
         {
             selfObject.SetActive(active);
         }
-
+    
         public void SuccessClaim(WatchAdsMoneyVipResult result)
         {
             var count = result.MoneyVip;

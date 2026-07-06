@@ -87,6 +87,10 @@ namespace Network
             module.RemoveHandler<ProgressionHandler>();
             module.AddHandler(progressionHandler);
             
+            var adsHandler = new AdsHandler();
+            module.RemoveHandler<AdsHandler>();
+            module.AddHandler(adsHandler);
+            
             AdminPanel.Instance.StartListen();
         }
         public void AddRequest(MessageTag tag, Action<IReader> response, int timeoutMilliseconds = 0, Action<Exception> onError = null)
