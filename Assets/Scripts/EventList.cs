@@ -54,6 +54,7 @@ public static partial class EventList
     }
     public static class Network
     {
+        public const string RESET_ARENA_RANK = "Network.RESET_ARENA_RANK";
         public const string GET_RANK = "Network.GET_RANK";
         public const string LOAD_RANK ="Network.LOAD_RANK";
         public const string CLAIM_RANK_REWARD = "Network.CLAIM_RANK_REWARD";

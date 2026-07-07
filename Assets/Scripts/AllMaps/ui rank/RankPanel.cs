@@ -29,6 +29,7 @@ namespace AllMaps.ui_rank
             ClearTops();
         }
 
+
         private void FixedUpdate()
         {
             if (currentSelect == null)

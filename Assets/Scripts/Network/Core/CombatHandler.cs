@@ -19,7 +19,8 @@ namespace Network.Core
 
         private static MessageTag[] handler =
         {
-            MessageTag.ResultCombatResult, MessageTag.LoadCharCombatResult,
+            MessageTag.ResultCombatResult,
+            MessageTag.LoadCharCombatResult,
             MessageTag.LoadCharCombatArenaResult,
         };
 

@@ -27,6 +27,7 @@ namespace Network.Core
         
         public MailHandler(IMailCallback callback)
         {
+            Debug.Log("Initializing mail handler");
             this.callback = callback;
             startId = long.MaxValue;
             hasNext = true;
@@ -170,6 +171,7 @@ namespace Network.Core
             MessageTag.GetMailsResult, MessageTag.MarkMailRead, MessageTag.RemoveMailId,
             MessageTag.RemoveAllMailsResult,
             MessageTag.ClaimMailResult, MessageTag.ClaimAllMailsResult,
+            MessageTag.NewMail,
         };
 
         public MessageTag[] HandleTag => clientHandler;

@@ -17,8 +17,8 @@ namespace Network.Core
 
         private async void GetRank(object[] data)
         {
-            var callback = (IGetRank) data[0];
-            var rankType = (RankType) data[1];
+            var callback = (IGetRank)data[0];
+            var rankType = (RankType)data[1];
             var client = Client.Instance;
             var reader = await client.RequestWait(MessageTag.GetRankRequest, rankType);
             var result = reader.MemRead<GetRankResult>();
@@ -37,6 +37,23 @@ namespace Network.Core
 
         public void Handle(Message<MessageTag> message)
         {
+            var tag = message.Tag;
+            var reader = message.Reader;
+            if (tag == MessageTag.ResetArenaRank)
+            {
+                var charData = Client.Instance.CharacterData;
+                var arena = charData.ArenaManager;
+                arena.Points = 0;
+                arena.CurrentArenaCount = 0;
+                foreach (var arenaReward in arena.Rewards)
+                {
+                    arenaReward.IsClaim = false;
+                }
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    Observer.Notify(EventList.Network.RESET_ARENA_RANK);
+                });
+            }
         }
 
         public void OnLeave()
@@ -47,7 +64,7 @@ namespace Network.Core
         {
         }
 
-        private static MessageTag[] handler = { };
+        private static MessageTag[] handler = { MessageTag.ResetArenaRank };
         public MessageTag[] HandleTag => handler;
     }
 }

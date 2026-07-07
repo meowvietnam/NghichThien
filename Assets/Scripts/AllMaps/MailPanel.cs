@@ -106,10 +106,12 @@ namespace AllMaps
 
         public void OnAdd(List<Mail> mails)
         {
-            foreach (var mail in mails)
+            foreach (var mail in mails.OrderByDescending(x => x.CreatedAt))
             {
-                AddMail(mail);
+                AddMail(mail, false);
             }
+
+            SortMailCellsByDate();
         }
 
         private void OnClose()
@@ -222,6 +224,11 @@ namespace AllMaps
 
         public void AddMail(Mail mail)
         {
+            AddMail(mail, true);
+        }
+
+        private void AddMail(Mail mail, bool sortAfterAdd)
+        {
             if (mailUIInstance == null)
             {
                 var mailUI = Instantiate(mailUIPrefab, mailUIParent);
@@ -233,6 +240,25 @@ namespace AllMaps
             var active = GetFilter()(mailCell);
             mailCell.SetActive(active);
             mailCells.Add(mailCell);
+            if (sortAfterAdd)
+            {
+                SortMailCellsByDate();
+            }
+        }
+
+        private void SortMailCellsByDate()
+        {
+            mailCells = mailCells
+                .OrderByDescending(x => x.Mail.CreatedAt)
+                .ThenByDescending(x => x.Mail.Id)
+                .ToList();
+
+            var reverseArrangement = mailCellParent.GetComponent<HorizontalOrVerticalLayoutGroup>()?.reverseArrangement == true;
+            for (var i = 0; i < mailCells.Count; i++)
+            {
+                var siblingIndex = reverseArrangement ? mailCells.Count - 1 - i : i;
+                mailCells[i].transform.SetSiblingIndex(siblingIndex);
+            }
         }
     }
 }

@@ -77,6 +77,8 @@ namespace AllMaps.DauTruong
         private void Start()
         {
             parent.SetActive(false);
+
+            Observer.AddObserver(EventList.Network.RESET_ARENA_RANK, OnResetRank);
             Observer.Notify(EventList.Network.LOAD_RANK, this);
         }
 
@@ -248,6 +250,14 @@ namespace AllMaps.DauTruong
         public void FailClaimReward(string message)
         {
             NotifyGroup.Instance.Show(message);
+        }
+        private void OnResetRank()
+        {
+            Init();
+        }
+        private void OnDestroy()
+        {
+            Observer.RemoveObserver(EventList.Network.RESET_ARENA_RANK, OnResetRank);
         }
     }
 }

@@ -157,5 +157,6 @@ namespace Network
         CloseAds = 913,
         LoadAdsFail = 914,
         
+        ResetArenaRank = 923,
     }
 }

@@ -85,6 +85,7 @@ namespace AllMaps
                 var message = "Bạn có 1 thư mới!";
                 NotifyGroup.Instance.Show(message);
                 mailPanel.AddMail(mail);
+                mailButton.Refresh();
             });
         }
     }
