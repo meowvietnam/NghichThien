@@ -84,7 +84,7 @@ public class INetworkEvent
     }
     public interface IBuyAndSell // Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessBuyAndSell();
+        void SuccessBuyAndSell(string message);
         void FailBuyAndSell(string message);
     }
     public interface ILoadTask// Check đủ ngộ đạo điểm mới learn được

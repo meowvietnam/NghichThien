@@ -35,53 +35,40 @@ public class AdsService : SingletonMonoDontDestroy<AdsService>
     [Button]
     public void ShowInterstitialAds(string location, Action closeCallback, Action failedCallback)
     {
-        Action closeCallback2 = new Action(() =>
+        Action closeCallback2 = () =>
         {
             closeCallback?.Invoke();
-        });
-        Action failCallback2 = new Action(() =>
+        };
+        Action failCallback2 = () =>
         {
             failedCallback?.Invoke();
-        });
-        //if (Client.Instance.CharacterData.no)
-        //{
-        //    closeCallback2?.Invoke();
-        //    failCallback2?.Invoke();
-        //    return;
-        //} 
+        };
         adsProvider.ShowInterstitial(location, closeCallback2, failCallback2);
     }
     public void ShowRewardVideoAds(string location, string buttonName,
     Action rewardedCallback, Action closeCallback, Action loadFailCallback)
     {
-        // 1. Ghi lại thời gian bắt đầu bấm nút xem Ads
         float startTime = Time.realtimeSinceStartup;
-
-        Action closeCallback2 = new Action(() =>
+        Action closeCallback2 = () =>
         {
-            // Tính xem quảng cáo đã hiển thị được bao nhiêu giây rồi
             float duration = Time.realtimeSinceStartup - startTime;
-
-            // Nếu thời gian mở ads quá ngắn (dưới 5 giây) chứng tỏ bấm phát tắt luôn hoặc dùng tool skip
             if (duration < 5f)
             {
                 NetworkManager.Instance.Invoke(() => {
-                    // Đóng giao diện, cảnh báo và KHÔNG phát thưởng
                     loadFailCallback?.Invoke();
                     Debug.LogWarning("Xem quảng cáo quá nhanh, nghi vấn hack/skip!");
                 });
                 return;
             }
-
             closeCallback?.Invoke();
-        });
+        };
 
-        Action rewardCallback2 = new Action(() =>
+        Action rewardCallback2 = () =>
         {
             rewardedCallback?.Invoke();
-        });
+        };
 
-        Action failCallback2 = new Action(() =>
+        Action failCallback2 = () =>
         {
             NetworkManager.Instance.Invoke(() =>
             {
@@ -109,7 +96,7 @@ public class AdsService : SingletonMonoDontDestroy<AdsService>
 
                 loadFailCallback?.Invoke();
             });
-        });
+        };
 
         adsProvider.ShowRewardVideo(location, buttonName, rewardCallback2, closeCallback2, failCallback2);
     }

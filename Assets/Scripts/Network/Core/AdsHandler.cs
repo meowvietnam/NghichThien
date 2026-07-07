@@ -3,6 +3,7 @@ using Network.Callback;
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
 using Network.Models;
+using UnityEngine;
 
 namespace Network.Core
 {
@@ -30,46 +31,7 @@ namespace Network.Core
         
         public void ClaimMoneyVip()
         {
-            var charData = Client.Instance.CharacterData;
-            if (!charData.IsNoAds)
-            {
-                AdsService.Instance.ShowRewardVideoAds(
-                    "MoneyVipAds",
-                    "Xem quảng cáo để nhận tiên ngọc",
-                    SendWatchAdsMoneyVip,
-                    null,
-                    () => NotifyGroup.Instance.Show("Không thể tải quảng cáo")
-                );
-            }
-            else
-            {
-                SendWatchAdsMoneyVip();
-            }
-        }
-
-        private async void SendWatchAdsMoneyVip()
-        {
-            var client = Client.Instance;
-            var reader = await client.RequestWait(MessageTag.WatchAdsMoneyVipRequest);
-            var result = reader.MemRead<WatchAdsMoneyVipResult>();
-            if (result.Success)
-            {
-                var charData = client.CharacterData;
-                charData.MoneyVip += result.MoneyVip;
-                charData.CurrentFreeAdsMoneyVipCount = result.Count;
-            }
-
-            NetworkManager.Instance.Invoke(() =>
-            {
-                if (result.Success)
-                {
-                    adsMoneyVipCallback?.SuccessClaim(result);
-                }
-                else
-                {
-                    adsMoneyVipCallback?.FailureClaim(result.Message);
-                }
-            });
+            Client.Instance.Send(MessageTag.WatchAdsMoneyVip);
         }
         public void OnEnter()
         {
@@ -78,12 +40,43 @@ namespace Network.Core
         {
             var tag = message.Tag;
             var reader = message.Reader;
+            var client = Client.Instance;
             if (tag == MessageTag.ActiveAdsMoneyVip)
             {
                 var active = reader.Read<bool>();
                 NetworkManager.Instance.Invoke(() =>
                 {
                     adsMoneyVipCallback?.ActiveAds(active);
+                });
+            }
+            else if (tag == MessageTag.WatchAdsMoneyVipResult)
+            {
+                var result = reader.MemRead<WatchAdsMoneyVipResult>();
+                if (result.Success)
+                {
+                    var charData = client.CharacterData;
+                    charData.MoneyVip += result.MoneyVip;
+                    charData.CurrentFreeAdsMoneyVipCount = result.Count;
+                }
+
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    if (result.Success)
+                    {
+                        adsMoneyVipCallback?.SuccessClaim(result);
+                    }
+                    else
+                    {
+                        adsMoneyVipCallback?.FailureClaim(result.Message);
+                    }
+                });
+            }
+            else if (tag == MessageTag.WatchAds)
+            {
+                var showAds = reader.MemRead<ShowAds>();
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    showAds.Show();
                 });
             }
         }
@@ -96,7 +89,11 @@ namespace Network.Core
         {
         }
 
-        private static MessageTag[] handler = { MessageTag.ActiveAdsMoneyVip };
+        private static MessageTag[] handler = { 
+            MessageTag.ActiveAdsMoneyVip, 
+            MessageTag.WatchAdsMoneyVipResult,
+            MessageTag.WatchAds
+        };
         public MessageTag[] HandleTag => handler;
     }
 }

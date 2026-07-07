@@ -3,8 +3,6 @@ using CreateCharacter;
 using LongDH.LongDHModules;
 using LuyenDan;
 using Network;
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -53,29 +51,10 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         SetTextMoneyCurrent();
         SetEventButton(btnConfirm, () =>
         {
-            if (listItemUserBuy.Any(x => x.gameObject.activeSelf) || listItemUserSell.Any(x => x.gameObject.activeSelf))
+            var listItemBuy = GetActiveTradeItemRefs(listItemUserBuy);
+            var listItemSell = GetActiveTradeItemRefs(listItemUserSell);
+            if (listItemBuy.Count > 0 || listItemSell.Count > 0)
             {
-                // Lấy ra danh sách các itemRef (có thể chứa các phần tử trùng nhau)
-                foreach (var item in listItemUserBuy)
-                {
-                    if (!item.gameObject.activeSelf) continue;
-                    item.itemRef.SetCount(item.count);
-                }
-
-                foreach (var item in listItemUserSell)
-                {
-                    if (!item.gameObject.activeSelf) continue;
-                    item.itemRef.SetCount(item.count);
-                }
-
-                List<ItemRef> listItemBuy = listItemUserBuy
-                    .Select(x => x.itemRef)
-                    .Where(x => x.Id != 0)
-                    .ToList();
-                List<ItemRef> listItemSell = listItemUserSell
-                    .Select(x => x.itemRef)
-                    .Where(x => x.Id != 0)
-                    .ToList();
                 Observer.Notify(EventList.Network.BUY_AND_SELL, this, listItemBuy, listItemSell, eShopType, eMonPhai);
             }
         });
@@ -104,21 +83,21 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         {
             Observer.Notify(EventList.Network.RELOAD_SHOP, this, eShopType, eMonPhai);
         }
+
         var charData = Client.Instance.CharacterData;
         if (charData.IsNoAds)
         {
             Send();
+            return;
         }
-        else
-        {
-            AdsService.Instance.ShowRewardVideoAds(
-                "ReloadShop",
-                "Xem quảng cáo để làm mới cửa hàng",
-                Send,
-                null,
-                () => NotifyGroup.Instance.Show("Không thể tải quảng cáo")
-            );
-        }
+
+        AdsService.Instance.ShowRewardVideoAds(
+            "ReloadShop",
+            "Xem quảng cáo để làm mới cửa hàng",
+            Send,
+            null,
+            () => NotifyGroup.Instance.Show("Không thể tải quảng cáo")
+        );
     }
 
     [SerializeField] private Button btnConfirm;
@@ -135,56 +114,40 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
 
     private void SetTextMoneyCurrent()
     {
-        foreach (var item in listItemUserBuy)
+        foreach (var item in listItemUserBuy.Where(IsActiveTradeItem))
         {
-            if (!item.gameObject.activeInHierarchy)
-            {
-                continue;
-            }
-
             item.itemRef.SetCount(item.count);
         }
 
-        foreach (var item in listItemUserSell)
+        foreach (var item in listItemUserSell.Where(IsActiveTradeItem))
         {
-            if (!item.gameObject.activeInHierarchy) continue;
             item.itemRef.SetCount(item.count);
         }
 
-        List<ItemRef> buyItems = listItemUserBuy
-            .Where(x => x.gameObject.activeInHierarchy)
-            .Select(x => x.itemRef)
-            .Where(x => x.Id != 0)
-            .ToList();
-        List<ItemRef> sellItems = listItemUserSell
-            .Where(x => x.gameObject.activeInHierarchy)
-            .Select(x => x.itemRef)
-            .Where(x => x.Id != 0)
-            .ToList();
-        var buyItemsAmount = buyItems.Select(x =>
+        var buyItemsAmount = listItemUserBuy.Where(IsActiveTradeItem).Select(x =>
         {
-            var provider = ItemProviderFactory.GetProvider(x.Type);
+            var provider = ItemProviderFactory.GetProvider(x.itemRef.Type);
             return new
             {
-                Id = x.Id,
-                Count = x.Count,
-                Amount = x.Count * provider.GetPriceItemBuy(x.Id)
+                x.itemRef.Id,
+                x.count,
+                Amount = x.count * provider.GetPriceItemBuy(x.itemRef.Id)
             };
         }).ToArray();
-        var sellItemsAmount = sellItems.Select(x =>
+        var sellItemsAmount = listItemUserSell.Where(IsActiveTradeItem).Select(x =>
         {
-            var provider = ItemProviderFactory.GetProvider(x.Type);
+            var provider = ItemProviderFactory.GetProvider(x.itemRef.Type);
             return new
             {
-                Id = x.Id,
-                Count = x.Count,
-                Amount = x.Count * provider.GetPriceItemSell(x.Id)
+                x.itemRef.Id,
+                x.count,
+                Amount = x.count * provider.GetPriceItemSell(x.itemRef.Id)
             };
         }).ToArray();
         Debug.Log(
-            $"SellItems: {string.Join(",\n", sellItemsAmount.Select(x => $"Id: {x.Id},Count: {x.Count}, Amount: {x.Amount}"))}");
+            $"SellItems: {string.Join(",\n", sellItemsAmount.Select(x => $"Id: {x.Id},Count: {x.count}, Amount: {x.Amount}"))}");
         Debug.Log(
-            $"BuyItems: {string.Join(",\n", buyItemsAmount.Select(x => $"Id: {x.Id},Count: {x.Count}, Amount: {x.Amount}"))}");
+            $"BuyItems: {string.Join(",\n", buyItemsAmount.Select(x => $"Id: {x.Id},Count: {x.count}, Amount: {x.Amount}"))}");
         var totalMoney = sellItemsAmount.Sum(x => x.Amount) - buyItemsAmount.Sum(x => x.Amount);
         if (totalMoney >= 0)
         {
@@ -225,22 +188,22 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
             {
                 foreach (var slotItemGift in listItem)
                 {
-                    if (slotItemGift.itemRef.Id != ItemInventory.itemRef.Id)
+                    if (!IsSameItem(slotItemGift.itemRef, ItemInventory.itemRef))
                     {
                         if (!slotItemGift.gameObject.activeSelf)
                         {
                             slotItemGift.gameObject.SetActive(true);
+                            var tradeItemRef = CreateItemRef(ItemInventory.itemRef, 0);
                             if (ItemInventory.itemRef.Type == ItemType.ThanThong ||
                                 ItemInventory.itemRef.Type == ItemType.CongPhap)
                             {
                                 Pool.Get<UIManager>()
-                                    .InitVisualItemSkill(slotItemGift, (BaseSkill)ItemInventory.itemData);
+                                    .InitVisualItemSkill(slotItemGift, (BaseSkill)ItemInventory.itemData, tradeItemRef);
                             }
 
                             Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, ItemInventory.iItemData,
-                                ItemInventory.itemRef);
+                                tradeItemRef);
                             AddCountItemToItem(ItemInventory, slotItemGift);
-                            slotItemGift.InitCount(1);
                             slotItemGift.InitAction(null, null,
                                 () => { AddCountItemToItem(slotItemGift, ItemInventory); });
                             SetTextMoneyCurrent();
@@ -272,17 +235,46 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         bagList.InitBag(false);
     }
 
+    private bool IsActiveTradeItem(ItemInventory item)
+    {
+        return item.gameObject.activeSelf
+               && item.itemRef != null
+               && item.itemRef.Id != 0
+               && item.count > 0;
+    }
+
+    private List<ItemRef> GetActiveTradeItemRefs(List<ItemInventory> tradeItems)
+    {
+        return tradeItems
+            .Where(IsActiveTradeItem)
+            .Select(x => CreateItemRef(x.itemRef, x.count))
+            .ToList();
+    }
+
+    private ItemRef CreateItemRef(ItemRef source, int count)
+    {
+        return new ItemRef
+        {
+            Id = source.Id,
+            Type = source.Type,
+            Count = (ushort)count,
+            TempId = source.TempId
+        };
+    }
+
     private void AddCountItemToItem(ItemInventory itemStart, ItemInventory itemEnd, int count = 1)
     {
         if (itemStart.count > 0)
         {
             itemEnd.AddCount(count);
+            itemEnd.InitCount(itemEnd.count);
             if (itemEnd.count > 0 && !itemEnd.gameObject.activeSelf)
             {
                 itemEnd.gameObject.SetActive(true);
             }
 
             itemStart.AddCount(-count);
+            itemStart.InitCount(itemStart.count);
             if (itemStart.count <= 0)
             {
                 itemStart.gameObject.SetActive(false);
@@ -297,7 +289,42 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         InitBagLogic(bagNpcList, listItemUserBuy, itemDatas);
     }
 
-    public void SuccessBuyAndSell()
+    private void ReturnItemsToBag(List<ItemInventory> tradeItems, Bag1ItemPrefabInventory bag)
+    {
+        foreach (var tradeItem in tradeItems)
+        {
+            if (!tradeItem.gameObject.activeSelf || tradeItem.itemRef == null || tradeItem.count <= 0)
+            {
+                continue;
+            }
+
+            var bagItem = bag.InventoryUIFacade.listItemUI.FirstOrDefault(x => IsSameItem(x.itemRef, tradeItem.itemRef));
+            if (bagItem != null)
+            {
+                AddCountItemToItem(tradeItem, bagItem, tradeItem.count);
+            }
+
+            tradeItem.gameObject.SetActive(false);
+        }
+    }
+
+    private bool IsSameItem(ItemRef a, ItemRef b)
+    {
+        return a != null
+               && b != null
+               && a.Type == b.Type
+               && a.Id == b.Id
+               && a.TempId == b.TempId;
+    }
+
+    private void ResetTradeItems()
+    {
+        ReturnItemsToBag(listItemUserSell, bagUserList);
+        ReturnItemsToBag(listItemUserBuy, bagNpcList);
+        textMoneyCurrent.text = "0";
+    }
+
+    private void HideTradeItems()
     {
         foreach (var item in listItemUserSell)
         {
@@ -308,8 +335,14 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         {
             item.gameObject.SetActive(false);
         }
+    }
 
-        NotifyGroup.Instance.Show($"Giao dịch thành công!");
+    public void SuccessBuyAndSell(string message)
+    {
+        HideTradeItems();
+        InitBagUser();
+        InitBagNPC(Client.Instance.CharacterData.ShopManager.GetShop(eShopType).Items.ToList());
+        NotifyGroup.Instance.Show(message);
         textMoneyCurrent.text = "0";
         textMoneyUser.text = Client.Instance.CharacterData.Stats.LinhThach.ToString();
     }
@@ -321,7 +354,6 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
 
     public void SuccessLoadShop(List<ItemRef> itemRefs)
     {
-        Debug.Log($"SuccessLoadShop {string.Join(", ", itemRefs.Select(i => i.Id))}");
         InitBagNPC(itemRefs);
     }
 
@@ -332,6 +364,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
 
     public void SuccessReloadShop(List<ItemRef> itemRefs)
     {
+        ResetTradeItems();
         InitBagNPC(itemRefs);
     }
 

@@ -14,6 +14,8 @@ namespace Network.Core
 {
     public class ShopHandler : IClientHandler
     {
+        private INetworkEvent.IReloadShop reloadShopCallback;
+
         public void OnEnter()
         {
             Observer.AddObserver(EventList.Network.LOAD_SHOP, LoadShop);
@@ -50,11 +52,12 @@ namespace Network.Core
                 inventoryTracking.Apply(inventory);
                 client.CharacterData.Stats.LinhThach = result.LinhThach;
             }
+
             NetworkManager.Instance.Invoke(() =>
             {
                 if (result.Success)
                 {
-                    callback.SuccessBuyAndSell();
+                    callback.SuccessBuyAndSell(result.Message);
                 }
                 else
                 {
@@ -73,38 +76,41 @@ namespace Network.Core
             var reader = await client.RequestWait(MessageTag.LoadShopRequest, shopType);
             var shop = reader.MemRead<Shop>();
             shopManager.SetShop(shop);
-            NetworkManager.Instance.Invoke(() =>
-            {
-                callback?.SuccessLoadShop(shop.Items.ToList());
-            });
+            NetworkManager.Instance.Invoke(() => { callback?.SuccessLoadShop(shop.Items.ToList()); });
         }
-        private async void ReloadShop(object[] data)
+
+        private void ReloadShop(object[] data)
         {
-            var callback = data[0] as INetworkEvent.IReloadShop;
+            reloadShopCallback = data[0] as INetworkEvent.IReloadShop;
             var shopType = (EShopType)data[1];
-            var client = Client.Instance;
-            var shopManager = client.CharacterData.ShopManager;
-            var reader = await client.RequestWait(MessageTag.ReloadShopRequest, shopType);
-            var result = reader.MemRead<ReloadShopResult>();
-            if (result.Success)
-            {
-                shopManager.SetShop(result.Shop);
-            }
-            NetworkManager.Instance.Invoke(() =>
-            {
-                if (result.Success)
-                {
-                    callback?.SuccessReloadShop(result.Shop.Items.ToList());
-                }
-                else
-                {
-                    callback?.FailReLoadShop(result.Message);
-                }
-            });
+            Client.Instance.Send(MessageTag.ReloadShop, shopType);
         }
-        
+
         public void Handle(Message<MessageTag> message)
         {
+            var tag = message.Tag;
+            var reader = message.Reader;
+            var client = Client.Instance;
+            if (tag == MessageTag.ReloadShopResult)
+            {
+                var result = reader.MemRead<ReloadShopResult>();
+                var shopManager = client.CharacterData.ShopManager;
+                if (result.Success)
+                {
+                    shopManager.SetShop(result.Shop);
+                }
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    if (result.Success)
+                    {
+                        reloadShopCallback?.SuccessReloadShop(result.Shop.Items.ToList());
+                    }
+                    else
+                    {
+                        reloadShopCallback?.FailReLoadShop(result.Message);
+                    }
+                });
+            }
         }
 
         public void OnLeave()
@@ -115,7 +121,7 @@ namespace Network.Core
         {
         }
 
-        private static readonly MessageTag[] hanlers = new MessageTag[0];
+        private static readonly MessageTag[] hanlers = { MessageTag.ReloadShopResult };
         public MessageTag[] HandleTag => hanlers;
     }
 }

@@ -14,11 +14,12 @@ namespace Network.Core
     {
         private ICompleteMainQuest completeMainQuestCallBack;
         private ICompleteSideQuest completeSideQuestCallBack;
-
+        private IReLoadTask reloadTaskCallback;
         private static MessageTag[] handler =
         {
             MessageTag.CompleteMainQuestResult,
             MessageTag.CompleteSideQuestResult,
+            MessageTag.ReloadDailyQuestResult,
         };
 
         public MessageTag[] HandleTag => handler;
@@ -72,6 +73,29 @@ namespace Network.Core
                     }
                 });
             }
+            else if (tag == MessageTag.ReloadDailyQuestResult)
+            {
+                var client = Client.Instance;
+                var result = reader.MemRead<ReloadDailyQuestResult>();
+                if (result.Success)
+                {
+                    var listQuest = result.DailyQuests;
+                    var eDailyQuest = result.EDailyQuest;
+                    var questManager = client.CharacterData.QuestManager;
+                    questManager.DailyQuests[eDailyQuest] = listQuest;
+                }
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    if (result.Success)
+                    {
+                        reloadTaskCallback?.SuccessReLoadTask(result.DailyQuests);
+                    }
+                    else
+                    {
+                        reloadTaskCallback?.FailReLoadTask(result.Message);
+                    }
+                });
+            }
         }
 
         public void OnDisconnect(IProtocol<MessageTag> protocol)
@@ -87,19 +111,12 @@ namespace Network.Core
             Observer.AddObserver(EventList.Network.RELOAD_TASK, ReloadTask);
         }
 
-        private async void ReloadTask(object[] data)
+        private void ReloadTask(object[] data)
         {
-            var callback = data[0] as IReLoadTask;
+            reloadTaskCallback = data[0] as IReLoadTask;
             var eDailyQuest = (EDailyQuest)data[1];
             var client = Client.Instance;
-            var reader = await client.RequestWait(MessageTag.ReloadDailyQuestRequest, eDailyQuest);
-            var listQuest = reader.MemRead<List<DailyQuest>>();
-            var questManager = client.CharacterData.QuestManager;
-            questManager.DailyQuests[eDailyQuest] = listQuest;
-            NetworkManager.Instance.Invoke(() =>
-            {
-                callback?.SuccessReLoadTask(listQuest);
-            });
+            client.Send(MessageTag.ReloadDailyQuest, eDailyQuest);
         }
 
         private async void DoneTask(object[] data)

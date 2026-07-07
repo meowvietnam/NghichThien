@@ -37,8 +37,16 @@ namespace AllMaps
 
         private void Claim()
         {
-            var popup = Pool.Get<PopupConfirmAction>();
-            popup.ShowPopConfirmAction($"Xem quảng cáo nhận {moneyVip} tiên ngọc", OnConfirm);
+            var charData = Client.Instance.CharacterData;
+            if (!charData.IsNoAds)
+            {
+                var popup = Pool.Get<PopupConfirmAction>();
+                popup.ShowPopConfirmAction($"Xem quảng cáo nhận {moneyVip} tiên ngọc", OnConfirm);
+            }
+            else
+            {
+                OnConfirm();
+            }
         }
 
         private void OnConfirm()

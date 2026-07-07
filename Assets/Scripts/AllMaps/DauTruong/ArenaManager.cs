@@ -132,6 +132,7 @@ namespace AllMaps.DauTruong
             var text = $"Làm mới sau: {Utils.GetTime(endTime)}";
             resetAfterText.text = text;
         }
+
         private void Ready()
         {
             if (state == MatchMakingState.NotFree)
@@ -139,15 +140,14 @@ namespace AllMaps.DauTruong
                 var popup = Pool.Get<PopupConfirmAction>();
                 popup.ShowPopConfirmAction($"Sử dụng {cost} tiên ngọc để tham gia đấu trường", SendReady);
             }
+            else if (state == MatchMakingState.Ads)
+            {
+                var popup = Pool.Get<PopupConfirmAction>();
+                popup.ShowPopConfirmAction($"Xem quảng cáo để tham gia đấu trường", SendReady);
+            }
             else
             {
-                AdsService.Instance.ShowRewardVideoAds(
-                    "ArenaMatchmaking",
-                    "Xem quảng cáo để tham gia đấu trường",
-                    SendReady,
-                    null,
-                    () => NotifyGroup.Instance.Show("Không thể tải quảng cáo")
-                );
+                SendReady();
             }
         }
 
@@ -228,6 +228,7 @@ namespace AllMaps.DauTruong
                     costObject.SetActive(true);
                     break;
             }
+
             Init();
         }
 

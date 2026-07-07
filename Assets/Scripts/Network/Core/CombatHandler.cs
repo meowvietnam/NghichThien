@@ -192,13 +192,13 @@ namespace Network.Core
 
         private void LoadCharCombat(object[] data)
         {
-            loadCharCallBack = data[0] as INetworkEvent.ILoadCharCombat;
+            loadCharCallBack = data[0] as ILoadCharCombat;
             Client.Instance.Send(MessageTag.LoadCharCombat);
         }
 
         private void LoadCharCombatArena(object[] data)
         {
-            loadCharArenaCallBack = data[0] as INetworkEvent.ILoadCharCombatArena;
+            loadCharArenaCallBack = data[0] as ILoadCharCombatArena;
             Client.Instance.Send(MessageTag.LoadCharCombatArena);
         }
 
