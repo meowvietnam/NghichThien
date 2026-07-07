@@ -20,10 +20,10 @@ namespace CreateCharacter
         [SerializeField] private Text title;
         [SerializeField] private Text description;
         [SerializeField] private Transform thisTransform;
-        [SerializeField] private CharStats.CharacterStats orginalStats;
+        [SerializeField] private CharacterStats orginalStats;
         [SerializeField] private int originalMoney;
 
-        public CharStats.CharacterStats CharacterStats => CreateCharacterSystem.Instance.NewCharacter.Stats;
+        public CharacterStats CharacterStats => CreateCharacterSystem.Instance.NewCharacter.Stats;
         private int money;
 
         [SerializeField] private List<CurrentInfo> currentInfos;

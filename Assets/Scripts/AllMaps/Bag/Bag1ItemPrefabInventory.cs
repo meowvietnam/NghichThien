@@ -34,8 +34,6 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
     private bool isTriggerShowTextCount = false;
     void OnScrollChanged(Vector2 value, Action<bool> loadBagFunc)
     {
-        Debug.Log("co vao onscrooll change");
-
         if (value.y < 0.05f && !isLoadingMore)
         {
             // Ki?m tra xem d? li?u còn ?? load không tr??c khi g?i

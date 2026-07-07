@@ -1,4 +1,5 @@
-﻿using Base;
+﻿using System;
+using Base;
 using LuyenDan;
 using LuyenDan.Inventory;
 using Network;
@@ -148,6 +149,17 @@ namespace LuyenKhi
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssets();
             Debug.Log($"Đã cập nhật thành công {count} Icon Fight từ folder: {folderPath}");
+        }
+        [Button]
+        public void FindMaterial(string name)
+        {
+            var item = Materials.FirstOrDefault(x => x.Name.Contains(name, StringComparison.InvariantCultureIgnoreCase));
+            if (item == null)
+            {
+                Debug.Log(name + " not found");
+                return;
+            }
+            Debug.Log($"{item.Name} - Id: {item.Id}");
         }
 #endif
     }

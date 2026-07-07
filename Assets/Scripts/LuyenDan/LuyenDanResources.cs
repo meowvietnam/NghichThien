@@ -144,5 +144,17 @@ namespace LuyenDan
             File.WriteAllBytes(path, writer.Buffer);
             Debug.Log(path);
         }
+
+        [Button]
+        public void FindHerbs(string name)
+        {
+            var item = HerbDatas.FirstOrDefault(x => x.Name.Contains(name, StringComparison.InvariantCultureIgnoreCase));
+            if (item == null)
+            {
+                Debug.Log(name + " not found");
+                return;
+            }
+            Debug.Log($"{item.Name} - Id: {item.Id}");
+        }
     }
 }
