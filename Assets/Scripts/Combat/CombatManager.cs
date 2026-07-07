@@ -238,7 +238,7 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
         {
             Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Xác nhận bỏ chạy khỏi trận chiến này?", () =>
             {
-                Observer.Notify(EventList.Network.RESULT_COMBAT, this, Pool.Get<GameManager>().currentETypeCombat, char1.characterStatsTemp.hp.Value, allThanThongIds, char2.characterStatsBase.level.Value, ETypeResultCombat.LoseByRun);// thằng 1 luoon la user thằng 2 là thằng enemy
+                Observer.Notify(EventList.Network.RESULT_COMBAT, this, Pool.Get<GameManager>().currentETypeCombat, char1.characterStatsTemp.hp.Value, char1.characterStatsBase.thanThuc.Value, char1.characterStatsBase.thoNguyen.Value, allThanThongIds, char2.characterStatsBase.level.Value, ETypeResultCombat.LoseByRun);// thằng 1 luoon la user thằng 2 là thằng enemy
 
             });
         });

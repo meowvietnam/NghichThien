@@ -44,7 +44,13 @@ namespace Network
 
             return Client.CharacterData != null;
         }
+        [Button]
+        public void LogArena()
+        {
+            Debug.Log("CurrentCount " + Client.CharacterData.ArenaManager.CurrentArenaCount);
 
+            Debug.Log("Arena Poin " + Client.CharacterData.ArenaManager.Points);
+        }    
         private HashSet<ThanThongEquip> GetFullIdThanThongWithCombo(ComboSkillResource.ETypeCombo eCombo)
         {
             var combo = ComboSkillResource.ComboSkillResource.Instance.comboNPC.FirstOrDefault(x =>

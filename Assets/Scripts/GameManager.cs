@@ -379,7 +379,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
         Pool.Get<UIManager>().ListIcon.gameObject.SetActive(false);
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
-        SceneManager.LoadScene("Combat");
+        Observer.Notify(EventList.GamePlay.LOAD_SCENE, "Combat");
 
 
     }
@@ -433,17 +433,20 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     }
     public void BackAllMapFromCombat(ETypeResultCombat eCombatResult)
     {
+
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         Pool.Get<UIManager>().panelGroup.SetActive(true);
         Pool.Get<UIManager>().ListIcon.gameObject.SetActive(true);
         currentECombatResult = eCombatResult;
         string backScene = listSceneLoaded[listSceneLoaded.Count-1];
-        SceneManager.LoadScene(backScene);
+        Observer.Notify(EventList.GamePlay.BACK_SCENE, backScene);
+        SoundManager.Instance.PlayMusicHome();
+
 
     }
-  
 
-   
+
+
 
     private void Awake()
     {
@@ -1145,8 +1148,8 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             eTypeVisual = ETypeVisualChar.Character,
             charStats = CharacterStatsSecureBuilder.FromCharacterSnapshot(user),
         };
-      
-        SceneManager.LoadScene("Combat");
+
+        Observer.Notify(EventList.GamePlay.LOAD_SCENE, "Combat");
     }
 
     public void FailLoadCharCombat(string message)
