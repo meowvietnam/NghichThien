@@ -10,6 +10,31 @@ namespace Network.Core
     {
         public void OnEnter()
         {
+            Observer.AddObserver(EventList.Network.SPECIAL_LEVELUP, SpecialLevelUp);
+        }
+
+        private async void SpecialLevelUp(object[] data)
+        {
+            var callback = data[0] as INetworkEvent.ISpecialLevelUp;
+            var client = Client.Instance;
+            var reader = await client.RequestWait(MessageTag.SpecialLevelUpRequest);
+            var result = reader.MemRead<SpecialLevelUpResult>();
+            if (result.Success)
+            {
+                var snapshot = result.StatsSnapshot;
+                client.CharacterData.Stats.ApplyFrom(snapshot);
+            }
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (result.Success)
+                {
+                    callback.SuccessSpecialLevelUp();
+                }
+                else
+                {
+                    callback.FailSpecialLevelUp(result.Message);
+                }
+            });
         }
 
         public void Handle(Message<MessageTag> message)
@@ -22,22 +47,20 @@ namespace Network.Core
                 var levelUpdated = reader.MemRead<LevelUpdated>();
                 var snapshot = new CharacterSnapshot(charData);
                 levelUpdated.ApplyTo(charData);
-                NetworkManager.Instance.Invoke(() =>
-                {
-                    Observer.Notify(EventList.Network.LEVEL_UP, snapshot);
-                });
+                NetworkManager.Instance.Invoke(() => { Observer.Notify(EventList.Network.LEVEL_UP, snapshot); });
             }
         }
 
         public void OnLeave()
         {
+            Observer.RemoveObserver(EventList.Network.SPECIAL_LEVELUP, SpecialLevelUp);
         }
 
         public void OnDisconnect(IProtocol<MessageTag> protocol)
         {
         }
 
-        private static MessageTag[] handler = { MessageTag.LevelUpdated };
+        private static readonly MessageTag[] handler = { MessageTag.LevelUpdated };
         public MessageTag[] HandleTag => handler;
     }
 }

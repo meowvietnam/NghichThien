@@ -142,7 +142,7 @@ namespace Network
         BuyAndSellRequest = 647,
         
         LevelUpdated = 783,
-        
+        SpecialLevelUpRequest = 789,
         GetAdsMoneyVipConfigRequest = 843,
         
         WatchAdsMoneyVip = 854,
