@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Network.Callback;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
 using Network.Models;
 using UnityEngine;
 using NativeTcp = System.Net.Sockets.TcpClient;
@@ -24,7 +25,7 @@ namespace Network
             }
             public void OnEnter()
             {
-                client.TcpClient.Send(MessageTag.CheckVersion,NetworkManager.Instance.Version);
+                client.TcpClient.Send(MessageTag.CheckVersion, NetworkManager.Instance.Version);
             }
 
             public void Handle(Message<MessageTag> message)
@@ -33,8 +34,8 @@ namespace Network
                 var reader = message.Reader;
                 if (tag == MessageTag.CheckVersionResult)
                 {
-                    var success = reader.Read<bool>();
-                    client.callback.OnCheckVersionResult(success);
+                    var result = reader.MemRead<CheckVersionResult>();
+                    client.callback.OnCheckVersionResult(result);
                 }
             }
             public void OnLeave()

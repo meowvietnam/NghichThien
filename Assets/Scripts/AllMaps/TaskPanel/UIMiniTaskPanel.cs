@@ -39,5 +39,11 @@ public class UIMiniTaskPanel : PanelGroup
 
         // 4. Gán Text
         timerText.text = GameManager.GetDateTimeText(GameManager.GetDayTimeWorldIntPlayer());
-    }    
+    }
+
+    private void OnDestroy()
+    {
+        Observer.RemoveObserver(EventList.GamePlay.TIME_ADJUST, InitTimer);
+        Observer.RemoveObserver(EventList.GamePlay.MOVE_MAP_SUCCESS, InitEnergy);
+    }
 }

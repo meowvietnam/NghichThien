@@ -26,12 +26,14 @@ public static partial class EventList
         public const string KIEM_KHI = "Combat.KIEM_KHI";
 
         public const string ADD_SKILL = "Combat.ADD_SKILL";
-        public const string UPDATE_AMKINH_THANTHONG= "Combat.UPDATE_AMKINH_THANTHONG";
+        public const string UPDATE_AMKINH_THANTHONG = "Combat.UPDATE_AMKINH_THANTHONG";
         public const string CHARACTER_HEALING = "Combat.CHARACTER_HEALING";
+
         public static void RemoveAllCombatObservers()
         {
             // Lấy tất cả các trường const string trong class Combat
-            var eventFields = typeof(Combat).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+            var eventFields = typeof(Combat)
+                .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
                 .Where(f => f.IsLiteral && !f.IsInitOnly && f.FieldType == typeof(string))
                 .Select(f => (string)f.GetValue(null))
                 .ToList();
@@ -42,21 +44,24 @@ public static partial class EventList
             Debug.Log("Đã xóa toàn bộ Observer của Combat");
         }
     }
+
     public static class GamePlay
-    {  
+    {
         public const string UPDATE_PLAYER_STATS = "GamePlay.UPDATE_PLAYER_STATS";
         public const string LOAD_SCENE = "GamePlay.LOAD_SCENE";
         public const string BACK_SCENE = "GamePlay.BACK_SCENE";
         public const string TIME_ADJUST = "GamePlay.TIME_ADJUST";
         public const string MOVE_MAP_SUCCESS = "GamePlay.MOVE_MAP_SUCCESS";
         public const string USER_ENTER_MAP = "GamePlay.ACTIVE_EVENT_MAP";
-
     }
+
     public static class Network
     {
+        public const string SIGN_IN_END = "Network.SIGN_IN_END";
+        public const string BEGIN_SIGN_IN = "Network.BEGIN_SIGN_IN";
         public const string RESET_ARENA_RANK = "Network.RESET_ARENA_RANK";
         public const string GET_RANK = "Network.GET_RANK";
-        public const string LOAD_RANK ="Network.LOAD_RANK";
+        public const string LOAD_RANK = "Network.LOAD_RANK";
         public const string CLAIM_RANK_REWARD = "Network.CLAIM_RANK_REWARD";
         public const string USE_DAN = "Network.USE_DAN";
         public const string LEARN_NGODAO = "Network.LEARN_NGODAO";

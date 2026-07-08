@@ -115,6 +115,9 @@ namespace Network.Core
 
         public void OnLeave()
         {
+            Observer.RemoveObserver(EventList.Network.LOAD_SHOP, LoadShop);
+            Observer.RemoveObserver(EventList.Network.RELOAD_SHOP, ReloadShop);
+            Observer.RemoveObserver(EventList.Network.BUY_AND_SELL, BuyAndSell);
         }
 
         public void OnDisconnect(IProtocol<MessageTag> protocol)

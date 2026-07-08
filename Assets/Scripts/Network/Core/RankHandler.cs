@@ -58,6 +58,7 @@ namespace Network.Core
 
         public void OnLeave()
         {
+            Observer.RemoveObserver(EventList.Network.GET_RANK, GetRank);
         }
 
         public void OnDisconnect(IProtocol<MessageTag> protocol)

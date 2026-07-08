@@ -177,6 +177,11 @@ namespace Network.Core
 
         public void OnLeave()
         {
+            Observer.RemoveObserver(EventList.Network.COMPLETE_MAINQUEST, CompleteMainQuest);
+            Observer.RemoveObserver(EventList.Network.COMPLETE_SIDEQUEST, CompleteSideQuest);
+            Observer.RemoveObserver(EventList.Network.LOAD_TASK, LoadTask);
+            Observer.RemoveObserver(EventList.Network.DONE_TASK, DoneTask);
+            Observer.RemoveObserver(EventList.Network.RELOAD_TASK, ReloadTask);
         }
     }
 }

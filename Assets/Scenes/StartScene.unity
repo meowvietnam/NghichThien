@@ -1346,7 +1346,6 @@ GameObject:
   m_Component:
   - component: {fileID: 775922833}
   - component: {fileID: 775922832}
-  - component: {fileID: 775922834}
   m_Layer: 0
   m_Name: StartScene
   m_TagString: Untagged
@@ -1369,10 +1368,7 @@ MonoBehaviour:
   statusText: {fileID: 56}
   conneting: "\u0110ang k\u1EBFt n\u1ED1i \u0111\u1EBFn m\xE1y ch\u1EE7..."
   checkingVersion: "\u0110ang ki\u1EC3m tra phi\xEAn b\u1EA3n..."
-  versionValid: "Phi\xEAn b\u1EA3n h\u1EE3p l\u1EC7"
-  versionInvalid: "Phi\xEAn b\u1EA3n kh\xF4ng h\u1EE3p l\u1EC7!"
   disconnectMessage: "M\u1EA5t k\u1EBFt n\u1ED1i \u0111\u1EBFn m\xE1y ch\u1EE7"
-  authService: {fileID: 775922834}
 --- !u!4 &775922833
 Transform:
   m_ObjectHideFlags: 0
@@ -1388,21 +1384,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &775922834
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 775922831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97cb20902c33d456998fc6644045695d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AuthService
-  username: test15
-  loggedIn: "\u0110ang \u0111\u0103ng nh\u1EADp..."
-  startScene: {fileID: 775922832}
 --- !u!1 &1005453928
 GameObject:
   m_ObjectHideFlags: 0

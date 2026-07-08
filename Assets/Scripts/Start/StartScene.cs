@@ -2,6 +2,7 @@ using Network;
 using Network.Callback;
 using Network.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Start
@@ -11,10 +12,7 @@ namespace Start
         [SerializeField] private Text statusText;
         [SerializeField] private string conneting;
         [SerializeField] private string checkingVersion;
-        [SerializeField] private string versionValid;
-        [SerializeField] private string versionInvalid;
         [SerializeField] private string disconnectMessage;
-        [SerializeField] private AuthService authService;
         private NetworkManager Net => NetworkManager.Instance;
 
         private void Start()
@@ -43,19 +41,15 @@ namespace Start
             });
         }
 
-        public void OnCheckVersionResult(bool result)
+        public void OnCheckVersionResult(CheckVersionResult result)
         {
             Net.Invoke(() =>
             {
-                if (result)
+                statusText.text = result.Message;
+                if (result.Success)
                 {
-                    statusText.text = versionValid;
-                    Net.AuthenticatedSuccess(authService);
-                    authService.Login();
-                }
-                else
-                {
-                    statusText.text = versionInvalid;
+                    Net.AuthenticatedSuccess();
+                    SceneManager.LoadSceneAsync("MainMenu");
                 }
             });
         }

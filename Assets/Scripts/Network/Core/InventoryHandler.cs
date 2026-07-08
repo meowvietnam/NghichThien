@@ -80,6 +80,7 @@ namespace Network.Core
 
         public void OnLeave()
         {
+            Observer.RemoveObserver(EventList.Network.EQUIP_EQUIPMENT, EquipEquipment);
         }
 
         public void OnDisconnect(IProtocol<MessageTag> protocol)

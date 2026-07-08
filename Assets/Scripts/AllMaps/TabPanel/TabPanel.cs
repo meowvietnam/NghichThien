@@ -147,6 +147,13 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         Observer.AddObserver(FilterControl.DONE_FILTER, DoneFilter);
     }
 
+    private void OnDestroy()
+    {
+        Observer.RemoveObserver(EventList.GamePlay.UPDATE_PLAYER_STATS, UpdatePlayerStats);
+        Observer.RemoveObserver(FilterControl.SELECT_FILTER, SelectFilter);
+        Observer.RemoveObserver(FilterControl.DONE_FILTER, DoneFilter);
+    }
+
     [Header("--- THUỘC TÍNH ---")]
     [SerializeField] private Image iconLevel;
     [SerializeField] private Text hpText;

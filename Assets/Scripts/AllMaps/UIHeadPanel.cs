@@ -52,4 +52,9 @@ public class UIHeadPanel : PanelGroup
         characterGraphic.SetGender(charData.Gender);
         characterGraphic.SetSkin(charData.Appearance.Skins);
     }
+
+    private void OnDestroy()
+    {
+        Observer.RemoveObserver(EventList.GamePlay.UPDATE_PLAYER_STATS, UpdatePlayerStats);
+    }
 }

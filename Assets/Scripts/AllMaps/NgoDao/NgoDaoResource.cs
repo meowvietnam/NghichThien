@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AllMaps.NgoDao;
 using DumpGame;
+using LongDHModules;
 using Network;
 using Network.Extensions;
 using UnityEngine;
@@ -87,7 +88,23 @@ public class NgoDaoResource : BaseData, IMemorySerializable<NgoDaoResource>
     }
     public void Deserialize(IReader reader, ref NgoDaoResource value)
     {
-        throw new System.NotImplementedException();
+        BaseData baseValue = value;
+        baseValue.Deserialize(reader, ref baseValue);
+
+        var manager = Pool.Get<GameManager>();
+        var count = reader.Read<int>();
+        value.ngoDao = new List<NgoDaoList>(count);
+        for (var i = 0; i < count; i++)
+        {
+            var ids = reader.ReadArray<int>();
+            var list = ids
+                .Select(id => manager == null ? null : manager.GetNgoDaoWithId(id))
+                .Where(x => x != null)
+                .ToList();
+            value.ngoDao.Add(new NgoDaoList { list = list });
+        }
+
+        value.eTypeSkill = reader.Read<BaseSkill.ETypeSkill>();
     }
     public override void Serialize(IWriter writer)
     {

@@ -94,7 +94,6 @@ namespace CreateCharacter
                     NotifyGroup.Instance.Show(result.Message);
                     return;
                 }
-
                 Client.Instance.ChangeState(new Network.ClientState.CreateCharacter(this));
                 BeginCreateCharacter();
             });

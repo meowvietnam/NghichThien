@@ -467,6 +467,12 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         Observer.AddObserver(EventList.GamePlay.BACK_SCENE, OnBackScene);
     }
 
+    private void OnDestroy()
+    {
+        Observer.RemoveObserver(EventList.GamePlay.LOAD_SCENE, OnLoadScene);
+        Observer.RemoveObserver(EventList.GamePlay.BACK_SCENE, OnBackScene);
+    }
+
     public ThanThong[] thanThongs;
     public CongPhap[] congPhaps;
     public AllMaps.NgoDao.NgoDao[] ngoDaos;

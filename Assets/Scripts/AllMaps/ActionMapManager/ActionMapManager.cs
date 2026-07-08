@@ -68,4 +68,10 @@ public abstract class ActionMapManager : MonoBehaviour , IUISingleton
         Observer.AddObserver(EventList.GamePlay.TIME_ADJUST, OnTimeAdjust);
         SceneManager.sceneLoaded += OnCheckSceneToTrigger;
     }
+
+    protected virtual void OnDestroy()
+    {
+        Observer.RemoveObserver(EventList.GamePlay.TIME_ADJUST, OnTimeAdjust);
+        SceneManager.sceneLoaded -= OnCheckSceneToTrigger;
+    }
 }

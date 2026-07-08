@@ -1,8 +1,8 @@
-using CreateCharacter;
+using System.Threading.Tasks;
 using Network.Callback;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
 using Network.Models;
-using UnityEngine;
 
 namespace Network.ClientState
 {
@@ -21,11 +21,6 @@ namespace Network.ClientState
         {
             var tag = message.Tag;
             var reader = message.Reader;
-            if (tag == MessageTag.LoginDeveloperResult)
-            {
-                var result = reader.Read<LoginResult>();
-                callback.OnLoginResult(result);
-            }
         }
 
         public void OnLeave()
@@ -33,5 +28,12 @@ namespace Network.ClientState
         }
 
         public MessageState State => MessageState.AuthState;
+
+        public async Task Login(ILogin loginRequest)
+        {
+            var reader = await Client.Instance.MemRequestWait(MessageTag.LoginRequest, loginRequest);
+            var result = reader.MemRead<LoginResult>();
+            callback.OnLoginResult(result);
+        }
     }
 }

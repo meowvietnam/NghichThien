@@ -152,7 +152,9 @@ namespace Network.Core
 
         public void OnLeave()
         {
+            Observer.RemoveObserver(EventList.Network.THINH_GIAO_NPC, ThinhGiaoKyNang);
+            Observer.RemoveObserver(EventList.Network.TANG_QUA_NPC, TangQuaNpc);
+            Observer.RemoveObserver(EventList.Network.GACHA, Gacha);
         }
     }
 }
-

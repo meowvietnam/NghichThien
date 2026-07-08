@@ -25,8 +25,9 @@ public abstract class ActionEnterMapManager : ActionMapManager
         Observer.AddObserver(EventList.GamePlay.USER_ENTER_MAP, RemoveMap);
         LoadAfterBackAllMaps();
     }
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         Observer.RemoveObserver(EventList.GamePlay.USER_ENTER_MAP, RemoveMap);
 
     }

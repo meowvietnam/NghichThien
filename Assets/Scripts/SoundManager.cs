@@ -59,6 +59,11 @@ public class SoundManager : BaseBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        Observer.RemoveObserver(EventList.Combat.END_COMBAT, EndCombat);
+    }
+
     private void LoadAndApplyAudioSettings()
     {
         // Lấy giá trị Music đã lưu, nếu key không tồn tại thì mặc định trả về 1f

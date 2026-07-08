@@ -47,6 +47,12 @@ public class SideQuestManager : ActionEnterMapManager
 
     }
 
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        Observer.RemoveObserver(EventList.GamePlay.USER_ENTER_MAP, USER_ENTER_MAP);
+    }
+
     public string nameChar;
     public CharacterStatsSecure characterProviderQuest;
     public void SetCharProviderQuest(CharacterStatsSecure characterStats)

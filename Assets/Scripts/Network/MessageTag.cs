@@ -158,5 +158,10 @@ namespace Network
         LoadAdsFail = 914,
         
         ResetArenaRank = 923,
+        
+        LoginRequest = 934,
+        
+        LogoutRequest = 948,
+        PlayRequest = 959,
     }
 }

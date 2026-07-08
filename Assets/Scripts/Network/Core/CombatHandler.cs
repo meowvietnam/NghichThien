@@ -205,6 +205,11 @@ namespace Network.Core
 
         public void OnLeave()
         {
+            Observer.RemoveObserver(EventList.Network.RESULT_COMBAT, ResultCombat);
+            Observer.RemoveObserver(EventList.Network.LOAD_CHAR_COMBAT, LoadCharCombat);
+            Observer.RemoveObserver(EventList.Network.LOAD_CHAR_COMBAT_ARENA, LoadCharCombatArena);
+            Observer.RemoveObserver(EventList.Network.LOAD_RANK, LoadRank);
+            Observer.RemoveObserver(EventList.Network.CLAIM_RANK_REWARD, ClaimRankReward);
         }
     }
 }

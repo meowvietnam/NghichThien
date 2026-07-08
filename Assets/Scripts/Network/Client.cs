@@ -43,6 +43,11 @@ namespace Network
             Debug.LogException(ex);
         }
 
+        protected override void OnDisconnected(IProtocol<MessageTag> protocol)
+        {
+            base.OnDisconnected(protocol);
+        }
+
         public void Send(Span<byte> data)
         {
             TcpClient.Send(data);

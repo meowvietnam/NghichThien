@@ -116,6 +116,13 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
         CheckSpawnQuest();
 
     }
+
+    private void OnDestroy()
+    {
+        Observer.RemoveObserver(EventList.GamePlay.MOVE_MAP_SUCCESS, CheckSpawnQuest);
+        Observer.RemoveObserver(EventList.GamePlay.USER_ENTER_MAP, RemoveMap);
+    }
+
     [Button]
     public void ExportMainQuestRS()
     {

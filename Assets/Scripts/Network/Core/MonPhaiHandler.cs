@@ -67,6 +67,7 @@ namespace Network.Core
 
         public void OnLeave()
         {
+            Observer.RemoveObserver(EventList.Network.JOIN_MONPHAI, JoinMonPhai);
         }
     }
 }

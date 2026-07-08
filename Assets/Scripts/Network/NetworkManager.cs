@@ -23,7 +23,6 @@ namespace Network
         private Client client;
         [ShowInInspector, ReadOnly] public int Id { get; private set; }
         [ShowInInspector, ReadOnly] public string Key { get; private set; }
-
         [ShowInInspector, TabGroup("Character"), HideLabel, InlineProperty]
         public CharacterData CharacterData
         {
@@ -73,10 +72,9 @@ namespace Network
             Key = key;
         }
 
-        public void AuthenticatedSuccess(IAuthCallback callback)
+        public void AuthenticatedSuccess()
         {
             client = new Client(unauthenticatedClient);
-            client.ChangeState(new AuthState(callback));
         }
 
         public void Invoke(Action action)

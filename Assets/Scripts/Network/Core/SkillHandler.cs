@@ -472,6 +472,15 @@ namespace Network.Core
 
         public void OnLeave()
         {
+            Observer.RemoveObserver(EventList.Network.LEARN_NGODAO, LearnNgoDaoRequest);
+            Observer.RemoveObserver(EventList.Network.EQUIP_THANTHONG, EquipThanThong);
+            Observer.RemoveObserver(EventList.Network.UNEQUIP_THANTHONG, UnEquipThanThong);
+            Observer.RemoveObserver(EventList.Network.EQUIP_CONGPHAP, EquipCongPhap);
+            Observer.RemoveObserver(EventList.Network.UNEQUIP_CONGPHAP, UnEquipCongPhap);
+            Observer.RemoveObserver(EventList.Network.TU_LUYEN, TuLuyen);
+            Observer.RemoveObserver(EventList.Network.LINH_NGO, LinhNgo);
+            Observer.RemoveObserver(EventList.Network.DOT_PHA_CONGPHAP, DotPhaCongPhap);
+            Observer.RemoveObserver(EventList.Network.USE_DAN, UseDan);
         }
 
         public void OnDisconnect(IProtocol<MessageTag> protocol)

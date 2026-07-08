@@ -49,4 +49,8 @@ public class LevelUpPopup : BaseBehaviour
         mainPopup.Show();
     }
 
+    private void OnDestroy()
+    {
+        Observer.RemoveObserver(EventList.Network.LEVEL_UP, OnLevelUp);
+    }
 }
