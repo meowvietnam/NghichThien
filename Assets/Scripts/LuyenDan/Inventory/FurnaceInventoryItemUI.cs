@@ -17,6 +17,7 @@ namespace LuyenDan.Inventory
 
         public void Init(FurnaceData data)
         {
+            Debug.Log("Init FurnaceInventoryItemUI");
             FData = data;
             Init(data.CreateRef());
         }

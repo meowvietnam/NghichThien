@@ -33,7 +33,8 @@ namespace LuyenDan
             {
                 Id = Id,
                 Type = ItemType.Furnace,
-                Count = 1
+                Count = 1,
+                TempId = Id,
             };
         }
 

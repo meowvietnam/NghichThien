@@ -23,6 +23,18 @@ namespace AllMaps.ItemProvider
             ctx.QualityText.text = GameManager.TextWithTier[ctx.IItemData.Tier];
         }
 
+        public override int GetPrice(ToolTipContext ctx)
+        {
+            var fData = ctx.FurnaceData;
+            if (fData != null)
+            {
+                return ctx.ActionShowItem == EActionShowItemInfor.None || ctx.ActionShowItem == EActionShowItemInfor.Sell
+                    ? GetPriceItemSell(fData.SelfId)
+                    : GetPriceItemBuy(fData.SelfId);
+            }
+            return base.GetPrice(ctx);
+        }
+
         public override FurnaceData GetDataItemByIdRef(ushort id)
         {
             var inventoryManager = Client.Instance.CharacterData.InventoryManager;
@@ -41,8 +53,9 @@ namespace AllMaps.ItemProvider
         public override int GetPriceItemSell(ushort Id)
         {
             FurnaceData furnaceData = GetDataItemByIdRef(Id);
-            return furnaceData.Durability *
-                   GameManager.PriceFurnaceWithTierPerDurability[LuyenDanResources.Instance.FindItem(furnaceData).Tier];
+            var item = LuyenDanResources.Instance.FindItem(furnaceData);
+            var basePrice = GameManager.PriceFurnaceWithTierPerDurability[item.Tier];
+            return furnaceData.Durability * basePrice;
         }
 
         public override (int, int) ValueTangQuaNPCWithItem(ushort id, int npcLevel)
