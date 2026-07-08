@@ -62,7 +62,7 @@ public class SideCombatQuestResource : SideQuestResource
 
 
         var charProvider = Pool.Get<SideQuestManager>().characterProviderQuest;
-        var enemyRandom = isSideCombatQuest2 ? GetNPCDataSideQuestWithTargetLevel(listEnemy, charProvider.level) : GetNPCDataSideQuestWithTargetLevel(npcDatas, charProvider.level);
+        var enemyRandom = isSideCombatQuest2 ? GetNPCDataSideQuestWithTargetLevel(listEnemy, Client.Instance.CharacterData.Progression.Level) : GetNPCDataSideQuestWithTargetLevel(npcDatas, Client.Instance.CharacterData.Progression.Level);
         Pool.Get<QuestManager>().enemyCombats = new List<NPCData> { enemyRandom};
         Pool.Get<SideQuestManager>().InitShowQuestHaveChar(() =>
         {
