@@ -281,7 +281,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     {
         string currentScene = SceneManager.GetActiveScene().name;
         int index = listSceneLoaded.IndexOf(currentScene);
-        if (index == 0)
+        if (index <= 0)
         {
             return;
         }

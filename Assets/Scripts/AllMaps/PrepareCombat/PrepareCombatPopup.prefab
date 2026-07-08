@@ -754,9 +754,11 @@ MonoBehaviour:
   commonMask: {fileID: 0}
   btnClose: {fileID: 6391347313627725680}
   scaleBase: 1
+  isIgnoreOtherPopup: 0
   popupInfor: {fileID: 2865874328002438967}
   btnAttack: {fileID: 1601554656915625426}
   btnPrepare: {fileID: 6506176292475203779}
+  btnNotPrepare: {fileID: 0}
   btnXemXet: {fileID: 2586082592314901481}
   txtNameUser: {fileID: 114353969931954196}
   txtTarget: {fileID: 114256290762963155}
@@ -5162,6 +5164,11 @@ PrefabInstance:
       propertyPath: charVisualControl
       value: 
       objectReference: {fileID: 2040204738095696174}
+    - target: {fileID: 612818935780958789, guid: 838f097ad8db1ee4f8489e96f0aa9e2f,
+        type: 3}
+      propertyPath: isIgnoreOtherPopup
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1298132543571192677, guid: 838f097ad8db1ee4f8489e96f0aa9e2f,
         type: 3}
       propertyPath: m_AnchorMax.y
