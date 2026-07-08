@@ -280,7 +280,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     public void OnBackScene()
     {
         string currentScene = SceneManager.GetActiveScene().name;
-        int index = listSceneLoaded.IndexOf(currentScene);
+        int index = listSceneLoaded.FindIndex(x => x.Equals(currentScene, StringComparison.InvariantCultureIgnoreCase));
         if (index <= 0)
         {
             return;
@@ -333,6 +333,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
 
     private void OnChangeSceneResult(ChangeSceneResult result)
     {
+        Debug.Log(result);
         NetworkManager.Instance.Invoke(() =>
         {
             if (result.Success)
@@ -433,16 +434,14 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     }
     public void BackAllMapFromCombat(ETypeResultCombat eCombatResult)
     {
-
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         Pool.Get<UIManager>().panelGroup.SetActive(true);
         Pool.Get<UIManager>().ListIcon.gameObject.SetActive(true);
         currentECombatResult = eCombatResult;
         string backScene = listSceneLoaded[listSceneLoaded.Count-1];
+        Debug.Log($"This back scene is {backScene}");
         Observer.Notify(EventList.GamePlay.BACK_SCENE, backScene);
         SoundManager.Instance.PlayMusicHome();
-
-
     }
 
 

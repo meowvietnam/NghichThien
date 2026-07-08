@@ -11,7 +11,6 @@ public class BackSceneBtn : BaseBehaviour
         SetEventButton(btn, () =>
         {
             Observer.Notify(EventList.GamePlay.BACK_SCENE);
-
         });
     }
 }

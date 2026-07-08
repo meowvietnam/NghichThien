@@ -7,6 +7,10 @@ namespace Network.Models
         public bool Success { get; set; }
         public string SceneName { get; set; }
         public string Message { get; set; }
+        public override string ToString()
+        {
+            return $"{Success} - {SceneName} - {Message}";
+        }
 
         public void Deserialize(IReader reader, ref ChangeSceneResult value)
         {

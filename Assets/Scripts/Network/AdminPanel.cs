@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using CreateCharacter;
 using LongDH.LongDHModules;
 using LongDHModules;
@@ -209,13 +210,6 @@ namespace Network
 
         [Button]
         [ShowIf(nameof(IsReady))]
-        public void ToLuyenKhi()
-        {
-            Observer.Notify(EventList.GamePlay.LOAD_SCENE, "LuyenKhi");
-        }
-
-        [Button]
-        [ShowIf(nameof(IsReady))]
         public void AddCongPhap(CongPhap congPhap, ushort level)
         {
             if (level == 0) return;
@@ -241,7 +235,14 @@ namespace Network
             Client.Send(MessageTag.SetMoneyVip, money);
         }
 
-
+        [Button]
+        [ShowIf(nameof(IsReady))]
+        public async void SetExp(int exp)
+        {
+            var reader = await Client.RequestWait(MessageTag.SetExpRequest, exp, 20000);
+            var currentExp = reader.Read<int>();
+            Client.CharacterData.Progression.CurrentExp = currentExp;
+        }
         public void OnEnter()
         {
         }

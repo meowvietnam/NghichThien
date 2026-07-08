@@ -1,6 +1,5 @@
 using LongDH.LongDHModules;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoadSceneBtn : BaseBehaviour

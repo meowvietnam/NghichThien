@@ -35,7 +35,7 @@ public class EventRewardPanel : Popup , IUISingleton
         if(resultCombat == ETypeResultCombat.Win)
         {
             imgBGTilte.sprite = spriteWin;
-            this.InitActionClose(() =>
+            InitActionClose(() =>
             {
                 Pool.Get<GameManager>().BackAllMapFromCombat(resultCombat);
             });
@@ -43,7 +43,7 @@ public class EventRewardPanel : Popup , IUISingleton
         else
         {
             imgBGTilte.sprite = spriteLose;
-            this.InitActionClose(() =>
+            InitActionClose(() =>
             {
                 Pool.Get<GameManager>().BackAllMapFromCombat(resultCombat);
             });

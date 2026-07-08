@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using CreateCharacter;
 using Network.Callback;
@@ -33,6 +34,7 @@ namespace Network
         }
         private void Awake()
         {
+            Debug.Log($"Main thread id: {Thread.CurrentThread.ManagedThreadId}");
             Instance = this;
             DontDestroyOnLoad(gameObject);
             StartCoroutine(LoadGameManager());
