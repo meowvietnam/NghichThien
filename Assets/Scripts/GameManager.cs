@@ -838,7 +838,9 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         // Nếu không tìm thấy cái nào rảnh, khởi tạo cái mới
         return item;
     }
-    public static string GetDescEquipment(IEnumerable<dynamic> effects, EquipmentType equipmentType)
+    // Phương thức overload hỗ trợ kiểu cụ thể Effect
+    // Chỉ cần 1 hàm duy nhất cho cả hai loại Effect
+    public static string GetDescEquipment(IEnumerable<IEffect> effects, EquipmentType equipmentType)
     {
         // 1. Dòng đầu tiên: [Chủ động] hoặc [Bị động]
         string textDesc = GetDescEquipment(equipmentType);
@@ -850,29 +852,27 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     };
 
         // Nhóm các effect dựa trên việc nó là Special hay không
-        // Sau đó duyệt qua từng nhóm để thêm SubHeader một lần duy nhất cho nhóm đó
         var groupedEffects = effects
-            .GroupBy(e => listEffectTypeStartCombat.Contains((EffectType)e.Type)) // Lưu ý ép kiểu nếu cần
-            .OrderByDescending(g => g.Key); // Ưu tiên hiện "Bắt đầu chiến đấu" trước (tùy chọn)
+            .GroupBy(e => listEffectTypeStartCombat.Contains(e.Type))
+            .OrderByDescending(g => g.Key);
 
         foreach (var group in groupedEffects)
         {
             bool isSpecial = group.Key;
 
-            // 2. Lấy dòng tiền tố (Chỉ lấy 1 lần cho cả nhóm)
+            // 2. Lấy dòng tiền tố
             string subHeader = GetDescEquipment(equipmentType, isSpecial);
             if (!string.IsNullOrEmpty(subHeader))
             {
                 textDesc += "\n" + subHeader;
             }
 
-            // 3. Duyệt qua các effect trong nhóm để nối nội dung chi tiết
+            // 3. Duyệt qua các effect
             foreach (var effect in group)
             {
-                string effectDetail = GetEffectDescription(effect);
+                string effectDetail = GetEffectDescription(effect.Type, effect.GetValue().ToString());
                 if (!string.IsNullOrEmpty(effectDetail))
                 {
-                    // Thêm một khoảng thụt đầu dòng (tùy chọn) để dễ nhìn hơn
                     textDesc += "\n - " + effectDetail;
                 }
             }
@@ -880,7 +880,8 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
 
         return textDesc;
     }
-  
+    // Nếu bạn còn code cũ sử dụng dynamic, hãy xóa hoặc convert sang version mới
+
     private static string GetEffectDescription(EffectType type,string Value)
     {
         switch (type)
@@ -995,25 +996,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
                 return "";
         }
     }
-    private static string GetEffectDescription(dynamic effect)
-    {
-        // BƯỚC QUAN TRỌNG: Kiểm tra và bóc tách giá trị số thực tế
-        int actualValue;
-
-        // Nếu nó là SecureInt (trong EffectClient)
-        if (effect.Value is SecureInt secure)
-        {
-            actualValue = secure.Value;
-        }
-        // Nếu nó là byte/int (trong Effect)
-        else
-        {
-            actualValue = (int)effect.Value;
-        }
-
-        // Bây giờ gọi hàm mô tả với kiểu dữ liệu "thuần" (EffectType, int)
-        return GetEffectDescription((EffectType)effect.Type, actualValue.ToString());
-    }
+ 
     public static string GetEffectDescription(EffectType type)
     {
         string suffix = " (X là giá trị ngẫu nhiên được luyện thành)";

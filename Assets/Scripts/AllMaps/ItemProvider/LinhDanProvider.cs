@@ -100,24 +100,29 @@ namespace AllMaps.ItemProvider
                             return;
                         }
                     }
-                    selectNum.Show(0.15f);
-
                     selectNum.SetMax(maxValue);
+
+
                     selectNum.ValueChanged += (value) =>
                     {
                         selectNum.SetText($"{itemInventory.iItemData.Name} x{value}");
                     };
+                    
                     selectNum.confirmAction.RemoveAllListeners();
                     selectNum.confirmAction.AddListener(() =>
                     {
                         var value = selectNum.GetValue();
                         if (value >= 1)
                         {
-                            Observer.Notify(EventList.Network.USE_DAN, this, itemInventory.itemRef.Id, value);
+                            Observer.Notify(EventList.Network.USE_DAN, this, itemInventory.itemRef.Id, (ushort)value);
                             itemInventory.AddCount(-value);
                         }
 
                     });
+                    selectNum.SetText($"{itemInventory.iItemData.Name} x{0}");
+
+                    selectNum.Show(0.15f);
+
                 }
 
 

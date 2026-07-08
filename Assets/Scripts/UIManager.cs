@@ -263,7 +263,10 @@ public class UIManager : BaseBehaviour
     {
         if (currentPopup == null || (currentPopup != null && !currentPopup.gameObject.activeSelf))
         {
-            commonMask.gameObject.SetActive(false);
+            if (commonMask != null)
+            {
+                commonMask.gameObject.SetActive(false);
+            }
         }
     }
 }

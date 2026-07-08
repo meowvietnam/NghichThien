@@ -63,8 +63,12 @@ public class Popup : BaseBehaviour
         actionComplete?.Invoke();
         gameObject.SetActive(false);
         if (commonMask == null)
-        {
-            Pool.Get<UIManager>().RegisterClosePopup();
+        {   var uiManager = Pool.Get<UIManager>();
+            if(uiManager != null)
+            {
+                uiManager.RegisterClosePopup();
+
+            }
 
         }
         else

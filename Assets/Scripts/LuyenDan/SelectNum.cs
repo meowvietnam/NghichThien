@@ -107,6 +107,7 @@ namespace LuyenDan
                 Canvas.ForceUpdateCanvases();
                 LayoutRebuilder.ForceRebuildLayoutImmediate(selectNumTransform);
             });
+            SetValue(0);
         }
         public void Hide(float time)
         {

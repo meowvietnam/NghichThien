@@ -70,7 +70,7 @@ namespace AllMaps.ui_rank
                 var typeRank = ArenaManager.GetArenaRankWithPoint(valueRank);
                 imageIcon.sprite = typeRank == ETypeArenaRank.None ? null : spriteRank[(int)typeRank - 1];
                 txtValue.transform.parent.gameObject.SetActive(false);
-                imageIcon.transform.localScale = Vector3.one * 0.05f;
+                imageIcon.transform.localScale = Vector3.one * 0.075f;
             }
 
             imageIcon.SetNativeSize();

@@ -7,10 +7,13 @@ using System.Linq;
 public class EquipmentClient 
 {
     [System.Serializable]
-    public class EffectClient
+    public class EffectClient : IEffect
     {
-        public EffectType Type;
+        public EffectType Type { get; set; }
         public SecureInt Value = new SecureInt(0);
+
+        public int GetValue() => Value.Value;
+    
     }
     public SecureInt id = new SecureInt(ushort.MaxValue);
     public string nameEquip;
