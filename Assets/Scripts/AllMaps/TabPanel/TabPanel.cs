@@ -61,6 +61,13 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         colorQualitys = q.Select(x => x.Color).ToArray();
         EditorUtility.SetDirty(this);
     }
+    [Header("--- Setting ---")]
+    [SerializeField] private Slider sliderMusic;
+    [SerializeField] private Slider sliderSound;
+    [SerializeField] private Text txtName;
+
+
+
     void SelectFilter()
     {
         lianziAnim.SetTrigger("Hide");
@@ -129,6 +136,10 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             gameObject.SetActive(false);
         });
         InitOnlyNgoDao();
+        SoundManager.Instance.SetSliderAudio(sliderMusic,true);
+        SoundManager.Instance.SetSliderAudio(sliderSound, false);
+        txtName.text = Client.Instance.CharacterData.Name;
+
     }
     private void OnEnable()
     {
@@ -245,6 +256,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     private NgoDaoToolTip ngoDaoToolTip;
     [SerializeField]
     public SecureInt indexThisPage;
+
     public void InitOnlyNgoDao()
     {
         // INit ngộ đạo skill

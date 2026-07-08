@@ -1461,6 +1461,7 @@ public class CharacterCombat : MonoBehaviour
             SetTextDameAnim("Né Tránh!", Color.whiteSmoke);
             Observer.Notify(EventList.Combat.NE_TRANH_SUCCESS, sender, this);
         }
+        if (allDamages.Count <= 0) return;
         Observer.Notify(EventList.Combat.CHARACTER_BEFORE_TAKE_DAME, sender, this);
 
         for (int i = 0; i < allDamages.Count; i++)

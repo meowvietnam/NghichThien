@@ -4,7 +4,7 @@ using LongDH.Script.ObjectPool;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public enum ETypeSound
 {
@@ -179,7 +179,7 @@ public class SoundManager : BaseBehaviour
         foreach (var audio in listAudio)
         {
             
-            if (audio.clip == infoCombat.clip || audio.clip == infoHome.clip)
+            if (audio.clip == infoCombat.clip || audio.clip == infoHome.clip || audio.clip == infoOpening.clip)
             {
                 audio.volume = volume;
             }
@@ -192,7 +192,7 @@ public class SoundManager : BaseBehaviour
 
         foreach (var audio in listAudio)
         {
-            if (audio.clip != infoCombat.clip && audio.clip != infoHome.clip)
+            if (audio.clip != infoCombat.clip && audio.clip != infoHome.clip && audio.clip != infoOpening.clip)
             {
                 audio.volume = volume;
             }
@@ -200,6 +200,23 @@ public class SoundManager : BaseBehaviour
         }
 
        
+    }
+    public void SetSliderAudio(Slider slider,bool isMusic)
+    {
+        if(isMusic)
+        {
+            slider.onValueChanged.AddListener((value) =>
+            {
+                SetMusicVolume(value);
+            });
+        }    
+        else
+        {
+            slider.onValueChanged.AddListener((value) =>
+            {
+                SetSoundVolume(value);
+            });
+        }    
     }
 
     public void LocateAwake()
