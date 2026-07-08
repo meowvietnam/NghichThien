@@ -59,6 +59,7 @@ namespace Network.Core
         {
             selectNum.SetText(GetExchangeText(value));
         }
+
         private void OnConfirmExchange()
         {
             var amount = selectNum.GetValue();
@@ -91,7 +92,6 @@ namespace Network.Core
 
         public async void InitIAP()
         {
-            Debug.Log($"[IapHandler] GetProducts Request");
             var reader = await Client.Instance.RequestWait(MessageTag.GetProductsRequest);
             ownerIapProducts = reader.MemRead<List<OwnerIapProduct>>();
             NetworkManager.Instance.Invoke(() =>
@@ -144,20 +144,24 @@ namespace Network.Core
             var reader = await Client.Instance
                 .RequestWait(MessageTag.ExchangeMoneyVipRequest, amount, 20000);
             var result = reader.MemRead<ExchangeMoneyVipResult>();
+            var charData = Client.Instance.CharacterData;
+            var addLinhThach = result.LinhThach - charData.Stats.LinhThach;
             if (result.Success)
             {
-                var charData = Client.Instance.CharacterData;
-                var addLinhThach = charData.Stats.LinhThach - result.LinhThach;
-                NotifyGroup.Instance.Show($"Thu hoạch được {addLinhThach}");
                 charData.MoneyVip = result.MoneyVip;
                 charData.Stats.LinhThach = result.LinhThach;
             }
 
             NetworkManager.Instance.Invoke(() =>
             {
+                var notify = NotifyGroup.Instance;
                 if (!result.Success)
                 {
-                    Debug.Log(result.Message);
+                    notify.Show(result.Message);
+                }
+                else
+                {
+                    notify.Show($"Quy đổi được {addLinhThach} Linh thạch");
                 }
             });
         }

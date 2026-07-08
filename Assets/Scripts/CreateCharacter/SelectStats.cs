@@ -25,7 +25,7 @@ namespace CreateCharacter
 
         public CharacterStats CharacterStats => CreateCharacterSystem.Instance.NewCharacter.Stats;
         private int money;
-
+        public int Money => money;
         [SerializeField] private List<CurrentInfo> currentInfos;
 
         // private Dictionary<int, Dictionary<int, List<StatModifier>>> statModifiersDictionary = new();
@@ -65,76 +65,6 @@ namespace CreateCharacter
             currentStep = steps[currentStepIndex];
             currentStep.OnEnter();
         }
-
-        public object Test()
-        {
-            var res = new List<object>();
-            foreach (var selectionModel in selectionModels)
-            {
-                var modelId = selectionModel.Id;
-                var step = stepConfig.StepDatas.FirstOrDefault(s => s.Id == modelId);
-                var gs = new List<object>();
-                res.Add(new
-                {
-                    Id = modelId,
-                    Step = step.Title,
-                    Groups = gs
-                });
-                if (step is SelectionStepData s)
-                {
-                    foreach (var selectionModelGroup in selectionModel.Groups)
-                    {
-                        var groupId = selectionModelGroup.Id;
-                        var group = s.Groups.FirstOrDefault(g => g.Id == groupId);
-                        var items = new List<object>();
-                        var g = new
-                        {
-                            Id = groupId,
-                            Items = items
-                        };
-                        gs.Add(g);
-                        foreach (var selectionItem in selectionModelGroup.Items)
-                        {
-                            var item = group.StatOptions.FirstOrDefault(x => x.Id == selectionItem);
-                            items.Add(new
-                            {
-                                Id = selectionItem,
-                                Name = item.Name
-                            });
-                        }
-                    }
-                }
-                else if (step is ElementalStepData e)
-                {
-                    foreach (var selectionModelGroup in selectionModel.Groups)
-                    {
-                        var groupId = selectionModelGroup.Id;
-                        if (e.GroupId == groupId)
-                        {
-                            var items = new List<object>();
-                            var g = new
-                            {
-                                Id = groupId,
-                                Items = items
-                            };
-                            gs.Add(g);
-                            foreach (var selectionItem in selectionModelGroup.Items)
-                            {
-                                var item = e.Elementals.FirstOrDefault(x => x.Id == selectionItem);
-                                items.Add(new
-                                {
-                                    Id = selectionItem,
-                                    Name = item.Name
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-
-            return res;
-        }
-
         public void NextStep()
         {
             if (currentStepIndex == steps.Count - 1)

@@ -27,6 +27,7 @@ namespace CreateCharacter
         [SerializeField] private ProgressBar progressBar;
         [SerializeField] private string createCharacterSuccess;
         [SerializeField] private string selecting;
+        [SerializeField] private PopupConfirmAction popupConfirmAction;
         private UserData UserData => Client.Instance.UserData;
         public static CreateCharacterSystem Instance { get; private set; }
         [field: SerializeField] public CharacterData NewCharacter { get; private set; }
@@ -185,10 +186,22 @@ namespace CreateCharacter
             });
         }
 
-        public void Final(List<SelectionModel> selectionModels)
+        private void SendFinal(List<SelectionModel> selectionModels)
         {
             Client.Instance.Send(MessageTag.ApplyStats, selectionModels);
             progressBar.DoShow(0.5f, 0.5f, null);
+        }
+        public void Final(List<SelectionModel> selectionModels)
+        {
+            var money = createCharacterPanel.SelectStats.Money;
+            if (money > 0)
+            {
+                popupConfirmAction.ShowPopConfirmAction($"Bạn vẫn còn {money} điểm thiên phú chưa sử dụng, bạn có xác nhận tạo nhân vật không", () => SendFinal(selectionModels));
+            }
+            else
+            {
+                SendFinal(selectionModels);
+            }
         }
     }
 }

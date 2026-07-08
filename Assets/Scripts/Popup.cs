@@ -41,8 +41,6 @@ public class Popup : BaseBehaviour
             {
                 uiManager.commonMask.gameObject.SetActive(true);
             }    
-
-
         }    
         else
         {
