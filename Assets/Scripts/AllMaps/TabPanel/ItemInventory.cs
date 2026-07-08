@@ -50,7 +50,7 @@ public class ItemInventory : BaseItemUI
     {
         this.count = count;
         textCount.text = count.ToString();
-        if (count >0)
+        if (count >= 0)
         {
             if (!this.gameObject.activeSelf)
             {

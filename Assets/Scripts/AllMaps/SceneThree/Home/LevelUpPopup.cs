@@ -47,6 +47,7 @@ public class LevelUpPopup : BaseBehaviour
         txtValueDonToc.text = stats.TocDoBay.ToString();
         txtLevel.text = GameManager.levelWithText[Client.Instance.CharacterData.Progression.Level];
         mainPopup.Show();
+        Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
     }
 
     private void OnDestroy()

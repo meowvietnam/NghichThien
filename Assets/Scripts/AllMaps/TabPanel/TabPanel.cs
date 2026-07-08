@@ -65,6 +65,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     [SerializeField] private Slider sliderMusic;
     [SerializeField] private Slider sliderSound;
     [SerializeField] private Text txtName;
+    [SerializeField] private Button btnLogOut;
 
 
 
@@ -139,6 +140,8 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         SoundManager.Instance.SetSliderAudio(sliderMusic,true);
         SoundManager.Instance.SetSliderAudio(sliderSound, false);
         txtName.text = Client.Instance.CharacterData.Name;
+        sliderMusic.value = SoundManager.Instance.volumeMusic;
+        sliderSound.value = SoundManager.Instance.volumeSound;
 
     }
     private void OnEnable()
