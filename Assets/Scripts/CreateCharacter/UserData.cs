@@ -14,7 +14,8 @@ namespace CreateCharacter
         [field: SerializeField] public int Id { get; set; }
         [field: SerializeField] public List<CharacterData> CharacterDatas { get; set; }
         [field: ShowInInspector] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
+        
+        [field: ShowInInspector] public string NameAlias { get; set; }
         public UserData()
         {
             CharacterDatas = new List<CharacterData>();

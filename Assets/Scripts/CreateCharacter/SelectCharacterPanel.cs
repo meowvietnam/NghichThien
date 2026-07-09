@@ -2,12 +2,17 @@ using System;
 using System.Collections.Generic;
 using Base;
 using DG.Tweening;
+using Network;
+using Network.Extensions;
+using Network.Extensions.MemoryPack;
+using Network.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace CreateCharacter
 {
-    public class SelectCharacterPanel : MonoBehaviour, IPanel
+    public class SelectCharacterPanel : BaseBehaviour, IPanel
     {
         [SerializeField] private GameObject thisObject;
         [SerializeField] private Transform content;
@@ -24,11 +29,24 @@ namespace CreateCharacter
                 var createAvatar = Instantiate(createAvatarPrefab, content);
                 createAvatar.Init(charData, skinResources);
             }
-            backBtn.onClick.AddListener(Back);
+            SetEventButton(backBtn,Back);
         }
-        private void Back()
+        private async void Back()
         {
-            Debug.Log("Not implemented yet");
+            var client = Client.Instance;
+            var reader = await client.RequestWait(MessageTag.BackToMainMenuRequest);
+            var result = reader.MemRead<Result>();
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (result.Success)
+                {
+                    SceneManager.LoadScene("MainMenu");
+                }
+                else
+                {
+                    NotifyGroup.Instance.Show(result.Message);
+                }
+            });
         }
         public void SetActive(bool active)
         {

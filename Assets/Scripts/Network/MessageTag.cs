@@ -169,5 +169,6 @@ namespace Network
         
         InGameLogout = 987,
         InGameLogoutResult = 988,
+        BackToMainMenuRequest = 992,
     }
 }

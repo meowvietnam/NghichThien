@@ -39,7 +39,18 @@ namespace Start
                 {
                     await button.SignOut();
                 }
+
+                return;
             }
+
+            var userData = client.UserData;
+            if (userData == null)
+            {
+                return;
+            }
+            menu.SetAccountAlias(userData.NameAlias);
+            menu.SetActive(true);
+            buttonGroups.SetActive(false);
         }
 
         private void OnSignInEnd(object[] data)
@@ -60,7 +71,9 @@ namespace Start
                 NotifyGroup.Instance.Show(result.Message);
                 if (result.Success)
                 {
-                    Client.Instance.SetUserData(result.UserData.User);
+                    var user = result.UserData.User;
+                    user.NameAlias = result.AccountAlias;
+                    Client.Instance.SetUserData(user);
                     menu.SetAccountAlias(result.AccountAlias);
                     menu.SetActive(true);
                     buttonGroups.SetActive(false);
@@ -136,6 +149,7 @@ namespace Start
             {
                 client.SetUserData(null);
             }
+
             NetworkManager.Instance.Invoke(async () =>
             {
                 if (result.Success)
@@ -144,6 +158,7 @@ namespace Start
                     {
                         await button.SignOut();
                     }
+
                     menu.SetActive(false);
                     buttonGroups.SetActive(true);
                     NotifyGroup.Instance.Show($"Xóa tài khoản thành công!");

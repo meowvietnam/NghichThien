@@ -243,9 +243,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 71119948}
-  - {fileID: 1621482521}
   - {fileID: 2481380111475658992}
   - {fileID: 1346338237}
+  - {fileID: 1621482521}
   - {fileID: 1376138052}
   - {fileID: 1170660490}
   - {fileID: 1188092410}
@@ -5048,6 +5048,7 @@ GameObject:
   - component: {fileID: 1621482521}
   - component: {fileID: 1621482523}
   - component: {fileID: 1621482522}
+  - component: {fileID: 1621482524}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -5062,7 +5063,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1621482520}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5071,7 +5072,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -756, y: 0}
+  m_AnchoredPosition: {x: -736, y: 0}
   m_SizeDelta: {x: 2933.6426, y: 1080}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1621482522
@@ -5113,6 +5114,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1621482520}
   m_CullTransparentMesh: 1
+--- !u!114 &1621482524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621482520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 330c54f550f7c45d5ab9512fcb4dc565, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MainMenu.BackgroundAnimation
+  selfTransform: {fileID: 1621482521}
+  startPosition: {x: -700, y: 0, z: 0}
+  endPosition: {x: 1786.4653, y: 0, z: 0}
+  time: 1.75
 --- !u!1 &1631753773
 GameObject:
   m_ObjectHideFlags: 0
