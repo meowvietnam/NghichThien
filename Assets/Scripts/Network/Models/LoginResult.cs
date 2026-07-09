@@ -10,6 +10,6 @@ namespace Network.Models
         public bool Success { get; set; }
         public string Message { get; set; }
         public UserWrapper UserData { get; set; }
-        public string WelcomeText { get; set; }
+        public string AccountAlias { get; set; }
     }
 }

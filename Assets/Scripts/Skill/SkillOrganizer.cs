@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
@@ -59,3 +60,4 @@ public class SkillOrganizer : EditorWindow
         Debug.Log($"Successfully organized {count} skill scripts!");
     }
 }
+#endif

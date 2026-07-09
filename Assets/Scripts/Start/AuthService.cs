@@ -26,23 +26,31 @@ namespace Start
         [SerializeField] private string signOutProgressText = "Đang đăng xuất...";
         [SerializeField] private string playProgressText = "Đang vào game...";
 
-        private void Start()
+        private async void Start()
         {
             var state = new AuthState(this);
             Client.Instance.ChangeState(state);
             Observer.AddObserver(EventList.Network.BEGIN_SIGN_IN, OnBeginSignIn);
             Observer.AddObserver(EventList.Network.SIGN_IN_END, OnSignInEnd);
+            var client = Client.Instance;
+            if (client.IsLogout)
+            {
+                foreach (var button in signInButtons)
+                {
+                    await button.SignOut();
+                }
+            }
         }
 
         private void OnSignInEnd(object[] data)
         {
-            progressBar.DoKill(() => {});
+            progressBar.DoKill(() => { });
         }
 
         private void OnBeginSignIn(object[] data)
         {
             progressBar.SetText(signInProgressText);
-            progressBar.DoShow(0.5f,0,null);
+            progressBar.DoShow(0.5f, 0, null);
         }
 
         public void OnLoginResult(LoginResult result)
@@ -53,7 +61,7 @@ namespace Start
                 if (result.Success)
                 {
                     Client.Instance.SetUserData(result.UserData.User);
-                    menu.SetTitle(result.WelcomeText);
+                    menu.SetAccountAlias(result.AccountAlias);
                     menu.SetActive(true);
                     buttonGroups.SetActive(false);
                 }
@@ -69,7 +77,7 @@ namespace Start
         public async void SignOut()
         {
             progressBar.SetText(signOutProgressText);
-            progressBar.DoShow(0.25f,0,null);
+            progressBar.DoShow(0.25f, 0, null);
             var client = Client.Instance;
             var reader = await client.RequestWait(MessageTag.LogoutRequest);
             var result = reader.MemRead<LogoutResult>();
@@ -80,7 +88,7 @@ namespace Start
 
             NetworkManager.Instance.Invoke(async () =>
             {
-                progressBar.DoKill(() => {});
+                progressBar.DoKill(() => { });
                 if (result.Success)
                 {
                     foreach (var button in signInButtons)
@@ -101,7 +109,7 @@ namespace Start
         public async void Play()
         {
             progressBar.SetText(playProgressText);
-            progressBar.DoShow(0.25f,0,null);
+            progressBar.DoShow(0.25f, 0, null);
             var client = Client.Instance;
             var reader = await client.RequestWait(MessageTag.PlayRequest);
             var result = reader.MemRead<PlayResult>();
@@ -109,14 +117,39 @@ namespace Start
             {
                 if (result.Success)
                 {
-                    progressBar.DoKill(() =>
-                    {
-                        SceneManager.LoadSceneAsync("CreateCharacter");
-                    });
+                    progressBar.DoKill(() => { SceneManager.LoadSceneAsync("CreateCharacter"); });
                 }
                 else
                 {
-                    progressBar.DoKill(() => {});
+                    progressBar.DoKill(() => { });
+                    NotifyGroup.Instance.Show(result.Message);
+                }
+            });
+        }
+
+        public async void DeleteAccount()
+        {
+            var client = Client.Instance;
+            var reader = await client.RequestWait(MessageTag.DeleteAccountRequest);
+            var result = reader.MemRead<DeleteAccountResult>();
+            if (result.Success)
+            {
+                client.SetUserData(null);
+            }
+            NetworkManager.Instance.Invoke(async () =>
+            {
+                if (result.Success)
+                {
+                    foreach (var button in signInButtons)
+                    {
+                        await button.SignOut();
+                    }
+                    menu.SetActive(false);
+                    buttonGroups.SetActive(true);
+                    NotifyGroup.Instance.Show($"Xóa tài khoản thành công!");
+                }
+                else
+                {
                     NotifyGroup.Instance.Show(result.Message);
                 }
             });

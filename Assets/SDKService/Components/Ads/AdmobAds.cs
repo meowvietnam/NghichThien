@@ -19,6 +19,8 @@ public class AdmobAds : IAdsProvider
     private Action interFailedCallback;
 
     private bool showBanner = false;
+    private bool isLoadingInterstitial;
+    private bool isLoadingRewarded;
 
     #region AdUnit IDs
     private string GetBannerId()
@@ -99,10 +101,6 @@ public class AdmobAds : IAdsProvider
         MobileAds.Initialize(initStatus =>
         {
             isInitialize = 1;
-
-            //RequestBanner();
-            RequestInterstitial();
-            RequestRewarded();
         });
     }
     #endregion
@@ -149,23 +147,38 @@ public class AdmobAds : IAdsProvider
         else
         {
             Debug.Log("Interstitial not ready");
-            interFailedCallback?.Invoke();
-            RequestInterstitial();
+            RequestInterstitial(() =>
+            {
+                if (interstitialAd != null && interstitialAd.CanShowAd())
+                {
+                    interstitialAd.Show();
+                }
+                else
+                {
+                    interFailedCallback?.Invoke();
+                }
+            }, interFailedCallback);
         }
     }
-    private void RequestInterstitial()
+    private void RequestInterstitial(Action onLoaded = null, Action onFailed = null)
     {
+        if (isLoadingInterstitial) return;
+        isLoadingInterstitial = true;
+
         string adUnitId = GetInterstitialId();
         AdRequest request = new AdRequest();
 
         InterstitialAd.Load(adUnitId, request, (InterstitialAd ad, LoadAdError error) =>
         {
+            isLoadingInterstitial = false;
             if (error != null || ad == null)
             {
                 Debug.LogError("Failed to load interstitial: " + error);
+                onFailed?.Invoke();
                 return;
             }
 
+            interstitialAd?.Destroy();
             interstitialAd = ad;
 
             interstitialAd.OnAdFullScreenContentClosed += () =>
@@ -174,7 +187,6 @@ public class AdmobAds : IAdsProvider
                 {
                     Debug.Log("Interstitial closed");
                     interCloserCallback?.Invoke();
-                    RequestInterstitial();
                 });
             };
 
@@ -184,9 +196,10 @@ public class AdmobAds : IAdsProvider
                 {
                     Debug.LogError("Interstitial failed: " + err);
                     interFailedCallback?.Invoke();
-                    RequestInterstitial();
                 });
             };
+
+            onLoaded?.Invoke();
         });
     }
     #endregion
@@ -213,23 +226,45 @@ public class AdmobAds : IAdsProvider
         else
         {
             Debug.Log("Rewarded not ready");
-            rewardAdsFailedCallback?.Invoke();
-            RequestRewarded();
+            RequestRewarded(() =>
+            {
+                if (rewardedAd != null && rewardedAd.CanShowAd())
+                {
+                    rewardedAd.Show((Reward reward) =>
+                    {
+                        NetworkManager.Instance.Invoke(() =>
+                        {
+                            Debug.Log($"User rewarded: {reward.Type}, amount: {reward.Amount}");
+                            rewardAdsRewardedCallback?.Invoke();
+                        });
+                    });
+                }
+                else
+                {
+                    rewardAdsFailedCallback?.Invoke();
+                }
+            }, rewardAdsFailedCallback);
         }
     }
 
-    private void RequestRewarded()
+    private void RequestRewarded(Action onLoaded = null, Action onFailed = null)
     {
+        if (isLoadingRewarded) return;
+        isLoadingRewarded = true;
+
         string adUnitId = GetRewardedId();
         AdRequest request = new AdRequest();
 
         RewardedAd.Load(adUnitId, request, (RewardedAd ad, LoadAdError error) =>
         {
+            isLoadingRewarded = false;
             if (error != null || ad == null)
             {
                 Debug.LogError("Failed to load rewarded: " + error);
+                onFailed?.Invoke();
                 return;
             }
+            rewardedAd?.Destroy();
             rewardedAd = ad;
             rewardedAd.OnAdFullScreenContentClosed += () =>
             {
@@ -237,7 +272,6 @@ public class AdmobAds : IAdsProvider
                 {
                     Debug.Log("Rewarded closed");
                     rewardAdsCloseCallback?.Invoke();
-                    RequestRewarded();
                 });
             };
             rewardedAd.OnAdFullScreenContentFailed += (AdError err) =>
@@ -246,9 +280,10 @@ public class AdmobAds : IAdsProvider
                 {
                     Debug.LogError("Rewarded failed: " + err);
                     rewardAdsFailedCallback?.Invoke();
-                    RequestRewarded();
                 });
             };
+
+            onLoaded?.Invoke();
         });
     }
     #endregion

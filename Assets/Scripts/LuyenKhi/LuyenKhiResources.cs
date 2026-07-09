@@ -7,7 +7,9 @@ using Network.Extensions;
 using Sirenix.OdinInspector;
 using System.IO;
 using System.Linq;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace LuyenKhi
@@ -94,6 +96,8 @@ namespace LuyenKhi
             File.WriteAllBytes(path, writer.Buffer);
             Debug.Log(path);
         }
+#if UNITY_EDITOR
+        
         [Button]
         public void ShowSpriteSize()
         {
@@ -105,7 +109,6 @@ namespace LuyenKhi
             var size = AssetSize.CalculateSize(sprites);
             Debug.Log(size);
         }
-#if UNITY_EDITOR
         [Button]
         public void LoadIconsFromFolder()
         {

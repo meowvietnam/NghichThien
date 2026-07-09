@@ -25,10 +25,19 @@ namespace AllMaps
 
         private void OnDestroy()
         {
-            if (Client.Instance == null) return;
-            var module = Client.Instance.CoreModule;
+            var client = Client.Instance;
+            if (client == null) return;
+            var module = client.CoreModule;
             var inventoryHandler = module.GetHandler<InventoryHandler>();
-            Client.Instance.CharacterData.OnInventoryUpdated -= OnInventoryUpdated;
+            if (inventoryHandler != null)
+            {
+                module.RemoveHandler(inventoryHandler);
+            }
+            var charData = client.CharacterData;
+            if (charData != null)
+            {
+                charData.OnInventoryUpdated -= OnInventoryUpdated;
+            }
         }
     }
 }

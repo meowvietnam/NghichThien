@@ -7,12 +7,14 @@ public class BaseBehaviour : MonoBehaviour
    
     protected void SetEventButton(Button btn , Action action)
     {
-        if (btn == null) return;
+        if (btn == null)
+        {
+            return;
+        }
         btn.onClick.RemoveAllListeners();
         btn.onClick.AddListener(() =>
         {
             action?.Invoke();
-            //sound btn\
             SoundManager.Instance.PlaySoundButtonClick();
         });
     }    

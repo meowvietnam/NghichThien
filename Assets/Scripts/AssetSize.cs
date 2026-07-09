@@ -1,8 +1,8 @@
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
-using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -77,3 +77,4 @@ public class AssetSize : MonoBehaviour
             .ToList();
     }
 }
+#endif

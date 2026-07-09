@@ -36,6 +36,7 @@ namespace LuyenKhi
                 {
                     icon = Resources.Load<Sprite>(IconPath);
                 }
+
                 return icon;
             }
         }
@@ -115,7 +116,7 @@ namespace LuyenKhi
             writer.WriteArray(ItemFlags);
             writer.Write(Price);
         }
-
+#if UNITY_EDITOR
         public void Move()
         {
             var icon = Icon;
@@ -123,5 +124,6 @@ namespace LuyenKhi
             var path = Path.GetDirectoryName(root + IconPath);
             AssetOptimize.Move(icon.texture, path);
         }
+#endif
     }
 }

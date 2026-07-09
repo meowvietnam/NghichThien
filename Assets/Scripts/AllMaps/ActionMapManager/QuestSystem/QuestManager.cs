@@ -1,4 +1,5 @@
-﻿using Base;
+﻿using System;
+using Base;
 using DG.Tweening;
 using DG.Tweening.Core.Easing;
 using LongDH.LongDHModules;
@@ -88,6 +89,10 @@ public class QuestManager : BaseBehaviour , IUISingleton
     {
         Pool.Set(this);
         SceneManager.sceneLoaded += OnCheckSceneToTrigger;
+    }
 
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnCheckSceneToTrigger;
     }
 }

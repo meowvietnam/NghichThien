@@ -34,7 +34,7 @@ namespace LuyenDan
                 return instance;
             }
         }
-
+#if UNITY_EDITOR
         [Button]
         public void ShowSpriteSize()
         {
@@ -45,7 +45,7 @@ namespace LuyenDan
             var size = AssetSize.CalculateSize(sprites);
             Debug.Log(size);
         }
-
+#endif
         public IItemData FindItem(FurnaceData furnace)
         {
             return TempFurnaceDatas.FirstOrDefault(x => x.Id == furnace.Id);

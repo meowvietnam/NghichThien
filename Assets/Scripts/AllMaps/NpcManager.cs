@@ -11,7 +11,9 @@ using ComboSkillResource.NPCData;
 using LongDHModules;
 using MemoryPack;
 using Snapshot;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using Base;
 
@@ -129,10 +131,11 @@ public class NPCManager : ActionMapManager
         }
         base.RandomAction();
     }
+#if UNITY_EDITOR
+    
     [Button]
     private void OnUpdateDataNPCData()
     {
-#if UNITY_EDITOR
         // Điền chính xác đường dẫn folder bạn muốn quét tại đây
         string[] searchFolders = new string[] { "Assets/Scripts/ComboSkillResource/NPCData" };
 
@@ -148,7 +151,6 @@ public class NPCManager : ActionMapManager
         AssetDatabase.SaveAssets();
 
         Debug.Log($"Đã cập nhật {npcDatas.Length} NPC từ folder chỉ định.");
-#endif
     }
 
     [Button]
@@ -161,4 +163,6 @@ public class NPCManager : ActionMapManager
         AssetDatabase.Refresh();
         Debug.Log(path);
     }
+#endif
+    
 }

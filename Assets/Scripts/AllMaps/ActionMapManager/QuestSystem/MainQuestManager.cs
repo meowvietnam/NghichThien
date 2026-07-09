@@ -12,7 +12,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 public class MainQuestManager : BaseBehaviour , IUISingleton
@@ -122,7 +124,7 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
         Observer.RemoveObserver(EventList.GamePlay.MOVE_MAP_SUCCESS, CheckSpawnQuest);
         Observer.RemoveObserver(EventList.GamePlay.USER_ENTER_MAP, RemoveMap);
     }
-
+#if UNITY_EDITOR
     [Button]
     public void ExportMainQuestRS()
     {
@@ -143,5 +145,5 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
         var path = Path.Combine(Application.dataPath, "Exports", "MainQuestManagerModel.bin");
         File.WriteAllBytes(path, writer.Buffer);
     }
-
+#endif
 }

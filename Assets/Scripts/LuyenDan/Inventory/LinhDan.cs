@@ -97,6 +97,8 @@ namespace LuyenDan.Inventory
             value.BuffValue = reader.Read<int>();
             value.EBuffType = reader.Read<EDanBuffType>();
         }
+#if UNITY_EDITOR
+        
         public void Move()
         {
             var icon = Icon;
@@ -104,5 +106,7 @@ namespace LuyenDan.Inventory
             var path = Path.GetDirectoryName(root + IconPath);
             AssetOptimize.Move(icon.texture, path);
         }
+#endif
+        
     }
 }

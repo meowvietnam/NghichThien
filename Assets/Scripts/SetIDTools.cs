@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
 using System.IO;
 public class SetIDTools
@@ -31,3 +32,4 @@ public class SetIDTools
         Debug.Log($"Successfully updated IDs for {count} items!");
     }
 }
+#endif

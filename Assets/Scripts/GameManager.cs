@@ -1040,6 +1040,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         }
         return "";
     }
+    #if UNITY_EDITOR
     [Button]
     public void ShowSpriteSize()
     {
@@ -1094,7 +1095,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         File.WriteAllBytes(path, writer.Buffer);
         Debug.Log(path);
     }
-
+#endif
     [Button]
     public void SetTimeLearnSkill()
     {

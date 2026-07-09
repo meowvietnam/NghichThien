@@ -139,6 +139,7 @@ namespace LuyenDan
             value.Locations = reader.Read();
             value.Description = reader.Read();
         }
+        #if UNITY_EDITOR
         public void Move()
         {
             var icon = Icon;
@@ -146,5 +147,6 @@ namespace LuyenDan
             var path = Path.GetDirectoryName(root + IconPath);
             AssetOptimize.Move(icon.texture, path);
         }
+        #endif
     }
 }

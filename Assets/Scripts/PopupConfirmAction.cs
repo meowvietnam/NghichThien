@@ -10,10 +10,6 @@ public class PopupConfirmAction : Popup,IUISingleton
     [SerializeField] private Button btnConfirm;
     [SerializeField] private Text contentText;
 
-    protected void Awake()
-    {
-       
-    }
     [Button]
     public void ShowPopConfirmAction(string content,Action actionConfirm)
     {
@@ -21,8 +17,7 @@ public class PopupConfirmAction : Popup,IUISingleton
         contentText.text = content;
         SetEventButton(btnConfirm, () =>
         {
-            Hide();
-            actionConfirm?.Invoke();
+           OnClickEvent(actionConfirm);
         });
         var fitter = contentText.GetComponent<ContentSizeFitter>();
         if (fitter != null)
@@ -37,6 +32,11 @@ public class PopupConfirmAction : Popup,IUISingleton
         }
     }
 
+    protected virtual void OnClickEvent(Action actionConfirm)
+    {
+        Hide();
+        actionConfirm?.Invoke();
+    }
     public void Init()
     {
         Pool.Set(this);

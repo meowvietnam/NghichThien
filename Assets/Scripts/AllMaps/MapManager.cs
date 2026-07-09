@@ -118,17 +118,11 @@ namespace AllMaps
         }
         public void PlayerMoveTo(Map map)
         {
-            Debug.Log($"{map.Id} move to {map.PlayerPosition}");
             if (CameraFollow.Instance.target != player.transform) return;
-            Debug.Log($"Camera follow {CameraFollow.Instance.target}");
             if (isDelayAfterLoadScene) return;
-            Debug.Log($"isDelayAfterLoadScene {isDelayAfterLoadScene}");
             if (map == current) return;
-            Debug.Log($"map is not currentMap {map.Id}");
             if (player.IsMoving) return;
-            Debug.Log($"player.IsMoving {player.IsMoving}");
             Client.Instance.Send(MessageTag.MoveToMap, map.Id);
-            Debug.Log($"Send");
         }
 
         private void Move(int[] path)

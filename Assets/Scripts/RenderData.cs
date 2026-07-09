@@ -1,7 +1,7 @@
+#if UNITY_EDITOR
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -84,3 +84,4 @@ public class RenderData : MonoBehaviour
         }
     }
 }
+#endif

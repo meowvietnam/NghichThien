@@ -8,7 +8,9 @@ using MemoryPack;
 using Sirenix.OdinInspector;
 using Skill;
 using Snapshot;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace ComboSkillResource
@@ -75,6 +77,8 @@ namespace ComboSkillResource
                 return instance;
             }
         }
+#if UNITY_EDITOR
+        
         [Button]
         public void Export()
         {
@@ -85,5 +89,7 @@ namespace ComboSkillResource
             AssetDatabase.Refresh();
             Debug.Log(path);
         }
+#endif
+        
     }
 }

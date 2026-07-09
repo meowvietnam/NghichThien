@@ -57,6 +57,7 @@ public static partial class EventList
 
     public static class Network
     {
+        public const string IN_GAME_LOGOUT = "Network.IN_GAME_LOGOUT";
         public const string SIGN_IN_END = "Network.SIGN_IN_END";
         public const string BEGIN_SIGN_IN = "Network.BEGIN_SIGN_IN";
         public const string RESET_ARENA_RANK = "Network.RESET_ARENA_RANK";

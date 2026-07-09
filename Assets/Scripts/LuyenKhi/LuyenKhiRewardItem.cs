@@ -64,6 +64,7 @@ namespace LuyenKhi
             writer.Write(Tier);
             writer.Write(Type);
         }
+        #if UNITY_EDITOR
         public void Move()
         {
             var icon = Icon;
@@ -77,5 +78,6 @@ namespace LuyenKhi
                 AssetOptimize.Move(iconFight.texture, fightPath);
             }
         }
+        #endif
     }
 }

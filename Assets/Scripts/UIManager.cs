@@ -1,4 +1,5 @@
-﻿using AllMaps.ItemProvider;
+﻿using System;
+using AllMaps.ItemProvider;
 using Base;
 using LongDH.LongDHModules;
 using LuyenDan;
@@ -10,7 +11,9 @@ using Sirenix.OdinInspector;
 using System.Linq;
 using AllMaps.ui_rank;
 using LongDHModules;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -41,6 +44,7 @@ public class UIManager : BaseBehaviour
     /// <summary>
     /// Abstract Factory để lấy equipment từ các collection khác nhau
     /// </summary>
+    #if UNITY_EDITOR
     [Button]
     public void GetQualities()
     {
@@ -50,7 +54,7 @@ public class UIManager : BaseBehaviour
         spriteFrames = qualities.Select(x => x.IconUp).ToArray();
         EditorUtility.SetDirty(this);
     }
-
+#endif
     public (Sprite, Sprite, Color) GetFrameAndQualityFullAndColorNameSkill(BaseSkill data)
     {
         if (data == null) return (default, default, default);
@@ -230,6 +234,7 @@ public class UIManager : BaseBehaviour
 
     private void Start()
     {
+        Observer.AddObserver(EventList.Network.IN_GAME_LOGOUT, OnLogout);
         var listPanel = transform.GetComponentsInChildren<PanelGroup>(true);
         var listSingleTon = transform.GetComponentsInChildren<IUISingleton>(true);
         foreach (var item in listPanel)
@@ -241,6 +246,17 @@ public class UIManager : BaseBehaviour
         {
             item.Init();
         }
+    }
+
+    private void OnDestroy()
+    {
+        Observer.RemoveObserver(EventList.Network.IN_GAME_LOGOUT, OnLogout);
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnLogout()
+    {
+        Destroy(gameObject);
     }
 
     [SerializeField] public Popup currentPopup;

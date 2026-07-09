@@ -6,22 +6,20 @@ using CreateCharacter.CharStats;
 using LongDH.LongDHModules;
 using LongDHModules;
 using LuyenDan;
-using LuyenDan.Inventory;
 using LuyenKhi;
 using Network;
-using Newtonsoft.Json.Linq;
-using Sirenix.Utilities;
-using System;
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.UI;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
-
+using Network.Extensions;
 
 public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEvent.IUnEquipCongPhap,INetworkEvent.IEquipThanThong, INetworkEvent.IUnEquipThanThong , INetworkEvent.IUseDan , INetworkEvent.IEquipEquipment
 {
@@ -52,6 +50,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     [SerializeField] private Button btnClose;
     [SerializeField] public ButtonWithPanel currentBtnWithPanel;
     [SerializeField] public ToolTipItems toolTipItems => ToolTipItems.Instance;
+    #if UNITY_EDITOR
     [ContextMenu(nameof(Get))]
     public void Get()
     {
@@ -61,6 +60,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         colorQualitys = q.Select(x => x.Color).ToArray();
         EditorUtility.SetDirty(this);
     }
+    #endif
     [Header("--- Setting ---")]
     [SerializeField] private Slider sliderMusic;
     [SerializeField] private Slider sliderSound;
@@ -136,6 +136,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         {
             gameObject.SetActive(false);
         });
+        SetEventButton(btnLogOut, OnLogout);
         InitOnlyNgoDao();
         SoundManager.Instance.SetSliderAudio(sliderMusic,true);
         SoundManager.Instance.SetSliderAudio(sliderSound, false);
@@ -144,6 +145,12 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         sliderSound.value = SoundManager.Instance.volumeSound;
 
     }
+
+    private void OnLogout()
+    {
+        Client.Instance.Send(MessageTag.InGameLogout);
+    }
+
     private void OnEnable()
     {
         btns[0]?.btn?.onClick.Invoke();

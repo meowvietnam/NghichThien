@@ -44,7 +44,7 @@ namespace CreateCharacter
             value.Colors = reader.ReadArray<Color>().ToList();
             value.GenderSkinGroups = reader.ReadArray<GenderSkinGroup>().ToList();
         }
-
+#if UNITY_EDITOR
         [Button]
         public void ShowSpriteSize()
         {
@@ -57,5 +57,6 @@ namespace CreateCharacter
             var size = AssetSize.CalculateSize(sprites);
             Debug.Log(size);
         }
+#endif
     }
 }

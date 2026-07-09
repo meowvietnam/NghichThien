@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Network
 {
-    public class Client : ClientConnection, ISender<MessageTag>, IRequester<MessageTag>
+    public class Client : ClientConnection, IRequester<MessageTag>
     {
         public static Client Instance { get; private set; }
         private MessageStateHandler<MessageTag, MessageState> stateModule;
@@ -15,7 +15,7 @@ namespace Network
         public UserData UserData { get; private set; }
         public CharacterData CharacterData { get; private set; }
         public IClientState State => stateModule.State as IClientState;
-
+        public bool IsLogout { get; private set; }
         public Client(UnauthenticatedClient client)
         {
             var tcpClient = client.TcpClient;
@@ -28,6 +28,10 @@ namespace Network
             AddModule(stateModule);
         }
 
+        public void SetLogout(bool isLogout)
+        {
+            IsLogout = isLogout;
+        }
         public void SetUserData(UserData userData)
         {
             UserData = userData;
@@ -60,6 +64,7 @@ namespace Network
 
         public void OnSelectedCharacter()
         {
+            SetLogout(false);
             var module = CoreModule;
             var sceneManager = new SceneManager();
             module.RemoveHandler<SceneManager>();
@@ -99,7 +104,10 @@ namespace Network
             var rankHandler = new RankHandler();
             module.RemoveHandler<RankHandler>();
             module.AddHandler(rankHandler);
-            
+
+            var inGameAuthHandler = new InGameAuthHandler();
+            module.RemoveHandler<InGameAuthHandler>();
+            module.AddHandler(inGameAuthHandler);
             AdminPanel.Instance.StartListen();
         }
         public void AddRequest(MessageTag tag, Action<IReader> response, int timeoutMilliseconds = 0, Action<Exception> onError = null)
