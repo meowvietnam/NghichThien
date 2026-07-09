@@ -978,7 +978,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
     public void FailEquipCongPhap(string message)
     {
-        Debug.LogError(message);
+        NotifyGroup.Instance.Show(message);
     }
 
     public void SuccessUnEquipCongPhap()
@@ -990,7 +990,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
     public void FailUnEquipCongPhap(string message)
     {
-        Debug.LogError(message);
+        NotifyGroup.Instance.Show(message);
     }
 
     public void SuccessUnEquipThanThong()
@@ -1001,7 +1001,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
     public void FailUnEquipThanThong(string message)
     {
-        Debug.LogError(message);
+        NotifyGroup.Instance.Show(message);
     }
 
     public void SuccessEquipThanThong()
@@ -1011,17 +1011,17 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
     public void FailEquipThanThong(string message)
     {
-        Debug.LogError(message);
+        NotifyGroup.Instance.Show(message);
     }
 
     public void SuccessUseDan()
     {
         Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
-
     }
 
     public void FailUseDan(string message)
     {
+        NotifyGroup.Instance.Show(message);
     }
 
     public void SuccessEquipEquipment()

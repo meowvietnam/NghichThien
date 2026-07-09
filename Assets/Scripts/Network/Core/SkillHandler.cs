@@ -73,6 +73,12 @@ namespace Network.Core
                     client.CharacterData.Stats.ApplyFrom(statsSnapshot);
                 }
                 var linhDan = LuyenDanResources.Instance.FindLinhDan(id);
+                client.CharacterData.InventoryManager.Decrease(new ItemRef()
+                {
+                    Id = id,
+                    Type = ItemType.LinhDan,
+                    Count = count,
+                });
                 var type = linhDan.ETypeDan;
                 if (type == ETypeDan.DanCombat)
                 {
