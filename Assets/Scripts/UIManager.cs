@@ -194,7 +194,7 @@ public class UIManager : BaseBehaviour
         }
         if(isIconSkillBase)
         {
-            item.icon.rectTransform.sizeDelta = Vector2(128,128);
+            item.icon.rectTransform.sizeDelta = new Vector2(128,128);
         }
 
 
