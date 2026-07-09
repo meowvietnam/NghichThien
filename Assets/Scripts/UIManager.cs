@@ -192,6 +192,10 @@ public class UIManager : BaseBehaviour
                 item.InitIcon(spriteCPInven, frame);
             }
         }
+        if(isIconSkillBase)
+        {
+            item.icon.rectTransform.sizeDelta = Vector2(128,128);
+        }
 
 
         item.InitInventory(itemRef, data);

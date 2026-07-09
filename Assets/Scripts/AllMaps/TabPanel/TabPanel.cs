@@ -652,7 +652,7 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         Pool.Get<UIManager>().InitVisualItemSkill(phuTu2, GameConfig.GetCongPhapWithId(equipment.PhuTu2Used));
         Pool.Get<UIManager>().InitVisualItemSkill(phuTu3, GameConfig.GetCongPhapWithId(equipment.PhuTu3Used));
         Pool.Get<UIManager>().InitVisualItemSkill(phuTu4, GameConfig.GetCongPhapWithId(equipment.PhuTu4Used));
-
+        nguyenAnh.gameObject.SetActive(Client.Instance.CharacterData.Progression.Level >= 10);
         // unEquip
         foreach (var currentItem in listItemsCongPhapSlot)
         {
