@@ -10,9 +10,7 @@ using Network.Extensions;
 using Network.Extensions.MemoryPack;
 using Network.Models;
 using SignIn;
-using SignIn.Google;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace Start
 {
@@ -25,7 +23,7 @@ namespace Start
         [SerializeField] private string signInProgressText = "Đang đăng nhập...";
         [SerializeField] private string signOutProgressText = "Đang đăng xuất...";
         [SerializeField] private string playProgressText = "Đang vào game...";
-
+        
         private async void Start()
         {
             var state = new AuthState(this);

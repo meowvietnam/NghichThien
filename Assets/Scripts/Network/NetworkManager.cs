@@ -17,7 +17,8 @@ namespace Network
         [SerializeField] private string host;
         [SerializeField] private int port;
         [SerializeField] private string connectFailMessage;
-        [field: SerializeField] public string Version { get; private set; }
+        [SerializeField] private string platform;
+        [ShowInInspector] public string Version => $"{platform}_v{Application.version}";
         private Queue<Action> actionQueue = new();
         public static NetworkManager Instance { get; private set; }
         private UnauthenticatedClient unauthenticatedClient;
