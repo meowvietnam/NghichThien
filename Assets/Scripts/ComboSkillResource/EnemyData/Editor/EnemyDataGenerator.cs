@@ -108,7 +108,7 @@ public class EnemyDataGenerator : EditorWindow
         enemy.charStatsCreateRef.Gender = (Gender)Random.Range(0, 2);
 
         // Stats tăng dần theo Level
-        enemy.charStatsCreateRef.hpMax = new SecureInt(Random.Range(50, 100) + (level * 25));
+        enemy.charStatsCreateRef.hpMax = new SecureInt(Random.Range(30, 60));
         enemy.charStatsCreateRef.hp = new SecureInt(enemy.charStatsCreateRef.hpMax.Value);
         enemy.charStatsCreateRef.tuChat = new SecureInt(Random.Range(60, 120));
         enemy.charStatsCreateRef.ngoTinh = new SecureInt(Random.Range(60, 120));

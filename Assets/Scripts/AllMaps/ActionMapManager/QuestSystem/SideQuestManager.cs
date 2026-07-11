@@ -21,7 +21,7 @@ public class SideQuestManager : ActionEnterMapManager
    
     public override string fileSaveMapNode => "SaveSideQuestMap";
 
-    public override int TimeMonthRandom => 10;
+    public override int TimeMonthRandom => 5;
 
     public override string fileSaveTime => "OldTimeRandomSideQuest";
 
