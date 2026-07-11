@@ -20,7 +20,7 @@ using Base;
 public class NPCManager : ActionMapManager
 {
     [SerializeField] public NPCData[] npcDatas; 
-    public override int TimeMonthRandom => 5;
+    public override int TimeMonthRandom => 12;
     public override string fileSaveTime => "OldTimeRandomNPC";
 
     public override void Init()
@@ -83,52 +83,57 @@ public class NPCManager : ActionMapManager
         var thoPhai = GetIdMapNodeWithMonPhai(EMonPhai.HoaTranGiao);
         var kiemPhai = GetIdMapNodeWithMonPhai(EMonPhai.BachDeLau);
 
+        int bachDeLauIndex = 0;
+        int kimHongKiemPhaiIndex = 0;
+
         foreach (var npc in npcDatas)
         {
-            if(npc.charStats.monPhai == Base.EMonPhai.None)
+            if (npc.charStats.monPhai == Base.EMonPhai.None)
             {
-
                 int randomMapId = mapManager.maps[UnityEngine.Random.Range(0, mapManager.maps.Length)].Id;
                 npc.charStats.idNode = randomMapId;
             }
             else
             {
-
                 switch (npc.charStats.monPhai)
                 {
                     case EMonPhai.None:
                         break;
-                    case EMonPhai.BachDeLau:
-                        npc.charStats.idNode = kiemPhai[UnityEngine.Random.Range(0,kiemPhai.Count)];
-                        break;
-                    case EMonPhai.KimHongKiemPhai:
-                        npc.charStats.idNode = kimPhai[UnityEngine.Random.Range(0, kimPhai.Count)];
 
+                    case EMonPhai.BachDeLau:
+                        // Distribute evenly across kiemPhai
+                        npc.charStats.idNode = kiemPhai[bachDeLauIndex];
+                        bachDeLauIndex = (bachDeLauIndex + 1) % kiemPhai.Count;
                         break;
+
+                    case EMonPhai.KimHongKiemPhai:
+                        // Distribute evenly across kimPhai
+                        npc.charStats.idNode = kimPhai[kimHongKiemPhaiIndex];
+                        kimHongKiemPhaiIndex = (kimHongKiemPhaiIndex + 1) % kimPhai.Count;
+                        break;
+
                     case EMonPhai.TrucSonTong:
                         npc.charStats.idNode = mocPhai[UnityEngine.Random.Range(0, mocPhai.Count)];
-
                         break;
+
                     case EMonPhai.TinhHaKiemPhai:
                         npc.charStats.idNode = thuyPhai[UnityEngine.Random.Range(0, thuyPhai.Count)];
-
                         break;
+
                     case EMonPhai.LyHoaMon:
                         npc.charStats.idNode = hoaPhai[UnityEngine.Random.Range(0, hoaPhai.Count)];
-
                         break;
+
                     case EMonPhai.HoaTranGiao:
                         npc.charStats.idNode = thoPhai[UnityEngine.Random.Range(0, thoPhai.Count)];
-
                         break;
+
                     default:
                         break;
                 }
-
             }
-
-
         }
+
         base.RandomAction();
     }
 #if UNITY_EDITOR

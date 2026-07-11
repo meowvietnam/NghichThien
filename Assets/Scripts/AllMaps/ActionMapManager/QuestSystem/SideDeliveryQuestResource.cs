@@ -63,7 +63,19 @@ public class SideDeliveryQuestResource : SideQuestResource
             var mapOfNPC = mapManager.FindMap(npc.charStats.idNode);
 
             // Điều kiện: Tìm thấy map và map đó phải thoả mãn IsEmptyAction
-            return mapOfNPC != null && mapOfNPC.IsEmptyAction;
+            if (mapOfNPC == null || !mapOfNPC.IsEmptyAction) return false;
+
+            // Kiểm tra nếu map là "strong hold"
+            if (mapOfNPC is Stronghold strongHold)
+            {
+                var monPhaiCheck = GameManager.ConvertEMapToEMonPhai(strongHold.eCurrentMapType);
+                if (monPhaiCheck != EMonPhai.None &&  monPhaiCheck != Client.Instance.CharacterData.MonPhai)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }).ToArray();
         var charRandomActive = GetNPCDataSideQuestWithTargetLevel(validNPCs, Client.Instance.CharacterData.Progression.Level);
         Pool.Get<SideQuestManager>().characterStatsTakeDeliver = charRandomActive.charStats;
