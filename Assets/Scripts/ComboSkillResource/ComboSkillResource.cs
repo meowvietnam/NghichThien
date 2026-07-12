@@ -22,9 +22,17 @@ namespace ComboSkillResource
         [Serializable]
         public class Combo
         {
-            public List<ThanThong> thanThongs;
-            public List<CongPhap> congPhaps;
+            public List<int> thanThongIds;
+            public List<int> congPhapIds;
             public List<NgoDao> ngoDaos;
+
+            [Button]
+            public void ConvertSkillToId()
+            {
+                thanThongIds.Clear();
+                congPhapIds.Clear();
+               
+            }
 
             [Button]
             public void LogRequireNgoDao()
@@ -35,19 +43,12 @@ namespace ComboSkillResource
             [Button]
             public void LogTierCongPhap()
             {
-                foreach (var item in congPhaps)
-                {
-                    Debug.Log(item.eTierSkill);
-                }
+                
             }
 
             [Button]
             public void LogTierThanThong()
             {
-                foreach (var item in thanThongs)
-                {
-                    Debug.Log(item.eTierSkill);
-                }
             }
         }
 
@@ -64,21 +65,42 @@ namespace ComboSkillResource
 
         public ComboWithType[] comboNPC;
         private static ComboSkillResource instance;
-
-        public static ComboSkillResource Instance
+        [Button("Convert All Skills To Id")]
+        public void ConvertAllSkillsToId()
         {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = Resources.Load<ComboSkillResource>("Combo Skill Resource");
-                }
+            if (comboNPC == null) return;
 
-                return instance;
+            foreach (var comboWithType in comboNPC)
+            {
+                if (comboWithType.comboWithDaiCanhGioi == null) continue;
+
+                foreach (var combo in comboWithType.comboWithDaiCanhGioi)
+                {
+                    combo?.ConvertSkillToId();
+                }
             }
-        }
+
 #if UNITY_EDITOR
-        
+            // Đánh dấu ScriptableObject là "dirty" để Unity lưu thay đổi
+            EditorUtility.SetDirty(this);
+#endif
+
+            Debug.Log("All skills converted to IDs successfully.");
+        }
+        //public static ComboSkillResource Instance
+        //{
+        //    get
+        //    {
+        //        if (instance == null)
+        //        {
+        //            instance = Resources.Load<ComboSkillResource>("Combo Skill Resource");
+        //        }
+
+        //        return instance;
+        //    }
+        //}
+#if UNITY_EDITOR
+
         [Button]
         public void Export()
         {

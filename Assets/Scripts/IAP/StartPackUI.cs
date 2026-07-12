@@ -33,7 +33,7 @@ namespace IAP
         public void SetCongPhap(ushort id)
         {
             var gameManager = Pool.Get<GameManager>();
-            var congPhap = gameManager.congPhaps.FirstOrDefault(x => x.Id == id);
+            var congPhap = gameManager.GetCongPhapWithId((int)id);
             if (congPhap == null)
             {
                 Debug.Log($"Null congphap {id}");

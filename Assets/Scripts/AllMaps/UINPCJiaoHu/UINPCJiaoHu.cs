@@ -144,6 +144,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
     [SerializeField]
     private Bag1ItemPrefabInventory bag;
 
+    
      private void ResetItemBag()
      {
         var oldItem = bag.InventoryUIFacade.listItemUI.FirstOrDefault(x => x.itemRef.Id == slotItemGift.itemRef.Id);
@@ -313,6 +314,21 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         thinhGiaoPop.Hide();
         xemXetPop.Hide();
         tangQuaPop.Hide();
+        xemXetPop.InitActionClose(() =>
+        {
+            Pool.Get<GameManager>().Cleanup();
+
+        });
+        tangQuaPop.InitActionClose(() =>
+        {
+            Pool.Get<GameManager>().Cleanup();
+
+        });
+        thinhGiaoPop.InitActionClose(() =>
+        {
+            Pool.Get<GameManager>().Cleanup();
+
+        });
         OpenOrCloseNpcList(true);
         ResetVisual(prefabNPCLeftItem.transform);
         SetEventButton(closeOrOpenListNPC, () =>
