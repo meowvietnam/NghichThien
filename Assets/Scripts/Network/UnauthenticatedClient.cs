@@ -25,7 +25,10 @@ namespace Network
             }
             public void OnEnter()
             {
-                client.TcpClient.Send(MessageTag.CheckVersion, NetworkManager.Instance.Version);
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    client.TcpClient.Send(MessageTag.CheckVersion, NetworkManager.Instance.Version);
+                });
             }
 
             public void Handle(Message<MessageTag> message)
