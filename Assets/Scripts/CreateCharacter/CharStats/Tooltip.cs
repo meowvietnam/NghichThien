@@ -52,7 +52,7 @@ namespace CreateCharacter.CharStats
             tween?.Kill();
             thisTransform.localScale = Vector3.zero;
             SetActive(true);
-            tween = thisTransform.DOScale(Vector3.one, 0.15f);
+            tween = thisTransform.DOScale(Vector3.one*1.5f, 0.15f);
         }
 
         public void DoHide()

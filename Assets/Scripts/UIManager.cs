@@ -19,6 +19,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Skill;
 using IAP;
+using DG.Tweening;
 
 public interface IUISingleton
 {
@@ -38,7 +39,8 @@ public class UIManager : BaseBehaviour
     [SerializeField] public Button btnThuongHoi;
     [SerializeField] public Button btnStartPack;
     [SerializeField] public Button btnGacha;
-
+    [SerializeField] public Button btnListIconShow;
+    [SerializeField] private bool isShowListIcon = true;
     public Transform ListIcon => btnBXH.transform.parent;
 
     /// <summary>
@@ -226,6 +228,25 @@ public class UIManager : BaseBehaviour
         {
             var iapHandler = Pool.Get<IapHandler>();
             iapHandler.transform.GetComponentInChildren<StartPackUI>(true).ThisPopup.Show();
+        });
+        SetEventButton(btnListIconShow, () =>
+        {
+            btnListIconShow.enabled = false;
+            if (isShowListIcon)
+            {
+                // Sử dụng DOAnchorPosX để di chuyển theo tọa độ của Anchor
+                ListIcon.GetComponent<RectTransform>().DOAnchorPosX(500, 0.5f);
+                isShowListIcon = false;
+            }
+            else
+            {
+                ListIcon.GetComponent<RectTransform>().DOAnchorPosX(-170, 0.5f);
+                isShowListIcon = true;
+            }
+            DOVirtual.DelayedCall(0.5f,() =>
+            {
+                btnListIconShow.enabled =true;
+            });
         });
         btnStartPack.gameObject.SetActive(!Client.Instance.CharacterData.IsInfiniteEnergy);
         SetEventButton(btnGacha, () => { Pool.Get<GachaPanel>().SetActive(); });

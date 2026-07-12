@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+
 [System.Serializable]
 public class SecureFloat
 {
@@ -46,21 +47,16 @@ public class SecureFloat
 
     void Set(float value)
     {
-        // Khởi tạo bộ ngẫu nhiên của hệ thống
         System.Random rand = new System.Random();
 
-        // Tạo split ngẫu nhiên từ -1000f đến 1000f
-        // Công thức: min + (rand.NextDouble() * (max - min))
         float split = (float)(-1000.0 + (rand.NextDouble() * 2000.0));
 
         float partA = split;
         float partB = value - split;
 
-        // Tạo Key ngẫu nhiên (Số nguyên)
         keyA = rand.Next(10000, 99999);
         keyB = rand.Next(10000, 99999);
 
-        // Mã hóa
         encA = FloatToInt(partA) ^ keyA;
         encB = FloatToInt(partB) ^ keyB;
 
@@ -77,6 +73,11 @@ public class SecureFloat
         return BitConverter.ToSingle(BitConverter.GetBytes(v), 0);
     }
 
+    public void RenewKeys()
+    {
+        Set(fakeValue);
+    }
+
     public static implicit operator float(SecureFloat s)
     {
         return s == null ? 0f : s.Value;
@@ -85,5 +86,10 @@ public class SecureFloat
     public static implicit operator SecureFloat(float v)
     {
         return new SecureFloat(v);
+    }
+
+    private void OnValidate()
+    {
+        RenewKeys();
     }
 }

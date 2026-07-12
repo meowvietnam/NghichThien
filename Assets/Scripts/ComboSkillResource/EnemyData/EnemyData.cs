@@ -3,6 +3,7 @@ using ComboSkillResource.NPCData;
 using LongDH.LongDHModules;
 using LongDH.Script.ObjectPool;
 using MemoryPack;
+using Sirenix.OdinInspector;
 using Skill;
 using UnityEngine;
 public partial class EnemyData : NPCData
@@ -28,8 +29,14 @@ public partial class EnemyData : NPCData
         "Binh", "Tướng", "Vương", "Hoàng", "Đế", "Nghiệt", "Ma", "Biến", "Sư", "Tử"
     };
 
- 
 
+    [Button]
+    private void SetHpChia(float soChia)
+    {
+        var newValue = (int)(charStats.hpMax / soChia);
+        charStats.hpMax = newValue;
+        charStats.hp = charStats.hpMax.Value;
+    }
     public override void SetBaseStats(GameManager gameConfig)
     {
       

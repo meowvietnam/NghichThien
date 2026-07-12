@@ -275,8 +275,8 @@ RectTransform:
   m_GameObject: {fileID: 1085869488853281962}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 0.8}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7273106669483596924}
   - {fileID: 7985788059307883304}
@@ -384,6 +384,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CreateCharacter.CreateAvatar
   graphic: {fileID: 587156498972796878}
   skinResources: {fileID: 0}
+  refLocalPos: {x: 0, y: 0, z: 0}
+  addLocalY: 30
   button: {fileID: 1706749516365853145}
   addGO: {fileID: 8111350290073119086}
   hasCharGO: {fileID: 231498733209444508}

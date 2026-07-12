@@ -4,9 +4,9 @@ using UnityEngine;
 [System.Serializable]
 public class SecureBool
 {
-    [SerializeField] int encValue; // Giá trị đã mã hóa
-    [SerializeField] int key;      // Khóa ngẫu nhiên
-    [SerializeField] bool fakeValue; // Giá trị giả để đánh lừa tìm kiếm 0/1
+    [SerializeField] int encValue;
+    [SerializeField] int key;
+    [SerializeField] bool fakeValue;
 
     public SecureBool(bool value)
     {
@@ -17,19 +17,13 @@ public class SecureBool
     {
         get
         {
-            // Giải mã: Lấy encValue XOR với key
-            // Nếu kết quả là 1 thì là true, 0 là false
             bool realValue = (encValue ^ key) == 1;
 
-            // Kiểm tra khớp với fakeValue để phát hiện can thiệp bộ nhớ
             if (realValue != fakeValue)
             {
-                // Giả sử bạn có AntiCheatManager như trong code cũ
                 Debug.LogError("Bool memory cheat detected!");
-                // AntiCheatManager.CheatDetected("Bool memory cheat detected");
             }
 
-            // Làm mới mã hóa mỗi lần truy cập để địa chỉ bộ nhớ liên tục thay đổi giá trị
             Set(realValue);
             return realValue;
         }
@@ -41,20 +35,21 @@ public class SecureBool
 
     private void Set(bool value)
     {
-        // Sử dụng System.Random để tránh lỗi Unity Serialization
         System.Random rand = new System.Random();
 
-        // Tạo key ngẫu nhiên từ 10000 đến 999999
         key = rand.Next(10000, 999999);
 
-        // Chuyển bool thành int (1 hoặc 0) rồi XOR với key
         int intVal = value ? 1 : 0;
         encValue = intVal ^ key;
 
         fakeValue = value;
     }
 
-    // Chuyển đổi ngầm định để sử dụng như biến bool bình thường
+    public void RenewKeys()
+    {
+        Set(fakeValue);
+    }
+
     public static implicit operator bool(SecureBool s)
     {
         return s == null ? false : s.Value;
@@ -68,5 +63,10 @@ public class SecureBool
     public override string ToString()
     {
         return Value.ToString();
+    }
+
+    private void OnValidate()
+    {
+        RenewKeys();
     }
 }

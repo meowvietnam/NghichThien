@@ -7,7 +7,101 @@ namespace ComboSkillResource.NPCData
     public partial class NPCData : ScriptableObject
     {
         public virtual ETypeVisualChar eTypeVisualChar => ETypeVisualChar.Character;
+        [Button("Renew All Keys")]
+        private void RenewAllKeys()
+        {
+            // Làm mới tất cả các khóa trong charStats
+            RenewKeysForCharacterStats(charStats);
 
+            // Làm mới tất cả các khóa trong charStatsCreateRef
+            RenewKeysForCharacterStats(charStatsCreateRef);
+        }
+        private void RenewKeysForCharacterStats(CharacterStatsSecure stats)
+        {
+            if (stats == null) return;
+
+            // Làm mới các SecureInt và SecureFloat
+            stats.idChar.RenewKeys();
+            stats.percentKim.RenewKeys();
+            stats.percentMoc.RenewKeys();
+            stats.percentThuy.RenewKeys();
+            stats.percentHoa.RenewKeys();
+            stats.percentTho.RenewKeys();
+            stats.percentMa.RenewKeys();
+
+            stats.tuChat.RenewKeys();
+            stats.ngoTinh.RenewKeys();
+            stats.thanThuc.RenewKeys();
+            stats.tocDoBay.RenewKeys();
+            stats.linhThach.RenewKeys();
+            stats.hp.RenewKeys();
+            stats.hpMax.RenewKeys();
+            stats.thoNguyen.RenewKeys();
+            stats.tamCanh.RenewKeys();
+            stats.idLinhCan.RenewKeys();
+
+            stats.ngoDaoDiem.RenewKeys();
+            stats.danDoc.RenewKeys();
+            stats.level.RenewKeys();
+            stats.tuoiTac.RenewKeys();
+            stats.currentExp.RenewKeys();
+
+            stats.idNode.RenewKeys();
+
+            // Làm mới các danh sách SecureInt
+            foreach (var item in stats.ngoDaoSaves)
+            {
+                item.RenewKeys();
+            }
+
+            foreach (var item in stats.thanThongOwner)
+            {
+                item.RenewKeys();
+            }
+
+            foreach (var item in stats.thanThongEquip)
+            {
+                item.RenewKeys();
+            }
+
+            foreach (var data in stats.camNgoSaves)
+            {
+                data.id.RenewKeys();
+                data.value.RenewKeys();
+            }
+
+            foreach (var data in stats.congPhapOwner)
+            {
+                data.id.RenewKeys();
+                data.value.RenewKeys();
+            }
+
+            foreach (var data in stats.relationShipNPC)
+            {
+                data.id.RenewKeys();
+                data.value.RenewKeys();
+            }
+
+            foreach (var data in stats.danDuocCombat)
+            {
+                data.id.RenewKeys();
+                data.value.RenewKeys();
+            }
+
+            // Làm mới các công pháp used
+            stats.donThuatUsed.RenewKeys();
+            stats.phuTu1Used.RenewKeys();
+            stats.phuTu2Used.RenewKeys();
+            stats.phuTu3Used.RenewKeys();
+            stats.phuTu4Used.RenewKeys();
+            stats.chuTu1Used.RenewKeys();
+            stats.chuTu2Used.RenewKeys();
+        }
+        private void OnValidate()
+        {
+            RenewAllKeys();
+
+        }
         protected virtual string[] Surnames => new[] {
             "Diệp", "Tiêu", "Lâm", "Sở", "Hàn", "Thần", "Lục", "Tô", "Tần", "Mặc",
             "Cố", "Thẩm", "Phương", "Bạch", "Long", "Phượng", "Vân", "Tống", "Khương", "Vũ",

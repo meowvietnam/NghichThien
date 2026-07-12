@@ -57,7 +57,7 @@ namespace LuyenKhi
                     string effectDesc = GameManager.GetEffectDescription(detail.EffectType);
 
                     tooltip.SetTextInfo(effectName, effectDesc);
-                    tooltip.SetScale(Vector2.one);
+                    tooltip.SetScale(Vector2.one * 1.5f);
 
                     // Đặt vị trí Tooltip lệch một chút so với ngón tay/chuột để không bị che
                     tooltip.SetPosition(eventData.position - new Vector2(100, -40));

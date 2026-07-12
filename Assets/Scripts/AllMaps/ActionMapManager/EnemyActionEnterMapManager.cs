@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemyActionEnterMapManager : ActionEnterMapManager
 {
-    public override int TimeMonthRandom => 10;
+    public override int TimeMonthRandom => 5;
 
     public override string fileSaveTime => "OldTimeRandomEnemy";
 

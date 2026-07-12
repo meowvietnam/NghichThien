@@ -19,6 +19,7 @@ namespace Start
         {
             statusText.text = conneting;
             _ = Net.Connect(this);
+            Application.targetFrameRate = 60;
         }
 
         public void SetStatusText(string text)

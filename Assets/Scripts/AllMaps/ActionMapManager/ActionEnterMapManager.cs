@@ -43,10 +43,15 @@ public abstract class ActionEnterMapManager : ActionMapManager
         foreach (var item in currentMapRandom)
         {
             if(item == null) continue; 
-            item.ResetDataAction();
+            if(item.actionMap == null)
+            {
+                item.ResetDataAction();
+
+            }
         }
-        currentMapRandom.Clear();
-        for (int i = 0; i < CountRandom; i++)
+
+        currentMapRandom.RemoveAll(item => item == null || (item != null && item.IsEmptyAction));
+        for (int i = 0; i < CountRandom - currentMapRandom.Count; i++)
         {
             int randomMapId = mapExcept[UnityEngine.Random.Range(0, mapExcept.Count)].Id;
             var map = mapManager.FindMap(randomMapId);
