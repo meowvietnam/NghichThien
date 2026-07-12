@@ -333,7 +333,6 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
 
     private void OnChangeSceneResult(ChangeSceneResult result)
     {
-        Debug.Log(result);
         NetworkManager.Instance.Invoke(() =>
         {
             if (result.Success)

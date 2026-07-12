@@ -23,21 +23,11 @@ public class QuestManager : BaseBehaviour , IUISingleton
     }
     private void OnCheckSceneToTrigger(Scene scene, LoadSceneMode mode)
     {
-        // Kiểm tra xem ĐÂY CÓ PHẢI là scene bạn muốn hay không (Ví dụ tên scene là "MainMap")
         if (scene.name == "AllMaps")
         {
-            Debug.Log($"Đã vào đúng scene: {scene.name}. Tiến hành kích hoạt logic!");
-
-            // Thực hiện logic của bạn tại đây
-            // Pool.Get<QuestManager>().QuestCombatTrigger(...);
-
-            // Hủy đăng ký ngay sau khi xử lý xong (nếu chỉ muốn chạy 1 lần)
             LoadAfterBackAllMaps();
         }
-        else
-        {
-            Debug.Log($"Vào scene {scene.name}, không phải scene MainMap nên bỏ qua.");
-        }
+
     }
     public virtual void LoadAfterBackAllMaps()
     {

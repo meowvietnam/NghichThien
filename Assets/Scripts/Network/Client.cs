@@ -24,6 +24,9 @@ namespace Network
             Instance = this;
             CoreModule = new CoreMessageHandler<MessageTag>();
             stateModule = new MessageStateHandler<MessageTag, MessageState>();
+            var sessionHandler = new SessionHandler();
+            CoreModule.RemoveHandler<SessionHandler>();
+            CoreModule.AddHandler(sessionHandler);
             AddModule(CoreModule);
             AddModule(stateModule);
         }
@@ -50,6 +53,14 @@ namespace Network
         protected override void OnDisconnected(IProtocol<MessageTag> protocol)
         {
             base.OnDisconnected(protocol);
+            NetworkManager.Instance.Invoke(() =>
+            {
+                var notifyGroup = NotifyGroup.Instance;
+                if (notifyGroup != null)
+                {
+                    notifyGroup.Show("Mất kết nối!");
+                }
+            });
         }
 
         public void Send(Span<byte> data)
@@ -108,6 +119,8 @@ namespace Network
             var inGameAuthHandler = new InGameAuthHandler();
             module.RemoveHandler<InGameAuthHandler>();
             module.AddHandler(inGameAuthHandler);
+            
+            
             AdminPanel.Instance.StartListen();
         }
         public void AddRequest(MessageTag tag, Action<IReader> response, int timeoutMilliseconds = 0, Action<Exception> onError = null)

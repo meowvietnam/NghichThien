@@ -170,5 +170,7 @@ namespace Network
         InGameLogout = 987,
         InGameLogoutResult = 988,
         BackToMainMenuRequest = 992,
+        Ping = 1029,
+        Pong = 1030,
     }
 }

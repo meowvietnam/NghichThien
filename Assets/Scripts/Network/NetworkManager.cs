@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CreateCharacter;
 using Network.Callback;
 using Network.ClientState;
+using Network.Core;
 using Network.Models;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -78,6 +79,7 @@ namespace Network
         public void AuthenticatedSuccess()
         {
             client = new Client(unauthenticatedClient);
+      
         }
 
         public void Invoke(Action action)

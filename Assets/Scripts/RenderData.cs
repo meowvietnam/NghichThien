@@ -26,9 +26,8 @@ public class RenderData : MonoBehaviour
         return sprites;
     }
 
-    private void OnValidate()
+    public void OnValidate()
     {
-        return;
         var image = GetComponent<Image>();
         if (image != null)
         {

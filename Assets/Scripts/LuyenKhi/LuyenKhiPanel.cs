@@ -54,12 +54,11 @@ namespace LuyenKhi
         private void OnInventoryUpdated(InventoryManager inventory)
         {
             NetworkManager.Instance.Invoke(() =>
-                {
-                    LuyenKhiPage.Init();
-                    var items = inventory.Materials.Select(x => x.DeepClone());
-                    Bag.Init(items);
-                }
-            );
+            {
+                LuyenKhiPage.Init();
+                var items = inventory.Materials.Select(x => x.DeepClone());
+                Bag.Init(items);
+            });
         }
 
         public void SetBackContext(IBackContext backContext)
@@ -97,10 +96,7 @@ namespace LuyenKhi
                 NotifyGroup.Instance.Show(result.Message);
                 if (result.Success)
                 {
-                    ProgressBar.DoKill(() =>
-                    {
-                        ResultPage.Show(result.Item);
-                    });
+                    ProgressBar.DoKill(() => { ResultPage.Show(result.Item); });
                 }
                 else
                 {

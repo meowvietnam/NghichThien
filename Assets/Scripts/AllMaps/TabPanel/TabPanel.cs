@@ -106,8 +106,6 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                 if(item.typePanel == ETypePanel.CongPhap)
                 {
                     InitCongPhap();
-                
-
                 }
                 else if (item.typePanel == ETypePanel.ThanThong)
                 {
@@ -638,22 +636,22 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
     public void InitCongPhap(int countDelay = 10)
     {
         Observer.RemoveObserver(FilterControl.SELECT_FILTER,SelectFilter);
-        var CharacterDatas = CharData;
-        var GameConfig = Pool.Get<GameManager>();
+        var characterDatas = CharData;
+        var gameConfig = Pool.Get<GameManager>();
         InitBag();
         bag.filterControl.InitFilterType(new List<ItemType> { ItemType.CongPhap });
 
 
-
         // load data 
-        var equipment = CharacterDatas.EquipmentManager;
-        Pool.Get<UIManager>().InitVisualItemSkill(donThuat, GameConfig.GetCongPhapWithId(equipment.DonThuatUsed));
-        Pool.Get<UIManager>().InitVisualItemSkill(chuTu, GameConfig.GetCongPhapWithId(equipment.ChuTu1Used));
-        Pool.Get<UIManager>().InitVisualItemSkill(nguyenAnh, GameConfig.GetCongPhapWithId(equipment.ChuTu2Used));
-        Pool.Get<UIManager>().InitVisualItemSkill(phuTu1, GameConfig.GetCongPhapWithId(equipment.PhuTu1Used));
-        Pool.Get<UIManager>().InitVisualItemSkill(phuTu2, GameConfig.GetCongPhapWithId(equipment.PhuTu2Used));
-        Pool.Get<UIManager>().InitVisualItemSkill(phuTu3, GameConfig.GetCongPhapWithId(equipment.PhuTu3Used));
-        Pool.Get<UIManager>().InitVisualItemSkill(phuTu4, GameConfig.GetCongPhapWithId(equipment.PhuTu4Used));
+        var equipment = characterDatas.EquipmentManager;
+        var ui = Pool.Get<UIManager>();
+        ui.InitVisualItemSkill(donThuat, gameConfig.GetCongPhapWithId(equipment.DonThuatUsed));
+        ui.InitVisualItemSkill(chuTu, gameConfig.GetCongPhapWithId(equipment.ChuTu1Used));
+        ui.InitVisualItemSkill(nguyenAnh, gameConfig.GetCongPhapWithId(equipment.ChuTu2Used));
+        ui.InitVisualItemSkill(phuTu1, gameConfig.GetCongPhapWithId(equipment.PhuTu1Used));
+        ui.InitVisualItemSkill(phuTu2, gameConfig.GetCongPhapWithId(equipment.PhuTu2Used));
+        ui.InitVisualItemSkill(phuTu3, gameConfig.GetCongPhapWithId(equipment.PhuTu3Used));
+        ui.InitVisualItemSkill(phuTu4, gameConfig.GetCongPhapWithId(equipment.PhuTu4Used));
         nguyenAnh.gameObject.SetActive(Client.Instance.CharacterData.Progression.Level >= 10);
         // unEquip
         foreach (var currentItem in listItemsCongPhapSlot)
@@ -667,38 +665,30 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
 
                     return;
                 }
-                Pool.Get<UIManager>().InitVisualItemSkill(currentItem, null);
+                ui.InitVisualItemSkill(currentItem, null);
 
                 Observer.Notify(EventList.Network.UNEQUIP_CONGPHAP, this, GetTypeSlotCP(currentItem.GetComponent<RectTransform>()));
 
             });
         }
-        var gameConfig = Pool.Get<GameManager>();
         List<ItemRef> itemDatas = new List<ItemRef>();
-        foreach (var item in CharacterDatas.InventoryManager.CongPhapOwners)
+        foreach (var item in characterDatas.InventoryManager.CongPhapOwners)
         {
             itemDatas.Add(new ItemRef { Id = (ushort)item.Id, Type = ItemType.CongPhap, Count = 1 });
         }
 
         bag.InitDataItem(itemDatas, (currentItem) =>
         {
-
             currentItem.InitAction(null, null, () =>
             {
                 CongPhap congPhap = currentItem.itemData as CongPhap;
                 // 1. Lấy RectTransform của ô Độn Thuật để so sánh chính xác
                 RectTransform donThuatRect = donThuat.GetComponent<RectTransform>();
-
-
-
                 itemSelect.Show(currentItem, listItemsCongPhapSlot.ConvertAll(x => x.GetComponent<RectTransform>()), (resultRect) =>
                 {
                     if (resultRect != null)
                     {
-
                         var itemSlot = resultRect.GetComponent<ItemInventory>();
-
-
                         // 2. Kiểm tra điều kiện chặn
                         bool isDroppingIntoDonThuat = (resultRect == donThuatRect);
                         if (itemSlot != null && congPhap != null)
@@ -714,21 +704,18 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
                                 else
                                 {
                                     NotifyGroup.Instance.Show("Công pháp không đúng loại");
-
                                 }
-
                                 return; // Thoát ra, không chạy code InitAsFurnace bên dưới
                             }
                             Debug.Log("Item slot sẵn sàng");
 
                             // Sử dụng biến tạm 'currentItem' hoặc 'index' thay vì 'i'
-                            Pool.Get<UIManager>().InitVisualItemSkill(itemSlot, congPhap);
+                            ui.InitVisualItemSkill(itemSlot, congPhap);
                             //equip
                             //congPhap.EquipCongPhap();
                             //save player cong phap equip id
                             Observer.Notify(EventList.Network.EQUIP_CONGPHAP, this, GetTypeSlotCP(resultRect), (ushort)congPhap.Id);
                             // Cách viết chuẩn
-
 
                         }
                     }
@@ -764,8 +751,6 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
             });
         }, true);
         bag.InitBag(false);
-      
-
     }
  
     [Header("--- Thần Thông ---")]

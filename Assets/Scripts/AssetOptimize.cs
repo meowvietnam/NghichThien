@@ -123,7 +123,7 @@ public class AssetOptimize
         }
     }
 
-    // [MenuItem("Tools/InjectRenderData")]
+    [MenuItem("Tools/InjectRenderData")]
     public static void InjectRenderData()
     {
         var scene = SceneManager.GetActiveScene();
@@ -161,7 +161,7 @@ public class AssetOptimize
         }
     }
 
-    // [MenuItem("Tools/InjectToPrefabs")]
+    [MenuItem("Tools/InjectToPrefabs")]
     public static void InjectToPrefabs()
     {
         var prefabs = GetAllPrefabs();
@@ -177,7 +177,7 @@ public class AssetOptimize
         }
     }
 
-    // [MenuItem("Tools/ReplaceRefPrefabs")]
+    [MenuItem("Tools/ReplaceRefPrefabs")]
     public static void ReplaceRefPrefabs()
     {
         var prefabs = GetAllPrefabs();
@@ -188,7 +188,7 @@ public class AssetOptimize
             var a = root.GetComponentsInChildren<RenderData>(true);
             foreach (var renderData in a)
             {
-                // renderData.OnValidate();
+                renderData.OnValidate();
             }
 
             PrefabUtility.SaveAsPrefabAsset(root, path);
@@ -196,7 +196,7 @@ public class AssetOptimize
             AssetDatabase.SaveAssets();
         }
     }
-
+    [MenuItem("Tools/InjectRenderDatas")]
     public static void InjectRenderDatas()
     {
         var guids = AssetDatabase.FindAssets("t:Scene");
@@ -209,7 +209,7 @@ public class AssetOptimize
         }
     }
 
-    // [MenuItem("Tools/DeleteRenderDatas")]
+    [MenuItem("Tools/DeleteRenderDatas")]
     public static void DeleteRenderDatas()
     {
         var guids = AssetDatabase.FindAssets("t:Scene");
@@ -233,7 +233,7 @@ public class AssetOptimize
         }
     }
 
-    // [MenuItem("Tools/DeleteRenderDataPrefabs")]
+    [MenuItem("Tools/DeleteRenderDataPrefabs")]
     public static void DeleteRenderDataPrefabs()
     {
         var prefabs = GetAllPrefabs();
@@ -349,7 +349,7 @@ public class AssetOptimize
         AssetDatabase.Refresh();
     }
 
-    // [MenuItem("Tools/ValidateRenderDatas")]
+    [MenuItem("Tools/ValidateRenderDatas")]
     public static void ValidateRenderDatas()
     {
         var guids = AssetDatabase.FindAssets("t:Scene");
@@ -360,7 +360,7 @@ public class AssetOptimize
             var renderDatas = GetRenderDatas(scene);
             foreach (var renderData in renderDatas)
             {
-                // renderData.OnValidate();
+                renderData.OnValidate();
             }
 
             EditorSceneManager.MarkSceneDirty(
@@ -374,7 +374,7 @@ public class AssetOptimize
         Debug.Log("Complete");
     }
 
-    // [MenuItem("Tools/ReplaceAnimationClips")]
+    [MenuItem("Tools/ReplaceAnimationClips")]
     public static void ReplaceAnimationClips()
     {
         var guids = AssetDatabase.FindAssets("t:AnimationClip");
