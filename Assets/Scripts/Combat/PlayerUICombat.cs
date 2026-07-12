@@ -49,6 +49,13 @@ public class PlayerUICombat : BaseBehaviour
     public SkillTip skillTip;
 
     public GameObject linhKhiSelectUI;
+    [SerializeField] private Text textLinhKhiUser;
+
+    public void SetTextLinhKhiUser()
+    {
+        textLinhKhiUser.text = $"{CurrentLinhKhi}/{maxLinhKhi}";
+    }    
+
     public void SetStateControl(EStateControl eState)
     {
         eStateControl = eState;
@@ -116,6 +123,7 @@ public class PlayerUICombat : BaseBehaviour
 
     public void Init()
     {
+        Observer.AddObserver(EventList.Combat.ADJUST_LINHKHI, SetTextLinhKhiUser);
         SetEventButton(btnConfirm, () =>
         {
             if (CombatManager.IsDelayGame) return;

@@ -24,9 +24,26 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
     public MainQuestResource CurrentMainQuest => currentMainQuest.Value < mainQuestResources.Count ?mainQuestResources[currentMainQuest.Value] : null;
    
     public List<Map> currentMapMainQuests = new();
+
+    public bool isFirstOpenGame = false;
+
+    private IEnumerator FirstMainQuest()
+    {
+        yield return new WaitForSeconds(0.5f);
+        if (isFirstOpenGame == false)
+        {
+            isFirstOpenGame = true;
+            if (currentMainQuest == 0)
+            {
+                CurrentMainQuest.ActiveEventMap(null);
+            }
+        }
+    }    
+  
     public void CheckSpawnQuest()
     {
         if (CurrentMainQuest == null) return;
+        
         if (currentMapMainQuests.Count <= 0)
         {
             var mapManager = Pool.Get<MapManager>();
@@ -116,7 +133,7 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
         Observer.AddObserver(EventList.GamePlay.USER_ENTER_MAP, RemoveMap);
         currentMainQuest = Client.Instance.CharacterData.QuestManager.CurrentMainQuest;
         CheckSpawnQuest();
-
+        StartCoroutine(FirstMainQuest());
     }
 
     private void OnDestroy()

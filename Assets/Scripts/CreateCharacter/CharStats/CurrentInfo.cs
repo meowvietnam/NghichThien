@@ -58,7 +58,7 @@ namespace CreateCharacter.CharStats
             var tooltip = Tooltip.Instance;
             tooltip.SetActive(true);
             tooltip.SetTextInfo(infoName,info);
-            tooltip.SetScale(Vector2.one);
+            tooltip.SetScale(Vector2.one * 1.5f);
             tooltip.SetPosition(eventData.position - new Vector2(100,-40));
         }
         public void OnPointerExit(PointerEventData eventData)

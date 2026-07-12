@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+
 [System.Serializable]
 public class SecureInt
 {
@@ -19,7 +20,6 @@ public class SecureInt
     {
         get
         {
-            // Nếu các biến enc/key chưa được khởi tạo (bằng 0), hãy lấy từ fakeValue
             if (encA == 0 && keyA == 0)
             {
                 Set(fakeValue);
@@ -44,9 +44,9 @@ public class SecureInt
             Set(value);
         }
     }
+
     void Set(int value)
     {
-        // Sử dụng System.Random thay vì UnityEngine.Random
         System.Random rand = new System.Random();
 
         int split = rand.Next(-1000, 1000);
@@ -62,6 +62,11 @@ public class SecureInt
         fakeValue = value;
     }
 
+    public void RenewKeys()
+    {
+        Set(fakeValue);
+    }
+
     public static implicit operator int(SecureInt s)
     {
         return s == null ? 0 : s.Value;
@@ -70,5 +75,11 @@ public class SecureInt
     public static implicit operator SecureInt(int v)
     {
         return new SecureInt(v);
+    }
+
+    // Automatically renew keys in the Inspector
+    private void OnValidate()
+    {
+        RenewKeys();
     }
 }

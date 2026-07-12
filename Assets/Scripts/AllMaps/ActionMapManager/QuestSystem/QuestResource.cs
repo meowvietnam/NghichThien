@@ -54,7 +54,10 @@ public abstract class SideQuestResource : QuestResource,INetworkEvent.ICompleteS
         var targetLevel = Client.Instance.CharacterData.Progression.Level;
         targetLevel = Mathf.Clamp(targetLevel, 1, int.MaxValue);
         var charRandom = GetNPCDataSideQuestWithTargetLevel(npcDatas, targetLevel);
-        charRandom.charStats.idNode = map.Id;
+        if(map != null)
+        {
+            charRandom.charStats.idNode = map.Id;
+        }    
         Pool.Get<UINPCJiaoHu>().OnReloadNpcThisNode();
         Pool.Get<SideQuestManager>().SetCharProviderQuest(charRandom.charStats);
     }
