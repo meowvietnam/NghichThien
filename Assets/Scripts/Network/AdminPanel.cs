@@ -52,47 +52,7 @@ namespace Network
 
             Debug.Log("Arena Poin " + Client.CharacterData.ArenaManager.Points);
         }    
-        private HashSet<ThanThongEquip> GetFullIdThanThongWithCombo(ComboSkillResource.ETypeCombo eCombo)
-        {
-            var combo = ComboSkillResource.ComboSkillResource.Instance.comboNPC.FirstOrDefault(x =>
-                x.typeCombo == eCombo);
-            if (combo == null) return new HashSet<ThanThongEquip>();
-
-            int daiCanhGioiIndex = Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1;
-
-            if (daiCanhGioiIndex < 0 || daiCanhGioiIndex >= combo.comboWithDaiCanhGioi.Length)
-                return new HashSet<ThanThongEquip>();
-
-            var listThanThong = combo.comboWithDaiCanhGioi[daiCanhGioiIndex].thanThongs;
-
-            var result = listThanThong.Select(x => new ThanThongEquip
-            {
-                Id = (ushort)x.Id,
-            }).ToHashSet();
-
-            return result;
-        }
-
-        private List<int> GetFullIdNgoDaoWithCombo(ComboSkillResource.ETypeCombo eCombo)
-        {
-            var combo = ComboSkillResource.ComboSkillResource.Instance.comboNPC.FirstOrDefault(x =>
-                x.typeCombo == eCombo);
-            return combo
-                .comboWithDaiCanhGioi[Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1]
-                .ngoDaos.Select(x => x.Id)
-                .ToList();
-        }
-
-        private List<int> GetFullIdCongPhapWithCombo(ComboSkillResource.ETypeCombo eCombo)
-        {
-            var combo = ComboSkillResource.ComboSkillResource.Instance.comboNPC.FirstOrDefault(x =>
-                x.typeCombo == eCombo);
-            return combo
-                .comboWithDaiCanhGioi[Skill.ThanThong.GetDaiCanhGioi(Client.CharacterData.Progression.Level) - 1]
-                .congPhaps.Select(x => x.Id)
-                .ToList();
-        }
-
+       
         [Button]
         [ShowIf(nameof(IsReady))]
         public void AddItems(List<ItemRef> items)
@@ -116,7 +76,7 @@ namespace Network
             {
                 items.Add(new ItemRef
                 {
-                    Id = (ushort)item.Id,
+                    Id = (ushort)item,
                     Count = 1,
                     Type = ItemType.ThanThong
                 });
@@ -126,7 +86,7 @@ namespace Network
             {
                 items.Add(new ItemRef
                 {
-                    Id = (ushort)item.Id,
+                    Id = (ushort)item,
                     Count = 1,
                     Type = ItemType.CongPhap
                 });

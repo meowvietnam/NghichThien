@@ -39,7 +39,7 @@ namespace CreateCharacter
         public Skill.CongPhap GetCongPhap()
         {
             var gameManager = LongDHModules.Pool.Get<GameManager>();
-            return gameManager.congPhaps.FirstOrDefault(x => x.Id == Id);
+            return gameManager.GetCongPhapWithId((int)Id);
         }
     }
 }

@@ -135,6 +135,8 @@ public class TabPanel : PanelGroup , INetworkEvent.IEquipCongPhap , INetworkEven
         SetEventButton(btnClose, () =>
         {
             gameObject.SetActive(false);
+            Pool.Get<GameManager>().Cleanup();
+
         });
         SetEventButton(btnLogOut, OnLogout);
         InitOnlyNgoDao();

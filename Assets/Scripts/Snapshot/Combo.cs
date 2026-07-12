@@ -17,8 +17,8 @@ namespace Snapshot
         }
         public Combo(global::ComboSkillResource.ComboSkillResource.Combo combo)
         {
-            ThanThongIds = combo.thanThongs.Select(x => (ushort)x.Id).ToArray();
-            CongPhapIds = combo.congPhaps.Select(x => (ushort)x.Id).ToArray();
+            ThanThongIds = combo.thanThongIds.Select(x => (ushort)x).ToArray();
+            CongPhapIds = combo.congPhapIds.Select(x => (ushort)x).ToArray();
             NgoDaoIds = combo.ngoDaos.Select(x => (ushort)x.Id).ToArray();
         }
         

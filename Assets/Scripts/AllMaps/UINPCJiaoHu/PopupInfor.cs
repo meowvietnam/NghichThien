@@ -24,6 +24,12 @@ public class PopupInfor : Popup
     [SerializeField] private Text textHaoCam;
     [SerializeField] private List<ItemInventory> listThanThongItemSlot;
     [SerializeField] private List<ItemInventory> listCongPhapItemSlot;
+    protected override void ActionBtnClose()
+    {
+        base.ActionBtnClose();
+        Pool.Get<GameManager>().Cleanup();
+
+    }
     public void InitPopDoXet(CharacterStatsSecure characterStatsTarget)
     {
         this.Show();

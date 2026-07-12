@@ -27,7 +27,12 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         Pool.Set(this);
         gameObject.SetActive(false);
     }
+    protected override void ActionBtnClose()
+    {
+        base.ActionBtnClose();
+        Pool.Get<GameManager>().Cleanup();
 
+    }
     public void ShowInitShop(EShopType eShopType)
     {
         this.eShopType = eShopType;
@@ -82,6 +87,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         void Send()
         {
             Observer.Notify(EventList.Network.RELOAD_SHOP, this, eShopType, eMonPhai);
+
         }
 
         var charData = Client.Instance.CharacterData;
@@ -339,6 +345,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
 
     public void SuccessBuyAndSell(string message)
     {
+        Pool.Get<GameManager>().Cleanup();
         HideTradeItems();
         InitBagUser();
         InitBagNPC(Client.Instance.CharacterData.ShopManager.GetShop(eShopType).Items.ToList());
@@ -364,6 +371,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
 
     public void SuccessReloadShop(List<ItemRef> itemRefs)
     {
+        Pool.Get<GameManager>().Cleanup();
         ResetTradeItems();
         InitBagNPC(itemRefs);
     }

@@ -116,16 +116,16 @@ public partial class EnemyData : NPCData
         {
             charStats.ngoDaoSaves.Add(item.Id);
         }
-        foreach (var item in CurrentCombo.congPhaps)
+        foreach (var item in CurrentCombo.congPhapIds)
         {
-            charStats.congPhapOwner.Add(new CharacterStatsSecure.DataSave { id = item.Id, value = 5 });
+            charStats.congPhapOwner.Add(new CharacterStatsSecure.DataSave { id = item, value = 5 });
 
 
         }
-        foreach (var item in CurrentCombo.thanThongs)
+        foreach (var item in CurrentCombo.thanThongIds)
         {
-            charStats.thanThongEquip.Add(item.Id);
-            charStats.thanThongOwner.Add(item.Id);
+            charStats.thanThongEquip.Add(item);
+            charStats.thanThongOwner.Add(item);
         }
         charStats.chuTu1Used = charStats.congPhapOwner.Count > 0 ? charStats.congPhapOwner[0].id : -1;
         charStats.phuTu1Used = charStats.congPhapOwner.Count > 1 ? charStats.congPhapOwner[1].id : -1;

@@ -25,8 +25,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
-
-
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -442,6 +442,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         Debug.Log($"This back scene is {backScene}");
         Observer.Notify(EventList.GamePlay.BACK_SCENE, backScene);
         SoundManager.Instance.PlayMusicHome();
+        Cleanup();
     }
 
 
@@ -472,19 +473,109 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         Observer.RemoveObserver(EventList.GamePlay.BACK_SCENE, OnBackScene);
     }
 
-    public ThanThong[] thanThongs;
-    public CongPhap[] congPhaps;
+    public int[] thanThongs;
+    public int[] congPhaps;
     public AllMaps.NgoDao.NgoDao[] ngoDaos;
     public BaseDanDuocCombat[] danDuocs;
 
-    public ThanThong GetThanThongWithId(int id)
+    private Dictionary<int, CongPhap> _cpCache = new Dictionary<int, CongPhap>();
+    private Dictionary<int, ThanThong> _ttCache = new Dictionary<int, ThanThong>();
+    private Dictionary<int, AsyncOperationHandle<CongPhap>> _cpHandles = new Dictionary<int, AsyncOperationHandle<CongPhap>>();
+    private Dictionary<int, AsyncOperationHandle<ThanThong>> _ttHandles = new Dictionary<int, AsyncOperationHandle<ThanThong>>();
+    public void PreloaderSkill(List<int> ids, bool isThanThong)
     {
-        return thanThongs.FirstOrDefault(x => x.Id == id);
+        foreach (var id in ids)
+        {
+            if (isThanThong)
+            {
+                // Chỉ cần gọi hàm này, nó tự kiểm tra cache và tự load nếu chưa có
+                GetThanThongWithId(id);
+            }
+            else
+            {
+                GetCongPhapWithId(id);
+            }
+        }
     }
-
     public CongPhap GetCongPhapWithId(int id)
     {
-        return congPhaps.FirstOrDefault(x => x.Id == id);
+        if (id == ushort.MaxValue || id < 0) return null;
+        if (_cpCache.TryGetValue(id, out var cp)) return cp;
+
+        var handle = Addressables.LoadAssetAsync<CongPhap>("congphap_" + id);
+        var data = handle.WaitForCompletion();
+
+        if (data != null)
+        {
+            _cpCache[id] = data;
+            _cpHandles[id] = handle; // Lưu handle lại để sau này Release
+        }
+        return data;
+    }
+
+    public ThanThong GetThanThongWithId(int id)
+    {
+        if (id == ushort.MaxValue || id < 0) return null;
+
+        if (_ttCache.TryGetValue(id, out var tt)) return tt;
+
+        var handle = Addressables.LoadAssetAsync<ThanThong>("thanthong_" + id);
+        var data = handle.WaitForCompletion();
+
+        if (data != null)
+        {
+            _ttCache[id] = data;
+            _ttHandles[id] = handle; // Đã thêm: Lưu handle lại
+        }
+        return data;
+    }
+    public void Cleanup()
+    {
+        // Combine all ThanThong IDs into one list
+        var allThanThongIds = new List<int>();
+        allThanThongIds.AddRange(Client.Instance.CharacterData.EquipmentManager.ThanThongEquips.Select(itemRef => (int)itemRef.Id));
+
+        // Combine all CongPhap IDs into one list
+        var allCongPhapIds = new List<int>();
+        allCongPhapIds.AddRange(Client.Instance.CharacterData.InventoryManager.CongPhapOwners.Select(itemRef => (int)itemRef.Id));
+
+        // Optionally, log the results for debugging
+        Debug.Log($"Total ThanThong IDs: {allThanThongIds.Count}");
+        Debug.Log($"Total CongPhap IDs: {allCongPhapIds.Count}");
+
+        // --- Dọn dẹp Công Pháp ---
+        CleanupCache(_cpCache, _cpHandles, allThanThongIds, "Công Pháp");
+
+        // --- Dọn dẹp Thần Thông ---
+        CleanupCache(_ttCache, _ttHandles, allCongPhapIds, "Thần Thông");
+    }
+
+    // Hàm hỗ trợ để tránh viết lặp lại code
+    private void CleanupCache<T>(Dictionary<int, T> cache, Dictionary<int, AsyncOperationHandle<T>> handles, IEnumerable<int> ownedIds, string logName)
+    {
+        // Tạo danh sách ID cần xóa để tránh lỗi "Collection modified" khi đang lặp
+        List<int> idsToRemove = new List<int>();
+
+        foreach (var id in cache.Keys)
+        {
+            // Kiểm tra nếu ID trong Cache không còn nằm trong danh sách sở hữu
+            // Lưu ý: nếu ownedIds là List, dùng .Contains() sẽ hơi chậm, tốt nhất nên là HashSet
+            if (!ownedIds.Contains(id))
+            {
+                idsToRemove.Add(id);
+            }
+        }
+
+        foreach (var id in idsToRemove)
+        {
+            if (handles.TryGetValue(id, out var handle))
+            {
+                Addressables.Release(handle);
+                handles.Remove(id);
+            }
+            cache.Remove(id);
+            Debug.Log($"Đã giải phóng RAM cho {logName} ID: {id}");
+        }
     }
     public AllMaps.NgoDao.NgoDao GetNgoDaoWithId(int id)
     {
@@ -495,26 +586,20 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     {
         return danDuocs.FirstOrDefault(x => x.Id == id);
     }
-    public ThanThong FindThanThongWithItemRef(ItemRef itemRef)
+    public BaseSkill FindThanThongWithItemRef(ItemRef itemRef)
     {
-        if (itemRef.Type == ItemType.ThanThong)
-        {
-            return GetThanThongWithId(itemRef.Id);
-        }
+        return GetThanThongWithId(itemRef.Id); // Chuyền Action vào đây
 
-        return null;
+
     }
 
-    public CongPhap FindCongPhapWithItemRef(ItemRef itemRef)
+    public BaseSkill FindCongPhapWithItemRef(ItemRef itemRef)
     {
-        if (itemRef.Type == ItemType.CongPhap)
-        {
-            return GetCongPhapWithId(itemRef.Id);
-        }
+        return GetCongPhapWithId(itemRef.Id);
 
-        return null;
+
     }
-
+    
     public static Dictionary<Tier, string> TextWithTier = new Dictionary<Tier, string>
     {
         { Tier.NhatPham, "Nhất Phẩm" },
@@ -588,11 +673,11 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         { BaseSkill.ETierSkill.ThienGiaiThuong, 600000 },
     };
 
-   
 
-  
 
-   
+
+
+
     [Button]
     private void OnUpdateDataThanThong()
     {
@@ -600,13 +685,15 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         // Tìm tất cả GUID của các asset có type là ThanThong
         string[] guids = AssetDatabase.FindAssets("t:ThanThong");
 
+        // Lấy danh sách ID của các ThanThong
         thanThongs = guids
             .Select(guid => AssetDatabase.LoadAssetAtPath<ThanThong>(AssetDatabase.GUIDToAssetPath(guid)))
             .Where(asset => asset != null)
+            .Select(asset => asset.Id) // Chỉ lấy ID của ThanThong
             .ToArray();
 
         EditorUtility.SetDirty(this); // Đánh dấu object đã thay đổi để Unity lưu lại
-        Debug.Log($"Đã cập nhật {thanThongs.Length} ThanThong vào mảng.");
+        Debug.Log($"Đã cập nhật {thanThongs.Length} ID của ThanThong vào mảng.");
 #endif
     }
 
@@ -617,15 +704,18 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         // Tìm tất cả GUID của các asset có type là CongPhap
         string[] guids = AssetDatabase.FindAssets("t:CongPhap");
 
+        // Lấy danh sách ID của các CongPhap
         congPhaps = guids
             .Select(guid => AssetDatabase.LoadAssetAtPath<CongPhap>(AssetDatabase.GUIDToAssetPath(guid)))
             .Where(asset => asset != null)
+            .Select(asset => asset.Id) // Chỉ lấy ID của CongPhap
             .ToArray();
 
-        EditorUtility.SetDirty(this);
-        Debug.Log($"Đã cập nhật {congPhaps.Length} CongPhap vào mảng.");
+        EditorUtility.SetDirty(this); // Đánh dấu object đã thay đổi để Unity lưu lại
+        Debug.Log($"Đã cập nhật {congPhaps.Length} ID của CongPhap vào mảng.");
 #endif
     }
+
 
     [Button]
     private void OnUpdateDataNgoDao()
@@ -1040,95 +1130,48 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         }
         return "";
     }
-    #if UNITY_EDITOR
-    [Button]
-    public void ShowSpriteSize()
-    {
-        var sprites = thanThongs.OfType<BaseData>()
-            .Concat(congPhaps)
-            .Concat(ngoDaos)
-            .Concat(danDuocs)
-            .Select(x => x.spriteItem)
-            .Where(x => x != null)
-            .ToHashSet();
-        var size = AssetSize.CalculateSize(sprites);
-        Debug.Log(size);
-    }
+   
 
-    [Button]
-    public void ExportNDTTCP()
-    {
-        var guids = AssetDatabase.FindAssets("t:BaseData");
-        var assets = guids.Select(x => AssetDatabase.GUIDToAssetPath(x))
-            .Select(x => AssetDatabase.LoadAssetAtPath<BaseData>(x))
-            .OrderBy(x => x.GetType().Name)
-            .ToList();
+    //[Button]
+    //public void ExportNDTTCP()
+    //{
+    //    var guids = AssetDatabase.FindAssets("t:BaseData");
+    //    var assets = guids.Select(x => AssetDatabase.GUIDToAssetPath(x))
+    //        .Select(x => AssetDatabase.LoadAssetAtPath<BaseData>(x))
+    //        .OrderBy(x => x.GetType().Name)
+    //        .ToList();
 
-        var thanThongs = assets.OfType<ThanThong>().ToList();
-        var ngoDaos = assets.OfType<AllMaps.NgoDao.NgoDao>().ToList();
-        var congPhaps = assets.OfType<CongPhap>().ToList();
-        this.thanThongs = thanThongs.ToArray();
-        this.ngoDaos = ngoDaos.ToArray();
-        this.congPhaps = congPhaps.ToArray();
-        var ndttcp = new NDCPTTManager()
-        {
-            ThanThongs = thanThongs.ToList(),
-            NgoDaos = ngoDaos.ToList(),
-            CongPhaps = congPhaps.ToList(),
-        };
-        var writer = new Writer(ndttcp.ByteSize());
-        writer.Write(ndttcp);
-        var path = Path.Combine(Application.dataPath, "Exports", "NDCPTTManager.bin");
-        File.WriteAllBytes(path, writer.Buffer);
-    }
+    //    var thanThongs = assets.OfType<ThanThong>().ToList();
+    //    var ngoDaos = assets.OfType<AllMaps.NgoDao.NgoDao>().ToList();
+    //    var congPhaps = assets.OfType<CongPhap>().ToList();
+    //    this.thanThongs = thanThongs.ToArray();
+    //    this.ngoDaos = ngoDaos.ToArray();
+    //    this.congPhaps = congPhaps.ToArray();
+    //    var ndttcp = new NDCPTTManager()
+    //    {
+    //        ThanThongs = thanThongs.ToList(),
+    //        NgoDaos = ngoDaos.ToList(),
+    //        CongPhaps = congPhaps.ToList(),
+    //    };
+    //    var writer = new Writer(ndttcp.ByteSize());
+    //    writer.Write(ndttcp);
+    //    var path = Path.Combine(Application.dataPath, "Exports", "NDCPTTManager.bin");
+    //    File.WriteAllBytes(path, writer.Buffer);
+    //}
 
-    [Button]
-    public void ExportNDResources()
-    {
-        var guids = AssetDatabase.FindAssets("t:NgoDaoResource");
-        var assets = guids.Select(x => AssetDatabase.GUIDToAssetPath(x))
-            .Select(x => AssetDatabase.LoadAssetAtPath<NgoDaoResource>(x))
-            .ToList();
-        var writer = new Writer(assets.ByteSize());
-        writer.WriteArray(assets);
-        var path = Path.Combine(Application.dataPath, "Exports", "NgoDaoManager.bin");
-        File.WriteAllBytes(path, writer.Buffer);
-        Debug.Log(path);
-    }
-#endif
-    [Button]
-    public void SetTimeLearnSkill()
-    {
-        foreach (var item in thanThongs)
-        {
-            item.SetBaseTimeLearn();
-#if UNITY_EDITOR
-            // Đánh dấu file Thần Thông này đã bị sửa đổi
-            EditorUtility.SetDirty(item);
-#endif
-        }
-        foreach (var item in congPhaps)
-        {
-            item.SetBaseTimeLearn();
-#if UNITY_EDITOR
-            // Đánh dấu file Công Pháp này đã bị sửa đổi
-            EditorUtility.SetDirty(item);
-#endif
-
-        }
-#if UNITY_EDITOR
-        // Đánh dấu file tổng này thay đổi (để lưu danh sách nếu có thay đổi)
-        EditorUtility.SetDirty(this);
-
-        // Ép Unity ghi toàn bộ các file đã đánh dấu ở trên xuống ổ cứng
-        AssetDatabase.SaveAssets();
-
-        // Buộc Editor vẽ lại giao diện ngay lập tức để cập nhật số liệu mới hiển thị
-        AssetDatabase.Refresh();
-
-        Debug.Log("Đã lưu data thành công cho từng Thần Thông và Công Pháp!");
-#endif
-    }
+    //[Button]
+    //public void ExportNDResources()
+    //{
+    //    var guids = AssetDatabase.FindAssets("t:NgoDaoResource");
+    //    var assets = guids.Select(x => AssetDatabase.GUIDToAssetPath(x))
+    //        .Select(x => AssetDatabase.LoadAssetAtPath<NgoDaoResource>(x))
+    //        .ToList();
+    //    var writer = new Writer(assets.ByteSize());
+    //    writer.WriteArray(assets);
+    //    var path = Path.Combine(Application.dataPath, "Exports", "NgoDaoManager.bin");
+    //    File.WriteAllBytes(path, writer.Buffer);
+    //    Debug.Log(path);
+    //}
 
     public void SuccessLoadCharCombat(CharacterSnapshot user)
     {
