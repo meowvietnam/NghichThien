@@ -40,14 +40,16 @@ namespace AllMaps.ItemProvider
             var inventoryManager = Client.Instance.CharacterData.InventoryManager;
             var furnaceData = new FurnaceData()
             {
-                SelfId = id
+                SelfId = id,
+                Id = id,
+                Durability = 100,
             };
             if (inventoryManager.Furnaces.TryGetValue(furnaceData, out var furnace))
             {
                 return furnace;
             }
 
-            return null;
+            return furnaceData;
         }
 
         public override int GetPriceItemSell(ushort Id)

@@ -137,7 +137,9 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
             {
                 x.itemRef.Id,
                 x.count,
-                Amount = x.count * provider.GetPriceItemBuy(x.itemRef.Id)
+                Amount = x.count * provider.GetPriceItemBuy(
+                    x.itemRef.Type == ItemType.Furnace ? x.itemRef.TempId : x.itemRef.Id
+                )
             };
         }).ToArray();
         var sellItemsAmount = listItemUserSell.Where(IsActiveTradeItem).Select(x =>
@@ -262,7 +264,6 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
     {
         return item.gameObject.activeSelf
                && item.itemRef != null
-               && item.itemRef.Id != 0
                && item.count > 0;
     }
 
