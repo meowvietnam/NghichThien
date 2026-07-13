@@ -183,6 +183,23 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
 
         // Thêm danh sách Ref vừa lấy được vào itemDatas
         itemDatas.AddRange(furnaceRefs);
+        List<ItemType> itemTypeCanSellForShop = new();
+        if(eShopType == EShopType.ShopDuocLieu)
+        {
+            itemTypeCanSellForShop = new List<ItemType> {ItemType.Herb,ItemType.Furnace,ItemType.LinhDan,ItemType.Recipe};
+
+        }  
+        else if(eShopType == EShopType.ShopVatLieu)
+        {
+            itemTypeCanSellForShop = new List<ItemType> { ItemType.Material, ItemType.VuKhi, ItemType.PhongCu, ItemType.TrangSuc };
+
+        }
+        else if (eShopType == EShopType.Skill)
+        {
+            itemTypeCanSellForShop = new List<ItemType> { ItemType.ThanThong, ItemType.CongPhap };
+
+        }
+        bagUserList.filterControl.InitFilterType(itemTypeCanSellForShop);
         InitBagLogic(bagUserList, listItemUserSell, itemDatas);
     }
 
