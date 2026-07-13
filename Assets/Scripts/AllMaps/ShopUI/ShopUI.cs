@@ -56,8 +56,8 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         SetTextMoneyCurrent();
         SetEventButton(btnConfirm, () =>
         {
-            var listItemBuy = GetActiveTradeItemRefs(listItemUserBuy);
-            var listItemSell = GetActiveTradeItemRefs(listItemUserSell);
+            var listItemBuy = GetActiveTradeItemRefs(listItemUserBuy,true);
+            var listItemSell = GetActiveTradeItemRefs(listItemUserSell,false);
             if (listItemBuy.Count > 0 || listItemSell.Count > 0)
             {
                 Observer.Notify(EventList.Network.BUY_AND_SELL, this, listItemBuy, listItemSell, eShopType, eMonPhai);
@@ -213,39 +213,38 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
             {
                 foreach (var slotItemGift in listItem)
                 {
-                    if (!IsSameItem(slotItemGift.itemRef, ItemInventory.itemRef))
+                    if (!slotItemGift.gameObject.activeSelf)
                     {
-                        if (!slotItemGift.gameObject.activeSelf)
+                        slotItemGift.gameObject.SetActive(true);
+                        var tradeItemRef = CreateItemRefSellOrBase(ItemInventory.itemRef, 0);
+                        if (ItemInventory.itemRef.Type == ItemType.ThanThong ||
+                            ItemInventory.itemRef.Type == ItemType.CongPhap)
                         {
-                            slotItemGift.gameObject.SetActive(true);
-                            var tradeItemRef = CreateItemRef(ItemInventory.itemRef, 0);
-                            if (ItemInventory.itemRef.Type == ItemType.ThanThong ||
-                                ItemInventory.itemRef.Type == ItemType.CongPhap)
-                            {
-                                Pool.Get<UIManager>()
-                                    .InitVisualItemSkill(slotItemGift, (BaseSkill)ItemInventory.itemData, tradeItemRef);
-                            }
-
-                            Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, ItemInventory.iItemData,
-                                tradeItemRef);
-                            AddCountItemToItem(ItemInventory, slotItemGift);
-                            slotItemGift.InitAction(null, null,
-                                () => { AddCountItemToItem(slotItemGift, ItemInventory); });
-                            SetTextMoneyCurrent();
-                            break;
+                            Pool.Get<UIManager>()
+                                .InitVisualItemSkill(slotItemGift, (BaseSkill)ItemInventory.itemData, tradeItemRef);
                         }
+
+                        Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, ItemInventory.iItemData,
+                            tradeItemRef);
+                        AddCountItemToItem(ItemInventory, slotItemGift);
+                        slotItemGift.InitAction(null, null,
+                            () => { AddCountItemToItem(slotItemGift, ItemInventory); });
+                        SetTextMoneyCurrent();
+                        break;
+                        
                     }
+                    
                     else
                     {
-                        if (slotItemGift.gameObject.activeSelf)
+                        if (IsSameItem(slotItemGift.itemRef, ItemInventory.itemRef))
                         {
                             if (ItemInventory.count > 0)
                             {
                                 AddCountItemToItem(ItemInventory, slotItemGift);
                             }
-
                             break;
                         }
+                        
                     }
                 }
                 //foreach (var item in listItemSlotThanThongs)
@@ -267,15 +266,25 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
                && item.count > 0;
     }
 
-    private List<ItemRef> GetActiveTradeItemRefs(List<ItemInventory> tradeItems)
+    private List<ItemRef> GetActiveTradeItemRefs(List<ItemInventory> tradeItems , bool isBuy)
     {
         return tradeItems
             .Where(IsActiveTradeItem)
-            .Select(x => CreateItemRef(x.itemRef, x.count))
+            .Select(x => isBuy? CreateItemRefBuy(x.itemRef, x.count): CreateItemRefSellOrBase(x.itemRef,x.countRequire))
             .ToList();
     }
 
-    private ItemRef CreateItemRef(ItemRef source, int count)
+    private ItemRef CreateItemRefBuy(ItemRef source, int count)
+    {
+        return new ItemRef
+        {
+            Id = source.Type == ItemType.Furnace ? source.TempId : source.Id,
+            Type = source.Type,
+            Count = (ushort)count,
+            TempId = source.TempId
+        };
+    }
+    private ItemRef CreateItemRefSellOrBase(ItemRef source, int count)
     {
         return new ItemRef
         {
