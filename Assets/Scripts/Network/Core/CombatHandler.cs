@@ -40,7 +40,8 @@ namespace Network.Core
                     charData.Stats.LinhThach += result.Reward.Money;
                     charData.Progression.NgoDaoDiem = result.NewNgoDaoDiem;
                     charData.ArenaManager.Points = result.NewPointRank;
-                    if (result.Reward?.ItemRefs != null) // Check nhanh cả Reward và ItemRefs
+                    charData.Stats.TamCanh = result.NewTamCanh;
+                    if (result.Reward?.ItemRefs != null)
                     {
                         foreach (var item in result.Reward.ItemRefs)
                         {

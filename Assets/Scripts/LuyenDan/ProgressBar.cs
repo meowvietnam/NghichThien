@@ -12,6 +12,7 @@ namespace LuyenDan
         [SerializeField] private Text text;
         [SerializeField] private GameObject selfObject;
         private bool isCompleted;
+        private bool hideOnCompleted = true;
         private Action completed;
         public void SetText(string text)
         {
@@ -28,6 +29,7 @@ namespace LuyenDan
         public void DoShow(float minTime,float completedTime,Action<float> progressChanged)
         {
             isCompleted = false;
+            hideOnCompleted = true;
             SetActive(true);
             StartCoroutine(Show(minTime,completedTime,progressChanged));
         }
@@ -67,12 +69,21 @@ namespace LuyenDan
             SetProgress(1f);
             progressChanged?.Invoke(1f);
             completed?.Invoke();
-            SetActive(false);
+            if (hideOnCompleted)
+            {
+                SetActive(false);
+            }
         }
        
         public void DoKill(Action completed)
         {
+            DoKill(completed, true);
+        }
+
+        public void DoKill(Action completed, bool hideOnCompleted)
+        {
             isCompleted = true;
+            this.hideOnCompleted = hideOnCompleted;
             this.completed = completed;
         }
     }
