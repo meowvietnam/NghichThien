@@ -56,6 +56,20 @@ namespace Network.Core
                 levelUpdated.ApplyTo(charData);
                 NetworkManager.Instance.Invoke(() => { Observer.Notify(EventList.Network.LEVEL_UP, snapshot); });
             }
+            else if (tag == MessageTag.ExperienceReward)
+            {
+                var experienceReward = reader.MemRead<ExperienceReward>();
+                charData.Progression.CurrentExp = experienceReward.NewExp;
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    var notifyGroup = NotifyGroup.Instance;
+                    if (notifyGroup != null)
+                    {
+                        notifyGroup.Show($"Bạn nhận được {experienceReward.AddExp} tu vi!");
+                        Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
+                    }
+                });
+            }
         }
 
         public void OnLeave()
@@ -67,7 +81,7 @@ namespace Network.Core
         {
         }
 
-        private static readonly MessageTag[] handler = { MessageTag.LevelUpdated };
+        private static readonly MessageTag[] handler = { MessageTag.LevelUpdated , MessageTag.ExperienceReward };
         public MessageTag[] HandleTag => handler;
     }
 }
