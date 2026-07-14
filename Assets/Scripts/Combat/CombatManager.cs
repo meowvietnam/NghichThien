@@ -515,7 +515,7 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
     {
         if (character.CurrentTurn >= TurnLinhKhiBaoLoan)
         {
-            character.TakeDameByStatic(null, new List<int> { (int)(10f * character.characterStatsTemp.hpMax) }, false,null,false);
+            character.TakeDameByStatic(null, new List<int> { (int)(0.1f * character.characterStatsTemp.hpMax) }, false,null,false);
 
         }
     }    

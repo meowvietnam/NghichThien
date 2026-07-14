@@ -71,6 +71,7 @@ public abstract class SideQuestResource : QuestResource,INetworkEvent.ICompleteS
           
 
         }
+        Client.Instance.CharacterData.QuestManager.CurrentCountSideQuest += 1;
         int newTamCanh = Client.Instance.CharacterData.Stats.TamCanh + Client.Instance.CharacterData.Progression.Level;
         NotifyGroup.Instance.Show($"Tâm cảnh của bạn tăng thêm {Client.Instance.CharacterData.Progression.Level}");
         Client.Instance.CharacterData.Stats.SetValue(CreateCharacter.CharStats.StatType.TamCanh, newTamCanh);
