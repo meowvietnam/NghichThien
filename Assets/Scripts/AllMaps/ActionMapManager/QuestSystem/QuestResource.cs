@@ -67,12 +67,13 @@ public abstract class SideQuestResource : QuestResource,INetworkEvent.ICompleteS
         foreach (var item in listNPCInteractive)
         {
             Client.Instance.CharacterData.Social.RelationshipAddValue((ushort)item.idChar,10);
-            int newTamCanh = Client.Instance.CharacterData.Stats.TamCanh + Client.Instance.CharacterData.Progression.Level;
-            Client.Instance.CharacterData.Stats.SetValue(CreateCharacter.CharStats.StatType.TamCanh, newTamCanh);
-            NotifyGroup.Instance.Show($"Hảo cảm của {item.nameUser} tăng thêm 10");
-            NotifyGroup.Instance.Show($"Tâm cảnh của bạn tăng thêm {Client.Instance.CharacterData.Progression.Level}");
+            NotifyGroup.Instance.Show($"Hảo cảm của {item.nameUser} tăng thêm 10"); 
+          
 
         }
+        int newTamCanh = Client.Instance.CharacterData.Stats.TamCanh + Client.Instance.CharacterData.Progression.Level;
+        NotifyGroup.Instance.Show($"Tâm cảnh của bạn tăng thêm {Client.Instance.CharacterData.Progression.Level}");
+        Client.Instance.CharacterData.Stats.SetValue(CreateCharacter.CharStats.StatType.TamCanh, newTamCanh);
         Pool.Get<UINPCJiaoHu>().OnReloadNpcThisNode();
 
 
@@ -128,7 +129,7 @@ public abstract class SideQuestResource : QuestResource,INetworkEvent.ICompleteS
     public virtual void SuccessCompleteSideQuest(int moneyVip, int linhThach)
     {
         Pool.Get<EventRewardPanel>().InitShowEventReward(new RewardSnapshot { MoneyVip = moneyVip , Money = linhThach }, $"{CompleteQuest[CompleteQuest.Count-1]}");
-
+       
     }
 
     public void FailCompleteSideQuest(string message)
