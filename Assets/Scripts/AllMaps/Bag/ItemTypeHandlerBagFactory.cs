@@ -8,7 +8,8 @@ using UnityEngine;
 
 public interface IBagItemTypeHandler
 {
-    void Handle(ItemInventory currentItem, ItemRef itemRef, bool isIconSkillBase);
+    void Handle(ItemInventory currentItem, ItemRef itemRef, bool isIconSkillBase,
+        EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None);
 }
 
 public static class ItemTypeHandlerBagFactory
@@ -31,7 +32,8 @@ public static class ItemTypeHandlerBagFactory
 
 public class SkillBagItemTypeHandler : IBagItemTypeHandler
 {
-    public void Handle(ItemInventory currentItem, ItemRef itemRef, bool isIconSkillBase)
+    public void Handle(ItemInventory currentItem, ItemRef itemRef, bool isIconSkillBase,
+        EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
     {
         var uiManager = Pool.Get<UIManager>();
         var gameManager = Pool.Get<GameManager>();
@@ -47,40 +49,52 @@ public class SkillBagItemTypeHandler : IBagItemTypeHandler
         }
 
         uiManager.InitVisualItemSkill(currentItem, data, itemRef);
-        uiManager.InitVisualItemInventory(currentItem, null, itemRef, isIconSkillBase);
+        uiManager.InitVisualItemInventory(currentItem, null, itemRef, isIconSkillBase, eActionShowItemInfor);
     }
 }
 
 public class EquipmentBagItemTypeHandler : IBagItemTypeHandler
 {
-    public void Handle(ItemInventory currentItem, ItemRef itemRef, bool isIconSkillBase)
+    public void Handle(ItemInventory currentItem, ItemRef itemRef, bool isIconSkillBase,
+        EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
     {
         var uiManager = Pool.Get<UIManager>();
         uiManager.InitVisualEquipment(currentItem, null, itemRef);
-        uiManager.InitVisualItemInventory(currentItem, null, itemRef, isIconSkillBase);
+        uiManager.InitVisualItemInventory(currentItem, null, itemRef, isIconSkillBase, eActionShowItemInfor);
     }
 }
 
 public class LuyenKhiBagItemTypeHandler : IBagItemTypeHandler
 {
-    public void Handle(ItemInventory currentItem, ItemRef itemRef, bool isIconSkillBase)
+    public void Handle(ItemInventory currentItem, ItemRef itemRef, bool isIconSkillBase,
+        EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
     {
         var uiManager = Pool.Get<UIManager>();
         var data = LuyenKhiResources.Instance.FindItem(itemRef);
-        uiManager.InitVisualItemInventory(currentItem, data, itemRef, isIconSkillBase);
+        uiManager.InitVisualItemInventory(currentItem, data, itemRef, isIconSkillBase, eActionShowItemInfor);
     }
 }
 
 public class LuyenDanBagItemTypeHandler : IBagItemTypeHandler
 {
-    public void Handle(ItemInventory currentItem, ItemRef itemRef, bool isIconSkillBase)
+    public void Handle(ItemInventory currentItem, ItemRef itemRef, bool isIconSkillBase,
+        EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
     {
         var uiManager = Pool.Get<UIManager>();
-        if(itemRef.Type == ItemType.Furnace && itemRef.TempId == 0)
+        if(itemRef.Type == ItemType.Furnace)
         {
-            itemRef = new ItemRef { TempId = itemRef.Id, Count = itemRef.Count , Type = ItemType.Furnace };
+            if (itemRef.TempId == 0)
+            {
+                itemRef = new ItemRef
+                {
+                    Id = itemRef.Id,
+                    TempId = itemRef.Id,
+                    Count = itemRef.Count,
+                    Type = ItemType.Furnace
+                };
+            }
         }    
         var data = LuyenDanResources.Instance.FindItem(itemRef);
-        uiManager.InitVisualItemInventory(currentItem, data, itemRef, isIconSkillBase);
+        uiManager.InitVisualItemInventory(currentItem, data, itemRef, isIconSkillBase, eActionShowItemInfor);
     }
 }

@@ -56,6 +56,7 @@ namespace LuyenDan
         {
             NetworkManager.Instance.Invoke(() =>
             {
+                Debug.Log("OnInventoryUpdated");
                 Alchermy.ClearAllSlot();
                 InitInventory(inventoryManager);
             });

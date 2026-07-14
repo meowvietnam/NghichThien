@@ -27,12 +27,13 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         Pool.Set(this);
         gameObject.SetActive(false);
     }
+
     protected override void ActionBtnClose()
     {
         base.ActionBtnClose();
         Pool.Get<GameManager>().Cleanup();
-
     }
+
     public void ShowInitShop(EShopType eShopType)
     {
         this.eShopType = eShopType;
@@ -56,8 +57,8 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         SetTextMoneyCurrent();
         SetEventButton(btnConfirm, () =>
         {
-            var listItemBuy = GetActiveTradeItemRefs(listItemUserBuy,true);
-            var listItemSell = GetActiveTradeItemRefs(listItemUserSell,false);
+            var listItemBuy = GetActiveTradeItemRefs(listItemUserBuy, true);
+            var listItemSell = GetActiveTradeItemRefs(listItemUserSell, false);
             if (listItemBuy.Count > 0 || listItemSell.Count > 0)
             {
                 Observer.Notify(EventList.Network.BUY_AND_SELL, this, listItemBuy, listItemSell, eShopType, eMonPhai);
@@ -84,26 +85,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
 
     private void ConfirmReloadShop()
     {
-        void Send()
-        {
-            Observer.Notify(EventList.Network.RELOAD_SHOP, this, eShopType, eMonPhai);
-
-        }
-
-        var charData = Client.Instance.CharacterData;
-        if (charData.IsNoAds)
-        {
-            Send();
-            return;
-        }
-
-        AdsService.Instance.ShowRewardVideoAds(
-            "ReloadShop",
-            "Xem quảng cáo để làm mới cửa hàng",
-            Send,
-            null,
-            () => NotifyGroup.Instance.Show("Không thể tải quảng cáo")
-        );
+        Observer.Notify(EventList.Network.RELOAD_SHOP, this, eShopType, eMonPhai);
     }
 
     [SerializeField] private Button btnConfirm;
@@ -152,10 +134,10 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
                 Amount = x.count * provider.GetPriceItemSell(x.itemRef.Id)
             };
         }).ToArray();
-        Debug.Log(
-            $"SellItems: {string.Join(",\n", sellItemsAmount.Select(x => $"Id: {x.Id},Count: {x.count}, Amount: {x.Amount}"))}");
-        Debug.Log(
-            $"BuyItems: {string.Join(",\n", buyItemsAmount.Select(x => $"Id: {x.Id},Count: {x.count}, Amount: {x.Amount}"))}");
+        // Debug.Log(
+        //     $"SellItems: {string.Join(",\n", sellItemsAmount.Select(x => $"Id: {x.Id},Count: {x.count}, Amount: {x.Amount}"))}");
+        // Debug.Log(
+        //     $"BuyItems: {string.Join(",\n", buyItemsAmount.Select(x => $"Id: {x.Id},Count: {x.count}, Amount: {x.Amount}"))}");
         var totalMoney = sellItemsAmount.Sum(x => x.Amount) - buyItemsAmount.Sum(x => x.Amount);
         if (totalMoney >= 0)
         {
@@ -186,26 +168,27 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         // Thêm danh sách Ref vừa lấy được vào itemDatas
         itemDatas.AddRange(furnaceRefs);
         List<ItemType> itemTypeCanSellForShop = new();
-        if(eShopType == EShopType.ShopDuocLieu)
+        if (eShopType == EShopType.ShopDuocLieu)
         {
-            itemTypeCanSellForShop = new List<ItemType> {ItemType.Herb,ItemType.Furnace,ItemType.LinhDan,ItemType.Recipe};
-
-        }  
-        else if(eShopType == EShopType.ShopVatLieu)
+            itemTypeCanSellForShop = new List<ItemType>
+                { ItemType.Herb, ItemType.Furnace, ItemType.LinhDan, ItemType.Recipe };
+        }
+        else if (eShopType == EShopType.ShopVatLieu)
         {
-            itemTypeCanSellForShop = new List<ItemType> { ItemType.Material, ItemType.VuKhi, ItemType.PhongCu, ItemType.TrangSuc };
-
+            itemTypeCanSellForShop = new List<ItemType>
+                { ItemType.Material, ItemType.VuKhi, ItemType.PhongCu, ItemType.TrangSuc };
         }
         else if (eShopType == EShopType.Skill)
         {
             itemTypeCanSellForShop = new List<ItemType> { ItemType.ThanThong, ItemType.CongPhap };
-
         }
+
         bagUserList.filterControl.InitFilterType(itemTypeCanSellForShop);
-        InitBagLogic(bagUserList, listItemUserSell, itemDatas);
+        InitBagLogic(bagUserList, listItemUserSell, itemDatas, EActionShowItemInfor.Sell);
     }
 
-    private void InitBagLogic(Bag1ItemPrefabInventory bagList, List<ItemInventory> listItem, List<ItemRef> itemDatas)
+    private void InitBagLogic(Bag1ItemPrefabInventory bagList, List<ItemInventory> listItem, List<ItemRef> itemDatas,
+        EActionShowItemInfor eActionShowItemInfor)
     {
         bagList.InitDataItem(itemDatas, (ItemInventory) =>
         {
@@ -225,15 +208,14 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
                         }
 
                         Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, ItemInventory.iItemData,
-                            tradeItemRef);
+                            tradeItemRef, false, eActionShowItemInfor);
                         AddCountItemToItem(ItemInventory, slotItemGift);
                         slotItemGift.InitAction(null, null,
                             () => { AddCountItemToItem(slotItemGift, ItemInventory); });
                         SetTextMoneyCurrent();
                         break;
-                        
                     }
-                    
+
                     else
                     {
                         if (IsSameItem(slotItemGift.itemRef, ItemInventory.itemRef))
@@ -242,9 +224,9 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
                             {
                                 AddCountItemToItem(ItemInventory, slotItemGift);
                             }
+
                             break;
                         }
-                        
                     }
                 }
                 //foreach (var item in listItemSlotThanThongs)
@@ -255,7 +237,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
                 //    }
                 //}
             });
-        }, false, true);
+        }, false, true, eActionShowItemInfor);
         bagList.InitBag(false);
     }
 
@@ -266,11 +248,11 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
                && item.count > 0;
     }
 
-    private List<ItemRef> GetActiveTradeItemRefs(List<ItemInventory> tradeItems , bool isBuy)
+    private List<ItemRef> GetActiveTradeItemRefs(List<ItemInventory> tradeItems, bool isBuy)
     {
         return tradeItems
             .Where(IsActiveTradeItem)
-            .Select(x => isBuy? CreateItemRefBuy(x.itemRef, x.count): CreateItemRefSellOrBase(x.itemRef,x.countRequire))
+            .Select(x => isBuy ? CreateItemRefBuy(x.itemRef, x.count) : CreateItemRefSellOrBase(x.itemRef, x.count))
             .ToList();
     }
 
@@ -284,6 +266,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
             TempId = source.TempId
         };
     }
+
     private ItemRef CreateItemRefSellOrBase(ItemRef source, int count)
     {
         return new ItemRef
@@ -319,7 +302,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
 
     private void InitBagNPC(List<ItemRef> itemDatas)
     {
-        InitBagLogic(bagNpcList, listItemUserBuy, itemDatas);
+        InitBagLogic(bagNpcList, listItemUserBuy, itemDatas, EActionShowItemInfor.Buy);
     }
 
     private void ReturnItemsToBag(List<ItemInventory> tradeItems, Bag1ItemPrefabInventory bag)
@@ -331,7 +314,8 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
                 continue;
             }
 
-            var bagItem = bag.InventoryUIFacade.listItemUI.FirstOrDefault(x => IsSameItem(x.itemRef, tradeItem.itemRef));
+            var bagItem =
+                bag.InventoryUIFacade.listItemUI.FirstOrDefault(x => IsSameItem(x.itemRef, tradeItem.itemRef));
             if (bagItem != null)
             {
                 AddCountItemToItem(tradeItem, bagItem, tradeItem.count);

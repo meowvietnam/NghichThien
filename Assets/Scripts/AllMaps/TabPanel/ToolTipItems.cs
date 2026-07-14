@@ -22,7 +22,8 @@ public enum EActionShowItemInfor
     Buy,
     Sell,
 }
-public class ToolTipItems : BaseBehaviour , IUISingleton
+
+public class ToolTipItems : BaseBehaviour, IUISingleton
 {
     [SerializeField] private Button btnMask;
     [SerializeField] private Image icon;
@@ -36,23 +37,28 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
     [SerializeField] private Image prefabIconRequire;
     [SerializeField] private Text priceText;
     [SerializeField] private BaseItemData itemData;
-    [SerializeField]
-    private GameObject tipObj;
-    [SerializeField]
-    private Image prefabLeftInfor;
-    [SerializeField]
-    private Image prefabRightInfor;
-    [SerializeField]
-    private ItemRef itemRef;
+    [SerializeField] private GameObject tipObj;
+    [SerializeField] private Image prefabLeftInfor;
+    [SerializeField] private Image prefabRightInfor;
+    [SerializeField] private ItemRef itemRef;
     private IItemData iItemData;
-    [SerializeField]
-    private FurnaceData furnaceData;
+
     public FurnaceData FurnaceData
     {
         get
         {
-            // Nếu _furnaceData null thì tạo mới một cái rồi trả về
-            return furnaceData ??= itemRef.Type == ItemType.Furnace ? Client.Instance.CharacterData.InventoryManager.Furnaces.FirstOrDefault(x => x.SelfId == itemRef.Id) : null;
+            if (itemRef == null)
+            {
+                return null;
+            }
+
+            if (itemRef.Type != ItemType.Furnace)
+            {
+                return null;
+            }
+            var furnaceData =
+                Client.Instance.CharacterData.InventoryManager.Furnaces.FirstOrDefault(x => x.SelfId == itemRef.Id);
+            return furnaceData;
         }
     }
 
@@ -60,14 +66,12 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
     [SerializeField] private EActionShowItemInfor eActionShowItem;
     public static ToolTipItems Instance { get; private set; }
     private CharacterData CharData => Client.Instance.CharacterData;
-   
 
-   
-    public void ShowInfoItem(IItemData itemData,ItemRef itemRef, FurnaceData furnaceData = null)
+
+    public void ShowInfoItem(IItemData itemData, ItemRef itemRef, FurnaceData furnaceData = null)
     {
         iItemData = itemData;
         this.itemRef = itemRef;
-        this.furnaceData = furnaceData;
         var tier = itemData.Tier;
         var quality = CoreConfig.Instance.FindQuality(tier);
         var frame = quality.IconUp;
@@ -87,7 +91,9 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
         InitInforItem();
         RefreshTooltipLayout();
     }
-    public void InitShow(ItemInventory itemInventory,Sprite frameSprite, Sprite qualityFull , Color colorName , ItemRef itemRef, IItemData iItemData , EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)
+
+    public void InitShow(ItemInventory itemInventory, Sprite frameSprite, Sprite qualityFull, Color colorName,
+        ItemRef itemRef, IItemData iItemData, EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)
     {
         if (itemInventory.itemData == null) return;
         gameObject.SetActive(true);
@@ -108,9 +114,10 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
         {
             SetQualityText(iItemData.Tier);
         }
+
         InitInforItem();
 
-        RefreshTooltipLayout();        
+        RefreshTooltipLayout();
     }
 
     private void SetQualityText(Tier tier)
@@ -118,11 +125,13 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
         var quality = CoreConfig.Instance.FindQuality(tier);
         SetQualityText(quality);
     }
+
     private void SetQualityText(Quality quality)
     {
         qualityText.text = quality.Name;
         qualityText.color = quality.Color;
     }
+
     private void RefreshTooltipLayout()
     {
         var fitter = tipObj.GetComponent<ContentSizeFitter>();
@@ -137,11 +146,12 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
             }
         }
     }
+
     private IEnumerator DelayFrame()
     {
         yield return null;
     }
-   
+
     void ResetKeyword(Image prefabKeyword)
     {
         for (int i = 0; i < prefabKeyword.transform.parent.childCount; i++)
@@ -149,7 +159,7 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
             prefabKeyword.transform.parent.GetChild(i).gameObject.SetActive(false);
         }
     }
-   
+
     public void SetPriceText(int price)
     {
         priceText.transform.parent.gameObject.SetActive(true);
@@ -162,17 +172,16 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
         {
             descriptionText.text += "\n";
         }
-    }    
+    }
+
     private void InitInforItem()
     {
-       
-
         if (itemRef == null) return;
-        var disPlayer = ItemProviderFactory.GetProvider(itemRef.Type);
-        if(disPlayer != null)
+        var displayer = ItemProviderFactory.GetProvider(itemRef.Type);
+        if (displayer != null)
         {
             var ctx = BuildContext();
-            disPlayer.Display(ctx);
+            displayer.Display(ctx);
         }
         else
         {
@@ -182,27 +191,29 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
             //    SetPriceText(GameManager.GetPriceItemBuy(itemRef, iItemData));
         }
     }
+
     private ToolTipContext BuildContext()
     {
         return new ToolTipContext
         {
-            TypeText        = typeText,
-            QualityText     = qualityText,
+            TypeText = typeText,
+            QualityText = qualityText,
             DescriptionText = descriptionText,
-            DescTextItem    = descTextItem,
+            DescTextItem = descTextItem,
             PrefabIconRequire = prefabIconRequire,
-            PrefabLeftInfor   = prefabLeftInfor,
-            PrefabRightInfor  = prefabRightInfor,
-            SpriteLinhKhis  = spriteLinhKhis,
-            ItemRef         = itemRef,
+            PrefabLeftInfor = prefabLeftInfor,
+            PrefabRightInfor = prefabRightInfor,
+            SpriteLinhKhis = spriteLinhKhis,
+            ItemRef = itemRef,
             FurnaceData = FurnaceData,
             IItemData = iItemData,
             BaseItemData = itemData,
-            ActionShowItem  = eActionShowItem,
-            SetPriceText    = SetPriceText,
+            ActionShowItem = eActionShowItem,
+            SetPriceText = SetPriceText,
             PriceText = priceText,
         };
     }
+
     private void InitIcon(Sprite spriteIcon, Sprite frameSprite)
     {
         if (spriteIcon != null)
@@ -210,10 +221,12 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
             icon.sprite = spriteIcon;
             icon.SetNativeSize();
         }
+
         if (frameSprite != null)
         {
             frame.sprite = frameSprite;
         }
+
         if (itemRef != null)
         {
             if (itemRef.Type == ItemType.VuKhi)
@@ -227,28 +240,27 @@ public class ToolTipItems : BaseBehaviour , IUISingleton
             else
             {
                 icon.rectTransform.localScale = Vector3.one;
-
             }
         }
     }
+
     public void SetColorName(Color color)
     {
         nameText.color = color;
         qualityText.color = color;
     }
+
     public void SetQualityFull(Sprite sprite)
     {
         qualityFull.sprite = sprite;
         qualityFull.SetNativeSize();
     }
+
     public void Init()
     {
         gameObject.SetActive(true);
         Instance = this;
         gameObject.SetActive(false);
-        SetEventButton(btnMask, () =>
-        {
-            gameObject.SetActive(false);
-        });
+        SetEventButton(btnMask, () => { gameObject.SetActive(false); });
     }
 }

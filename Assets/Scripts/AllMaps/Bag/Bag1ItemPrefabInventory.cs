@@ -36,6 +36,7 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
 
     private bool isTriggerShowTextCount = false;
     private int loadedCount;
+    private EActionShowItemInfor eActionShowItemInfor;
 
     void OnScrollChanged(Vector2 value, Action<bool> loadBagFunc)
     {
@@ -95,9 +96,10 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
   
     public void SetItemDataShow(List<ItemRef> itemDatas)
     {
-        ushort vuKhiEquip = Client.Instance.CharacterData.EquipmentManager.VuKhi;
-        ushort phongCuEquip = Client.Instance.CharacterData.EquipmentManager.PhongCu;
-        ushort trangSucEquip = Client.Instance.CharacterData.EquipmentManager.TrangSuc;
+        var equipment = Client.Instance.CharacterData.EquipmentManager;
+        ushort vuKhiEquip = equipment.VuKhi;
+        ushort phongCuEquip = equipment.PhongCu;
+        ushort trangSucEquip = equipment.TrangSuc;
         this.itemDataShows = itemDatas.Where(item =>
         {
             // Nếu là Vũ Khí và trùng ID đang mặc -> Loại bỏ
@@ -113,7 +115,8 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             return true;
         }).ToList();
     }
-    public void InitDataItem(List<ItemRef> itemDatas , Action<ItemInventory> actionItemInventory , bool isIconSkillBase = false , bool isShowTextCount = false)
+    public void InitDataItem(List<ItemRef> itemDatas , Action<ItemInventory> actionItemInventory , bool isIconSkillBase = false , bool isShowTextCount = false,
+        EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
     {
         this.itemFullDatas = itemDatas;
 
@@ -125,6 +128,7 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
         this.isIconSkillBase = isIconSkillBase;
         this.InventoryUIFacade.listItemUI.Clear();
         this.isTriggerShowTextCount = isShowTextCount;
+        this.eActionShowItemInfor = eActionShowItemInfor;
     }
    
     public void InitBag(bool isAdd=false)
@@ -162,7 +166,7 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             }
             var itemRef = itemDataShows[index];
             
-            InventoryUIFacade.RenderBagItem(currentItem, itemRef, isIconSkillBase);
+            InventoryUIFacade.RenderBagItem(currentItem, itemRef, isIconSkillBase, eActionShowItemInfor);
             if (isTriggerShowTextCount)
             {
                 currentItem.textCount.gameObject.SetActive(true);

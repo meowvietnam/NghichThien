@@ -161,7 +161,7 @@ public class UIManager : BaseBehaviour
     }
 
     public void InitVisualItemInventory(ItemInventory item, IItemData data, ItemRef itemRef,
-        bool isIconSkillBase = false)
+        bool isIconSkillBase = false, EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
     {
         Sprite frame = null;
         BaseItemData baseItemData = null;
@@ -200,7 +200,7 @@ public class UIManager : BaseBehaviour
         }
 
 
-        item.InitInventory(itemRef, data);
+        item.InitInventory(itemRef, data, eActionShowItemInfor);
     }
 
     public Image commonMask;

@@ -48,7 +48,6 @@ namespace LuyenDan
 #endif
         public IItemData FindItem(FurnaceData furnace)
         {
-            Debug.Log(furnace.Id);
             return TempFurnaceDatas.FirstOrDefault(x => x.Id == furnace.Id);
         }
 

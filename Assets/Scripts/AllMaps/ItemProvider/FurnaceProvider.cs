@@ -15,7 +15,11 @@ namespace AllMaps.ItemProvider
         {
             base.Display(ctx);
 
-            var furnaceData = ctx.FurnaceData;
+            var furnaceData = ctx.FurnaceData ?? new FurnaceData
+            {
+                Id = ctx.ItemRef.TempId != 0 ? ctx.ItemRef.TempId : ctx.ItemRef.Id,
+                Durability = 100,
+            };
             ctx.TypeText.text = "Lò Luyện Đan";
             ctx.DescriptionText.text = "Đan lô vật phẩm bắt buộc để có thể luyện chế đan dược";
             ctx.DescTextItem.transform.parent.gameObject.SetActive(true);
@@ -41,7 +45,6 @@ namespace AllMaps.ItemProvider
             var furnaceData = new FurnaceData()
             {
                 SelfId = id,
-                Id = id,
                 Durability = 100,
             };
             if (inventoryManager.Furnaces.TryGetValue(furnaceData, out var furnace))
@@ -49,12 +52,21 @@ namespace AllMaps.ItemProvider
                 return furnace;
             }
 
-            return furnaceData;
+            return null;
         }
 
-        public override int GetPriceItemSell(ushort Id)
+        public override int GetPriceItemSell(ushort id)
         {
-            FurnaceData furnaceData = GetDataItemByIdRef(Id);
+            FurnaceData furnaceData = GetDataItemByIdRef(id);
+            if (furnaceData == null)
+            {
+                furnaceData = new FurnaceData()
+                {
+                    SelfId = 0,
+                    Id = id,
+                    Durability = 100,
+                };
+            }
             var item = LuyenDanResources.Instance.FindItem(furnaceData);
             var basePrice = GameManager.PriceFurnaceWithTierPerDurability[item.Tier];
             return furnaceData.Durability * basePrice;

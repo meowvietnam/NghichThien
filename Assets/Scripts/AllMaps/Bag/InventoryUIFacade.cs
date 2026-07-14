@@ -14,7 +14,8 @@ public class InventoryUIFacade
         listItemUI = new List<ItemInventory>();
     }
 
-    public void RenderBagItem(ItemInventory currentItem, ItemRef itemRef, bool isIconSkillBase)
+    public void RenderBagItem(ItemInventory currentItem, ItemRef itemRef, bool isIconSkillBase,
+        EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
     {
         if (currentItem == null)
             return;
@@ -27,6 +28,6 @@ public class InventoryUIFacade
         }
         listItemUI.Add(currentItem);
         var handler = ItemTypeHandlerBagFactory.Create(itemRef.Type);
-        handler.Handle(currentItem, itemRef, isIconSkillBase);
+        handler.Handle(currentItem, itemRef, isIconSkillBase, eActionShowItemInfor);
     }
 }

@@ -66,7 +66,6 @@ namespace CreateCharacter
         public ItemRef CreateRefSelfId()
         {
             var itemType = GetItemType();
-            Debug.Log($"[ItemRef] Created: ID={SelfId}, Type={itemType}");
             return new ItemRef()
             {
                 Id = SelfId,

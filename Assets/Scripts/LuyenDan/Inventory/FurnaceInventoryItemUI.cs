@@ -17,9 +17,15 @@ namespace LuyenDan.Inventory
 
         public void Init(FurnaceData data)
         {
-            Debug.Log("Init FurnaceInventoryItemUI");
             FData = data;
-            Init(data.CreateRef());
+            var itemRef = new ItemRef()
+            {
+                Id = FData.SelfId,
+                Count = 1,
+                Type = ItemType.Furnace,
+                TempId = FData.Id
+            };
+            Init(itemRef);
         }
         protected override void OnSelected()
         {
