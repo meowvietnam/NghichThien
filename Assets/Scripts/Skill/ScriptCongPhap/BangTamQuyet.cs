@@ -23,14 +23,14 @@ public class BangTamQuyet : CongPhap, IMemorySerializable<BangTamQuyet>
     {
         var stats = statsCurrent.Stats;
         var tamCanh = stats.TamCanh + buffValues[level-1];
-        stats.TamCanh = tamCanh;
+        stats.SetTamCanh(tamCanh);
     }
 
     public override void UnEquipCongPhap(CharacterData statsCurrent, int level)
     {
         var stats = statsCurrent.Stats;
         var tamCanh = stats.TamCanh - buffValues[level-1];
-        stats.TamCanh = tamCanh;
+        stats.SetTamCanh(tamCanh);
     }
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)

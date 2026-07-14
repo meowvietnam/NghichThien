@@ -12,10 +12,10 @@ namespace AllMaps
         private void Start()
         {
             var module = Client.Instance.CoreModule;
-            module.RemoveHandler<InventoryHandler>();
-            var inventoryHandler = new InventoryHandler();
-            Client.Instance.CharacterData.OnInventoryUpdated += OnInventoryUpdated;
-            module.AddHandler(inventoryHandler);
+       
+            var charData = Client.Instance.CharacterData;
+            charData.OnInventoryUpdated += OnInventoryUpdated;
+            charData.GetInventory();
         }
 
         public void OnInventoryUpdated(InventoryManager result)
@@ -27,12 +27,6 @@ namespace AllMaps
         {
             var client = Client.Instance;
             if (client == null) return;
-            var module = client.CoreModule;
-            var inventoryHandler = module.GetHandler<InventoryHandler>();
-            if (inventoryHandler != null)
-            {
-                module.RemoveHandler(inventoryHandler);
-            }
             var charData = client.CharacterData;
             if (charData != null)
             {

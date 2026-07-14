@@ -120,7 +120,7 @@ namespace Network
                 actionQueue.Enqueue(action);
             }
         }
-
+        
         private IClientState GetClientState()
         {
             if(client == null) return null;

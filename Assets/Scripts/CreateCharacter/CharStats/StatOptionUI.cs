@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace CreateCharacter.CharStats
 {
-    public class StatOptionUI : MonoBehaviour
+    public class StatOptionUI : BaseBehaviour
     {
         [SerializeField] private Toggle toggle;
         [SerializeField] private Text nameText;

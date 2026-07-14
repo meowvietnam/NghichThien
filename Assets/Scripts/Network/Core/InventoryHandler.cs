@@ -21,9 +21,7 @@ namespace Network.Core
 
         public void OnEnter()
         {
-            Client.Instance.Send(MessageTag.GetInventory);
             Observer.AddObserver(EventList.Network.EQUIP_EQUIPMENT, EquipEquipment);
-
         }
         private void EquipEquipment(object[] data)
         {

@@ -12,8 +12,9 @@ namespace Network.Models
     {
         public bool Success { get; set; }
         public string Message { get; set; }
-        public RewardSnapshot Reward { get; set; }
+        public RewardItems RewardItems { get; set; }
         public int NewTienNgoc { get; set; }
-
+        public int Money { get; set; }
+        public int MoneyVip { get; set; }
     }
 }

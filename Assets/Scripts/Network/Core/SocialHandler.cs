@@ -7,6 +7,8 @@ using Network.Extensions.MemoryPack;
 using Network.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using AllMaps.EventReward;
 using UnityEngine;
 using static INetworkEvent;
 namespace Network.Core
@@ -128,18 +130,22 @@ namespace Network.Core
                 var result = reader.Read<GachaResult>();
                 if (result.Success)
                 {
-                    Client.Instance.CharacterData.MoneyVip = result.NewTienNgoc;
-                    foreach (var item in result.Reward.ItemRefs)
-                    {
-                        Client.Instance.CharacterData.InventoryManager.Add(item);
-
-                    }
+                    var charData = Client.Instance.CharacterData;
+                    charData.MoneyVip = result.NewTienNgoc;
+                    charData.InventoryManager.AddToInventory(result.RewardItems);
                 }
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
                     {
-                        gachaCallBack.SuccessGacha(result.Reward);
+                        var rewardItems = result.RewardItems;
+                        var listItems = new List<ItemRef>(rewardItems.OtherItems);
+                        listItems.AddRange(rewardItems.Furnaces.Select(x => x.CreateRefSelfID()));
+                        var rewardSnapshot = new RewardSnapshot()
+                        {
+                            ItemRefs = listItems,
+                        };
+                        gachaCallBack.SuccessGacha(rewardSnapshot);
                     }
                     else
                     {

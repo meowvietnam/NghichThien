@@ -58,6 +58,7 @@ namespace Network.Core
                     charData.MoneyVip += result.MoneyVipRandom;
                     charData.Stats.LinhThach += result.LinhThachRandom;
                     charData.QuestManager.CurrentCountSideQuest = result.CurrentSideQuest;
+                    charData.Stats.TamCanh = result.NewTamCanh;
                 }
 
                 NetworkManager.Instance.Invoke(() =>

@@ -29,7 +29,7 @@ public class BaoThapQuanTuongPhap : CongPhap, IMemorySerializable<BaoThapQuanTuo
         var thanThuc = stats.ThanThuc + buffValues[level - 1];
         var tamCanh = stats.TamCanh + buffValues2[level - 1];
         stats.ThanThuc = thanThuc;
-        stats.TamCanh = tamCanh;
+        stats.SetTamCanh(tamCanh);
     }
 
     public override void UnEquipCongPhap(CharacterData statsCurrent, int level)
@@ -38,7 +38,7 @@ public class BaoThapQuanTuongPhap : CongPhap, IMemorySerializable<BaoThapQuanTuo
         var thanThuc = stats.ThanThuc - buffValues[level - 1];
         var tamCanh = stats.TamCanh - buffValues2[level - 1];
         stats.ThanThuc = thanThuc;
-        stats.TamCanh = tamCanh;
+        stats.SetTamCanh(tamCanh);
     }
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)

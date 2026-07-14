@@ -297,5 +297,14 @@ namespace CreateCharacter.CharStats
             value.DanDoc = reader.Read<int>();
             value.TuoiTac = reader.Read<TimeSpan>();
         }
+        public static int GetMinTamCanh()
+        {
+            return -100;
+        }
+        public void SetTamCanh(int tamCanh)
+        {
+            tamCanh = Math.Max(GetMinTamCanh(), tamCanh);
+            TamCanh = tamCanh;
+        }
     }
 }

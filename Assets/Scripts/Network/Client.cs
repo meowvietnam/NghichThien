@@ -80,7 +80,11 @@ namespace Network
             var skillHandler = new SkillHandler();
             module.RemoveHandler<SkillHandler>();
             module.AddHandler(skillHandler);
-
+            
+            var inventoryHandler = new InventoryHandler();
+            module.RemoveHandler<InventoryHandler>();
+            module.AddHandler(inventoryHandler);
+            
             var monPhaiHandler = new MonPhaiHandler();
             module.RemoveHandler<MonPhaiHandler>();
             module.AddHandler(monPhaiHandler);
