@@ -53,6 +53,7 @@ public static partial class EventList
         public const string TIME_ADJUST = "GamePlay.TIME_ADJUST";
         public const string MOVE_MAP_SUCCESS = "GamePlay.MOVE_MAP_SUCCESS";
         public const string USER_ENTER_MAP = "GamePlay.ACTIVE_EVENT_MAP";
+        public const string UPDATE_MAILS = "GamePlay.UPDATE_MAILS";
     }
 
     public static class Network

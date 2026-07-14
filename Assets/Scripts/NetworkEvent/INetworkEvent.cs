@@ -49,7 +49,7 @@ public class INetworkEvent
     }
     public interface ITuLuyen // Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessTuLuyen(int valueAdd,int valueAddHp);
+        void SuccessTuLuyen(int valueAdd,int valueAddHp, int valueDecreaseTamCanh);
         void FailTuLuyen(string message);
     }
     public interface ILinhNgo // Check đủ ngộ đạo điểm mới learn được

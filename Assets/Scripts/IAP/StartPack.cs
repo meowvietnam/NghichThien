@@ -62,7 +62,7 @@ namespace IAP
             }
             var prefab = context.StartPackUIPrefab;
             var iapHandler = context.IapHandler;
-            var startPackUI = UnityEngine.Object.Instantiate(prefab, iapHandler.transform);
+            var startPackUI = Object.Instantiate(prefab, iapHandler.transform);
             startPackUI.SetMoneyVipText(MoneyVip);
             startPackUI.SetMoneyText(Money);
             startPackUI.SetCongPhap(CongPhapId);

@@ -34,6 +34,14 @@ namespace Network.Core
             pageSize = 50;
         }
 
+        public void SyncLoadedMails()
+        {
+            var mails = Client.CharacterData?.Social?.Mails;
+            startId = mails != null && mails.Count > 0 ? mails.Min(x => x.Id) : long.MaxValue;
+            hasNext = true;
+            getLock = false;
+        }
+
         public void GetMails()
         {
             if (getLock) return;
@@ -68,11 +76,12 @@ namespace Network.Core
                 {
                     var charData = Client.CharacterData;
                     var mails = result.Mails;
+                    hasNext = result.HasNext;
                     if (mails.Count != 0)
                     {
-                        charData.Social.Mails.AddRange(mails);
+                        var loadedMailIds = charData.Social.Mails.Select(x => x.Id).ToHashSet();
+                        charData.Social.Mails.AddRange(mails.Where(x => !loadedMailIds.Contains(x.Id)));
                         startId = mails.Last().Id;
-                        hasNext = result.HasNext;
                         if (hasNext)
                         {
                             pageSize = mails.Count;

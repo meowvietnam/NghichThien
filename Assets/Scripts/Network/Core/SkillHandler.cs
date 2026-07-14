@@ -322,10 +322,11 @@ namespace Network.Core
             {
                 var result = reader.Read<TuLuyenResult>();
                 var charData = Client.Instance.CharacterData;
+                var stats = charData.Stats;
+                var valueDecreaseTamCanh = stats.TamCanh - result.NewTamCanh;
                 if (result.Success)
                 {
                     charData.Progression.CurrentExp = result.CurrentExp;
-                    var stats = charData.Stats;
                     stats.LinhThach = result.RemainingMoney;
                     stats.TamCanh = result.NewTamCanh;
                     stats.Hp = result.NewHp;
@@ -334,7 +335,7 @@ namespace Network.Core
                 {
                     if (result.Success)
                     {
-                        tuLuyenCallback.SuccessTuLuyen(result.DeltaExp, result.DeltaHp);
+                        tuLuyenCallback.SuccessTuLuyen(result.DeltaExp, result.DeltaHp, valueDecreaseTamCanh);
                     }
                     else
                     {

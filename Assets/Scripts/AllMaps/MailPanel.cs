@@ -114,6 +114,21 @@ namespace AllMaps
             SortMailCellsByDate();
         }
 
+        public void SyncMails(List<Mail> mails)
+        {
+            foreach (var mailCell in mailCells)
+            {
+                if (mailCell != null)
+                {
+                    Destroy(mailCell.gameObject);
+                }
+            }
+
+            mailCells.Clear();
+            mailUIInstance?.SetActive(false);
+            OnAdd(mails ?? new List<Mail>());
+        }
+
         private void OnClose()
         {
             SetActive(false);

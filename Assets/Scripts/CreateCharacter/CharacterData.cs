@@ -77,16 +77,57 @@ namespace CreateCharacter
 
         public CharacterData(CharacterData clone)
         {
-            Id = clone.Id;
-            Gender = clone.Gender;
-            Name = clone.Name;
-            MonPhai = clone.MonPhai;
-            MoneyVip = clone.MoneyVip;
-            IsInfiniteEnergy = clone.IsInfiniteEnergy;
-            IsNoAds = clone.IsNoAds;
-            CanFly = clone.CanFly;
-            CurrentFreeAdsMoneyVipCount = clone.CurrentFreeAdsMoneyVipCount;
-            CreatedAt = clone.CreatedAt;
+            SyncFrom(clone);
+        }
+
+        public static void Sync(CharacterData source, CharacterData target)
+        {
+            if (target == null)
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
+
+            target.SyncFrom(source);
+        }
+
+        public void SyncFrom(CharacterData source)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            var synced = source.DeepClone();
+            Id = synced.Id;
+            Gender = synced.Gender;
+            Name = synced.Name;
+            MonPhai = synced.MonPhai;
+            MoneyVip = synced.MoneyVip;
+            IsInfiniteEnergy = synced.IsInfiniteEnergy;
+            IsNoAds = synced.IsNoAds;
+            CanFly = synced.CanFly;
+            CurrentFreeAdsMoneyVipCount = synced.CurrentFreeAdsMoneyVipCount;
+            CreatedAt = synced.CreatedAt;
+            Progression = synced.Progression ?? new Progression();
+            Stats ??= new CharacterStats();
+            Stats.CopyFrom(synced.Stats ?? new CharacterStats());
+            Appearance = synced.Appearance ?? new Appearance();
+            InventoryManager = synced.InventoryManager ?? new InventoryManager();
+            EquipmentManager = synced.EquipmentManager ?? new EquipmentManager();
+            Social = synced.Social ?? new Social();
+            QuestManager = synced.QuestManager ?? new QuestManager();
+            ArenaManager = synced.ArenaManager ?? new ArenaManager();
+            ShopManager = synced.ShopManager ?? new ShopManager();
+            InventoryChanged();
+            LongDH.LongDHModules.Observer.Notify(EventList.GamePlay.UPDATE_MAILS);
+        }
+
+        public CharacterData DeepClone()
+        {
+            var writer = new Writer(ByteSize());
+            writer.Write(this);
+            var reader = new Reader(writer.Buffer);
+            return reader.Read<CharacterData>();
         }
 
         public int ByteSize()

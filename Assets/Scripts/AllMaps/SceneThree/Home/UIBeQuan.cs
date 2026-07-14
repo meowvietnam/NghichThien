@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
+using CreateCharacter.CharStats;
 using Network.Models;
 using UnityEngine;
 using UnityEngine.UI;
@@ -223,6 +224,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         int GetTotalValueBuffWithMultiplier(List<float> percent)
         {
             float total = tocDoTuLuyenCP;
+            Debug.Log($"TDTL: {total}");
             foreach (var item in percent)
             {
                 total *= (1 + item / 100f);
@@ -233,9 +235,9 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
 
         tuChatText.text = GameManager.tuChatWithText[charData.Stats.LinhCan];
         tamCanhText.text = getTamCanh.name;
-        totalValueTuLuyenText.text =
-            $"{GetTotalValueBuffWithMultiplier(new List<float> { percentTuChat, 100, percentTamCanh })}";
+        totalValueTuLuyenText.text = "0";
         sliderTuLuyen.minValue = 0;
+        sliderTuLuyen.value = 0;
         sliderTuLuyen.maxValue = (int)(charData.Stats.ThoNguyen - GameManager.GetIntTuoiTac(charData.Stats.TuoiTac)) *
             10 * 12 / 100;
         sliderTuLuyen.onValueChanged.RemoveAllListeners();
@@ -243,6 +245,24 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         {
             // 1. Ép kiểu value về int (vì thời gian tu luyện của bạn là SecureInt/int)
             int tongSoThang = Mathf.RoundToInt(value);
+            if (tongSoThang > 0)
+            {
+                var buffExp = GetTotalValueBuffWithMultiplier(new List<float> { percentTuChat, 100, percentTamCanh }) * tongSoThang;
+                var ability = charData.Stats.Ability;
+                if (ability.HasFlag(Ability.TienThienDaoThe))
+                {
+                    buffExp += (int)MathF.Ceiling(buffExp * 0.1f);
+                }
+                if (ability.HasFlag(Ability.HuyenAmTuyetMach))
+                {
+                    buffExp -= (int)MathF.Ceiling(buffExp * 0.1f);
+                }
+                totalValueTuLuyenText.text = $"{buffExp}";
+            }
+            else
+            {
+                totalValueTuLuyenText.text = "0";
+            }
             // 2. Cập nhật vào biến SecureInt
             currentTuLuyenTimeInt = (tongSoThang);
             UpdateTuLuyenTimeUI();
@@ -632,12 +652,14 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         bagCongPhap.InitBag();
     }
 
-    public void SuccessTuLuyen(int valueAdd, int valueAddHp)
+    public void SuccessTuLuyen(int valueAdd, int valueAddHp, int valueDecreaseTamCanh)
     {
         Observer.Notify(EventList.GamePlay.TIME_ADJUST);
-        NotifyGroup.Instance.Show(
+        var notifyGroup = NotifyGroup.Instance;
+        notifyGroup.Show(
             $"Tu luyện thành công {textNam.text} năm {textThang.text} tháng nhận được {valueAdd} tu vi");
-        NotifyGroup.Instance.Show($"Khôi phục +{valueAddHp} khí huyết");
+        notifyGroup.Show($"Khôi phục +{valueAddHp} khí huyết");
+        notifyGroup.Show($"Giảm {valueDecreaseTamCanh} tâm cảnh");
         Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
     }
 
@@ -693,6 +715,4 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
     {
         NotifyGroup.Instance.Show(message);
     }
-
-  
 }

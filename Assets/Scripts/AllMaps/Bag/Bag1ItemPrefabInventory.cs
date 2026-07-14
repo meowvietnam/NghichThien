@@ -14,6 +14,9 @@ using UnityEngine.UI;
 
 public class Bag1ItemPrefabInventory : BaseBehaviour
 {
+    private const int InitialLoadCount = 30;
+    private const int LoadMoreCount = 10;
+
     public bool isLoadingMore = false;
     
    
@@ -32,12 +35,12 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
     public InventoryUIFacade InventoryUIFacade => inventoryUIFacade ?? (inventoryUIFacade = new InventoryUIFacade());
 
     private bool isTriggerShowTextCount = false;
+    private int loadedCount;
+
     void OnScrollChanged(Vector2 value, Action<bool> loadBagFunc)
     {
-        if (value.y < 0.05f && !isLoadingMore)
+        if (value.y < 0.05f && !isLoadingMore && CanLoadMore())
         {
-            // Ki?m tra xem d? li?u còn ?? load không tr??c khi g?i
-            // (Ví d?: compare s? l??ng UI hi?n có v?i t?ng s? data th?t)
             StartCoroutine(TriggerLoadMore(loadBagFunc));
         }
     }
@@ -70,15 +73,24 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
     }
     IEnumerator TriggerLoadMore(Action<bool> loadBagFunc)
     {
+        if (!CanLoadMore())
+        {
+            yield break;
+        }
+
         isLoadingMore = true;
         Debug.Log("co vao trigger load more");
 
-        // G?i tr?c ti?p hàm Coroutine và ch? nó ch?y xong
+        var beforeLoadCount = loadedCount;
         loadBagFunc?.Invoke(true);
 
-        // ??i m?t chút ?? tránh vi?c g?i liên t?c khi user gi? chu?t ? ?áy
         yield return new WaitForSeconds(0.5f);
-        isLoadingMore = false;
+        isLoadingMore = CanLoadMore() && loadedCount == beforeLoadCount;
+    }
+
+    private bool CanLoadMore()
+    {
+        return loadedCount < itemDataShows.Count;
     }
   
     public void SetItemDataShow(List<ItemRef> itemDatas)
@@ -125,51 +137,30 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             {
                 prefabItemBag.transform.parent.GetChild(i).gameObject.SetActive(false);
             }
-        }
-        int totalLoad = 30;
-        int countAdd = 10;
-        int currentLoad = itemDataShows.Count;
-        int startIndex = 0;
 
-        if (!isAdd)
+            loadedCount = 0;
+            InventoryUIFacade.listItemUI.Clear();
+        }
+
+        if (!CanLoadMore())
         {
-            if (currentLoad >= totalLoad)
-            {
-                currentLoad = totalLoad;
-            }
+            isLoadingMore = false;
+            return;
         }
-        else
-        {
-            currentLoad = countAdd;
-            var currentItem = GetItemCurrentActiveFromBag(prefabItemBag.gameObject);
-            if (currentItem == null) return;
-            ItemRef refItem = currentItem.itemRef;
-            if (refItem == null)
-            {
-                Debug.Log("ref item null");
-                return;
-            }
 
-            startIndex = itemDataShows.IndexOf(refItem) + 1;
-            if (startIndex >= itemDataShows.Count)
-            {
-                return;
-            }
+        var startIndex = loadedCount;
+        var currentLoad = Math.Min(isAdd ? LoadMoreCount : InitialLoadCount, itemDataShows.Count - startIndex);
+        var renderedCount = 0;
 
-        }
         for (int i = 0; i < currentLoad; i++)
-        {// TẠO BIẾN TẠM Ở ĐÂY
+        {
             int index = i + startIndex;
             var currentItem = GameManager.GetItemPoolWithPrefabInParent(prefabItemBag);
-            ItemRef itemRef = null;
             if (index >= itemDataShows.Count)
             {
                 break;
             }
-            if (i < itemDataShows.Count)
-            {
-                itemRef = itemDataShows[index];
-            }
+            var itemRef = itemDataShows[index];
             
             InventoryUIFacade.RenderBagItem(currentItem, itemRef, isIconSkillBase);
             if (isTriggerShowTextCount)
@@ -177,8 +168,15 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
                 currentItem.textCount.gameObject.SetActive(true);
             }
             actionItemInventory?.Invoke(currentItem);
+            renderedCount++;
                 
 
+        }
+
+        loadedCount += renderedCount;
+        if (!isAdd)
+        {
+            isLoadingMore = false;
         }
     }
 }

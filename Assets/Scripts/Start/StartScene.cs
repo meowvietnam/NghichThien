@@ -28,35 +28,34 @@ namespace Start
         }
         public void OnConnectResult(ConnectResult connectResult)
         {
-            Net.Invoke(() =>
+            if (connectResult.Success)
             {
-                if (connectResult.Success)
-                {
-                    Net.SetIdentity(connectResult.Id, connectResult.Key);
-                    statusText.text = checkingVersion;
-                }
-                else
-                {
-                    statusText.text = connectResult.Message;
-                }
-            });
+                Net.SetIdentity(connectResult.Id, connectResult.Key);
+                statusText.text = checkingVersion;
+            }
+            else
+            {
+                statusText.text = connectResult.Message;
+            }
         }
 
         public void OnCheckVersionResult(CheckVersionResult result)
         {
-            Net.Invoke(() =>
+            statusText.text = result.Message;
+            if (result.Success)
             {
-                statusText.text = result.Message;
-                if (result.Success)
-                {
-                    Net.AuthenticatedSuccess();
-                    SceneManager.LoadSceneAsync("MainMenu");
-                }
-            });
+                Net.AuthenticatedSuccess();
+                SceneManager.LoadSceneAsync("MainMenu");
+            }
         }
         public void OnDisconnect()
         {
-            Net.Invoke(() => { statusText.text = disconnectMessage; });
+            statusText.text = disconnectMessage;
+        }
+
+        public void OnReconnectResult(Result result)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

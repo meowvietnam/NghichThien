@@ -29,13 +29,12 @@ namespace AllMaps
 
         public void OnAdd(List<Mail> mails)
         {
-            var isNeverRead = mails.Any(x => !x.IsRead);
-            redPoint.SetActive(isNeverRead);
+            Refresh();
         }
 
         public void Refresh()
         {
-            var mails = Client.Instance.CharacterData.Social.Mails;
+            var mails = Client.Instance.CharacterData?.Social?.Mails ?? new List<Mail>();
             var isNeverRead = mails.Any(x => !x.IsRead);
             redPoint.SetActive(isNeverRead);
         }

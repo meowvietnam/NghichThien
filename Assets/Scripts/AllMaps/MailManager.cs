@@ -23,7 +23,10 @@ namespace AllMaps
             var module = Client.Instance.CoreModule;
             module.RemoveHandler<MailHandler>();
             var mailHandler = new MailHandler(this);
+            mailHandler.SyncLoadedMails();
             module.AddHandler(mailHandler);
+            Observer.AddObserver(EventList.GamePlay.UPDATE_MAILS, RefreshMails);
+            RefreshMails();
         }
 
         public void OnGetMails(GetMailsResult result)
@@ -87,6 +90,23 @@ namespace AllMaps
                 mailPanel.AddMail(mail);
                 mailButton.Refresh();
             });
+        }
+
+        private void RefreshMails()
+        {
+            NetworkManager.Instance.Invoke(() =>
+            {
+                var handler = Client.Instance.CoreModule.GetHandler<MailHandler>();
+                handler?.SyncLoadedMails();
+                var mails = Client.Instance.CharacterData?.Social?.Mails ?? new List<Mail>();
+                mailPanel.SyncMails(mails);
+                mailButton.Refresh();
+            });
+        }
+
+        private void OnDestroy()
+        {
+            Observer.RemoveObserver(EventList.GamePlay.UPDATE_MAILS, RefreshMails);
         }
     }
 }

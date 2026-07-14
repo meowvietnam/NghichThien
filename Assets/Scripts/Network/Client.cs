@@ -16,6 +16,7 @@ namespace Network
         public CharacterData CharacterData { get; private set; }
         public IClientState State => stateModule.State as IClientState;
         public bool IsLogout { get; private set; }
+        public event Action OnDisconnect;
         public Client(UnauthenticatedClient client)
         {
             var tcpClient = client.TcpClient;
@@ -55,11 +56,7 @@ namespace Network
             base.OnDisconnected(protocol);
             NetworkManager.Instance.Invoke(() =>
             {
-                var notifyGroup = NotifyGroup.Instance;
-                if (notifyGroup != null)
-                {
-                    notifyGroup.Show("Mất kết nối!");
-                }
+                OnDisconnect?.Invoke();
             });
         }
 

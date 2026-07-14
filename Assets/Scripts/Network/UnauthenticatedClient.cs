@@ -1,10 +1,7 @@
-using System;
-using System.Threading.Tasks;
 using Network.Callback;
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
 using Network.Models;
-using UnityEngine;
 using NativeTcp = System.Net.Sockets.TcpClient;
 
 namespace Network
@@ -38,7 +35,11 @@ namespace Network
                 if (tag == MessageTag.CheckVersionResult)
                 {
                     var result = reader.MemRead<CheckVersionResult>();
-                    client.callback.OnCheckVersionResult(result);
+                    var net = NetworkManager.Instance;
+                    net.Invoke(() =>
+                    {
+                        client.callback.OnCheckVersionResult(result);
+                    });
                 }
             }
             public void OnLeave()
@@ -70,15 +71,28 @@ namespace Network
                 if (tag == MessageTag.ConnectResult)
                 {
                     var result = reader.Read<ConnectResult>();
-                    client.callback.OnConnectResult(result);
+                    
                     if (result.Success)
                     {
                         client.ChangeState(new CheckVersionState(client));
                     }
+                    NetworkManager.Instance.Invoke(() =>
+                    {
+                        client.callback.OnConnectResult(result);
+                    });
                 }
                 else if (tag == MessageTag.ReconnectResult)
                 {
-                    
+                    var result = reader.MemRead<Result>();
+                    var net = NetworkManager.Instance;
+                    if (result.Success)
+                    {
+                        net.ReconnectSuccess();   
+                    }
+                    net.Invoke(() =>
+                    {
+                        client.callback.OnReconnectResult(result);
+                    });
                 }
             }
             public void OnLeave()
@@ -102,7 +116,10 @@ namespace Network
         }
         protected override void OnDisconnected(IProtocol<MessageTag> protocol)
         {
-            callback.OnDisconnect();            
+            NetworkManager.Instance.Invoke(() =>
+            {
+                callback.OnDisconnect();  
+            });          
         }
     }
 }

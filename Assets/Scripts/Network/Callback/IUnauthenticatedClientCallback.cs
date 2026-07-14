@@ -7,5 +7,6 @@ namespace Network.Callback
         void OnConnectResult(ConnectResult connectResult);
         void OnCheckVersionResult(CheckVersionResult result);
         void OnDisconnect();
+        void OnReconnectResult(Result result);
     }
 }

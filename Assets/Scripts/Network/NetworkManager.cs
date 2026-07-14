@@ -20,6 +20,8 @@ namespace Network
         [SerializeField] private string connectFailMessage;
         [SerializeField] private string platform;
         [ShowInInspector] public string Version => $"{platform}_v{Application.version}";
+        [SerializeField] private ReconnectManager reconnectManager;
+        
         private Queue<Action> actionQueue = new();
         public static NetworkManager Instance { get; private set; }
         private UnauthenticatedClient unauthenticatedClient;
@@ -49,13 +51,13 @@ namespace Network
             var prefab = req.asset as GameManager;
             InstantiateAsync(prefab);
         }
-        public async Task Connect(IUnauthenticatedClientCallback callback)
+        public async Task Connect(IUnauthenticatedClientCallback callback, bool reconnect = false)
         {
             try
             {
                 var tcpClient = new System.Net.Sockets.TcpClient();
                 await tcpClient.ConnectAsync(host, port);
-                unauthenticatedClient = new UnauthenticatedClient(tcpClient, callback, false);
+                unauthenticatedClient = new UnauthenticatedClient(tcpClient, callback, reconnect);
             }
             catch (Exception e)
             {
@@ -79,9 +81,13 @@ namespace Network
         public void AuthenticatedSuccess()
         {
             client = new Client(unauthenticatedClient);
-      
+            reconnectManager.Register(client);
         }
 
+        public void ReconnectSuccess()
+        {
+            client.TcpClient.Reconnect(unauthenticatedClient.TcpClient);
+        }
         public void Invoke(Action action)
         {
             lock (actionQueue)
