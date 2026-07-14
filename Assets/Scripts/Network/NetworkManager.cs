@@ -7,6 +7,7 @@ using CreateCharacter;
 using Network.Callback;
 using Network.ClientState;
 using Network.Core;
+using Network.Extensions.MemoryPack;
 using Network.Models;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace Network
         [SerializeField] private string host;
         [SerializeField] private int port;
         [SerializeField] private string connectFailMessage;
+        [SerializeField] private float connectTimeoutSeconds = 10f;
         [SerializeField] private string platform;
         [ShowInInspector] public string Version => $"{platform}_v{Application.version}";
         [SerializeField] private ReconnectManager reconnectManager;
@@ -38,7 +40,6 @@ namespace Network
         }
         private void Awake()
         {
-            Debug.Log($"Main thread id: {Thread.CurrentThread.ManagedThreadId}");
             Instance = this;
             DontDestroyOnLoad(gameObject);
             StartCoroutine(LoadGameManager());
@@ -53,17 +54,41 @@ namespace Network
         }
         public async Task Connect(IUnauthenticatedClientCallback callback, bool reconnect = false)
         {
+            System.Net.Sockets.TcpClient tcpClient = null;
             try
             {
-                var tcpClient = new System.Net.Sockets.TcpClient();
-                await tcpClient.ConnectAsync(host, port);
+                unauthenticatedClient = null;
+                tcpClient = new System.Net.Sockets.TcpClient();
+                var connectTask = tcpClient.ConnectAsync(host, port);
+                var timeoutMilliseconds = Mathf.Max(1, connectTimeoutSeconds) * 1000f;
+                var completedTask = await Task.WhenAny(connectTask, Task.Delay((int)timeoutMilliseconds));
+                if (completedTask != connectTask)
+                {
+                    tcpClient.Close();
+                    _ = connectTask.ContinueWith(task =>
+                    {
+                    }, TaskContinuationOptions.OnlyOnFaulted);
+                    throw new TimeoutException($"Kết nối quá thời gian chờ sau {connectTimeoutSeconds:0.##} giây");
+                }
+
+                await connectTask;
                 unauthenticatedClient = new UnauthenticatedClient(tcpClient, callback, reconnect);
             }
             catch (Exception e)
             {
-                Debug.Log(e);
+                tcpClient?.Close();
                 callback.OnConnectResult(new ConnectResult() { Success = false, Message = connectFailMessage });
             }
+        }
+
+        public bool SendReconnect(Reconnect reconnect)
+        {
+            if (unauthenticatedClient == null)
+            {
+                return false;
+            }
+            unauthenticatedClient.TcpClient.MemSend(MessageTag.Reconnect, reconnect);
+            return true;
         }
         private void Update()
         {

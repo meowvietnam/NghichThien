@@ -22,7 +22,14 @@ namespace Network.Core
             if (result.Success)
             {
                 var snapshot = result.StatsSnapshot;
-                client.CharacterData.Stats.ApplyFrom(snapshot);
+                var charData = client.CharacterData;
+                charData.Stats.ApplyFrom(snapshot);
+                var inventory = charData.InventoryManager;
+                var buffItems = result.BuffItems;
+                foreach (var buffItem in buffItems)
+                {
+                    inventory.Decrease(buffItem);
+                }
             }
             NetworkManager.Instance.Invoke(() =>
             {
