@@ -34,11 +34,21 @@ public class PrepareElementArenaCombat : MonoBehaviour
             valuePoint = Client.Instance.CharacterData.ArenaManager.Points;
         }    
         var currentRank = ArenaManager.GetArenaRankWithPoint(stats.pointArena.Value);
-
-        iconRank.sprite = spriteRefRank[(int)currentRank - 1];
-        iconRank.SetNativeSize();
-        iconRankName.sprite = spriteRefRankName[(int)currentRank - 1];
-        iconRankName.SetNativeSize();
+        if(currentRank != ETypeArenaRank.None)
+        {
+            iconRank.gameObject.SetActive(true);
+            iconRankName.gameObject.SetActive(true);
+            iconRank.sprite = spriteRefRank[(int)currentRank - 1];
+            iconRank.SetNativeSize();
+            iconRankName.sprite = spriteRefRankName[(int)currentRank - 1];
+            iconRankName.SetNativeSize();
+        }    
+        else
+        {
+            iconRank.gameObject.SetActive(false);
+            iconRankName.gameObject.SetActive(false);
+        }    
+        
     }
 
 }
