@@ -1,4 +1,5 @@
 ﻿using CreateCharacter;
+using Network;
 using Network.Models;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -19,7 +20,7 @@ public class PrepareElementArenaCombat : MonoBehaviour
     [SerializeField] private Sprite[] spriteRefLevel;
     [SerializeField] private CharacterGraphic graphicChar; // tuổi
 
-    public void InitVisual(CharacterStatsSecure stats)
+    public void InitVisual(CharacterStatsSecure stats , CharacterSnapshot snapshot)
     {
         graphicChar.SetGender(stats.Gender);
         graphicChar.SetSkin(stats.Skins, stats.Colors);
@@ -27,13 +28,17 @@ public class PrepareElementArenaCombat : MonoBehaviour
         txtLevel.text = textLevel;
         txtName.text = stats.nameUser;
         iconLevel.sprite = spriteRefLevel[stats.level - 1];
+        int valuePoint = stats.pointArena;
+        if(snapshot == null)
+        {
+            valuePoint = Client.Instance.CharacterData.ArenaManager.Points;
+        }    
+        var currentRank = ArenaManager.GetArenaRankWithPoint(stats.pointArena.Value);
 
-        //var currentRank = ArenaManager.GetArenaRankWithPoint(characterSnapshot.PointArena);
-
-        //iconRank.sprite = spriteRefRank[(int)currentRank - 1];
-        //iconRank.SetNativeSize();
-        //iconRankName.sprite = spriteRefRankName[(int)currentRank - 1];
-        //iconRankName.SetNativeSize();
+        iconRank.sprite = spriteRefRank[(int)currentRank - 1];
+        iconRank.SetNativeSize();
+        iconRankName.sprite = spriteRefRankName[(int)currentRank - 1];
+        iconRankName.SetNativeSize();
     }
 
 }

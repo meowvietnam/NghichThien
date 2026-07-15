@@ -102,8 +102,8 @@ namespace AllMaps.DauTruong
         {
             var gameManager = Pool.Get<GameManager>();
             gameManager.GoToPrepareCombatArena(user, enemy);
-            userUI.InitVisual(gameManager.user.charStats);
-            enemyUI.InitVisual(gameManager.enemyCombat.charStats);
+            userUI.InitVisual(gameManager.user.charStats,user);
+            enemyUI.InitVisual(gameManager.enemyCombat.charStats,enemy);
             parentPrepareCombat.gameObject.SetActive(true);
             gameManager.SetBGCombat(spriteCombat);
             DOVirtual.DelayedCall(2f, () => { gameManager.GoToCombatArena(); });

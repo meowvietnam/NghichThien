@@ -402,7 +402,6 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             eTypeVisual = ETypeVisualChar.Character,
             charStats = CharacterStatsSecureBuilder.ArenaFromCharacterSnapshot(user),
         };
-        enemy = null;
         if(enemy != null)
         {
             this.enemyCombat = new CharCombatInit
@@ -412,14 +411,24 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             };
         }
         else
-        {
+        {// 1. Lấy tất cả NPC trùng level
+            var matchingNPCs = Pool.Get<NPCManager>().npcDatas
+                .Where(x => x.charStats.level.Value == user.Level)
+                .ToList();
+
+            // 2. Chọn ngẫu nhiên 1 NPC (nếu không có thì trả về null)
+            var randomNPC = matchingNPCs.Count > 0
+                ? matchingNPCs[UnityEngine.Random.Range(0, matchingNPCs.Count)]
+                : null; // Hoặc Pool.Get<NPCManager>().npcDatas.FirstOrDefault(); (để tránh null)
+
+            // 3. Gán vào EnemyCombat
             this.enemyCombat = new CharCombatInit
             {
                 eTypeVisual = ETypeVisualChar.Character,
-                charStats = Pool.Get<NPCManager>().npcDatas.FirstOrDefault(x=>x.charStats.level.Value == user.Level).charStats,
+                charStats = randomNPC?.charStats // Thêm dấu '?' để an toàn nếu randomNPC bị null
             };
         }
-        if (enemyCombat == null) return;
+        if (enemyCombat.charStats == null) return;
         currentETypeCombat = ETypeCombat.DauTruong;
         currentECombatResult = ETypeResultCombat.None;
     }
