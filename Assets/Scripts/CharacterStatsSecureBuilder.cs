@@ -80,6 +80,11 @@ public class CharacterStatsSecureBuilder
         _stats.monPhai = monPhai;
         return this;
     }
+    public CharacterStatsSecureBuilder WithPointArena(int value)
+    {
+        _stats.pointArena = new SecureInt(value);
+        return this;
+    }
 
     public CharacterStatsSecureBuilder WithThanThongEquip(List<SecureInt> items)
     {
@@ -251,6 +256,7 @@ public class CharacterStatsSecureBuilder
             .WithPhuTu2Used(character.PhuTu2Used)
             .WithPhuTu3Used(character.PhuTu3Used)
             .WithPhuTu4Used(character.PhuTu4Used)
+            .WithPointArena(character.PointArena)
             // --- ĐÃ ĐIỀN ĐỦ ĐOẠN KHUYẾT THIẾU ---
             .WithAbility(character.Ability)
             .WithPercentKim(character.Kim)

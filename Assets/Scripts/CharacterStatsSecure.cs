@@ -44,6 +44,7 @@ public class CharacterStatsSecure
     public SecureInt thoNguyen = new SecureInt(0);
     public SecureInt tamCanh = new SecureInt(0);
     public SecureInt idLinhCan = new SecureInt(0);
+    public SecureInt pointArena = new SecureInt(0);
 
     public Ability ability = new Ability(); // Đảm bảo Ability có constructor ko tham số
 

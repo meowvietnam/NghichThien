@@ -47,6 +47,9 @@ namespace Network.Models
         public int PhuTu1Used { get; set; }
         public int ChuTu2Used { get; set; }
         public int ChuTu1Used { get; set; }
+
+        public int PointArena { get; set; }
+
         [MemoryPackConstructor]
         public CharacterSnapshot()
         {
@@ -89,6 +92,7 @@ namespace Network.Models
             this.Ability = c.Stats.Ability;
             this.DanDoc = c.Stats.DanDoc;
             this.Hp = c.Stats.Hp;
+            this.PointArena = c.ArenaManager.Points;
         }
     }
 }
