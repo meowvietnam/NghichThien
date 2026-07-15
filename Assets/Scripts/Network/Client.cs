@@ -121,6 +121,9 @@ namespace Network
             module.RemoveHandler<InGameAuthHandler>();
             module.AddHandler(inGameAuthHandler);
             
+            var dailyHandler = new DailyHandler();
+            module.RemoveHandler<DailyHandler>();
+            module.AddHandler(dailyHandler);
             
             AdminPanel.Instance.StartListen();
         }

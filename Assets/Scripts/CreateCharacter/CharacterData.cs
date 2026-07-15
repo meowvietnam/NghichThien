@@ -245,5 +245,11 @@ namespace CreateCharacter
             var thanThong = result.ThanThong;
             EquipmentManager.EquipThanThong(thanThong);
         }
+
+        public void ApplyDailyReset(DailyReset dailyReset)
+        {
+            ArenaManager.CurrentArenaCount = dailyReset.CurrentArenaCount;
+            QuestManager.CurrentCountSideQuest = dailyReset.CurrentCountSideQuest;
+        }
     }
 }
