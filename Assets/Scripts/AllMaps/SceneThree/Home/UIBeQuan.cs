@@ -689,19 +689,17 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
             Observer.Notify(EventList.Network.EQUIP_CONGPHAP, Pool.Get<TabPanel>(), typeSlot, (ushort)idCpUpdate);
             typeSlot = ETypeSlotCP.None;
         }
-
         Observer.Notify(EventList.GamePlay.TIME_ADJUST);
     }
 
     public void FailDotPhaCongPhap(string message)
     {
+        NotifyGroup.Instance.Show(message);
         if (typeSlot != ETypeSlotCP.None)
         {
             Observer.Notify(EventList.Network.EQUIP_CONGPHAP, Pool.Get<TabPanel>(), typeSlot, (ushort)idCpUpdate);
             typeSlot = ETypeSlotCP.None;
         }
-
-        NotifyGroup.Instance.Show(message);
     }
 
     public void SuccessSpecialLevelUp()

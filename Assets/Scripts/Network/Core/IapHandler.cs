@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using CreateCharacter;
 using DG.Tweening;
 using IAP;
@@ -9,19 +9,13 @@ using LuyenDan;
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
 using Network.Models;
-using Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
 namespace Network.Core
 {
-    public class IapHandler : PanelGroup, IClientHandler, IStoreListener
+    public class IapHandler : PanelGroup, IClientHandler
     {
-        private IStoreController m_StoreController;
-
-        private IExtensionProvider m_StoreExtensionProvider;
-
         [SerializeField] public Popup popupMain;
         [SerializeField] private StartPackUI startPackUIPrefab;
         [SerializeField] private MoneyVipPackUI moneyVipUIPrefab;
@@ -31,7 +25,7 @@ namespace Network.Core
         [SerializeField] private Button showExchangePopup;
         [SerializeField] private SelectNum selectNum;
         private List<OwnerIapProduct> ownerIapProducts;
-
+        [SerializeField] private IapService iapService;
         private static MessageTag[] handler =
         {
             MessageTag.PurchaseIapResult
@@ -46,12 +40,13 @@ namespace Network.Core
             coreModule.RemoveHandler<IapHandler>();
             coreModule.AddHandler(this);
             InitExchangeMoneyVip();
-            InitIAP();
+            _ = InitIAP();
         }
 
         private void InitExchangeMoneyVip()
         {
             SetEventButton(showExchangePopup, ShowExchangePopup);
+            selectNum.confirmAction.RemoveListener(OnConfirmExchange);
             selectNum.confirmAction.AddListener(OnConfirmExchange);
         }
 
@@ -64,7 +59,7 @@ namespace Network.Core
         {
             var amount = selectNum.GetValue();
             selectNum.Hide(0.5f);
-            ExchangeMoneyVip(amount);
+            _ = ExchangeMoneyVip(amount);
         }
 
         private string GetExchangeText(int value)
@@ -80,6 +75,7 @@ namespace Network.Core
             selectNum.SetMin(min);
             selectNum.SetMax(max);
             selectNum.SetValue(min);
+            selectNum.ValueChanged -= SetExchangeText;
             selectNum.ValueChanged += SetExchangeText;
             selectNum.SetText(GetExchangeText(min));
             selectNum.Show(0.5f);
@@ -90,80 +86,109 @@ namespace Network.Core
             StartCoroutine(RefreshUI());
         }
 
-        public async void InitIAP()
+        public async Task InitIAP()
         {
-            var reader = await Client.Instance.RequestWait(MessageTag.GetProductsRequest);
-            ownerIapProducts = reader.MemRead<List<OwnerIapProduct>>();
-            NetworkManager.Instance.Invoke(() =>
+            try
             {
-                var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-                foreach (var ownerIapProduct in ownerIapProducts)
+                if (iapService == null)
                 {
-                    var productId = ownerIapProduct.Product.StoreProductId;
-                    var productType = (ProductType)ownerIapProduct.Product.ProductType;
-                    builder.AddProduct(productId, productType);
+                    NotifyGroup.Instance.Show("IAP chưa được cấu hình");
+                    return;
                 }
-
-                UnityPurchasing.Initialize(this, builder);
-                foreach (var ownerIapProduct in ownerIapProducts)
+                await iapService.InitializeIAP();
+                iapService.PurchasePending -= OnPurchasePending;
+                iapService.PurchasePending += OnPurchasePending;
+                iapService.IapFailed -= OnIapFailed;
+                iapService.IapFailed += OnIapFailed;
+                var reader = await Client.Instance.RequestWait(MessageTag.GetProductsRequest);
+                ownerIapProducts = reader.MemRead<List<OwnerIapProduct>>();
+                ownerIapProducts ??= new List<OwnerIapProduct>();
+                NetworkManager.Instance.Invoke(() =>
                 {
-                    var uiContext = new IapUIContext()
+                    iapService.FetchProducts(ownerIapProducts);
+                    iapService.FetchPurchases();
+                    foreach (var ownerIapProduct in ownerIapProducts)
                     {
-                        IapHandler = this,
-                        StartPackUIPrefab = startPackUIPrefab,
-                        MoneyVipPackUIPrefab = moneyVipUIPrefab,
-                        MoneyVipSprites = moneyVipSprites,
-                        OwnerIapProduct = ownerIapProduct,
-                        IapProductContainer = iapProductContainer
-                    };
-                    ownerIapProduct.Product.Reward.InitUI(uiContext);
-                }
-
-                popupMain.Show();
-                var fitter = this.transform.GetComponentsInChildren<ContentSizeFitter>();
-                if (fitter != null)
-                {
-                    foreach (var item in fitter)
-                    {
-                        for (int i = 0; i < 3; i++)
+                        var uiContext = new IapUIContext()
                         {
-                            Canvas.ForceUpdateCanvases();
-                            LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
-                            item.enabled = false;
-                            item.enabled = true;
+                            IapHandler = this,
+                            StartPackUIPrefab = startPackUIPrefab,
+                            MoneyVipPackUIPrefab = moneyVipUIPrefab,
+                            MoneyVipSprites = moneyVipSprites,
+                            OwnerIapProduct = ownerIapProduct,
+                            IapProductContainer = iapProductContainer
+                        };
+                        ownerIapProduct.Product.Reward?.InitUI(uiContext);
+                    }
+                    popupMain.Show();
+                    var fitter = transform.GetComponentsInChildren<ContentSizeFitter>();
+                    if (fitter != null)
+                    {
+                        foreach (var item in fitter)
+                        {
+                            for (int i = 0; i < 3; i++)
+                            {
+                                Canvas.ForceUpdateCanvases();
+                                LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
+                                item.enabled = false;
+                                item.enabled = true;
+                            }
                         }
                     }
-                }
-
-                DOVirtual.DelayedCall(0, () => { popupMain.Hide(); });
-            });
+                    DOVirtual.DelayedCall(0, () => { popupMain.Hide(); });
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+                NetworkManager.Instance.Invoke(() => { NotifyGroup.Instance.Show($"Khởi tạo IAP thất bại: {ex.Message}"); });
+            }
         }
 
-        public async void ExchangeMoneyVip(int amount)
+        private void OnPurchasePending(IapModel model)
         {
-            var reader = await Client.Instance
-                .RequestWait(MessageTag.ExchangeMoneyVipRequest, amount, 20000);
-            var result = reader.MemRead<ExchangeMoneyVipResult>();
-            var charData = Client.Instance.CharacterData;
-            var addLinhThach = result.LinhThach - charData.Stats.LinhThach;
-            if (result.Success)
-            {
-                charData.MoneyVip = result.MoneyVip;
-                charData.Stats.LinhThach = result.LinhThach;
-            }
+            Client.Instance.Send(MessageTag.IapPurchase, model);
+        }
 
-            NetworkManager.Instance.Invoke(() =>
+        private void OnIapFailed(string message)
+        {
+            NetworkManager.Instance.Invoke(() => { NotifyGroup.Instance.Show(message); });
+        }
+
+        public async Task ExchangeMoneyVip(int amount)
+        {
+            try
             {
-                var notify = NotifyGroup.Instance;
-                if (!result.Success)
+                var client = Client.Instance;
+                var reader = await client
+                    .RequestWait(MessageTag.ExchangeMoneyVipRequest, amount, 20000);
+                var result = reader.MemRead<ExchangeMoneyVipResult>();
+                var charData = client.CharacterData;
+                var addLinhThach = result.LinhThach - charData.Stats.LinhThach;
+                if (result.Success)
                 {
-                    notify.Show(result.Message);
+                    charData.MoneyVip = result.MoneyVip;
+                    charData.Stats.LinhThach = result.LinhThach;
                 }
-                else
+
+                NetworkManager.Instance.Invoke(() =>
                 {
-                    notify.Show($"Quy đổi được {addLinhThach} Linh thạch");
-                }
-            });
+                    var notify = NotifyGroup.Instance;
+                    if (!result.Success)
+                    {
+                        notify.Show(result.Message);
+                    }
+                    else
+                    {
+                        notify.Show($"Quy đổi được {addLinhThach} Linh thạch");
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+                NetworkManager.Instance.Invoke(() => { NotifyGroup.Instance.Show($"Quy đổi thất bại: {ex.Message}"); });
+            }
         }
 
         private IEnumerator RefreshUI()
@@ -175,65 +200,12 @@ namespace Network.Core
 
         public void BuyProduct(string productId)
         {
-            if (m_StoreController != null)
-            {
-                Product product = m_StoreController.products.WithID(productId);
-                if (product != null && product.availableToPurchase)
-                {
-                    m_StoreController.InitiatePurchase(product);
-                }
-            }
-        }
-
-        public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
-        {
-            m_StoreController = controller;
-            m_StoreExtensionProvider = extensions;
-            Debug.Log("Unity IapPurchase đã khởi tạo thành công hoàn toàn!");
-        }
-
-        public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
-        {
-            string receipt = args.purchasedProduct.receipt;
-            Debug.Log(receipt);
-            var purchaseToken = ExtractGooglePurchaseToken(receipt);
-            string productId = args.purchasedProduct.definition.id;
-            var iapModel = new IapModel
-            {
-                Store = Store.GooglePlay,
-                ProductId = productId,
-                PurchaseToken = purchaseToken
-            };
-            Client.Instance.Send(MessageTag.IapPurchase, iapModel);
-            return PurchaseProcessingResult.Pending;
+            iapService.BuyProduct(productId);
         }
 
         public void OnServerResponseIapSuccess(string productId)
         {
-            if (m_StoreController != null)
-            {
-                Product product = m_StoreController.products.WithID(productId);
-                if (product != null)
-                {
-                    m_StoreController.ConfirmPendingPurchase(product);
-                    Debug.Log($"[IapPurchase] Hoàn tất tiêu thụ gói {productId} thành công!");
-                }
-            }
-        }
-
-        public void OnInitializeFailed(InitializationFailureReason error)
-        {
-            Debug.LogError($"IapPurchase Khởi tạo thất bại: {error}");
-        }
-
-        public void OnInitializeFailed(InitializationFailureReason error, string message = null)
-        {
-            Debug.LogError($"IapPurchase Khởi tạo thất bại: {error} - Lỗi: {message}");
-        }
-
-        public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
-        {
-            Debug.LogError($"Mua sản phẩm {product.definition.id} thất bại. Lý do: {failureReason}");
+            iapService.ConfirmPurchase(productId);
         }
 
         public void OnDisconnect(IProtocol<MessageTag> protocol)
@@ -251,21 +223,18 @@ namespace Network.Core
             if (tag == MessageTag.PurchaseIapResult)
             {
                 var result = reader.Read<IapResult>();
-                if (result.Success)
-                {
-                    result.Reward.Execute(Client.Instance.CharacterData);
-                    OnServerResponseIapSuccess(result.ProductId);
-                }
-
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
                     {
+                        var reward = result.Reward;
+                        reward?.Execute(Client.Instance.CharacterData);
+                        OnServerResponseIapSuccess(result.ProductId);
                         var uiContext = new IapUIContext()
                         {
                             IapHandler = this,
                         };
-                        result.Reward.ShowUISuccess(uiContext);
+                        reward?.ShowUISuccess(uiContext);
                     }
                     else
                     {
@@ -278,43 +247,15 @@ namespace Network.Core
         public void OnLeave()
         {
         }
-
-        private string ExtractGooglePurchaseToken(string receiptJson)
+        private void OnDestroy()
         {
-            try
+            if (iapService == null)
             {
-                var receipt = JsonConvert.DeserializeObject<UnityIAPReceipt>(receiptJson);
-                if (receipt?.Payload == null) return string.Empty;
-
-                var payload = JsonConvert.DeserializeObject<GooglePlayPayload>(receipt.Payload);
-                if (payload?.Json == null) return string.Empty;
-
-                var purchaseData = JsonConvert.DeserializeObject<GooglePurchaseData>(payload.Json);
-                return purchaseData?.PurchaseToken ?? string.Empty;
+                return;
             }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[IAP] Parse purchaseToken thất bại: {ex.Message}");
-                return string.Empty;
-            }
-        }
 
-        private class UnityIAPReceipt
-        {
-            [JsonProperty("Store")] public string Store { get; set; }
-            [JsonProperty("TransactionID")] public string TransactionID { get; set; }
-            [JsonProperty("Payload")] public string Payload { get; set; }
-        }
-
-        private class GooglePlayPayload
-        {
-            [JsonProperty("json")] public string Json { get; set; }
-            [JsonProperty("signature")] public string Signature { get; set; }
-        }
-
-        private class GooglePurchaseData
-        {
-            [JsonProperty("purchaseToken")] public string PurchaseToken { get; set; }
+            iapService.PurchasePending -= OnPurchasePending;
+            iapService.IapFailed -= OnIapFailed;
         }
     }
 }
