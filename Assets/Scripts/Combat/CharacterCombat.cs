@@ -999,11 +999,8 @@ public class CharacterCombat : MonoBehaviour
             totalKhiHapThu /= 2;
         }
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, treKhi);
-
         totalKhiHapThu = Mathf.Clamp(totalKhiHapThu,0,int.MaxValue);
         dictHapThuLinhKhi = DictHapThuLinhKhi(totalKhiHapThu);
-        Debug.Log("total khí hấp thụ " + totalKhiHapThu);
-
         foreach (var item in dictHapThuLinhKhi)
         {
             HapThuLinhKhi(item.Key, item.Value);
