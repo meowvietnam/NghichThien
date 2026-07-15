@@ -827,7 +827,7 @@ public class CharacterCombat : MonoBehaviour
     public SecureInt totalKhiRandom;
     public int CurrentLinhKhi => khiKim + khiMoc+khiThuy+khiHoa+khiTho+khiMa;
 
-    public int baseCountHapThuLinhKhi => CurrentTurn != 1? totalKhiRandom - totalKhi : totalKhiRandom - CurrentLinhKhi;
+    public int baseCountHapThuLinhKhi => totalKhiRandom - CurrentLinhKhi;
     public SecureInt countHapThuLinhKhiNewTurn;
 
     private void InitTotalKhi()
@@ -995,8 +995,11 @@ public class CharacterCombat : MonoBehaviour
             totalKhiHapThu /= 2;
         }
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, treKhi);
+
         totalKhiHapThu = Mathf.Clamp(totalKhiHapThu,0,int.MaxValue);
         dictHapThuLinhKhi = DictHapThuLinhKhi(totalKhiHapThu);
+        Debug.Log("total khí hấp thụ " + totalKhiHapThu);
+
         foreach (var item in dictHapThuLinhKhi)
         {
             HapThuLinhKhi(item.Key, item.Value);

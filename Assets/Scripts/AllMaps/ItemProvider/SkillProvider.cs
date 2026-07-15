@@ -68,7 +68,13 @@ namespace AllMaps.ItemProvider
             var charData = Client.Instance.CharacterData;
             if (ctx.BaseItemData is ThanThong skill)
             {
-                ctx.PrefabIconRequire.transform.parent.parent.gameObject.SetActive(true);
+                var parent = ctx.PrefabIconRequire.transform.parent.parent;
+                parent.gameObject.SetActive(true);
+                // clear
+                for (int i = 0; i < ctx.PrefabIconRequire.transform.parent.childCount; i++)
+                {
+                    ctx.PrefabIconRequire.transform.parent.GetChild(i).gameObject.SetActive(false);
+                }
                 for (int i = 0; i < skill.BaseRequireActive.Count; i++)
                 {
                     Image itemRequire = GameManager.GetItemPoolWithPrefabInParent(ctx.PrefabIconRequire);
