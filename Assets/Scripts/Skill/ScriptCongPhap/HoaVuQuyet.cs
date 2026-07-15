@@ -17,7 +17,7 @@ public class HoaVuQuyet : CongPhap, IMemorySerializable<HoaVuQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Kết thúc hiệp, bản thân khôi phục {GetColoredText($"+{healValues}", "red")} điểm Hp";
+        return $"Kết thúc hiệp, bản thân khôi phục {GetColoredText($"+{healValues[level-1]}", "red")} điểm Hp";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)
