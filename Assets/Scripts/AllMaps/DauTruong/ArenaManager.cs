@@ -65,7 +65,7 @@ namespace AllMaps.DauTruong
                 progressRank.gameObject.SetActive(true);
                 progressRank.sprite = spriteRefRank[(int)nextRank - 1];
                 txtPoint.text = $"{pointUser}/{valueNextRank}";
-                progressBar.fillAmount = (float)(pointUser / valueNextRank);
+                progressBar.fillAmount = (float)pointUser / valueNextRank;
             }
         }
 
