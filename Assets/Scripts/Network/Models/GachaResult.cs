@@ -16,5 +16,7 @@ namespace Network.Models
         public int NewTienNgoc { get; set; }
         public int Money { get; set; }
         public int MoneyVip { get; set; }
+        public ETypeGacha Type { get; set; }
+        public int TotalGacha { get; set; }
     }
 }

@@ -47,7 +47,6 @@ namespace Network.Models
         public int PhuTu1Used { get; set; }
         public int ChuTu2Used { get; set; }
         public int ChuTu1Used { get; set; }
-
         public int PointArena { get; set; }
 
         [MemoryPackConstructor]
@@ -77,7 +76,6 @@ namespace Network.Models
             this.PhuTu3Used = equipment.PhuTu3Used;
             this.PhuTu4Used = equipment.PhuTu4Used;
             this.ThanThongEquip = equipment.ThanThongEquips.Select(x => (int)x.Id).ToList();
-
             this.DanCombatUseds = equipment.DanCombatUseds;
             this.NgoDaos = c.InventoryManager.NgoDaos;
             this.VuKhi = c.InventoryManager.VuKhis.FirstOrDefault(x => x.SelfId == c.EquipmentManager.VuKhi);

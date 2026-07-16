@@ -132,6 +132,7 @@ namespace Network.Core
                 {
                     var charData = Client.Instance.CharacterData;
                     charData.MoneyVip = result.NewTienNgoc;
+                    charData.GachaManager.Set(result.Type, result.TotalGacha);
                     charData.InventoryManager.AddToInventory(result.RewardItems);
                 }
                 NetworkManager.Instance.Invoke(() =>

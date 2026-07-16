@@ -26,6 +26,7 @@ public class GachaPanel : PanelGroup , INetworkEvent.IGacha
     [SerializeField] public Text txtRequire1 => btnGacha1.transform.GetChild(0).GetComponent<Text>();
     [SerializeField] public Text txtRequire10 => btnGacha10.transform.GetChild(0).GetComponent<Text>();
     [SerializeField] private Button btnBack;
+    [SerializeField] private Text thresholdText;
     public ETypeGacha CurrentTypeGacha => currentBtn != null?(ETypeGacha)listBtnPage.IndexOf(currentBtn) : ETypeGacha.ThanThong;
     public override void Init()
     {
@@ -36,9 +37,7 @@ public class GachaPanel : PanelGroup , INetworkEvent.IGacha
             var btn = listBtnPage[index];
             SetEventButton(btn, () =>
             {
-
                 InitBtn(btn);
-                
             });
 
         }
@@ -80,6 +79,7 @@ public class GachaPanel : PanelGroup , INetworkEvent.IGacha
         {
            gameObject.SetActive(false);
         });
+        UpdateThreshold();
     }
     private void InitBtn(Button btnRef)
     {
@@ -95,20 +95,34 @@ public class GachaPanel : PanelGroup , INetworkEvent.IGacha
         txtRequire1.text = $"x{PageGachaWithRequireValue[(ETypeGacha)indexRef]}";
         txtRequire10.text = $"x{PageGachaWithRequireValue[(ETypeGacha)indexRef] * 10}";
         btnRef.transform.GetChild(0).gameObject.SetActive(true);
-
+        UpdateThreshold();
     }
     public void SetActive()
     {
-        this.gameObject.SetActive(true);
+        gameObject.SetActive(true);
         InitBtn(listBtnPage[0]);
     }
     public void SuccessGacha(RewardSnapshot rewardGacha)
     {
-        Pool.Get<EventRewardPanel>().InitShowEventReward(rewardGacha,"May mắn luôn ở quanh ta!");
-    }   
+        var panel = Pool.Get<EventRewardPanel>();
+        panel.InitShowEventReward(rewardGacha,"May mắn luôn ở quanh ta!");
+        UpdateThreshold();
+    }
+
+    private void UpdateThreshold()
+    {
+        var gacha = Client.Instance.CharacterData.GachaManager;
+        var total = gacha.Get(CurrentTypeGacha);
+        var threshold = gacha.Threshold;
+        var remaining = threshold - total % threshold;
+        var text = $"Còn {remaining} lần quay nữa bạn sẽ nhận được vật phẩm hiếm";
+        if(thresholdText != null)
+        {
+            thresholdText.text = text;
+        }
+    }
     public void FailGacha(string message)
     {
         NotifyGroup.Instance.Show(message);
     }    
-
 }
