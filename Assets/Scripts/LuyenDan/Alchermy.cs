@@ -290,7 +290,7 @@ namespace LuyenDan
                         var tierColor = GetColorHexByTier(data.Tier);
                         builder.Append($"<color=#{textColor}>Chưa sở hữu công thức này</color> (<b><color=#{tierColor}>{data.Name}</color></b>)");
                         builder.AppendLine();
-                        builder.Append("<color=#ff8800>Tỉ lệ thành công: <b>50%</b></color>");
+                        builder.Append("<color=#ff8800>Tỉ lệ thành công: <b>100%</b></color>");
                         builder.AppendLine();
                         builder.Append(
                             $"<i><color=#aaaaaa>Tiêu hao</color> <color=#ff4444>{baseDaysRequired * value}</color> <color=#aaaaaa>ngày</color> nếu thành công," +

@@ -7,6 +7,7 @@ using LongDH.LongDHModules;
 using LongDHModules;
 using LuyenDan;
 using LuyenKhi;
+using Network.ClientState;
 using Network.Core;
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
@@ -22,7 +23,11 @@ namespace Network
     {
         private Client Client => Client.Instance;
         private static AdminPanel instance;
-
+#if UNITY_EDITOR
+        private string secretKey = "qnn22n2us7g2bbna-aql11.e22111m1m";
+#else
+        private string secretKey = "";
+#endif
         public static AdminPanel Instance
         {
             get
@@ -45,14 +50,15 @@ namespace Network
 
             return Client.CharacterData != null;
         }
+
         [Button]
         public void LogArena()
         {
             Debug.Log("CurrentCount " + Client.CharacterData.ArenaManager.CurrentArenaCount);
 
             Debug.Log("Arena Poin " + Client.CharacterData.ArenaManager.Points);
-        }    
-       
+        }
+
         [Button]
         [ShowIf(nameof(IsReady))]
         public void AddItems(List<ItemRef> items)
@@ -203,6 +209,34 @@ namespace Network
             var currentExp = reader.Read<int>();
             Client.CharacterData.Progression.CurrentExp = currentExp;
         }
+
+        [Button]
+        [ShowIf(nameof(IsAuthStateAndNotLogin))]
+        public void AdminLoginGoogle(string email)
+        {
+            var state = Client.State as AuthState;
+            state?.Login(new AdminLoginWithGoogle()
+            {
+                Email = email,
+                SecretKey = secretKey
+            });
+        }
+
+        private bool IsAuthStateAndNotLogin()
+        {
+            if (Client == null)
+            {
+                return false;
+            }
+
+            if (Client.UserData != null)
+            {
+                return false;
+            }
+
+            return Client.State is AuthState;
+        }
+
         public void OnEnter()
         {
         }

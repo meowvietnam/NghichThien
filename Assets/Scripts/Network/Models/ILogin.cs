@@ -5,6 +5,7 @@ namespace Network.Models
 {
     [MemoryPackable]
     [MemoryPackUnion(0, typeof(LoginWithGoogle))]
+    [MemoryPackUnion(1, typeof(AdminLoginWithGoogle))]
     public partial interface ILogin
     {
         SignInProvider GetSignInProvider();

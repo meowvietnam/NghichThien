@@ -3,6 +3,7 @@ namespace SignIn
     public enum SignInProvider
     {
         Guest = 0,
+        AdminGoogle = 6,
         Google = 10,
         Facebook = 20,
     }
