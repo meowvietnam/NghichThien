@@ -391,8 +391,6 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
             HideAllPop();
             tangQuaPop.Show();
             InitPopTangQua();
-           
-
         });
         SetEventButton(btnThinhGiao, () =>
         {

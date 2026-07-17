@@ -46,7 +46,7 @@ public class UIManager : BaseBehaviour
     /// <summary>
     /// Abstract Factory để lấy equipment từ các collection khác nhau
     /// </summary>
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     [Button]
     public void GetQualities()
     {
@@ -194,9 +194,10 @@ public class UIManager : BaseBehaviour
                 item.InitIcon(spriteCPInven, frame);
             }
         }
-        if(isIconSkillBase)
+
+        if (isIconSkillBase)
         {
-            item.icon.rectTransform.sizeDelta = new Vector2(128,128);
+            item.icon.rectTransform.sizeDelta = new Vector2(128, 128);
         }
 
 
@@ -205,7 +206,7 @@ public class UIManager : BaseBehaviour
 
     public Image commonMask;
     public GameObject panelGroup;
-
+    private Tween openListTween;
     private void Awake()
     {
         var existing = Pool.Get<UIManager>();
@@ -231,22 +232,23 @@ public class UIManager : BaseBehaviour
         });
         SetEventButton(btnListIconShow, () =>
         {
-            btnListIconShow.enabled = false;
+            openListTween?.Kill();
+            var listRectTf = ListIcon.GetComponent<RectTransform>();
             if (isShowListIcon)
             {
-                // Sử dụng DOAnchorPosX để di chuyển theo tọa độ của Anchor
-                ListIcon.GetComponent<RectTransform>().DOAnchorPosX(500, 0.5f);
+                openListTween = listRectTf.DOAnchorPosX(0, 0.5f);
                 isShowListIcon = false;
             }
             else
             {
-                ListIcon.GetComponent<RectTransform>().DOAnchorPosX(-170, 0.5f);
+                var layout = listRectTf.GetComponent<HorizontalLayoutGroup>();
+                var spacing = layout.spacing;
+                var width = listRectTf.rect.width;
+                var buttonWidth = btnListIconShow.GetComponent<RectTransform>().rect.width;
+                var xValue = width - buttonWidth - spacing;
+                openListTween = listRectTf.DOAnchorPosX(xValue, 0.5f);
                 isShowListIcon = true;
             }
-            DOVirtual.DelayedCall(0.5f,() =>
-            {
-                btnListIconShow.enabled =true;
-            });
         });
         btnStartPack.gameObject.SetActive(!Client.Instance.CharacterData.IsInfiniteEnergy);
         SetEventButton(btnGacha, () => { Pool.Get<GachaPanel>().SetActive(); });

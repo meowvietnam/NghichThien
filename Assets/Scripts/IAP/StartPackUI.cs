@@ -20,13 +20,13 @@ namespace IAP
 
         public void SetMoneyVipText(int moneyVip)
         {
-            var text = $"{Utils.FormatMoney(moneyVip)} Tiên ngọc";
+            var text = $"{Utils.FormatCount(moneyVip)} Tiên ngọc";
             moneyText.text = text;
         }
 
         public void SetMoneyText(int money)
         {
-            var text = $"{Utils.FormatMoney(money)} Linh thạch";
+            var text = $"{Utils.FormatCount(money)} Linh thạch";
             moneyText.text = text;
         }
 

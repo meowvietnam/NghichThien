@@ -38,7 +38,7 @@ namespace LuyenKhi
         }
         public virtual void Init(ItemRef itemRef)
         {
-            this.ItemRef = itemRef;
+            ItemRef = itemRef;
             SetCount(itemRef.Count);
             var data = LuyenKhiResources.Instance.FindItem(itemRef);
             if (data != null)

@@ -8,10 +8,11 @@ namespace Base
         private static readonly Random Random = new();
         private static readonly object RandomLock = new();
 
-        public static string FormatMoney(long money)
+        public static string FormatCount(long money)
         {
             return money.ToString("N0", CultureInfo.GetCultureInfo("vi-VN"));
         }
+        
         public static string GetTime(TimeSpan timeSpan)
         {
             if (timeSpan <= TimeSpan.Zero)

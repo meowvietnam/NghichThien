@@ -13,12 +13,12 @@ namespace IAP
         [SerializeField] private Button purchaseButton;
         public void SetMoneyVipText(int moneyVip)
         {
-            var text = $"{Utils.FormatMoney(moneyVip)} Tiên ngọc";
+            var text = $"{Utils.FormatCount(moneyVip)} Tiên ngọc";
             moneyVipText.text = text;
         }
         public void SetPriceText(long price)
         {
-            var text = $"{Utils.FormatMoney(price)} VNĐ";
+            var text = $"{Utils.FormatCount(price)} VNĐ";
             priceText.text = text;
         }
 

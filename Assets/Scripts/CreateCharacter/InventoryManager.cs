@@ -240,10 +240,14 @@ namespace CreateCharacter
             {
                 if (itemRefse.TryGetValue(itemRef, out var item))
                 {
-                    item.Count = (ushort)(itemRef.Count + count);
-                    if (item.Count == 0)
+                    var remaining = (itemRef.Count + count);
+                    if (remaining <= 0)
                     {
                         itemRefse.Remove(item);
+                    }
+                    else
+                    {
+                        itemRef.Count = (ushort)remaining;
                     }
                     return;
                 }

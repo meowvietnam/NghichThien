@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Base;
 using CreateCharacter;
+using LongDH.LongDHModules;
+using Network.Models;
 using UnityEngine;
 using UnityEngine.UI;
 using ArenaManager = AllMaps.DauTruong.ArenaManager;
@@ -25,9 +27,12 @@ namespace AllMaps.ui_rank
         [SerializeField] private List<Sprite> spriteLevel;
         [SerializeField] private List<Sprite> spriteRank;
         [SerializeField] private Sprite spriteTienNgoc;
-
+        [SerializeField] private Button infoButton;
+        private CharacterStatsSecure charData;
         public void Init(CharacterData charData, int rank, RankType rankType, int valueRank)
         {
+            this.charData = CharacterStatsSecureBuilder.ArenaFromCharacterSnapshot(new CharacterSnapshot(charData));
+            SetEventButton(infoButton, ShowPopupInfo);
             var tuoiTac = GameManager.GetIntTuoiTac(charData.Stats.TuoiTac);
             var name = charData.Name;
             var gender = charData.Gender;
@@ -36,6 +41,10 @@ namespace AllMaps.ui_rank
             Init(tuoiTac, rank, name, valueRank, gender, skin, color, rankType);
         }
 
+        private void ShowPopupInfo()
+        {
+            Observer.Notify(EventList.GamePlay.SHOW_RANK_INFO_POPUP, charData);
+        }
         public void Init(int tuoitac, int sttRank, string nameUser, int valueRank, Gender gender,
             Dictionary<string, string> skin, Dictionary<string, Color> colors, RankType rankType)
         {
@@ -59,18 +68,18 @@ namespace AllMaps.ui_rank
             }
             else if (rankType == RankType.RankTongNap || rankType == RankType.RankTongTieu)
             {
-                txtValueRank.text = valueRank.ToString();
+                txtValueRank.text = Utils.FormatCount(valueRank);
                 imageIcon.sprite = spriteTienNgoc;
                 txtValue.transform.parent.gameObject.SetActive(false);
-                imageIcon.transform.localScale = Vector3.one * 0.5f;
+                imageIcon.transform.localScale = Vector3.one * 0.4f;
             }
             else if (rankType == RankType.RankArena)
             {
-                txtValueRank.text = valueRank.ToString();
+                txtValueRank.text = Utils.FormatCount(valueRank);
                 var typeRank = ArenaManager.GetArenaRankWithPoint(valueRank);
                 imageIcon.sprite = typeRank == ETypeArenaRank.None ? null : spriteRank[(int)typeRank - 1];
                 txtValue.transform.parent.gameObject.SetActive(false);
-                imageIcon.transform.localScale = Vector3.one * 0.075f;
+                imageIcon.transform.localScale = Vector3.one * 0.05f;
             }
 
             imageIcon.SetNativeSize();

@@ -14,7 +14,13 @@ namespace Network.Models
         {
             if (Deletes.Remove(value))
             {
-                Updates.Add(value);
+                Replace(Updates, value);
+                return;
+            }
+
+            if (Updates.Remove(value))
+            {
+                Replace(Updates, value);
                 return;
             }
             Adds.Add(value);
@@ -22,11 +28,16 @@ namespace Network.Models
         public void Update(T value)
         {
             if (Adds.Contains(value))
+            {
+                Replace(Adds, value);
                 return;
+            }
 
             if (Deletes.Contains(value))
+            {
                 return;
-            Updates.Add(value);
+            }
+            Replace(Updates, value);
         }
 
         public void Delete(T value)
@@ -35,7 +46,7 @@ namespace Network.Models
                 return;
 
             Updates.Remove(value);
-            Deletes.Add(value);
+            Replace(Deletes, value);
         }
         public bool IsModified()
         {
@@ -62,6 +73,11 @@ namespace Network.Models
             {
                 set.UnionWith(Adds);
             }
+        }
+        private static void Replace(HashSet<T> set, T value)
+        {
+            set.Remove(value);
+            set.Add(value);
         }
     }
 }

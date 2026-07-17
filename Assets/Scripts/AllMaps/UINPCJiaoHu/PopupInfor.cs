@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class PopupInfor : Popup
 {
-    [Header("--- Pop D� X�t ---")]
+    [Header("--- Pop Do Xet ---")]
     [SerializeField] public CharacterGraphic charVisualPopXemXet;
     [SerializeField] public CharacterVisualControl charVisualControl;
     [SerializeField] private Text textThanThuc;
@@ -32,10 +32,11 @@ public class PopupInfor : Popup
     }
     public void InitPopDoXet(CharacterStatsSecure characterStatsTarget)
     {
-        this.Show();
+        Show();
         textNamePopXemXet.text = characterStatsTarget.nameUser;
         charVisualPopXemXet.SetGender(characterStatsTarget.Gender);
-        charVisualPopXemXet.SetSkin(characterStatsTarget.Skins);
+        charVisualPopXemXet.SetSkin(characterStatsTarget.Skins, characterStatsTarget.Colors);
+        Debug.Log(characterStatsTarget.Skins.Count);
         textThanThuc.text = characterStatsTarget.thanThuc.Value.ToString();
         textTocDoBay.text = characterStatsTarget.tocDoBay.Value.ToString();
         textNgoTinh.text = characterStatsTarget.ngoTinh.Value.ToString();
@@ -47,6 +48,7 @@ public class PopupInfor : Popup
         textHaoCam.text = Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar).ToString();
         List<Skill.ThanThong> listThanThongData = new List<Skill.ThanThong>();
         var gameConfig = Pool.Get<GameManager>();
+        var ui = Pool.Get<UIManager>();
         foreach (var item in characterStatsTarget.thanThongEquip)
         {
             listThanThongData.Add(gameConfig.GetThanThongWithId(item.Value));
@@ -56,13 +58,13 @@ public class PopupInfor : Popup
             var item = listThanThongItemSlot[i];
             var data = i < listThanThongData.Count ? listThanThongData[i] : null;
 
-            Pool.Get<UIManager>().InitVisualItemSkill(item, data);
+            ui.InitVisualItemSkill(item, data);
         }
-        Pool.Get<UIManager>().InitVisualItemSkill(listCongPhapItemSlot[0], gameConfig.GetCongPhapWithId(characterStatsTarget.chuTu1Used.Value));
-        Pool.Get<UIManager>().InitVisualItemSkill(listCongPhapItemSlot[1], gameConfig.GetCongPhapWithId(characterStatsTarget.chuTu2Used.Value));
-        Pool.Get<UIManager>().InitVisualItemSkill(listCongPhapItemSlot[2], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu1Used.Value));
-        Pool.Get<UIManager>().InitVisualItemSkill(listCongPhapItemSlot[3], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu2Used.Value));
-        Pool.Get<UIManager>().InitVisualItemSkill(listCongPhapItemSlot[4], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu3Used.Value));
-        Pool.Get<UIManager>().InitVisualItemSkill(listCongPhapItemSlot[5], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu4Used.Value));
+        ui.InitVisualItemSkill(listCongPhapItemSlot[0], gameConfig.GetCongPhapWithId(characterStatsTarget.chuTu1Used.Value));
+        ui.InitVisualItemSkill(listCongPhapItemSlot[1], gameConfig.GetCongPhapWithId(characterStatsTarget.chuTu2Used.Value));
+        ui.InitVisualItemSkill(listCongPhapItemSlot[2], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu1Used.Value));
+        ui.InitVisualItemSkill(listCongPhapItemSlot[3], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu2Used.Value));
+        ui.InitVisualItemSkill(listCongPhapItemSlot[4], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu3Used.Value));
+        ui.InitVisualItemSkill(listCongPhapItemSlot[5], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu4Used.Value));
     }
 }

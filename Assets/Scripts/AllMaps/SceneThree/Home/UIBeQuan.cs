@@ -56,6 +56,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         {
             prefab.transform.parent.GetChild(i).gameObject.SetActive(false);
         }
+
         foreach (var item in itemRefs)
         {
             var itemInventory = GameManager.GetItemPoolWithPrefabInParent(prefab);
@@ -64,8 +65,6 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
             itemInventory.InitCount(ItemProviderFactory.GetProvider(item.Type).GetCountOwner(item.Id));
             itemInventory.InitCountRequire(item.Count);
         }
-
-        
     }
 
     private void Awake()
@@ -109,17 +108,18 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
             });
         }
 
-       
+
         SetEventButton(btnShowPopDotPha, () =>
         {
             var inforLevel = LevelResource.Instance.inforLevels[Client.Instance.CharacterData.Progression.Level - 1];
-            if (inforLevel.IsSpecialLevelUp && Client.Instance.CharacterData.Progression.CurrentExp >= inforLevel.tuviRequireNextLevel)
+            if (inforLevel.IsSpecialLevelUp &&
+                Client.Instance.CharacterData.Progression.CurrentExp >= inforLevel.tuviRequireNextLevel)
             {
                 popDotPha.Show();
                 SetupPopupDotPha(inforLevel.RequireItem, prefabItemRequireDotPha);
                 var btnGreyConfirmDotPha = btnConfirmDotPha.transform.GetChild(0).GetComponent<Button>();
                 var canDotPha = inforLevel.RequireItem.All(x =>
-                ItemProviderFactory.GetProvider(x.Type)?.GetCountOwner(x.Id) >= x.Count);
+                    ItemProviderFactory.GetProvider(x.Type)?.GetCountOwner(x.Id) >= x.Count);
                 btnGreyConfirmDotPha.gameObject.SetActive(!canDotPha);
                 if (canDotPha)
                 {
@@ -128,23 +128,19 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
                         popDotPha.Hide();
                         Observer.Notify(EventList.Network.SPECIAL_LEVELUP, this);
                     });
-                   
-                }    
+                }
                 else
                 {
-                    SetEventButton(btnGreyConfirmDotPha, () =>
-                    {
-                        NotifyGroup.Instance.Show("Không đủ nguyên liệu cần để đột phá");
-                    });
-                }    
-                
+                    SetEventButton(btnGreyConfirmDotPha,
+                        () => { NotifyGroup.Instance.Show("Không đủ nguyên liệu cần để đột phá"); });
+                }
+
                 SetupPopupDotPha(inforLevel.BuffItem, prefabItemThienDaoDotPha);
-            }   
+            }
             else
             {
                 NotifyGroup.Instance.Show("Tu vi của bạn cần đạt tới bình cảnh để có thể đột phá");
             }
-         
         });
     }
 
@@ -238,8 +234,9 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         totalValueTuLuyenText.text = "0";
         sliderTuLuyen.minValue = 0;
         sliderTuLuyen.value = 0;
-        sliderTuLuyen.maxValue = (int)(charData.Stats.ThoNguyen - GameManager.GetIntTuoiTac(charData.Stats.TuoiTac)) *
-            10 * 12 / 100;
+        var value = Math.Max(0, charData.Stats.LinhThach / 100);
+        value = Math.Min(value, 120);
+        sliderTuLuyen.maxValue = value;
         sliderTuLuyen.onValueChanged.RemoveAllListeners();
         sliderTuLuyen.onValueChanged.AddListener((value) =>
         {
@@ -247,22 +244,26 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
             int tongSoThang = Mathf.RoundToInt(value);
             if (tongSoThang > 0)
             {
-                var buffExp = GetTotalValueBuffWithMultiplier(new List<float> { percentTuChat, 100, percentTamCanh }) * tongSoThang;
+                var buffExp = GetTotalValueBuffWithMultiplier(new List<float> { percentTuChat, 100, percentTamCanh }) *
+                              tongSoThang;
                 var ability = charData.Stats.Ability;
                 if (ability.HasFlag(Ability.TienThienDaoThe))
                 {
                     buffExp += (int)MathF.Ceiling(buffExp * 0.1f);
                 }
+
                 if (ability.HasFlag(Ability.HuyenAmTuyetMach))
                 {
                     buffExp -= (int)MathF.Ceiling(buffExp * 0.1f);
                 }
+
                 totalValueTuLuyenText.text = $"{buffExp}";
             }
             else
             {
                 totalValueTuLuyenText.text = "0";
             }
+
             // 2. Cập nhật vào biến SecureInt
             currentTuLuyenTimeInt = (tongSoThang);
             UpdateTuLuyenTimeUI();
@@ -663,7 +664,6 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
     }
 
-   
 
     public void FailTuLuyen(string message)
     {
@@ -689,6 +689,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
             Observer.Notify(EventList.Network.EQUIP_CONGPHAP, Pool.Get<TabPanel>(), typeSlot, (ushort)idCpUpdate);
             typeSlot = ETypeSlotCP.None;
         }
+
         Observer.Notify(EventList.GamePlay.TIME_ADJUST);
     }
 
@@ -706,7 +707,6 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
     {
         NotifyGroup.Instance.Show("Đột phá thành công");
         Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
-
     }
 
     public void FailSpecialLevelUp(string message)

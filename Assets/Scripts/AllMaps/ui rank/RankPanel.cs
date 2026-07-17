@@ -11,6 +11,7 @@ namespace AllMaps.ui_rank
 {
     public class RankPanel : PanelGroup, IGetRank
     {
+        [SerializeField] private PopupInfor popupInfor;
         [SerializeField] private Popup mainPopup;
         [SerializeField] private Button infoRewardBtn;
         [SerializeField] public Transform rankContainer;
@@ -25,8 +26,15 @@ namespace AllMaps.ui_rank
 
         private void Start()
         {
-            infoRewardBtn.onClick.AddListener(ShowHideRewardInfo);
+            Observer.AddObserver(EventList.GamePlay.SHOW_RANK_INFO_POPUP, ShowRankInfoPopup);
+            SetEventButton(infoRewardBtn, ShowHideRewardInfo);
             ClearTops();
+        }
+
+        private void ShowRankInfoPopup(object[] data)
+        {
+            var charData = data[0] as CharacterStatsSecure;
+            popupInfor.InitPopDoXet(charData);
         }
 
 
@@ -104,6 +112,12 @@ namespace AllMaps.ui_rank
         {
             isLock = false;
             NotifyGroup.Instance.Show(message);
+        }
+
+        private void OnDestroy()
+        {
+            Observer.RemoveObserver(EventList.GamePlay.SHOW_RANK_INFO_POPUP, ShowRankInfoPopup);
+            infoRewardBtn.onClick.RemoveAllListeners();
         }
     }
 }

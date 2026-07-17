@@ -53,6 +53,7 @@ namespace Network.Models
         public CharacterSnapshot()
         {
         }
+        //Stats,Progression, Appearance, Equipment, Inventory, ArenaManager
         public CharacterSnapshot(CharacterData c)
         {
             var equipment = c.EquipmentManager;

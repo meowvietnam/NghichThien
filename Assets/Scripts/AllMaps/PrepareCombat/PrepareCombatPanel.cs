@@ -44,7 +44,6 @@ public class PrepareCombatPanel : Popup , IUISingleton
         {
             Pool.Get<TabPanel>().gameObject.SetActive(true);
 
-
         });
 
     }

@@ -12,6 +12,7 @@ namespace IAP
         public int MoneyVip { get; set; }
         public int Money { get; set; }
         public ushort CongPhapId { get; set; }
+        [MemoryPackIgnore] private string productId;
         public void Execute(CharacterData charData)
         {
             charData.IsInfiniteEnergy = true;
@@ -52,10 +53,11 @@ namespace IAP
 
         public void ShowUISuccess(IapUIContext context)
         {
-
+            context.IapHandler.IapObjects[productId].SetActive(false);
         }
         public void InitUI(IapUIContext context)
         {
+            productId = context.OwnerIapProduct.Product.StoreProductId;
             if (context.OwnerIapProduct.HasPurchased)
             {
                 return;
@@ -63,12 +65,14 @@ namespace IAP
             var prefab = context.StartPackUIPrefab;
             var iapHandler = context.IapHandler;
             var startPackUI = Object.Instantiate(prefab, iapHandler.transform);
+            iapHandler.IapObjects[productId] = startPackUI.gameObject;
             startPackUI.SetMoneyVipText(MoneyVip);
             startPackUI.SetMoneyText(Money);
             startPackUI.SetCongPhap(CongPhapId);
+            
             startPackUI.SetPurchaseAction(() =>
             {
-                context.IapHandler.BuyProduct(context.IapProduct.StoreProductId);
+                context.IapHandler.BuyProduct(productId);
             });
             if(!Client.Instance.CharacterData.IsInfiniteEnergy)
             {

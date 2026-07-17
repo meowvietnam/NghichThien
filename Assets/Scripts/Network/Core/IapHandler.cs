@@ -32,7 +32,7 @@ namespace Network.Core
         };
 
         public MessageTag[] HandleTag => handler;
-
+        public Dictionary<string, GameObject> IapObjects { get; private set; } = new();
         public override void Init()
         {
             base.Init();

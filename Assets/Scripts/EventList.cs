@@ -47,6 +47,7 @@ public static partial class EventList
 
     public static class GamePlay
     {
+        public const string SHOW_RANK_INFO_POPUP = "GamePlay.SHOW_RANK_INFO_POPUP";
         public const string UPDATE_PLAYER_STATS = "GamePlay.UPDATE_PLAYER_STATS";
         public const string LOAD_SCENE = "GamePlay.LOAD_SCENE";
         public const string BACK_SCENE = "GamePlay.BACK_SCENE";
