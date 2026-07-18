@@ -62,8 +62,21 @@ public class SideQuestManager : ActionEnterMapManager
     [SerializeField] public Dictionary<string, string> skins => characterProviderQuest.Skins;
     [SerializeField] public Dictionary<string, Color> color => characterProviderQuest.Colors;
     [SerializeField] public Gender gender => characterProviderQuest.Gender;
-   
 
+
+    protected override void LoadData()
+    {
+        base.LoadData();
+        if(CountRandom<=0)
+        {
+            foreach (var item in currentMapRandom )
+            {
+                item.ResetDataAction();
+
+            }
+            currentMapRandom.Clear();
+        }    
+    }
     public void DoneQuest()
     {
         Pool.Get<QuestManager>().QuestDone();
