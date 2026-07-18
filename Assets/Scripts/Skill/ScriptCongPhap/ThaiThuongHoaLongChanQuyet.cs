@@ -28,7 +28,7 @@ public class ThaiThuongHoaLongChanQuyet : ThoNapCongPhap, IMemorySerializable<Th
 
     public override string GetDesc(int level)
     {
-        return $"{GetDesc(level)}. Kết thúc hiệp, hấp thụ {GetColoredText($"{buffValues2[level - 1]}*X", "red")} điểm linh khí (X là số lượt hiện tại và giới hạn tối đa là {GetColoredText($"{maxs[level - 1]}", "red")})";
+        return $"{base.GetDesc(level)}. Kết thúc hiệp, hấp thụ {GetColoredText($"{buffValues2[level - 1]}*X", "red")} điểm linh khí (X là số lượt hiện tại và giới hạn tối đa là {GetColoredText($"{maxs[level - 1]}", "red")})";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

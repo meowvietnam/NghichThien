@@ -18,7 +18,7 @@ public class CuuLongDanLoiQuyet : ThoNapCongPhap, IMemorySerializable<CuuLongDan
 
     public override string GetDesc(int level)
     {
-        return $"{GetDesc(level)}. Kết thúc hiệp, thu hoạch được {GetColoredText($"+{buffValues2[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.GiamTonThuong)}";
+        return $"{base.GetDesc(level)}. Kết thúc hiệp, thu hoạch được {GetColoredText($"+{buffValues2[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.GiamTonThuong)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

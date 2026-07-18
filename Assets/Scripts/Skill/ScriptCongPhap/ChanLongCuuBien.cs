@@ -17,7 +17,7 @@ public class ChanLongCuuBien : ThoNapCongPhap, IMemorySerializable<ChanLongCuuBi
 
     public override string GetDesc(int level)
     {
-        return $"{GetDesc(level)}. Bắt đầu chiến đấu, thu hoạch được {GetColoredText($"+{buffValues2[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChanLongChiHuyet)}";
+        return $"{base.GetDesc(level)}. Bắt đầu chiến đấu, thu hoạch được {GetColoredText($"+{buffValues2[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChanLongChiHuyet)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)
