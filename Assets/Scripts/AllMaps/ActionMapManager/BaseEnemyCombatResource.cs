@@ -27,23 +27,50 @@ public class BaseEnemyCombatResource : ActionMapResourceSO
         int playerLevel = levelTarget;
 
         int targetLevel = playerLevel;
-        float rand = UnityEngine.Random.value;
-        int maxTarget75Percent = playerLevel + 1;
-        int maxTarget25Percent = playerLevel + 3;
+        float rand = UnityEngine.Random.value; // Trả về giá trị từ 0.0 đến 1.0
+        int maxLevelConfig = Pool.Get<GameManager>().inforLevels.Length;
 
-        maxTarget75Percent = maxTarget75Percent > Pool.Get<GameManager>().inforLevels.Length ? Pool.Get<GameManager>().inforLevels.Length : maxTarget75Percent;
-        maxTarget25Percent = maxTarget25Percent > Pool.Get<GameManager>().inforLevels.Length ? Pool.Get<GameManager>().inforLevels.Length : maxTarget25Percent;
-        // Xác định level mục tiêu cho vị trí này
-        if (rand <= 0.25f)
+        if (rand <= 0.50f)
         {
-            // 25% vượt cấp (+1 hoặc +2)
-            targetLevel = UnityEngine.Random.Range(maxTarget75Percent, maxTarget25Percent);
+            // 50% bằng chính xác level của player
+            targetLevel = playerLevel;
+        }
+        else if (rand <= 0.75f)
+        {
+            // 25% vượt cấp (từ playerLevel + 1 đến playerLevel + 2)
+            // +3 ở max vì Random.Range cho int không lấy giá trị cuối
+            int minOver = playerLevel + 1;
+            int maxOver = playerLevel + 3;
+
+            // Giới hạn không vượt quá max level của game
+            minOver = minOver > maxLevelConfig ? maxLevelConfig : minOver;
+            maxOver = maxOver > maxLevelConfig ? maxLevelConfig : maxOver;
+
+            if (minOver == maxOver)
+            {
+                targetLevel = minOver;
+            }
+            else
+            {
+                targetLevel = UnityEngine.Random.Range(minOver, maxOver);
+            }
         }
         else
         {
-            // 75% cùng hoặc dưới cảnh giới (1 -> playerLevel)
-            targetLevel = UnityEngine.Random.Range(1, maxTarget75Percent);
+            // 25% dưới cảnh giới (từ 1 đến playerLevel - 1)
+            // Để lấy được đến playerLevel - 1 thì max của Random.Range phải là playerLevel
+            if (playerLevel > 1)
+            {
+                targetLevel = UnityEngine.Random.Range(1, playerLevel);
+            }
+            else
+            {
+                targetLevel = 1; // Nếu player đang ở level 1 thì không thể thấp hơn được nữa
+            }
         }
+
+        // Bọc thêm một lớp bảo mật cuối cùng để đảm bảo targetLevel luôn hợp lệ
+        targetLevel = Mathf.Clamp(targetLevel, 1, maxLevelConfig);
 
         // 3. Tìm danh sách enemy phù hợp với level này
         var possibleEnemies = listEnemy

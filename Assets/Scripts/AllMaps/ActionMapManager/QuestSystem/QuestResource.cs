@@ -82,27 +82,57 @@ public abstract class SideQuestResource : QuestResource,INetworkEvent.ICompleteS
     public NPCData GetNPCDataSideQuestWithTargetLevel(NPCData[] listEnemy, int levelTarget)
     {
         int playerLevel = levelTarget;
-
         int targetLevel = playerLevel;
         float rand = UnityEngine.Random.value;
-        int minTarget75Percent = playerLevel - 1;
-        int maxTarget75Percent = playerLevel + 1;
-        int maxTarget25Percent = playerLevel + 3;
+        int maxLevelConfig = Pool.Get<GameManager>().inforLevels.Length;
 
-        minTarget75Percent = minTarget75Percent <= 0 ? 1 : minTarget75Percent;
-        maxTarget75Percent = maxTarget75Percent > Pool.Get<GameManager>().inforLevels.Length ? Pool.Get<GameManager>().inforLevels.Length : maxTarget75Percent;
-        maxTarget25Percent = maxTarget25Percent > Pool.Get<GameManager>().inforLevels.Length ? Pool.Get<GameManager>().inforLevels.Length : maxTarget25Percent;
-        // Xác định level mục tiêu cho vị trí này
-        if (rand <= 0.25f)
+        // --- TỰ ĐỊNH NGHĨA KHOẢNG CỦA BẠN Ở ĐÂY ---
+        int minUnder = playerLevel - 2; // Ví dụ: dưới cấp tối đa là thấp hơn 2 cấp (thay vì cố định là 1)
+        int maxOver = playerLevel + 2; // Ví dụ: vượt cấp tối đa là cao hơn 2 cấp
+
+        // Giới hạn các biến để không vượt quá giới hạn của game (1 -> maxLevelConfig)
+        minUnder = Mathf.Clamp(minUnder, 1, maxLevelConfig);
+        maxOver = Mathf.Clamp(maxOver, 1, maxLevelConfig);
+        // ------------------------------------------
+
+        if (rand <= 0.50f)
         {
-            // 25% vượt cấp (+1 hoặc +2)
-            targetLevel = UnityEngine.Random.Range(maxTarget75Percent, maxTarget25Percent);
+            // 1. [50%] Bằng chính xác level của player
+            targetLevel = playerLevel;
+        }
+        else if (rand <= 0.75f)
+        {
+            // 2. [25%] Vượt cấp (Từ playerLevel + 1 đến maxOver)
+            int startOver = playerLevel + 1;
+
+            if (startOver > maxOver)
+            {
+                targetLevel = maxOver; // Nếu đã chạm trần thì lấy luôn maxOver
+            }
+            else
+            {
+                // Cộng 1 vào tham số max vì Random.Range của số nguyên không lấy giá trị cuối
+                targetLevel = UnityEngine.Random.Range(startOver, maxOver + 1);
+            }
         }
         else
         {
-            // 75% cùng hoặc dưới cảnh giới (playerLevel - 1 -> playerLevel)
-            targetLevel = UnityEngine.Random.Range(minTarget75Percent, maxTarget75Percent);
+            // 3. [25%] Dưới cấp (Từ minUnder đến playerLevel - 1)
+            int endUnder = playerLevel - 1;
+
+            if (minUnder > endUnder)
+            {
+                targetLevel = minUnder; // Nếu đã chạm sàn thì lấy luôn minUnder
+            }
+            else
+            {
+                // Cộng 1 vào endUnder để đảm bảo lấy được giá trị (playerLevel - 1)
+                targetLevel = UnityEngine.Random.Range(minUnder, endUnder + 1);
+            }
         }
+
+        // Chốt chặn cuối cùng bảo vệ mảng inforLevels
+        targetLevel = Mathf.Clamp(targetLevel, 1, maxLevelConfig);
 
         // 3. Tìm danh sách enemy phù hợp với level này
         var possibleEnemies = listEnemy
