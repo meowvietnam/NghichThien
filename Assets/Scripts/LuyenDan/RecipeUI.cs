@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace LuyenDan
 {
-    public class RecipeUI : MonoBehaviour
+    public class RecipeUI : BaseBehaviour
     {
         [SerializeField] private Text recipeNameText;
         [SerializeField] private Toggle toggle;
@@ -21,6 +21,7 @@ namespace LuyenDan
 
         [SerializeField] private Text chuduocDetail;
         [SerializeField] private Text phuduocDetail;
+        public Button btnInfor;
         public RecipeData Data => data;
         public bool IsCraftable { get; private set; }
         public void Init(RecipeData data, ToggleGroup group)
@@ -52,6 +53,15 @@ namespace LuyenDan
                     phuduocDetail.text = resources.GetHerbDetail(phuduoc.Id,HerbType.ChuDuoc);
                 }
             }
+            SetEventButton(btnInfor, () =>
+            {
+                ToolTipItems.Instance.ShowInfoItem(Data, new ItemRef
+                {
+                    Id = (ushort)Data.Id,
+                    Type = ItemType.Recipe,
+                    Count = 1,
+                });
+            });
         }
 
         public void Destroy()
