@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using AllMaps.ItemProvider;
 using LongDHModules;
+using Network.Models;
 
 public enum EShopType
 {
@@ -359,7 +360,12 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         Pool.Get<GameManager>().Cleanup();
         HideTradeItems();
         InitBagUser();
-        InitBagNPC(Client.Instance.CharacterData.ShopManager.GetShop(eShopType).Items.ToList());
+        var loadShop = new LoadShopRequest()
+        {
+            ShopType = eShopType,
+            MonPhai = eMonPhai
+        };
+        InitBagNPC(Client.Instance.CharacterData.ShopManager.GetShop(loadShop).Items.ToList());
         NotifyGroup.Instance.Show(message);
         textMoneyCurrent.text = "0";
         textMoneyUser.text = Client.Instance.CharacterData.Stats.LinhThach.ToString();

@@ -37,7 +37,6 @@ public class UIManager : BaseBehaviour
     [SerializeField] public GameObject loadScene;
     [SerializeField] public Button btnBXH;
     [SerializeField] public Button btnThuongHoi;
-    [SerializeField] public Button btnStartPack;
     [SerializeField] public Button btnGacha;
     [SerializeField] public Button btnListIconShow;
     [SerializeField] private bool isShowListIcon = true;
@@ -225,11 +224,6 @@ public class UIManager : BaseBehaviour
             iapHandler.popupMain.Show();
         });
         SetEventButton(btnBXH, () => { Pool.Get<RankPanel>().DoShow(); });
-        SetEventButton(btnStartPack, () =>
-        {
-            var iapHandler = Pool.Get<IapHandler>();
-            iapHandler.transform.GetComponentInChildren<StartPackUI>(true).ThisPopup.Show();
-        });
         SetEventButton(btnListIconShow, () =>
         {
             openListTween?.Kill();
@@ -250,7 +244,6 @@ public class UIManager : BaseBehaviour
                 isShowListIcon = true;
             }
         });
-        btnStartPack.gameObject.SetActive(!Client.Instance.CharacterData.IsInfiniteEnergy);
         SetEventButton(btnGacha, () => { Pool.Get<GachaPanel>().SetActive(); });
     }
 

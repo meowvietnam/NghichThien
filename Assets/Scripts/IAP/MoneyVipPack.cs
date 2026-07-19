@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CreateCharacter;
 using MemoryPack;
 using UnityEngine;
@@ -28,7 +29,7 @@ namespace IAP
         {
             var product = context.IapProduct;
             var ui = Object.Instantiate(context.MoneyVipPackUIPrefab, context.IapProductContainer);
-            context.IapHandler.IapObjects[product.StoreProductId] = ui.gameObject;
+            context.IapHandler.IapObjects[product.StoreProductId] = new List<GameObject>() { ui.gameObject };
             ui.SetMoneyVipText(MoneyVip);
             var icon = context.MoneyVipSprites[IconIndex];
             ui.SetIcon(icon);

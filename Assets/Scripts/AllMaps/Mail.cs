@@ -21,5 +21,10 @@ namespace AllMaps
         [field: SerializeField]
         public List<IMailReward> Rewards { get; set; } = new();
         [field: ShowInInspector] public DateTime CreatedAt { get; set; }
+
+        public bool HasReward()
+        {
+            return Rewards.Count > 0;
+        }
     }
 }

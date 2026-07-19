@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CreateCharacter;
 using LuyenDan;
 using MemoryPack;
@@ -53,7 +54,11 @@ namespace IAP
 
         public void ShowUISuccess(IapUIContext context)
         {
-            context.IapHandler.IapObjects[productId].SetActive(false);
+            var gameObjects = context.IapHandler.IapObjects[productId];
+            foreach (var gameObject in gameObjects)
+            {
+                gameObject.SetActive(false);
+            }
         }
         public void InitUI(IapUIContext context)
         {
@@ -65,23 +70,26 @@ namespace IAP
             var prefab = context.StartPackUIPrefab;
             var iapHandler = context.IapHandler;
             var startPackUI = Object.Instantiate(prefab, iapHandler.transform);
-            iapHandler.IapObjects[productId] = startPackUI.gameObject;
+            startPackUI.ThisPopup.Hide();
+            var btnStartPack = Object.Instantiate(context.BtnStartPackPrefab, context.IconListContainer);
+            btnStartPack.transform.SetAsLastSibling();
+            BaseBehaviour.SetEventButton(btnStartPack, () =>
+            {
+                startPackUI.ThisPopup.Show();
+            });
+            var listGameObjects = new List<GameObject>();
+            listGameObjects.Add(startPackUI.gameObject);
+            listGameObjects.Add(btnStartPack.gameObject);
+            iapHandler.IapObjects[productId] = listGameObjects;
             startPackUI.SetMoneyVipText(MoneyVip);
             startPackUI.SetMoneyText(Money);
             startPackUI.SetCongPhap(CongPhapId);
-            
             startPackUI.SetPurchaseAction(() =>
             {
                 context.IapHandler.BuyProduct(productId);
             });
-            if(!Client.Instance.CharacterData.IsInfiniteEnergy)
-            {
-                startPackUI.ThisPopup.Show();
-            }
-            else
-            {
-                startPackUI.ThisPopup.Hide();
-            }
         }
+
+
     }
 }

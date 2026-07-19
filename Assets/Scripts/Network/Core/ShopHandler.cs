@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AllMaps;
 using AllMaps.ItemProvider;
+using Base;
 using CreateCharacter;
 using LongDH.LongDHModules;
 using LuyenDan;
@@ -29,12 +30,14 @@ namespace Network.Core
             var buyItems = data[1] as List<ItemRef>;
             var sellItems = data[2] as List<ItemRef>;
             var shopType = (EShopType)data[3];
+            var monPhai = (EMonPhai)data[4];
             var client = Client.Instance;
             var request = new BuyAndSell()
             {
                 BuyItems = buyItems,
                 SellItems = sellItems,
                 ShopType = shopType,
+                MonPhai = monPhai,
             };
             var reader = await client.RequestWait(MessageTag.BuyAndSellRequest, request);
             var result = reader.MemRead<BuyAndSellResult>();
@@ -43,7 +46,7 @@ namespace Network.Core
             if (result.Success)
             {
                 var shop = result.ReloadShop;
-                shopManager.SetShop(shop);
+                shopManager.SetShop(shop, result.MonPhai);
                 var inventoryTracking = new InventoryTracking()
                 {
                     Furnaces = result.Furnaces,
@@ -71,19 +74,46 @@ namespace Network.Core
         {
             var callback = data[0] as INetworkEvent.ILoadShop;
             var shopType = (EShopType)data[1];
+            var monPhai = (EMonPhai)data[2];
+            Debug.Log(monPhai);
+            var request = new LoadShopRequest()
+            {
+                ShopType = shopType,
+                MonPhai = monPhai,
+            };
             var client = Client.Instance;
             var shopManager = client.CharacterData.ShopManager;
-            var reader = await client.RequestWait(MessageTag.LoadShopRequest, shopType);
-            var shop = reader.MemRead<Shop>();
-            shopManager.SetShop(shop);
-            NetworkManager.Instance.Invoke(() => { callback?.SuccessLoadShop(shop.Items.ToList()); });
+            var reader = await client.MemRequestWait(MessageTag.LoadShopRequest, request);
+            var result = reader.MemRead<LoadShopResult>();
+            if (result.Success)
+            {
+                shopManager.SetShop(result.Shop, result.MonPhai);
+            }
+
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (result.Success)
+                {
+                    callback?.SuccessLoadShop(result.Shop.Items.ToList());
+                }
+                else
+                {
+                    callback?.FailLoadShop(result.Message);
+                }
+            });
         }
 
         private void ReloadShop(object[] data)
         {
             reloadShopCallback = data[0] as INetworkEvent.IReloadShop;
             var shopType = (EShopType)data[1];
-            Client.Instance.Send(MessageTag.ReloadShop, shopType);
+            var monPhai = (EMonPhai)data[2];
+            var request = new ReloadShopRequest()
+            {
+                ShopType = shopType,
+                MonPhai = monPhai,
+            };
+            Client.Instance.MemSend(MessageTag.ReloadShop, request);
         }
 
         public void Handle(Message<MessageTag> message)
@@ -97,8 +127,9 @@ namespace Network.Core
                 var shopManager = client.CharacterData.ShopManager;
                 if (result.Success)
                 {
-                    shopManager.SetShop(result.Shop);
+                    shopManager.SetShop(result.Shop, result.MonPhai);
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)

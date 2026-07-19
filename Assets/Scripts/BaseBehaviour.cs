@@ -4,8 +4,7 @@ using UnityEngine.UI;
 
 public class BaseBehaviour : MonoBehaviour
 {
-   
-    protected void SetEventButton(Button btn , Action action)
+    public static void SetEventButton(Button btn , Action action)
     {
         if (btn == null)
         {

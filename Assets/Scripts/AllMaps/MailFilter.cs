@@ -13,7 +13,7 @@ namespace AllMaps
 
         private void Start()
         {
-            this.SetEventButton(filterButton, OnClick);
+            SetEventButton(filterButton, OnClick);
         }
 
         private void OnClick()

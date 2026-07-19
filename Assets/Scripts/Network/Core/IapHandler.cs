@@ -22,6 +22,8 @@ namespace Network.Core
         [SerializeField] private Sprite[] moneyVipSprites;
         [SerializeField] private RectTransform iapProductContainer;
         [SerializeField] private RectTransform mainIapProductContainer;
+        [SerializeField] private Button btnStartPackPrefab;
+        [SerializeField] private RectTransform iconListContainer;
         [SerializeField] private Button showExchangePopup;
         [SerializeField] private SelectNum selectNum;
         private List<OwnerIapProduct> ownerIapProducts;
@@ -32,7 +34,7 @@ namespace Network.Core
         };
 
         public MessageTag[] HandleTag => handler;
-        public Dictionary<string, GameObject> IapObjects { get; private set; } = new();
+        public Dictionary<string, List<GameObject>> IapObjects { get; private set; } = new();
         public override void Init()
         {
             base.Init();
@@ -116,7 +118,9 @@ namespace Network.Core
                             MoneyVipPackUIPrefab = moneyVipUIPrefab,
                             MoneyVipSprites = moneyVipSprites,
                             OwnerIapProduct = ownerIapProduct,
-                            IapProductContainer = iapProductContainer
+                            IapProductContainer = iapProductContainer,
+                            BtnStartPackPrefab = btnStartPackPrefab,
+                            IconListContainer =  iconListContainer,
                         };
                         ownerIapProduct.Product.Reward?.InitUI(uiContext);
                     }

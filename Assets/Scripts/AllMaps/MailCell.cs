@@ -1,27 +1,47 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace AllMaps
 {
+    [Serializable]
+    public class MailCellImage
+    {
+        [field: SerializeField] public bool HasReward { get; private set; }
+        [field: SerializeField] public Sprite Selected { get; private set; }
+        [field: SerializeField] public Sprite Unselected { get; private set; }
+    }
+
     public class MailCell : MonoBehaviour
     {
         [SerializeField] private Text mailFrom;
         [SerializeField] private Text title;
         [SerializeField] private Text time;
-        [SerializeField] private Sprite selected;
-        [SerializeField] private Sprite unselected;
         [SerializeField] private Image background;
         [SerializeField] private Toggle toggle;
         [SerializeField] private GameObject isReadObject;
+        [SerializeField] private MailCellImage[] images;
         private Mail mail;
         public Mail Mail => mail;
         private MailPanel mailPanel;
 
+        private Sprite GetSelected()
+        {
+            var hasReward = mail?.HasReward() ?? false;
+            return images.First(x => x.HasReward == hasReward).Selected;
+        }
+
+        private Sprite GetUnselected()
+        {
+            var hasReward = mail?.HasReward() ?? false;
+            return images.First(x => x.HasReward == hasReward).Unselected;
+        }
         public void Init(MailPanel mailPanel, Mail mail, ToggleGroup toggleGroup)
         {
             this.mailPanel = mailPanel;
             this.mail = mail;
+            background.sprite = GetUnselected();
             title.text = mail.Title;
             UpdateTime();
             isReadObject.SetActive(!mail.IsRead);
@@ -33,6 +53,7 @@ namespace AllMaps
         {
             isReadObject.SetActive(false);
         }
+
         public static string ToTimeAgo(TimeSpan timeSpan)
         {
             if (timeSpan.TotalSeconds < 60)
@@ -50,7 +71,7 @@ namespace AllMaps
 
         private void OnSelect(bool isOn)
         {
-            background.sprite = isOn ? selected : unselected;
+            background.sprite = isOn ? GetSelected() : GetUnselected();
             if (isOn)
             {
                 mailPanel.SelectMail(mail);
