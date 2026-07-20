@@ -70,6 +70,7 @@ public class EventRewardPanel : Popup , IUISingleton
         itemReward.itemInventory.SetQualityFull(itemInventoryPrefab.qualityFull.sprite);
         itemReward.itemInventory.textName.text = "Linh Thạch";
         itemReward.textCount.text = $"x{rewardDataCurrent.Money}";
+        itemReward.itemInventory.btnShowInfor.gameObject.SetActive(false);
 
     }
     private void SetVisualRewardMoneyVip()
@@ -80,6 +81,7 @@ public class EventRewardPanel : Popup , IUISingleton
         itemReward.itemInventory.SetQualityFull(itemInventoryPrefab.qualityFull.sprite);
         itemReward.itemInventory.textName.text = "Tiên Ngọc";
         itemReward.textCount.text = $"x{rewardDataCurrent.MoneyVip}";
+        itemReward.itemInventory.btnShowInfor.gameObject.SetActive(false);
 
     }
 
@@ -87,7 +89,9 @@ public class EventRewardPanel : Popup , IUISingleton
     {
         var itemReward = GetComponentItemReward();
         ItemTypeHandlerBagFactory.Create(itemRef.Type).Handle(itemReward.itemInventory, itemRef,false);
-        itemReward.textCount.text = $"x{itemRef.Count.ToString()}";    
+        itemReward.textCount.text = $"x{itemRef.Count.ToString()}";
+        itemReward.itemInventory.btnShowInfor.gameObject.SetActive(true);
+
     }
     (ItemInventory itemInventory , Text textCount) GetComponentItemReward()
     {

@@ -14,7 +14,7 @@ public class ItemInventory : BaseItemUI
     [SerializeField] public Text textCount;
     [SerializeField] public Text textName;
     [SerializeField] private GameObject leftUpMask;
-    [SerializeField] private Button btnShowInfor;
+    [SerializeField] public Button btnShowInfor;
     [SerializeField] public ItemRef itemRef;
     [SerializeField] public IItemData iItemData;
     [SerializeField] public int count;

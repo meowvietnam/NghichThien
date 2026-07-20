@@ -467,8 +467,8 @@ public class CharacterCombat : MonoBehaviour
 
     public Dictionary<BaseData, SecureInt> skillTichLuy = new Dictionary<BaseData, SecureInt>();
 
-    public CharacterStatsSecure characterStatsBase; // khi end combat thì characterStatsBase sẽ lấy hp từ hp của stats Temp
-    public CharacterStatsSecure characterStatsTemp;
+    public CharacterStatsSecure characterStatsBase = new(); // khi end combat thì characterStatsBase sẽ lấy hp từ hp của stats Temp
+    public CharacterStatsSecure characterStatsTemp = new();
     public List<PlaySkillData> thanThongUseThisTurn =>
         thanThongUseThisComBat.Count > 0 ? thanThongUseThisComBat[^1] : null;
     public List<PlaySkillData> thanThongUseLastTurn =>

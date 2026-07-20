@@ -70,6 +70,7 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
 
     public void ShowInfoItem(IItemData itemData, ItemRef itemRef, FurnaceData furnaceData = null)
     {
+
         iItemData = itemData;
         this.itemRef = itemRef;
         var tier = itemData.Tier;
@@ -115,11 +116,36 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
             SetQualityText(iItemData.Tier);
         }
 
-        InitInforItem();
+        InitInforItem(null);
 
         RefreshTooltipLayout();
     }
+    public void InitShowForCombat(BaseItemData itemData, Sprite frameSprite, Sprite qualityFull, Color colorName,
+       ItemRef itemRef, EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None, CharacterCombat charCombat = null)
+    {
+        if (itemData == null) return;
+        gameObject.SetActive(true);
+        priceText.transform.parent.gameObject.SetActive(false);
+        prefabIconRequire.transform.parent.parent.gameObject.SetActive(false);
+        descTextItem.transform.parent.gameObject.SetActive(false);
+        this.itemData = itemData;
+        this.itemRef = itemRef;
+        nameText.text = itemData.nameItem;
+        eActionShowItem = eTypeActionShow;
+        InitIcon(itemData.spriteItem, frameSprite);
+        SetQualityFull(qualityFull);
+        SetColorName(colorName);
+        ResetKeyword(prefabLeftInfor);
+        ResetKeyword(prefabRightInfor);
+        if (iItemData != null)
+        {
+            SetQualityText(iItemData.Tier);
+        }
 
+        InitInforItem(charCombat);
+
+        RefreshTooltipLayout();
+    }
     private void SetQualityText(Tier tier)
     {
         var quality = CoreConfig.Instance.FindQuality(tier);
@@ -174,14 +200,23 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
         }
     }
 
-    private void InitInforItem()
+    private void InitInforItem(CharacterCombat charCombat = null)
     {
         if (itemRef == null) return;
         var displayer = ItemProviderFactory.GetProvider(itemRef.Type);
         if (displayer != null)
         {
             var ctx = BuildContext();
-            displayer.Display(ctx);
+            if(displayer is ThanThongProviderCombat thanThongProviderCombat)
+            {
+                thanThongProviderCombat.DisplayCombat(ctx, charCombat);
+
+            }
+            else
+            {
+                displayer.Display(ctx);
+
+            }
         }
         else
         {

@@ -261,8 +261,12 @@ public class PlayerUICombat : BaseBehaviour
             Action actionHolder = new Action(() =>
             {
                 int daiCanhGioi = ThanThong.GetDaiCanhGioi(player.characterStatsTemp.level);
-                skillTip.SetPosition(new Vector3(skill.transform.position.x, skillTip.transform.position.y, skillTip.transform.position.z));
-                skillTip.ShowSkillTip(skill.ThanThongData.nameItem,skill.ThanThongData is TranPhapTT tranPhapTT? tranPhapTT.GetDescTranPhap(player,daiCanhGioi) : skill.ThanThongData.GetDesc(daiCanhGioi), skill.ThanThongData.GetTextTypeSkill(), skill.ThanThongData.GetRequireActive(player), skill.ThanThongData, player.characterStatsTemp.level);
+                var inforVisualSkill = Pool.Get<UIManager>().GetFrameAndQualityFullAndColorNameSkill((BaseSkill)skill.itemData);
+
+                ToolTipItems.Instance.InitShowForCombat(skill.ThanThongData, inforVisualSkill.Item1, inforVisualSkill.Item2, inforVisualSkill.Item3, new LuyenDan.ItemRef { Id = (ushort)skill.ThanThongData.Id, Type = LuyenDan.ItemType.ThanThong, Count = 1 } , EActionShowItemInfor.None,player);
+
+                //skillTip.SetPosition(new Vector3(skill.transform.position.x, skillTip.transform.position.y, skillTip.transform.position.z));
+                //skillTip.ShowSkillTip(skill.ThanThongData.nameItem,skill.ThanThongData is TranPhapTT tranPhapTT? tranPhapTT.GetDescTranPhap(player,daiCanhGioi) : skill.ThanThongData.GetDesc(daiCanhGioi), skill.ThanThongData.GetTextTypeSkill(), skill.ThanThongData.GetRequireActive(player), skill.ThanThongData, player.characterStatsTemp.level);
             });
             Action actionPointerUp = new Action(() =>
             {
@@ -364,7 +368,7 @@ public class PlayerUICombat : BaseBehaviour
         if(player.characterStatsBase.vuKhi.Item != null )
         {
             equipmentWeapon.gameObject.SetActive(true);
-
+            equipmentWeapon.btnShowInfor.gameObject.SetActive(false);
             var inforVisualEquipment = Pool.Get<UIManager>().GetFrameAndQualityFullAndColorNameEquipment(player.characterStatsBase.vuKhi.Item.Tier);
 
             equipmentWeapon.Init(new BaseItemData { name = player.characterStatsBase.vuKhi.nameEquip, spriteItem = player.characterStatsBase.vuKhi.Item.Icon }, inforVisualEquipment.Item1);

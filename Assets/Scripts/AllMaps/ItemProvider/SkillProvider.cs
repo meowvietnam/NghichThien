@@ -6,6 +6,8 @@ using Network;
 using Skill;
 using System.Linq;
 using UnityEngine.UI;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace AllMaps.ItemProvider
 {
@@ -61,6 +63,35 @@ namespace AllMaps.ItemProvider
     {
         public override ItemType SupportedType => ItemType.ThanThong;
         public abstract string TypeText { get; }
+        protected virtual List<ThanThong.RequireActive> GetRequireActive(ThanThong skill)
+        {
+            return skill.BaseRequireActive;
+        }
+        protected virtual string GetDescThanThong(ThanThong skill,int level)
+        {
+            return skill.GetDesc(ThanThong.GetDaiCanhGioi(level));
+        }
+        protected void DisplayBaseThanThong(ToolTipContext ctx, ThanThong skill,List<ThanThong.RequireActive> requireActives , string desc)
+        {
+            var parent = ctx.PrefabIconRequire.transform.parent.parent;
+            parent.gameObject.SetActive(true);
+            // clear
+            for (int i = 0; i < ctx.PrefabIconRequire.transform.parent.childCount; i++)
+            {
+                ctx.PrefabIconRequire.transform.parent.GetChild(i).gameObject.SetActive(false);
+            }
+            for (int i = 0; i < requireActives.Count; i++)
+            {
+                Image itemRequire = GameManager.GetItemPoolWithPrefabInParent(ctx.PrefabIconRequire);
+
+                itemRequire.gameObject.SetActive(true);
+                itemRequire.sprite = ctx.SpriteLinhKhis[(int)requireActives[i].linhKhiRequire];
+                itemRequire.SetNativeSize();
+                itemRequire.transform.GetChild(0).GetComponent<Text>().text = $"x{requireActives[i].count}";
+            }
+            ctx.DescriptionText.text = desc;
+
+        }
         public override void Display(ToolTipContext ctx)
         {
             base.Display(ctx);
@@ -68,37 +99,71 @@ namespace AllMaps.ItemProvider
             var charData = Client.Instance.CharacterData;
             if (ctx.BaseItemData is ThanThong skill)
             {
-                var parent = ctx.PrefabIconRequire.transform.parent.parent;
-                parent.gameObject.SetActive(true);
-                // clear
-                for (int i = 0; i < ctx.PrefabIconRequire.transform.parent.childCount; i++)
-                {
-                    ctx.PrefabIconRequire.transform.parent.GetChild(i).gameObject.SetActive(false);
-                }
-                for (int i = 0; i < skill.BaseRequireActive.Count; i++)
-                {
-                    Image itemRequire = GameManager.GetItemPoolWithPrefabInParent(ctx.PrefabIconRequire);
-                   
-                    itemRequire.gameObject.SetActive(true);
-                    itemRequire.sprite = ctx.SpriteLinhKhis[(int)skill.BaseRequireActive[i].linhKhiRequire];
-                    itemRequire.SetNativeSize();
-                    itemRequire.transform.GetChild(0).GetComponent<Text>().text = $"x{skill.BaseRequireActive[i].count}";
-                }
-                ctx.DescriptionText.text = skill.GetDesc(ThanThong.GetDaiCanhGioi(charData.Progression.Level));
+                
+                var requireActives = GetRequireActive(skill);
+                DisplayBaseThanThong(ctx, skill,requireActives, GetDescThanThong(skill, charData.Progression.Level));
 
             }
-            
+
 
         }
+     
         public override BaseSkill GetDataItemByIdRef(ushort Id)
         {
             return Pool.Get<GameManager>().GetThanThongWithId(Id);
         }
     }
+    public class ThanThongProviderCombat : AbstractThanThongProvider
+    {
+        public override string TypeText => "Thần Thông";
+        protected List<ThanThong.RequireActive> GetRequireActiveCombat(ThanThong skill, CharacterCombat charCombat)
+        {
+            return skill.GetRequireActive(charCombat);
+        }
+        protected string GetDescThanThongCombat(ThanThong skill, CharacterCombat charCombat)
+        {
+            var daiCanhGioi = ThanThong.GetDaiCanhGioi(charCombat.characterStatsBase.level);
+            return skill is TranPhapTT tranPhapTT ? tranPhapTT.GetDescTranPhap(charCombat, daiCanhGioi) : skill.GetDesc(daiCanhGioi);
+        }
+        public override void Display(ToolTipContext ctx)
+        {
+            base.Display(ctx);
+            ctx.PriceText.transform.parent.gameObject.SetActive(false);
+            if (ctx.BaseItemData is BaseSkill skill)
+            {
+                ctx.TypeText.text = skill.GetTextTypeSkill();
+
+
+            }
+
+
+        }
+        public void DisplayCombat(ToolTipContext ctx, CharacterCombat charCombat)
+        {
+            Display(ctx);
+            if (ctx.BaseItemData is ThanThong skill)
+            {
+               
+                var requireActives = GetRequireActiveCombat(skill, charCombat);
+                DisplayBaseThanThong(ctx, skill, requireActives, GetDescThanThongCombat(skill, charCombat));
+
+              
+
+            }
+
+
+        }
+    }
     public class ThanThongBookProvider : AbstractThanThongProvider
     {
         public override string TypeText => "Sách Thần Thông";
-        
+        public override void Display(ToolTipContext ctx)
+        {
+            base.Display(ctx);
+            ctx.PriceText.transform.parent.gameObject.SetActive(true);
+
+
+        }
     }
     public class ThanThongProvider : AbstractThanThongProvider
     {
@@ -145,6 +210,7 @@ namespace AllMaps.ItemProvider
         {
             ctx.DescriptionText.text = cp.GetDesc(5);
             ctx.DescTextItem.text = $"<color=#ffb143>【Tốc độ tu luyện】</color> {cp.GetTocDoTuLuyen(5)}";
+            ctx.PriceText.transform.parent.gameObject.SetActive(true);
 
         }
 

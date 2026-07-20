@@ -4,9 +4,9 @@ public class PlayerUICombatItem : BaseItemUI
 {
     [SerializeField] private Image recommentHighLight;
     [SerializeField] private Image maskCoolDown;
-    [SerializeField] private Button btnShowInfor;
+    [SerializeField] public Button btnShowInfor;
     [SerializeField] private Text cdText;
-    [SerializeField] private Image fullQuality;
+    [SerializeField] public Image fullQuality;
 
     public bool isLock => maskCoolDown.gameObject.activeSelf || cdText.transform.parent.gameObject.activeSelf;
     public override bool IsSetNativeIcon => false;
@@ -21,11 +21,12 @@ public class PlayerUICombatItem : BaseItemUI
         btnShowInfor.gameObject.SetActive(itemData != null);
 
         SetLock(itemData == null);
-        btnShowInfor.onClick.AddListener(() =>
+        SetEventButton(btnShowInfor, () =>
         {
             EventHolder();
-        });
 
+        });
+       
     }
     public void SetFullQuality(Sprite sprite)
     {
