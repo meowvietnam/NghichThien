@@ -28,27 +28,44 @@ public class MaDiemQuyet : CongPhap, IMemorySerializable<MaDiemQuyet>
 
     public override void EquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
-        statsCurrent.thoNguyen -= thoNguyens[daiCanhGioiCongPhap - 1];
+        // statsCurrent.thoNguyen -= thoNguyens[daiCanhGioiCongPhap - 1];
     }
 
     public override void UnEquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
-        statsCurrent.thoNguyen += thoNguyens[daiCanhGioiCongPhap - 1];
+        // statsCurrent.thoNguyen += thoNguyens[daiCanhGioiCongPhap - 1];
     }
     public override void EquipCongPhap(CharacterData statsCurrent, int level)
     {
-        var stats = statsCurrent.Stats;
-        var thoNguyen = stats.ThoNguyen - thoNguyens[level - 1];
-        stats.ThoNguyen =  thoNguyen;
+        // var stats = statsCurrent.Stats;
+        // var thoNguyen = stats.ThoNguyen - thoNguyens[level - 1];
+        // stats.ThoNguyen =  thoNguyen;
     }
 
     public override void UnEquipCongPhap(CharacterData statsCurrent, int level)
     {
-        var stats = statsCurrent.Stats;
-        var thoNguyen = stats.ThoNguyen + thoNguyens[level - 1];
-        stats.ThoNguyen =  thoNguyen;
+        // var stats = statsCurrent.Stats;
+        // var thoNguyen = stats.ThoNguyen + thoNguyens[level - 1];
+        // stats.ThoNguyen =  thoNguyen;
     }
 
+    public override void UpgradeCongPhapSuccess(CharacterData statsCurrent, int level)
+    {
+        var stats = statsCurrent.Stats;
+        var thoNguyen = stats.ThoNguyen;
+        var require = thoNguyens[level - 1];
+        var newThoNguyen = thoNguyen - require;
+        stats.SetThoNguyen(newThoNguyen);
+    }
+
+    public override void LearnCongPhapSuccess(CharacterData statsCurrent, int level)
+    {
+        var stats = statsCurrent.Stats;
+        var thoNguyen = stats.ThoNguyen;
+        var require = thoNguyens[level - 1];
+        var newThoNguyen = thoNguyen - require;
+        stats.SetThoNguyen(newThoNguyen);
+    }
     public override int ByteSize()
     {
         var byteSize = base.ByteSize();

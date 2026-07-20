@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Base;
 using CreateCharacter;
 using LongDH.LongDHModules;
+using LongDHModules;
 using LuyenDan;
 using MemoryPack;
 using Network.Extensions;
@@ -68,10 +69,11 @@ namespace Network.Core
             if (result.Success)
             {
                 var statsSnapshot = result.Stats;
-                if(statsSnapshot != null)
+                if (statsSnapshot != null)
                 {
                     client.CharacterData.Stats.ApplyFrom(statsSnapshot);
                 }
+
                 var linhDan = LuyenDanResources.Instance.FindLinhDan(id);
                 client.CharacterData.InventoryManager.Decrease(new ItemRef()
                 {
@@ -98,6 +100,7 @@ namespace Network.Core
                     }
                 }
             }
+
             NetworkManager.Instance.Invoke(() =>
             {
                 if (result.Success)
@@ -331,6 +334,7 @@ namespace Network.Core
                     stats.TamCanh = result.NewTamCanh;
                     stats.Hp = result.NewHp;
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -346,6 +350,7 @@ namespace Network.Core
             else if (tag == MessageTag.LinhNgoResult)
             {
                 var result = reader.Read<LinhNgoResult>();
+                var charData = Client.Instance.CharacterData;
                 if (result.Success)
                 {
                     var type = result.Type;
@@ -359,7 +364,6 @@ namespace Network.Core
                     var newTuoiTac = result.NewTuoiTac;
                     var camNgos = result.CamNgos;
                     var newNgoDaoDiem = result.NewNgoDaoDiem;
-                    var charData = Client.Instance.CharacterData;
                     var inventory = charData.InventoryManager;
                     if (type == ItemType.CongPhap)
                     {
@@ -410,6 +414,13 @@ namespace Network.Core
                 {
                     if (result.Success)
                     {
+                        if (result.Type == ItemType.CongPhap)
+                        {
+                            var gameManager = Pool.Get<GameManager>();
+                            var cp = gameManager.GetCongPhapWithId(result.Id);
+                            cp.LearnCongPhapSuccess(charData, 1);
+                        }
+
                         linhNgoCallback.SuccessLinhNgo();
                     }
                     else
@@ -421,6 +432,9 @@ namespace Network.Core
             else if (tag == MessageTag.DotPhaCongPhapResult)
             {
                 var result = reader.Read<DotPhaCongPhapResult>();
+                var charData = Client.Instance.CharacterData;
+                var inventory = charData.InventoryManager;
+
                 if (result.Success)
                 {
                     var id = result.Id;
@@ -428,8 +442,6 @@ namespace Network.Core
                     var newTuoiTac = result.NewTuoiTac;
                     var camNgos = result.CamNgos;
                     var newNgoDaoDiem = result.NewNgoDaoDiem;
-                    var charData = Client.Instance.CharacterData;
-                    var inventory = charData.InventoryManager;
                     var itemRef = new ItemRef()
                     {
                         Id = id,
@@ -462,11 +474,20 @@ namespace Network.Core
                         }
                     }
                 }
-
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
                     {
+                        var cpOwnerRef = new CongPhap()
+                        {
+                            Id = result.Id,
+                        };
+                        if (inventory.CongPhapOwners.TryGetValue(cpOwnerRef, out var cpOwner))
+                        {
+                            var gameManager = Pool.Get<GameManager>();
+                            var cp = gameManager.GetCongPhapWithId(result.Id);
+                            cp.UpgradeCongPhapSuccess(charData, cpOwner.Level);
+                        }
                         dotPhaCallback.SuccessDotPhaCongPhap();
                     }
                     else

@@ -26,7 +26,7 @@ namespace CreateCharacter.CharStats
         [field: SerializeField] public int LinhThach { get; set; }
         [field: SerializeField] public int Hp { get; set; }
         [field: SerializeField] public int SinhMenh { get; set; }
-        [field: SerializeField] public int ThoNguyen { get; set; }
+        [field: SerializeField] public int ThoNguyen { get; private set; }
         [field: SerializeField] public int TamCanh { get; set; }
         [field: SerializeField] public LinhCan LinhCan { get; private set; }
         [field: SerializeField] public Ability Ability { get; private set; }
@@ -241,6 +241,7 @@ namespace CreateCharacter.CharStats
             TamCanh = snapshot.TamCanh;
             DanDoc = snapshot.DanDoc;
         }
+
         public int ByteSize()
         {
             return Kim.ByteSize() + Moc.ByteSize() + Thuy.ByteSize() + Hoa.ByteSize()
@@ -297,14 +298,27 @@ namespace CreateCharacter.CharStats
             value.DanDoc = reader.Read<int>();
             value.TuoiTac = reader.Read<TimeSpan>();
         }
+
         public static int GetMinTamCanh()
         {
             return -100;
         }
+
         public void SetTamCanh(int tamCanh)
         {
             tamCanh = Math.Max(GetMinTamCanh(), tamCanh);
             TamCanh = tamCanh;
+        }
+
+        public int GetMinThoNguyen()
+        {
+            return 0;
+        }
+
+        public void SetThoNguyen(int thoNguyen)
+        {
+            thoNguyen = Math.Max(GetMinThoNguyen(), thoNguyen);
+            ThoNguyen = thoNguyen;
         }
     }
 }

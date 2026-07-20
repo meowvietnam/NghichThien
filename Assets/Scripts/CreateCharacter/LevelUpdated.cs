@@ -22,7 +22,7 @@ namespace CreateCharacter
             stats.Hp = HpMax;
             stats.ThanThuc = ThanThuc;
             stats.TocDoBay = DonToc;
-            stats.ThoNguyen = ThoNguyen;
+            stats.SetThoNguyen(ThoNguyen);
             progression.NgoDaoDiem = NewNgoDaoDiem;
         }
     }

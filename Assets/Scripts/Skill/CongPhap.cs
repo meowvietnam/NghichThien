@@ -49,12 +49,9 @@ namespace Skill
         }
         public virtual void UpgradeCongPhapSuccess(CharacterData statsCurrent, int level)
         {
-            UnEquipCongPhap(statsCurrent, level - 1);
-            EquipCongPhap(statsCurrent, level);
         }
         public virtual void LearnCongPhapSuccess(CharacterData statsCurrent, int level)
         {
-        
         }
         public virtual int GetTocDoTuLuyen(int levelCP)
         {
