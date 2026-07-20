@@ -40,7 +40,7 @@ public class ThienMaGiaiThe : ThanThong, IMemorySerializable<ThienMaGiaiThe>
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         int tieuHao = tieuHaos[GetIndexLevelThanThong(caster)];
-        if (caster.characterStatsBase.thoNguyen > tieuHao && !caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is ThienMaGiaiThe)) && base.IsCanUse(caster, target))
+        if (caster.characterStatsBase.thoNguyen >= tieuHao && !caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is ThienMaGiaiThe)) && base.IsCanUse(caster, target))
         {
             return true;
         }

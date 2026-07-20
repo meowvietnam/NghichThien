@@ -16,8 +16,11 @@ public class NhienHonQuyet : CongPhap, IMemorySerializable<NhienHonQuyet>
     private int debuff = 1;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
+        if (caster.characterStatsBase.thanThuc <= 0) return;
+
         if (caster.thanThongCurrentUse.thanThong is KinhHonChu)
         {
+
             target.AddDamageData(new List<int>{buffValues[CurrentLevelCongPhapInCombat(caster) - 1]});
         }
     }
@@ -36,6 +39,7 @@ public class NhienHonQuyet : CongPhap, IMemorySerializable<NhienHonQuyet>
 
     public void Execute2(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
+        if (caster.characterStatsBase.thanThuc <= 0) return;
         caster.characterStatsBase.thanThuc -= debuff;
     }
 
