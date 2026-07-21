@@ -39,6 +39,14 @@ namespace Skill
         {
 
         }
+        protected void TieuHaoThoNguyen(CharacterData statsCurrent, int level,int[] tieuHao)
+        {
+            var stats = statsCurrent.Stats;
+            var thoNguyen = stats.ThoNguyen;
+            var require = tieuHao[level - 1];
+            var newThoNguyen = thoNguyen - require;
+            stats.SetThoNguyen(newThoNguyen);
+        }
         public virtual void EquipCongPhap(CharacterData statsCurrent , int level)
         {
 

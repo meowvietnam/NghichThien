@@ -1,7 +1,8 @@
-﻿using Network;
+﻿using CreateCharacter;
+using Network;
 using Network.Extensions;
-using Skill;
 using UnityEngine;
+using CongPhap = Skill.CongPhap;
 
 public class CPTieuHaoThoNguyen : CongPhap, IMemorySerializable<CPTieuHaoThoNguyen>
 {
@@ -14,12 +15,25 @@ public class CPTieuHaoThoNguyen : CongPhap, IMemorySerializable<CPTieuHaoThoNguy
     {
         base.UpgradeCongPhapSuccess(statsCurrent, daiCanhGioiCongPhap);
         statsCurrent.thoNguyen -= tieuHao[daiCanhGioiCongPhap - 1];
+        statsCurrent.thoNguyen = Mathf.Max(statsCurrent.thoNguyen, 0);
     }
     public override void LearnCongPhapSuccess(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
         base.LearnCongPhapSuccess(statsCurrent, daiCanhGioiCongPhap);
         statsCurrent.thoNguyen -= tieuHao[daiCanhGioiCongPhap - 1];
+        statsCurrent.thoNguyen = Mathf.Max(statsCurrent.thoNguyen, 0);
     }
+
+    public override void LearnCongPhapSuccess(CharacterData statsCurrent, int level)
+    {
+        TieuHaoThoNguyen(statsCurrent, level, tieuHao);
+    }
+
+    public override void UpgradeCongPhapSuccess(CharacterData statsCurrent, int level)
+    {
+        TieuHaoThoNguyen(statsCurrent, level, tieuHao);
+    }
+
     public override string GetDesc(int level)
     {
         return $"(Học tập hoặc đột phá tiêu hao thọ nguyên {GetColoredText($"{tieuHao[level-1]} năm", "red")})";

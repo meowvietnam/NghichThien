@@ -22,7 +22,7 @@ namespace CreateCharacter
         [SerializeField] private Transform thisTransform;
         [SerializeField] private CharacterStats orginalStats;
         [SerializeField] private int originalMoney;
-
+        [SerializeField] private Transform stepsTransform;
         public CharacterStats CharacterStats => CreateCharacterSystem.Instance.NewCharacter.Stats;
         private int money;
         public int Money => money;
@@ -47,7 +47,7 @@ namespace CreateCharacter
             SetMoney(originalMoney);
             foreach (var stepData in stepConfig.StepDatas)
             {
-                var step = stepData.CreateUI(this, thisTransform);
+                var step = stepData.CreateUI(this, stepsTransform);
                 step.SetActive(false);
                 steps.Add(step);
             }

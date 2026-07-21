@@ -51,20 +51,12 @@ public class MaDiemQuyet : CongPhap, IMemorySerializable<MaDiemQuyet>
 
     public override void UpgradeCongPhapSuccess(CharacterData statsCurrent, int level)
     {
-        var stats = statsCurrent.Stats;
-        var thoNguyen = stats.ThoNguyen;
-        var require = thoNguyens[level - 1];
-        var newThoNguyen = thoNguyen - require;
-        stats.SetThoNguyen(newThoNguyen);
+        TieuHaoThoNguyen(statsCurrent, level, thoNguyens);
     }
 
     public override void LearnCongPhapSuccess(CharacterData statsCurrent, int level)
     {
-        var stats = statsCurrent.Stats;
-        var thoNguyen = stats.ThoNguyen;
-        var require = thoNguyens[level - 1];
-        var newThoNguyen = thoNguyen - require;
-        stats.SetThoNguyen(newThoNguyen);
+        TieuHaoThoNguyen(statsCurrent, level, thoNguyens);
     }
     public override int ByteSize()
     {
