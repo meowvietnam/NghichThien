@@ -297,7 +297,7 @@ public class PlayerUICombat : BaseBehaviour
 
                 }
               
-                if (listSpecial == null || listSpecial.Count <= 0)
+                if (listSpecial == null || listSpecial.Count <= 0 || listSpecial.Count < listRequire.Count)
                 {
                     listSpecial = skill.ThanThongData.GetLinhKhiTieuTanIfPossible(player);
 
