@@ -386,6 +386,12 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     public void GoToCombat()
     {
         if (enemyCombat == null) return;
+        if (Client.Instance.CharacterData.Stats.Hp <= 0)
+        {
+            NotifyGroup.Instance.Show("Khí huyết đã cạn. Hãy bế quan tại khách sạn hoặc sử dụng đan dược để hồi phục");
+            return;
+        }
+        Client.Instance.CharacterData.EquipmentManager.DanCombatUseds.Clear();
         Pool.Get<UIManager>().panelGroup.SetActive(false);
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
         Pool.Get<UIManager>().ListIcon.gameObject.SetActive(false);
@@ -436,6 +442,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     {
         this.enemyCombat = enemyCombat;
         if (enemyCombat == null) return;
+          
         currentETypeCombat = eTypeCombat;
         Pool.Get<PrepareCombatPanel>().Show();
         currentECombatResult = ETypeResultCombat.None;
