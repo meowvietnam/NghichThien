@@ -12,9 +12,7 @@ namespace LuyenKhi
         public Action<PointerEventData> actionPointerDown;
         public void OnPointerDown(PointerEventData eventData)
         {
-            Debug.Log("PointerDown hoạt động");
             actionPointerDown?.Invoke(eventData);
-
         }
 
         public void SetText(string text)

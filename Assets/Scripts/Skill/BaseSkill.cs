@@ -4,6 +4,7 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Base;
 using Network;
 using Network.Extensions;
 using UnityEngine;
@@ -88,20 +89,19 @@ public enum EBuffAndDeBuff
     NguHoa,
     NguTho,
     PhanTonThuong,
-
 }
 
 public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
 {
     [SerializeField] public int baseTimeLearn;
+
     [Button]
     public virtual void SetBaseTimeLearn()
     {
-        
     }
+
     public enum ETierSkill
     {
-
         None,
         NhanGiaiHa,
         NhanGiaiTrung,
@@ -112,8 +112,8 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
         ThienGiaiHa,
         ThienGiaiTrung,
         ThienGiaiThuong,
-
     }
+
     public static List<EBuffAndDeBuff> eDebuffs = new List<EBuffAndDeBuff>
     {
         EBuffAndDeBuff.DeTonThuong,
@@ -131,6 +131,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
         EBuffAndDeBuff.ThanThuong,
         EBuffAndDeBuff.NhieuHon
     };
+
     public static List<EBuffAndDeBuff> eNoneBuff = new List<EBuffAndDeBuff>
     {
         EBuffAndDeBuff.QuyCuu,
@@ -147,11 +148,13 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
         EBuffAndDeBuff.Hon,
         EBuffAndDeBuff.Anh,
     };
+
     public static List<EBuffAndDeBuff> eBuffs = Enum.GetValues(typeof(EBuffAndDeBuff))
-    .Cast<EBuffAndDeBuff>()
-    .Where(e => e != EBuffAndDeBuff.None)
-    .Where(e => !eDebuffs.Contains(e) && !eNoneBuff.Contains(e))
-    .ToList();
+        .Cast<EBuffAndDeBuff>()
+        .Where(e => e != EBuffAndDeBuff.None)
+        .Where(e => !eDebuffs.Contains(e) && !eNoneBuff.Contains(e))
+        .ToList();
+
     public enum ETypeSkill
     {
         None,
@@ -168,6 +171,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
         DiHoa,
         TranPhap
     }
+
     public enum EKeyWord
     {
         None,
@@ -182,51 +186,51 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
         ThanThuc,
         ChanThucTonThuong
     }
+
     public ETierSkill eTierSkill;
     public ETypeSkill[] eTypeSkill;
 
-    [SerializeField]private EKeyWord[] eKeywordSkillHave;
-    [SerializeField]private EBuffAndDeBuff[] eKeywordBuffSkillHave;
-    
+    [SerializeField] private EKeyWord[] eKeywordSkillHave;
+    [SerializeField] private EBuffAndDeBuff[] eKeywordBuffSkillHave;
+
     public virtual EKeyWord[] GetEKeywordSkillHave()
     {
         return eKeywordSkillHave;
     }
+
     public virtual EBuffAndDeBuff[] GetEKeywordBuffSkillHave(int level)
     {
         return eKeywordBuffSkillHave;
-    }    
+    }
 
 
-    public virtual void Execute(CharacterCombat caster, CharacterCombat target, params object[] data) {}
-   
+    public virtual void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
+    {
+    }
+
     public interface LienKich
     {
         public abstract void ExecuteLienKich(CharacterCombat caster, CharacterCombat target);
-
-
     }
+
     public interface TuongSinh
     {
         public abstract void ExecuteTuongSinh(CharacterCombat caster, CharacterCombat target);
-
-
     }
+
     public interface TuongKhac
     {
         public abstract void ExecuteTuongKhac(CharacterCombat caster, CharacterCombat target);
-
-
     }
+
     public interface TuongDong
     {
         public abstract void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target);
-
     }
+
     public interface ThanThuc
     {
         public abstract void ExecuteThanThuc(CharacterCombat caster, CharacterCombat target);
-
     }
 
     public virtual string GetDesc(int daiCanhGioi)
@@ -234,8 +238,8 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
         return string.Empty;
     }
 
-    
-    public static string GetKeyWordBuffOrDeBuff(EBuffAndDeBuff eKeyWord , int level = 1)
+
+    public static string GetKeyWordBuffOrDeBuff(EBuffAndDeBuff eKeyWord, int level = 1)
     {
         string text = string.Empty;
         switch (eKeyWord)
@@ -500,9 +504,10 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
             default:
                 break;
         }
-        return GetColoredText($"[{text}]", "#ffb143");
 
+        return GetColoredText($"[{text}]", "#ffb143");
     }
+
     public static string GetDescBuffOrDeBuff(EBuffAndDeBuff eKeyWord)
     {
         string text = string.Empty;
@@ -526,17 +531,20 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                 text = "Giai đoạn hấp thụ linh khí, mỗi tầng -1 linh khí có thể hấp thụ sau đó giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.SucThe:
-                text = "Mỗi nhận 1 điểm sát thương thì giải trừ 1 tầng. Bắt đầu hiệp, mỗi tầng gây 1 điểm sát thương kiếm hệ cho đối phương sau đó giải trừ toàn bộ";
+                text =
+                    "Mỗi nhận 1 điểm sát thương thì giải trừ 1 tầng. Bắt đầu hiệp, mỗi tầng gây 1 điểm sát thương kiếm hệ cho đối phương sau đó giải trừ toàn bộ";
 
                 break;
             case EBuffAndDeBuff.GiamTonThuong:
                 text = "Trong hiệp này, mỗi tầng ngăn cản 1 điểm sát thương. Kết thúc hiệp giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.NoiThuong:
-                text = $"Giai đoạn hấp thụ linh khí, nhận sát thương {GetColoredText($"mỗi tầng * số linh khí hấp thụ","red")} sau đó giải trừ 1 tầng";
+                text =
+                    $"Giai đoạn hấp thụ linh khí, nhận sát thương {GetColoredText($"mỗi tầng * số linh khí hấp thụ", "red")} sau đó giải trừ 1 tầng";
                 break;
             case EBuffAndDeBuff.TrienNhieu:
-                text = "Trong hiệp này, khi bản thân thi pháp nhận mỗi tầng 1 điểm sát thương. Kết thúc hiệp giải trừ toàn bộ";
+                text =
+                    "Trong hiệp này, khi bản thân thi pháp nhận mỗi tầng 1 điểm sát thương. Kết thúc hiệp giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.TriLieu:
                 text = $"Kết thúc hiệp, mỗi tầng khôi phục 1 điểm sinh mệnh sau đó giải trừ 1 tầng";
@@ -566,13 +574,15 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                 text = $"Thổ hệ thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.TuKhi:
-                text = $"Giai đoạn hấp thụ linh khí, mỗi tầng hấp thụ nhiều thêm 1 điểm linh khí sau đó giải trừ toàn bộ";
+                text =
+                    $"Giai đoạn hấp thụ linh khí, mỗi tầng hấp thụ nhiều thêm 1 điểm linh khí sau đó giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.Cham:
                 text = $"Chỉ thị vật";
                 break;
             case EBuffAndDeBuff.SuongGia:
-                text = $"Mỗi khi sử dụng thần thông gây tổn thương, mỗi tầng giảm -1 điểm sát thương có thể gây ra. Sau đó giải trừ 1 tầng";
+                text =
+                    $"Mỗi khi sử dụng thần thông gây tổn thương, mỗi tầng giảm -1 điểm sát thương có thể gây ra. Sau đó giải trừ 1 tầng";
                 break;
             case EBuffAndDeBuff.DongKet:
                 text = "Bản thân hiệp sau không được thi pháp";
@@ -593,10 +603,12 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                 text = $"Bắt đầu hiệp, mỗi tầng nhận 1 điểm sát thương sau đó giải trừ 1 tầng";
                 break;
             case EBuffAndDeBuff.HoaDiem:
-                text = $"Mỗi khi nhận sát thương bởi thần thông, phản lại sát thương cho đối thủ mỗi tầng gây thêm 1 điểm sát thương. Kết thúc hiệp, bản thân nhận 1 tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}. Sử dụng bất kỳ loại thần thông nào không phải {GetTextLinhKhi(ELinhKhi.Hoa)} hệ thần thông thì sẽ giải trừ";
+                text =
+                    $"Mỗi khi nhận sát thương bởi thần thông, phản lại sát thương cho đối thủ mỗi tầng gây thêm 1 điểm sát thương. Kết thúc hiệp, bản thân nhận 1 tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}. Sử dụng bất kỳ loại thần thông nào không phải {GetTextLinhKhi(ELinhKhi.Hoa)} hệ thần thông thì sẽ giải trừ";
                 break;
             case EBuffAndDeBuff.Diem:
-                text = $"Trong hiệp này, {GetTextLinhKhi(ELinhKhi.Hoa)} hệ tổn thương +1. Kết thúc hiệp giải trừ toàn bộ";
+                text =
+                    $"Trong hiệp này, {GetTextLinhKhi(ELinhKhi.Hoa)} hệ tổn thương +1. Kết thúc hiệp giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.Tran:
                 text = $"Chỉ thị vật";
@@ -611,7 +623,8 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                 text = $"Chỉ thị vật";
                 break;
             case EBuffAndDeBuff.AnNac:
-                text = $"Có 50% tỉ lệ né tránh thần thông sát thương. Sử dụng bất kì thần thông nào cùng đều giải trừ trạng thái này";
+                text =
+                    $"Có 50% tỉ lệ né tránh thần thông sát thương. Sử dụng bất kì thần thông nào cùng đều giải trừ trạng thái này";
                 break;
             case EBuffAndDeBuff.Hon:
                 text = $"Chỉ thị vật";
@@ -638,7 +651,8 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                 text = $"Chỉ thị vật";
                 break;
             case EBuffAndDeBuff.QuyTon:
-                text = $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 4 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 1500";
+                text =
+                    $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 4 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 1500";
                 break;
             case EBuffAndDeBuff.HonLuc:
                 text = $"Mỗi tổn thương 1 điểm sẽ giải trừ 1 tầng, tiêu hao hết Quỷ Hồn tiêu tan";
@@ -647,28 +661,36 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                 text = $"Trong hiệp này, mỗi tầng tăng lên một điểm sát thương đối với thần thông hệ kiếm";
                 break;
             case EBuffAndDeBuff.NhanKiem:
-                text = $"Kết thúc hiệp, mỗi một tầng thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}";
+                text =
+                    $"Kết thúc hiệp, mỗi một tầng thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}";
                 break;
             case EBuffAndDeBuff.DiaKiem:
-                text = $"Kết thúc hiệp, mỗi một tầng thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}";
+                text =
+                    $"Kết thúc hiệp, mỗi một tầng thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}";
                 break;
             case EBuffAndDeBuff.ThienKiem:
-                text = $"Kết thúc hiệp, mỗi một tầng phát động {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} một lần";
+                text =
+                    $"Kết thúc hiệp, mỗi một tầng phát động {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} một lần";
                 break;
             case EBuffAndDeBuff.QuyLinh:
-                text = $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 1 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 150";
+                text =
+                    $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 1 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 150";
                 break;
             case EBuffAndDeBuff.QuyBinh:
-                text = $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 2 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 300";
+                text =
+                    $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 2 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 300";
                 break;
             case EBuffAndDeBuff.QuyTuong:
-                text = $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 3 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 500";
+                text =
+                    $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 3 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 500";
                 break;
             case EBuffAndDeBuff.QuyDe:
-                text = $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 5 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 5000";
+                text =
+                    $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 5 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 5000";
                 break;
             case EBuffAndDeBuff.KiemTam:
-                text = $"Mỗi khi sử dụng {GetTextTypeSkill(ETypeSkill.Kiem)} hệ thần thông thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiemHiep)}, sau đó giải trừ một tầng. Kết thúc hiệp giải trừ toàn bộ";
+                text =
+                    $"Mỗi khi sử dụng {GetTextTypeSkill(ETypeSkill.Kiem)} hệ thần thông thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiemHiep)}, sau đó giải trừ một tầng. Kết thúc hiệp giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.ChanThan:
                 text = $"Thần thức thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ toàn bộ";
@@ -725,29 +747,36 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                 text = $"Trong hiệp này, mỗi tầng giảm một điểm sát thương đối với thần thông hệ Thổ";
                 break;
             case EBuffAndDeBuff.PhanTonThuong:
-                text = $"Mỗi lần nhận tổn thương, mỗi tầng phản lại một điểm sát thương cho đối thủ. Kết thúc hiệp, giải trừ toàn bộ";
+                text =
+                    $"Mỗi lần nhận tổn thương, mỗi tầng phản lại một điểm sát thương cho đối thủ. Kết thúc hiệp, giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.TichHoa:
-                text = $"Kết thúc hiệp, mỗi tầng giải trừ một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}. Sau đó, giải trừ toàn bộ";
+                text =
+                    $"Kết thúc hiệp, mỗi tầng giải trừ một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}. Sau đó, giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.TichKim:
-                text = $"Mỗi lần nhận tổn thương, mỗi tầng giải trừ một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}. Kết thúc hiệp, giải trừ toàn bộ";
+                text =
+                    $"Mỗi lần nhận tổn thương, mỗi tầng giải trừ một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}. Kết thúc hiệp, giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.TichMoc:
-                text = $"Mỗi lần sử dụng thần thông, mỗi tầng giải trừ một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}. Kết thúc hiệp, giải trừ toàn bộ";
+                text =
+                    $"Mỗi lần sử dụng thần thông, mỗi tầng giải trừ một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}. Kết thúc hiệp, giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.TichThuy:
-                text = $"Mỗi lần sử dụng thần thông, mỗi tầng giải trừ một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SuongGia)}. Kết thúc hiệp, giải trừ toàn bộ";
+                text =
+                    $"Mỗi lần sử dụng thần thông, mỗi tầng giải trừ một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SuongGia)}. Kết thúc hiệp, giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.TichDoc:
-                text = $"Bắt đầu hiệp, mỗi tầng giải trừ một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}. Kết thúc hiệp, giải trừ toàn bộ";
+                text =
+                    $"Bắt đầu hiệp, mỗi tầng giải trừ một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}. Kết thúc hiệp, giải trừ toàn bộ";
                 break;
             default:
                 break;
         }
-        return $"{GetKeyWordBuffOrDeBuff(eKeyWord)}: " + text;
 
+        return $"{GetKeyWordBuffOrDeBuff(eKeyWord)}: " + text;
     }
+
     public static string GetKeyWord(EKeyWord eKeyWord)
     {
         string text = string.Empty;
@@ -797,9 +826,10 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
             default:
                 break;
         }
-        return GetColoredText($"[{text}]", "#ffb143");
 
+        return GetColoredText($"[{text}]", "#ffb143");
     }
+
     public static string GetDescKeyWord(EKeyWord eKeyWord)
     {
         string text = string.Empty;
@@ -844,9 +874,10 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
             default:
                 break;
         }
-        return $"{GetKeyWord(eKeyWord)}: " + text;
 
+        return $"{GetKeyWord(eKeyWord)}: " + text;
     }
+
     public static string GetTextLinhKhi(ELinhKhi eLinhKhi)
     {
         string text = string.Empty;
@@ -880,24 +911,26 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
             default:
                 break;
         }
+
         return text;
     }
+
     public string GetTextTypeSkill()
     {
         string text = string.Empty;
         for (int i = 0; i < eTypeSkill.Length; i++)
         {
-            var item  = eTypeSkill[i];
+            var item = eTypeSkill[i];
             text += GetTextTypeSkill(item);
-            if(i < eTypeSkill.Length-1)
+            if (i < eTypeSkill.Length - 1)
             {
                 text += " - ";
-            }    
-
+            }
         }
-       
+
         return GetColoredText($"{text}", "#ffb143");
     }
+
     public static string GetTextTierSkill(ETierSkill eTierSkill)
     {
         string text = string.Empty;
@@ -910,41 +943,33 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                 break;
             case ETierSkill.NhanGiaiTrung:
                 text = "Nhân Giai Trung";
-
                 break;
             case ETierSkill.NhanGiaiThuong:
                 text = "Nhân Giai Thượng";
-
                 break;
             case ETierSkill.DiaGiaiHa:
                 text = "Địa Giai Hạ";
-
                 break;
             case ETierSkill.DiaGiaiTrung:
                 text = "Địa Giai Trung";
-
                 break;
             case ETierSkill.DiaGiaiThuong:
                 text = "Địa Giai Thượng";
-
                 break;
             case ETierSkill.ThienGiaiHa:
                 text = "Thiên Giai Hạ";
-
                 break;
             case ETierSkill.ThienGiaiTrung:
                 text = "Thiên Giai Trung";
-
                 break;
             case ETierSkill.ThienGiaiThuong:
                 text = "Thiên Giai Thượng";
-
-                break;
-            default:
                 break;
         }
+
         return text;
     }
+
     public static string GetTextTypeSkill(ETypeSkill typeSkill)
     {
         string text = string.Empty;
@@ -993,19 +1018,39 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                 break;
             case ETypeSkill.TranPhap:
                 text = "Trận Pháp";
-
-                break;
-            default:
                 break;
         }
+
         return text;
     }
+
+    public static ETypeSkill MonPhaiToSkill(EMonPhai monPhai)
+    {
+        switch (monPhai)
+        {
+            case EMonPhai.KimHongKiemPhai:
+                return ETypeSkill.Kim;
+            case EMonPhai.TrucSonTong:
+                return ETypeSkill.Moc;
+            case EMonPhai.TinhHaKiemPhai:
+                return ETypeSkill.Thuy;
+            case EMonPhai.LyHoaMon:
+                return ETypeSkill.Hoa;
+            case EMonPhai.HoaTranGiao:
+                return ETypeSkill.Tho;
+            case EMonPhai.BachDeLau:
+                return ETypeSkill.Kiem;
+            default:
+                return ETypeSkill.None;
+        }
+    }
+
     public bool CheckIsEqualETypeSkill(CharacterCombat caster)
     {
-        
-        return CheckIsEqualETypeSkill(caster,this.eTypeSkill);   
+        return CheckIsEqualETypeSkill(caster, this.eTypeSkill);
     }
-    public static bool CheckIsEqualETypeSkill(CharacterCombat caster , ETypeSkill[] skill)
+
+    public static bool CheckIsEqualETypeSkill(CharacterCombat caster, ETypeSkill[] skill)
     {
         if (caster.thanThongCurrentUse == null) return false;
         Debug.Log("Check Equal " + caster.thanThongCurrentUse.thanThong.name);
@@ -1014,20 +1059,21 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
         Debug.Log("Check Equal " + isExecute);
         return isExecute;
     }
+
     public bool CheckIsEqualETypeSkill(ETypeSkill[] eTypeSkills)
     {
-        
-        bool isExecute = CheckIsEqualETypeSkill(eTypeSkills,this.eTypeSkill);
+        bool isExecute = CheckIsEqualETypeSkill(eTypeSkills, this.eTypeSkill);
         Debug.Log("Check Equal " + isExecute);
         return isExecute;
     }
-    public static bool CheckIsEqualETypeSkill(ETypeSkill[] eTypeSkills , ETypeSkill[] eTypeSkillsCurrent)
-    {
 
+    public static bool CheckIsEqualETypeSkill(ETypeSkill[] eTypeSkills, ETypeSkill[] eTypeSkillsCurrent)
+    {
         bool isExecute = eTypeSkills.Any(skill => eTypeSkillsCurrent.Contains(skill));
         Debug.Log("Check Equal " + isExecute);
         return isExecute;
     }
+
     public void KiemY(CharacterCombat caster)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, 1);
@@ -1054,6 +1100,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
             default:
                 break;
         }
+
         return ETypeSkill.None;
     }
 

@@ -293,6 +293,11 @@ namespace Network
         {
         }
 
+        [Button]
+        public void ToConvert()
+        {
+            Observer.Notify(EventList.GamePlay.LOAD_SCENE, "ConvertElementalSkill");
+        }
         private static readonly MessageTag[] handler =
         {
             MessageTag.AddItemsResult, MessageTag.SetNgoDaoDiemResult, MessageTag.SetCamNgoResult,

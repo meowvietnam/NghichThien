@@ -172,29 +172,22 @@ namespace AllMaps.ItemProvider
         {
             base.Display(ctx);
             ctx.PriceText.transform.parent.gameObject.SetActive(false);
-           
-
         }
     }
     public abstract class AbstractCongPhapProvider : SkillProvider
     {
         public override ItemType SupportedType => ItemType.CongPhap;
         public abstract string TypeText { get;}
-
         public override void Display(ToolTipContext ctx)
         {
             base.Display(ctx);
             ctx.DescTextItem.transform.parent.gameObject.SetActive(true);
-
             ctx.TypeText.text = TypeText;
             if (ctx.BaseItemData is CongPhap skill)
             {
                 ctx.PrefabIconRequire.transform.parent.parent.gameObject.SetActive(false);
-
                 SetDisplay(ctx,skill);
-
             }
-
         }
         public abstract void SetDisplay(ToolTipContext ctx,CongPhap cp);
        
@@ -211,10 +204,7 @@ namespace AllMaps.ItemProvider
             ctx.DescriptionText.text = cp.GetDesc(5);
             ctx.DescTextItem.text = $"<color=#ffb143>【Tốc độ tu luyện】</color> {cp.GetTocDoTuLuyen(5)}";
             ctx.PriceText.transform.parent.gameObject.SetActive(true);
-
         }
-
-
     }
     public class CongPhapProvider : CongPhapBookProvider
     {
@@ -222,24 +212,17 @@ namespace AllMaps.ItemProvider
         public override void SetDisplay(ToolTipContext ctx, CongPhap cp)
         {
             ctx.PriceText.transform.parent.gameObject.SetActive(false);
-
             var charData = Client.Instance.CharacterData;
             var cpChar = charData.InventoryManager.CongPhapOwners.FirstOrDefault(x => x.Id == cp.Id);
             if(cpChar != null)
             {
                 ctx.DescriptionText.text = cp.GetDesc(cpChar.Level);
                 ctx.DescTextItem.text = $"<color=#ffb143>【Tiến độ】</color> Tầng thứ {cpChar.Level}   <color=#ffb143>【Tốc độ tu luyện】</color> {cp.GetTocDoTuLuyen(cpChar.Level)}";
-
             }
             else
             {     
-                            
                base.SetDisplay(ctx, cp);
-
             }
         }
-   
-        
-
     }
 }

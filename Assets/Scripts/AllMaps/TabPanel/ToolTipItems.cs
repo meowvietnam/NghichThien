@@ -10,7 +10,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Base;
+using ConvertElementalSkill;
 using CreateCharacter;
+using LongDHModules;
 using UnityEngine;
 using UnityEngine.UI;
 using CongPhap = Skill.CongPhap;
@@ -68,6 +70,42 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
     private CharacterData CharData => Client.Instance.CharacterData;
 
 
+    public void ShowInfoSkill(ISkillItemData skillItemData, EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)
+    {
+        if (skillItemData?.ItemData == null)
+        {
+            return;
+        }
+        var skill = skillItemData.ItemData;
+        var skillItemRef = CreateSkillItemRef(skill);
+        if (skillItemRef == null)
+        {
+            return;
+        }
+        var visual = skillItemData.VisualQuality;
+        gameObject.SetActive(true);
+        priceText.transform.parent.gameObject.SetActive(false);
+        prefabIconRequire.transform.parent.parent.gameObject.SetActive(false);
+        descTextItem.transform.parent.gameObject.SetActive(false);
+        itemData = skill;
+        itemRef = skillItemRef;
+        iItemData = null;
+        eActionShowItem = eTypeActionShow;
+        nameText.text = skillItemData.Name;
+        InitIcon(skillItemData.Icon, visual.Frame);
+        SetQualityFull(visual.QualityFull);
+        SetColorName(visual.Color);
+        ResetKeyword(prefabLeftInfor);
+        ResetKeyword(prefabRightInfor);
+        InitInforItem(null);
+        RefreshTooltipLayout();
+    }
+
+    public void ShowInfoItem(ISkillItemData skillItemData, EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)
+    {
+        ShowInfoSkill(skillItemData, eTypeActionShow);
+    }
+
     public void ShowInfoItem(IItemData itemData, ItemRef itemRef, FurnaceData furnaceData = null)
     {
 
@@ -91,6 +129,26 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
         ResetKeyword(prefabRightInfor);
         InitInforItem();
         RefreshTooltipLayout();
+    }
+
+    private static ItemRef CreateSkillItemRef(BaseSkill skill)
+    {
+        return skill switch
+        {
+            ThanThong => new ItemRef
+            {
+                Id = (ushort)skill.Id,
+                Type = ItemType.ThanThong,
+                Count = 1
+            },
+            CongPhap => new ItemRef
+            {
+                Id = (ushort)skill.Id,
+                Type = ItemType.CongPhap,
+                Count = 1
+            },
+            _ => null
+        };
     }
 
     public void InitShow(ItemInventory itemInventory, Sprite frameSprite, Sprite qualityFull, Color colorName,

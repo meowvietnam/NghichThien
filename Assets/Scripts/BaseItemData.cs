@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class BaseItemData : BaseData
 {
-    
     [SerializeField]
     public Sprite frameItem => null;
     public virtual string GetDesc()

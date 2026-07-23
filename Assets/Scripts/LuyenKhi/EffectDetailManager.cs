@@ -50,16 +50,10 @@ namespace LuyenKhi
                     var tooltip = Pool.Get<UIManager>().transform.GetComponentInChildren<Tooltip>(true);
                     tooltip.SetActive(true);
                     Debug.Log("effect text luyện khí hoạt động");
-
-                    // Lấy tên hiệu ứng (detail.Name) và mô tả từ hàm public static đã viết
-                    // Lưu ý: detail.EffectType là loại hiệu ứng, ta truyền vào hàm xử lý chuỗi "X"
                     string effectName = detail.Name;
                     string effectDesc = GameManager.GetEffectDescription(detail.EffectType);
-
                     tooltip.SetTextInfo(effectName, effectDesc);
                     tooltip.SetScale(Vector2.one * 1.5f);
-
-                    // Đặt vị trí Tooltip lệch một chút so với ngón tay/chuột để không bị che
                     tooltip.SetPosition(eventData.position - new Vector2(100, -40));
                 };
             }

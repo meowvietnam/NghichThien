@@ -12,7 +12,7 @@ public interface IFilterProvider
 {
     int OptionCount { get; }
     string GetOptionText(int index);
-    bool Matches(ItemRef item, ItemType currentType, Base.Tier tierCurrent, BaseSkill.ETierSkill eTierSkillCurrent, EquipmentTier eTierEquipmentCurrent);
+    bool Matches(ItemRef item, ItemType currentType, Tier tierCurrent, BaseSkill.ETierSkill eTierSkillCurrent, EquipmentTier eTierEquipmentCurrent);
 }
 
 public static class FilterProviderFactory
