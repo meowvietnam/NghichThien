@@ -69,13 +69,26 @@ namespace Network.Core
             if (result.Success)
             {
                 var statsSnapshot = result.Stats;
+                var charData = client.CharacterData;
+
                 if (statsSnapshot != null)
                 {
-                    client.CharacterData.Stats.ApplyFrom(statsSnapshot);
+                    charData.Stats.ApplyFrom(statsSnapshot);
                 }
 
+                var inventory = charData.InventoryManager;
+                var camNgos = result.CamNgos;
+                if (camNgos != null)
+                {
+                    inventory.CamNgos = camNgos;
+                }
+                var exp = result.CurrentExp;
+                if (exp != null)
+                {
+                    charData.Progression.CurrentExp = exp.Value;
+                }
                 var linhDan = LuyenDanResources.Instance.FindLinhDan(id);
-                client.CharacterData.InventoryManager.Decrease(new ItemRef()
+                inventory.Decrease(new ItemRef()
                 {
                     Id = id,
                     Type = ItemType.LinhDan,
@@ -89,7 +102,7 @@ namespace Network.Core
                         Id = id,
                         Count = count
                     };
-                    var danCombatUseds = client.CharacterData.EquipmentManager.DanCombatUseds;
+                    var danCombatUseds = charData.EquipmentManager.DanCombatUseds;
                     if (danCombatUseds.TryGetValue(danCombatRef, out var danCombatUsed))
                     {
                         danCombatUsed.Count += count;
@@ -105,7 +118,7 @@ namespace Network.Core
             {
                 if (result.Success)
                 {
-                    callback?.SuccessUseDan();
+                    callback?.SuccessUseDan(result.Message);
                 }
                 else
                 {
@@ -474,6 +487,7 @@ namespace Network.Core
                         }
                     }
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -488,6 +502,7 @@ namespace Network.Core
                             var cp = gameManager.GetCongPhapWithId(result.Id);
                             cp.UpgradeCongPhapSuccess(charData, cpOwner.Level);
                         }
+
                         dotPhaCallback.SuccessDotPhaCongPhap();
                     }
                     else

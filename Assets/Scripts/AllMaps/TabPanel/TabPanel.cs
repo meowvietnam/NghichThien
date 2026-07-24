@@ -1015,9 +1015,13 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
         NotifyGroup.Instance.Show(message);
     }
 
-    public void SuccessUseDan()
+    public void SuccessUseDan(string message)
     {
         Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
+        if (!string.IsNullOrEmpty(message))
+        {
+            NotifyGroup.Instance.Show(message);
+        }
     }
 
     public void FailUseDan(string message)

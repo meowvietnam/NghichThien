@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CreateCharacter;
 using LuyenDan;
 using MemoryPack;
 
@@ -9,5 +10,7 @@ namespace Network.Models
     {
         public StatsSnapshot StatsSnapshot { get; set; }
         public List<ItemRef> BuffItems { get; set; }
+        public int CurrentExp { get; set; }
+        public HashSet<CamNgo> CamNgos { get; set; }
     }
 }

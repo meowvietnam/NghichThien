@@ -114,7 +114,7 @@ namespace AllMaps.ItemProvider
                         var value = selectNum.GetValue();
                         if (value >= 1)
                         {
-                            Observer.Notify(EventList.Network.USE_DAN, this, itemInventory.itemRef.Id, (ushort)value);
+                            Observer.Notify(EventList.Network.USE_DAN, Pool.Get<TabPanel>(), itemInventory.itemRef.Id, (ushort)value);
                             itemInventory.AddCount(-value);
                         }
 

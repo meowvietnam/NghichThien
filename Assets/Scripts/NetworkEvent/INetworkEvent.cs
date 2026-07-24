@@ -2,6 +2,7 @@
 using AllMaps;
 using AllMaps.EventReward;
 using CreateCharacter;
+using JetBrains.Annotations;
 using LuyenDan;
 using Network.Models;
 
@@ -9,7 +10,7 @@ public class INetworkEvent
 {
     public interface IUseDan
     {
-        void SuccessUseDan();
+        void SuccessUseDan(string message);
         void FailUseDan(string message);
     }
     public interface ILearnNgoDao // Check đủ ngộ đạo điểm mới learn được

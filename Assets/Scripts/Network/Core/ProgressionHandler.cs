@@ -30,16 +30,20 @@ namespace Network.Core
                 {
                     inventory.Decrease(buffItem);
                 }
+                var camNgos = result.CamNgos;
+                inventory.CamNgos =  camNgos;
+                var currentExp = result.CurrentExp;
+                charData.Progression.CurrentExp = currentExp;
             }
             NetworkManager.Instance.Invoke(() =>
             {
                 if (result.Success)
                 {
-                    callback.SuccessSpecialLevelUp();
+                    callback?.SuccessSpecialLevelUp();
                 }
                 else
                 {
-                    callback.FailSpecialLevelUp(result.Message);
+                    callback?.FailSpecialLevelUp(result.Message);
                 }
             });
         }

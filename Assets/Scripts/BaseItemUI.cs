@@ -95,8 +95,6 @@ public class BaseItemUI : BaseBehaviour, IPointerUpHandler , IPointerDownHandler
     {
         enumerator = StartCoroutine(IECheckHolder());
         actionPointerDown?.Invoke();
-        Debug.Log("cos goi OnPointerDown item ui");
-
     }
 
     public virtual void OnPointerUp()

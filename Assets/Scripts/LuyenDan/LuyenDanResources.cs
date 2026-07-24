@@ -87,7 +87,17 @@ namespace LuyenDan
             var item = LinhDans.FirstOrDefault(x => x.Id == id);
             return item;
         }
-
+        [Button]
+        public LinhDan[] FindLinhDans(ETypeDan type)
+        {
+            return LinhDans.Where(x => x.ETypeDan == type).OrderBy(x => x.Tier).ThenBy(x => x.Name).ToArray();
+        }
+        [Button]
+        public LinhDan FindLinhDan(string desc)
+        {
+            var item = LinhDans.FirstOrDefault(x => x.Description.Contains(desc, StringComparison.InvariantCultureIgnoreCase));
+            return item;
+        }
         public string GetHerbDetail(int id, HerbType herbType)
         {
             var herb = HerbDatas.FirstOrDefault(x => x.Id == id);
