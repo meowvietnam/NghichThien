@@ -21,6 +21,15 @@ namespace ConvertElementalSkill
             }
             UpdateButton();
         }
+
+        public void Clear()
+        {
+            foreach (var slot in slots)
+            {
+                slot.ClearNew();
+            }
+            UpdateButton();
+        }
         public void OnSelect(Slot slot)
         {
             UpdateButton();
@@ -44,12 +53,17 @@ namespace ConvertElementalSkill
         }
         private void OnConvert()
         {
-            
+            ConvertElementalSkillPanel.Instance.Convert();
         }
 
         private void OnDestroy()
         {
             convertButton.onClick.RemoveAllListeners();
+        }
+
+        public Slot[] GetAvailableSlots()
+        {
+            return slots.Where(x => x.SkillData != null).ToArray();
         }
     }
 }

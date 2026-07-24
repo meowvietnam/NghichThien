@@ -177,5 +177,7 @@ namespace Network
         ExperienceReward = 1089,
         DailyReset = 1123,
         Report = 1225,
+        
+        ConvertElementalSkillRequest = 1232
     }
 }

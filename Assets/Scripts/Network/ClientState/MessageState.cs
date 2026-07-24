@@ -7,6 +7,7 @@ namespace Network.ClientState
         CreateCharacter,
         AllMaps,
         LuyenDan,
-        LuyenKhi
+        LuyenKhi,
+        ConvertElementalSkill
     }
 }

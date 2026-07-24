@@ -23,6 +23,12 @@ namespace ConvertElementalSkill
                 items.Add(item);
             }
         }
+        public void AddItem(SkillData skillData)
+        {
+            var item = Instantiate(itemPrefab, content);
+            item.SetData(skillData);
+            items.Add(item);
+        }
         public void ApplyFilterOn(ItemBag item)
         {
             var active = true;
@@ -61,5 +67,6 @@ namespace ConvertElementalSkill
         {
             return item.SkillData.ItemRef.Count > 0;
         }
+
     }
 }

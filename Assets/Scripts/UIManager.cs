@@ -38,6 +38,7 @@ public class UIManager : BaseBehaviour
     [SerializeField] public Button btnBXH;
     [SerializeField] public Button btnThuongHoi;
     [SerializeField] public Button btnGacha;
+    [SerializeField] private Button convertBtn;
     [SerializeField] public Button btnListIconShow;
     [SerializeField] private bool isShowListIcon = true;
     public Transform ListIcon => btnBXH.transform.parent;
@@ -245,6 +246,10 @@ public class UIManager : BaseBehaviour
             }
         });
         SetEventButton(btnGacha, () => { Pool.Get<GachaPanel>().SetActive(); });
+        SetEventButton(convertBtn, () =>
+        {
+            Observer.Notify(EventList.GamePlay.LOAD_SCENE, "ConvertElementalSkill");
+        });
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)

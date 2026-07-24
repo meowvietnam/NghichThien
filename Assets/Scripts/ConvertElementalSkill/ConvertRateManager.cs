@@ -16,6 +16,13 @@ namespace ConvertElementalSkill
             }
         }
 
+        public void Clear()
+        {
+            foreach (var convertRateText in rateTexts)
+            {
+                convertRateText.SetActive(false);
+            }
+        }
         public void RefreshRateText(Slot[] slots)
         {
             var instance = ConvertElementalSkillPanel.Instance;

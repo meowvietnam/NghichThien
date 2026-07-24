@@ -55,6 +55,27 @@ namespace ConvertElementalSkill
             itemList.UpdateFilter();
         }
 
+        public void AddItem(ItemRef item)
+        {
+            var currentItemBag = FindItem(item.Id);
+            if (currentItemBag != null)
+            {
+                var itemRef = currentItemBag.SkillData.ItemRef;
+                itemRef.SetCount(itemRef.Count + item.Count);
+                itemList.ApplyFilterOn(currentItemBag);
+            }
+            else
+            {
+                var ui = Pool.Get<UIManager>();
+                var gameManager = Pool.Get<GameManager>();
+                ISkillItemData itemData = item.Type == ItemType.ThanThong
+                    ? new ThanThongItemData(item, gameManager, ui)
+                    : new CongPhapItemData(item, gameManager, ui);
+                var skillData = new SkillData(item, itemData);
+                itemList.AddItem(skillData);
+                itemList.UpdateFilter();
+            }
+        }
         public ItemBag FindItem(ushort id)
         {
             return itemList.FindItem(id);

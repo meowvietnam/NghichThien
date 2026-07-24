@@ -9,9 +9,9 @@ namespace ConvertElementalSkill
         protected override void Start()
         {
             base.Start();
-            SetEventButton(clearButton, OnClear);
+            SetEventButton(clearButton, Clear);
         }
-        private void OnClear()
+        public void Clear()
         {
             ClearItem();
             ConvertElementalSkillPanel.Instance.Page.PutItems.OnDeselect(this);
