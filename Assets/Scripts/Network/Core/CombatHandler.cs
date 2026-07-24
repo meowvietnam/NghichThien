@@ -62,11 +62,11 @@ namespace Network.Core
                 {
                     if (result.Success)
                     {
-                        resultCombatCallBack.SuccessWinCombatBase(result.Reward, result.TypeResultCombat);
+                        resultCombatCallBack.SuccessResultCombatBase(result.Reward, result.TypeResultCombat);
                     }
                     else
                     {
-                        resultCombatCallBack.FailWinCombatBase(result.Message);
+                        resultCombatCallBack.FailResultCombatBase(result.Message);
                     }
                 });
             }

@@ -81,7 +81,7 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
     [SerializeField] private Tooltip buffInfor;
     [SerializeField] public Transform parentUIFight => buffInfor.transform.parent;
 
-    public SecureBool IsDelayGame => char1.CheckDie() || char2.CheckDie();
+    public SecureBool IsDelayGame => CheckDie();
     public SecureBool isDelayEffectSkill;
 
     public Camera cameraEffectSkillDynamic;
@@ -108,7 +108,7 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
         // Từ lượt 15 trở đi kích hoạt trạng thái bạo loạn
         if (currentTurn.CurrentTurn >= 15)
         {
-            textTurn += "<color=red><b>Linh Khí Bạo Loạn!</b></color>\n<size=80%>(Kết thúc hiệp tổn hao 10% Khí Huyết tối đa)</size>";
+            textTurn = "<size=25%>(Kết thúc hiệp, tổn hao 10% Khí Huyết tối đa)</size>\n<color=red><b>Linh Khí Bạo Loạn!</b></color>";
         }
 
         txtTurn.text = textTurn;
@@ -146,7 +146,7 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
                .Where(data => data?.thanThong != null)  // Lọc bỏ các dữ liệu null để tránh lỗi NullReferenceException
                .Select(data => data.thanThong.Id)       // Chọn ra id (Giả sử id của ThanThong có kiểu dữ liệu là int/string)
                .ToList();
-    public void CheckDie()
+    public bool CheckDie()
     {
         CharacterCombat characterDie = null;
         CharacterCombat characterWin = null;
@@ -179,7 +179,10 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
             }
 
             EventList.Combat.RemoveAllCombatObservers();
+            return true;
         } 
+       
+        return false;
             
 
     }    
@@ -193,7 +196,10 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
         Observer.AddObserver(EventList.Combat.UPDATE_AMKINH_THANTHONG, SetUIAmKinh);
 
         Observer.AddObserver(EventList.Combat.CHARACTER_ADJUST_HP, SetUIHpBar);
-        Observer.AddObserver(EventList.Combat.CHARACTER_ADJUST_HP, CheckDie);
+        Observer.AddObserver(EventList.Combat.CHARACTER_ADJUST_HP, () =>
+        {
+            CheckDie();
+        });
 
         if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
         if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
@@ -1316,7 +1322,7 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
         EventList.Combat.RemoveAllCombatObservers();
     }
 
-    public void SuccessWinCombatBase(RewardSnapshot rewardSnapshot , ETypeResultCombat resultCombaType)
+    public void SuccessResultCombatBase(RewardSnapshot rewardSnapshot , ETypeResultCombat resultCombaType)
     {
         if(resultCombaType == ETypeResultCombat.Win)
         {
@@ -1336,7 +1342,7 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
 
     }
 
-    public void FailWinCombatBase(string message)
+    public void FailResultCombatBase(string message)
     {
         Debug.Log("chỉ có thể là chó hack"+message);
     }

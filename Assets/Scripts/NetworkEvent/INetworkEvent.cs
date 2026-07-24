@@ -126,8 +126,8 @@ public class INetworkEvent
     }
     public interface IResultCombat// Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessWinCombatBase(RewardSnapshot rewardSnapshot, ETypeResultCombat resultCombaType);
-        void FailWinCombatBase(string message);
+        void SuccessResultCombatBase(RewardSnapshot rewardSnapshot, ETypeResultCombat resultCombaType);
+        void FailResultCombatBase(string message);
     }
     public interface ILoadCharCombat// Check đủ ngộ đạo điểm mới learn được
     {

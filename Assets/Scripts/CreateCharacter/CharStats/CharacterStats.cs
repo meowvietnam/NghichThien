@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using Network;
@@ -240,6 +241,8 @@ namespace CreateCharacter.CharStats
             ThoNguyen = snapshot.ThoNguyen;
             TamCanh = snapshot.TamCanh;
             DanDoc = snapshot.DanDoc;
+            Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
+
         }
 
         public int ByteSize()
