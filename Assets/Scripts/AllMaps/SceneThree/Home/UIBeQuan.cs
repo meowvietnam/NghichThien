@@ -172,6 +172,69 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
     private CharacterData CharData => Client.Instance.CharacterData;
     public double CostPriceTieuHao1Month => CalculateCost(CharData.Progression.Level);
 
+    public static int GetTotalTuLuyen(float percentTuChat,float percentTamCanh,float tocDoTuLuyenCP,int tongSoThang)
+    {
+        var buffExp = GetTotalValueBuffWithMultiplier(new List<float> { percentTuChat, 100, percentTamCanh }, (int)tocDoTuLuyenCP) *
+                            tongSoThang;
+        var ability = Client.Instance.CharacterData.Stats.Ability;
+        if (ability.HasFlag(Ability.TienThienDaoThe))
+        {
+            buffExp += (int)MathF.Ceiling(buffExp * 0.1f);
+        }
+
+        if (ability.HasFlag(Ability.HuyenAmTuyetMach))
+        {
+            buffExp -= (int)MathF.Ceiling(buffExp * 0.1f);
+        }
+        return buffExp;
+    }
+    public static int GetTotalValueBuffWithMultiplier(List<float> percent, int tocDoTuLuyenCP)
+    {
+        float total = tocDoTuLuyenCP;
+        Debug.Log($"TDTL: {total}");
+        foreach (var item in percent)
+        {
+            total *= (1 + item / 100f);
+        }
+
+        return (int)total;
+    }    
+    public static float GetPercentTamCanhPlayer()
+    {
+        float percentTamCanh = 0;
+        var getTamCanh = GameManager.GetTamCanhValue(Client.Instance.CharacterData.Stats.TamCanh);
+        if (getTamCanh.index > ThanThong.GetDaiCanhGioi(Client.Instance.CharacterData.Progression.Level))
+        {
+            percentTamCanh = +50;
+        }
+        else if (getTamCanh.index < ThanThong.GetDaiCanhGioi(Client.Instance.CharacterData.Progression.Level))
+        {
+            percentTamCanh = -50;
+        }
+        return percentTamCanh;
+    }
+    public static int GetTocDoTuLuyenCharData()
+    {
+        var charData =Client.Instance.CharacterData;
+        var cpChuTu = Pool.Get<GameManager>().GetCongPhapWithId(charData.EquipmentManager.ChuTu1Used);
+
+        int tocDoTuLuyenCP = 0;
+        if (cpChuTu != null)
+        {
+            var congPhapOwners = charData.InventoryManager.CongPhapOwners;
+            var level = 0;
+            if (congPhapOwners.TryGetValue(new CreateCharacter.CongPhap()
+            {
+                Id = charData.EquipmentManager.ChuTu1Used
+            }, out var congPhap))
+            {
+                level = congPhap.Level;
+            }
+
+            tocDoTuLuyenCP = cpChuTu.GetTocDoTuLuyen(level);
+        }
+        return tocDoTuLuyenCP;
+    }
     private void InitPageTuLuyen()
     {
         var charData = CharData;
@@ -179,37 +242,26 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         var cpChuTu = Pool.Get<GameManager>().GetCongPhapWithId(charData.EquipmentManager.ChuTu1Used);
         string nameCPstr = "Không";
 
-        int tocDoTuLuyenCP = 0;
+        int tocDoTuLuyenCP = GetTocDoTuLuyenCharData();
         if (cpChuTu != null)
         {
             nameCPstr = cpChuTu.nameItem;
-            var congPhapOwners = charData.InventoryManager.CongPhapOwners;
-            var level = 0;
-            if (congPhapOwners.TryGetValue(new CreateCharacter.CongPhap()
-                {
-                    Id = charData.EquipmentManager.ChuTu1Used
-                }, out var congPhap))
-            {
-                level = congPhap.Level;
-            }
-
-            tocDoTuLuyenCP = cpChuTu.GetTocDoTuLuyen(level);
+           
         }
 
         nameCP.text = $"《{nameCPstr}》";
         valueTuLuyenForCPText.text = tocDoTuLuyenCP.ToString();
         int percentTuChat = charData.Stats.TuChat;
         percentTuChatText.text = $"{percentTuChat}%";
-        var getTamCanh = GameManager.GetTamCanhValue(charData.Stats.TamCanh);
-
-        int percentTamCanh = 0;
+        var getTamCanh = GameManager.GetTamCanhValue(Client.Instance.CharacterData.Stats.TamCanh);
+        float percentTamCanh = GetPercentTamCanhPlayer();
         tamCanhValueText.text = "Tăng lên";
-        if (getTamCanh.index > ThanThong.GetDaiCanhGioi(charData.Progression.Level))
+        if (percentTamCanh>0)
         {
             percentTamCanh = +50;
             tamCanhValueText.text = "Tăng lên";
         }
-        else if (getTamCanh.index < ThanThong.GetDaiCanhGioi(charData.Progression.Level))
+        else if (percentTamCanh<0)
         {
             percentTamCanh = -50;
             tamCanhValueText.text = "Giảm xuống";
@@ -217,17 +269,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
 
         percentTamCanhText.text = $"{percentTamCanh}%";
 
-        int GetTotalValueBuffWithMultiplier(List<float> percent)
-        {
-            float total = tocDoTuLuyenCP;
-            Debug.Log($"TDTL: {total}");
-            foreach (var item in percent)
-            {
-                total *= (1 + item / 100f);
-            }
-
-            return (int)total;
-        }
+       
 
         tuChatText.text = GameManager.tuChatWithText[charData.Stats.LinhCan];
         tamCanhText.text = getTamCanh.name;
@@ -244,20 +286,9 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
             int tongSoThang = Mathf.RoundToInt(value);
             if (tongSoThang > 0)
             {
-                var buffExp = GetTotalValueBuffWithMultiplier(new List<float> { percentTuChat, 100, percentTamCanh }) *
-                              tongSoThang;
-                var ability = charData.Stats.Ability;
-                if (ability.HasFlag(Ability.TienThienDaoThe))
-                {
-                    buffExp += (int)MathF.Ceiling(buffExp * 0.1f);
-                }
+             
 
-                if (ability.HasFlag(Ability.HuyenAmTuyetMach))
-                {
-                    buffExp -= (int)MathF.Ceiling(buffExp * 0.1f);
-                }
-
-                totalValueTuLuyenText.text = $"{buffExp}";
+                totalValueTuLuyenText.text = $"{GetTotalTuLuyen(percentTuChat,percentTamCanh,tocDoTuLuyenCP,tongSoThang)}";
             }
             else
             {

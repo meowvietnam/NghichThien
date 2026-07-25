@@ -194,6 +194,9 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
     [SerializeField] private Text thuyText;
     [SerializeField] private Text hoaText;
     [SerializeField] private Text thoText;
+    [SerializeField] private Text monPhaiText;
+    [SerializeField] private Text chucVuText;
+
     [SerializeField] private Sprite[] listSpriteIconTamCanh;
     [SerializeField] private Color[] listColorTamCanh;
 
@@ -226,7 +229,8 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
         thanThucText.text = CharacterDatas.Stats.ThanThuc.ToString();
         ngoTinhText.text = CharacterDatas.Stats.NgoTinh.ToString();
         donTocText.text = CharacterDatas.Stats.TocDoBay.ToString();
-        //tocDoTuLuyenText.text = player.characterStatsBase.tocDoBay.Value.ToString();
+        var cpChuTu = Pool.Get<GameManager>().GetCongPhapWithId(CharacterDatas.EquipmentManager.ChuTu1Used);
+        tocDoTuLuyenText.text = $"{UIBeQuan.GetTotalTuLuyen(CharacterDatas.Stats.TuChat, UIBeQuan.GetPercentTamCanhPlayer(), UIBeQuan.GetTocDoTuLuyenCharData(), 1)}/Tháng";
         var getTamCanh = GameManager.GetTamCanhValue(CharacterDatas.Stats.TamCanh);
         var getDanDoc = GameManager.GetDanDocValue(CharacterDatas.Stats.DanDoc);
 
@@ -245,6 +249,10 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
         thuyText.text = $"{(int)CharacterDatas.Stats.Thuy}";
         hoaText.text = $"{(int)CharacterDatas.Stats.Hoa}";
         thoText.text = $"{(int)CharacterDatas.Stats.Tho}";
+
+        monPhaiText.text = GameManager.GetMonPhaiTextBase(Client.Instance.CharacterData.MonPhai).ToString();
+        chucVuText.text = GameManager.GetChucVuTextBase(Client.Instance.CharacterData.MonPhai,Client.Instance.CharacterData.Progression.Level).ToString();
+
     }
 
     [Header("--- NGỘ ĐẠO ---")] [SerializeField]

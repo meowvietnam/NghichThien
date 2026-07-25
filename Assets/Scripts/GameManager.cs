@@ -275,8 +275,22 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             textChucVu += " " + chucVuText[ThanThong.GetDaiCanhGioi(level)];
         }
         return textChucVu;
-    }   
+    }
+    public static string GetChucVuTextBase(EMonPhai monPhai, int level)
+    {
+        string textChucVu = "";
+        if (monPhai != EMonPhai.None)
+        {
+            textChucVu = chucVuText[ThanThong.GetDaiCanhGioi(level)];
+        }
+        return textChucVu;
+    }
+    public static string GetMonPhaiTextBase(EMonPhai monPhai)
+    {
+        
 
+        return monPhaiText[monPhai];
+    }
     public void OnBackScene()
     {
         string currentScene = SceneManager.GetActiveScene().name;
