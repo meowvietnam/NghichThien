@@ -400,21 +400,41 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     public void GoToCombat()
     {
         if (enemyCombat == null) return;
-        if (Client.Instance.CharacterData.Stats.Hp <= 0)
+        if (Client.Instance.CharacterData.Stats.Hp <= 0 && currentETypeCombat == ETypeCombat.AllMaps)
         {
             NotifyGroup.Instance.Show("Khí huyết đã cạn. Hãy bế quan tại khách sạn hoặc sử dụng đan dược để hồi phục");
             return;
         }
+        
         Client.Instance.CharacterData.EquipmentManager.DanCombatUseds.Clear();
         Pool.Get<UIManager>().panelGroup.SetActive(false);
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
         Pool.Get<UIManager>().ListIcon.gameObject.SetActive(false);
         Pool.Get<PrepareCombatPanel>().Hide();
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
-        Observer.Notify(EventList.Network.LOAD_CHAR_COMBAT, this);
+        if (currentETypeCombat == ETypeCombat.LuanBan)
+        {
+            GoToLuanBan(new CharacterSnapshot(Client.Instance.CharacterData));
+        }
+        else
+        {
+            Observer.Notify(EventList.Network.LOAD_CHAR_COMBAT, this);
+
+        }
 
 
     }
+    public void GoToLuanBan(CharacterSnapshot user)
+    {
+        this.user = new CharCombatInit
+        {
+            eTypeVisual = ETypeVisualChar.Character,
+            charStats = CharacterStatsSecureBuilder.ArenaFromCharacterSnapshot(user),
+        };
+
+        Observer.Notify(EventList.GamePlay.LOAD_SCENE, "Combat");
+    }
+
     public void GoToPrepareCombatArena(CharacterSnapshot user,CharacterSnapshot enemy)
     {
         this.user = new CharCombatInit

@@ -27,7 +27,7 @@ public class KySinhDanHuyetThuat : ThanThong, IMemorySerializable<KySinhDanHuyet
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"+{dames[level - 1]} điểm", "red")} sát thương, nếu là {GetTextLinhKhi(ELinhKhi.Moc)} hệ linh khí thì hấp thụ gấp đôi";
+        return $"Tạo thành {GetColoredText($"+{dames[level - 1]} điểm", "red")} sát thương, nếu đối phương đang ở dưới trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)} thì khôi phục khí huyết tương ứng";
     }
 
     public override int ByteSize()
