@@ -60,7 +60,7 @@ namespace ConvertElementalSkill
         }
         public ItemBag FindItem(ushort id)
         {
-            return items.First(x => x.SkillData.ItemRef.Id == id);
+            return items.FirstOrDefault(x => x.SkillData.ItemRef.Id == id);
         }
 
         public bool Filter(ItemBag item)
