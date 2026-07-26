@@ -38,7 +38,7 @@ namespace ConvertElementalSkill
 
         private void UpdateRate()
         {
-            ConvertElementalSkillPanel.Instance.Page.RateManager.RefreshRateText(slots);
+            ConvertElementalSkillPanel.Instance.Page.RateManager.RefreshRateText();
         }
         
         public void OnDeselect(Slot slot)
@@ -64,6 +64,11 @@ namespace ConvertElementalSkill
         public Slot[] GetAvailableSlots()
         {
             return slots.Where(x => x.SkillData != null).ToArray();
+        }
+
+        public Slot[] GetSlots()
+        {
+            return slots;
         }
     }
 }

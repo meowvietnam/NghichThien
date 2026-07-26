@@ -22,9 +22,8 @@ namespace ConvertElementalSkill
         public ToolTipItems ToolTipItems => ToolTipItems.Instance;
         [SerializeField] private GameObject selectTypeObject;
         [SerializeField] private ProgressBar progressBar;
-        private SkillType currentSelectedSkill = SkillType.ThanThong;
-        public string CurrentSelectedSkillName { get; private set; }
-
+        public SelectSkillType CurrentSelectedSkill { get; private set; }
+        public TypeSkillToggle CurrentSelectedTypeSkill { get; private set; }
         private void Awake()
         {
             Instance = this;
@@ -52,14 +51,18 @@ namespace ConvertElementalSkill
 
         public void OnSelectSkillType(SelectSkillType selectSkillType)
         {
+            CurrentSelectedSkill = selectSkillType;
             selectTypeObject.SetActive(false);
             Page.SetActive(true);
             Page.SetIcon(selectSkillType.Icon);
             Page.SetName(selectSkillType.Name);
-            currentSelectedSkill = selectSkillType.SkillType;
-            CurrentSelectedSkillName = selectSkillType.Name;
             var inventory = Client.Instance.CharacterData.InventoryManager;
             Init(inventory);
+        }
+        public void OnSelect(TypeSkillToggle typeSkillToggle)
+        {
+            CurrentSelectedTypeSkill = typeSkillToggle;
+            Page.RateManager.RefreshRateText();
         }
         [Button]
         public async void Convert()
@@ -76,6 +79,7 @@ namespace ConvertElementalSkill
                 .ToHashSet();
             var request = new Network.Models.ConvertElementalSkill()
             {
+                TypeSkill = CurrentSelectedTypeSkill.Type,
                 ItemConverts = itemConverts,
             };
             var client = Client.Instance;
@@ -118,7 +122,7 @@ namespace ConvertElementalSkill
 
         private void Init(InventoryManager inventory)
         {
-            var itemSet = currentSelectedSkill == SkillType.ThanThong ? inventory.ThanThongs : inventory.CongPhaps;
+            var itemSet = CurrentSelectedSkill.SkillType == SkillType.ThanThong ? inventory.ThanThongs : inventory.CongPhaps;
             var items = itemSet.Select(x => x.DeepClone()).ToHashSet();
             Bag.Init(items);
             Page.Init();
@@ -135,5 +139,6 @@ namespace ConvertElementalSkill
 
             Instance = null;
         }
+
     }
 }

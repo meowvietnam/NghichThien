@@ -23,7 +23,7 @@ namespace ConvertElementalSkill
             var item = gameManager.GetCongPhapWithId(itemRef.Id);
             ItemData = item;
             Id = itemRef.Id;
-            Icon = item.spriteItem;
+            Icon = ui.spriteCPInven;
             Name = item.nameItem;
             TierSkill = item.eTierSkill;
             ETypeSkills = item.eTypeSkill;

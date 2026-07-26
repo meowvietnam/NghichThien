@@ -23,11 +23,11 @@ namespace ConvertElementalSkill
                 convertRateText.SetActive(false);
             }
         }
-        public void RefreshRateText(Slot[] slots)
+
+        public void RefreshRateText()
         {
             var instance = ConvertElementalSkillPanel.Instance;
-            var monPhai = Client.Instance.CharacterData.MonPhai;
-            var monPhaiText = GameManager.monPhaiText[monPhai];
+            var slots = instance.Page.PutItems.GetSlots();
             var oneRate = 100f / slots.Length;
             var tierCount = slots
                 .Where(x => x.SkillData != null)
@@ -38,6 +38,7 @@ namespace ConvertElementalSkill
                     Count = g.Count(),
                     Color = g.First().SkillData.ItemData.VisualQuality.Color
                 }).ToArray();
+            var currentTypeSkillName = instance.CurrentSelectedTypeSkill.Name;
             for (int i = 0; i < tierCount.Length; i++)
             {
                 var tier = tierCount[i].Tier;
@@ -45,11 +46,12 @@ namespace ConvertElementalSkill
                 var color = tierCount[i].Color;
                 var tierText = BaseSkill.GetTextTierSkill(tier);
                 var rate = count * oneRate;
-                var currentSkillName = instance.CurrentSelectedSkillName;
-                var text = $"Có {rate:F2}% chuyển đổi thành {currentSkillName} <i><color=#4A90E2>{monPhaiText}</color></i> - <color=#{ColorUtility.ToHtmlStringRGB(color)}>{tierText}</color>";
+                var text =
+                    $"Có {rate:F2}% chuyển đổi hệ <i><color=#4A90E2>{currentTypeSkillName}</color></i> - <color=#{ColorUtility.ToHtmlStringRGB(color)}>{tierText}</color>";
                 rateTexts[i].SetText(text);
                 rateTexts[i].SetActive(true);
             }
+
             for (int i = tierCount.Length; i < rateTexts.Length; i++)
             {
                 rateTexts[i].SetActive(false);

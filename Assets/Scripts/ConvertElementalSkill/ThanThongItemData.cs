@@ -25,7 +25,7 @@ namespace ConvertElementalSkill
             var item = gameManager.GetThanThongWithId(itemRef.Id);
             ItemData = item;
             Id = itemRef.Id;
-            Icon = item.spriteItem;
+            Icon = ui.spriteTTInven;
             Name = item.nameItem;
             TierSkill = item.eTierSkill;
             ETypeSkills = item.eTypeSkill;

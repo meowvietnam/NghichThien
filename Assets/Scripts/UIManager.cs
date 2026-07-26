@@ -31,8 +31,8 @@ public class UIManager : BaseBehaviour
     [SerializeField] public Sprite[] spriteQualityFulls;
     [SerializeField] public Sprite[] spriteFrames;
     [SerializeField] public Color[] colorQualitys;
-    [SerializeField] private Sprite spriteTTInven;
-    [SerializeField] private Sprite spriteCPInven;
+    [SerializeField] public Sprite spriteTTInven;
+    [SerializeField] public Sprite spriteCPInven;
     [SerializeField] private Sprite spriteRecipeInven;
     [SerializeField] public GameObject loadScene;
     [SerializeField] public Button btnBXH;
