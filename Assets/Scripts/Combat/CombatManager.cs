@@ -828,7 +828,19 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
                 thanThongTemp.Remove(itemToMove); // Xóa khỏi vị trí hiện tại
                 thanThongTemp.Add(itemToMove);    // Thêm lại vào cuối list
             }
-            // check skill play ưu tiên liên kích
+            // Sắp xếp lại thanThongTemp theo các tiêu chí:
+            // 1. Ưu tiên skill chưa từng dùng hoặc dùng ít nhất trong thanThongUseThisComBat
+            // 2. Ưu tiên skill có Tier cao hơn nếu số lần dùng bằng nhau
+            thanThongTemp = thanThongTemp
+                .OrderBy(skill =>
+                {
+                    // Duyệt qua các list con trong thanThongUseThisComBat, 
+                    // đếm xem skill này xuất hiện bao nhiêu lần trong PlaySkillData.thanThong
+                    return currentTurn.thanThongUseThisComBat
+                        .Sum(listCon => listCon.Count(playData => playData.thanThong == skill));
+                })
+                .ThenByDescending(skill => skill.eTierSkill) // Sắp xếp giảm dần theo Tier (Tier cao đứng trước)
+                .ToList();
             foreach (var item in thanThongTemp)
             {
                 if( item is BaseSkill.LienKich && IsLienKich(item,currentTurn.thanThongCurrentUse.thanThong))

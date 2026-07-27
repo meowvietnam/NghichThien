@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AllMaps.ItemProvider;
+using AllMaps.ui_rank;
 using LongDHModules;
 using LuyenDan;
 using Network;
@@ -46,10 +47,15 @@ namespace AllMaps.ItemProvider
                 ItemType.LinhDan => new LinhDanProvider(),
                 ItemType.Recipe => new RecipeProvider(),
                 ItemType.Material => new MaterialProvider(),
-                ItemType.ThanThong => tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.ThanThong? new ThanThongProvider()  :new ThanThongBookProvider(),
-                ItemType.CongPhap => tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.CongPhap ? new CongPhapProvider() :new CongPhapBookProvider(),
+                ItemType.ThanThong => (tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.ThanThong) || IsBaseSkillVisual()? new ThanThongProvider()  :new ThanThongBookProvider(),
+                ItemType.CongPhap => (tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.CongPhap)|| IsBaseSkillVisual() ? new CongPhapProvider() :new CongPhapBookProvider(),
                 _ => null,
             };
+        }
+        public static bool IsBaseSkillVisual()
+        {
+            var beQuan = Pool.Get<UIBeQuan>();
+            return !Pool.Get<TabPanel>().gameObject.activeSelf&& (Pool.Get<UIManager>().currentPopup is PopupInfor || (beQuan != null && beQuan.popBeQuan.gameObject.activeSelf && beQuan.currentBtnWithPage.typePage == UIBeQuan.ETypePage.Update) || Pool.Get<RankPanel>().popupInfor.gameObject.activeSelf);
         }
     }
 }
