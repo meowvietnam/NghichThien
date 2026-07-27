@@ -208,6 +208,14 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
         var gameConfig = Pool.Get<GameManager>();
         char1.Init(gameConfig.user);
         char2.Init(gameConfig.enemyCombat);
+        foreach (var item in char1.thanThongEquip)
+        {
+            item.LoadFirstDataPrefab();
+        }
+        foreach (var item in char2.thanThongEquip)
+        {
+            item.LoadFirstDataPrefab();
+        }
         char2.isAutoCastSkill = true;
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, NewTurn);
