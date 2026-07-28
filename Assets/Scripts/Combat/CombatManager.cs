@@ -817,7 +817,7 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
         List<ThanThong> thanThongTemp = new List<ThanThong>();
         foreach(var item in currentTurn.thanThongEquip)
         {
-            if(item.IsCanUse(currentTurn,targetTurn))
+            if(item.IsCanUseGlobal(currentTurn,targetTurn))
             {
                 thanThongTemp.Add(item);
             }    

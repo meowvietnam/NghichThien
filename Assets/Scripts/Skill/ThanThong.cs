@@ -375,7 +375,10 @@ namespace Skill
         {
             return caster.congPhapDynamic.Count(x => x.congPhap is DietLinhQuyet) <= DietLinhQuyet.require - 1;
         }
-
+        public bool IsCanUseGlobal(CharacterCombat caster, CharacterCombat target)
+        {
+            return IsCanUse(caster,target) && !caster.thanThongCoolDown.ContainsKey(this);
+        }
         protected GameObject ShowSkillEffectParticleBase(CharacterCombat caster, float delay, float cameraSize = 50f,
             bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
         {

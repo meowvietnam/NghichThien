@@ -89,7 +89,7 @@ public class SideDeliveryQuestResource : SideQuestResource
             {
                 CameraFollow.Instance.target = Pool.Get<Player>().transform;
 
-            });
+            },false);
         }, GetStartDialogs(), charRandom);
     }
     public override void QuestDoneUI()

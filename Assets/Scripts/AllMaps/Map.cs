@@ -49,6 +49,11 @@ namespace AllMaps
                 iconVisualAction.Recycle();
                 iconVisualAction = null;
             }
+            for (int i = 0; i < this.transform.GetChild(0).childCount; i++)
+            {
+                this.transform.GetChild(0).GetChild(i).gameObject.SetActive(false);
+            } 
+                
         }    
         public virtual void SetData(IActionMap dataCurrent, GameObject iconVisualAction)
         {
