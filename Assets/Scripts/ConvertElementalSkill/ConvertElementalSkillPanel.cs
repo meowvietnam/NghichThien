@@ -1,6 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Base;
 using CreateCharacter;
+using LongDHModules;
 using LuyenDan;
 using Network;
 using Network.ClientState;
@@ -136,8 +138,8 @@ namespace ConvertElementalSkill
             {
                 charData.OnInventoryUpdated -= OnInventoryUpdated;
             }
-
             Instance = null;
+            Pool.Get<GameManager>().Cleanup();
         }
 
     }

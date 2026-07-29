@@ -53,7 +53,6 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
             {
                 return null;
             }
-
             if (itemRef.Type != ItemType.Furnace)
             {
                 return null;
@@ -105,10 +104,8 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
     {
         ShowInfoSkill(skillItemData, eTypeActionShow);
     }
-
     public void ShowInfoItem(IItemData itemData, ItemRef itemRef, FurnaceData furnaceData = null)
     {
-
         iItemData = itemData;
         this.itemRef = itemRef;
         var tier = itemData.Tier;

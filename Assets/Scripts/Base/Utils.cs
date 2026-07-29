@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace Base
@@ -42,6 +43,35 @@ namespace Base
             }
 
             return new string(chars);
+        }
+        public static List<T[]> SplitArray<T>(T[] array, int parts)
+        {
+            if (parts <= 0)
+                throw new ArgumentException("parts must be greater than 0");
+
+            var result = new List<T[]>();
+
+            int baseSize = array.Length / parts;
+            int remainder = array.Length % parts;
+
+            int index = 0;
+
+            for (int i = 0; i < parts; i++)
+            {
+                int size = baseSize + (i < remainder ? 1 : 0);
+
+                var chunk = new T[size];
+                Array.Copy(array, index, chunk, 0, size);
+
+                result.Add(chunk);
+                index += size;
+            }
+
+            return result;
+        }
+        public static string FormatTimeOnly(TimeSpan time)
+        {
+            return $"{time.Hours:D2}:{time.Minutes:D2}";
         }
     }
 }

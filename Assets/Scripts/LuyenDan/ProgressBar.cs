@@ -80,6 +80,10 @@ namespace LuyenDan
             DoKill(completed, true);
         }
 
+        public bool IsCompleted()
+        {
+            return isCompleted;
+        }
         public void DoKill(Action completed, bool hideOnCompleted)
         {
             isCompleted = true;

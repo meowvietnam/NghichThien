@@ -8,6 +8,7 @@ namespace Network.ClientState
         AllMaps,
         LuyenDan,
         LuyenKhi,
-        ConvertElementalSkill
+        ConvertElementalSkill,
+        Auction
     }
 }

@@ -10,6 +10,8 @@ using System.Linq;
 using LongDHModules;
 using UnityEditor;
 using UnityEngine;
+using Player = Auction.Player;
+
 [CreateAssetMenu(fileName = nameof(SideDeliveryQuestResource), menuName = "Action Map/Side Quest/" + nameof(SideDeliveryQuestResource))]
 
 public class SideDeliveryQuestResource : SideQuestResource

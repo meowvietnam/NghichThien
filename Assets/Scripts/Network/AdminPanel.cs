@@ -294,9 +294,9 @@ namespace Network
         }
 
         [Button]
-        public void ToConvert()
+        public void ToAuction()
         {
-            Observer.Notify(EventList.GamePlay.LOAD_SCENE, "ConvertElementalSkill");
+            Observer.Notify(EventList.GamePlay.LOAD_SCENE, "Auction");
         }
         private static readonly MessageTag[] handler =
         {

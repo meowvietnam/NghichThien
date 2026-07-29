@@ -51,6 +51,11 @@ namespace LuyenDan
             return TempFurnaceDatas.FirstOrDefault(x => x.Id == furnace.Id);
         }
 
+        public IItemData FindFurnace(int id)
+        {
+            return TempFurnaceDatas.FirstOrDefault(x => x.Id == id);
+        }
+
         public IItemData FindItem(ItemRef itemRef)
         {
             if (itemRef.Type == ItemType.Furnace)

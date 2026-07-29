@@ -1,3 +1,4 @@
+using System;
 using NativeTcp = System.Net.Sockets.TcpClient;
 
 namespace Network
@@ -15,6 +16,14 @@ namespace Network
             TcpClient = new TcpClient(client);
             AddProtocol(TcpClient);
             TcpClient.StartRead();
+        }
+        public void AddReconnectedListener(Action onReconnected)
+        {
+            TcpClient.ReconnectedSuccess += onReconnected;
+        }
+        public void RemoveReconnectedListener(Action onReconnected)
+        {
+            TcpClient.ReconnectedSuccess -= onReconnected;
         }
     }
 }

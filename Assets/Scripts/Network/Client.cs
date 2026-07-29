@@ -31,7 +31,7 @@ namespace Network
             AddModule(CoreModule);
             AddModule(stateModule);
         }
-
+        
         public void SetLogout(bool isLogout)
         {
             IsLogout = isLogout;
@@ -124,6 +124,18 @@ namespace Network
             var dailyHandler = new DailyHandler();
             module.RemoveHandler<DailyHandler>();
             module.AddHandler(dailyHandler);
+            
+            var auctionHandler = new AuctionHandler();
+            module.RemoveHandler<AuctionHandler>();
+            module.AddHandler(auctionHandler);
+            
+            var syncHandler = new SyncHandler();
+            module.RemoveHandler<SyncHandler>();
+            module.AddHandler(syncHandler);
+            
+            var notifyHandler = new NotifyHandler();
+            module.RemoveHandler<NotifyHandler>();
+            module.AddHandler(notifyHandler);
             
             AdminPanel.Instance.StartListen();
         }

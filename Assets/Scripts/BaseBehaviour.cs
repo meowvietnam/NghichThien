@@ -14,7 +14,7 @@ public class BaseBehaviour : MonoBehaviour
         btn.onClick.AddListener(() =>
         {
             action?.Invoke();
-            SoundManager.Instance.PlaySoundButtonClick();
+            SoundManager.Instance?.PlaySoundButtonClick();
         });
     }    
 }

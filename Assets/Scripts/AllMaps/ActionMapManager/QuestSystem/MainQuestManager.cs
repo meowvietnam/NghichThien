@@ -1,13 +1,9 @@
 ﻿using AllMaps;
-using Base;
-using DG.Tweening;
 using LongDH.LongDHModules;
 using LongDHModules;
 using Network;
 using Network.Extensions;
 using Sirenix.OdinInspector;
-using Sirenix.Utilities;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -88,7 +84,7 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
 
     private IEnumerator FollowItemsOneByOneRoutine()
     {
-        var player = Pool.Get<Player>();    
+        var player = Pool.Get<AllMaps.Player>();    
         while (player.IsMoving)
         {
             yield return null; // Chờ đến frame tiếp theo và kiểm tra lại trạng thái di chuyển của player

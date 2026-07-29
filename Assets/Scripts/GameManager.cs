@@ -580,13 +580,19 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     }
     public void Cleanup()
     {
+        if (Client.Instance == null)
+        {
+            return;
+        }
+        var charData = Client.Instance.CharacterData;
+        
         // Combine all ThanThong IDs into one list
         var allThanThongIds = new List<int>();
-        allThanThongIds.AddRange(Client.Instance.CharacterData.EquipmentManager.ThanThongEquips.Select(itemRef => (int)itemRef.Id));
+        allThanThongIds.AddRange(charData.EquipmentManager.ThanThongEquips.Select(itemRef => (int)itemRef.Id));
 
         // Combine all CongPhap IDs into one list
         var allCongPhapIds = new List<int>();
-        allCongPhapIds.AddRange(Client.Instance.CharacterData.InventoryManager.CongPhapOwners.Select(itemRef => (int)itemRef.Id));
+        allCongPhapIds.AddRange(charData.InventoryManager.CongPhapOwners.Select(itemRef => (int)itemRef.Id));
 
         // Optionally, log the results for debugging
         Debug.Log($"Total ThanThong IDs: {allThanThongIds.Count}");
