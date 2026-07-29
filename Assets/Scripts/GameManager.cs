@@ -486,6 +486,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         Pool.Get<UIManager>().panelGroup.SetActive(true);
         Pool.Get<UIManager>().ListIcon.gameObject.SetActive(true);
+        ReleaseGroupSkillEffect();
         currentECombatResult = eCombatResult;
         string backScene = listSceneLoaded[listSceneLoaded.Count-1];
         Debug.Log($"This back scene is {backScene}");
@@ -604,7 +605,23 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         // --- Dọn dẹp Thần Thông ---
         CleanupCache(_ttCache, _ttHandles, allCongPhapIds, "Thần Thông");
     }
+    public static void ReleaseGroupSkillEffect()
+    {
+        // 1. Lấy vị trí tất cả asset thuộc Label "skilleffect"
+        var locationsHandle = Addressables.LoadResourceLocationsAsync("skilleffect");
+        var locations = locationsHandle.WaitForCompletion();
 
+        // 2. Loop qua từng location để Release
+        foreach (var location in locations)
+        {
+            Addressables.Release(location);
+        }
+
+        // 3. Release luôn handle dùng để tìm location
+        Addressables.Release(locationsHandle);
+
+        Debug.Log("[Addressables] Đã xả RAM toàn bộ group skilleffect!");
+    }
     // Hàm hỗ trợ để tránh viết lặp lại code
     private void CleanupCache<T>(Dictionary<int, T> cache, Dictionary<int, AsyncOperationHandle<T>> handles, IEnumerable<int> ownedIds, string logName)
     {

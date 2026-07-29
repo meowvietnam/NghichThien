@@ -11,8 +11,8 @@ namespace AllMaps.ui_rank
 {
     public class RankPanel : PanelGroup, IGetRank
     {
-        [SerializeField] private PopupInfor popupInfor;
-        [SerializeField] private Popup mainPopup;
+        [SerializeField] public PopupInfor popupInfor;
+        [SerializeField] public Popup mainPopup;
         [SerializeField] private Button infoRewardBtn;
         [SerializeField] public Transform rankContainer;
         [SerializeField] public RankElementInfor rankPrefab;

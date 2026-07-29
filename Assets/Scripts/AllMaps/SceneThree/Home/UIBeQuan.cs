@@ -38,9 +38,9 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
     }
 
     [SerializeField] private ButtonWithPage[] btns;
-    [SerializeField] private ButtonWithPage currentBtnWithPage;
+    [SerializeField] public ButtonWithPage currentBtnWithPage;
     [SerializeField] private Button btnShowPopBeQuan;
-    [SerializeField] private Popup popBeQuan;
+    [SerializeField] public Popup popBeQuan;
     [SerializeField] private Popup popDotPha;
 
     [Header("InforDotPha")] [SerializeField]

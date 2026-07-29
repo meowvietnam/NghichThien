@@ -208,6 +208,14 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
         var gameConfig = Pool.Get<GameManager>();
         char1.Init(gameConfig.user);
         char2.Init(gameConfig.enemyCombat);
+        foreach (var item in char1.thanThongEquip)
+        {
+            item.LoadFirstDataPrefab();
+        }
+        foreach (var item in char2.thanThongEquip)
+        {
+            item.LoadFirstDataPrefab();
+        }
         char2.isAutoCastSkill = true;
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, NewTurn);
@@ -809,7 +817,7 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
         List<ThanThong> thanThongTemp = new List<ThanThong>();
         foreach(var item in currentTurn.thanThongEquip)
         {
-            if(item.IsCanUse(currentTurn,targetTurn))
+            if(item.IsCanUseGlobal(currentTurn,targetTurn))
             {
                 thanThongTemp.Add(item);
             }    
@@ -828,7 +836,19 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
                 thanThongTemp.Remove(itemToMove); // Xóa khỏi vị trí hiện tại
                 thanThongTemp.Add(itemToMove);    // Thêm lại vào cuối list
             }
-            // check skill play ưu tiên liên kích
+            // Sắp xếp lại thanThongTemp theo các tiêu chí:
+            // 1. Ưu tiên skill chưa từng dùng hoặc dùng ít nhất trong thanThongUseThisComBat
+            // 2. Ưu tiên skill có Tier cao hơn nếu số lần dùng bằng nhau
+            thanThongTemp = thanThongTemp
+                .OrderBy(skill =>
+                {
+                    // Duyệt qua các list con trong thanThongUseThisComBat, 
+                    // đếm xem skill này xuất hiện bao nhiêu lần trong PlaySkillData.thanThong
+                    return currentTurn.thanThongUseThisComBat
+                        .Sum(listCon => listCon.Count(playData => playData.thanThong == skill));
+                })
+                .ThenByDescending(skill => skill.eTierSkill) // Sắp xếp giảm dần theo Tier (Tier cao đứng trước)
+                .ToList();
             foreach (var item in thanThongTemp)
             {
                 if( item is BaseSkill.LienKich && IsLienKich(item,currentTurn.thanThongCurrentUse.thanThong))

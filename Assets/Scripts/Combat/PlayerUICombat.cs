@@ -452,7 +452,7 @@ public class PlayerUICombat : BaseBehaviour
         foreach (var item in fightSkills)
         {
             if (item.ThanThongData == null) continue;
-            if (!item.ThanThongData.IsCanUse(player,CombatManager.targetTurn))
+            if (!item.ThanThongData.IsCanUseGlobal(player,CombatManager.targetTurn))
             {
               
 
