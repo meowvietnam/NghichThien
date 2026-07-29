@@ -10,8 +10,6 @@ using System.Linq;
 using LongDHModules;
 using UnityEditor;
 using UnityEngine;
-using Player = Auction.Player;
-
 [CreateAssetMenu(fileName = nameof(SideDeliveryQuestResource), menuName = "Action Map/Side Quest/" + nameof(SideDeliveryQuestResource))]
 
 public class SideDeliveryQuestResource : SideQuestResource
@@ -91,7 +89,7 @@ public class SideDeliveryQuestResource : SideQuestResource
             {
                 CameraFollow.Instance.target = Pool.Get<Player>().transform;
 
-            },false);
+            });
         }, GetStartDialogs(), charRandom);
     }
     public override void QuestDoneUI()
