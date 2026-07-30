@@ -321,12 +321,10 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
                     return;
                 }    
             }
-            
             SetDialogGacCong("xin dừng bước hiện tại nơi này chưa thể vào hãy kiên nhẫn chờ bản cập nhật tiếp theo!");
-
             return;
         }
-
+        
         if (data.Length > 1)
         {
             EMapType eMap = (EMapType)data[1];
@@ -349,6 +347,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     {
         NetworkManager.Instance.Invoke(() =>
         {
+            Debug.Log($"OnChangeSceneResult {result.SceneName} {result.Success}");
             if (result.Success)
             {
                 ChangeSceneSuccess(result.SceneName);
@@ -361,6 +360,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
                     notify.Show(result.Message);
                 }
                 Pool.Get<UIManager>().loadScene.gameObject.SetActive(false);
+                Debug.Log(result.Message);
             }
         });
     }

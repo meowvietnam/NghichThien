@@ -1,5 +1,6 @@
 using System;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
 using Network.Models;
 using UnityEngine;
 
@@ -18,7 +19,8 @@ namespace Network.Core
             var reader = message.Reader;
             if (tag == MessageTag.ChangeSceneResult)
             {
-                var result = reader.Read<ChangeSceneResult>();
+                var result = reader.MemRead<ChangeSceneResult>();
+                Debug.Log($"SceneName: {result.SceneName}, Success: {result.Success}");
                 if (onChangeSceneResult != null)
                 {
                     onChangeSceneResult(result);
