@@ -3,6 +3,8 @@ using LongDH.LongDHModules;
 using Network.ClientState;
 using Network.Extensions.MemoryPack;
 using Network.Models;
+using Start;
+using UnityEngine;
 
 namespace Network.Core
 {
@@ -31,6 +33,7 @@ namespace Network.Core
                 {
                     if (result.Success)
                     {
+                        AuthService.DeleteSignInProvider();
                         Observer.Notify(EventList.Network.IN_GAME_LOGOUT);
                         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
                     }

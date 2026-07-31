@@ -34,14 +34,14 @@ namespace Auction
             confirmBtn.onClick.RemoveAllListeners();
         }
 
-        public void Show(float duration = 0.15f)
+        public void Show(float duration = 0.25f)
         {
             tween?.Kill();
             selfObject.SetActive(true);
             tween = background.DOScale(Vector3.one, duration);
         }
 
-        public void Hide(float duration = 0.15f)
+        public void Hide(float duration = 0.25f)
         {
             tween?.Kill();
             tween = background.DOScale(Vector3.zero, duration).OnComplete(() => selfObject.SetActive(false));

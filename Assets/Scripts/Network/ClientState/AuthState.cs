@@ -3,6 +3,9 @@ using Network.Callback;
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
 using Network.Models;
+using SignIn;
+using Start;
+using UnityEngine;
 
 namespace Network.ClientState
 {
@@ -29,11 +32,24 @@ namespace Network.ClientState
 
         public MessageState State => MessageState.AuthState;
 
-        public async Task Login(ILogin loginRequest)
+        public async Task<LoginResult> Login(ILogin loginRequest)
         {
             var reader = await Client.Instance.MemRequestWait(MessageTag.LoginRequest, loginRequest);
             var result = reader.MemRead<LoginResult>();
+
+            NetworkManager.Instance.Invoke(() =>
+            {
+                if (result.Success)
+                {
+                    AuthService.SetSignInProvider(result.Provider);
+                }
+                else
+                {
+                    AuthService.DeleteSignInProvider();
+                }
+            });
             callback.OnLoginResult(result);
+            return result;
         }
     }
 }

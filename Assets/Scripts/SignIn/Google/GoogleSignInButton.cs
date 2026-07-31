@@ -34,8 +34,7 @@ namespace SignIn.Google
                 return null;
             }
         }
-
-        protected override ISignInService GetSignInService()
+        public override ISignInService GetSignInService()
         {
             return googleSignIn;
         }

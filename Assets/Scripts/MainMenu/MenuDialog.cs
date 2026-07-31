@@ -17,13 +17,14 @@ namespace MainMenu
         [SerializeField] private Button btnAccount;
         [SerializeField] private Popup popAccount;
         [SerializeField] private PopupConfirmPassword popupConfirmPassword;
+        [SerializeField] private GuestRegisterButton guestRegisterButton;
         private void Start()
         {
             SetEventButton(btnAccount, () =>
             {
+                guestRegisterButton.TryValidate();
                 popAccount.Show();
             });
-
             SetEventButton(playButton, OnPlay);
             SetEventButton(logoutButton, OnLogout);
             SetEventButton(deleteAccountButton, OnDeleteAccount);
@@ -53,7 +54,7 @@ namespace MainMenu
         }
         public void SetAccountAlias(string alias)
         {
-            this.accountAlias.text = alias;
+            accountAlias.text = alias;
         }
 
         public void SetActive(bool active)
@@ -62,6 +63,10 @@ namespace MainMenu
             if (!active)
             {
                 popAccount.Hide();
+            }
+            else
+            {
+                guestRegisterButton.TryValidate();
             }
         }
     }

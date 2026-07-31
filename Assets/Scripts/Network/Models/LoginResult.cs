@@ -1,6 +1,7 @@
 using CreateCharacter;
 using MemoryPack;
 using Network.Extensions;
+using SignIn;
 
 namespace Network.Models
 {
@@ -11,5 +12,6 @@ namespace Network.Models
         public string Message { get; set; }
         public UserWrapper UserData { get; set; }
         public string AccountAlias { get; set; }
+        public SignInProvider Provider { get; set; }
     }
 }

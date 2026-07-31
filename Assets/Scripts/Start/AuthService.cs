@@ -1,7 +1,11 @@
-﻿using CreateCharacter;
+﻿using System.Linq;
+using Base;
+using CreateCharacter;
+using JetBrains.Annotations;
 using LongDH.LongDHModules;
 using LuyenDan;
 using MainMenu;
+using MemoryPack;
 using Network;
 using Network.Callback;
 using Network.ClientState;
@@ -23,7 +27,8 @@ namespace Start
         [SerializeField] private string signInProgressText = "Đang đăng nhập...";
         [SerializeField] private string signOutProgressText = "Đang đăng xuất...";
         [SerializeField] private string playProgressText = "Đang vào game...";
-        
+        public const string SIGNIN_PROVIDER_KEY = "signin_provider_key";
+        public const string LOCAL_ACCOUNT_KEY = "local_account_key";
         private async void Start()
         {
             var state = new AuthState(this);
@@ -44,11 +49,73 @@ namespace Start
             var userData = client.UserData;
             if (userData == null)
             {
+                var provider = GetSignInProvider();
+                if (provider != null)
+                {
+                    var button = signInButtons.FirstOrDefault(x => x.GetSignInService().Provider == provider);
+                    if (button != null)
+                    {
+                        button.SignIn();
+                    }
+                }
                 return;
             }
+
             menu.SetAccountAlias(userData.NameAlias);
             menu.SetActive(true);
             buttonGroups.SetActive(false);
+        }
+        //main thread
+        public void OnRegisterResult(RegisterResult result)
+        {
+            if (result.Success)
+            {
+                var user = result.UserData.User;
+                user.NameAlias = result.AccountAlias;
+                Client.Instance.SetUserData(user);
+                menu.SetAccountAlias(result.AccountAlias);
+                menu.SetActive(true);
+                buttonGroups.SetActive(false);
+            }
+        }
+
+        public static LocalAccount GetLocalAccount()
+        {
+            if (PlayerPrefs.HasKey(LOCAL_ACCOUNT_KEY))
+            {
+                var bytes = PlayerPrefsEx.GetBytes(LOCAL_ACCOUNT_KEY);
+                return MemoryPackSerializer.Deserialize<LocalAccount>(bytes);
+            }
+            return null;
+        }
+
+        public static void DeleteLocalAccount()
+        {
+            PlayerPrefs.DeleteKey(LOCAL_ACCOUNT_KEY);
+        }
+        public static SignInProvider? GetSignInProvider()
+        {
+            if (PlayerPrefs.HasKey(SIGNIN_PROVIDER_KEY))
+            {
+                return (SignInProvider)PlayerPrefs.GetInt(SIGNIN_PROVIDER_KEY);
+            }
+
+            return null;
+        }
+
+        public static void SetSignInProvider(SignInProvider provider)
+        {
+            PlayerPrefs.SetInt(SIGNIN_PROVIDER_KEY, (int)provider);
+        }
+
+        public static void SetLocalAccount(LocalAccount account)
+        {
+            var bytes = MemoryPackSerializer.Serialize(account);
+            PlayerPrefsEx.SetBytes(LOCAL_ACCOUNT_KEY, bytes);
+        }
+        public static void DeleteSignInProvider()
+        {
+            PlayerPrefs.DeleteKey(SIGNIN_PROVIDER_KEY);
         }
 
         private void OnSignInEnd(object[] data)
@@ -69,6 +136,7 @@ namespace Start
                 NotifyGroup.Instance.Show(result.Message);
                 if (result.Success)
                 {
+                    SetSignInProvider(result.Provider);
                     var user = result.UserData.User;
                     user.NameAlias = result.AccountAlias;
                     Client.Instance.SetUserData(user);
@@ -96,12 +164,12 @@ namespace Start
             {
                 client.SetUserData(null);
             }
-
             NetworkManager.Instance.Invoke(async () =>
             {
                 progressBar.DoKill(() => { });
                 if (result.Success)
                 {
+                    DeleteSignInProvider();
                     foreach (var button in signInButtons)
                     {
                         await button.SignOut();
@@ -152,6 +220,7 @@ namespace Start
             {
                 if (result.Success)
                 {
+                    DeleteSignInProvider();
                     foreach (var button in signInButtons)
                     {
                         await button.SignOut();
@@ -166,6 +235,17 @@ namespace Start
                     NotifyGroup.Instance.Show(result.Message);
                 }
             });
+        }
+
+        public void RegisterSuccess(RegisterModel model)
+        {
+            var localAccount = new LocalAccount()
+            {
+                Username = model.Username,
+                Password = model.Password,
+            };
+            SetLocalAccount(localAccount);
+            SetSignInProvider(SignInProvider.UsernamePassword);
         }
     }
 }

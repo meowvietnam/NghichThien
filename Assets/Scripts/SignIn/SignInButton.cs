@@ -18,7 +18,7 @@ namespace SignIn
             SetEventButton(button, SignIn);
         }
 
-        private async void SignIn()
+        public async void SignIn()
         {
             try
             {
@@ -27,7 +27,11 @@ namespace SignIn
                 if (request != null)
                 {
                     var state = Client.Instance.State as AuthState;
-                    if (state != null) await state.Login(request);
+                    if (state != null)
+                    {
+                        var result = await state.Login(request);
+                        OnLoginResult(result);
+                    }
                 }
             }
             catch (Exception e)
@@ -43,8 +47,12 @@ namespace SignIn
             }
         }
         protected abstract Task<ILogin> CreateRequest();
-        protected abstract ISignInService GetSignInService();
+        public abstract ISignInService GetSignInService();
 
+        protected virtual void OnLoginResult(LoginResult result)
+        {
+            
+        }
         public async Task SignOut()
         {
             await GetSignInService().SignOutAsync();
