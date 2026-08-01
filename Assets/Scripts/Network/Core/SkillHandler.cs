@@ -87,6 +87,7 @@ namespace Network.Core
                 {
                     charData.Progression.CurrentExp = exp.Value;
                 }
+                charData.Progression.NgoDaoDiem = result.NgoDaoDiem;
                 var linhDan = LuyenDanResources.Instance.FindLinhDan(id);
                 inventory.Decrease(new ItemRef()
                 {

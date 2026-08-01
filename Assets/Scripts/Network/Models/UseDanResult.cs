@@ -12,5 +12,6 @@ namespace Network.Models
         public StatsSnapshot? Stats { get; set; }
         public int? CurrentExp { get; set; }
         public HashSet<CamNgo>? CamNgos { get; set; }
+        public int NgoDaoDiem { get; set; }
     }
 }
