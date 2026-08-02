@@ -1435,7 +1435,7 @@ GameObject:
   - component: {fileID: 122951692}
   - component: {fileID: 122951691}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: Or
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9157,6 +9157,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1616615381}
   - component: {fileID: 1616615382}
+  - component: {fileID: 1616615383}
   m_Layer: 5
   m_Name: AuthService
   m_TagString: Untagged
@@ -9195,6 +9196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97cb20902c33d456998fc6644045695d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Start.AuthService
+  platformResolver: {fileID: 1616615383}
   menu: {fileID: 2481380111475658994}
   buttonGroups: {fileID: 1346338236}
   progressBar: {fileID: 655876916}
@@ -9205,6 +9207,20 @@ MonoBehaviour:
   signInProgressText: "\u0110ang \u0111\u0103ng nh\u1EADp..."
   signOutProgressText: "\u0110ang \u0111\u0103ng xu\u1EA5t..."
   playProgressText: "\u0110ang v\xE0o game..."
+--- !u!114 &1616615383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616615380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b62ef86abfcf8487d8861f4449e2e7f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MainMenu.PlatformResolver
+  or: {fileID: 122951689}
+  googleSignInButton: {fileID: 1118203861}
 --- !u!1 &1621482520
 GameObject:
   m_ObjectHideFlags: 0

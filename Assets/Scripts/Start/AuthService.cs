@@ -20,6 +20,7 @@ namespace Start
 {
     public class AuthService : BaseBehaviour, IAuthCallback
     {
+        [SerializeField] private PlatformResolver platformResolver;
         [SerializeField] private MenuDialog menu;
         [SerializeField] private GameObject buttonGroups;
         [SerializeField] private ProgressBar progressBar;
@@ -31,6 +32,7 @@ namespace Start
         public const string LOCAL_ACCOUNT_KEY = "local_account_key";
         private async void Start()
         {
+            platformResolver.Run();
             var state = new AuthState(this);
             Client.Instance.ChangeState(state);
             Observer.AddObserver(EventList.Network.BEGIN_SIGN_IN, OnBeginSignIn);

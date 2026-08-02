@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using IAP;
 using Network.Models;
 using Newtonsoft.Json;
+using Sirenix.OdinInspector;
 using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using UnityEngine;
@@ -15,8 +16,12 @@ namespace Network
     public class IapService : MonoBehaviour
     {
         [SerializeField] private string environmentName = "production";
-        [SerializeField] private Store store = Store.GooglePlay;
-
+        
+        #if UNITY_IPHONE
+        [ShowInInspector,ReadOnly] private Store store = Store.AppStore;
+        #else
+        [ShowInInspector,ReadOnly] private Store store = Store.GooglePlay;
+        #endif
         private StoreController storeController;
         private readonly Dictionary<string, PendingOrder> pendingOrdersByProductId = new();
         private Task initializeTask;
@@ -140,20 +145,17 @@ namespace Network
             {
                 return;
             }
-
             var product = storeController.GetProducts().FirstOrDefault(x => x.definition.id == productId);
             if (product == null)
             {
                 IapFailed?.Invoke($"Không tìm thấy sản phẩm {productId}");
                 return;
             }
-
             if (!product.availableToPurchase)
             {
                 IapFailed?.Invoke($"Sản phẩm {productId} chưa sẵn sàng để mua");
                 return;
             }
-
             storeController.PurchaseProduct(product);
         }
 
@@ -164,7 +166,6 @@ namespace Network
                 callback?.Invoke(false, "IAP chưa được khởi tạo");
                 return;
             }
-
             storeController.RestoreTransactions(callback);
         }
 
@@ -248,7 +249,7 @@ namespace Network
             {
                 Store = store,
                 ProductId = productId,
-                PurchaseToken = ExtractPurchaseToken(order.Info.Receipt)
+                ReceiptJson = order.Info.Receipt
             };
             PurchasePending?.Invoke(iapModel);
         }
@@ -305,7 +306,6 @@ namespace Network
             {
                 return string.Empty;
             }
-
             try
             {
                 var receipt = JsonConvert.DeserializeObject<UnityIAPReceipt>(receiptJson);
@@ -325,7 +325,6 @@ namespace Network
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Parse purchase token thất bại: {ex.Message}");
                 return receiptJson;
             }
         }

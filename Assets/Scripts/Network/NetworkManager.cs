@@ -20,24 +20,28 @@ namespace Network
         [SerializeField] private int port;
         [SerializeField] private string connectFailMessage;
         [SerializeField] private float connectTimeoutSeconds = 10f;
-        [SerializeField] private string platform;
+#if UNITY_IPHONE
+        [ShowInInspector, ReadOnly] private string platform = "ios";
+#else
+        [ShowInInspector, ReadOnly] private string platform = "apk";
+#endif
         [ShowInInspector] public string Version => $"{platform}_v{Application.version}";
         [SerializeField] private ReconnectManager reconnectManager;
-        
+
         private Queue<Action> actionQueue = new();
         public static NetworkManager Instance { get; private set; }
         private UnauthenticatedClient unauthenticatedClient;
         private Client client;
         [ShowInInspector, ReadOnly] public int Id { get; private set; }
         [ShowInInspector, ReadOnly] public string Key { get; private set; }
+
         [ShowInInspector, TabGroup("Character"), HideLabel, InlineProperty]
         public CharacterData CharacterData
         {
             get => client?.CharacterData;
-            private set
-            {
-            }
+            private set { }
         }
+
         private void Awake()
         {
             Instance = this;
@@ -52,6 +56,7 @@ namespace Network
             var prefab = req.asset as GameManager;
             InstantiateAsync(prefab);
         }
+
         public async Task Connect(IUnauthenticatedClientCallback callback, bool reconnect = false)
         {
             System.Net.Sockets.TcpClient tcpClient = null;
@@ -65,9 +70,7 @@ namespace Network
                 if (completedTask != connectTask)
                 {
                     tcpClient.Close();
-                    _ = connectTask.ContinueWith(task =>
-                    {
-                    }, TaskContinuationOptions.OnlyOnFaulted);
+                    _ = connectTask.ContinueWith(task => { }, TaskContinuationOptions.OnlyOnFaulted);
                     throw new TimeoutException($"Kết nối quá thời gian chờ sau {connectTimeoutSeconds:0.##} giây");
                 }
 
@@ -87,9 +90,11 @@ namespace Network
             {
                 return false;
             }
+
             unauthenticatedClient.TcpClient.MemSend(MessageTag.Reconnect, reconnect);
             return true;
         }
+
         private void Update()
         {
             while (actionQueue.Count > 0)
@@ -97,6 +102,7 @@ namespace Network
                 actionQueue.Dequeue().Invoke();
             }
         }
+
         public void SetIdentity(int id, string key)
         {
             Id = id;
@@ -113,6 +119,7 @@ namespace Network
         {
             client.TcpClient.Reconnect(unauthenticatedClient.TcpClient);
         }
+
         public void Invoke(Action action)
         {
             lock (actionQueue)
@@ -120,10 +127,10 @@ namespace Network
                 actionQueue.Enqueue(action);
             }
         }
-        
+
         private IClientState GetClientState()
         {
-            if(client == null) return null;
+            if (client == null) return null;
             return client.State;
         }
     }

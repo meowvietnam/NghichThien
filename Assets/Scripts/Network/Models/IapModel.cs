@@ -11,6 +11,6 @@ namespace Network.Models
     {
         public Store Store { get; set; }
         public string ProductId { get; set; }
-        public string PurchaseToken { get; set; }
+        public string ReceiptJson { get; set; }
     }
 }
