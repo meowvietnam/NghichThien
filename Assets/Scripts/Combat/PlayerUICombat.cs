@@ -589,16 +589,15 @@ public class PlayerUICombat : BaseBehaviour
     }
     public void NewTurn(params object[] data)
     {
-        if (!(bool)data[2])
+        CharacterCombat currentTurn = (CharacterCombat)data[0];
+        if(currentTurn != player)
         {
-            this.gameObject.SetActive(false);
             return;
-        }
+        }    
         this.gameObject.SetActive(true);
 
-        CharacterCombat player = (CharacterCombat)data[0];
         
-        if (player == null) return;
+        if (currentTurn == null) return;
         SetStateControl(EStateControl.None);
         
         foreach (var item in linhKhiRemains)
@@ -608,26 +607,26 @@ public class PlayerUICombat : BaseBehaviour
                 case ELinhKhi.None:
                     break;
                 case ELinhKhi.Kim:
-                    item.SetCount(player.khiKim);
+                    item.SetCount(currentTurn.khiKim);
                     break;
                 case ELinhKhi.Moc:
-                    item.SetCount(player.khiMoc);
+                    item.SetCount(currentTurn.khiMoc);
 
                     break;
                 case ELinhKhi.Thuy:
-                    item.SetCount(player.khiThuy);
+                    item.SetCount(currentTurn.khiThuy);
 
                     break;
                 case ELinhKhi.Hoa:
-                    item.SetCount(player.khiHoa);
+                    item.SetCount(currentTurn.khiHoa);
 
                     break;
                 case ELinhKhi.Tho:
-                    item.SetCount(player.khiTho);
+                    item.SetCount(currentTurn.khiTho);
 
                     break;
                 case ELinhKhi.Ma:
-                    item.SetCount(player.khiMa);
+                    item.SetCount(currentTurn.khiMa);
 
                     break;
                 default:
