@@ -148,15 +148,18 @@ namespace CreateCharacter
                     break;
                 case LuyenKhi.EquipmentType.Armor:
                     PhongCu = result.Id;
-
                     break;
                 case LuyenKhi.EquipmentType.Jewelry:
                     TrangSuc = result.Id;
-
                     break;
                 default:
                     break;
             }
+        }
+
+        public void ClearDanCombat()
+        {
+            DanCombatUseds.Clear();
         }
     }
 }

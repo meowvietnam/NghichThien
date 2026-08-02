@@ -36,6 +36,7 @@ namespace Network.Core
                 if (result.Success)
                 {
                     var charData = Client.Instance.CharacterData;
+                    charData.EquipmentManager.ClearDanCombat();
                     charData.MoneyVip += result.Reward.MoneyVip;
                     charData.Stats.LinhThach += result.Reward.Money;
                     charData.Progression.NgoDaoDiem = result.NewNgoDaoDiem;
@@ -48,13 +49,11 @@ namespace Network.Core
                             charData.InventoryManager.Add(item);
                         }
                     }
-
                     charData.Stats.Hp = result.NewHP;
                     foreach (var item in result.NewCamNgo)
                     {
                         charData.InventoryManager.AddOrUpdate(item);
                     }
-
                     charData.EquipmentManager.DanCombatUseds.Clear();
                 }
 
@@ -73,7 +72,6 @@ namespace Network.Core
             else if (tag == MessageTag.LoadCharCombatResult)
             {
                 var result = reader.Read<LoadCharCombatResult>();
-
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -95,6 +93,7 @@ namespace Network.Core
                     charData.MoneyVip = result.NewMoneyVip;
                     charData.ArenaManager.CurrentArenaCount = result.CurrentArenaCount;
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -137,6 +136,7 @@ namespace Network.Core
                     .First(x => x.Id == result.Id);
                 reward.IsClaim = true;
             }
+
             NetworkManager.Instance.Invoke(() =>
             {
                 if (result.Success)
