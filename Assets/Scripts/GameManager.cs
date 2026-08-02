@@ -406,7 +406,6 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             return;
         }
         
-        Client.Instance.CharacterData.EquipmentManager.DanCombatUseds.Clear();
         Pool.Get<UIManager>().panelGroup.SetActive(false);
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
         Pool.Get<UIManager>().ListIcon.gameObject.SetActive(false);
@@ -419,6 +418,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         else
         {
             Observer.Notify(EventList.Network.LOAD_CHAR_COMBAT, this);
+            Client.Instance.CharacterData.EquipmentManager.DanCombatUseds.Clear();
 
         }
 
@@ -471,6 +471,8 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         if (enemyCombat.charStats == null) return;
         currentETypeCombat = ETypeCombat.DauTruong;
         currentECombatResult = ETypeResultCombat.None;
+        Client.Instance.CharacterData.EquipmentManager.DanCombatUseds.Clear();
+
     }
     public void GoToPrepareCombat(CharCombatInit enemyCombat, ETypeCombat eTypeCombat)
     {

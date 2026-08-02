@@ -540,6 +540,7 @@ public class CharacterCombat : MonoBehaviour
         public ThanThong thanThong;
         public List<LinhKhiTieuTan> linhKhiTieuTan;
     }
+    [Serializable]
     public class CountStack<T>
     {
         public T type;

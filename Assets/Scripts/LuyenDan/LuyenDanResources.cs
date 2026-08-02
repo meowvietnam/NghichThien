@@ -86,7 +86,11 @@ namespace LuyenDan
             var herb = HerbDatas.FirstOrDefault(x => x.Id == id);
             return herb;
         }
-
+        public LinhDan FindLinhDanWithName(string name)
+        {
+            var item = LinhDans.FirstOrDefault(x => x.Name == name);
+            return item;
+        }
         public LinhDan FindLinhDan(int id)
         {
             var item = LinhDans.FirstOrDefault(x => x.Id == id);
