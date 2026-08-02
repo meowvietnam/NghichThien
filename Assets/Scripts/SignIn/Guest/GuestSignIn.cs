@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Base;
 using UnityEngine;
 
 namespace SignIn.Guest
@@ -24,6 +25,7 @@ namespace SignIn.Guest
             return Task.FromResult<ISignInCredential>(new GuestCredential()
             {
                 Username = username,
+                DeviceId = DeviceIdProvider.GetDeviceId()
             });
         }
 
