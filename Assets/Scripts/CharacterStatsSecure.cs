@@ -61,6 +61,7 @@ public class CharacterStatsSecure
     public EquipmentClient vuKhi = new EquipmentClient();
     public EquipmentClient phongCu = new EquipmentClient();
     public EquipmentClient trangSuc = new EquipmentClient();
+    [Serializable]
     public class DataSave
     {
         // Trong class con cũng phải truyền giá trị

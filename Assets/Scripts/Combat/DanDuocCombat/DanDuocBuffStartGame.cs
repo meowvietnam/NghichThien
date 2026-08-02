@@ -13,7 +13,9 @@ public class DanDuocBuffStartGame : BaseDanDuocCombat
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        caster.AddBuffAndDebuffCount(buffType, buff * GetDanDuocCombat(caster).count );
+        int buffC = buff * GetDanDuocCombat(caster).count;
+        Debug.Log(this.nameItem + "DanDuocBuffStartGame đan dược được sử dụng InitPosCallExecute" + buffC);
+        caster.AddBuffAndDebuffCount(buffType, buffC);
 
     }
 }
