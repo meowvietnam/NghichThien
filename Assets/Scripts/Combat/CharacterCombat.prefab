@@ -398,6 +398,7 @@ MonoBehaviour:
   specialThanThongImpactAfterPlaySkill: []
   ngoDaoCombats: []
   ngoDaoCombatsDynamic: []
+  danDuocCombats: []
   danDuocCombatsDynamic: []
   listAmKinhTT: []
   isAutoCastSkill:
@@ -557,6 +558,12 @@ MonoBehaviour:
       keyA: 0
       keyB: 0
       fakeValue: 0
+    pointArena:
+      encA: -43833
+      encB: 33755
+      keyA: 43556
+      keyB: 33478
+      fakeValue: 0
     ability: 0
     ngoDaoDiem:
       encA: -74598
@@ -590,6 +597,7 @@ MonoBehaviour:
       keyB: 18679
       fakeValue: 0
     ngoDaoSaves: []
+    camNgoSaves: []
     vuKhi:
       id:
         encA: 49121
@@ -620,6 +628,7 @@ MonoBehaviour:
     monPhai: 0
     thanThongOwner: []
     thanThongEquip: []
+    congPhapOwner: []
     donThuatUsed:
       encA: 0
       encB: 0
@@ -662,6 +671,7 @@ MonoBehaviour:
       keyA: 0
       keyB: 0
       fakeValue: 0
+    relationShipNPC: []
     Gender: 0
     skinList: []
     colorList: []
@@ -671,6 +681,7 @@ MonoBehaviour:
       keyA: 40780
       keyB: 61888
       fakeValue: 0
+    danDuocCombat: []
   characterStatsTemp:
     idChar:
       encA: -19967
@@ -774,6 +785,12 @@ MonoBehaviour:
       keyA: 86736
       keyB: 65927
       fakeValue: 0
+    pointArena:
+      encA: 16227
+      encB: -86610
+      keyA: 16203
+      keyB: 86646
+      fakeValue: 0
     ability: 0
     ngoDaoDiem:
       encA: 64317
@@ -807,6 +824,7 @@ MonoBehaviour:
       keyB: 29291
       fakeValue: 0
     ngoDaoSaves: []
+    camNgoSaves: []
     vuKhi:
       id:
         encA: -12124
@@ -837,6 +855,7 @@ MonoBehaviour:
     monPhai: 0
     thanThongOwner: []
     thanThongEquip: []
+    congPhapOwner: []
     donThuatUsed:
       encA: 26921
       encB: -32679
@@ -879,6 +898,7 @@ MonoBehaviour:
       keyA: 40450
       keyB: 27670
       fakeValue: 0
+    relationShipNPC: []
     Gender: 0
     skinList: []
     colorList: []
@@ -888,6 +908,7 @@ MonoBehaviour:
       keyA: 77392
       keyB: 23077
       fakeValue: 0
+    danDuocCombat: []
   totalKhi:
     encA: 0
     encB: 0
@@ -895,6 +916,12 @@ MonoBehaviour:
     keyB: 0
     fakeValue: 0
   totalKhiRandom:
+    encA: 0
+    encB: 0
+    keyA: 0
+    keyB: 0
+    fakeValue: 0
+  firstBaseHapThuLinhKhi:
     encA: 0
     encB: 0
     keyA: 0
@@ -2174,7 +2201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6807565768852035142}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: BuffEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -44,7 +44,7 @@ public class LeKiemQuyet : CongPhap, IMemorySerializable<LeKiemQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi sử dụng {GetTextTypeSkill(ETypeSkill.Kiem)} hệ thần thông. Nếu {GetKeyWord(EKeyWord.TuongSinh)} thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.GiamTonThuong)}. Nếu {GetKeyWord(EKeyWord.TuongKhac)} thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}";
+        return $"Kiếm hệ sát thương {GetColoredText($"+{buffValues[level - 1]}", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

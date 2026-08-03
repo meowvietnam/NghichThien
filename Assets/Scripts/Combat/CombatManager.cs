@@ -165,16 +165,20 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
         {
             
             var gameManager = Pool.Get<GameManager>();
-            if (characterWin == char1)
+            if(gameManager.currentECombatResult == ETypeResultCombat.None)
             {
-                Observer.Notify(EventList.Combat.END_COMBAT, char1, char2, true);// thằng đầu là thằng win thằng sau là thằng die
-                Observer.Notify(EventList.Network.RESULT_COMBAT, this,gameManager.currentETypeCombat, char1.characterStatsTemp.hp.Value, char1.characterStatsBase.thanThuc.Value , char1.characterStatsBase.thoNguyen.Value, allThanThongIds, char2.characterStatsBase.level.Value , ETypeResultCombat.Win);// thằng 1 luoon la user thằng 2 là thằng enemy
+                if (characterWin == char1)
+                {
+                    Observer.Notify(EventList.Combat.END_COMBAT, char1, char2, true);
+                    EndCombat(ETypeResultCombat.Win);
+                }
+                else
+                {
+                    Observer.Notify(EventList.Combat.END_COMBAT, char1, char2, false);
+                    EndCombat(ETypeResultCombat.LoseByDied);
 
-            }
-            else
-            {
-                Observer.Notify(EventList.Combat.END_COMBAT, char1, char2, false);// thằng đầu là thằng win thằng sau là thằng die
-                Observer.Notify(EventList.Network.RESULT_COMBAT, this, gameManager.currentETypeCombat, char1.characterStatsTemp.hp.Value, char1.characterStatsBase.thanThuc.Value, char1.characterStatsBase.thoNguyen.Value, allThanThongIds, char2.characterStatsBase.level.Value, ETypeResultCombat.LoseByDied);// thằng 1 luoon la user thằng 2 là thằng enemy
+                }
+               
 
             }
 
@@ -252,14 +256,26 @@ public class CombatManager : BaseBehaviour , INetworkEvent.IResultCombat
         {
             Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Xác nhận bỏ chạy khỏi trận chiến này?", () =>
             {
-                Observer.Notify(EventList.Network.RESULT_COMBAT, this, Pool.Get<GameManager>().currentETypeCombat, char1.characterStatsTemp.hp.Value, char1.characterStatsBase.thanThuc.Value, char1.characterStatsBase.thoNguyen.Value, allThanThongIds, char2.characterStatsBase.level.Value, ETypeResultCombat.LoseByRun);// thằng 1 luoon la user thằng 2 là thằng enemy
+                EndCombat(ETypeResultCombat.LoseByRun);
             });
         });
         bgCombat.sprite = Pool.Get<GameManager>().spriteBGCombat;
         SoundManager.Instance.PlayMusicCombat();
 
     }
-
+    public void EndCombat(ETypeResultCombat resultCombatType)
+    {
+        var gameManager = Pool.Get<GameManager>();
+        gameManager.currentECombatResult = resultCombatType;
+        if (gameManager.currentETypeCombat == ETypeCombat.LuanBan)
+        {
+            SuccessResultCombatBase(new(), gameManager.currentECombatResult);
+        }
+        else
+        {
+            Observer.Notify(EventList.Network.RESULT_COMBAT, this, gameManager.currentETypeCombat, char1.characterStatsTemp.hp.Value, char1.characterStatsBase.thanThuc.Value, char1.characterStatsBase.thoNguyen.Value, allThanThongIds, char2.characterStatsBase.level.Value, gameManager.currentECombatResult);// thằng 1 luoon la user thằng 2 là thằng enemy
+        }
+    }    
     public static bool IsTuongDong(List<LinhKhiTieuTan> linhKhiTieuTan)
     {
         // Lấy danh sách các hệ có Count > 0
