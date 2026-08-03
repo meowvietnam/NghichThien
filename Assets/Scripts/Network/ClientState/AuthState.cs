@@ -36,7 +36,6 @@ namespace Network.ClientState
         {
             var reader = await Client.Instance.MemRequestWait(MessageTag.LoginRequest, loginRequest);
             var result = reader.MemRead<LoginResult>();
-
             NetworkManager.Instance.Invoke(() =>
             {
                 if (result.Success)
@@ -45,6 +44,7 @@ namespace Network.ClientState
                 }
                 else
                 {
+                    Debug.Log(result.Message);
                     AuthService.DeleteSignInProvider();
                 }
             });

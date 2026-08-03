@@ -221,7 +221,17 @@ namespace Network
                 SecretKey = secretKey
             });
         }
-
+        [Button]
+        [ShowIf(nameof(IsAuthStateAndNotLogin))]
+        public void AdminLoginWithName(string name)
+        {
+            var state = Client.State as AuthState;
+            state?.Login(new AdminLoginWithName()
+            {
+                Name = name,
+                SecretKey = secretKey
+            });
+        }
         private bool IsAuthStateAndNotLogin()
         {
             if (Client == null)
@@ -284,19 +294,11 @@ namespace Network
                 Client.CharacterData.Stats.LinhThach = money;
             }
         }
-
         public void OnLeave()
         {
         }
-
         public void OnDisconnect(IProtocol<MessageTag> protocol)
         {
-        }
-
-        [Button]
-        public void ToAuction()
-        {
-            Observer.Notify(EventList.GamePlay.LOAD_SCENE, "Auction");
         }
         private static readonly MessageTag[] handler =
         {
