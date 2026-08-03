@@ -145,6 +145,7 @@ public class PlayerUICombat : BaseBehaviour
                     {
 
                         Observer.Notify(EventList.Combat.END_TURN_COMBAT, player, CombatManager.char2, GetLinhKhiTieuTans(currentNodes));
+                        this.gameObject.SetActive(false);
                         SetStateControl(EStateControl.None);
 
                     }
@@ -592,6 +593,8 @@ public class PlayerUICombat : BaseBehaviour
         CharacterCombat currentTurn = (CharacterCombat)data[0];
         if(currentTurn != player)
         {
+            this.gameObject.SetActive(false);
+
             return;
         }    
         this.gameObject.SetActive(true);

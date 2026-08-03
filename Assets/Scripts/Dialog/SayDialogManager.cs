@@ -162,31 +162,26 @@ public class SayDialogManager : BaseBehaviour
     // Hàm bổ trợ: Xử lý Logic khi click vào Panel
     private void HandlePanelClick()
     {
-        // Kiểm tra xem câu hiện tại có kèm Voice không
-        AudioClip currentVoice = (dialogVoices != null && currentDialogIndex < dialogVoices.Count) ? dialogVoices[currentDialogIndex] : null;
-
-        // 1. Nếu ĐANG CÓ VOICE: Bắt buộc phải đợi chữ chạy xong hoàn toàn (isDone = true) mới cho Next
-        if (currentVoice != null)
-        {
-            if (isDone)
-            {
-                NextOrFinish();
-            }
-            return;
-        }
-
-        // 2. Nếu KHÔNG CÓ VOICE: Cho phép người chơi Skip text nhanh
+        // 1. Nếu đang gõ chữ (chưa hiện hết full câu)
         if (isTyping)
         {
-            // Click lần 1: Ngắt hiệu ứng chạy, hiện toàn bộ text ngay lập tức
-            StopCoroutine(typingCoroutine);
+            // Dừng coroutine gõ chữ
+            if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+
+            // Dừng âm thanh voice hiện tại (nếu đang phát)
+            if (audioSource != null && audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
+
+            // Hiển thị ngay toàn bộ nội dung
             textContent.text = fullContent;
             isTyping = false;
             isDone = true;
         }
+        // 2. Nếu đã gõ xong (full chữ) -> Bấm thêm lần nữa để qua câu mới hoặc kết thúc
         else if (isDone)
         {
-            // Click lần 2: Đã hiện full chữ xong, bấm cái nữa để qua câu tiếp theo
             NextOrFinish();
         }
     }
