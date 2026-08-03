@@ -102,7 +102,7 @@ namespace Network.Core
                 iapService.PurchasePending += OnPurchasePending;
                 iapService.IapFailed -= OnIapFailed;
                 iapService.IapFailed += OnIapFailed;
-                var reader = await Client.Instance.RequestWait(MessageTag.GetProductsRequest);
+                var reader = await Client.Instance.RequestWait(MessageTag.GetProductsRequest, iapService.Store);
                 ownerIapProducts = reader.MemRead<List<OwnerIapProduct>>();
                 ownerIapProducts ??= new List<OwnerIapProduct>();
                 NetworkManager.Instance.Invoke(() =>

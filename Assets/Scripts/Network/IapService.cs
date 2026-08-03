@@ -22,6 +22,7 @@ namespace Network
         #else
         [ShowInInspector,ReadOnly] private Store store = Store.GooglePlay;
         #endif
+        public Store Store => store;
         private StoreController storeController;
         private readonly Dictionary<string, PendingOrder> pendingOrdersByProductId = new();
         private Task initializeTask;
