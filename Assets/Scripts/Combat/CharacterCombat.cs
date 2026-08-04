@@ -1429,7 +1429,6 @@ public class CharacterCombat : MonoBehaviour
     }
     public void TakeDameByStatic(CharacterCombat sender, List<int> dames,  bool isCongDon = false , BaseSkill.ETypeSkill[] eTypeSkils = null , bool isDef = true)
     {
-
         var newListDames = CaculateDame(sender, dames, isCongDon, eTypeSkils);
         if (sender != null && eTypeSkils != null)
         {
@@ -1437,8 +1436,6 @@ public class CharacterCombat : MonoBehaviour
 
         }
         TakeDame(sender,isDef);
-       
-
     }
     [Button]
     public void  TakeDame(CharacterCombat sender , bool isDef)
@@ -1464,10 +1461,16 @@ public class CharacterCombat : MonoBehaviour
         void NeTranh()
         {
             SetTextDameAnim("Né Tránh!", Color.whiteSmoke);
-            Observer.Notify(EventList.Combat.NE_TRANH_SUCCESS, sender, this);
+            if (sender != null)
+            {
+                Observer.Notify(EventList.Combat.NE_TRANH_SUCCESS, sender, this);
+            }
         }
         if (allDamages.Count <= 0) return;
-        Observer.Notify(EventList.Combat.CHARACTER_BEFORE_TAKE_DAME, sender, this);
+        if (sender != null)
+        {
+            Observer.Notify(EventList.Combat.CHARACTER_BEFORE_TAKE_DAME, sender, this);
+        }
 
         for (int i = 0; i < allDamages.Count; i++)
         {
@@ -1486,9 +1489,10 @@ public class CharacterCombat : MonoBehaviour
                 {
                     allDamages[i] = -1;
                 }
-
-                Observer.Notify(EventList.Combat.CHECK_NE_TRANH, sender, this, i);
-               
+                if (sender != null)
+                {
+                    Observer.Notify(EventList.Combat.CHECK_NE_TRANH, sender, this, i);
+                }
             }
             var dame = allDamages[i];
             bool isNeTranh = dame == -1;
@@ -1509,11 +1513,8 @@ public class CharacterCombat : MonoBehaviour
             }
 
         }
-       
-
         allDamages.Clear();
-
-
+        allDamages.Add(0);
     }
     private void TakeDame(CharacterCombat sender ,int dame , bool isDef)
     {
@@ -1589,7 +1590,11 @@ public class CharacterCombat : MonoBehaviour
 
             }
         }
-        Observer.Notify(EventList.Combat.CHARACTER_TAKE_DAME, sender, this, dame);
+
+        if (sender != null)
+        {
+            Observer.Notify(EventList.Combat.CHARACTER_TAKE_DAME, sender, this, dame);
+        }
         Observer.Notify(EventList.Combat.CHARACTER_ADJUST_HP);
         
 

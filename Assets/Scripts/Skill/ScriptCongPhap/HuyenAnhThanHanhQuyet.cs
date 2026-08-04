@@ -18,7 +18,7 @@ public class HuyenAnhThanHanhQuyet : PhiVanKinh, IMemorySerializable<HuyenAnhTha
         CharacterCombat target = data.Length > 1 ? data[1] as CharacterCombat : null;
         // Kiểm tra caster không null và thỏa mãn điều kiện sử dụng
         // target ng nhận dame là ng cần check né tránh
-        if (target != null && IsCanUse(target))
+        if (target != null && caster != null && IsCanUse(target))
         {
             Execute(caster, target, data);
         }
