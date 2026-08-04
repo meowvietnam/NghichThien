@@ -27,6 +27,12 @@ namespace AllMaps.ItemProvider
                 ItemType.PhongCu => new PhongCuEquipmentProvider(),
                 ItemType.TrangSuc => new TrangSucEquipmentProvider(),
                 ItemType.LinhDan => new LinhDanProvider(),
+                ItemType.ThanThong => new ThanThongBookProvider(),
+                ItemType.CongPhap => new CongPhapBookProvider(),
+                ItemType.Herb => new HerbProvider(),
+                ItemType.Furnace => new FurnaceProvider(),
+                ItemType.Recipe => new RecipeProvider(),
+                ItemType.Material => new MaterialProvider(),
                 _ => null,
             };
         }
@@ -47,8 +53,8 @@ namespace AllMaps.ItemProvider
                 ItemType.LinhDan => new LinhDanProvider(),
                 ItemType.Recipe => new RecipeProvider(),
                 ItemType.Material => new MaterialProvider(),
-                ItemType.ThanThong => (tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.ThanThong) || IsBaseSkillVisual()? new ThanThongProvider()  :new ThanThongBookProvider(),
-                ItemType.CongPhap => (tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.CongPhap)|| IsBaseSkillVisual() ? new CongPhapProvider() :new CongPhapBookProvider(),
+                ItemType.ThanThong => (tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.ThanThong) || IsBaseSkillVisual()? new ThanThongProvider()  : new ThanThongBookProvider(),
+                ItemType.CongPhap => (tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.CongPhap)|| IsBaseSkillVisual() ? new CongPhapProvider() : new CongPhapBookProvider(),
                 _ => null,
             };
         }

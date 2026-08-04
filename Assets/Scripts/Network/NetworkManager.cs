@@ -21,9 +21,9 @@ namespace Network
         [SerializeField] private string connectFailMessage;
         [SerializeField] private float connectTimeoutSeconds = 10f;
 #if UNITY_IPHONE
-        [ShowInInspector, ReadOnly] private string platform = "ios";
+        [ShowInInspector, ReadOnly] private string platform => "ios";
 #else
-        [ShowInInspector, ReadOnly] private string platform = "apk";
+        [ShowInInspector, ReadOnly] private string platform => "apk";
 #endif
         [ShowInInspector] public string Version => $"{platform}_v{Application.version}";
         [SerializeField] private ReconnectManager reconnectManager;

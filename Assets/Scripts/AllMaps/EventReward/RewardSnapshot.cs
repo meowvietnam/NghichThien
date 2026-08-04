@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using LuyenDan;
 using MemoryPack;
+using Network;
+using UnityEngine;
 
 namespace AllMaps.EventReward
 {
@@ -8,13 +11,39 @@ namespace AllMaps.EventReward
     [MemoryPackable]
     public partial class RewardSnapshot
     {
-        public List<ItemRef> ItemRefs = new();
-        public int Money = 0;
-        public int MoneyVip = 0;
-
-        public RewardSnapshot()
+        public RewardItems RewardItems;
+        public List<ItemRef> ItemRefs;
+        public int Money;
+        public int MoneyVip;
+        public void AddReward(RewardSnapshot reward)
         {
-            
+            Money += reward.Money;
+            MoneyVip += reward.MoneyVip;
+            if (ItemRefs != null && reward.ItemRefs != null)
+            {
+                var dict = ItemRefs.ToDictionary(x => x.Id);
+                foreach (var item in reward.ItemRefs)
+                {
+                    if (dict.TryGetValue(item.Id, out var exist))
+                    {
+                        exist.Count += item.Count;
+                    }
+                    else
+                    {
+                        ItemRefs.Add(item);
+                        dict[item.Id] = item;
+                    }
+                }
+            }
+        }
+        public RewardSnapshot Clone()
+        {
+            return new RewardSnapshot()
+            {
+                ItemRefs = ItemRefs.Select(x => x.DeepClone()).ToList(),
+                Money = Money,
+                MoneyVip = MoneyVip,
+            };
         }
     }
 }

@@ -1,6 +1,7 @@
 using Base;
 using System;
 using AllMaps;
+using AllMaps.EventReward;
 using CreateCharacter.CharStats;
 using LongDH.LongDHModules;
 using Network;
@@ -246,6 +247,16 @@ namespace CreateCharacter
         {
             ArenaManager.CurrentArenaCount = dailyReset.CurrentArenaCount;
             QuestManager.CurrentCountSideQuest = dailyReset.CurrentCountSideQuest;
+        }
+
+        public void Claim(RewardSnapshot reward)
+        {
+            MoneyVip += reward.MoneyVip;
+            Stats.LinhThach += reward.Money;
+            if (reward.RewardItems != null)
+            {
+                InventoryManager.AddToInventory(reward.RewardItems);
+            }
         }
     }
 }

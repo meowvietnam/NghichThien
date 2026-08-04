@@ -2,10 +2,11 @@ using LuyenDan;
 using LuyenDan.Inventory;
 using Network;
 using System.Linq;
+using CreateCharacter;
 
 namespace AllMaps.ItemProvider
 {
-    public class RecipeProvider : ItemProvider<RecipeData>
+    public class RecipeProvider : ItemProvider<RecipeData>, IUseItemProvider
     {
         public override ItemType SupportedType => ItemType.Recipe;
         public override int BaseValueLevelWithTier => 6;
@@ -77,6 +78,11 @@ namespace AllMaps.ItemProvider
                 return recipe.LinhDan.PriceV130 * 5;
             }
             return 0;
+        }
+
+        public void UseItem(ItemInventory itemInventory)
+        {
+            NotifyGroup.Instance?.Show("Sử dụng để luyện đan tại Phòng luyên đan!");
         }
     }
 }

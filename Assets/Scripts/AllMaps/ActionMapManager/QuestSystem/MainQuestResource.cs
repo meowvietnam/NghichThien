@@ -70,15 +70,6 @@ public class MainQuestResource : QuestResource, INetworkEvent.ICompleteMainQuest
         var charData = Client.Instance.CharacterData;
         var reward = Pool.Get<MainQuestManager>().CurrentMainQuest.rewardRef;
         Debug.Log("Success complete main quest event " + $"linh thạch = {reward.Money} , moneyvip = {reward.MoneyVip}");
-
-        charData.MoneyVip += reward.MoneyVip;
-        charData.Stats.LinhThach += reward.Money;
-        var listItemRef = reward.ItemRefs;
-        foreach (var item in listItemRef)
-        {
-            charData.InventoryManager.Add(item);
-        }
-
         Pool.Get<MainQuestManager>().currentMainQuest.Value =
             Client.Instance.CharacterData.QuestManager.CurrentMainQuest;
         Pool.Get<MainQuestManager>().CheckSpawnQuest();
