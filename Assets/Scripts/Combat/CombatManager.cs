@@ -154,7 +154,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         .Where(data => data?.thanThong != null) // Lọc bỏ các dữ liệu null để tránh lỗi NullReferenceException
         .Select(data => data.thanThong.Id) // Chọn ra id (Giả sử id của ThanThong có kiểu dữ liệu là int/string)
         .ToList();
-
+    
     public bool CheckDie()
     {
         CharacterCombat characterDie = null;
@@ -918,8 +918,21 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     {
         StartTurn();
         NewTurn();
+        StartCoroutine(CheckDieCoroutine());
     }
 
+    private IEnumerator CheckDieCoroutine()
+    {
+        var wait = new WaitForSeconds(1f);
+        var die = false;
+        while (!die)
+        {
+            die = CheckDie();
+            Debug.Log($"Is die: {die}");
+            yield return wait;
+        }
+    }
+    
     public void ExcuteWeapon()
     {
         if (!currentTurn.isCooldownWeapon)
