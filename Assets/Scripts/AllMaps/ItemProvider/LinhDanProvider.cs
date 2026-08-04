@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace AllMaps.ItemProvider
 {
-    public class LinhDanProvider : ItemProvider<LinhDan> , IUseItemProvider
+    public class LinhDanProvider : ItemProvider<LinhDan>, IUseItemProvider
     {
         public override int BaseValueLevelWithTier => 6;
         public override ItemType SupportedType => ItemType.LinhDan;

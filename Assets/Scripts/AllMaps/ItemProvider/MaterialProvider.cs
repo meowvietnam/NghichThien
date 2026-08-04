@@ -3,11 +3,12 @@ using LuyenDan;
 using LuyenKhi;
 using Network;
 using System.Linq;
+using CreateCharacter;
 using UnityEngine;
 
 namespace AllMaps.ItemProvider
 {
-    public class MaterialProvider : ItemProvider<LuyenKhi.Material>
+    public class MaterialProvider : ItemProvider<LuyenKhi.Material>, IUseItemProvider
     {
         public override ItemType SupportedType => ItemType.Material;
         public override void Display(ToolTipContext ctx)
@@ -33,6 +34,11 @@ namespace AllMaps.ItemProvider
         {
             return  GameManager.PriceVatLieuWithTier[GetDataItemByIdRef(Id).Tier];
 
+        }
+
+        public void UseItem(ItemInventory itemInventory)
+        {
+            NotifyGroup.Instance?.Show("Sử dụng để luyện vũ khí tại Thần binh các!");
         }
     }
 }

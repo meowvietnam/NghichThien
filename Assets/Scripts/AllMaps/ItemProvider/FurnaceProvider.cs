@@ -1,11 +1,12 @@
 using System.Linq;
+using CreateCharacter;
 using LuyenDan;
 using Network;
 using UnityEngine;
 
 namespace AllMaps.ItemProvider
 {
-    public class FurnaceProvider : ItemProvider<FurnaceData>
+    public class FurnaceProvider : ItemProvider<FurnaceData>, IUseItemProvider
     {
         public override int BaseValueLevelWithTier => 3;
 
@@ -82,6 +83,11 @@ namespace AllMaps.ItemProvider
 
             return (base.ValueTangQuaNPCWithItem(id, npcLevel).Item1 - penalty,
                 base.ValueTangQuaNPCWithItem(id, npcLevel).Item2);
+        }
+
+        public void UseItem(ItemInventory itemInventory)
+        {
+            NotifyGroup.Instance?.Show("Sử dụng để luyện đan tại Phòng luyên đan!");
         }
     }
 }
