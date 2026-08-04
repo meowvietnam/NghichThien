@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Network;
 using Network.Callback;
 using Network.Models;
@@ -39,13 +40,36 @@ namespace Start
             }
         }
 
+        private (int delay, string message)? ParseMessage(string text)
+        {
+            if (!text.StartsWith('['))
+            {
+                return null;
+            }
+            int end = text.IndexOf(']');
+            if (end < 0)
+            {
+                return null;
+            }
+            if (!int.TryParse(text.Substring(1, end - 1), out var delay))
+            {
+                return null;
+            }
+            string message = text[(end + 1)..].Trim();
+            return (delay, message);
+        }
         public void OnCheckVersionResult(CheckVersionResult result)
         {
-            statusText.text = result.Message;
+            var parse = ParseMessage(result.Message);
+            statusText.text = !parse.HasValue ? result.Message : parse.Value.message;
             if (result.Success)
             {
-                Net.AuthenticatedSuccess();
-                SceneManager.LoadSceneAsync("MainMenu");
+                var delay = parse?.delay ?? 0;
+                DOVirtual.DelayedCall(delay, () =>
+                {
+                    Net.AuthenticatedSuccess();
+                    SceneManager.LoadSceneAsync("MainMenu");
+                });
             }
         }
         public void OnDisconnect()
@@ -55,7 +79,6 @@ namespace Start
 
         public void OnReconnectResult(Result result)
         {
-            throw new System.NotImplementedException();
         }
     }
 }
