@@ -18,9 +18,9 @@ namespace Network
         [SerializeField] private string environmentName = "production";
         
         #if UNITY_IPHONE
-        [ShowInInspector,ReadOnly] private Store store = Store.AppStore;
+        [ShowInInspector,ReadOnly] private Store store => Store.AppStore;
         #else
-        [ShowInInspector,ReadOnly] private Store store = Store.GooglePlay;
+        [ShowInInspector,ReadOnly] private Store store => Store.GooglePlay;
         #endif
         public Store Store => store;
         private StoreController storeController;

@@ -195,13 +195,6 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         return false;
     }
 
-    [Button]
-    public void WinLuon()
-    {
-        Observer.Notify(EventList.Combat.END_COMBAT, char1, char2, true);
-        EndCombat(ETypeResultCombat.Win);
-        EventList.Combat.RemoveAllCombatObservers();
-    }
     private void Awake()
     {
         Pool.Set(this);
