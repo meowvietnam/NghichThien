@@ -1,139 +1,187 @@
-﻿using LuyenDan;
+﻿using System;
+using CreateCharacter;
+using LongDHModules;
+using LuyenDan;
+using Network.Models;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using AllMaps.EventReward;
-using LongDH.Script.ObjectPool;
-using LongDH.LongDHModules;
-using LongDHModules;
-using Sirenix.OdinInspector;
 
-public class EventRewardPanel : Popup , IUISingleton 
+namespace AllMaps.EventReward
 {
-    
-    [SerializeField] private Text txtDesc;
-    [SerializeField] private Sprite spriteEvent;
-    [SerializeField] private Sprite spriteWin;
-    [SerializeField] private Sprite spriteLose;
-    [SerializeField] private Image imgBGTilte;
-    [SerializeField] private GameObject itemRewardPrefab;
-    private ItemInventory itemInventoryPrefab => itemRewardPrefab.transform.GetChild(0).GetComponent<ItemInventory>();
+    public class EventRewardPanel : Popup , IUISingleton, INetworkEvent.IWatchAdsCombat, INetworkEvent.IWatchAdsSideQuest
+    {
+        [SerializeField] private Text txtDesc;
+        [SerializeField] private Sprite spriteEvent;
+        [SerializeField] private Sprite spriteWin;
+        [SerializeField] private Sprite spriteLose;
+        [SerializeField] private Image imgBGTilte;
+        [SerializeField] private GameObject itemRewardPrefab;
+        private ItemInventory itemInventoryPrefab => itemRewardPrefab.transform.GetChild(0).GetComponent<ItemInventory>();
 
-    [SerializeField] private Sprite spriteMoney;
-    [SerializeField] private Sprite spriteMoneyVip;
-    [SerializeField] private RewardSnapshot rewardDataCurrent;
-    [Button]
-    public void InitShowEventReward(RewardSnapshot rewardData, string contentText)
-    {
-        InitShow(rewardData, contentText);
-        imgBGTilte.sprite = spriteEvent;
-        this.InitActionClose(null);
-    }
-    public void InitShowCombatReward(RewardSnapshot rewardData, string contentText,ETypeResultCombat resultCombat)
-    {
-        InitShow(rewardData, contentText);
-        if(resultCombat == ETypeResultCombat.Win)
+        [SerializeField] private Sprite spriteMoney;
+        [SerializeField] private Sprite spriteMoneyVip;
+        [SerializeField] private RewardSnapshot rewardDataCurrent;
+        [SerializeField] private Button rewardAdsButton;
+        [SerializeField] private GameObject rewardAdsObject;
+        private Action onRewardAdsClick;
+        [Button]
+        public void InitShowEventReward(RewardSnapshot rewardData, string contentText, Action onRewardAdsClick = null)
         {
-            imgBGTilte.sprite = spriteWin;
-            InitActionClose(() =>
+            SetEventRewardAds(onRewardAdsClick);
+            InitShow(rewardData, contentText);
+            imgBGTilte.sprite = spriteEvent;
+            InitActionClose(null);
+        }
+
+        private void SetEventRewardAds(Action onRewardAdsClick)
+        {
+            this.onRewardAdsClick = onRewardAdsClick;
+            var activeRewardAdsButton = onRewardAdsClick != null;
+            rewardAdsObject.SetActive(activeRewardAdsButton);
+        }
+        public void InitShowCombatReward(RewardSnapshot rewardData, string contentText,ETypeResultCombat resultCombat, Action onRewardAdsClick = null)
+        {
+            SetEventRewardAds(onRewardAdsClick);
+            InitShow(rewardData, contentText);
+            if(resultCombat == ETypeResultCombat.Win)
             {
-                Pool.Get<GameManager>().BackAllMapFromCombat(resultCombat);
-            });
-        }
-        else
-        {
-            imgBGTilte.sprite = spriteLose;
-            InitActionClose(() =>
+                imgBGTilte.sprite = spriteWin;
+                InitActionClose(() =>
+                {
+                    Pool.Get<GameManager>().BackAllMapFromCombat(resultCombat);
+                });
+            }
+            else
             {
-                Pool.Get<GameManager>().BackAllMapFromCombat(resultCombat);
-            });
-
+                imgBGTilte.sprite = spriteLose;
+                InitActionClose(() =>
+                {
+                    Pool.Get<GameManager>().BackAllMapFromCombat(resultCombat);
+                });
+            }
         }
-       
-    }
-    public void InitShow(RewardSnapshot rewardData,string contentText)
-    {
-        Show();
-        Transform child = this.transform.GetChild(1);
-        this.rewardDataCurrent = rewardData;
-        child.transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(this.rewardDataCurrent != null);
-        child.transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(this.rewardDataCurrent != null);
-        child.transform.GetChild(2).gameObject.SetActive(this.rewardDataCurrent != null);
-        SetReward();
-        txtDesc.text = contentText;
-    }
-    private void SetVisualRewardMoney()
-    {
-        var itemReward = GetComponentItemReward();
-
-        itemReward.itemInventory.InitIcon(spriteMoney,itemInventoryPrefab.frame.sprite);
-        itemReward.itemInventory.SetQualityFull(itemInventoryPrefab.qualityFull.sprite);
-        itemReward.itemInventory.textName.text = "Linh Thạch";
-        itemReward.textCount.text = $"x{rewardDataCurrent.Money}";
-        itemReward.itemInventory.btnShowInfor.gameObject.SetActive(false);
-
-    }
-    private void SetVisualRewardMoneyVip()
-    {
-        var itemReward = GetComponentItemReward();
-
-        itemReward.itemInventory.InitIcon(spriteMoneyVip, itemInventoryPrefab.frame.sprite);
-        itemReward.itemInventory.SetQualityFull(itemInventoryPrefab.qualityFull.sprite);
-        itemReward.itemInventory.textName.text = "Tiên Ngọc";
-        itemReward.textCount.text = $"x{rewardDataCurrent.MoneyVip}";
-        itemReward.itemInventory.btnShowInfor.gameObject.SetActive(false);
-
-    }
-
-    private void SetVisualRewardItem( ItemRef itemRef)
-    {
-        var itemReward = GetComponentItemReward();
-        ItemTypeHandlerBagFactory.Create(itemRef.Type).Handle(itemReward.itemInventory, itemRef,false);
-        itemReward.textCount.text = $"x{itemRef.Count.ToString()}";
-        itemReward.itemInventory.btnShowInfor.gameObject.SetActive(true);
-
-    }
-    (ItemInventory itemInventory , Text textCount) GetComponentItemReward()
-    {
-        var itemReward = GameManager.GetItemPoolWithPrefabInParent(itemRewardPrefab.transform);
-        itemReward.transform.localScale = Vector3.one;
-        ItemInventory itemInventory = itemReward.transform.GetChild(0).GetComponent<ItemInventory>();
-        Text textCountReward = itemReward.transform.GetChild(1).GetComponent<Text>();
-        return (itemInventory, textCountReward);
-    }
-    private void SetReward()
-    {
-        for (int i = 0; i < itemRewardPrefab.transform.parent.childCount; i++)
+        private void InitShow(RewardSnapshot rewardData,string contentText)
         {
-            itemRewardPrefab.transform.parent.GetChild(i).gameObject.SetActive(false);
+            Show();
+            Transform child = this.transform.GetChild(1);
+            this.rewardDataCurrent = rewardData;
+            child.transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(this.rewardDataCurrent != null);
+            child.transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(this.rewardDataCurrent != null);
+            child.transform.GetChild(2).gameObject.SetActive(this.rewardDataCurrent != null);
+            SetReward();
+            txtDesc.text = contentText;
+        }
+        private void SetVisualRewardMoney()
+        {
+            var itemReward = GetComponentItemReward();
+            itemReward.itemInventory.InitIcon(spriteMoney,itemInventoryPrefab.frame.sprite);
+            itemReward.itemInventory.SetQualityFull(itemInventoryPrefab.qualityFull.sprite);
+            itemReward.itemInventory.textName.text = "Linh Thạch";
+            itemReward.textCount.text = $"x{rewardDataCurrent.Money}";
+            itemReward.itemInventory.btnShowInfor.gameObject.SetActive(false);
+        }
+        private void SetVisualRewardMoneyVip()
+        {
+            var itemReward = GetComponentItemReward();
+            itemReward.itemInventory.InitIcon(spriteMoneyVip, itemInventoryPrefab.frame.sprite);
+            itemReward.itemInventory.SetQualityFull(itemInventoryPrefab.qualityFull.sprite);
+            itemReward.itemInventory.textName.text = "Tiên Ngọc";
+            itemReward.textCount.text = $"x{rewardDataCurrent.MoneyVip}";
+            itemReward.itemInventory.btnShowInfor.gameObject.SetActive(false);
         }
 
-        if (this.rewardDataCurrent == null) return;
-        if(rewardDataCurrent.Money > 0)
+        private void SetVisualRewardItem(ItemRef itemRef)
         {
-            SetVisualRewardMoney();
+            var itemReward = GetComponentItemReward();
+            ItemTypeHandlerBagFactory.Create(itemRef.Type).Handle(itemReward.itemInventory, itemRef,false);
+            itemReward.textCount.text = $"x{itemRef.Count.ToString()}";
+            itemReward.itemInventory.btnShowInfor.gameObject.SetActive(true);
 
         }
-        if (rewardDataCurrent.MoneyVip > 0)
+        (ItemInventory itemInventory , Text textCount) GetComponentItemReward()
         {
-            SetVisualRewardMoneyVip();
-
+            var itemReward = GameManager.GetItemPoolWithPrefabInParent(itemRewardPrefab.transform);
+            itemReward.transform.localScale = Vector3.one;
+            ItemInventory itemInventory = itemReward.transform.GetChild(0).GetComponent<ItemInventory>();
+            Text textCountReward = itemReward.transform.GetChild(1).GetComponent<Text>();
+            return (itemInventory, textCountReward);
         }
-       
-        if (this.rewardDataCurrent?.ItemRefs != null) // Check nhanh cả Reward và ItemRefs
+        private void SetReward()
         {
-            foreach (var item in this.rewardDataCurrent.ItemRefs)
+            var parent = itemRewardPrefab.transform.parent;
+            for (int i = 0; i < parent.childCount; i++)
             {
-                SetVisualRewardItem(item);
+                parent.GetChild(i).gameObject.SetActive(false);
+            }
+            if (rewardDataCurrent == null) return;
+            if(rewardDataCurrent.Money > 0)
+            {
+                SetVisualRewardMoney();
+            }
+            if (rewardDataCurrent.MoneyVip > 0)
+            {
+                SetVisualRewardMoneyVip();
 
             }
-            
+            if (rewardDataCurrent?.ItemRefs != null)
+            {
+                foreach (var item in rewardDataCurrent.ItemRefs)
+                {
+                    SetVisualRewardItem(item);
+                }
+            }
         }
 
-    }
+        public void Init()
+        {
+            Pool.Set(this);
+            SetEventButton(rewardAdsButton, OnRewardAdsClick);
+        }
 
-    public void Init()
-    {
-        Pool.Set(this);
+        private void OnRewardAdsClick()
+        {
+            onRewardAdsClick?.Invoke();
+        }
+
+        public void SuccessWatchAdsCombat(RewardSnapshot reward)
+        {
+            SetEventRewardAds(null);
+            rewardDataCurrent.AddReward(reward);
+            SetReward();
+            ShowEffect();
+        }
+
+        public void FailWatchAdsCombat(string message)
+        {
+            NotifyGroup.Instance.Show(message);
+        }
+
+        public void SuccessWatchAdsSideQuest(WatchAdsSideQuestResult result)
+        {
+            SetEventRewardAds(null);
+            rewardDataCurrent.Money += result.AddMoney;
+            rewardDataCurrent.MoneyVip += result.AddMoneyVip;
+            SetReward();
+            ShowEffect();
+        }
+
+        private void ShowEffect()
+        {
+            var parent = itemRewardPrefab.transform.parent;
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                var child = parent.GetChild(i);
+                if (child.gameObject.activeInHierarchy)
+                {
+                    child.GetComponentInChildren<ParticleSystem>()?.Play();
+                }
+            }
+        }
+        
+        public void FailWatchAdsSideQuest(string message)
+        {
+            NotifyGroup.Instance.Show(message);
+        }
     }
 }

@@ -98,5 +98,7 @@ public static partial class EventList
         public const string GACHA = "Network.GACHA";
         public const string SPECIAL_LEVELUP = "Network.SPECIAL_LEVELUP";
         public const string LEVEL_UP = "Network.LEVEL_UP";
+        public const string WATCH_ADS_COMBAT = "Network.WATCH_ADS_COMBAT";
+        public const string WATCH_ADS_SIDE_QUEST = "Network.WATCH_ADS_SIDE_QUEST";
     }
 }

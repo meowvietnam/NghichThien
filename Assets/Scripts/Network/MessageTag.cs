@@ -150,8 +150,12 @@ namespace Network
         WatchAdsMoneyVipResult = 855,
         
         ActiveAdsMoneyVip = 856,
-        
+        WatchAdsCombat = 858,
+        WatchAdsCombatResult = 859,
         WatchAds = 861,
+        
+        WatchAdsSideQuest = 872,
+        WatchAdsSideQuestResult = 873,
         
         GetRankRequest = 887,
         CompleteAds = 912,

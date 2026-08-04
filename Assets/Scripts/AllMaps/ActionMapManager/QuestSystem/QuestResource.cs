@@ -13,25 +13,26 @@ using UnityEngine.TextCore.Text;
 
 public abstract class QuestResource : ActionMapResourceSO
 {
-   
     public virtual List<string> CompleteQuest { get; }
+
     public virtual bool CanActiveEventMap()
     {
         return true;
     }
+
     public override void ActiveEventMap(Map map)
     {
         if (CanActiveEventMap())
         {
             Pool.Get<QuestManager>().InitQuest(this);
-
         }
     }
+
     public abstract void QuestDoneData();
     public abstract void QuestDoneUI();
-
 }
-public abstract class SideQuestResource : QuestResource,INetworkEvent.ICompleteSideQuest
+
+public abstract class SideQuestResource : QuestResource, INetworkEvent.ICompleteSideQuest
 {
     [SerializeField] public NPCData[] npcDatas => Pool.Get<NPCManager>().npcDatas;
 
@@ -40,45 +41,47 @@ public abstract class SideQuestResource : QuestResource,INetworkEvent.ICompleteS
         Quiz,
         Combat,
         Delivery,
-
     }
+
     public virtual ETypeSideQuest Type { get; }
     public virtual List<CharacterStatsSecure> listNPCInteractive { get; }
+
     public List<int> listIdNPCInteractive =>
         listNPCInteractive != null
             ? listNPCInteractive.Select(npc => npc.idChar.Value).ToList()
             : new List<int>(); // Nếu listNPC null thì trả về list rỗng để tránh lỗi NullReferenceException
+
     public override void ActiveEventMap(Map map)
     {
         base.ActiveEventMap(map);
         var targetLevel = Client.Instance.CharacterData.Progression.Level;
         targetLevel = Mathf.Clamp(targetLevel, 1, int.MaxValue);
         var charRandom = GetNPCDataSideQuestWithTargetLevel(npcDatas, targetLevel);
-        if(map != null)
+        if (map != null)
         {
             charRandom.charStats.idNode = map.Id;
-        }    
+        }
+
         Pool.Get<UINPCJiaoHu>().OnReloadNpcThisNode();
         Pool.Get<SideQuestManager>().SetCharProviderQuest(charRandom.charStats);
     }
+
     public override void QuestDoneData()
     {
         Observer.Notify(EventList.Network.COMPLETE_SIDEQUEST, this, listIdNPCInteractive);
         foreach (var item in listNPCInteractive)
         {
-            Client.Instance.CharacterData.Social.RelationshipAddValue((ushort)item.idChar,10);
-            NotifyGroup.Instance.Show($"Hảo cảm của {item.nameUser} tăng thêm 10"); 
-          
-
+            Client.Instance.CharacterData.Social.RelationshipAddValue((ushort)item.idChar, 10);
+            NotifyGroup.Instance.Show($"Hảo cảm của {item.nameUser} tăng thêm 10");
         }
+
         Client.Instance.CharacterData.QuestManager.CurrentCountSideQuest += 1;
         int newTamCanh = Client.Instance.CharacterData.Stats.TamCanh + Client.Instance.CharacterData.Progression.Level;
         NotifyGroup.Instance.Show($"Tâm cảnh của bạn tăng thêm {Client.Instance.CharacterData.Progression.Level}");
         Client.Instance.CharacterData.Stats.SetValue(CreateCharacter.CharStats.StatType.TamCanh, newTamCanh);
         Pool.Get<UINPCJiaoHu>().OnReloadNpcThisNode();
-
-
     }
+
     public NPCData GetNPCDataSideQuestWithTargetLevel(NPCData[] listEnemy, int levelTarget)
     {
         int playerLevel = levelTarget;
@@ -152,15 +155,22 @@ public abstract class SideQuestResource : QuestResource,INetworkEvent.ICompleteS
         // Chọn ngẫu nhiên 1 con từ danh sách phù hợp
         if (possibleEnemies.Count > 0)
         {
-            NPCData randomEnemy = possibleEnemies[UnityEngine.Random.Range(0, possibleEnemies.Count)];
+            NPCData randomEnemy = possibleEnemies[Random.Range(0, possibleEnemies.Count)];
             return randomEnemy;
         }
+
         return null;
     }
+
+    private void OnAdsRewardButtonClick()
+    {
+        Observer.Notify(EventList.Network.WATCH_ADS_SIDE_QUEST, Pool.Get<EventRewardPanel>());
+    }
+
     public virtual void SuccessCompleteSideQuest(int moneyVip, int linhThach)
     {
-        Pool.Get<EventRewardPanel>().InitShowEventReward(new RewardSnapshot { MoneyVip = moneyVip , Money = linhThach }, $"{CompleteQuest[CompleteQuest.Count-1]}");
-       
+        Pool.Get<EventRewardPanel>().InitShowEventReward(new RewardSnapshot { MoneyVip = moneyVip, Money = linhThach },
+            $"{CompleteQuest[CompleteQuest.Count - 1]}", OnAdsRewardButtonClick);
     }
 
     public void FailCompleteSideQuest(string message)

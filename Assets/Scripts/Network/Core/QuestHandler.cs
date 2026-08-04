@@ -12,14 +12,16 @@ namespace Network.Core
 {
     public class QuestHandler : IClientHandler
     {
-        private ICompleteMainQuest completeMainQuestCallBack;
-        private ICompleteSideQuest completeSideQuestCallBack;
+        private ICompleteMainQuest completeMainQuestCallback;
+        private ICompleteSideQuest completeSideQuestCallback;
         private IReLoadTask reloadTaskCallback;
+        private IWatchAdsSideQuest watchAdsSideQuestCallback;
         private static MessageTag[] handler =
         {
             MessageTag.CompleteMainQuestResult,
             MessageTag.CompleteSideQuestResult,
             MessageTag.ReloadDailyQuestResult,
+            MessageTag.WatchAdsSideQuestResult,
         };
 
         public MessageTag[] HandleTag => handler;
@@ -35,17 +37,24 @@ namespace Network.Core
                 {
                     var charData = Client.Instance.CharacterData;
                     charData.QuestManager.CurrentMainQuest = result.CurrentMainQuest;
+                    charData.Stats.LinhThach = result.Money;
+                    charData.MoneyVip = result.MoneyVip;
+                    var rewardItems = result.RewardItems;
+                    if (rewardItems != null)
+                    {
+                        charData.InventoryManager.AddToInventory(rewardItems);
+                    }
                 }
 
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
                     {
-                        completeMainQuestCallBack.SuccessCompleteMainQuest();
+                        completeMainQuestCallback.SuccessCompleteMainQuest();
                     }
                     else
                     {
-                        completeMainQuestCallBack.FailMainQuest(result.Message);
+                        completeMainQuestCallback.FailMainQuest(result.Message);
                     }
                 });
             }
@@ -65,12 +74,12 @@ namespace Network.Core
                 {
                     if (result.Success)
                     {
-                        completeSideQuestCallBack.SuccessCompleteSideQuest(result.MoneyVipRandom,
+                        completeSideQuestCallback.SuccessCompleteSideQuest(result.MoneyVipRandom,
                             result.LinhThachRandom);
                     }
                     else
                     {
-                        completeSideQuestCallBack.FailCompleteSideQuest(result.Message);
+                        completeSideQuestCallback.FailCompleteSideQuest(result.Message);
                     }
                 });
             }
@@ -97,6 +106,28 @@ namespace Network.Core
                     }
                 });
             }
+            else if (tag == MessageTag.WatchAdsSideQuestResult)
+            {
+                var result = reader.MemRead<WatchAdsSideQuestResult>();
+                if (result.Success)
+                {
+                    var charData = Client.Instance.CharacterData;
+                    charData.MoneyVip = result.MoneyVip;
+                    charData.Stats.LinhThach = result.Money;
+                }
+
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    if (result.Success)
+                    {
+                        watchAdsSideQuestCallback?.SuccessWatchAdsSideQuest(result);
+                    }
+                    else
+                    {
+                        watchAdsSideQuestCallback?.FailWatchAdsSideQuest(result.Message);
+                    }
+                });
+            }
         }
 
         public void OnDisconnect(IProtocol<MessageTag> protocol)
@@ -110,6 +141,13 @@ namespace Network.Core
             Observer.AddObserver(EventList.Network.LOAD_TASK, LoadTask);
             Observer.AddObserver(EventList.Network.DONE_TASK, DoneTask);
             Observer.AddObserver(EventList.Network.RELOAD_TASK, ReloadTask);
+            Observer.AddObserver(EventList.Network.WATCH_ADS_SIDE_QUEST, WatchAdsSideQuest);
+        }
+
+        private void WatchAdsSideQuest(object[] data)
+        {
+            watchAdsSideQuestCallback = data[0] as IWatchAdsSideQuest;
+            Client.Instance.Send(MessageTag.WatchAdsSideQuest);
         }
 
         private void ReloadTask(object[] data)
@@ -161,14 +199,14 @@ namespace Network.Core
 
         private void CompleteMainQuest(object[] data)
         {
-            completeMainQuestCallBack = data[0] as INetworkEvent.ICompleteMainQuest;
+            completeMainQuestCallback = data[0] as INetworkEvent.ICompleteMainQuest;
             var currentMainQuestClient = (int)data[1];
             Client.Instance.Send(MessageTag.CompleteMainQuest, currentMainQuestClient);
         }
 
         private void CompleteSideQuest(object[] data)
         {
-            completeSideQuestCallBack = data[0] as INetworkEvent.ICompleteSideQuest;
+            completeSideQuestCallback = data[0] as INetworkEvent.ICompleteSideQuest;
             var completeSideQuest = new CompleteSideQuest()
             {
                 ListIdNpc = data[1] as List<int>
@@ -183,6 +221,7 @@ namespace Network.Core
             Observer.RemoveObserver(EventList.Network.LOAD_TASK, LoadTask);
             Observer.RemoveObserver(EventList.Network.DONE_TASK, DoneTask);
             Observer.RemoveObserver(EventList.Network.RELOAD_TASK, ReloadTask);
+            Observer.RemoveObserver(EventList.Network.WATCH_ADS_SIDE_QUEST, WatchAdsSideQuest);
         }
     }
 }

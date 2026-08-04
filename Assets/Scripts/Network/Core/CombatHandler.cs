@@ -13,15 +13,16 @@ namespace Network.Core
 {
     public class CombatHandler : IClientHandler
     {
-        private IResultCombat resultCombatCallBack;
-        private ILoadCharCombat loadCharCallBack;
-        private ILoadCharCombatArena loadCharArenaCallBack;
-
+        private IResultCombat resultCombatCallback;
+        private ILoadCharCombat loadCharCallback;
+        private ILoadCharCombatArena loadCharArenaCallback;
+        private IWatchAdsCombat watchAdsCombatCallback;
         private static MessageTag[] handler =
         {
             MessageTag.ResultCombatResult,
             MessageTag.LoadCharCombatResult,
             MessageTag.LoadCharCombatArenaResult,
+            MessageTag.WatchAdsCombatResult
         };
 
         public MessageTag[] HandleTag => handler;
@@ -36,19 +37,14 @@ namespace Network.Core
                 if (result.Success)
                 {
                     var charData = Client.Instance.CharacterData;
+                    if (result.Reward != null)
+                    {
+                        charData.Claim(result.Reward);
+                    }
                     charData.EquipmentManager.ClearDanCombat();
-                    charData.MoneyVip += result.Reward.MoneyVip;
-                    charData.Stats.LinhThach += result.Reward.Money;
                     charData.Progression.NgoDaoDiem = result.NewNgoDaoDiem;
                     charData.ArenaManager.Points = result.NewPointRank;
                     charData.Stats.TamCanh = result.NewTamCanh;
-                    if (result.Reward?.ItemRefs != null)
-                    {
-                        foreach (var item in result.Reward.ItemRefs)
-                        {
-                            charData.InventoryManager.Add(item);
-                        }
-                    }
                     charData.Stats.Hp = result.NewHP;
                     foreach (var item in result.NewCamNgo)
                     {
@@ -56,16 +52,15 @@ namespace Network.Core
                     }
                     charData.EquipmentManager.DanCombatUseds.Clear();
                 }
-
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
                     {
-                        resultCombatCallBack.SuccessResultCombatBase(result.Reward, result.TypeResultCombat);
+                        resultCombatCallback.SuccessResultCombatBase(result.Reward, result.TypeResultCombat);
                     }
                     else
                     {
-                        resultCombatCallBack.FailResultCombatBase(result.Message);
+                        resultCombatCallback.FailResultCombatBase(result.Message);
                     }
                 });
             }
@@ -76,11 +71,11 @@ namespace Network.Core
                 {
                     if (result.Success)
                     {
-                        loadCharCallBack.SuccessLoadCharCombat(result.Client);
+                        loadCharCallback.SuccessLoadCharCombat(result.Client);
                     }
                     else
                     {
-                        loadCharCallBack.FailLoadCharCombat(result.Message);
+                        loadCharCallback.FailLoadCharCombat(result.Message);
                     }
                 });
             }
@@ -98,11 +93,34 @@ namespace Network.Core
                 {
                     if (result.Success)
                     {
-                        loadCharArenaCallBack.SuccessLoadCharCombatArena(result.Client, result.Enemy);
+                        loadCharArenaCallback.SuccessLoadCharCombatArena(result.Client, result.Enemy);
                     }
                     else
                     {
-                        loadCharArenaCallBack.FailLoadCharCombatArena(result.Message);
+                        loadCharArenaCallback.FailLoadCharCombatArena(result.Message);
+                    }
+                });
+            }
+            else if (tag == MessageTag.WatchAdsCombatResult)
+            {
+                var result = reader.MemRead<WatchAdsCombatResult>();
+                if (result.Success)
+                {
+                    if (result.Reward != null)
+                    {
+                        Client.Instance.CharacterData.Claim(result.Reward);
+                    }
+                }
+
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    if (result.Success)
+                    {
+                        watchAdsCombatCallback.SuccessWatchAdsCombat(result.Reward);
+                    }
+                    else
+                    {
+                        watchAdsCombatCallback.FailWatchAdsCombat(result.Message);
                     }
                 });
             }
@@ -119,6 +137,13 @@ namespace Network.Core
             Observer.AddObserver(EventList.Network.LOAD_CHAR_COMBAT_ARENA, LoadCharCombatArena);
             Observer.AddObserver(EventList.Network.LOAD_RANK, LoadRank);
             Observer.AddObserver(EventList.Network.CLAIM_RANK_REWARD, ClaimRankReward);
+            Observer.AddObserver(EventList.Network.WATCH_ADS_COMBAT, WatchAdsCombat);
+        }
+
+        private void WatchAdsCombat(object[] data)
+        {
+            watchAdsCombatCallback = data[0] as IWatchAdsCombat;
+            Client.Instance.Send(MessageTag.WatchAdsCombat);
         }
 
         private async void ClaimRankReward(object[] data)
@@ -170,7 +195,7 @@ namespace Network.Core
 
         private void ResultCombat(object[] data)
         {
-            resultCombatCallBack = data[0] as INetworkEvent.IResultCombat;
+            resultCombatCallback = data[0] as INetworkEvent.IResultCombat;
             var ETypeCombat = (ETypeCombat)data[1];
             var CurrentHpUser = (int)data[2];
             var CurrentThanThuc = (int)data[3];
@@ -194,13 +219,13 @@ namespace Network.Core
 
         private void LoadCharCombat(object[] data)
         {
-            loadCharCallBack = data[0] as ILoadCharCombat;
+            loadCharCallback = data[0] as ILoadCharCombat;
             Client.Instance.Send(MessageTag.LoadCharCombat);
         }
 
         private void LoadCharCombatArena(object[] data)
         {
-            loadCharArenaCallBack = data[0] as ILoadCharCombatArena;
+            loadCharArenaCallback = data[0] as ILoadCharCombatArena;
             Client.Instance.Send(MessageTag.LoadCharCombatArena);
         }
 
@@ -211,6 +236,7 @@ namespace Network.Core
             Observer.RemoveObserver(EventList.Network.LOAD_CHAR_COMBAT_ARENA, LoadCharCombatArena);
             Observer.RemoveObserver(EventList.Network.LOAD_RANK, LoadRank);
             Observer.RemoveObserver(EventList.Network.CLAIM_RANK_REWARD, ClaimRankReward);
+            Observer.RemoveObserver(EventList.Network.WATCH_ADS_COMBAT, WatchAdsCombat);
         }
     }
 }

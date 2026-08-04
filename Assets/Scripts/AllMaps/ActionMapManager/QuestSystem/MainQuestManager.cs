@@ -43,6 +43,10 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
         if (currentMapMainQuests.Count <= 0)
         {
             var mapManager = Pool.Get<MapManager>();
+            if (mapManager == null)
+            {
+                return;
+            }
             foreach (var item in CurrentMainQuest.IdNode)
             {
                 currentMapMainQuests.Add(mapManager.SetDataOnMap(CurrentMainQuest, item));
