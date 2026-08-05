@@ -13,15 +13,18 @@ namespace Network.ClientState
     public class AllMaps : IClientState
     {
         private IAllMapsCallback callback;
+
         public AllMaps(IAllMapsCallback callback)
         {
             this.callback = callback;
         }
+
         public void OnEnter()
         {
             var client = Client.Instance;
             client.Send(MessageTag.GetPlayerOnlineThisNode);
         }
+
         public void Handle(Message<MessageTag> message)
         {
             var tag = message.Tag;
@@ -29,27 +32,35 @@ namespace Network.ClientState
             if (tag == MessageTag.MoveToMapResult)
             {
                 var result = reader.Read<MoveToMapResult>();
+                var charData = Client.Instance.CharacterData;
+
                 if (result.Success)
                 {
-                    var charData = Client.Instance.CharacterData;
                     charData.Progression.IdCurrentNode = result.Path.Last();
                     charData.Progression.CurrentEnergy = result.Energy;
                     charData.Stats.TuoiTac = result.NewAge;
-
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
-                    if (!result.Success)
+                    if (!result.Success && !charData.IsInfiniteEnergy)
                     {
-                        Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Không đủ năng lượng\nXác nhận xem quảng cáo để hồi đầy năng lượng", () =>
-                        {
-                            AdsService.Instance.ShowRewardVideoAds("RewardEnergy", "Xem quảng cáo để hồi đầy năng lượng", () =>
+                        Pool.Get<PopupConfirmAction>().ShowPopConfirmAction(
+                            "Không đủ năng lượng\nXác nhận xem quảng cáo để hồi đầy năng lượng",
+                            () =>
                             {
-                                Client.Instance.Send(MessageTag.WatchAdsForEnergy);
-                            }, null, null);
-                        });
+                                if (!charData.IsNoAds)
+                                {
+                                    AdsService.Instance.ShowRewardVideoAds("RewardEnergy",
+                                        "Xem quảng cáo để hồi đầy năng lượng",
+                                        () => { Client.Instance.Send(MessageTag.WatchAdsForEnergy); }, null, null);
+                                }
+                                else
+                                {
+                                    Client.Instance.Send(MessageTag.WatchAdsForEnergy);
+                                }
+                            });
                     }
-
                 });
 
                 callback.OnMoveToMapResult(result);
@@ -66,21 +77,15 @@ namespace Network.ClientState
                 {
                     var charData = Client.Instance.CharacterData;
                     charData.Progression.CurrentEnergy = result.NewEnergy;
-                    NetworkManager.Instance.Invoke(() =>
-                    {
-                        Observer.Notify(EventList.GamePlay.MOVE_MAP_SUCCESS);
-
-
-                    });
-
-
+                    NetworkManager.Instance.Invoke(() => { Observer.Notify(EventList.GamePlay.MOVE_MAP_SUCCESS); });
                 }
             }
         }
+
         public void OnLeave()
         {
         }
 
-        public MessageState State  => MessageState.AllMaps;
+        public MessageState State => MessageState.AllMaps;
     }
 }
