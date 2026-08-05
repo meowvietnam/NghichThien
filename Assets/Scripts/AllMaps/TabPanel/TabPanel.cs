@@ -557,8 +557,8 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
     {
         bag.isLoadingMore = false;
         bag.gameObject.SetActive(true);
-        moneyText.text = CharData.Stats.LinhThach.ToString();
-        moneyVipText.text = CharData.MoneyVip.ToString();
+        moneyText.text = Utils.FormatCount(CharData.Stats.LinhThach);
+        moneyVipText.text = Utils.FormatCount(CharData.MoneyVip);
         lianziAnim.SetTrigger("Show");
     }
 
