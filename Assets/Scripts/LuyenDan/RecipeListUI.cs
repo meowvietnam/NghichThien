@@ -33,7 +33,6 @@ namespace LuyenDan
             {
                 recipeUI.Destroy();
             }
-
             recipes.Clear();
             foreach (var recipe in datas)
             {
@@ -41,7 +40,6 @@ namespace LuyenDan
                 instance.Init(recipe, toggleGroup);
                 recipes.Add(instance);
             }
-
             Refresh();
         }
 
