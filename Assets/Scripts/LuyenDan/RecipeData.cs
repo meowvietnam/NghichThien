@@ -169,5 +169,21 @@ namespace LuyenDan
             writer.Write(LinhDanId);
             writer.WriteArray(Recipes);
         }
+
+        public bool IsInPlayerInventory()
+        {
+            var itemRef = new ItemRef()
+            {
+                Id = (ushort)Id,
+                Type = ItemType.Recipe,
+                Count = 1
+            };
+            var recipes = Client.Instance.CharacterData.InventoryManager.Recipes;
+            if (recipes.TryGetValue(itemRef, out var recipe))
+            {
+                return recipe.Count > 0;
+            }
+            return false;
+        }
     }
 }

@@ -66,16 +66,7 @@ namespace LuyenDan
             var cloned = inventoryManager.DeepClone();
             FurnaceInventory.Init(cloned.Furnaces);
             HerbInventory.Init(cloned.Herbs);
-            var datas = cloned.Recipes.Select(x =>
-            {
-                var recipe = Resources.FindRecipe(x.Id);
-                if (recipe == null)
-                {
-                    Debug.Log($"Recipe {x} not found");
-                }
-
-                return recipe;
-            }).ToList();
+            var datas = Resources.Recipes;
             RecipeListUI.Init(datas);
         }
 

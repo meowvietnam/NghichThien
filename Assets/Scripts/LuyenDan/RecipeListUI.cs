@@ -89,11 +89,6 @@ namespace LuyenDan
 
             return (null, null);
         }
-        public bool HasRecipe(RecipeData recipeData)
-        {
-            if(recipeData == null) return false;
-            return recipes.Any(r => r.Data == recipeData);
-        }
         public (RecipeData data, RecipeData.Recipe recipe) FindResourcesRecipe(Ingredient main1, Ingredient sub1,
             Ingredient sub2, Ingredient primer)
         {

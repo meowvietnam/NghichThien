@@ -27,7 +27,13 @@ namespace LuyenDan
         public void Init(RecipeData data, ToggleGroup group)
         {
             this.data = data;
-            recipeNameText.text = data.LinhDan.Name;
+            var hasRecipe = data.IsInPlayerInventory();
+            var owner = hasRecipe ? "Đã có" : "Chưa có";
+            var color = hasRecipe
+                ? new Color32(100, 255, 140, 255)
+                : new Color32(255, 110, 100, 255);
+            recipeNameText.text =
+                $"{data.LinhDan.Name} (<color=#{ColorUtility.ToHtmlStringRGB(color)}>{owner}</color>)";
             toggle.onValueChanged.AddListener(OnValueChanged);
             foreach (var recipeData in data.Recipes)
             {
