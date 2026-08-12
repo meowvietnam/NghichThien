@@ -30,6 +30,8 @@ namespace IAP
             inventory.Add(congPhapRef);
         }
 
+
+
         public void Refund(CharacterData charData)
         {
             charData.IsInfiniteEnergy = false;
