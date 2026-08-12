@@ -1,5 +1,6 @@
 using System.Linq;
 using Base;
+using ConvertElementalSkill;
 using LuyenDan.Inventory;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -83,6 +84,35 @@ namespace LuyenDan
             if (itemNameText != null) itemNameText.text = data.Name;
             
             SetTier(data.Tier);
+        }
+        public void SetSkill(SkillData skillData)
+        {
+            if (skillData != null)
+            {
+                SetSkillData(skillData.ItemData);
+                var itemRef = skillData.ItemRef;
+                SetCount(itemRef.Count);
+            }
+            else
+            {
+                SetSkillData(null);
+            }
+        }
+        private void SetQuality(SkillVisualQuality quality)
+        {
+            if (qualityBackground != null) qualityBackground.sprite = quality.Frame;
+            if (qualityIconUp != null) qualityIconUp.sprite = quality.QualityFull;
+            if (itemNameText != null) itemNameText.color = quality.Color;
+        }
+        private void SetSkillData(ISkillItemData data)
+        {
+            bool hasItem = data != null;
+            if (emptySlot != null) emptySlot.SetActive(!hasItem);
+            if (filledSlot != null) filledSlot.SetActive(hasItem);
+            if (!hasItem) return;
+            if (itemIcon != null) itemIcon.sprite = data.Icon;
+            if (itemNameText != null) itemNameText.text = data.Name;
+            SetQuality(data.VisualQuality);
         }
     }
 }

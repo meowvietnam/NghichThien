@@ -252,7 +252,7 @@ namespace LuyenDan
             if (max == int.MaxValue || max < 1) max = 1;
             var recipeListUI = LuyenDanPanel.Instance.RecipeListUI;
             var (data, recipe) = recipeListUI.FindResourcesRecipe(main1, sub1, sub2, primer);
-            var hasRecipe = recipeListUI.HasRecipe(data);
+            var hasRecipe = data?.IsInPlayerInventory() ?? false;
             var hasData = data != null;
             string linhdanName = string.Empty;
             int baseDaysRequired = 0;

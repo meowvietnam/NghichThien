@@ -6,6 +6,7 @@ using LongDHModules;
 using Network;
 using UnityEngine;
 using UnityEngine.UI;
+
 public enum EDailyQuest
 {
     TongMon,
@@ -14,21 +15,22 @@ public enum EDailyQuest
     ThienTinhThanh,
     QuangLangThanh,
     ThienCoCac,
-} 
-public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetworkEvent.IReLoadTask , INetworkEvent.IDoneTask
+}
+
+public class TaskDailyPanel : BaseBehaviour, INetworkEvent.ILoadTask, INetworkEvent.IReLoadTask, INetworkEvent.IDoneTask
 {
     [SerializeField] private Text textNameTask;
     [SerializeField] private List<TaskDaily> listTaskDaily;
     [SerializeField] private TaskDaily taskDaily = null;
     [SerializeField] private Button btnWatchAds;
-    [SerializeField]
-    private Popup popupTaskDaily;
-    [SerializeField]
-    private Button btnTaskShow;
+    [SerializeField] private Popup popupTaskDaily;
+    [SerializeField] private Button btnTaskShow;
+
     private void OnEnable()
     {
         textNameTask.text = GameManager.dictMapTypeWithName.GetValueOrDefault(Pool.Get<GameManager>().currentEMapType);
     }
+
     public static EDailyQuest GetTaskType()
     {
         if (Pool.Get<GameManager>().CurrentEMonPhai != Base.EMonPhai.None)
@@ -39,7 +41,6 @@ public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetwork
         {
             switch (Pool.Get<GameManager>().currentEMapType)
             {
-                
                 case AllMaps.EMapType.VanTichThanh:
                     return EDailyQuest.VanTichThanh;
 
@@ -58,24 +59,27 @@ public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetwork
                     break;
             }
         }
+
         return default;
-    }    
+    }
+
     private void Awake()
     {
         Init();
-
     }
+
     private void Init()
     {
         Pool.Set(this);
         popupTaskDaily.Hide();
-        SetEventButton(btnWatchAds,ReloadTask);
+        SetEventButton(btnWatchAds, ReloadTask);
         SetEventButton(btnTaskShow, () =>
         {
             Observer.Notify(EventList.Network.LOAD_TASK, this, GetTaskType());
             popupTaskDaily.Show();
         });
     }
+
     private void ReloadTask()
     {
         var charData = Client.Instance.CharacterData;
@@ -92,32 +96,16 @@ public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetwork
 
     private void ConfirmReloadTask()
     {
-        void Send()
-        {
-            Observer.Notify(EventList.Network.RELOAD_TASK, this, GetTaskType());
-        }
-        var charData = Client.Instance.CharacterData;
-        if (charData.IsNoAds)
-        {
-            Send();
-        }
-        else
-        {
-            AdsService.Instance.ShowRewardVideoAds(
-                "ReloadTask",
-                "Xem quảng cáo để làm mới nhiệm vụ chưa làm",
-                Send,
-                null,
-                () => NotifyGroup.Instance.Show("Không thể tải quảng cáo")
-            );
-        }
+        Observer.Notify(EventList.Network.RELOAD_TASK, this, GetTaskType());
     }
+
     public void DoneTask(TaskDaily task)
     {
         if (taskDaily != null) return;
         taskDaily = task;
         Observer.Notify(EventList.Network.DONE_TASK, this, taskDaily.DailyQuest.Id);
-    }    
+    }
+
     private void InitTask(List<DailyQuest> listQuests)
     {
         for (var i = 0; i < listQuests.Count; i++)
@@ -125,6 +113,7 @@ public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetwork
             listTaskDaily[i].InitTask(listQuests[i]);
         }
     }
+
     public void SuccessLoadTask(List<DailyQuest> listTask)
     {
         popupTaskDaily.Show();
@@ -144,7 +133,6 @@ public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetwork
     public void FailReLoadTask(string message)
     {
         popupTaskDaily.Hide();
-
     }
 
     public void SuccessDoneTask()
@@ -152,6 +140,7 @@ public class TaskDailyPanel : BaseBehaviour , INetworkEvent.ILoadTask , INetwork
         taskDaily.InitTask(taskDaily.DailyQuest);
         taskDaily = null;
     }
+
     public void FailDoneTask(string message)
     {
         NotifyGroup.Instance.Show(message);

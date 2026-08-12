@@ -16,8 +16,9 @@ namespace Network
 {
     public class NetworkManager : MonoBehaviour
     {
-        [SerializeField] private string host;
-        [SerializeField] private int port;
+        [ShowInInspector, ReadOnly] private string host => serverConfig?.Host ?? string.Empty;
+        [ShowInInspector, ReadOnly] private int port => serverConfig?.Port ?? 0;
+        [SerializeField] private ServerConfig serverConfig;
         [SerializeField] private string connectFailMessage;
         [SerializeField] private float connectTimeoutSeconds = 10f;
 #if UNITY_IPHONE

@@ -1,4 +1,5 @@
 using LuyenDan;
+using LuyenDan.Inventory;
 using UnityEngine;
 
 namespace ConvertElementalSkill

@@ -1,4 +1,6 @@
 using Base;
+using ConvertElementalSkill;
+using LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using LuyenKhi;
@@ -22,18 +24,33 @@ namespace CreateCharacter
         {
             var itemData = GetItemData();
             var ui = context.RewardUI;
-            ui.SetData(itemData);
-            ui.SetCount(Item.Count);
+            if (itemData is IItemData i)
+            {
+                ui.SetData(i);
+                ui.SetCount(Item.Count);
+            }
+            else if (itemData is SkillData skillData)
+            {
+                ui.SetSkill(skillData);
+            }
         }
 
-        private IItemData GetItemData()
+        private object GetItemData()
         {
             switch (Item.Type)
             {
                 case ItemType.Material:
-                    return LuyenKhiResources.Instance.FindItem(Item);
-                default:
+                    return LuyenKhiResources.Instance.FindMaterial(Item.Id);
+                case ItemType.LinhDan:
+                case ItemType.Herb:
+                case ItemType.Recipe:
                     return LuyenDanResources.Instance.FindItem(Item);
+                case ItemType.CongPhap:
+                    return new SkillData(Item, new CongPhapItemData(Item, Pool.Get<GameManager>(), Pool.Get<UIManager>()));
+                case ItemType.ThanThong:
+                    return new SkillData(Item, new ThanThongItemData(Item,Pool.Get<GameManager>(), Pool.Get<UIManager>()));
+                default:
+                    return null;
             }
         }
 
@@ -41,8 +58,17 @@ namespace CreateCharacter
         {
             var core = CoreConfig.Instance;
             var item = GetItemData();
-            return
-                $"<color=#{ColorUtility.ToHtmlStringRGBA(core.FindQuality(item.Tier).Color)}>{item.Name} x{Item.Count}</color>";
+            if (item is IItemData i)
+            {
+                return
+                    $"<color=#{ColorUtility.ToHtmlStringRGBA(core.FindQuality(i.Tier).Color)}>{i.Name} x{Item.Count}</color>";
+            }
+            if (item is SkillData skillData)
+            {
+                return
+                    $"<color=#{ColorUtility.ToHtmlStringRGBA(skillData.ItemData.VisualQuality.Color)}>{skillData.ItemData.Name} x{Item.Count}</color>";
+            }
+            return string.Empty;
         }
     }
 }
