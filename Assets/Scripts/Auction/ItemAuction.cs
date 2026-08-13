@@ -118,12 +118,5 @@ namespace Auction
         {
             Destroy(selfObject);
         }
-
-        [Button]
-        public void TestSetItem(ItemRef itemRef)
-        {
-            var item = ItemFactory.CreateItem(itemRef);
-            SetItem(item);
-        }
     }
 }

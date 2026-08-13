@@ -98,15 +98,15 @@ namespace Network
                 });
             }
 
-            foreach (var item in LuyenDanResources.Instance.Recipes)
-            {
-                items.Add(new ItemRef
-                {
-                    Id = (ushort)item.Id,
-                    Count = 1,
-                    Type = ItemType.Recipe
-                });
-            }
+            // foreach (var item in LuyenDanResources.Instance.Recipes)
+            // {
+            //     items.Add(new ItemRef
+            //     {
+            //         Id = (ushort)item.Id,
+            //         Count = 1,
+            //         Type = ItemType.Recipe
+            //     });
+            // }
 
             foreach (var item in LuyenDanResources.Instance.HerbDatas)
             {
@@ -186,7 +186,7 @@ namespace Network
             };
             Client.Send(MessageTag.AddCongPhap, cp);
         }
-
+        
         [Button]
         [ShowIf(nameof(IsReady))]
         public void SetMoney(int money)
@@ -231,6 +231,17 @@ namespace Network
                 Name = name,
                 SecretKey = secretKey
             });
+        }
+
+        [Button]
+        [ShowIf(nameof(IsReady))]
+        private void SendNotify(string msg)
+        {
+            if (string.IsNullOrEmpty(msg))
+            {
+                return;
+            }
+            Client.Send(MessageTag.AdminNotify, msg);
         }
         private bool IsAuthStateAndNotLogin()
         {

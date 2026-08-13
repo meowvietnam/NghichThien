@@ -265,12 +265,10 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
             if(displayer is ThanThongProviderCombat thanThongProviderCombat)
             {
                 thanThongProviderCombat.DisplayCombat(ctx, charCombat);
-
             }
             else
             {
                 displayer.Display(ctx);
-
             }
         }
         else

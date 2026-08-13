@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Auction
 {
-    public class MaterialData : IItemData, IItemAuctionData
+    public class MaterialData : IItemAuctionData
     {
         public int Id { get; }
         public Sprite Icon { get; }
@@ -20,7 +20,7 @@ namespace Auction
         public MaterialData(int id)
         {
             Id = id;
-            var material = LuyenKhiResources.Instance.FindMaterial((ushort)id);
+            var material = GetItemData();
             Icon = material.Icon;
             var quality = CoreConfig.Instance.FindQuality(material.Tier);
             Color = quality.Color;
@@ -39,7 +39,12 @@ namespace Auction
                 Count = 1,
                 Type = ItemType.Material,
             };
-            toolTip.ShowInfoItem(this, itemRef);
+            toolTip.ShowInfoItem(GetItemData(), itemRef);
+        }
+
+        public IItemData GetItemData()
+        {
+            return LuyenKhiResources.Instance.FindMaterial((ushort)Id);
         }
     }
 }

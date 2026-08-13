@@ -230,7 +230,8 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
         ngoTinhText.text = CharacterDatas.Stats.NgoTinh.ToString();
         donTocText.text = CharacterDatas.Stats.TocDoBay.ToString();
         var cpChuTu = Pool.Get<GameManager>().GetCongPhapWithId(CharacterDatas.EquipmentManager.ChuTu1Used);
-        tocDoTuLuyenText.text = $"{UIBeQuan.GetTotalTuLuyen(CharacterDatas.Stats.TuChat, UIBeQuan.GetPercentTamCanhPlayer(), UIBeQuan.GetTocDoTuLuyenCharData(), 1)}/Tháng";
+        tocDoTuLuyenText.text =
+            $"{UIBeQuan.GetTotalTuLuyen(CharacterDatas.Stats.TuChat, UIBeQuan.GetPercentTamCanhPlayer(), UIBeQuan.GetTocDoTuLuyenCharData(), 1)}/Tháng";
         var getTamCanh = GameManager.GetTamCanhValue(CharacterDatas.Stats.TamCanh);
         var getDanDoc = GameManager.GetDanDocValue(CharacterDatas.Stats.DanDoc);
 
@@ -251,8 +252,8 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
         thoText.text = $"{(int)CharacterDatas.Stats.Tho}";
 
         monPhaiText.text = GameManager.GetMonPhaiTextBase(Client.Instance.CharacterData.MonPhai).ToString();
-        chucVuText.text = GameManager.GetChucVuTextBase(Client.Instance.CharacterData.MonPhai,Client.Instance.CharacterData.Progression.Level).ToString();
-
+        chucVuText.text = GameManager.GetChucVuTextBase(Client.Instance.CharacterData.MonPhai,
+            Client.Instance.CharacterData.Progression.Level).ToString();
     }
 
     [Header("--- NGỘ ĐẠO ---")] [SerializeField]
@@ -365,6 +366,7 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
     public void InitNgoDaoSlotCanLearn(List<RectTransform> listSkill)
     {
         var CharacterDatas = CharData;
+        var inventory = CharacterDatas.InventoryManager;
         // reset
         foreach (var item in listSkill)
         {
@@ -383,7 +385,7 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
             for (int i = 0; i < item.transform.childCount; i++)
             {
                 NgoDaoSlot ngoDaoSlot = item.transform.GetChild(i).GetComponent<NgoDaoSlot>();
-                if (CharacterDatas.InventoryManager.NgoDaos.Any(x => x.Id == ngoDaoSlot.ngoDaoSO.Id))
+                if (inventory.NgoDaos.Any(x => x.Id == ngoDaoSlot.ngoDaoSO.Id))
                 {
                     ngoDaoSlot.LearnedVisual();
                 }
@@ -391,7 +393,7 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
         }
 
         var camNgoThisPage =
-            CharacterDatas.InventoryManager.CamNgos.FirstOrDefault(x =>
+            inventory.CamNgos.FirstOrDefault(x =>
                 x.Id == listNgoDaoResources[indexThisPage].eTypeSkill);
         int camNgoValue = 0;
         if (camNgoThisPage != null)
@@ -422,7 +424,7 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
                         CamNgo camNgo = null;
                         if (resource != null)
                         {
-                            camNgo = CharacterDatas.InventoryManager.CamNgos.FirstOrDefault(x =>
+                            camNgo = inventory.CamNgos.FirstOrDefault(x =>
                                 x.Id == resource.eTypeSkill);
 
                             // Tiếp tục logic xử lý...
@@ -799,6 +801,7 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
                 {
                     continue;
                 }
+
                 var id = ttEquip.Id;
                 thanThongData =
                     GameConfig.GetThanThongWithId(id);
