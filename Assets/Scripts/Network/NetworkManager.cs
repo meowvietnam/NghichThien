@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using CreateCharacter;
+using Firebase.Analytics;
 using Network.Callback;
 using Network.ClientState;
 using Network.Core;

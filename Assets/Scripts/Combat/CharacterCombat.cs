@@ -1665,6 +1665,11 @@ public class CharacterCombat : MonoBehaviour
         }
         dataHeal = 0;
         Observer.Notify(EventList.Combat.CHARACTER_ADJUST_HP);
-    }    
+    }
 
+    [Button]
+    public void AddKietSuc()
+    {
+        AddBuffAndDebuffCount(EBuffAndDeBuff.KietSuc, 1);
+    }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CreateCharacter;
 using DG.Tweening;
+using Firebase.Analytics;
 using IAP;
 using LuyenDan;
 using Network.Extensions;
@@ -232,13 +233,15 @@ namespace Network.Core
                     if (result.Success)
                     {
                         var reward = result.Reward;
-                        reward?.Execute(Client.Instance.CharacterData);
+                        var charData = Client.Instance.CharacterData;
+                        reward?.Execute(charData);
                         OnServerResponseIapSuccess(result.ProductId);
                         var uiContext = new IapUIContext()
                         {
                             IapHandler = this,
                         };
                         reward?.ShowUISuccess(uiContext);
+                        FirebaseAnalytics.LogEvent("iap_purchase", "productId", result.ProductId);
                     }
                     else
                     {

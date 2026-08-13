@@ -774,6 +774,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             }
 
             Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
+            return;
         }
 
         // param 0 là bool isPlayer == char1 

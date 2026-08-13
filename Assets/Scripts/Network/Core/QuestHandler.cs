@@ -6,6 +6,7 @@ using Network.Models;
 using System.Collections.Generic;
 using System.Linq;
 using AllMaps;
+using Firebase.Analytics;
 using static INetworkEvent;
 
 namespace Network.Core
@@ -16,6 +17,7 @@ namespace Network.Core
         private ICompleteSideQuest completeSideQuestCallback;
         private IReLoadTask reloadTaskCallback;
         private IWatchAdsSideQuest watchAdsSideQuestCallback;
+
         private static MessageTag[] handler =
         {
             MessageTag.CompleteMainQuestResult,
@@ -68,6 +70,10 @@ namespace Network.Core
                     charData.Stats.LinhThach += result.LinhThachRandom;
                     charData.QuestManager.CurrentCountSideQuest = result.CurrentSideQuest;
                     charData.Stats.TamCanh = result.NewTamCanh;
+                    if (result.CurrentSideQuest == 10)
+                    {
+                        FirebaseAnalytics.LogEvent("complete_full_side_quest_day", "done", 1);
+                    }
                 }
 
                 NetworkManager.Instance.Invoke(() =>
@@ -94,6 +100,7 @@ namespace Network.Core
                     var questManager = client.CharacterData.QuestManager;
                     questManager.DailyQuests[eDailyQuest] = listQuest;
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -172,6 +179,7 @@ namespace Network.Core
                     .First(x => x.Id == result.QuestId);
                 quest.Claim();
             }
+
             NetworkManager.Instance.Invoke(() =>
             {
                 if (result.Success)

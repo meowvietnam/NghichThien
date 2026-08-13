@@ -143,9 +143,8 @@ public class PlayerUICombat : BaseBehaviour
                 case EStateControl.DeleteLinhKhi:
                     if (CurrentLinhKhi <= maxLinhKhi || player.isSkipTieuTanLinhKhi == true)
                     {
-
-                        Observer.Notify(EventList.Combat.END_TURN_COMBAT, player, CombatManager.char2, GetLinhKhiTieuTans(currentNodes));
                         this.gameObject.SetActive(false);
+                        Observer.Notify(EventList.Combat.END_TURN_COMBAT, player, CombatManager.char2, GetLinhKhiTieuTans(currentNodes));
                         SetStateControl(EStateControl.None);
 
                     }
@@ -590,17 +589,23 @@ public class PlayerUICombat : BaseBehaviour
     }
     public void NewTurn(params object[] data)
     {
+        Debug.Log("NewTurn");
         CharacterCombat currentTurn = (CharacterCombat)data[0];
         if(currentTurn != player)
         {
+            Debug.Log("NewTurn1");
             this.gameObject.SetActive(false);
 
             return;
         }    
         this.gameObject.SetActive(true);
 
-        
-        if (currentTurn == null) return;
+
+        if (currentTurn == null)
+        {
+            Debug.Log("NewTurn2");
+            return;
+        }
         SetStateControl(EStateControl.None);
         
         foreach (var item in linhKhiRemains)
