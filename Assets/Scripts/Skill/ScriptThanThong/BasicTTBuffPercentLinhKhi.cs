@@ -47,7 +47,7 @@ public class BasicTTBuffPercentLinhKhi : ThanThong, IMemorySerializable<BasicTTB
 
     public override string GetDesc(int level)
     {
-        return $"Cơ sở {GetTextLinhKhi(elinhKhi)} hệ thần thông, tăng {GetColoredText($"{buffPercent[level - 1]}", "red")} điểm {GetTextLinhKhi(elinhKhi)} hệ linh khí";
+        return $"Cơ sở {GetTextLinhKhi(elinhKhi)} hệ thần thông, tăng {GetColoredText($"{buffPercent[level - 1]}", "red")}% khả năng hấp thụ {GetTextLinhKhi(elinhKhi)} hệ linh khí trong trận chiến";
     }
 
     public override int ByteSize()
