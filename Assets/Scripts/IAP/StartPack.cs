@@ -14,6 +14,7 @@ namespace IAP
         public int Money { get; set; }
         public ushort CongPhapId { get; set; }
         [MemoryPackIgnore] private string productId;
+
         public void Execute(CharacterData charData)
         {
             charData.IsInfiniteEnergy = true;
@@ -31,7 +32,6 @@ namespace IAP
         }
 
 
-
         public void Refund(CharacterData charData)
         {
             charData.IsInfiniteEnergy = false;
@@ -44,7 +44,7 @@ namespace IAP
                 Type = ItemType.CongPhap,
                 Id = CongPhapId,
             };
-            if(inventory.CongPhaps.TryGetValue(congPhapRef, out var congPhap))
+            if (inventory.CongPhaps.TryGetValue(congPhapRef, out var congPhap))
             {
                 congPhap.Count -= 1;
                 if (congPhap.Count < 1)
@@ -62,6 +62,7 @@ namespace IAP
                 gameObject.SetActive(false);
             }
         }
+
         public void InitUI(IapUIContext context)
         {
             productId = context.OwnerIapProduct.Product.StoreProductId;
@@ -69,16 +70,14 @@ namespace IAP
             {
                 return;
             }
+
             var prefab = context.StartPackUIPrefab;
             var iapHandler = context.IapHandler;
             var startPackUI = Object.Instantiate(prefab, iapHandler.transform);
             startPackUI.ThisPopup.Hide();
             var btnStartPack = Object.Instantiate(context.BtnStartPackPrefab, context.IconListContainer);
             btnStartPack.transform.SetAsLastSibling();
-            BaseBehaviour.SetEventButton(btnStartPack, () =>
-            {
-                startPackUI.ThisPopup.Show();
-            });
+            BaseBehaviour.SetEventButton(btnStartPack, () => { startPackUI.ThisPopup.Show(); });
             var listGameObjects = new List<GameObject>();
             listGameObjects.Add(startPackUI.gameObject);
             listGameObjects.Add(btnStartPack.gameObject);
@@ -88,10 +87,24 @@ namespace IAP
             startPackUI.SetCongPhap(CongPhapId);
             startPackUI.SetPurchaseAction(() =>
             {
-                context.IapHandler.BuyProduct(productId);
+                CanBuyProduct(context);
             });
         }
-
-
+        private async void CanBuyProduct(IapUIContext context)
+        {
+            var product = context.OwnerIapProduct.Product;
+            var store = product.Store;
+            var productId = product.StoreProductId;
+            var handler = context.IapHandler;
+            var result = await handler.CanBuyProduct(store, productId);
+            if (result.Success)
+            {
+                handler.BuyProduct(productId);
+            }
+            else
+            {
+                NotifyGroup.Instance?.Show(result.Message);
+            }
+        }
     }
 }

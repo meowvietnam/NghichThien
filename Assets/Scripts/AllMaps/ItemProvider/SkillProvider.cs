@@ -80,11 +80,6 @@ namespace AllMaps.ItemProvider
         {
             var parent = ctx.PrefabIconRequire.transform.parent.parent;
             parent.gameObject.SetActive(true);
-            // clear
-            for (int i = 0; i < ctx.PrefabIconRequire.transform.parent.childCount; i++)
-            {
-                ctx.PrefabIconRequire.transform.parent.GetChild(i).gameObject.SetActive(false);
-            }
 
             for (int i = 0; i < requireActives.Count; i++)
             {
