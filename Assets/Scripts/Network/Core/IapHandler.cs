@@ -155,6 +155,16 @@ namespace Network.Core
             Client.Instance.Send(MessageTag.IapPurchase, model);
         }
 
+        public async Task<Result> CanBuyProduct(Store store, string productId)
+        {
+            var request = new CanBuyProductRequest()
+            {
+                Store = store,
+                ProductId = productId
+            };
+            var reader = await Client.Instance.MemRequestWait(MessageTag.CanBuyProductRequest, request);
+            return reader.MemRead<Result>();
+        }
         private void OnIapFailed(string message)
         {
             NetworkManager.Instance.Invoke(() => { NotifyGroup.Instance.Show(message); });

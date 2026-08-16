@@ -98,15 +98,15 @@ namespace Network
                 });
             }
 
-            // foreach (var item in LuyenDanResources.Instance.Recipes)
-            // {
-            //     items.Add(new ItemRef
-            //     {
-            //         Id = (ushort)item.Id,
-            //         Count = 1,
-            //         Type = ItemType.Recipe
-            //     });
-            // }
+            foreach (var item in LuyenDanResources.Instance.Recipes)
+            {
+                items.Add(new ItemRef
+                {
+                    Id = (ushort)item.Id,
+                    Count = 1,
+                    Type = ItemType.Recipe
+                });
+            }
 
             foreach (var item in LuyenDanResources.Instance.HerbDatas)
             {
@@ -203,7 +203,7 @@ namespace Network
 
         [Button]
         [ShowIf(nameof(IsReady))]
-        public async void SetExp(int exp)
+        private async void SetExp(int exp)
         {
             var reader = await Client.RequestWait(MessageTag.SetExpRequest, exp, 20000);
             var currentExp = reader.Read<int>();
@@ -212,7 +212,7 @@ namespace Network
 
         [Button]
         [ShowIf(nameof(IsAuthStateAndNotLogin))]
-        public void AdminLoginGoogle(string email)
+        private void AdminLoginGoogle(string email)
         {
             var state = Client.State as AuthState;
             state?.Login(new AdminLoginWithGoogle()
@@ -223,7 +223,7 @@ namespace Network
         }
         [Button]
         [ShowIf(nameof(IsAuthStateAndNotLogin))]
-        public void AdminLoginWithName(string name)
+        private void AdminLoginWithName(string name)
         {
             var state = Client.State as AuthState;
             state?.Login(new AdminLoginWithName()
@@ -242,6 +242,24 @@ namespace Network
                 return;
             }
             Client.Send(MessageTag.AdminNotify, msg);
+        }
+
+        [Button]
+        [ShowIf(nameof(IsReady))]
+        private async void CreateAuctionSession(CreateNewAuctionSession session)
+        {
+            var reader = await Client.MemRequestWait(MessageTag.CreateNewAuctionSessionRequest, session);
+            var result = reader.MemRead<Result>();
+            NotifyGroup.Instance?.Show(result.Message);
+        }
+
+        [Button]
+        [ShowIf(nameof(IsReady))]
+        private async void RemoveLastAuctionSession()
+        {
+            var reader = await Client.RequestWait(MessageTag.RemoveLastAuctionSessionRequest);
+            var result = reader.MemRead<Result>();
+            NotifyGroup.Instance?.Show(result.Message);
         }
         private bool IsAuthStateAndNotLogin()
         {

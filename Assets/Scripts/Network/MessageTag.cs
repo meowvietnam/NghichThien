@@ -209,6 +209,9 @@ namespace Network
         
         RegisterRequest = 1634,
         GuestRegisterRequest = 1683,
-        ResetNgoDaoRequest = 1752
+        ResetNgoDaoRequest = 1752,
+        CreateNewAuctionSessionRequest = 1812,
+        RemoveLastAuctionSessionRequest = 1816,
+        CanBuyProductRequest = 1921
     }
 }

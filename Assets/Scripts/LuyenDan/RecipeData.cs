@@ -126,19 +126,19 @@ namespace LuyenDan
         [field: SerializeField] public int Id { get; private set; }
         [field: SerializeField] public int LinhDanId { get; set; }
 
-        public Sprite Icon
-        {
-            get
-            {
-                var linhDan = LinhDan;
-                if (linhDan == null)
-                {
-                    return null;
-                }
-                return linhDan.Icon;
-            }
-        }
-
+        // public Sprite Icon
+        // {
+        //     get
+        //     {
+        //         var linhDan = LinhDan;
+        //         if (linhDan == null)
+        //         {
+        //             return null;
+        //         }
+        //         return linhDan.Icon;
+        //     }
+        // }
+        [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public List<Recipe> Recipes { get; private set; }
 
         public LinhDan LinhDan
