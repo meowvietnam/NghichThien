@@ -25,14 +25,14 @@ public class PhiVanKinh : CongPhap, IMemorySerializable<PhiVanKinh>
     public override void EquipCongPhap(CharacterData statsCurrent, int level)
     {
         var stats = statsCurrent.Stats;
-        var tocDoBay = stats.ThanThuc + buffValues[level - 1];
+        var tocDoBay = stats.TocDoBay + buffValues[level - 1];
         stats.TocDoBay = tocDoBay;
     }
 
     public override void UnEquipCongPhap(CharacterData statsCurrent, int level)
     {
         var stats = statsCurrent.Stats;
-        var tocDoBay = stats.ThanThuc - buffValues[level - 1];
+        var tocDoBay = stats.TocDoBay - buffValues[level - 1];
         stats.TocDoBay = tocDoBay;
     }
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)

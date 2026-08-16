@@ -5,11 +5,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using CreateCharacter;
 using Firebase.Analytics;
+using LuyenDan;
 using Network.Callback;
 using Network.ClientState;
 using Network.Core;
 using Network.Extensions.MemoryPack;
 using Network.Models;
+using Newtonsoft.Json;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -110,7 +112,7 @@ namespace Network
             Id = id;
             Key = key;
         }
-
+        
         public void AuthenticatedSuccess()
         {
             client = new Client(unauthenticatedClient);
@@ -121,7 +123,7 @@ namespace Network
         {
             client.TcpClient.Reconnect(unauthenticatedClient.TcpClient);
         }
-
+    
         public void Invoke(Action action)
         {
             lock (actionQueue)
@@ -129,7 +131,6 @@ namespace Network
                 actionQueue.Enqueue(action);
             }
         }
-
         private IClientState GetClientState()
         {
             if (client == null) return null;

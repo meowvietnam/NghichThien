@@ -51,6 +51,7 @@ namespace Network.Core
                 {
                     Furnaces = result.Furnaces,
                     Items = result.Items,
+                    Equipments = result.Equipment,
                 };
                 inventoryTracking.Apply(inventory);
                 client.CharacterData.Stats.LinhThach = result.LinhThach;
