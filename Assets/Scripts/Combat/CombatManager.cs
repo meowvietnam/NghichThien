@@ -408,7 +408,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             Observer.Notify(EventList.Combat.BEFORE_EXCUTE_SKILL, caster, target);
             if (caster.IsDebuffTuoiTac)
             {
-                caster.TakeDameByStatic(null, new List<int> { (int)(0.1f * caster.characterStatsTemp.hpMax) }, false);
+                caster.TakeDameByStatic(null, new List<int> { (int)(0.05f * caster.characterStatsTemp.hpMax) }, false);
             }
 
             if (caster.CurrentIndexDanDoc == 4)
