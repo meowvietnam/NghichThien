@@ -101,6 +101,9 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
     [SerializeField] private Button btnWatchAds;
     [SerializeField] private Bag1ItemPrefabInventory bagUserList;
     [SerializeField] private Bag1ItemPrefabInventory bagNpcList;
+    private InventoryUIFacade inventoryUIFacade;
+
+    public InventoryUIFacade InventoryUIFacade => inventoryUIFacade ?? (inventoryUIFacade = new InventoryUIFacade());
 
     private void SetTextMoneyCurrent()
     {
@@ -209,15 +212,8 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
                     {
                         slotItemGift.gameObject.SetActive(true);
                         var tradeItemRef = CreateItemRefSellOrBase(ItemInventory.itemRef, 0);
-                        if (ItemInventory.itemRef.Type == ItemType.ThanThong ||
-                            ItemInventory.itemRef.Type == ItemType.CongPhap)
-                        {
-                            Pool.Get<UIManager>()
-                                .InitVisualItemSkill(slotItemGift, (BaseSkill)ItemInventory.itemData, tradeItemRef);
-                        }
-
-                        Pool.Get<UIManager>().InitVisualItemInventory(slotItemGift, ItemInventory.iItemData,
-                            tradeItemRef, false, eActionShowItemInfor);
+                        InventoryUIFacade.RenderBagItem(slotItemGift,tradeItemRef,false);
+                        
                         AddCountItemToItem(ItemInventory, slotItemGift);
                         slotItemGift.InitAction(null, null,
                             () => { AddCountItemToItem(slotItemGift, ItemInventory); });
