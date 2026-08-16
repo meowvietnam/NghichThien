@@ -174,19 +174,31 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         if (characterDie != null)
         {
             var gameManager = Pool.Get<GameManager>();
-            if (gameManager.currentECombatResult == ETypeResultCombat.None)
+            
+            if(!Pool.Get<EventRewardPanel>().gameObject.activeSelf)
             {
+                if (gameManager.currentECombatResult == ETypeResultCombat.None)
+                {
+                    if (characterWin == char1)
+                    {
+                        Observer.Notify(EventList.Combat.END_COMBAT, char1, char2, true);
+                        EndCombat(ETypeResultCombat.Win);
+                    }
+                    else
+                    {
+                        Observer.Notify(EventList.Combat.END_COMBAT, char1, char2, false);
+                        EndCombat(ETypeResultCombat.LoseByDied);
+                    }
+                }
                 if (characterWin == char1)
                 {
-                    Observer.Notify(EventList.Combat.END_COMBAT, char1, char2, true);
                     EndCombat(ETypeResultCombat.Win);
                 }
                 else
                 {
-                    Observer.Notify(EventList.Combat.END_COMBAT, char1, char2, false);
                     EndCombat(ETypeResultCombat.LoseByDied);
                 }
-            }
+            }    
 
             EventList.Combat.RemoveAllCombatObservers();
             return true;
@@ -928,7 +940,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         var die = false;
         while (!die)
         {
-            die = CheckDie();
+            CheckDie();
+            die = Pool.Get<EventRewardPanel>().gameObject.activeSelf;
             Debug.Log($"Is die: {die}");
             yield return wait;
         }
