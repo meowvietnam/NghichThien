@@ -916,7 +916,7 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
             Debug.Log("có vào đây");
             if (currentItem.itemRef == null || currentItem.itemData == null ||
                 currentItem.itemRef.Type != ItemType.VuKhi && currentItem.itemRef.Type != ItemType.PhongCu &&
-                currentItem.itemRef.Type != ItemType.VuKhi)
+                currentItem.itemRef.Type != ItemType.TrangSuc)
             {
                 Debug.Log("data null");
 

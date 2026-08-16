@@ -156,33 +156,40 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         var characterData = Client.Instance.CharacterData;
         var gameConfig = Pool.Get<GameManager>();
         List<ItemRef> itemDatas = new List<ItemRef>();
-        itemDatas.AddRange(characterData.InventoryManager.Herbs.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.Recipes.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.ThanThongs.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.CongPhaps.ToList());
+
+    
         // itemDatas.AddRange(characterData.InventoryManager.VuKhis.ToList());
         // itemDatas.AddRange(characterData.InventoryManager.PhongCus.ToList());
         // itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
-        itemDatas.AddRange(characterData.InventoryManager.LinhDans.ToList());
         // Sử dụng LINQ để trích xuất Ref từ mỗi phần tử trong furnaceDatas
-        var furnaceRefs = characterData.InventoryManager.Furnaces.Select(f => f.CreateRefSelfID()).ToList();
 
         // Thêm danh sách Ref vừa lấy được vào itemDatas
-        itemDatas.AddRange(furnaceRefs);
         List<ItemType> itemTypeCanSellForShop = new();
         if (eShopType == EShopType.ShopDuocLieu)
         {
             itemTypeCanSellForShop = new List<ItemType>
                 { ItemType.Herb, ItemType.Furnace, ItemType.LinhDan, ItemType.Recipe };
+            itemDatas.AddRange(characterData.InventoryManager.Herbs.ToList());
+            itemDatas.AddRange(characterData.InventoryManager.Recipes.ToList());
+            itemDatas.AddRange(characterData.InventoryManager.LinhDans.ToList());
+            var furnaceRefs = characterData.InventoryManager.Furnaces.Select(f => f.CreateRefSelfID()).ToList();
+            itemDatas.AddRange(furnaceRefs);
+
         }
         else if (eShopType == EShopType.ShopVatLieu)
         {
             itemTypeCanSellForShop = new List<ItemType>
                 { ItemType.Material, ItemType.VuKhi, ItemType.PhongCu, ItemType.TrangSuc };
+            itemDatas.AddRange(characterData.InventoryManager.VuKhis.Select(f => f.CreateRefSelfId()).ToList());
+            itemDatas.AddRange(characterData.InventoryManager.PhongCus.Select(f => f.CreateRefSelfId()).ToList());
+            itemDatas.AddRange(characterData.InventoryManager.TrangSucs.Select(f => f.CreateRefSelfId()).ToList());
+            itemDatas.AddRange(characterData.InventoryManager.Materials.ToList());
         }
         else if (eShopType == EShopType.Skill)
         {
             itemTypeCanSellForShop = new List<ItemType> { ItemType.ThanThong, ItemType.CongPhap };
+            itemDatas.AddRange(characterData.InventoryManager.ThanThongs.ToList());
+            itemDatas.AddRange(characterData.InventoryManager.CongPhaps.ToList());
         }
 
         bagUserList.filterControl.InitFilterType(itemTypeCanSellForShop);
