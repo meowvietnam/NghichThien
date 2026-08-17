@@ -86,8 +86,7 @@ GameObject:
   - component: {fileID: 7303700718634451351}
   - component: {fileID: 4836083291467886740}
   - component: {fileID: 4534278364680250389}
-  - component: {fileID: 970399227014003806}
-  - component: {fileID: 8772866635069528407}
+  - component: {fileID: 2802057732968959703}
   m_Layer: 0
   m_Name: TheThangVip
   m_TagString: Untagged
@@ -159,7 +158,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &970399227014003806
+--- !u!114 &2802057732968959703
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,30 +167,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2353020589230434233}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 903b0a83e7284679a66a5b051787cbe6, type: 3}
+  m_Script: {fileID: 11500000, guid: 04537afbc441248a3a778152effd457c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::IAP.StartPackUI
-  moneyVipText: {fileID: 6843943445693342982}
-  moneyText: {fileID: 0}
-  congPhapText: {fileID: 0}
-  congPhapIcon: {fileID: 0}
-  purchaseButton: {fileID: 7397870437662310736}
---- !u!114 &8772866635069528407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2353020589230434233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9496240f288ff9b4aa9849cd1d24183e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Popup
+  m_EditorClassIdentifier: Assembly-CSharp::IAP.MonthlyPassPackPanel
   commonMask: {fileID: 0}
   btnClose: {fileID: 5075947438785844269}
   scaleBase: 1
   isIgnoreOtherPopup: 0
+  payButton: {fileID: 7397870437662310736}
+  moneyText: {fileID: 6843943445693342982}
 --- !u!1 &2691323045417329959
 GameObject:
   m_ObjectHideFlags: 0
@@ -845,8 +829,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 291.6491, y: 0.0000076293945}
-  m_SizeDelta: {x: 208.6849, y: 51.6622}
+  m_AnchoredPosition: {x: 368, y: 0.0000076293945}
+  m_SizeDelta: {x: 300, y: 51.6622}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &3349645737206353045
 CanvasRenderer:
@@ -883,7 +867,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 90
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1

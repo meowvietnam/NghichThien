@@ -212,6 +212,9 @@ namespace Network
         ResetNgoDaoRequest = 1752,
         CreateNewAuctionSessionRequest = 1812,
         RemoveLastAuctionSessionRequest = 1816,
-        CanBuyProductRequest = 1921
+        CanBuyProductRequest = 1921,
+        GetTrungSinhConfigRequest = 1933,
+        ToTrungSinhRequest = 1954,
+        TrungSinhRequest = 1996,
     }
 }

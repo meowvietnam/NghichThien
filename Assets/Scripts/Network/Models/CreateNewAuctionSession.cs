@@ -2,15 +2,15 @@ using System;
 using LuyenDan;
 using MemoryPack;
 using System;
+using UnityEngine;
 
 namespace Network.Models
 {
     [Serializable]
     [MemoryPackable]
-    [Serializable]
     public partial class CreateNewAuctionSession
     {
-        public int Price;
-        public ItemRef Item;
+        [field: SerializeField] public int Price { get; set; }
+        [field: SerializeField] public ItemRef Item { get; set; }
     }
 }

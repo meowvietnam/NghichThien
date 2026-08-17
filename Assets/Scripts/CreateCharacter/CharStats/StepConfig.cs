@@ -46,9 +46,9 @@ namespace CreateCharacter.CharStats
         }
 
         [Button]
-        public void ToBinary()
+        public void ToBinary(string name)
         {
-            var path = Path.Combine(Application.dataPath, "Exports", "step-config.bin");
+            var path = Path.Combine(Application.dataPath, "Exports", $"{name}.bin");
             var writer = new Writer(ByteSize());
             writer.Write(this);
             File.WriteAllBytes(path, writer.Buffer);

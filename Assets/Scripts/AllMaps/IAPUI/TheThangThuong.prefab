@@ -493,8 +493,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 291.6491, y: 0.0000076293945}
-  m_SizeDelta: {x: 208.6849, y: 51.6622}
+  m_AnchoredPosition: {x: 379, y: 0.0000076293945}
+  m_SizeDelta: {x: 300, y: 51.6622}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &5551453735325287517
 CanvasRenderer:
@@ -531,7 +531,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 90
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
@@ -977,8 +977,7 @@ GameObject:
   - component: {fileID: 9041444923410784835}
   - component: {fileID: 7522408443776682025}
   - component: {fileID: 8804212486808360736}
-  - component: {fileID: 7231247017560663163}
-  - component: {fileID: 587902573262216244}
+  - component: {fileID: 826460278832272900}
   m_Layer: 0
   m_Name: TheThangThuong
   m_TagString: Untagged
@@ -1050,7 +1049,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7231247017560663163
+--- !u!114 &826460278832272900
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1059,30 +1058,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 6072293480463597802}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 903b0a83e7284679a66a5b051787cbe6, type: 3}
+  m_Script: {fileID: 11500000, guid: 04537afbc441248a3a778152effd457c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::IAP.StartPackUI
-  moneyVipText: {fileID: 6011077386700505092}
-  moneyText: {fileID: 0}
-  congPhapText: {fileID: 0}
-  congPhapIcon: {fileID: 0}
-  purchaseButton: {fileID: 8043602271398774486}
---- !u!114 &587902573262216244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6072293480463597802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9496240f288ff9b4aa9849cd1d24183e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Popup
+  m_EditorClassIdentifier: Assembly-CSharp::IAP.MonthlyPassPackPanel
   commonMask: {fileID: 0}
   btnClose: {fileID: 2359487379515798159}
   scaleBase: 1
   isIgnoreOtherPopup: 0
+  payButton: {fileID: 8043602271398774486}
+  moneyText: {fileID: 6011077386700505092}
 --- !u!1 &6561863571384041775
 GameObject:
   m_ObjectHideFlags: 0

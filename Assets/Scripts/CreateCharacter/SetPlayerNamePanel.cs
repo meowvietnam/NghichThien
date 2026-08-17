@@ -16,6 +16,7 @@ namespace CreateCharacter
         [SerializeField] private Button nextBtn;
         public CanvasGroup CanvasGroup => canvasGroup;
         public Tween Tween { get; set; }
+        [SerializeField] private CreateCharacterSystem system;
         private void Start()
         {
             backBtn.onClick.AddListener(Back);
@@ -34,8 +35,8 @@ namespace CreateCharacter
         }
         public void NextSuccess()
         {
-            CreateCharacterSystem.Instance.NewCharacter.Name = nameInput.text;
-            CreateCharacterSystem.Instance.NextToCreateCharacterPanel();
+            system.NewCharacter.Name = nameInput.text;
+            system.NextToCreateCharacterPanel();
         }
         private void Back()
         {

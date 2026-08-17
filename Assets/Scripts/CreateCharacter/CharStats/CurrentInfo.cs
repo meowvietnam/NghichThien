@@ -48,7 +48,7 @@ namespace CreateCharacter.CharStats
         private void OnValueChanged(object value)
         {
             valueText.text = GetValue(value);
-            var originalValue = selectStats.GetOrginalValue(statType);
+            var originalValue = selectStats.GetOriginalValue(statType);
             var color = GetColor(value, originalValue);
             valueText.color = color;
         }

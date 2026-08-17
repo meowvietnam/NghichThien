@@ -29,6 +29,7 @@ namespace Network.Core
         [SerializeField] private SelectNum selectNum;
         private List<OwnerIapProduct> ownerIapProducts;
         [SerializeField] private IapService iapService;
+        [SerializeField] private MonthlyPassPackUI monthlyPassUIPrefab;
         private static MessageTag[] handler =
         {
             MessageTag.PurchaseIapResult
@@ -114,6 +115,7 @@ namespace Network.Core
                     {
                         var uiContext = new IapUIContext()
                         {
+                            ProductId = ownerIapProduct.Product.StoreProductId,
                             IapHandler = this,
                             StartPackUIPrefab = startPackUIPrefab,
                             MoneyVipPackUIPrefab = moneyVipUIPrefab,
@@ -122,6 +124,7 @@ namespace Network.Core
                             IapProductContainer = iapProductContainer,
                             BtnStartPackPrefab = btnStartPackPrefab,
                             IconListContainer =  iconListContainer,
+                            MonthlyPassPackUIPrefab = monthlyPassUIPrefab,
                         };
                         ownerIapProduct.Product.Reward?.InitUI(uiContext);
                     }
@@ -244,13 +247,14 @@ namespace Network.Core
                     {
                         var reward = result.Reward;
                         var charData = Client.Instance.CharacterData;
-                        reward?.Execute(charData);
                         OnServerResponseIapSuccess(result.ProductId);
                         var uiContext = new IapUIContext()
                         {
                             IapHandler = this,
+                            ProductId = result.ProductId,
                         };
                         reward?.ShowUISuccess(uiContext);
+                        NotifyGroup.Instance.Show("Nạp thành công!");
                         FirebaseAnalytics.LogEvent("iap_purchase", "productId", result.ProductId);
                     }
                     else

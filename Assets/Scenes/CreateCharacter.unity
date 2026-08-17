@@ -2133,15 +2133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c91333ac4629154d92d704a8f750e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreateCharacterSystem
-  totalSlots: 1
-  skinResources: {fileID: 11400000, guid: eb63df279467d0e4a9ccdb13556e6fa9, type: 2}
-  selectCharacterPanel: {fileID: 1398726143}
-  setPlayerNamePanel: {fileID: 1360749558}
-  createCharacterPanel: {fileID: 1632159927}
-  progressBar: {fileID: 9095434920990779136}
-  createCharacterSuccess: "T\u1EA1o nh\xE2n v\u1EADt th\xE0nh c\xF4ng!"
-  selecting: "\u0110ang ch\u1ECDn nh\xE2n v\u1EADt..."
-  popupConfirmAction: {fileID: 1734082751}
   <NewCharacter>k__BackingField:
     <Id>k__BackingField: 0
     <Gender>k__BackingField: 0
@@ -2188,6 +2179,19 @@ MonoBehaviour:
     <ArenaManager>k__BackingField:
       <CurrentArenaCount>k__BackingField: 0
       <Points>k__BackingField: 0
+  createCharacterPanel: {fileID: 1632159927}
+  progressBar: {fileID: 9095434920990779136}
+  popupConfirmAction: {fileID: 1734082751}
+  totalSlots: 1
+  skinResources: {fileID: 11400000, guid: eb63df279467d0e4a9ccdb13556e6fa9, type: 2}
+  selectCharacterPanel: {fileID: 1398726143}
+  setPlayerNamePanel: {fileID: 1360749558}
+  createCharacterSuccess: "T\u1EA1o nh\xE2n v\u1EADt th\xE0nh c\xF4ng!"
+  selecting: "\u0110ang ch\u1ECDn nh\xE2n v\u1EADt..."
+  popupConfirmAction: {fileID: 1734082751}
+  confirmText: "B\u1EA1n v\u1EABn c\xF2n {0} \u0111i\u1EC3m thi\xEAn ph\xFA ch\u01B0a
+    s\u1EED d\u1EE5ng, b\u1EA1n c\xF3 mu\u1ED1n t\u1EA1o nh\xE2n v\u1EADt kh\xF4ng?"
+  originalMoney: 20
 --- !u!4 &494252467
 Transform:
   m_ObjectHideFlags: 0
@@ -3810,8 +3814,8 @@ MonoBehaviour:
     <LinhCan>k__BackingField: 4
     <Ability>k__BackingField: 0
     <DanDoc>k__BackingField: 0
-  originalMoney: 20
   stepsTransform: {fileID: 1702114813}
+  system: {fileID: 494252466}
   currentInfos:
   - {fileID: 1943284686}
   - {fileID: 1049692295}
@@ -5614,6 +5618,7 @@ MonoBehaviour:
   canvasGroup: {fileID: 1360749559}
   backBtn: {fileID: 2032348917}
   nextBtn: {fileID: 188574324}
+  system: {fileID: 494252466}
 --- !u!225 &1360749559
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6014,6 +6019,7 @@ MonoBehaviour:
     type: 3}
   backBtn: {fileID: 1717821905}
   canvasGroup: {fileID: 1398726144}
+  system: {fileID: 494252466}
 --- !u!225 &1398726144
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -8054,7 +8060,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 165, y: -31}
+  m_AnchoredPosition: {x: 165, y: -30.981308}
   m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1940343895

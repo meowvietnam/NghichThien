@@ -13,7 +13,6 @@ namespace IAP
         public int MoneyVip { get; set; }
         public int Money { get; set; }
         public ushort CongPhapId { get; set; }
-        [MemoryPackIgnore] private string productId;
 
         public void Execute(CharacterData charData)
         {
@@ -56,6 +55,7 @@ namespace IAP
 
         public void ShowUISuccess(IapUIContext context)
         {
+            var productId = context.ProductId;
             var gameObjects = context.IapHandler.IapObjects[productId];
             foreach (var gameObject in gameObjects)
             {
@@ -65,7 +65,7 @@ namespace IAP
 
         public void InitUI(IapUIContext context)
         {
-            productId = context.OwnerIapProduct.Product.StoreProductId;
+            var productId = context.OwnerIapProduct.Product.StoreProductId;
             if (context.OwnerIapProduct.HasPurchased)
             {
                 return;

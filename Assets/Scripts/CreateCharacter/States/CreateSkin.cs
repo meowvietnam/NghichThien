@@ -9,9 +9,11 @@ namespace CreateCharacter.States
     public class CreateSkin : ICreateCharacterState
     {
         private readonly CreateCharacterPanel createCharacterPanel;
-        public CreateSkin(CreateCharacterPanel createCharacterPanel)
+        private AbstractCreateCharacterSystem system;
+        public CreateSkin(CreateCharacterPanel createCharacterPanel, AbstractCreateCharacterSystem system)
         {
             this.createCharacterPanel = createCharacterPanel;
+            this.system = system;
         }
         public void OnEnter()
         {
@@ -29,7 +31,7 @@ namespace CreateCharacter.States
                 Skins = skin,
                 Colors = color,
             };
-            var newCharacter = CreateCharacterSystem.Instance.NewCharacter;
+            var newCharacter = system.NewCharacter;
             newCharacter.Gender = gender;
             newCharacter.Appearance.Skins = skin;
             newCharacter.Appearance.Colors = color;
@@ -37,7 +39,7 @@ namespace CreateCharacter.States
         }
         public void Back()
         {
-            CreateCharacterSystem.Instance.ToSetPlayerNamePanel(createCharacterPanel);
+            system.ToSetPlayerNamePanel(createCharacterPanel);
         }
 
         public void OnExit()

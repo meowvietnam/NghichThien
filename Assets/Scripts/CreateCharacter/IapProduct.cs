@@ -13,5 +13,6 @@ namespace CreateCharacter
         public Store Store { get; set; }
         public IIapReward Reward { get; set; }
         public bool IsActive { get; set; }
+        public string Name { get; set; }
     }
 }
