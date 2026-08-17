@@ -7,7 +7,6 @@ namespace Network.Models
 {
     [Serializable]
     [MemoryPackable]
-    [Serializable]
     public partial class CreateNewAuctionSession
     {
         public int Price;
