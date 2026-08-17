@@ -97,7 +97,7 @@ namespace AllMaps.ItemProvider
         public override void Display(ToolTipContext ctx)
         {
             base.Display(ctx);
-            ctx.TypeText.text = TypeText;
+            ctx.TypeText.text += $" [{TypeText}]";
             var charData = Client.Instance.CharacterData;
             if (ctx.BaseItemData is ThanThong skill)
             {
@@ -152,7 +152,7 @@ namespace AllMaps.ItemProvider
 
     public class ThanThongBookProvider : AbstractThanThongProvider, IUseItemProvider
     {
-        public override string TypeText => "Sách Thần Thông";
+        public override string TypeText => "Sách TT";
 
         public override void Display(ToolTipContext ctx)
         {
@@ -168,7 +168,7 @@ namespace AllMaps.ItemProvider
 
     public class ThanThongProvider : AbstractThanThongProvider
     {
-        public override string TypeText => "Thần Thông";
+        public override string TypeText => "TT";
 
         public override void Display(ToolTipContext ctx)
         {
@@ -186,7 +186,7 @@ namespace AllMaps.ItemProvider
         {
             base.Display(ctx);
             ctx.DescTextItem.transform.parent.gameObject.SetActive(true);
-            ctx.TypeText.text = TypeText;
+            ctx.TypeText.text += $" [{TypeText}]";
             if (ctx.BaseItemData is CongPhap skill)
             {
                 ctx.PrefabIconRequire.transform.parent.parent.gameObject.SetActive(false);
@@ -204,7 +204,7 @@ namespace AllMaps.ItemProvider
 
     public class CongPhapBookProvider : AbstractCongPhapProvider, IUseItemProvider
     {
-        public override string TypeText => "Sách Công Pháp";
+        public override string TypeText => "Sách CP";
 
         public override void SetDisplay(ToolTipContext ctx, CongPhap cp)
         {
@@ -221,7 +221,7 @@ namespace AllMaps.ItemProvider
 
     public class CongPhapProvider : CongPhapBookProvider
     {
-        public override string TypeText => "Công Pháp";
+        public override string TypeText => "CP";
 
         public override void SetDisplay(ToolTipContext ctx, CongPhap cp)
         {
