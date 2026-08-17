@@ -1,14 +1,16 @@
 using System;
 using LuyenDan;
 using MemoryPack;
+using System;
 
 namespace Network.Models
 {
+    [Serializable]
     [MemoryPackable]
     [Serializable]
     public partial class CreateNewAuctionSession
     {
-        public int Price { get; set; }
-        public ItemRef Item { get; set; }
+        public int Price;
+        public ItemRef Item;
     }
 }
