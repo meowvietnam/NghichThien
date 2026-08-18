@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace ConvertElementalSkill
 {
-    public sealed class ItemBag : BaseItemUI, IPointerEnterHandler, IPointerExitHandler
+    public class ItemBag : BaseItemUI, IPointerEnterHandler, IPointerExitHandler
     {
         protected override void OnSelected()
         {

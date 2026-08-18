@@ -57,5 +57,9 @@ namespace LuyenDan
         {
             return new ItemRef(Id, Type, Count);
         }
+        public override string ToString()
+        {
+            return $"{Id} {Type} {Count}";
+        }
     }
 }

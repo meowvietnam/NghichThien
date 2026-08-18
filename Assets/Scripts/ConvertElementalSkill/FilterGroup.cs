@@ -11,18 +11,20 @@ namespace ConvertElementalSkill
         [SerializeField] private GameObject selectObject;
         [SerializeField] private string nameGroup;
         [SerializeField] private BaseFilter[] filters;
-        
+
         private BaseFilter currentFilter;
         private ItemList itemList;
         private bool open;
-        public void Init()
+
+        public void Init(ItemList itemList)
         {
+            this.itemList = itemList;
             SetEventButton(openButton, OnOpenClick);
-            itemList = ConvertElementalSkillPanel.Instance.Bag.ItemList;
             foreach (var filter in filters)
             {
                 filter.Init();
             }
+
             SelectFilter(null);
         }
 
@@ -38,6 +40,7 @@ namespace ConvertElementalSkill
             var rotZ = open ? 180 : 0;
             arrow.localEulerAngles = new Vector3(0, 0, rotZ);
         }
+
         public void SelectFilter(BaseFilter filter)
         {
             open = false;
@@ -47,6 +50,7 @@ namespace ConvertElementalSkill
             {
                 itemList.RemoveFilter(currentFilter);
             }
+
             currentFilter = filter;
             if (currentFilter != null)
             {
@@ -58,6 +62,7 @@ namespace ConvertElementalSkill
                 filterText.text = nameGroup;
             }
         }
+
         public void UpdateFilter()
         {
             itemList.UpdateFilter();
