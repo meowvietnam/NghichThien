@@ -823,9 +823,10 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
 
                     return;
                 }
-
                 Observer.Notify(EventList.Network.UNEQUIP_THANTHONG, this, thanThong.Id);
                 Pool.Get<UIManager>().InitVisualItemSkill(currentItem, null);
+                CharacterDatas.EquipmentManager.UnEquipThanThong((ushort)(thanThong.Id));
+
             });
         }
 
@@ -870,6 +871,12 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
                                 //save player thần thông equip id
                                 Observer.Notify(EventList.Network.EQUIP_THANTHONG, this, (ushort)thanThong.Id,
                                     (byte)listItemSlotThanThongs.IndexOf(itemSlot));
+                                CharacterDatas.EquipmentManager.EquipThanThong(new ThanThongEquip
+                                {
+                                    Id = (ushort)thanThong.Id,
+                                    SlotIndex = (byte)listItemSlotThanThongs.IndexOf(itemSlot)
+                                });
+
                                 // Cách viết chuẩn
                             }
                         }

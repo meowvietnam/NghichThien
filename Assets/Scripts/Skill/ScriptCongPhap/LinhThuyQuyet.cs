@@ -20,7 +20,7 @@ public class LinhThuyQuyet : CongPhap, IMemorySerializable<LinhThuyQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi sử dụng {GetTextTypeSkill()} hệ thần thông, bản thân khôi phục {GetColoredText($"+{healValues}", "red")} điểm Hp";
+        return $"Mỗi sử dụng {GetTextTypeSkill()} hệ thần thông, bản thân khôi phục {GetColoredText($"+{healValues[level-1]}", "red")} điểm Hp";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)
