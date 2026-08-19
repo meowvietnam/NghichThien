@@ -793,20 +793,13 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
         {
             var item = listItemSlotThanThongs[i];
             ThanThong thanThongData = null;
-
-            if (i < thanThongEquips.Count)
+            var ttEquip = thanThongEquips.FirstOrDefault(x => x.SlotIndex == (byte)i);
+            if (ttEquip != null)
             {
-                var ttEquip = thanThongEquips.FirstOrDefault(x => x.SlotIndex == (byte)i);
-                if (ttEquip == null)
-                {
-                    continue;
-                }
-
                 var id = ttEquip.Id;
                 thanThongData =
                     GameConfig.GetThanThongWithId(id);
-            }
-
+            }   
             Pool.Get<UIManager>().InitVisualItemSkill(item, thanThongData);
         }
 
