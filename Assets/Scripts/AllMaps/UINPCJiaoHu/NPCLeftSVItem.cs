@@ -32,9 +32,7 @@ public class NPCLeftSVItem : BaseBehaviour
         textMonPhai.text = GameManager.GetChucVuText(charStats.monPhai, charStats.level);
         SetEventButton(btn, () =>
         {
-
             Pool.Get<UINPCJiaoHu>().ShowNpcPop(charStats);
-
         });
    }    
 }

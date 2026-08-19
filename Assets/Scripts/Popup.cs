@@ -67,9 +67,7 @@ public class Popup : BaseBehaviour
             if(uiManager != null)
             {
                 uiManager.RegisterClosePopup();
-
             }
-
         }
         else
         {

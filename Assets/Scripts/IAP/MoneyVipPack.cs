@@ -34,7 +34,26 @@ namespace IAP
             var icon = context.MoneyVipSprites[IconIndex];
             ui.SetIcon(icon);
             ui.SetPriceText(product.Price);
-            ui.SetPurchaseAction(() => { context.IapHandler.BuyProduct(product.StoreProductId); });
+            ui.SetPurchaseAction(() =>
+            {
+                CanBuyProduct(context);
+            });
+        }
+        private async void CanBuyProduct(IapUIContext context)
+        {
+            var product = context.OwnerIapProduct.Product;
+            var store = product.Store;
+            var productId = product.StoreProductId;
+            var handler = context.IapHandler;
+            var result = await handler.CanBuyProduct(store, productId);
+            if (result.Success)
+            {
+                handler.BuyProduct(productId);
+            }
+            else
+            {
+                NotifyGroup.Instance?.Show(result.Message);
+            }
         }
     }
 }

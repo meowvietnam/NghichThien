@@ -1,3 +1,4 @@
+using LuyenDan.Inventory;
 using UnityEngine;
 
 namespace Auction

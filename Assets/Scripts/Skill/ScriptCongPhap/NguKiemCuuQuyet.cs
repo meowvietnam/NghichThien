@@ -14,10 +14,11 @@ public class NguKiemCuuQuyet : CongPhap, IMemorySerializable<NguKiemCuuQuyet>
     private int[] buffValues = new int[]{1, 2, 4, 8, 12};
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        ThanThong thanThong = (ThanThong)data[2];
+        if (caster.thanThongCurrentUse == null) return;
+        ThanThong thanThong = caster.thanThongCurrentUse.thanThong;
         if (thanThong is NguKiemThuat)
         {
-            caster.AddDamageData(new List<int>{buffValues[CurrentLevelCongPhapInCombat(caster) - 1]});
+            target.AddDamageData(new List<int>{buffValues[CurrentLevelCongPhapInCombat(caster) - 1]});
         }
     }
 
@@ -28,7 +29,7 @@ public class NguKiemCuuQuyet : CongPhap, IMemorySerializable<NguKiemCuuQuyet>
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.Combat.PLAY_SKILL, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
     }
 
     public override int ByteSize()

@@ -1,5 +1,6 @@
 using AllMaps;
 using Base;
+using CreateCharacter;
 using LuyenDan;
 using MemoryPack;
 
@@ -17,5 +18,6 @@ namespace Network.Models
         public EMonPhai MonPhai { get; set; }
         public Modify<FurnaceData> Furnaces { get; set; } = new();
         public Modify<ItemRef> Items { get; set; } = new();
+        public Modify<Equipment> Equipment { get; set; } = new();
     }
 }

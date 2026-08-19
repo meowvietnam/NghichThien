@@ -6,6 +6,8 @@ using LuyenDan.Inventory;
 using Network;
 using Network.Callback;
 using Network.Core;
+using Network.Extensions;
+using Network.Extensions.MemoryPack;
 using Network.Models;
 using UnityEngine;
 
@@ -37,16 +39,23 @@ namespace LuyenDan
         [field: SerializeField] public AlchermyResult AlchermyResult { get; private set; }
         [field: SerializeField] public ProgressBar ProgressBar { get; private set; }
         private CharacterData CharacterData => Client.Instance.CharacterData;
-
+        public LuyenDanConfig Config { get; private set; }
         private void Start()
         {
             var client = Client.Instance;
             client.ChangeState(new Network.ClientState.LuyenDan(this));
             var charData = CharacterData;
             charData.OnInventoryUpdated += OnInventoryUpdated;
-            charData.GetInventory();
+            GetData();
         }
 
+        private async void GetData()
+        {
+            var client = Client.Instance;
+            var reader = await client.RequestWait(MessageTag.GetLuyenDanConfigRequest);
+            Config = reader.MemRead<LuyenDanConfig>();
+            CharacterData.GetInventory();
+        }
         private void OnDestroy()
         {
             CharacterData.OnInventoryUpdated -= OnInventoryUpdated;

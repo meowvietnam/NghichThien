@@ -21,16 +21,16 @@ namespace CreateCharacter
         [SerializeField] private Text description;
         [SerializeField] private Transform thisTransform;
         [SerializeField] private CharacterStats orginalStats;
-        [SerializeField] private int originalMoney;
+        private int originalMoney;
         [SerializeField] private Transform stepsTransform;
-        public CharacterStats CharacterStats => CreateCharacterSystem.Instance.NewCharacter.Stats;
+        [SerializeField] private AbstractCreateCharacterSystem system;
+        public CharacterStats CharacterStats => system.NewCharacter.Stats;
         private int money;
         public int Money => money;
         [SerializeField] private List<CurrentInfo> currentInfos;
 
-        // private Dictionary<int, Dictionary<int, List<StatModifier>>> statModifiersDictionary = new();
         [SerializeField] private Text remainingText;
-        private List<Step> steps = new ();
+        private List<Step> steps = new();
         private Step currentStep;
         private int currentStepIndex = -1;
         private CreateCharacterPanel createCharacterPanel;
@@ -40,10 +40,15 @@ namespace CreateCharacter
         private List<SelectionModel> selectionModels = new List<SelectionModel>();
         private List<StatModifier> statModifiers = new List<StatModifier>();
 
-        public void Init(CreateCharacterPanel createCharacterPanel)
+        public void Init(CreateCharacterPanel createCharacterPanel, int money, CharacterStats characterStats = null)
         {
+            if (characterStats != null)
+            {
+                orginalStats = characterStats;
+            }
             this.createCharacterPanel = createCharacterPanel;
             CharacterStats.CopyFrom(orginalStats);
+            originalMoney = money;
             SetMoney(originalMoney);
             foreach (var stepData in stepConfig.StepDatas)
             {
@@ -65,6 +70,7 @@ namespace CreateCharacter
             currentStep = steps[currentStepIndex];
             currentStep.OnEnter();
         }
+
         public void NextStep()
         {
             if (currentStepIndex == steps.Count - 1)
@@ -89,9 +95,10 @@ namespace CreateCharacter
             currentStep = steps[currentStepIndex];
             currentStep.OnEnter();
         }
+
         private void Final()
         {
-            CreateCharacterSystem.Instance.Final(selectionModels);
+            system.Final(selectionModels);
         }
 
         public void PreviousStep()
@@ -99,7 +106,7 @@ namespace CreateCharacter
             if (currentStepIndex == 0)
             {
                 currentStepIndex--;
-                createCharacterPanel.SetState(new CreateSkin(createCharacterPanel));
+                system.SelectStatsBack();
                 return;
             }
 
@@ -179,7 +186,7 @@ namespace CreateCharacter
             return currentStep.Validate();
         }
 
-        public object GetOrginalValue(StatType statType)
+        public object GetOriginalValue(StatType statType)
         {
             return orginalStats.GetValue(statType);
         }
@@ -213,11 +220,13 @@ namespace CreateCharacter
             {
                 return;
             }
+
             var group = model.Groups.FirstOrDefault(x => x.Id == groupId);
             if (group == null)
             {
                 return;
             }
+
             group.Items.Remove(selectionId);
             if (group.Items.Count == 0)
             {

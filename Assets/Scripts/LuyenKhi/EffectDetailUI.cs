@@ -22,7 +22,7 @@ namespace LuyenKhi
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            Tooltip.Instance.SetActive(false);
+            Tooltip.Instance?.SetActive(false);
         }
     }
 }

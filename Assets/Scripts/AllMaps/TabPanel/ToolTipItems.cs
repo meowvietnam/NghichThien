@@ -259,18 +259,21 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
     {
         if (itemRef == null) return;
         var displayer = ItemProviderFactory.GetProvider(itemRef.Type);
+     
         if (displayer != null)
         {
             var ctx = BuildContext();
+            for (int i = 0; i < ctx.PrefabIconRequire.transform.parent.childCount; i++)
+            {
+                ctx.PrefabIconRequire.transform.parent.GetChild(i).gameObject.SetActive(false);
+            }
             if(displayer is ThanThongProviderCombat thanThongProviderCombat)
             {
                 thanThongProviderCombat.DisplayCombat(ctx, charCombat);
-
             }
             else
             {
                 displayer.Display(ctx);
-
             }
         }
         else

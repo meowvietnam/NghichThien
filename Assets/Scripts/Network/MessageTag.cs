@@ -45,6 +45,7 @@ namespace Network
         GetInventoryResult = 196,
         EquipEquipment = 197,
         EquipEquipmentResult = 198,
+        GetLuyenDanConfigRequest = 200,
         LuyenDan = 201,
         LuyenDanResult = 202,
 
@@ -204,8 +205,16 @@ namespace Network
         GetAuctionInfo2Request = 1366,
         
         Notify = 1595,
+        AdminNotify = 1597,
         
         RegisterRequest = 1634,
         GuestRegisterRequest = 1683,
+        ResetNgoDaoRequest = 1752,
+        CreateNewAuctionSessionRequest = 1812,
+        RemoveLastAuctionSessionRequest = 1816,
+        CanBuyProductRequest = 1921,
+        GetTrungSinhConfigRequest = 1933,
+        ToTrungSinhRequest = 1954,
+        TrungSinhRequest = 1996,
     }
 }

@@ -1,3 +1,4 @@
+using Firebase.Analytics;
 using MemoryPack;
 using Network.Extensions;
 namespace Network.Models
@@ -26,6 +27,7 @@ namespace Network.Models
         public virtual void OnReward()
         {
             Client.Instance.Send(MessageTag.CompleteAds, GetAdsType());
+            FirebaseAnalytics.LogEvent("ads_reward_complete");
         }
 
         public virtual void OnClose()

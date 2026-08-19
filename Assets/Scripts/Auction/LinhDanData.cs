@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Auction
 {
-    public class LinhDanData : IItemData, IItemAuctionData
+    public class LinhDanData : IItemAuctionData
     {
         public int Id { get; }
         public Sprite Icon { get; }
@@ -18,7 +18,7 @@ namespace Auction
         public LinhDanData(int id)
         {
             Id = id;
-            var linhDan = LuyenDanResources.Instance.FindLinhDan(id);
+            var linhDan = GetItemData();
             Name = linhDan.Name;
             Tier = linhDan.Tier;
             Description = linhDan.Description;
@@ -36,7 +36,12 @@ namespace Auction
                 Count = 1,
                 Type = ItemType.LinhDan,
             };
-            toolTip.ShowInfoItem(this, itemRef);
+            toolTip.ShowInfoItem(GetItemData(), itemRef);
+        }
+
+        private IItemData GetItemData()
+        {
+            return LuyenDanResources.Instance.FindLinhDan(Id);
         }
     }
 }

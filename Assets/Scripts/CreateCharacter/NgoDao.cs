@@ -1,8 +1,6 @@
 using System;
 using Base;
 using MemoryPack;
-using Network;
-using Network.Extensions;
 using UnityEngine;
 
 namespace CreateCharacter

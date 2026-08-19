@@ -183,8 +183,6 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         {
             ItemInventory.InitAction(null, null, () =>
             {
-
-
                 if (slotItemGift.itemData == null || (slotItemGift.itemRef != null && slotItemGift.itemRef.Id != ItemInventory.itemRef.Id))
                 {
                     if (slotItemGift.itemRef != null && slotItemGift.itemRef.Id != ItemInventory.itemRef.Id)
@@ -228,8 +226,16 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         textNameUser.text = characterData.Name;
         SetEventButton(btnConfirmTangQua, () =>
         {
-            if(slotItemGift.itemRef == null) return;
-            var value = ItemProviderFactory.GetProvider(slotItemGift.itemRef.Type).ValueTangQuaNPCWithItem(slotItemGift.itemRef.Id, characterStatsTarget.level);
+            var myId = characterStatsTarget.idChar.Value;
+            var npcDatas = Pool.Get<NPCManager>().npcDatas;
+            if (npcDatas.All(x => x.charStats.idChar != myId))
+            {
+                NotifyGroup.Instance.Show("NPC không hợp lệ!");
+                return;
+            }
+            var item =  slotItemGift.itemRef;
+            if(item == null) return;
+            var value = ItemProviderFactory.GetProvider(item.Type).ValueTangQuaNPCWithItem(item.Id, characterStatsTarget.level);
             var xungHo = GameManager.XungHoText(characterStatsTarget.level,characterStatsTarget.Gender);
             if(value.Item1 < 0)
             {
@@ -237,15 +243,15 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
             }
             else
             {
-                if (slotItemGift.itemRef != null && slotItemGift.count > 0)
+                if (slotItemGift.count > 0)
                 {
-
                     SayDialogManager.Instance.ShowDialogWithSkin(characterStatsTarget.nameUser, characterStatsTarget.Gender, characterStatsTarget.Skins, characterStatsTarget.Colors, new List<string> { $"{xungHo.targetCallMe}, sảng khoái" });
-                    slotItemGift.itemRef.Count = (ushort)slotItemGift.count;
-                    int valueAdd = value.Item1 * slotItemGift.itemRef.Count * value.Item2 * 2;
+                    item.Count = (ushort)slotItemGift.count;
+                    int valueAdd = value.Item1 * item.Count * value.Item2 * 2;
+                    Debug.Log($"Value: [{value.Item1},{value.Item2}], ValueAdd: {valueAdd}, Item = [{item}]");
                     NotifyGroup.Instance.Show($"Mối quan hệ giữa bạn và {characterStatsTarget.nameUser} tăng thêm {valueAdd}");
 
-                    Observer.Notify(EventList.Network.TANG_QUA_NPC, this, characterStatsTarget.idChar.Value, slotItemGift.itemRef);
+                    Observer.Notify(EventList.Network.TANG_QUA_NPC, this, myId, slotItemGift.itemRef);
                     var InventoryManager = Client.Instance.CharacterData.InventoryManager;
                     if (slotItemGift.itemRef.Type == ItemType.Furnace)
                     {
@@ -255,14 +261,11 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
                     else if (slotItemGift.itemRef.Type == ItemType.VuKhi || slotItemGift.itemRef.Type == ItemType.PhongCu || slotItemGift.itemRef.Type == ItemType.TrangSuc)
                     {
                         InventoryManager.RemoveEquipment((ushort)slotItemGift.itemRef.Id);
-
                     }
                     else
                     {
                         InventoryManager.Add(slotItemGift.itemRef, -slotItemGift.itemRef.Count);
-
                     }
-
                     slotItemGift.Init(null, null);
                     slotItemGift.InitCount(0);
                 }
@@ -287,9 +290,10 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
             }
         }
 
+        var currentNode = Client.Instance.CharacterData.Progression.IdCurrentNode;
         // 2. Lọc danh sách NPC thuộc Node hiện tại VÀ chưa xuất hiện trên UI (chưa có Id trong existingNpcIds)
         List<NPCData> npcOnCurrentMap = Pool.Get<NPCManager>().npcDatas
-            .Where(x => x.charStats.idNode == Client.Instance.CharacterData.Progression.IdCurrentNode
+            .Where(x => x.charStats.idNode == currentNode
                      && !existingNpcIds.Contains(x.charStats.idChar)) // Điều kiện check chưa tồn tại ở đây
             .ToList();
 

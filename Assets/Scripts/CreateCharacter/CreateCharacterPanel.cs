@@ -3,6 +3,7 @@ using Base;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using CreateCharacter.CharStats;
 using CreateCharacter.States;
 using DG.Tweening;
 using UnityEngine;
@@ -26,26 +27,30 @@ namespace CreateCharacter
         public Tween Tween { get; set; }
         private bool isInit;
         private ICreateCharacterState state;
-        public void Init(SkinResources skinResources)
+
+        public void Init(ICreateCharacterState initState, SkinResources skinResources, int money,
+            CharacterData charData = null, CharacterStats stats = null)
         {
             if (isInit)
             {
-                SetState(new CreateSkin(this));
+                SetState(initState);
                 return;
             }
+
             isInit = true;
-            avatar.Init(skinResources);
-            setPlayerAvatar.Init(skinResources);
-            selectStats.Init(this);
+            avatar.Init(skinResources, charData);
+            setPlayerAvatar?.Init(skinResources);
+            selectStats.Init(this, money, stats);
             foreach (var item in selectGenders)
             {
-                item.Init();
+                item?.Init();
             }
-            var selectGender = selectGenders.FirstOrDefault(s => s.Gender == initializeGender);
+
+            var selectGender = selectGenders.FirstOrDefault(s => s != null && s.Gender == initializeGender);
             selectGender?.ToggleOn();
             backBtn.onClick.AddListener(Back);
             nextBtn.onClick.AddListener(Next);
-            SetState(new CreateSkin(this));
+            SetState(initState);
         }
 
         public void SetState(ICreateCharacterState newState)
@@ -54,6 +59,7 @@ namespace CreateCharacter
             state = newState;
             state?.OnEnter();
         }
+
         public void SetActive(bool active)
         {
             thisObject.SetActive(active);
@@ -63,6 +69,7 @@ namespace CreateCharacter
         {
             state?.Next();
         }
+
         private void Back()
         {
             state?.Back();

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Firebase.Analytics;
 using LongDH.LongDHModules;
 using LongDHModules;
 using Network.Callback;
@@ -77,7 +78,11 @@ namespace Network.ClientState
                 {
                     var charData = Client.Instance.CharacterData;
                     charData.Progression.CurrentEnergy = result.NewEnergy;
-                    NetworkManager.Instance.Invoke(() => { Observer.Notify(EventList.GamePlay.MOVE_MAP_SUCCESS); });
+                    NetworkManager.Instance.Invoke(() =>
+                    {
+                        Observer.Notify(EventList.GamePlay.MOVE_MAP_SUCCESS);
+                        FirebaseAnalytics.LogEvent("ads_reward_complete");
+                    });
                 }
             }
         }

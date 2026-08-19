@@ -9,9 +9,11 @@ namespace IAP
 {
     public class IapUIContext
     {
+        public string ProductId { get; init; }
         public IapHandler IapHandler { get; init; }
         public StartPackUI StartPackUIPrefab { get; init; }
         public MoneyVipPackUI MoneyVipPackUIPrefab { get; init; }
+        public MonthlyPassPackUI MonthlyPassPackUIPrefab { get; init; }
         public Button BtnStartPackPrefab { get; init; }
         public OwnerIapProduct OwnerIapProduct { get; init; }
         public IapProduct IapProduct => OwnerIapProduct.Product;
@@ -22,10 +24,10 @@ namespace IAP
     [MemoryPackable]
     [MemoryPackUnion(0, typeof(StartPack))]
     [MemoryPackUnion(1, typeof(MoneyVipPack))]
+    [MemoryPackUnion(2, typeof(MonthlyPassPack))]
+    [MemoryPackUnion(3, typeof(MonthlyPassVipPack))]
     public partial interface IIapReward
     {
-        void Execute(CharacterData charData);
-        void Refund(CharacterData charData);
         void ShowUISuccess(IapUIContext context);
         void InitUI(IapUIContext context);
     }

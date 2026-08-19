@@ -15,16 +15,19 @@ namespace ConvertElementalSkill
         [SerializeField] private FilterGroup[] filterGroups;
         private ISelectedItemCallback callback;
         public ItemList ItemList => itemList;
+
         public void OpenWithCallback(ISelectedItemCallback callback)
         {
             this.callback = callback;
             SetActive(true);
         }
+
         public void OnSelected(ItemBag item)
         {
             SetActive(false);
             callback?.OnSelected(item);
         }
+
         public void SetActive(bool active)
         {
             selfObject.SetActive(active);
@@ -34,6 +37,7 @@ namespace ConvertElementalSkill
         {
             SetActive(false);
         }
+
         public void Init(IEnumerable<ItemRef> items)
         {
             SetEventButton(maskBtn, Back);
@@ -50,8 +54,9 @@ namespace ConvertElementalSkill
             itemList.ClearFilters();
             foreach (var filterGroup in filterGroups)
             {
-                filterGroup.Init();
+                filterGroup.Init(itemList);
             }
+
             itemList.UpdateFilter();
         }
 
@@ -76,10 +81,12 @@ namespace ConvertElementalSkill
                 itemList.UpdateFilter();
             }
         }
+
         public ItemBag FindItem(ushort id)
         {
             return itemList.FindItem(id);
         }
+
         private void OnDestroy()
         {
             maskBtn.onClick.RemoveAllListeners();

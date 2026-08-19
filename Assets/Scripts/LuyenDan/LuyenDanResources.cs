@@ -132,7 +132,6 @@ namespace LuyenDan
         {
             return Recipes.FirstOrDefault(x => x.Id == i);
         }
-
         public void Deserialize(IReader reader, ref LuyenDanResources value)
         {
             value.TempFurnaceDatas = reader.ReadArray<TempFurnaceData>().ToList();

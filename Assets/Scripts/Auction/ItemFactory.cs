@@ -16,6 +16,7 @@ namespace Auction
                 ItemType.Material => new MaterialData(id),
                 ItemType.CongPhap => new CongPhapData(id),
                 ItemType.ThanThong => new ThanThongData(id),
+                ItemType.Recipe => new RecipeData(id),
                 _ => throw new($"Không hỗ trợ {type}")
             };
             return new Item(itemRef, data);

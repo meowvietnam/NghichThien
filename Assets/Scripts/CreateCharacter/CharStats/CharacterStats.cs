@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
+using MemoryPack;
 using Network;
 using Network.Extensions;
 using Network.Models;
@@ -12,7 +13,8 @@ using UnityEngine;
 namespace CreateCharacter.CharStats
 {
     [Serializable]
-    public class CharacterStats : IMemorySerializable<CharacterStats>
+    [MemoryPackable]
+    public partial class CharacterStats 
     {
         [field: SerializeField] public float Kim { get; set; }
         [field: SerializeField] public float Moc { get; set; }
@@ -34,9 +36,10 @@ namespace CreateCharacter.CharStats
         [field: SerializeField] public int DanDoc { get; private set; }
         [field: ShowInInspector] public TimeSpan TuoiTac { get; set; }
 #if !SERVER
+        [MemoryPackIgnore]
         private readonly Dictionary<StatType, Action<object>> onStatChanges = new();
 #endif
-
+        [MemoryPackConstructor]
         public CharacterStats()
         {
         }
@@ -222,7 +225,6 @@ namespace CreateCharacter.CharStats
                     break;
             }
         }
-
         public void ApplyFrom(StatsSnapshot snapshot)
         {
             Kim = snapshot.Kim;
@@ -242,66 +244,7 @@ namespace CreateCharacter.CharStats
             TamCanh = snapshot.TamCanh;
             DanDoc = snapshot.DanDoc;
             Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
-
         }
-
-        public int ByteSize()
-        {
-            return Kim.ByteSize() + Moc.ByteSize() + Thuy.ByteSize() + Hoa.ByteSize()
-                   + Tho.ByteSize() + Ma.ByteSize() + TuChat.ByteSize() + NgoTinh.ByteSize()
-                   + ThanThuc.ByteSize() + TocDoBay.ByteSize() + LinhThach.ByteSize()
-                   + Hp.ByteSize()
-                   + SinhMenh.ByteSize()
-                   + ThoNguyen.ByteSize() + TamCanh.ByteSize() + LinhCan.ByteSize() + Ability.ByteSize()
-                   + DanDoc.ByteSize() + TuoiTac.ByteSize();
-        }
-
-        public void Serialize(IWriter writer)
-        {
-            writer.Write(Kim);
-            writer.Write(Moc);
-            writer.Write(Thuy);
-            writer.Write(Hoa);
-            writer.Write(Tho);
-            writer.Write(Ma);
-            writer.Write(TuChat);
-            writer.Write(NgoTinh);
-            writer.Write(ThanThuc);
-            writer.Write(TocDoBay);
-            writer.Write(LinhThach);
-            writer.Write(Hp);
-            writer.Write(SinhMenh);
-            writer.Write(ThoNguyen);
-            writer.Write(TamCanh);
-            writer.Write(LinhCan);
-            writer.Write(Ability);
-            writer.Write(DanDoc);
-            writer.Write(TuoiTac);
-        }
-
-        public void Deserialize(IReader reader, ref CharacterStats value)
-        {
-            value.Kim = reader.Read<float>();
-            value.Moc = reader.Read<float>();
-            value.Thuy = reader.Read<float>();
-            value.Hoa = reader.Read<float>();
-            value.Tho = reader.Read<float>();
-            value.Ma = reader.Read<float>();
-            value.TuChat = reader.Read<int>();
-            value.NgoTinh = reader.Read<int>();
-            value.ThanThuc = reader.Read<int>();
-            value.TocDoBay = reader.Read<int>();
-            value.LinhThach = reader.Read<int>();
-            value.Hp = reader.Read<int>();
-            value.SinhMenh = reader.Read<int>();
-            value.ThoNguyen = reader.Read<int>();
-            value.TamCanh = reader.Read<int>();
-            value.LinhCan = reader.Read<LinhCan>();
-            value.Ability = reader.Read<Ability>();
-            value.DanDoc = reader.Read<int>();
-            value.TuoiTac = reader.Read<TimeSpan>();
-        }
-
         public static int GetMinTamCanh()
         {
             return -100;

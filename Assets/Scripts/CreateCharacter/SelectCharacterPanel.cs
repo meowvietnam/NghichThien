@@ -21,13 +21,14 @@ namespace CreateCharacter
         [SerializeField] private CanvasGroup canvasGroup;
         public CanvasGroup CanvasGroup => canvasGroup;
         public Tween Tween { get; set; }
+        [SerializeField] private CreateCharacterSystem system;
         public void Init(List<CharacterData> characterDatas, int totalSlots, SkinResources skinResources)
         {
             for (int i = 0; i < totalSlots; i++)
             {
                 var charData = i < characterDatas.Count ? characterDatas[i] : null;
                 var createAvatar = Instantiate(createAvatarPrefab, content);
-                createAvatar.Init(charData, skinResources);
+                createAvatar.Init(charData, skinResources, system);
             }
             SetEventButton(backBtn,Back);
         }

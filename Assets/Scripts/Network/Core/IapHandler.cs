@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CreateCharacter;
 using DG.Tweening;
+using Firebase.Analytics;
 using IAP;
 using LuyenDan;
 using Network.Extensions;
@@ -28,6 +29,7 @@ namespace Network.Core
         [SerializeField] private SelectNum selectNum;
         private List<OwnerIapProduct> ownerIapProducts;
         [SerializeField] private IapService iapService;
+        [SerializeField] private MonthlyPassPackUI monthlyPassUIPrefab;
         private static MessageTag[] handler =
         {
             MessageTag.PurchaseIapResult
@@ -113,6 +115,7 @@ namespace Network.Core
                     {
                         var uiContext = new IapUIContext()
                         {
+                            ProductId = ownerIapProduct.Product.StoreProductId,
                             IapHandler = this,
                             StartPackUIPrefab = startPackUIPrefab,
                             MoneyVipPackUIPrefab = moneyVipUIPrefab,
@@ -121,6 +124,7 @@ namespace Network.Core
                             IapProductContainer = iapProductContainer,
                             BtnStartPackPrefab = btnStartPackPrefab,
                             IconListContainer =  iconListContainer,
+                            MonthlyPassPackUIPrefab = monthlyPassUIPrefab,
                         };
                         ownerIapProduct.Product.Reward?.InitUI(uiContext);
                     }
@@ -154,6 +158,16 @@ namespace Network.Core
             Client.Instance.Send(MessageTag.IapPurchase, model);
         }
 
+        public async Task<Result> CanBuyProduct(Store store, string productId)
+        {
+            var request = new CanBuyProductRequest()
+            {
+                Store = store,
+                ProductId = productId
+            };
+            var reader = await Client.Instance.MemRequestWait(MessageTag.CanBuyProductRequest, request);
+            return reader.MemRead<Result>();
+        }
         private void OnIapFailed(string message)
         {
             NetworkManager.Instance.Invoke(() => { NotifyGroup.Instance.Show(message); });
@@ -232,13 +246,16 @@ namespace Network.Core
                     if (result.Success)
                     {
                         var reward = result.Reward;
-                        reward?.Execute(Client.Instance.CharacterData);
+                        var charData = Client.Instance.CharacterData;
                         OnServerResponseIapSuccess(result.ProductId);
                         var uiContext = new IapUIContext()
                         {
                             IapHandler = this,
+                            ProductId = result.ProductId,
                         };
                         reward?.ShowUISuccess(uiContext);
+                        NotifyGroup.Instance.Show("Nạp thành công!");
+                        FirebaseAnalytics.LogEvent("iap_purchase", "productId", result.ProductId);
                     }
                     else
                     {

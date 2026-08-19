@@ -1,41 +1,31 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using Base;
 using CreateCharacter.CharStats;
 using CreateCharacter.States;
-using DG.Tweening;
-using LuyenDan;
 using Network;
 using Network.Callback;
 using Network.ClientState;
 using Network.Extensions;
 using Network.Models;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace CreateCharacter
 {
-    public class CreateCharacterSystem : MonoBehaviour, ISelectCharacterCallback, ICreateCharacterCallback
+    public class CreateCharacterSystem : AbstractCreateCharacterSystem, ISelectCharacterCallback
     {
         [SerializeField] private int totalSlots = 3;
         [SerializeField] private SkinResources skinResources;
         [SerializeField] private SelectCharacterPanel selectCharacterPanel;
         [SerializeField] private SetPlayerNamePanel setPlayerNamePanel;
-        [SerializeField] private CreateCharacterPanel createCharacterPanel;
-        [SerializeField] private ProgressBar progressBar;
         [SerializeField] private string createCharacterSuccess;
         [SerializeField] private string selecting;
-        [SerializeField] private PopupConfirmAction popupConfirmAction;
+        [SerializeField] private string confirmText;
+        [SerializeField] private int originalMoney;
         private UserData UserData => Client.Instance.UserData;
-        public static CreateCharacterSystem Instance { get; private set; }
-        [field: SerializeField] public CharacterData NewCharacter { get; private set; }
-        public SkinResources SkinResources => skinResources;
-
+        
         private void Start()
         {
-            Instance = this;
             var state = new SelectCharacter(this);
             Client.Instance.ChangeState(state);
             state.GetCharacters();
@@ -53,11 +43,19 @@ namespace CreateCharacter
             ToSetPlayerNamePanel(selectCharacterPanel);
         }
 
-        public void ToSetPlayerNamePanel(IPanel panel)
+        public override void ToSetPlayerNamePanel(IPanel panel)
         {
-            panel.DoFade(1, 0, 0.5f, false, () => { panel.SetActive(false); });
+            panel.DoFade(1, 0, 0.5f, false, () =>
+            {
+                panel.SetActive(false);
+            });
             setPlayerNamePanel.SetActive(true);
             setPlayerNamePanel.DoFade(0, 1, 0.5f, true);
+        }
+
+        public override void SelectStatsBack()
+        {
+            createCharacterPanel.SetState(new CreateSkin(createCharacterPanel, this));
         }
 
         public void BackToSelectCharacter()
@@ -71,7 +69,7 @@ namespace CreateCharacter
         {
             setPlayerNamePanel.DoFade(1, 0, 0.5f, false, () => { setPlayerNamePanel.SetActive(false); });
             createCharacterPanel.SetActive(true);
-            createCharacterPanel.Init(skinResources);
+            createCharacterPanel.Init(new CreateSkin(createCharacterPanel, this),skinResources, originalMoney);
             createCharacterPanel.DoFade(0, 1, 0.5f, true);
         }
 
@@ -84,7 +82,19 @@ namespace CreateCharacter
                 selectCharacterPanel.DoFade(0, 1, 0.5f, true);
             });
         }
-
+        public override void Final(List<SelectionModel> selectionModels)
+        {
+            var money = createCharacterPanel.SelectStats.Money;
+            if (money > 0)
+            {
+                var text = string.Format(confirmText, money);
+                popupConfirmAction.ShowPopConfirmAction(text, () => SendFinal(selectionModels));
+            }
+            else
+            {
+                SendFinal(selectionModels);
+            }
+        }
         public void OnCanCreateCharacter(CanCreateChar result)
         {
             NetworkManager.Instance.Invoke(() =>
@@ -115,7 +125,6 @@ namespace CreateCharacter
                     var characterData = result.CharacterData;
                     Client.Instance.SetChar(characterData);
                     Client.Instance.OnSelectedCharacter();
-                    Debug.Log("Load");
                     var op = SceneManager.LoadSceneAsync("AllMaps");
                     if (op != null)
                     {
@@ -129,7 +138,7 @@ namespace CreateCharacter
             });
         }
 
-        public void BackToSelectChar()
+        public override void BackToSelectChar()
         {
             NetworkManager.Instance.Invoke(() =>
             {
@@ -138,7 +147,7 @@ namespace CreateCharacter
             });
         }
 
-        public void OnSetNameResult(SetCharNameResult result)
+        public override void OnSetNameResult(SetCharNameResult result)
         {
             NetworkManager.Instance.Invoke(() =>
             {
@@ -152,30 +161,17 @@ namespace CreateCharacter
                 }
             });
         }
-
-        public void OnSetSkinsResult(SetSkinResult result)
-        {
-            NetworkManager.Instance.Invoke(() =>
-            {
-                if (result.Success)
-                {
-                    createCharacterPanel.SetState(new SelectStatsState(createCharacterPanel));
-                }
-                else
-                {
-                    NotifyGroup.Instance.Show(result.Message);
-                }
-            });
-        }
-
-        public void OnApplyStatsResult(ApplyStatsResult result)
+        public override void OnApplyStatsResult(ApplyStatsResult result)
         {
             NetworkManager.Instance.Invoke(() =>
             {
                 if (result.Success)
                 {
                     NotifyGroup.Instance.Show(createCharacterSuccess);
-                    progressBar.DoKill(() => { SceneManager.LoadSceneAsync("CreateCharacter"); });
+                    progressBar.DoKill(() =>
+                    {
+                        SceneManager.LoadSceneAsync("CreateCharacter");
+                    });
                 }
                 else
                 {
@@ -183,24 +179,6 @@ namespace CreateCharacter
                     progressBar.DoKill(() => { });
                 }
             });
-        }
-
-        private void SendFinal(List<SelectionModel> selectionModels)
-        {
-            Client.Instance.Send(MessageTag.ApplyStats, selectionModels);
-            progressBar.DoShow(0.5f, 0.5f, null);
-        }
-        public void Final(List<SelectionModel> selectionModels)
-        {
-            var money = createCharacterPanel.SelectStats.Money;
-            if (money > 0)
-            {
-                popupConfirmAction.ShowPopConfirmAction($"Bạn vẫn còn {money} điểm thiên phú chưa sử dụng, bạn có xác nhận tạo nhân vật không", () => SendFinal(selectionModels));
-            }
-            else
-            {
-                SendFinal(selectionModels);
-            }
         }
     }
 }

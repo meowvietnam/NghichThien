@@ -225,7 +225,8 @@ namespace LuyenDan
 
         public void Refine()
         {
-            var items = LuyenDanPanel.Instance.HerbInventory.ItemsSnapshot;
+            var luyenDan = LuyenDanPanel.Instance;
+            var items = luyenDan.HerbInventory.ItemsSnapshot;
             SelectLinhDanNum.SetMin(1);
             int max = int.MaxValue;
 
@@ -250,7 +251,7 @@ namespace LuyenDan
             }
 
             if (max == int.MaxValue || max < 1) max = 1;
-            var recipeListUI = LuyenDanPanel.Instance.RecipeListUI;
+            var recipeListUI = luyenDan.RecipeListUI;
             var (data, recipe) = recipeListUI.FindResourcesRecipe(main1, sub1, sub2, primer);
             var hasRecipe = data?.IsInPlayerInventory() ?? false;
             var hasData = data != null;
@@ -285,12 +286,16 @@ namespace LuyenDan
                     builder.Append($"<b><color=#{colorStr}>{linhdanName}</color></b> <color=#00ff00>x{value}</color>");
                     if (!hasRecipe)
                     {
+                        var config = luyenDan.Config;
+                        var furnaceTierDiff = -tierDiff;
+                        var rateFloat = furnaceTierDiff > 0 ? config.MinRate + furnaceTierDiff * config.RatePerTier : config.MinRate;
+                        var rate = Mathf.RoundToInt(rateFloat);
                         var textColor = "9CA3AF";
                         builder.AppendLine();
                         var tierColor = GetColorHexByTier(data.Tier);
                         builder.Append($"<color=#{textColor}>Chưa sở hữu công thức này</color> (<b><color=#{tierColor}>{data.Name}</color></b>)");
                         builder.AppendLine();
-                        builder.Append("<color=#ff8800>Tỉ lệ thành công: <b>25%</b></color>");
+                        builder.Append($"<color=#ff8800>Tỉ lệ thành công: <b>{rate}%</b></color>");
                         builder.AppendLine();
                         builder.Append(
                             $"<i><color=#aaaaaa>Tiêu hao</color> <color=#ff4444>{baseDaysRequired * value}</color> <color=#aaaaaa>ngày</color> nếu thành công," +

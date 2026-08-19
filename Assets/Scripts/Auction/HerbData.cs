@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Auction
 {
-    public class HerbData : IItemAuctionData, IItemData
+    public class HerbData : IItemAuctionData
     {
         public string Name { get; }
         public Tier Tier { get; }
@@ -18,7 +18,7 @@ namespace Auction
         public HerbData(int id)
         {
             Id = id;
-            var herb = LuyenDanResources.Instance.FindHerb(id);
+            var herb = GetItemData();
             Name = herb.Name;
             Tier = herb.Tier;
             Description = herb.Description;
@@ -36,7 +36,12 @@ namespace Auction
                 Count = 1,
                 Type = ItemType.Herb,
             };
-            toolTip.ShowInfoItem(this, itemRef);
+            toolTip.ShowInfoItem(GetItemData(), itemRef);
+        }
+
+        public IItemData GetItemData()
+        {
+            return LuyenDanResources.Instance.FindHerb(Id);
         }
     }
 }

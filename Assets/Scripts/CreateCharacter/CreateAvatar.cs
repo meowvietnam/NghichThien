@@ -16,10 +16,12 @@ namespace CreateCharacter
         [SerializeField] private Text levelText;
         [SerializeField] private Image levelImage;
         private CharacterData characterData;
-        public void Init(CharacterData characterData, SkinResources skinResources)
+        private CreateCharacterSystem system;
+        public void Init(CharacterData characterData, SkinResources skinResources, CreateCharacterSystem system)
         {
             this.characterData = characterData;
             this.skinResources = skinResources;
+            this.system = system;
             var hasChar = characterData != null;
             addGO.SetActive(!hasChar);
             hasCharGO.SetActive(hasChar);
@@ -77,7 +79,7 @@ namespace CreateCharacter
         }
         private void SelectCharacter()
         {
-            CreateCharacterSystem.Instance.SelectCharacter(characterData.Id);
+            system.SelectCharacter(characterData.Id);
         }
         [Button]
         private void CreateCharacter()

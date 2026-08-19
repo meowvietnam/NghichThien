@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Auction
 {
-    public class FurnaceData : IItemAuctionData, IItemData
+    public class FurnaceData : IItemAuctionData
     {
         public string Name { get; }
         public Tier Tier { get; }
@@ -18,7 +18,7 @@ namespace Auction
         public FurnaceData(int id)
         {
             Id = id;
-            var furnace = LuyenDanResources.Instance.FindFurnace(id);
+            var furnace = GetItemData();
             Name = furnace.Name;
             Tier = furnace.Tier;
             Description = furnace.Description;
@@ -36,7 +36,12 @@ namespace Auction
                 Count = 1,
                 Type = ItemType.Furnace,
             };
-            toolTip.ShowInfoItem(this, itemRef);
+            toolTip.ShowInfoItem(GetItemData(), itemRef);
+        }
+
+        public IItemData GetItemData()
+        {
+            return LuyenDanResources.Instance.FindFurnace(Id);
         }
     }
 }

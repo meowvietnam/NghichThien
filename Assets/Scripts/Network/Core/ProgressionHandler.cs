@@ -1,4 +1,6 @@
 using CreateCharacter;
+using ExcelDataReader.Log;
+using Firebase.Analytics;
 using LongDH.LongDHModules;
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
@@ -58,7 +60,12 @@ namespace Network.Core
                 var levelUpdated = reader.MemRead<LevelUpdated>();
                 var snapshot = new CharacterSnapshot(charData);
                 levelUpdated.ApplyTo(charData);
-                NetworkManager.Instance.Invoke(() => { Observer.Notify(EventList.Network.LEVEL_UP, snapshot); });
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    Observer.Notify(EventList.Network.LEVEL_UP, snapshot);
+                    FirebaseAnalytics.LogEvent("level_up", "level", levelUpdated.Level);
+                });
+                
             }
             else if (tag == MessageTag.ExperienceReward)
             {
