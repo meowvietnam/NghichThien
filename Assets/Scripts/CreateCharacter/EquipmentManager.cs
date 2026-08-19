@@ -122,11 +122,10 @@ namespace CreateCharacter
 
         public void UnEquipThanThong(ushort id)
         {
-            var thanThong = new ThanThongEquip()
-            {
-                Id = id,
-            };
-            ThanThongEquips.Remove(thanThong);
+            var old = ThanThongEquips.FirstOrDefault(x => x.Id == id);
+
+         
+            ThanThongEquips.Remove(old);
         }
 
         public ThanThongEquip EquipThanThong(ThanThongEquip thanThong)
