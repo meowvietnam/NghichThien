@@ -347,7 +347,7 @@ namespace Network.Core
                     stats.LinhThach = result.RemainingMoney;
                     stats.TamCanh = result.NewTamCanh;
                     stats.Hp = result.NewHp;
-                    stats.TuoiTac = result.NewTuoiTac;
+                    stats.TuoiTac = result.TuoiTac;
                 }
 
                 NetworkManager.Instance.Invoke(() =>
