@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using MemoryPack;
 using Network;
 using Network.Extensions;
 
 namespace CreateCharacter.CharStats
 {
-    public class SelectionGroup : IMemorySerializable<SelectionGroup>
+    [MemoryPackable]
+    public partial class SelectionGroup
     {
         public int Id { get; private set; }
         public List<int> Items { get; private set; }
@@ -13,26 +15,9 @@ namespace CreateCharacter.CharStats
             Id = id;
             Items = new List<int>();
         }
-
+        [MemoryPackConstructor]
         public SelectionGroup()
         {
-        }
-
-
-        public int ByteSize()
-        {
-            return Id.ByteSize() + Items.ByteSize();
-        }
-
-        public void Serialize(IWriter writer)
-        {
-            writer.Write(Id);
-            writer.WriteArray(Items);
-        }
-        public void Deserialize(IReader reader, ref SelectionGroup value)
-        {
-            value.Id = reader.Read<int>();
-            value.Items = reader.ReadArray<int>().ToList();
         }
     }
 }

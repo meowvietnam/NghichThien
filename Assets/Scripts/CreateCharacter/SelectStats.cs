@@ -37,15 +37,17 @@ namespace CreateCharacter
         [SerializeField] private Image nextImage;
         [SerializeField] private Sprite nextSprite;
         [SerializeField] private Sprite finalSprite;
-        private List<SelectionModel> selectionModels = new List<SelectionModel>();
-        private List<StatModifier> statModifiers = new List<StatModifier>();
-
+        [SerializeField] private PopupConfirmAction popupConfirmAction;
+        private List<SelectionModel> selectionModels = new ();
+        private List<StatModifier> statModifiers = new ();
+        
         public void Init(CreateCharacterPanel createCharacterPanel, int money, CharacterStats characterStats = null)
         {
             if (characterStats != null)
             {
                 orginalStats = characterStats;
             }
+
             this.createCharacterPanel = createCharacterPanel;
             CharacterStats.CopyFrom(orginalStats);
             originalMoney = money;
@@ -96,9 +98,84 @@ namespace CreateCharacter
             currentStep.OnEnter();
         }
 
+        public List<string> GetSelection(List<SelectionModel> selectionModels)
+        {
+            var res = new List<object>();
+            var selectionNames = new List<string>();
+            foreach (var selectionModel in selectionModels)
+            {
+                var modelId = selectionModel.Id;
+                var step = stepConfig.StepDatas.FirstOrDefault(s => s.Id == modelId);
+                var gs = new List<object>();
+                res.Add(new
+                {
+                    Id = modelId,
+                    Step = step.Title,
+                    Groups = gs
+                });
+                if (step is SelectionStepData s)
+                {
+                    foreach (var selectionModelGroup in selectionModel.Groups)
+                    {
+                        var groupId = selectionModelGroup.Id;
+                        var group = s.Groups.FirstOrDefault(g => g.Id == groupId);
+                        var items = new List<object>();
+                        var g = new
+                        {
+                            Id = groupId,
+                            Items = items
+                        };
+                        gs.Add(g);
+                        foreach (var selectionItem in selectionModelGroup.Items)
+                        {
+                            var item = group.StatOptions.FirstOrDefault(x => x.Id == selectionItem);
+                            items.Add(new
+                            {
+                                Id = selectionItem,
+                                Name = item.Name
+                            });
+                            selectionNames.Add(item.Name);
+                        }
+                    }
+                }
+                else if (step is ElementalStepData e)
+                {
+                    foreach (var selectionModelGroup in selectionModel.Groups)
+                    {
+                        var groupId = selectionModelGroup.Id;
+                        if (e.GroupId == groupId)
+                        {
+                            var items = new List<object>();
+                            var g = new
+                            {
+                                Id = groupId,
+                                Items = items
+                            };
+                            gs.Add(g);
+                            foreach (var selectionItem in selectionModelGroup.Items)
+                            {
+                                var item = e.Elementals.FirstOrDefault(x => x.Id == selectionItem);
+                                items.Add(new
+                                {
+                                    Id = selectionItem,
+                                    Name = item.Name
+                                });
+                                selectionNames.Add(item.Name);
+                            }
+                        }
+                    }
+                }
+            }
+            return selectionNames;
+        }
+
         private void Final()
         {
-            system.Final(selectionModels);
+            var singleLineRichText = string.Join(" <color=#888888>|</color> ", GetSelection(selectionModels));
+            popupConfirmAction.ShowPopConfirmAction($"Xác nhận lựa chọn:\n{singleLineRichText}", () =>
+            {
+                system.Final(selectionModels);
+            });
         }
 
         public void PreviousStep()
