@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CreateCharacter;
+using LongDH.LongDHModules;
 using LuyenDan.Inventory;
 using Network;
 using Network.Callback;
@@ -105,7 +106,7 @@ namespace LuyenDan
 
         public void LuyenDanResult(LuyenDanResult result)
         {
-            NetworkManager.Instance.Invoke(() => { OnLuyenDanCompleted(result); });
+            NetworkManager.Instance.Invoke(() => { OnLuyenDanCompleted(result); Observer.Notify(EventList.GamePlay.TIME_ADJUST);            });
         }
     }
 }
