@@ -7,6 +7,11 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using CreateCharacter;
 
+public enum EVehicleType
+{
+    Base,
+    Sword,
+}
 public class NewCharacterGraphic : MonoBehaviour
 {
     [SerializeField] public SkeletonAnimation graphic;
@@ -15,7 +20,7 @@ public class NewCharacterGraphic : MonoBehaviour
     private Dictionary<string, Color> currentColors = new Dictionary<string, Color>();
     public Vector3 refLocalPos; // lấy male làm chuẩn
     public float addLocalY = 30f; // lấy male làm chuẩn
-
+    public GameObject[] visualVehicle;
     private void OnEnable()
     {
         if (refLocalPos == Vector3.zero)
@@ -27,6 +32,16 @@ public class NewCharacterGraphic : MonoBehaviour
     {
         refLocalPos = this.transform.localPosition;
     }
+    public void InitVisual(EVehicleType vehicleType,Gender gender, Dictionary<string, string> combines, Dictionary<string, Color> colors = null)
+    {
+        foreach (var item in visualVehicle)
+        {
+            item.gameObject.SetActive(false);
+        }
+        visualVehicle[(int)vehicleType].gameObject.SetActive(true);
+        SetGender(gender);
+        SetSkin(combines,colors);
+    }    
     public void SetGender(Gender gender)
     {
         var skeletonDataAsset = skinResources.GenderSkinGroups.FirstOrDefault(skinResource => skinResource.Gender == gender)?.SkeletonDataAsset;
