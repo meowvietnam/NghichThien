@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using LongDHModules;
 using UnityEngine;
+using Network;
 
 namespace AllMaps
 {
@@ -19,7 +20,7 @@ namespace AllMaps
         [SerializeField] private float speed = 2;
         public bool IsSwordRiding { get; private set; }
         public bool IsMoving { get; private set; }
-
+        public NewCharacterGraphic newVisual;
 
         public void Init(Gender gender, bool isSwordRiding)
         {
@@ -38,6 +39,9 @@ namespace AllMaps
             anim.timeScale = speed;
             SetMoving(false);
             Pool.Set(this);
+            EVehicleType vehicleType = isSwordRiding ? EVehicleType.Sword : EVehicleType.Base;
+           
+            newVisual.InitVisual(vehicleType, gender,Client.Instance.CharacterData.Appearance.Skins, Client.Instance.CharacterData.Appearance.Colors);
 
             // test
         }
