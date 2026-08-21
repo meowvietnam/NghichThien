@@ -9,5 +9,7 @@ namespace Rank
     public partial interface IMonsterRankReward
     {
         void Claim(CharacterData charData);
+        void ShowUI(MonsterRankRewardUIContext context);
+        string GetRichText();
     }
 }
