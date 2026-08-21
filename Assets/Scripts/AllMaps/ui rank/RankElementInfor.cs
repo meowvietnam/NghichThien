@@ -60,6 +60,7 @@ namespace AllMaps.ui_rank
 
             txtName.text = nameUser;
             var imageIcon = txtValueRank.transform.GetChild(0).GetComponent<Image>();
+            imageIcon.gameObject.SetActive(true);
             if (rankType == RankType.RankLevel)
             {
                 GameManager.levelWithText.TryGetValue(valueRank, out string textLevel);
@@ -82,13 +83,17 @@ namespace AllMaps.ui_rank
                 imageIcon.sprite = typeRank == ETypeArenaRank.None ? null : spriteRank[(int)typeRank - 1];
                 txtValue.transform.parent.gameObject.SetActive(false);
                 imageIcon.transform.localScale = Vector3.one * 0.05f;
+                if (valueRank <= 0)
+                {
+                    imageIcon.gameObject.SetActive(false);
+                }
             }
             else if (rankType == RankType.RankMonster)
             {
                 txtValueRank.text = Utils.FormatCount(valueRank);
                 imageIcon.sprite = spriteDietQuai;
                 txtValue.transform.parent.gameObject.SetActive(false);
-                imageIcon.transform.localScale = Vector3.one * 0.5f;
+                imageIcon.transform.localScale = Vector3.one * 0.04f;
             }
             imageIcon.SetNativeSize();
         }

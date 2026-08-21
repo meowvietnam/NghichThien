@@ -13,17 +13,29 @@ namespace Rank
     public partial class ItemMonsterRankReward : IMonsterRankReward
     {
         public ItemRef Item { get; set; }
+        public BaseSkill.ETierSkill Tier { get; set; }
+        public ItemType Type { get; set; }
+        public ushort Count { get; set; }
         public void Claim(CharacterData charData)
         {
             charData.InventoryManager.Add(Item);
         }
         public void ShowUI(MonsterRankRewardUIContext context)
         {
-            var skillData = GetItemData();
-            var itemUi = Object.Instantiate(context.ItemUIPrefab, context.Container);
-            itemUi.SetSkill(skillData);
+            var itemUi = Object.Instantiate(context.SkillItemPrefab, context.Container);
+            itemUi.SetText(GetDescription());
         }
 
+        private string GetDescription()
+        {
+            var tierText = BaseSkill.GetTextTierSkill(Tier);
+            var typeItemText = Type switch
+            {
+                ItemType.ThanThong => "Thần thông",
+                ItemType.CongPhap => "Công pháp",
+            };
+            return $"x{Utils.FormatCount(Count)} {tierText} {typeItemText}";
+        }
         private SkillData GetItemData()
         {
             var type = Item.Type;

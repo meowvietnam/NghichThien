@@ -30,9 +30,13 @@ namespace Rank
         }
         public void ShowUI(MonsterRankRewardUIContext context)
         {
-            var item = Object.Instantiate(context.ItemUIPrefab, context.Container);
-            item.SetData(GetItemData());
-            item.SetCount(MoneyVip);
+            var item = Object.Instantiate(context.MoneyVipPrefab, context.Container);
+            item.SetText(GetDescription());
+        }
+
+        private string GetDescription()
+        {
+            return $"x{Utils.FormatCount(MoneyVip)} Tiên ngọc";
         }
     }
 }

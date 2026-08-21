@@ -21,19 +21,15 @@ namespace Rank
         private Button claimButton;
         public void ShowUI(MonsterRankRewardUIContext context)
         {
-            context.RequirePointsText.text = Utils.FormatCount(RequirePoints);
+            context.RequirePointsText.text = $"{Utils.FormatCount(context.Points)}/{Utils.FormatCount(RequirePoints)}";
             claimButton = context.ClaimButton;
             BaseBehaviour.SetEventButton(claimButton, Claim);
-            RefreshUI();
+            var interactable = !IsClaim && context.Points >= RequirePoints;
+            claimButton.interactable = interactable;
             foreach (var reward in Rewards)
             {
                 reward.ShowUI(context);
             }
-        }
-
-        private void RefreshUI()
-        {
-            claimButton.interactable = !IsClaim;
         }
         private async void Claim()
         {
@@ -46,6 +42,7 @@ namespace Rank
             }
             else
             {
+                Rewards = result.Rewards;
                 IsClaim = true;
                 var charData = client.CharacterData;
                 foreach (var reward in Rewards)
@@ -54,7 +51,7 @@ namespace Rank
                 }
                 var text = $"Bạn nhận được: {string.Join(", ", Rewards.Select(x => x.GetRichText()))}";
                 NotifyGroup.Instance.Show(text);
-                RefreshUI();
+                claimButton.interactable = false;
             }
         }
     }
