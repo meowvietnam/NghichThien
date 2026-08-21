@@ -88,7 +88,7 @@ namespace AllMaps.ui_rank
                 txtValueRank.text = Utils.FormatCount(valueRank);
                 imageIcon.sprite = spriteDietQuai;
                 txtValue.transform.parent.gameObject.SetActive(false);
-                imageIcon.transform.localScale = Vector3.one * 0.4f;
+                imageIcon.transform.localScale = Vector3.one * 0.5f;
             }
             imageIcon.SetNativeSize();
         }
