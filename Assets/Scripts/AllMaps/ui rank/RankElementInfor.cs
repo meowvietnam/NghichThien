@@ -15,6 +15,7 @@ namespace AllMaps.ui_rank
         RankTongNap,
         RankTongTieu,
         RankArena,
+        RankMonster
     }
 
     public class RankElementInfor : BaseBehaviour
@@ -27,6 +28,7 @@ namespace AllMaps.ui_rank
         [SerializeField] private List<Sprite> spriteLevel;
         [SerializeField] private List<Sprite> spriteRank;
         [SerializeField] private Sprite spriteTienNgoc;
+        [SerializeField] private Sprite spriteDietQuai;
         [SerializeField] private Button infoButton;
         private CharacterStatsSecure charData;
         public void Init(CharacterData charData, int rank, RankType rankType, int valueRank)
@@ -81,7 +83,13 @@ namespace AllMaps.ui_rank
                 txtValue.transform.parent.gameObject.SetActive(false);
                 imageIcon.transform.localScale = Vector3.one * 0.05f;
             }
-
+            else if (rankType == RankType.RankMonster)
+            {
+                txtValueRank.text = Utils.FormatCount(valueRank);
+                imageIcon.sprite = spriteDietQuai;
+                txtValue.transform.parent.gameObject.SetActive(false);
+                imageIcon.transform.localScale = Vector3.one * 0.4f;
+            }
             imageIcon.SetNativeSize();
         }
 
