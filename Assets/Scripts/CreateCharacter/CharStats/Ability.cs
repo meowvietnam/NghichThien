@@ -3,7 +3,7 @@ using System;
 namespace CreateCharacter.CharStats
 {
     [Flags]
-    public enum Ability
+    public enum Ability : int
     {
         None,
         YeuDuoiNhieuBenh = 1 << 0,

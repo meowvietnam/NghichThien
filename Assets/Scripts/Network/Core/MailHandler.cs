@@ -80,6 +80,7 @@ namespace Network.Core
                     if (mails.Count != 0)
                     {
                         var loadedMailIds = charData.Social.Mails.Select(x => x.Id).ToHashSet();
+                        Debug.Log($"Loaded {string.Join(", ",  loadedMailIds.Select(x => x.ToString()))}");
                         charData.Social.Mails.AddRange(mails.Where(x => !loadedMailIds.Contains(x.Id)));
                         startId = mails.Last().Id;
                         if (hasNext)

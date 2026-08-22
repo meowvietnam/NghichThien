@@ -1,3 +1,4 @@
+using System;
 using CreateCharacter;
 using MemoryPack;
 
@@ -14,5 +15,6 @@ namespace Network
         public int NewHp { get; set; }
         public int DeltaExp { get; set; }
         public int DeltaHp { get; set; }
+        public TimeSpan TuoiTac { get; set; }
     }
 }

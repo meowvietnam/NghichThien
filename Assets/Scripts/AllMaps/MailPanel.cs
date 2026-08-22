@@ -41,6 +41,7 @@ namespace AllMaps
             {
                 filter = All;
             }
+
             return filter;
         }
 
@@ -106,6 +107,17 @@ namespace AllMaps
 
         public void OnAdd(List<Mail> mails)
         {
+            var ids = mails.Select(x => x.Id).ToHashSet();
+            for (var i = mailCells.Count - 1; i >= 0; i--)
+            {
+                var mailCell = mailCells[i];
+                if (mailCell == null || mailCell.Mail == null || ids.Contains(mailCell.Mail.Id))
+                {
+                    mailCells.RemoveAt(i);
+                    Destroy(mailCell.gameObject);
+                }
+            }
+
             foreach (var mail in mails.OrderByDescending(x => x.CreatedAt))
             {
                 AddMail(mail, false);
@@ -250,6 +262,7 @@ namespace AllMaps
                 mailUI.SetActive(false);
                 mailUIInstance = mailUI;
             }
+
             var mailCell = Instantiate(mailCellPrefab, mailCellParent);
             mailCell.Init(this, mail, toggleGroup);
             var active = GetFilter()(mailCell);
@@ -268,7 +281,8 @@ namespace AllMaps
                 .ThenByDescending(x => x.Mail.Id)
                 .ToList();
 
-            var reverseArrangement = mailCellParent.GetComponent<HorizontalOrVerticalLayoutGroup>()?.reverseArrangement == true;
+            var reverseArrangement =
+                mailCellParent.GetComponent<HorizontalOrVerticalLayoutGroup>()?.reverseArrangement == true;
             for (var i = 0; i < mailCells.Count; i++)
             {
                 var siblingIndex = reverseArrangement ? mailCells.Count - 1 - i : i;

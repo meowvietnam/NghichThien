@@ -61,15 +61,23 @@ namespace CreateCharacter.CharStats
             var list = StepDatas.OfType<SelectionStepData>().ToList();
             var option = list.SelectMany(x => x.Groups)
                 .SelectMany(x => x.StatOptions)
-                .FirstOrDefault(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
-            if (option == null)
+                .Where(x => x.Modifiers.Any(x => x.Type == StatType.Ability && x.Action != Action.Or)).ToList();
+            foreach (var o in option)
             {
-                Debug.Log("null");
-                return;
+                Debug.Log(o.Name);
             }
-            Debug.Log(option.Id);
-            Debug.Log(option.Name);
-            Debug.Log(option.Modifiers.First().Ability);
+            // var list = StepDatas.OfType<SelectionStepData>().ToList();
+            // var option = list.SelectMany(x => x.Groups)
+            //     .SelectMany(x => x.StatOptions)
+            //     .FirstOrDefault(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
+            // if (option == null)
+            // {
+            //     Debug.Log("null");
+            //     return;
+            // }
+            // Debug.Log(option.Id);
+            // Debug.Log(option.Name);
+            // Debug.Log(option.Modifiers.First().Ability);
         }
     }
 }

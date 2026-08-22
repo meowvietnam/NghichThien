@@ -7,6 +7,8 @@ using Network.Callback;
 using Network.Models;
 using UnityEngine;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
+
 namespace CreateCharacter
 {
     public abstract class AbstractCreateCharacterSystem : MonoBehaviour, ICreateCharacterCallback
@@ -34,7 +36,7 @@ namespace CreateCharacter
         }
         protected void SendFinal(List<SelectionModel> selectionModels)
         {
-            Client.Instance.Send(MessageTag.ApplyStats, selectionModels);
+            Client.Instance.MemSend(MessageTag.ApplyStats, selectionModels);
             progressBar.DoShow(0.5f, 0.5f, null);
         }
 

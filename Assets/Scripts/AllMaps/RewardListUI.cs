@@ -17,7 +17,6 @@ namespace AllMaps
         private MailUI mailUI;
         public void Init(MailUI mailUI,List<IMailReward> rewardItem, bool claim)
         {
-            DestroyAll();
             this.mailUI = mailUI;
             var active = rewardItem.Count > 0;
             rewardObjects.SetActive(active);
@@ -25,23 +24,28 @@ namespace AllMaps
             SetEventButton(claimButton,OnClaim);
             claimButton.gameObject.SetActive(active);
             claimButton.interactable = !claim;
-            foreach (var reward in rewardItem)
+            var needed = rewardItem.Count - rewardItems.Count;
+            for (int i = 0; i < needed; i++)
             {
                 var rewardUI = Instantiate(rewardUIPrefab, transform);
-                rewardUI.Init(reward, claim);
                 rewardItems.Add(rewardUI);
             }
-        }
 
-        private void DestroyAll()
-        {
-            claimButton.onClick.RemoveAllListeners();
-            removeButton.onClick.RemoveAllListeners();
-            foreach (var rewardItem in rewardItems)
+            if (needed < 0)
             {
-                rewardItem.DestroyObject();
+                for (int i = rewardItems.Count + needed; i < rewardItems.Count; i++)
+                {
+                    var rewardUI = rewardItems[i];
+                    rewardUI.SetActive(false);
+                }
             }
-            rewardItems.Clear();
+            for (var i = 0; i < rewardItem.Count; i++)
+            {
+                var reward = rewardItem[i];
+                var rewardUI = rewardItems[i];
+                rewardUI.SetActive(true);
+                rewardUI.Init(reward, claim);
+            }            
         }
         public void SetClaim(bool claim)
         {

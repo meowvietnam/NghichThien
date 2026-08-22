@@ -71,7 +71,7 @@ namespace TrungSinh
             var client = Client.Instance;
             progressBar.SetText("Đang trùng sinh");
             progressBar.DoShow(0.5f, 0.5f, null);
-            var reader = await client.RequestWait(MessageTag.TrungSinhRequest, selectionModels);
+            var reader = await client.MemRequestWait(MessageTag.TrungSinhRequest, selectionModels);
             var result = reader.MemRead<TrungSinhResult>();
             progressBar.DoKill(() =>
             {

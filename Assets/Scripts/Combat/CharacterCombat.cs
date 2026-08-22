@@ -1371,55 +1371,49 @@ public class CharacterCombat : MonoBehaviour
     }
     private List<int> CaculateDame(CharacterCombat sender, List<int> dames, bool isCongDon = false, BaseSkill.ETypeSkill[] eTypeSkils = null)
     {
-        if (sender != null && eTypeSkils != null)
-        {
+        if (sender != null && eTypeSkils != null && dames.Count>0)
+        {   // Build decorator chain for this damage value
+            IDamageModifier damageModifier = new PlainDamageModifier(dames[0]);
+
+            // Apply sender's offensive buffs
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.ChanKim, eTypeSkils);
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.ChanMoc, eTypeSkils);
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.ChanThuy, eTypeSkils);
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.ChanHoa, eTypeSkils);
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.ChanTho, eTypeSkils);
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.ChanKiem, eTypeSkils);
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.ChanThan, eTypeSkils);
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.ChanKhi, eTypeSkils);
+            // Apply sender's offensive buffs
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.NguKimHiep, eTypeSkils);
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.NguMocHiep, eTypeSkils);
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.NguThuyHiep, eTypeSkils);
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.NguHoaHiep, eTypeSkils);
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.NguThoHiep, eTypeSkils);
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.NguKiemHiep, eTypeSkils);
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.NguThanThucHiep, eTypeSkils);
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.NguKhiHiep, eTypeSkils);
+            // Apply SucLuc and Diem
+            damageModifier = new BuffDameDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.SucLuc);
+            damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.Diem, eTypeSkils);
+
+            // Apply defender's damage reductions (DeTonThuong)
+            damageModifier = new BuffDameDecorator(damageModifier, dames[0], this, EBuffAndDeBuff.DeTonThuong);
+
+            // Apply defender's debuffs (NguKim, NguMoc, etc.)
+            damageModifier = new DefenseDebuffDecorator(damageModifier, dames[0], this, EBuffAndDeBuff.NguKim, eTypeSkils);
+            damageModifier = new DefenseDebuffDecorator(damageModifier, dames[0], this, EBuffAndDeBuff.NguMoc, eTypeSkils);
+            damageModifier = new DefenseDebuffDecorator(damageModifier, dames[0], this, EBuffAndDeBuff.NguThuy, eTypeSkils);
+            damageModifier = new DefenseDebuffDecorator(damageModifier, dames[0], this, EBuffAndDeBuff.NguHoa, eTypeSkils);
+            damageModifier = new DefenseDebuffDecorator(damageModifier, dames[0], this, EBuffAndDeBuff.NguTho, eTypeSkils);
+            // Apply GiảmTonThuong (sender's damage reduction)
+            damageModifier = new GiamTonThuongDecorator(damageModifier, dames[0], this);
+            // Apply SuongGia (sender's damage reduction)
+            damageModifier = new SuongGiaDecorator(damageModifier, dames[0], sender);
+            // Calculate final damage
+            int finalDame = damageModifier.Calculate();
             for (int i = 0; i < dames.Count; i++)
             {
-                // Build decorator chain for this damage value
-                IDamageModifier damageModifier = new PlainDamageModifier(dames[i]);
-
-                // Apply sender's offensive buffs
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanKim, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanMoc, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanThuy, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanHoa, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanTho, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanKiem, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanThan, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.ChanKhi, eTypeSkils);
-            // Apply sender's offensive buffs
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguKimHiep, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguMocHiep, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguThuyHiep, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguHoaHiep, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguThoHiep, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguKiemHiep, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguThanThucHiep, eTypeSkils);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.NguKhiHiep, eTypeSkils);
-                // Apply SucLuc and Diem
-                damageModifier = new BuffDameDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.SucLuc);
-                damageModifier = new OffensiveBuffDecorator(damageModifier, dames[i], sender, EBuffAndDeBuff.Diem, eTypeSkils);
-
-                // Apply defender's damage reductions (DeTonThuong)
-                damageModifier = new BuffDameDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.DeTonThuong);
-
-                // Apply defender's debuffs (NguKim, NguMoc, etc.)
-                damageModifier = new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguKim, eTypeSkils);
-                damageModifier = new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguMoc, eTypeSkils);
-                damageModifier = new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguThuy, eTypeSkils);
-                damageModifier = new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguHoa, eTypeSkils);
-                damageModifier = new DefenseDebuffDecorator(damageModifier, dames[i], this, EBuffAndDeBuff.NguTho, eTypeSkils);
-                // Apply GiảmTonThuong (sender's damage reduction)
-                damageModifier = new GiamTonThuongDecorator(damageModifier, dames[i], this);
-
-
-                // Apply SuongGia (sender's damage reduction)
-                damageModifier = new SuongGiaDecorator(damageModifier, dames[i], sender);
-               
-
-                // Calculate final damage
-                int finalDame = damageModifier.Calculate();
-
                 dames[i] = finalDame;
             }
             

@@ -20,32 +20,42 @@ public class CuuChuyenDuThanKiem : ThanThong, IMemorySerializable<CuuChuyenDuTha
     private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        // Thực hiện Action lần đầu (nếu đây là logic mặc định của bạn)
-        Action(caster, target, data);
+        // Kiểm tra xem caster có đủ linh khí để dùng chiêu thức ít nhất 1 lần không
         if (caster.CurrentLinhKhi >= require)
         {
-            for (int i = 0; i < require; i++)
+            // Tính toán số lần có thể kích hoạt dựa trên lượng linh khí hiện tại (tránh lặp vô hạn)
+            int availableActivations = caster.CurrentLinhKhi / require;
+            List<int> dames = new List<int>();
+                   // Dùng vòng lặp thay cho đệ quy để xử lý từng lần đánh và trừ linh khí tương ứng
+            for (int step = 0; step < availableActivations; step++)
             {
-                var linhKhiNguatNhien = caster.GetRandomLinhKhiConLai();
-                caster.TieuTanLinhKhi(linhKhiNguatNhien, 1);
-            }
+            
 
-            Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, thanThongActive, new List<LinhKhiTieuTan>());
-        }
-        else
-        {
+                // Tiêu tốn linh khí cho mỗi lần kích hoạt
+                for (int i = 0; i < require; i++)
+                {
+                    var linhKhiNguatNhien = caster.GetRandomLinhKhiConLai();
+                    caster.TieuTanLinhKhi(linhKhiNguatNhien, 1);
+                }
+                // Thực hiện hành động của skill (gây dame, hiệu ứng, v.v.)
+                Action(caster, target, data);
+                dames.Add(this.dames[GetIndexLevelThanThong(caster)]);
+
+            }
+            target.CaculateDameByThanThong(caster, dames, eTypeSkill);
+            // Nếu không đủ linh khí yêu cầu ban đầu, tiến hành gỡ hiệu ứng sau khoảng thời gian delay
             DOVirtual.DelayedCall(delayTimeEffect, () =>
             {
                 caster.RemoveEffectSkillNoDestroy(this);
             });
         }
+     
     }
 
     private void Action(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         KiemY(caster);
-        int dame = dames[GetIndexLevelThanThong(caster)];
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+       
         caster.effectSkillNoDestroy.TryGetValue(this, out GameObject effect);
         if (effect == null)
         {

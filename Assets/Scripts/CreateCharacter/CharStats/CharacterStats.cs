@@ -101,7 +101,7 @@ namespace CreateCharacter.CharStats
             Apply(modifier.Type, modifier.Action, modifier.Value);
         }
 
-        public void Apply(StatType type, Action action, float value)
+        public void Apply(StatType type, Action action, double value)
         {
             if (type == StatType.None) return;
             if (action == Action.Set)
@@ -111,7 +111,7 @@ namespace CreateCharacter.CharStats
             else if (action == Action.Add)
             {
                 var t = GetValue(type);
-                SetValue(type, Convert.ToSingle(t) + value);
+                SetValue(type, Convert.ToDouble(t) + value);
             }
             else if (action == Action.Or)
             {
@@ -149,8 +149,9 @@ namespace CreateCharacter.CharStats
             }
         }
 
-        private void SetFloat(StatType type, float value)
+        private void SetFloat(StatType type, double newValue)
         {
+            var value = (float)newValue;
             switch (type)
             {
                 case StatType.Kim: Kim = value; break;
@@ -186,7 +187,7 @@ namespace CreateCharacter.CharStats
 #endif
         }
 
-        public void SetValue(StatType type, float value)
+        public void SetValue(StatType type, double value)
         {
             switch (type)
             {
