@@ -307,7 +307,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
         // Chỉ xét khi có 2 hoặc 3
         if (list.Count == 1)
-            return false;
+            return true;
 
         if (list.Count >= 4)
             return false;
