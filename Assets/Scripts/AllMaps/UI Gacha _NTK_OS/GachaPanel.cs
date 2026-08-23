@@ -11,7 +11,7 @@ public class GachaPanel : PanelGroup , INetworkEvent.IGacha
 {
 
     [SerializeField] private List<Button> listBtnPage;
-    [SerializeField] private List<Image> listPageVisual;
+    [SerializeField] private List<GameObject> listPageVisual;
     [SerializeField] private Button currentBtn; 
     public static Dictionary<ETypeGacha, int> PageGachaWithRequireValue = new Dictionary<ETypeGacha, int>
     {
@@ -21,6 +21,7 @@ public class GachaPanel : PanelGroup , INetworkEvent.IGacha
         {ETypeGacha.DuocLieu,300},
         {ETypeGacha.VatLieu,200},
     };
+    private BaseSkill.ETypeSkill typeSkill;
     [SerializeField] private Button btnGacha1;
     [SerializeField] private Button btnGacha10;
     [SerializeField] public Text txtRequire1 => btnGacha1.transform.GetChild(0).GetComponent<Text>();
@@ -52,8 +53,7 @@ public class GachaPanel : PanelGroup , INetworkEvent.IGacha
             {
                 Pool.Get<PopupConfirmAction>().ShowPopConfirmAction($"Xác nhận tiêu {require} tiên ngọc quay 1 lần", () =>
                 {
-                    NotifyGroup.Instance.Show("Quay 1 lần thành công");
-                    Observer.Notify(EventList.Network.GACHA, this, CurrentTypeGacha, false);//isGacha10
+                    Observer.Notify(EventList.Network.GACHA, this, CurrentTypeGacha, false,typeSkill);//isGacha10
                 });
                
 
@@ -70,8 +70,7 @@ public class GachaPanel : PanelGroup , INetworkEvent.IGacha
             {
                 Pool.Get<PopupConfirmAction>().ShowPopConfirmAction($"Xác nhận tiêu {require} tiên ngọc quay 10 lần", () =>
                 {
-                    NotifyGroup.Instance.Show("Quay 10 lần thành công");
-                    Observer.Notify(EventList.Network.GACHA, this, CurrentTypeGacha, true);//isGacha10
+                    Observer.Notify(EventList.Network.GACHA, this, CurrentTypeGacha, true,typeSkill);//isGacha10
                 });
             }    
         });
@@ -86,12 +85,12 @@ public class GachaPanel : PanelGroup , INetworkEvent.IGacha
         if(currentBtn != null)
         {
             int indexCurrent = listBtnPage.IndexOf(currentBtn);
-            listPageVisual[indexCurrent].gameObject.SetActive(false);
+            listPageVisual[indexCurrent].SetActive(false);
             currentBtn.transform.GetChild(0).gameObject.SetActive(false);
         }    
         this.currentBtn = btnRef;
         int indexRef = listBtnPage.IndexOf(btnRef);
-        listPageVisual[indexRef].gameObject.SetActive(true);
+        listPageVisual[indexRef].SetActive(true);
         txtRequire1.text = $"x{PageGachaWithRequireValue[(ETypeGacha)indexRef]}";
         txtRequire10.text = $"x{PageGachaWithRequireValue[(ETypeGacha)indexRef] * 10}";
         btnRef.transform.GetChild(0).gameObject.SetActive(true);
@@ -112,7 +111,7 @@ public class GachaPanel : PanelGroup , INetworkEvent.IGacha
     private void UpdateThreshold()
     {
         var gacha = Client.Instance.CharacterData.GachaManager;
-        var total = gacha.Get(CurrentTypeGacha);
+        var total = gacha.Get(CurrentTypeGacha,typeSkill);
         var threshold = gacha.Threshold;
         var remaining = threshold - total % threshold;
         var text = $"Còn {remaining} lần quay nữa bạn sẽ nhận được vật phẩm hiếm";
@@ -120,6 +119,12 @@ public class GachaPanel : PanelGroup , INetworkEvent.IGacha
         {
             thresholdText.text = text;
         }
+    }
+
+    public void SetTypeSkill(BaseSkill.ETypeSkill skill)
+    {
+        typeSkill = skill;
+        UpdateThreshold();
     }
     public void FailGacha(string message)
     {

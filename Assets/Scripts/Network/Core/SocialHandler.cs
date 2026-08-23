@@ -1,4 +1,3 @@
-
 using Base;
 using LongDH.LongDHModules;
 using LuyenDan;
@@ -11,6 +10,7 @@ using System.Linq;
 using AllMaps.EventReward;
 using UnityEngine;
 using static INetworkEvent;
+
 namespace Network.Core
 {
     public class SocialHandler : IClientHandler
@@ -21,9 +21,9 @@ namespace Network.Core
 
         private static MessageTag[] handler =
         {
-              MessageTag.ThinhGiaoKyNangResult , MessageTag.TangQuaNpcResult , MessageTag.GachaResult ,
+            MessageTag.ThinhGiaoKyNangResult, MessageTag.TangQuaNpcResult, MessageTag.GachaResult,
         };
-      
+
         public MessageTag[] HandleTag => handler;
 
         public void OnDisconnect(IProtocol<MessageTag> protocol)
@@ -35,21 +35,23 @@ namespace Network.Core
             Observer.AddObserver(EventList.Network.THINH_GIAO_NPC, ThinhGiaoKyNang);
             Observer.AddObserver(EventList.Network.TANG_QUA_NPC, TangQuaNpc);
             Observer.AddObserver(EventList.Network.GACHA, Gacha);
-
         }
+
         private void Gacha(object[] data)
         {
-            gachaCallBack = data[0] as INetworkEvent.IGacha;
+            gachaCallBack = data[0] as IGacha;
             var typeGacha = (ETypeGacha)data[1];
             bool isGacha10 = (bool)data[2];
+            var typeSkill = (BaseSkill.ETypeSkill)data[3];
             var gacha = new GachaModel()
             {
                 TypeGacha = typeGacha,
                 IsGacha10 = isGacha10,
-
+                TypeSkill = typeSkill,
             };
             Client.Instance.Send(MessageTag.Gacha, gacha);
         }
+
         private void TangQuaNpc(object[] data)
         {
             tangQuaCallBack = data[0] as INetworkEvent.ITangQuaNPC;
@@ -60,14 +62,14 @@ namespace Network.Core
             {
                 IdChar = idNpc,
                 ItemRef = itemRef,
-
             };
             Client.Instance.Send(MessageTag.TangQuaNpc, tangQua);
         }
+
         private void ThinhGiaoKyNang(object[] data)
         {
             thinhGiaoCallBack = data[0] as INetworkEvent.IThinhGiaoNPC;
-         
+
             var idNpc = (int)data[1];
             var idSkill = (ushort)data[2];
             var typeSkill = (ItemType)data[3];
@@ -76,10 +78,10 @@ namespace Network.Core
                 IdChar = (int)idNpc,
                 IdSkill = (int)idSkill,
                 TypeSkill = typeSkill,
-               
             };
             Client.Instance.Send(MessageTag.ThinhGiaoKyNang, thinhGiao);
         }
+
         public void Handle(Message<MessageTag> message)
         {
             var tag = message.Tag;
@@ -89,9 +91,11 @@ namespace Network.Core
                 var result = reader.Read<ThinhGiaoKyNangResult>();
                 if (result.Success)
                 {
-                    Client.Instance.CharacterData.Social.RelationshipSetValue((ushort)result.IdChar,result.NewValueRelationship);
+                    Client.Instance.CharacterData.Social.RelationshipSetValue((ushort)result.IdChar,
+                        result.NewValueRelationship);
                     Client.Instance.CharacterData.InventoryManager.Add(result.ItemRefSkill);
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -102,7 +106,6 @@ namespace Network.Core
                     {
                         thinhGiaoCallBack.FailThinhGiaoNpc(result.Message);
                     }
-
                 });
             }
             else if (tag == MessageTag.TangQuaNpcResult)
@@ -110,8 +113,10 @@ namespace Network.Core
                 var result = reader.Read<TangQuaNpcResult>();
                 if (result.Success)
                 {
-                    Client.Instance.CharacterData.Social.RelationshipSetValue((ushort)result.IdChar, result.NewValueRelationship);
+                    Client.Instance.CharacterData.Social.RelationshipSetValue((ushort)result.IdChar,
+                        result.NewValueRelationship);
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -122,7 +127,6 @@ namespace Network.Core
                     {
                         tangQuaCallBack.FailTangQuaNpc(result.Message);
                     }
-
                 });
             }
             else if (tag == MessageTag.GachaResult)
@@ -132,9 +136,10 @@ namespace Network.Core
                 {
                     var charData = Client.Instance.CharacterData;
                     charData.MoneyVip = result.NewTienNgoc;
-                    charData.GachaManager.Set(result.Type, result.TotalGacha);
+                    charData.GachaManager.Set(result.Type, result.Skill, result.TotalGacha);
                     charData.InventoryManager.AddToInventory(result.RewardItems);
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -152,7 +157,6 @@ namespace Network.Core
                     {
                         gachaCallBack.FailGacha(result.Message);
                     }
-
                 });
             }
         }

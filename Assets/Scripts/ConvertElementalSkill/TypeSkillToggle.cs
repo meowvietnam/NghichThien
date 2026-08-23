@@ -10,7 +10,10 @@ namespace ConvertElementalSkill
         [SerializeField] private Toggle toggle;
         [SerializeField] private GameObject active;
         [SerializeField] private GameObject inactive;
-        
+        public (BaseSkill.ETypeSkill, GameObject, GameObject ) Get()
+        {
+            return (Type, active, inactive);
+        }
         private void Start()
         {
             toggle.onValueChanged.AddListener(OnToggle);

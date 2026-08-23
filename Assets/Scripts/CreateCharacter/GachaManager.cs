@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MemoryPack;
 
 namespace CreateCharacter
@@ -11,17 +12,24 @@ namespace CreateCharacter
         public int GachaDanDuoc { get; set; }
         public int GachaDuocLieu { get; set; }
         public int GachaVatLieu { get; set; }
+        public Dictionary<BaseSkill.ETypeSkill, int> GachaThanThongDict { get; set; }
+        public Dictionary<BaseSkill.ETypeSkill, int> GachaCongPhapDict { get; set; }
         public int Threshold { get; set; }
         
-        public void Set(ETypeGacha type, int value)
+        public void Set(ETypeGacha type,BaseSkill.ETypeSkill skill, int value)
         {
+            var oldValue = Get(type,skill);
+            if (oldValue == value)
+            {
+                return;
+            }
             switch (type)
             {
                 case ETypeGacha.ThanThong:
-                    GachaThanThong = value;
+                    GachaThanThongDict[skill] = value;
                     break;
                 case ETypeGacha.CongPhap:
-                    GachaCongPhap = value;
+                    GachaCongPhapDict[skill] = value;
                     break;
                 case ETypeGacha.DanDuoc:
                     GachaDanDuoc = value;
@@ -34,14 +42,22 @@ namespace CreateCharacter
                     break;
             }
         }
-        public int Get(ETypeGacha type)
+        public int Get(ETypeGacha type, BaseSkill.ETypeSkill skill)
         {
             switch (type)
             {
                 case ETypeGacha.ThanThong:
-                    return GachaThanThong;
+                    if (GachaThanThongDict.TryGetValue(skill, out var ttValue))
+                    {
+                        return ttValue;
+                    }
+                    return 0;
                 case ETypeGacha.CongPhap:
-                    return GachaCongPhap;
+                    if (GachaCongPhapDict.TryGetValue(skill, out var cpValue))
+                    {
+                        return cpValue;
+                    }
+                    return 0;
                 case ETypeGacha.DanDuoc:
                     return GachaDanDuoc;
                 case ETypeGacha.DuocLieu:
