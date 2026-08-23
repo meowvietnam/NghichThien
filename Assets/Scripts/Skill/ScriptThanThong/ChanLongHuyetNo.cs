@@ -39,7 +39,7 @@ public class ChanLongHuyetNo : ThanThong, IMemorySerializable<ChanLongHuyetNo>
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanLongChiHuyet, out SecureInt buff);
-        if (buff > require && base.IsCanUse(caster, target))
+        if (buff >= require && base.IsCanUse(caster, target))
         {
             return true;
         }
