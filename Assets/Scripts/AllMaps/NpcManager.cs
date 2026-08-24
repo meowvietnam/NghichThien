@@ -169,5 +169,9 @@ public class NPCManager : ActionMapManager
         Debug.Log(path);
     }
 #endif
-    
+    [Button]
+    public NPCData GetNPC(int id)
+    {
+        return npcDatas.FirstOrDefault(x => x.charStats.idChar == id);
+    }
 }

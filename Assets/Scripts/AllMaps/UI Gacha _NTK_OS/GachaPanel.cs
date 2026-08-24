@@ -85,7 +85,6 @@ public class GachaPanel : PanelGroup , INetworkEvent.IGacha
         });
         UpdateThreshold();
     }
-
     private int GetPrice(ETypeGacha gacha)
     {
         var alpha = 1;
