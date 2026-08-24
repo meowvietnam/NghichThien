@@ -611,6 +611,16 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
 
                     buffInfor.DoShow();
+                    var scrollRect = buffIcon.transform.GetComponentInParent<ScrollRect>();
+                    buffInfor.transform.SetParent(scrollRect.transform);
+
+                    // Lấy dấu của scale.x từ parent của scrollRect
+                    float parentScaleXSign = Mathf.Sign(scrollRect.transform.parent.localScale.x);
+
+                    // Nhân scale.x hiện tại với dấu vừa lấy
+                    Vector3 currentScale = buffInfor.transform.localScale;
+                    buffInfor.transform.localScale = new Vector3(currentScale.x * parentScaleXSign, currentScale.y, currentScale.z);
+
                 });
                 isHave = true;
             }

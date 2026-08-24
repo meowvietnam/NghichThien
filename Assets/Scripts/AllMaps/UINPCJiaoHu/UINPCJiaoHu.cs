@@ -144,22 +144,29 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
     [SerializeField] private Button btnConfirmTangQua;
     [SerializeField]
     private Bag1ItemPrefabInventory bag;
+    private InventoryUIFacade inventoryUIFacade;
 
-    
-     private void ResetItemBag()
+    public InventoryUIFacade InventoryUIFacade => inventoryUIFacade ?? (inventoryUIFacade = new InventoryUIFacade());
+
+
+    private void ResetItemBag()
      {
         var oldItem = bag.InventoryUIFacade.listItemUI.FirstOrDefault(x => x.itemRef.Id == slotItemGift.itemRef.Id);
         if(oldItem != null)
         {
             oldItem.gameObject.SetActive(true);
             oldItem.InitCount(oldItem.itemRef.Count);
-        }    
+        }
+        this.InventoryUIFacade.RenderBagItem(slotItemGift,null,false);
      }    
      public void InitPopTangQua()
      {
+        textHaoCamPopTangQua.text = Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar).ToString();
+
         slotItemGift.Init(null, null);
 
         var characterData = Client.Instance.CharacterData;
+
         var gameConfig = Pool.Get<GameManager>();
         List<ItemRef> itemDatas = new List<ItemRef>();
         itemDatas.AddRange(characterData.InventoryManager.Herbs.ToList());
@@ -185,7 +192,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
             {
                 if (slotItemGift.itemData == null || (slotItemGift.itemRef != null && slotItemGift.itemRef.Id != ItemInventory.itemRef.Id))
                 {
-                    if (slotItemGift.itemRef != null && slotItemGift.itemRef.Id != ItemInventory.itemRef.Id)
+                    if (slotItemGift.itemRef != null && slotItemGift.itemRef.Id != ItemInventory.itemRef.Id && slotItemGift.gameObject.activeSelf)
                     {
                         ResetItemBag();
                     }
@@ -215,8 +222,8 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         }, false, true);
         slotItemGift.InitAction(null, null, () =>
         {
+            if(!slotItemGift.gameObject.activeSelf) return;
             ResetItemBag();
-            slotItemGift.Init(null, null);
         });
         bag.InitBag(false);
         //reset 
@@ -237,7 +244,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
             if(item == null) return;
             var value = ItemProviderFactory.GetProvider(item.Type).ValueTangQuaNPCWithItem(item.Id, characterStatsTarget.level);
             var xungHo = GameManager.XungHoText(characterStatsTarget.level,characterStatsTarget.Gender);
-            if(value.Item1 < 0)
+            if(value.Item1 <= 0)
             {
                 SayDialogManager.Instance.ShowDialogWithSkin(characterStatsTarget.nameUser,characterStatsTarget.Gender,characterStatsTarget.Skins,characterStatsTarget.Colors, new List<string> { $"{xungHo.targetCallMe}, ta không cần thứ này!" });
             }
@@ -266,8 +273,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
                     {
                         InventoryManager.Add(slotItemGift.itemRef, -slotItemGift.itemRef.Count);
                     }
-                    slotItemGift.Init(null, null);
-                    slotItemGift.InitCount(0);
+                    this.InventoryUIFacade.RenderBagItem(slotItemGift, null, false);
                 }
             }
            
