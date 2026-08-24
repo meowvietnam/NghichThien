@@ -269,8 +269,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
                     {
                         InventoryManager.Add(slotItemGift.itemRef, -slotItemGift.itemRef.Count);
                     }
-                    slotItemGift.Init(null, null);
-                    slotItemGift.InitCount(0);
+                    this.InventoryUIFacade.RenderBagItem(slotItemGift, null, false);
                 }
             }
            
