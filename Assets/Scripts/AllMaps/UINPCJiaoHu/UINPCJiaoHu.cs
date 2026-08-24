@@ -254,7 +254,12 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
                 {
                     SayDialogManager.Instance.ShowDialogWithSkin(characterStatsTarget.nameUser, characterStatsTarget.Gender, characterStatsTarget.Skins, characterStatsTarget.Colors, new List<string> { $"{xungHo.targetCallMe}, sảng khoái" });
                     item.Count = (ushort)slotItemGift.count;
-                    int valueAdd = value.Item1 * item.Count * value.Item2 * 2;
+                    ushort count = item.Count;
+                    if(item.Type == ItemType.VuKhi || item.Type == ItemType.PhongCu || item.Type == ItemType.TrangSuc)
+                    {
+                        count = 5;
+                    }    
+                    int valueAdd = value.Item1 * count * value.Item2 * 2;
                     Debug.Log($"Value: [{value.Item1},{value.Item2}], ValueAdd: {valueAdd}, Item = [{item}]");
                     NotifyGroup.Instance.Show($"Mối quan hệ giữa bạn và {characterStatsTarget.nameUser} tăng thêm {valueAdd}");
 
