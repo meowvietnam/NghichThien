@@ -233,17 +233,17 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         { Tier.NhiPham, 3 },
         { Tier.TamPham, 5 },
         { Tier.TuPham, 8 },
-        { Tier.NguPham, 11 },
-        { Tier.LucPham, 15 },
+        { Tier.NguPham, 15 },
+        { Tier.LucPham, 20 },
     };
 
     public static Dictionary<EquipmentTier, int> tierEquipmentWithLevel = new Dictionary<EquipmentTier, int>
     {
-        { EquipmentTier.PhuKhi, 30 },
-        { EquipmentTier.PhapKhi, 50 },
-        { EquipmentTier.PhapBao, 80 },
-        { EquipmentTier.ThuanDuong, 110 },
-        { EquipmentTier.ThongThien, 150 },
+        { EquipmentTier.PhuKhi, 5},
+        { EquipmentTier.PhapKhi, 8 },
+        { EquipmentTier.PhapBao, 11 },
+        { EquipmentTier.ThuanDuong, 18 },
+        { EquipmentTier.ThongThien, 25 },
     };
 
     public static Dictionary<int, ETypeVisualChar> levelWithVisualChar = new Dictionary<int, ETypeVisualChar>
