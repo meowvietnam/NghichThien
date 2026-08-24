@@ -161,9 +161,12 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
      }    
      public void InitPopTangQua()
      {
+        textHaoCamPopTangQua.text = Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar).ToString();
+
         slotItemGift.Init(null, null);
 
         var characterData = Client.Instance.CharacterData;
+
         var gameConfig = Pool.Get<GameManager>();
         List<ItemRef> itemDatas = new List<ItemRef>();
         itemDatas.AddRange(characterData.InventoryManager.Herbs.ToList());
@@ -189,7 +192,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
             {
                 if (slotItemGift.itemData == null || (slotItemGift.itemRef != null && slotItemGift.itemRef.Id != ItemInventory.itemRef.Id))
                 {
-                    if (slotItemGift.itemRef != null && slotItemGift.itemRef.Id != ItemInventory.itemRef.Id)
+                    if (slotItemGift.itemRef != null && slotItemGift.itemRef.Id != ItemInventory.itemRef.Id && slotItemGift.gameObject.activeSelf)
                     {
                         ResetItemBag();
                     }
@@ -219,6 +222,7 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
         }, false, true);
         slotItemGift.InitAction(null, null, () =>
         {
+            if(!slotItemGift.gameObject.activeSelf) return;
             ResetItemBag();
         });
         bag.InitBag(false);
