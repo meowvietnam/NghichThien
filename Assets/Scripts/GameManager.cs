@@ -239,11 +239,11 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
 
     public static Dictionary<EquipmentTier, int> tierEquipmentWithLevel = new Dictionary<EquipmentTier, int>
     {
-        { EquipmentTier.PhuKhi, 3 },
-        { EquipmentTier.PhapKhi, 6 },
-        { EquipmentTier.PhapBao, 9 },
-        { EquipmentTier.ThuanDuong, 12 },
-        { EquipmentTier.ThongThien, 15 },
+        { EquipmentTier.PhuKhi, 30 },
+        { EquipmentTier.PhapKhi, 50 },
+        { EquipmentTier.PhapBao, 80 },
+        { EquipmentTier.ThuanDuong, 110 },
+        { EquipmentTier.ThongThien, 150 },
     };
 
     public static Dictionary<int, ETypeVisualChar> levelWithVisualChar = new Dictionary<int, ETypeVisualChar>
