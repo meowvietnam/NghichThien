@@ -219,5 +219,33 @@ namespace Network
         
         GetMonsterKillRequest = 2009,
         ClaimMonsterKillRewardRequest = 2032,
+        
+        
+        
+        VisitDongPhuRequest = 2044,
+        GetDongPhuInfo = 2086,
+        GetDongPhuInfoResult = 2089,
+
+        WateringHelp = 2104,
+        WateringHelpResult = 2106,
+        WateringHelpNotify = 2107,
+        Plant = 2114,
+        PlantResult = 2117,
+        PlantNotify = 2131,
+        UpgradeDongPhu = 2151,
+        UpgradeDongPhuResult = 2158,
+        UpgradeDongPhuNotify = 2164,
+
+        GetDongPhuShopRequest = 2178,
+        GetDongPhuInventoryRequest = 2180,
+        GetDongPhuHistoriesRequest = 2192,
+        BuySeedRequest = 2189,
+        HarvestSlot = 2204,
+        HarverstSlotResult = 2208,
+        HarvertSlotNotify = 2212,
+        LikeDongPhu = 2314,
+        LikeDongPhuResult = 2324,
+        LikeDongPhuNotify = 2342,
+        ToAllMapFromDongPhu = 2351,
     }
 }

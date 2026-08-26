@@ -10,6 +10,7 @@ namespace Network.ClientState
         LuyenKhi,
         ConvertElementalSkill,
         Auction,
-        TrungSinh
+        TrungSinh,
+        DongPhuState
     }
 }
