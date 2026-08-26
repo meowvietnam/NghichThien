@@ -9,7 +9,7 @@ namespace DP
 {
     public class DongPhuSeedUI : BaseBehaviour
     {
-        private ushort herbId;
+        public ushort HerbId { get; private set; }
         private int count;
         [SerializeField] private Image qualityUp;
         [SerializeField] private Image qualityFull;
@@ -32,13 +32,8 @@ namespace DP
         {
             var toolTipItems = ToolTipItems.Instance;
             var herbData = GetItemData();
-            var itemRef = new ItemRef(herbId,ItemType.Herb, 1);
+            var itemRef = new ItemRef(HerbId,ItemType.Herb, 1);
             toolTipItems.ShowInfoItem(herbData, itemRef);
-        }
-
-        public bool IsThis(ushort herbId)
-        {
-            return this.herbId == herbId;
         }
         public void Init(ushort herbId, int count)
         {
@@ -48,11 +43,11 @@ namespace DP
 
         private HerbData GetItemData()
         {
-            return LuyenDanResources.Instance.FindHerb(herbId);
+            return LuyenDanResources.Instance.FindHerb(HerbId);
         }
         public void SetHerbId(ushort herbId)
         {
-            this.herbId = herbId;
+            this.HerbId = herbId;
             var data = GetItemData();
             var quality = CoreConfig.Instance.FindQuality(data.Tier);
             qualityUp.sprite = quality.IconUp;

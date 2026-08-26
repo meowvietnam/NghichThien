@@ -1,15 +1,48 @@
+using Network;
+using Network.Extensions.MemoryPack;
+using Network.Models;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace DP
 {
-    public class SlotUI : BaseBehaviour
+    public class SlotUI : BaseBehaviour, IOpenInventoryContext
     {
         [SerializeField] private DongPhuSeedUI seedUI;
         [SerializeField] private GameObject lockObject;
         [SerializeField] private SlotInfo slotInfo;
+        [SerializeField] private Button button;
         public PlantingSlot Slot { get; private set; }
         public PlantSeed Seed { get; private set; }
+
+        private void Start()
+        {
+            SetEventButton(button, OnClick);
+            seedUI.Clicked += OnSeedClick;
+        }
+
+        private void OnSeedClick()
+        {
+        }
+
+        private void OnClick()
+        {
+            var panel = DongPhuPanel.Instance;
+            if (!panel.IsMe())
+            {
+                return;
+            }
+            if (Seed != null)
+            {
+                return;
+            }
+            var selected = panel.Selected;
+            var selectedTf = selected.transform;
+            selectedTf.SetParent(transform);
+            selectedTf.localPosition = Vector3.zero;
+            selected.SetActive(true);
+            panel.OpenInventoryWithContext(this);
+        }
 
         public void Init(PlantingSlot slot, PlantSeed seed)
         {
@@ -18,7 +51,7 @@ namespace DP
             Slot.OnLockedChanged += OnLockChanged;
             Slot.OnHarvest += OnHarvest;
             Slot.OnPlant += OnPlant;
-            SetSeed(seed);       
+            SetSeed(seed);
         }
 
         private void OnPlant(PlantSeed seed)
@@ -30,7 +63,7 @@ namespace DP
         {
             SetLocked(isLocked);
         }
-
+      
         public void SetSeed(PlantSeed seed)
         {
             Seed = seed;
@@ -40,6 +73,7 @@ namespace DP
                 seedUI.Init(seed.HerbId, 1);
                 seedUI.gameObject.SetActive(true);
             }
+
             UpdateSlotText();
         }
 
@@ -61,6 +95,7 @@ namespace DP
                 }
             }
         }
+
         public void SetLocked(bool value)
         {
             lockObject.SetActive(value);
@@ -68,6 +103,7 @@ namespace DP
             {
                 seedUI.gameObject.SetActive(false);
             }
+
             UpdateSlotText();
         }
 
@@ -75,5 +111,23 @@ namespace DP
         {
             SetSeed(null);
         }
+        public void OnClose()
+        {
+            var panel = DongPhuPanel.Instance;
+            var selected = panel.Selected;
+            selected.SetActive(true);
+        }
+        public void OnSelect(DongPhuSeedUI seedUI)
+        {
+            var herbId = seedUI.HerbId;
+            var slotIndex = Slot.SlotIndex;
+            var request = new PlantRequest()
+            {
+                HerbId = herbId,
+                SlotIndex = slotIndex,
+            };
+            Client.Instance.MemSend(MessageTag.Plant, request);
+        }
+
     }
 }

@@ -32,5 +32,9 @@ namespace DP
             IsLocked = isLocked;
             OnLockedChanged?.Invoke(isLocked);
         }
+        public void InvokeOnPlant(PlantSeed plantSeed)
+        {
+            OnPlant?.Invoke(plantSeed);
+        }
     }
 }

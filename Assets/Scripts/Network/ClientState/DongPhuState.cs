@@ -32,6 +32,16 @@ namespace Network.ClientState
                 var result = reader.MemRead<GetDongPhuInfoResult>();
                 panel.OnGetDongPhuInfoResult(result);
             }
+            else if (tag == MessageTag.PlantResult)
+            {
+                var result = reader.MemRead<PlantResult>();
+                panel.OnPlantResult(result);
+            }
+            else if (tag == MessageTag.PlantNotify)
+            {
+                var notify = reader.MemRead<PlantNotify>();
+                panel.OnPlantNotify(notify);
+            }
         }
         public void OnLeave()
         {
