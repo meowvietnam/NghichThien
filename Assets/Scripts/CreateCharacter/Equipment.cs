@@ -23,7 +23,14 @@ namespace CreateCharacter
         [MemoryPackIgnore]
         public LuyenKhiRewardItem Item => LuyenKhiResources.Instance.RewardItems.FirstOrDefault(x => x.Id == Id);
         [MemoryPackIgnore]
-        public Material[] Materials => LuyenKhiResources.Instance.Materials.Where(x => MaterialIds.Contains((ushort)x.Id)).ToArray();
+        public Material[] Materials
+        {
+            get
+            {
+                var materials = LuyenKhiResources.Instance.Materials;
+                return MaterialIds.Select(x => materials.FirstOrDefault(y => y.Id == x)).ToArray();
+            }
+        }
         [MemoryPackIgnore]
         public EquipmentGradeConfig GradeConfig => LuyenKhiResources.Instance.EquipmentGrades.FirstOrDefault(x=>x.Grade == GetGrade());
 
