@@ -621,7 +621,6 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
             if ((int)eTypeRelationShip >= (int)ERelationShip.ThanThiet)
             {
                 CallActionThinhGiao(itemInventory);
-
             }
         }
         void CallActionThinhGiao(ItemInventory item)
