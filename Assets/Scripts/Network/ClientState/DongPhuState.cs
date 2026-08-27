@@ -1,4 +1,6 @@
-﻿using DP;
+﻿using CreateCharacter;
+using DP;
+using LongDH.LongDHModules;
 using Network.Extensions.MemoryPack;
 using Network.Models;
 
@@ -41,6 +43,50 @@ namespace Network.ClientState
             {
                 var notify = reader.MemRead<PlantNotify>();
                 panel.OnPlantNotify(notify);
+            }
+            else if(tag == MessageTag.HarverstSlotResult)
+            {
+                var result = reader.MemRead<HarvestSlotResult>();
+                panel.OnHarvestSlotResult(result);
+            }
+            else if(tag == MessageTag.HarvertSlotNotify)
+            {
+                var notify = reader.MemRead<HarvestSlotNotify>();
+                panel.OnHarvestSlotNotify(notify);
+            }
+            else if(tag == MessageTag.WateringHelpResult)
+            {
+                var result = reader.MemRead<WateringHelpResult>();
+                panel.OnWateringHelpResult(result);
+            }
+            else if(tag == MessageTag.WateringHelpNotify)
+            {
+                var notify = reader.MemRead<WateringHelpNotify>();
+                panel.OnWateringHelpNotify(notify);
+            }
+            else if(tag == MessageTag.LikeDongPhuResult)
+            {
+                var result = reader.MemRead<LikeDongPhuResult>();
+                panel.OnLikeDongPhuResult(result);
+            }
+            else if(tag == MessageTag.LikeDongPhuNotify)
+            {
+                var notify = reader.MemRead<LikeDongPhuNotify>();
+                panel.OnLikeDongPhuNotify(notify);
+            }
+            else if(tag == MessageTag.UpgradeDongPhuResult)
+            {
+                var result = reader.MemRead<UpgradeDongPhuResult>();
+                panel.OnUpgradeDongPhuResult(result);
+            }
+            else if(tag == MessageTag.UpgradeDongPhuNotify)
+            {
+                var notify = reader.MemRead<UpgradeDongPhuNotify>();
+                panel.OnUpgradeDongPhuNotify(notify);
+            }
+            else if(tag == MessageTag.ToAllMapFromDongPhu)
+            {
+                Observer.Notify(EventList.GamePlay.LOAD_SCENE, "AllMaps");
             }
         }
         public void OnLeave()

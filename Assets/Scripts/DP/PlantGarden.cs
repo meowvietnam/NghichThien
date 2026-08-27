@@ -21,5 +21,17 @@ namespace DP
             }
             return null;
         }
+        public PlantSeed GetPlantSeed(ushort slotIndex)
+        {
+            var seed = new PlantSeed()
+            {
+                SlotIndex = slotIndex
+            };
+            if(Seeds.TryGetValue(seed, out var mySeed))
+            {
+                return mySeed;
+            }
+            return null;
+        }
     }
 }

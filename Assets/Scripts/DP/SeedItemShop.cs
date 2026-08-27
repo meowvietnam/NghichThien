@@ -1,4 +1,6 @@
 using System;
+using Auction;
+using LuyenDan;
 using MemoryPack;
 
 namespace DP
@@ -8,11 +10,21 @@ namespace DP
     {
         public int CharId { get; set; }
         public int PricePerSeed { get; set; }
-        public int HerbId { get; set; }
+        public ushort HerbId { get; set; }
         public int Count { get; set; }
+        public event Action<int> OnCountChanged;
         public override int GetHashCode()
         {
             return HerbId;
+        }
+        public LuyenDan.HerbData GetHerb()
+        {
+            return LuyenDanResources.Instance.FindHerb(HerbId);
+        }
+        public void SetCount(int count)
+        {
+            Count = count;
+            OnCountChanged?.Invoke(count);
         }
         public bool Equals(SeedItemShop? other)
         {

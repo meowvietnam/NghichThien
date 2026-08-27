@@ -1,0 +1,83 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using DG.Tweening;
+using DP;
+using Newtonsoft.Json;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class VisitDongPhuPanel : BaseBehaviour
+{
+    [SerializeField] private Button closeButton;
+    [SerializeField] private InputField nameField;
+    [SerializeField] private Button visitButton;
+    [SerializeField] private VisitPlayer visitPlayerPrefab;
+    [SerializeField] private RectTransform content;
+    [SerializeField] private RectTransform panel;
+    private Tween tween;
+    private string key = "visit_history";
+    private bool isInit;
+    private void Start()
+    {
+        SetEventButton(visitButton, Visit);
+        SetEventButton(closeButton, Hide);
+    }
+
+    private void Hide()
+    {
+        tween?.Kill();
+        tween = panel.DOScale(Vector3.zero, 0.5f).OnComplete(() =>
+        {
+            gameObject.SetActive(false);
+        });
+    }
+
+    private void Visit()
+    {
+        var name = nameField.text;
+        if(string.IsNullOrWhiteSpace(name))
+        {
+            return;
+        }
+        DongPhuPanel.Instance.Visit(name);
+    }
+    public void Show()
+    {
+        tween?.Kill();
+        if(!isInit)
+        {
+            var histories = GetHistories();
+            foreach(var history in histories)
+            {
+                var player = Instantiate(visitPlayerPrefab, content);
+                player.Init(history);
+            }
+        }
+        gameObject.SetActive(true);
+        panel.localScale = Vector3.zero;
+        tween = panel.DOScale(Vector3.one, 0.5f);
+    }
+    private HashSet<string> GetHistories()
+    {
+        if(PlayerPrefs.HasKey(key))
+        {
+            var json = PlayerPrefs.GetString(key);
+            return JsonConvert.DeserializeObject<HashSet<string>>(json);
+        }
+        return new HashSet<string>();
+    }
+    public void AddHistory(string name)
+    {
+        var histories = GetHistories();
+        histories.Add(name);
+        if(histories.Count > 15)
+        {
+            var first = histories.First();
+            histories.Remove(first);
+        }
+        var json = JsonConvert.SerializeObject(histories);
+        PlayerPrefs.SetString(key, json);
+        PlayerPrefs.Save();
+    }
+}

@@ -36,5 +36,9 @@ namespace DP
         {
             OnPlant?.Invoke(plantSeed);
         }
+        public void InvokeOnHarvest(PlantSeed seed)
+        {
+            OnHarvest?.Invoke(seed);
+        }
     }
 }

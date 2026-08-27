@@ -28,5 +28,10 @@ namespace DP
         {
             return SlotIndex;
         }
+
+        public bool CanHarvest()
+        {
+            return DateTime.UtcNow >= EstimateHarvestAt;
+        }
     }
 }

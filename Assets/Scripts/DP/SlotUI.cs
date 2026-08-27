@@ -12,6 +12,7 @@ namespace DP
         [SerializeField] private GameObject lockObject;
         [SerializeField] private SlotInfo slotInfo;
         [SerializeField] private Button button;
+        [SerializeField] private ParticleSystem effect;
         public PlantingSlot Slot { get; private set; }
         public PlantSeed Seed { get; private set; }
 
@@ -24,7 +25,10 @@ namespace DP
         private void OnSeedClick()
         {
         }
-
+        public bool HasSeed()
+        {
+            return Seed != null;
+        }
         private void OnClick()
         {
             var panel = DongPhuPanel.Instance;
@@ -36,11 +40,7 @@ namespace DP
             {
                 return;
             }
-            var selected = panel.Selected;
-            var selectedTf = selected.transform;
-            selectedTf.SetParent(transform);
-            selectedTf.localPosition = Vector3.zero;
-            selected.SetActive(true);
+            panel.SetCurrentSelectedSlot(this);
             panel.OpenInventoryWithContext(this);
         }
 
@@ -63,7 +63,6 @@ namespace DP
         {
             SetLocked(isLocked);
         }
-      
         public void SetSeed(PlantSeed seed)
         {
             Seed = seed;
@@ -72,11 +71,17 @@ namespace DP
             {
                 seedUI.Init(seed.HerbId, 1);
                 seedUI.gameObject.SetActive(true);
+                seedUI.Clicked += OnSeedClicked;
             }
 
             UpdateSlotText();
         }
-
+        private void OnSeedClicked()
+        {
+            var dongPhu = DongPhuPanel.Instance;
+            dongPhu.HideInventory();
+            dongPhu.SetCurrentSelectedSlot(this);
+        }
         private void UpdateSlotText()
         {
             var isLocked = Slot.IsLocked;
@@ -106,16 +111,17 @@ namespace DP
 
             UpdateSlotText();
         }
-
+        public void PlayEffect()
+        {
+            effect.Play();
+        }
         private void OnHarvest(PlantSeed plantSeed)
         {
             SetSeed(null);
         }
         public void OnClose()
         {
-            var panel = DongPhuPanel.Instance;
-            var selected = panel.Selected;
-            selected.SetActive(true);
+            DongPhuPanel.Instance.SetCurrentSelectedSlot(null);
         }
         public void OnSelect(DongPhuSeedUI seedUI)
         {
@@ -127,7 +133,7 @@ namespace DP
                 SlotIndex = slotIndex,
             };
             Client.Instance.MemSend(MessageTag.Plant, request);
+            DongPhuPanel.Instance.HideInventory();
         }
-
     }
 }

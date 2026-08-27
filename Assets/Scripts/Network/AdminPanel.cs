@@ -323,6 +323,11 @@ namespace Network
                 Client.CharacterData.Stats.LinhThach = money;
             }
         }
+        [Button]
+        public void ToDongPhu()
+        {
+            Observer.Notify(EventList.GamePlay.LOAD_SCENE, "DongPhu");
+        }
         public void OnLeave()
         {
         }
