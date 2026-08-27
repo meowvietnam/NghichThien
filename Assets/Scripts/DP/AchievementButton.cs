@@ -14,7 +14,7 @@ namespace DP
         }
         private void OnClick()
         {
-            NotifyGroup.Instance.Show("Tính năng đang phát triển");
+            DongPhuPanel.Instance.NotifyGroup.Show("Tính năng đang phát triển");
         }
     }
 }

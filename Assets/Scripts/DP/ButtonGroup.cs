@@ -83,24 +83,24 @@ namespace DP
         }
         public void UpdateUI()
         {
-            var dongPhu = DongPhuPanel.Instance;
-            var slot = dongPhu.CurrentSelectedSlot;
-            if (slot == null)
-            {
-                WaterButton.interactable = false;
-                HarvestButton.interactable = false;
-                return;
-            }
-            if (!slot.HasSeed())
-            {
-                WaterButton.interactable = false;
-                HarvestButton.interactable = false;
-                return;
-            }
-            var canWatering = dongPhu.CanWateringHelp();
-            var canHarvest = slot.Seed.CanHarvest();
-            WaterButton.interactable = canWatering;
-            HarvestButton.interactable = canHarvest;
+            // var dongPhu = DongPhuPanel.Instance;
+            // var slot = dongPhu.CurrentSelectedSlot;
+            // if (slot == null)
+            // {
+            //     WaterButton.interactable = false;
+            //     HarvestButton.interactable = false;
+            //     return;
+            // }
+            // if (!slot.HasSeed())
+            // {
+            //     WaterButton.interactable = false;
+            //     HarvestButton.interactable = false;
+            //     return;
+            // }
+            // var canWatering = dongPhu.CanWateringHelp();
+            // var canHarvest = slot.Seed.CanHarvest();
+            // WaterButton.interactable = canWatering;
+            // HarvestButton.interactable = canHarvest;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Base;
 using Network;
 using Network.Extensions.MemoryPack;
@@ -55,12 +56,20 @@ namespace DP
         public void Init(SeedItemShop itemShop)
         {
             seedItemShop = itemShop;
+            seedUI.Init(itemShop.HerbId, itemShop.Count);
             UpdateCount();
+            itemShop.OnCountChanged += OnCountChanged; 
             priceText.text = Utils.FormatCount(itemShop.PricePerSeed);
+        }
+
+        private void OnCountChanged(int count)
+        {
+            UpdateCount();
         }
         private void UpdateCount()
         {
             var count = seedItemShop.Count;
+            Debug.Log(count);
             if (count <= 0)
             {
                 Destroy(gameObject);
@@ -69,6 +78,11 @@ namespace DP
             {
                 seedUI.SetCount(count);
             }
+        }
+
+        private void OnDestroy()
+        {
+            seedItemShop.OnCountChanged -= OnCountChanged;
         }
     }
 }

@@ -14,5 +14,6 @@ namespace DP
         public TimeSpan ReduceTime { get; set; }  
         public int RequireMoneyVip { get; set; }
         public Color Color { get; set; }
+        public float Alpha { get; set; }
     }
 }

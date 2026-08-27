@@ -24,6 +24,7 @@ namespace AllMaps
         DatPhongThanh,
         QuangLangThanh,
         ThienCoCac,
+        DongPhu
     }
     public class Stronghold : Map , INetworkEvent.IJoinMonPhai
     {

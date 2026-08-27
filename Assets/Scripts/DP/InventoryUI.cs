@@ -17,9 +17,7 @@ namespace DP
         [SerializeField] private Text moneyVipText;
         [SerializeField] private CharacterGraphic avatar;
         private Tween tween;
-        private void Start()
-        {
-        }
+
         public void Init(DongPhuInventory inventory)
         {
             var charData = Client.Instance.CharacterData;
@@ -31,14 +29,19 @@ namespace DP
             {
                 OnAddSeed(seed);
             }
-
             inventory.OnAddSeed += OnAddSeed;
         }
         private void OnAddSeed(Seed seed)
         {
-            var seedUi =  Instantiate(seedUIPrefab, container);
+            Debug.Log($"Add seed: {seed.HerbId}, {seed.Count}");
+            var seedUi = Instantiate(seedUIPrefab, container);
             seedUi.Init(seed.HerbId, seed.Count);
-            seed.OnCountUpdated += (count) =>
+            seedUi.Clicked += OnClickSeed;
+            void OnClickSeed()
+            {
+                context?.OnSelect(seedUi);
+            }
+            void OnCountUpdated(int count)
             {
                 if (count > 0)
                 {
@@ -46,10 +49,15 @@ namespace DP
                 }
                 else
                 {
+                    seed.OnCountUpdated -= OnCountUpdated;
                     Destroy(seedUi.gameObject);
                 }
-            };
+            }
+
+            seed.OnCountUpdated += OnCountUpdated;
         }
+
+
         public void UpdateMoney()
         {
             var charData = Client.Instance.CharacterData;
@@ -63,14 +71,18 @@ namespace DP
             this.context = context;
             UpdateMoney();
             tween?.Kill();
-            tween = transform.DOScale(Vector3.one,0.5f);
+            gameObject.SetActive(true);
+            tween = transform.DOScale(Vector3.one,0.25f);
             return tween;
         }
         public void Hide()
         {
             context?.OnClose(); 
             tween?.Kill();
-            tween = transform.DOScale(Vector3.zero,0.5f);
+            tween = transform.DOScale(Vector3.zero,0.25f).OnComplete(() =>
+            {
+                gameObject.SetActive(false);
+            });
         }
     }
 }

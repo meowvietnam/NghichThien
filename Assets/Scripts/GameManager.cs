@@ -55,6 +55,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         { EMapType.DatPhongThanh, "S20" },
         { EMapType.QuangLangThanh, "S29" },
         { EMapType.ThienCoCac, "S21" },
+        { EMapType.DongPhu, "DongPhu" },
     };
 
     public static Dictionary<EMapType, string> dictMapTypeWithName = new Dictionary<EMapType, string>()

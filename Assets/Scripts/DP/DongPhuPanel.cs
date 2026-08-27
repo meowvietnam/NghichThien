@@ -37,23 +37,29 @@ namespace DP
         [field: SerializeField] public SelectNum SelectNum { get; private set; }
         [SerializeField] private ProgressBar progressBar;
         [SerializeField] private VisitDongPhuPanel visitDongPhuPanel;
+        [field: SerializeField] public NotifyGroup NotifyGroup { get; private set; }
+        [field: SerializeField] public ToolTipItems ToolTipItems { get; private set; }
         public SlotUI CurrentSelectedSlot { get; private set; }
 
         private void Start()
         {
+            Instance = this;
+            ToolTipItems.Init();
             progressBar.SetText("Đang tải Động phủ...");
-            progressBar.DoShow(0.75f, 0.25f, null);
+            progressBar.DoShow(0.25f, 0.15f, null);
             SetEventButton(closeButton, Close);
             client = Client.Instance;
             var state = new DongPhuState(this);
             client.ChangeState(state);
             client.Send(MessageTag.GetDongPhuInfo);
         }
+
         private void UpdateLevel()
         {
             var slots = DongPhuInfo.DongPhu.Garden.Slots;
             var config = DongPhuInfo.Config;
             var level = DongPhuInfo.DongPhu.Level;
+            UpdateTextInfo();
             foreach (var slot in slots)
             {
                 if (slot.IsLocked)
@@ -67,6 +73,7 @@ namespace DP
                 }
             }
         }
+
         private void Close()
         {
             shop.Hide();
@@ -79,22 +86,25 @@ namespace DP
             var level = GetLevelConfig(DongPhuInfo.MyLevel);
             return DongPhuInfo.CurrentWateringHelpCount < level.MyMaxWaterHelpPerDay;
         }
+
         public void OnGetDongPhuInfoResult(GetDongPhuInfoResult result)
         {
             if (!result.Success)
             {
-                NotifyGroup.Instance.Show(result.Message);
+                NotifyGroup.Show(result.Message);
             }
             else
             {
                 Init(result.DongPhuInfo);
             }
         }
+
         public void HideInventory()
         {
             InventoryUI.Hide();
             closeButton.gameObject.SetActive(true);
         }
+
         public DongPhuLevelConfig? GetMyNextLevel()
         {
             var levels = DongPhuInfo.Config.Levels;
@@ -103,20 +113,24 @@ namespace DP
             {
                 return null;
             }
+
             var nextLevelIndex = levelIndex + 1;
             if (nextLevelIndex >= levels.Length)
             {
                 return null;
             }
+
             return levels[nextLevelIndex];
         }
+
         public void OnPlantResult(PlantResult result)
         {
-            NotifyGroup.Instance.Show(result.Message);
+            NotifyGroup.Show(result.Message);
             if (!result.Success)
             {
                 return;
             }
+
             var updatedSeed = result.UpdatedSeed;
             if (Inventory.Seeds.TryGetValue(updatedSeed, out var seed))
             {
@@ -126,6 +140,7 @@ namespace DP
                     Inventory.Seeds.Remove(updatedSeed);
                 }
             }
+
             Selected.gameObject.SetActive(false);
             OnPlant(result.PlantSeed);
         }
@@ -149,6 +164,7 @@ namespace DP
         {
             return DongPhuInfo.Config.Levels.First(x => x.Level == level);
         }
+
         public void SetCurrentSelectedSlot(SlotUI slotUI)
         {
             CurrentSelectedSlot = slotUI;
@@ -158,6 +174,7 @@ namespace DP
                 ButtonGroup.Hide();
                 return;
             }
+
             var hasSeed = slotUI.HasSeed();
             if (hasSeed)
             {
@@ -167,11 +184,13 @@ namespace DP
             {
                 ButtonGroup.Hide();
             }
+
             var selectedTf = Selected.transform;
             selectedTf.SetParent(slotUI.transform);
             selectedTf.localPosition = Vector3.zero;
             Selected.SetActive(true);
         }
+
         public async void OpenInventoryWithContext(IOpenInventoryContext context)
         {
             if (Inventory == null)
@@ -179,18 +198,20 @@ namespace DP
                 var inventory = await GetInventory();
                 InventoryUI.Init(inventory);
             }
+
             shop.Hide();
-            InventoryUI.Show(context).OnComplete(() =>
-            {
-                closeButton.gameObject.SetActive(true);
-            });
+            InventoryUI.Show(context).OnComplete(() => { closeButton.gameObject.SetActive(true); });
         }
+
         public void UpdateTextInfo()
         {
             var dongPhu = DongPhuInfo.DongPhu;
             var level = GetLevelConfig(dongPhu.Level);
-            textInfo.text = $"Động phủ của <color=#FFD166>{dongPhu.Name}</color> [<color=#{ColorUtility.ToHtmlStringRGB(level.Color)}>{level.Name}</color>]";
+            textInfo.text =
+                $"Động phủ của <color=#FFD166>{dongPhu.Name}</color> [<color=#{ColorUtility.ToHtmlStringRGB(level.Color)}>{level.Name}</color>]";
+            Debug.Log(textInfo.text);
         }
+
         public void Init(DongPhuInfo info)
         {
             progressBar.DoKill(() => { });
@@ -201,8 +222,8 @@ namespace DP
             UpdateLike();
             gardenUI.Init(DongPhuInfo.DongPhu.Garden);
             ButtonGroup.Init(IsMe());
-            UpdateLevel();
         }
+
         private void UpdateLike()
         {
             var canLike = DongPhuInfo.CanLike;
@@ -210,10 +231,12 @@ namespace DP
             var like = DongPhuInfo.DongPhu.LikeCount;
             likeText.text = Utils.FormatCount(like);
         }
+
         public bool IsMe()
         {
             return DongPhuInfo.DongPhu.CharId == client.CharacterData.Id;
         }
+
         public async Task<DongPhuShop> GetShop()
         {
             if (Shop == null)
@@ -221,6 +244,7 @@ namespace DP
                 var reader = await client.RequestWait(MessageTag.GetDongPhuShopRequest);
                 Shop = reader.MemRead<DongPhuShop>();
             }
+
             return Shop;
         }
 
@@ -231,12 +255,13 @@ namespace DP
                 var reader = await client.RequestWait(MessageTag.GetDongPhuInventoryRequest);
                 Inventory = reader.MemRead<DongPhuInventory>();
             }
+
             return Inventory;
         }
 
         public void OnHarvestSlotResult(HarvestSlotResult result)
         {
-            NotifyGroup.Instance.Show(result.Message);
+            NotifyGroup.Show(result.Message);
             if (result.Success)
             {
                 var charData = Client.Instance.CharacterData;
@@ -245,6 +270,7 @@ namespace DP
                 {
                     reward.Claim(charData);
                 }
+
                 InventoryUI.UpdateMoney();
                 OnHarvest(result.SlotIndex);
                 ButtonGroup.UpdateUI();
@@ -255,6 +281,7 @@ namespace DP
         {
             OnHarvest(notify.SlotIndex);
         }
+
         private void OnHarvest(ushort slotIndex)
         {
             var garden = DongPhuInfo.DongPhu.Garden;
@@ -265,11 +292,13 @@ namespace DP
                 Debug.Log("Slot null!!!");
                 return;
             }
+
             if (seed == null)
             {
                 Debug.Log("Seed null!");
                 return;
             }
+
             garden.Seeds.Remove(seed);
             slot.InvokeOnHarvest(seed);
             var slotUI = gardenUI.FindSlot(slotIndex);
@@ -283,7 +312,7 @@ namespace DP
 
         public void OnWateringHelpResult(WateringHelpResult result)
         {
-            NotifyGroup.Instance.Show(result.Message);
+            NotifyGroup.Show(result.Message);
             if (result.Success)
             {
                 var charData = Client.Instance.CharacterData;
@@ -292,12 +321,14 @@ namespace DP
                 {
                     reward.Claim(charData);
                 }
+
                 DongPhuInfo.CurrentWateringHelpCount = result.CurrentWateringHelpCount;
                 InventoryUI.UpdateMoney();
                 OnWateringHelp(result.SlotIndex, result.ReduceTime);
                 ButtonGroup.UpdateUI();
             }
         }
+
         private void OnWateringHelp(ushort slotIndex, TimeSpan reduceTime)
         {
             var garden = DongPhuInfo.DongPhu.Garden;
@@ -308,11 +339,13 @@ namespace DP
                 Debug.Log("Slot null!!!");
                 return;
             }
+
             if (seed == null)
             {
                 Debug.Log("Seed null!");
                 return;
             }
+
             seed.EstimateHarvestAt -= reduceTime;
             var slotUI = gardenUI.FindSlot(slotIndex);
             slotUI.PlayEffect();
@@ -320,13 +353,15 @@ namespace DP
 
         public async void OnBuySeedResult(BuySeedResult result)
         {
-            NotifyGroup.Instance.Show(result.Message);
+            NotifyGroup.Show(result.Message);
             if (result.Success)
             {
                 if (Inventory == null)
                 {
                     await GetInventory();
+                    InventoryUI.Init(Inventory);
                 }
+
                 var charData = Client.Instance.CharacterData;
                 charData.Stats.LinhThach = result.NewLinhThach;
                 InventoryUI.UpdateMoney();
@@ -336,15 +371,13 @@ namespace DP
                 Shop.UpdateSeed(updatedSeed);
             }
         }
+
         public async void OpenShop()
         {
             await GetShop();
             shop.Init(Shop);
             InventoryUI.Hide();
-            shop.Show().OnComplete(() =>
-            {
-                closeButton.gameObject.SetActive(true);
-            });
+            shop.Show().OnComplete(() => { closeButton.gameObject.SetActive(true); });
         }
 
         public void CloseShop()
@@ -355,12 +388,15 @@ namespace DP
 
         public void OnLikeDongPhuResult(LikeDongPhuResult result)
         {
-            NotifyGroup.Instance.Show(result.Message);
             if (result.Success)
             {
                 DongPhuInfo.CanLike = result.CanLike;
                 DongPhuInfo.DongPhu.LikeCount = result.NewLike;
                 UpdateLike();
+            }
+            else
+            {
+                NotifyGroup.Show(result.Message);
             }
         }
 
@@ -372,7 +408,7 @@ namespace DP
 
         public void OnUpgradeDongPhuResult(UpgradeDongPhuResult result)
         {
-            NotifyGroup.Instance.Show(result.Message);
+            NotifyGroup.Show(result.Message);
             if (result.Success)
             {
                 DongPhuInfo.MyLevel = result.NewLevel;
@@ -380,6 +416,7 @@ namespace DP
                 {
                     DongPhuInfo.DongPhu.Level = result.NewLevel;
                 }
+
                 client.CharacterData.MoneyVip = result.NewMoneyVip;
                 InventoryUI.UpdateMoney();
                 UpdateLevel();
@@ -391,6 +428,7 @@ namespace DP
             DongPhuInfo.DongPhu.Level = notify.NewLevel;
             UpdateLevel();
         }
+
         public async void Visit(string dongPhuName)
         {
             var request = new VisitDongPhu()
@@ -399,18 +437,18 @@ namespace DP
             };
             var client = Client.Instance;
             progressBar.SetText("Đang tìm Động phủ...");
-            progressBar.DoShow(0.75f, 0.25f,null);
+            progressBar.DoShow(0.25f, 0.15f, null);
             var reader = await client.MemRequestWait(MessageTag.VisitDongPhuRequest, request);
-            progressBar.DoKill(() => {});
+            progressBar.DoKill(() => { });
             var result = reader.MemRead<VisitDongPhuResult>();
-            if(result.Success)
+            if (result.Success)
             {
                 visitDongPhuPanel.AddHistory(dongPhuName);
                 SceneManager.LoadScene("DongPhu");
             }
             else
             {
-                NotifyGroup.Instance.Show(result.Message);
+                NotifyGroup.Show(result.Message);
             }
         }
     }

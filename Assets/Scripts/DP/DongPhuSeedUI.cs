@@ -10,7 +10,6 @@ namespace DP
     public class DongPhuSeedUI : BaseBehaviour
     {
         public ushort HerbId { get; private set; }
-        private int count;
         [SerializeField] private Image qualityUp;
         [SerializeField] private Image qualityFull;
         [SerializeField] private Image icon;
@@ -30,7 +29,7 @@ namespace DP
         }
         private void ShowInfo()
         {
-            var toolTipItems = ToolTipItems.Instance;
+            var toolTipItems = DongPhuPanel.Instance.ToolTipItems;
             var herbData = GetItemData();
             var itemRef = new ItemRef(HerbId,ItemType.Herb, 1);
             toolTipItems.ShowInfoItem(herbData, itemRef);
@@ -58,7 +57,6 @@ namespace DP
         }
         public void SetCount(int count)
         {
-            this.count = count;
             countText.text = count > 1 ? Utils.FormatCount(count) : string.Empty;
         }
     }

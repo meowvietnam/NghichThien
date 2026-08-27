@@ -16,13 +16,17 @@ namespace DP
         public Tween Show()
         {
             tween?.Kill();
-            tween = transform.DOScale(Vector3.one,0.5f);
+            gameObject.SetActive(true);
+            tween = transform.DOScale(Vector3.one,0.25f);
             return tween;
         }
         public void Hide()
         {
             tween?.Kill();
-            tween = transform.DOScale(Vector3.zero,0.5f);
+            tween = transform.DOScale(Vector3.zero,0.25f).OnComplete(() =>
+            {
+                gameObject.SetActive(false);
+            });
         }
   
         public void Init(DongPhuShop shop)

@@ -73,7 +73,10 @@ namespace DP
                 seedUI.gameObject.SetActive(true);
                 seedUI.Clicked += OnSeedClicked;
             }
-
+            else
+            {
+                seedUI.gameObject.SetActive(false);
+            }
             UpdateSlotText();
         }
         private void OnSeedClicked()
@@ -89,7 +92,7 @@ namespace DP
             {
                 var levelUnlocked = DongPhuPanel.Instance.GetLevelConfig(Slot.UnlockLevel);
                 var text =
-                    $"Mở khoá <color=#{ColorUtility.ToHtmlStringRGB(levelUnlocked.Color)}>{levelUnlocked.Name}</color>)";
+                    $"Mở khoá <color=#{ColorUtility.ToHtmlStringRGB(levelUnlocked.Color)}>{levelUnlocked.Name}</color>";
                 slotInfo.SetInfoText(text);
             }
             else

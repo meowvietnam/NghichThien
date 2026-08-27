@@ -21,7 +21,7 @@ namespace DP
         }
         public string GetName()
         {
-            return $"ô thứ {SlotIndex + 1}";
+            return $"Ô thứ {SlotIndex + 1}";
         }
         public override int GetHashCode()
         {
