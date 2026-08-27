@@ -247,5 +247,6 @@ namespace Network
         LikeDongPhuResult = 2324,
         LikeDongPhuNotify = 2342,
         ToAllMapFromDongPhu = 2351,
+        OpenLink = 2484,
     }
 }

@@ -3,6 +3,8 @@ using DP;
 using LongDH.LongDHModules;
 using Network.Extensions.MemoryPack;
 using Network.Models;
+using Unity.Android.Gradle.Manifest;
+using Application = UnityEngine.Application;
 
 namespace Network.ClientState
 {
@@ -87,6 +89,12 @@ namespace Network.ClientState
             else if(tag == MessageTag.ToAllMapFromDongPhu)
             {
                 Observer.Notify(EventList.GamePlay.LOAD_SCENE, "AllMaps");
+            }
+            else if (tag == MessageTag.OpenLink)
+            {
+                var model = reader.MemRead<OpenLink>();
+                var link = model.Link;
+                Application.OpenURL(link);
             }
         }
         public void OnLeave()

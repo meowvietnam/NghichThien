@@ -9,7 +9,7 @@ namespace DP
     public class UpgradeButton : BaseBehaviour
     {
         [SerializeField] private Button button;
-        [SerializeField] private PopupConfirmAction popup;
+        [SerializeField] private UpgradeDongPhuPanel panel;
         private void Start()
         {
             SetEventButton(button, OnClick);
@@ -22,11 +22,7 @@ namespace DP
                 NotifyGroup.Instance.Show("Động phủ của bạn đã đạt cấp tối đa");
                 return;
             }
-            var text = $"Sử dụng {Utils.FormatCount(nextLevel.RequireMoneyVip)} Tiên ngọc để nâng cấp Động phủ <color=#{ColorUtility.ToHtmlStringRGB(nextLevel.Color)}>{nextLevel.Name}</color>";
-            popup.ShowPopConfirmAction(text, () =>
-            {
-                Client.Instance.Send(MessageTag.UpgradeDongPhu);
-            });
+            panel.ShowPopup(nextLevel.Level);
         }
     }
 }
