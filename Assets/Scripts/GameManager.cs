@@ -301,7 +301,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             return;
         }
         Pool.Get<UIManager>().panelGroup.SetActive(true);
-        Pool.Get<UIManager>().ListIcon.gameObject.SetActive(true);
+        Pool.Get<UIManager>().SetActiveListIcon(true);
         string backScene = listSceneLoaded[index - 1];
         listSceneLoaded.Remove(currentScene);
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
@@ -392,7 +392,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         if (enemyCombat == null) return;
         Pool.Get<UIManager>().panelGroup.SetActive(false);
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
-        Pool.Get<UIManager>().ListIcon.gameObject.SetActive(false);
+        Pool.Get<UIManager>().SetActiveListIcon(false);
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         Observer.Notify(EventList.GamePlay.LOAD_SCENE, "Combat");
 
@@ -409,7 +409,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         
         Pool.Get<UIManager>().panelGroup.SetActive(false);
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
-        Pool.Get<UIManager>().ListIcon.gameObject.SetActive(false);
+        Pool.Get<UIManager>().SetActiveListIcon(false);
         Pool.Get<PrepareCombatPanel>().Hide();
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         if (currentETypeCombat == ETypeCombat.LuanBan)
@@ -488,7 +488,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     {
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         Pool.Get<UIManager>().panelGroup.SetActive(true);
-        Pool.Get<UIManager>().ListIcon.gameObject.SetActive(true);
+        Pool.Get<UIManager>().SetActiveListIcon(true);
         ReleaseGroupSkillEffect();
         currentECombatResult = eCombatResult;
         string backScene = listSceneLoaded[listSceneLoaded.Count-1];

@@ -1,3 +1,5 @@
+using ConvertElementalSkill.Prefabs;
+using LuyenKhi;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,5 +13,6 @@ namespace Rank
         public RectTransform Container { get; init; }
         public ItemRewardUI MoneyVipPrefab { get; init; }
         public ItemRewardUI SkillItemPrefab { get; init; }
+        public LinhDanItem LinhDanItemPrefab { get; init; }
     }
 }

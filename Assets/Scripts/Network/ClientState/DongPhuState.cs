@@ -3,7 +3,7 @@ using DP;
 using LongDH.LongDHModules;
 using Network.Extensions.MemoryPack;
 using Network.Models;
-using Unity.Android.Gradle.Manifest;
+
 using Application = UnityEngine.Application;
 
 namespace Network.ClientState
@@ -95,6 +95,11 @@ namespace Network.ClientState
                 var model = reader.MemRead<OpenLink>();
                 var link = model.Link;
                 Application.OpenURL(link);
+            }
+            else if (tag == MessageTag.ReloadDpShopResult)
+            {
+                var result = reader.MemRead<ReloadDpShopResult>();
+                panel.OnReloadShopResult(result);
             }
         }
         public void OnLeave()

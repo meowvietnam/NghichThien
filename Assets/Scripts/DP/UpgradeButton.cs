@@ -19,7 +19,7 @@ namespace DP
             var nextLevel = DongPhuPanel.Instance.GetMyNextLevel();
             if(nextLevel == null)
             {
-                NotifyGroup.Instance.Show("Động phủ của bạn đã đạt cấp tối đa");
+                DongPhuPanel.Instance.NotifyGroup.Show("Động phủ của bạn đã đạt cấp tối đa");
                 return;
             }
             panel.ShowPopup(nextLevel.Level);

@@ -248,5 +248,7 @@ namespace Network
         LikeDongPhuNotify = 2342,
         ToAllMapFromDongPhu = 2351,
         OpenLink = 2484,
+        ReloadDpShop = 2531,
+        ReloadDpShopResult = 2541,
     }
 }

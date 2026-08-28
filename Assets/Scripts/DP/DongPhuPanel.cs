@@ -18,6 +18,12 @@ using UnityEngine.UI;
 
 namespace DP
 {
+    [Serializable]
+    public class DongPhuBackground
+    {
+        [field:SerializeField] public DongPhuLevel Level { get; private set; }
+        [field: SerializeField] public Sprite Background { get; private set; }
+    }
     public class DongPhuPanel : BaseBehaviour
     {
         public static DongPhuPanel Instance { get; private set; }
@@ -39,6 +45,8 @@ namespace DP
         [SerializeField] private VisitDongPhuPanel visitDongPhuPanel;
         [field: SerializeField] public NotifyGroup NotifyGroup { get; private set; }
         [field: SerializeField] public ToolTipItems ToolTipItems { get; private set; }
+        [SerializeField] private Image background;
+        [SerializeField] private DongPhuBackground[] backgrounds;
         public SlotUI CurrentSelectedSlot { get; private set; }
 
         private void Start()
@@ -209,6 +217,13 @@ namespace DP
             var level = GetLevelConfig(dongPhu.Level);
             textInfo.text =
                 $"Động phủ của <color=#FFD166>{dongPhu.Name}</color> [<color=#{ColorUtility.ToHtmlStringRGB(level.Color)}>{level.Name}</color>]";
+            
+            var bg = backgrounds.FirstOrDefault(x => x.Level == dongPhu.Level);
+            if (bg == null)
+            {
+                return;
+            }
+            background.sprite = bg.Background;
             Debug.Log(textInfo.text);
         }
 
@@ -449,6 +464,16 @@ namespace DP
             else
             {
                 NotifyGroup.Show(result.Message);
+            }
+        }
+
+        public void OnReloadShopResult(ReloadDpShopResult result)
+        {
+            NotifyGroup.Show(result.Message);
+            if (result.Success)
+            {
+                Shop = result.Shop;
+                shop.Init(Shop);
             }
         }
     }

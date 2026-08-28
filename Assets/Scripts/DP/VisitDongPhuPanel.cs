@@ -53,6 +53,8 @@ namespace DP
                     var player = Instantiate(visitPlayerPrefab, content);
                     player.Init(history);
                 }
+
+                isInit = true;
             }
             gameObject.SetActive(true);
             panel.localScale = Vector3.zero;

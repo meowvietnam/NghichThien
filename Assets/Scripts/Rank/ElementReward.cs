@@ -1,3 +1,5 @@
+using ConvertElementalSkill.Prefabs;
+using LuyenKhi;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +10,7 @@ namespace Rank
         [SerializeField] private Text text;
         [SerializeField] private ItemRewardUI moneyVipPrefab;
         [SerializeField] private ItemRewardUI skillPrefab;
+        [SerializeField] private LinhDanItem linhDanItemPrefab;
         [SerializeField] private Button rewardButton;
         [SerializeField] private RectTransform content;
 
@@ -26,7 +29,8 @@ namespace Rank
                 SkillItemPrefab =  skillPrefab,
                 RequirePointsText = text,
                 Container =  content,
-                ClaimButton = rewardButton
+                ClaimButton = rewardButton,
+                LinhDanItemPrefab = linhDanItemPrefab
             };
         }
     }
