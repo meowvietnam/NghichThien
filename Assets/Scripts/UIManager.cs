@@ -47,6 +47,7 @@ public class UIManager : BaseBehaviour
         {
             listIcon.gameObject.SetActive(active);
         }
+        btnListIconShow.gameObject.SetActive(active);
     }
     /// <summary>
     /// Abstract Factory để lấy equipment từ các collection khác nhau
