@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ConvertElementalSkill.Prefabs
 {
-    public class LinhDanItem : BaseItemUI
+    public class ItemUI : BaseItemUI
     {
         private IItemData itemData;
         private ItemRef itemRef;

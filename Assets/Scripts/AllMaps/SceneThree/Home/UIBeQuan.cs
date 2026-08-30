@@ -111,15 +111,25 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
 
         SetEventButton(btnShowPopDotPha, () =>
         {
-            var inforLevel = LevelResource.Instance.inforLevels[Client.Instance.CharacterData.Progression.Level - 1];
+            var charData = Client.Instance.CharacterData;
+            var progression = charData.Progression;
+            var inventory = charData.InventoryManager;
+            var linhDans = inventory.LinhDans;
+            var inforLevel = LevelResource.Instance.inforLevels[progression.Level - 1];
             if (inforLevel.IsSpecialLevelUp &&
-                Client.Instance.CharacterData.Progression.CurrentExp >= inforLevel.tuviRequireNextLevel)
+                progression.CurrentExp >= inforLevel.tuviRequireNextLevel)
             {
                 popDotPha.Show();
                 SetupPopupDotPha(inforLevel.RequireItem, prefabItemRequireDotPha);
                 var btnGreyConfirmDotPha = btnConfirmDotPha.transform.GetChild(0).GetComponent<Button>();
                 var canDotPha = inforLevel.RequireItem.All(x =>
-                    ItemProviderFactory.GetProvider(x.Type)?.GetCountOwner(x.Id) >= x.Count);
+                {
+                    if (!linhDans.TryGetValue(x, out var owner))
+                    {
+                        return false;
+                    }
+                    return owner.Count >= x.Count;
+                });
                 btnGreyConfirmDotPha.gameObject.SetActive(!canDotPha);
                 if (canDotPha)
                 {
@@ -191,7 +201,6 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
     public static int GetTotalValueBuffWithMultiplier(List<float> percent, int tocDoTuLuyenCP)
     {
         float total = tocDoTuLuyenCP;
-        Debug.Log($"TDTL: {total}");
         foreach (var item in percent)
         {
             total *= (1 + item / 100f);

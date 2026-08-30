@@ -73,7 +73,7 @@ namespace Network
         LuyenKhiResult = 311,
         SetEquipmentName = 320,
         SetEquipmentNameResult = 321,
-
+        RandomLuyenKhiRequest = 324,
 
         LearnNgoDao = 332,
         LearnNgoDaoResult = 333,
@@ -250,5 +250,11 @@ namespace Network
         OpenLink = 2484,
         ReloadDpShop = 2531,
         ReloadDpShopResult = 2541,
+        
+        
+        GetAllActiveEvents  = 2742,
+        GetEventRequest = 2812,
+        HandleEventRequest = 2833,
+        
     }
 }

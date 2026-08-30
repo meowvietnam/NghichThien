@@ -65,7 +65,14 @@ namespace DP
             if(PlayerPrefs.HasKey(key))
             {
                 var json = PlayerPrefs.GetString(key);
-                return JsonConvert.DeserializeObject<HashSet<string>>(json);
+                try
+                {
+                    return JsonConvert.DeserializeObject<HashSet<string>>(json);
+                }
+                catch
+                {
+                    return new HashSet<string>();
+                }
             }
             return new HashSet<string>();
         }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Events;
 using LuyenDan;
 using MemoryPack;
 using Network;
@@ -13,6 +14,7 @@ namespace AllMaps.EventReward
     {
         public RewardItems RewardItems;
         public List<ItemRef> ItemRefs;
+        public List<ItemEvent> itemEvents;
         public int Money;
         public int MoneyVip;
         public void AddReward(RewardSnapshot reward)

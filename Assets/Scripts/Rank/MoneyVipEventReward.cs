@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Rank
 {
     [MemoryPackable]
-    public partial class MoneyVipMonsterRankReward : IMonsterRankReward
+    public partial class MoneyVipEventReward : IEventReward
     {
         public int MoneyVip { get; set; }
         public void Claim(CharacterData charData)
@@ -28,7 +28,7 @@ namespace Rank
             return
                 $"<color=#{ColorUtility.ToHtmlStringRGBA(core.FindQuality(item.Tier).Color)}>{item.Name} x{MoneyVip}</color>";
         }
-        public void ShowUI(MonsterRankRewardUIContext context)
+        public void ShowUI(RewardUIContext context)
         {
             var item = Object.Instantiate(context.MoneyVipPrefab, context.Container);
             item.SetText(GetDescription());

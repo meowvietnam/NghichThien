@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Rank
 {
     [MemoryPackable]
-    public partial class ItemMonsterRankReward : IMonsterRankReward
+    public partial class SkillEventReward : IEventReward
     {
         public ItemRef Item { get; set; }
         public BaseSkill.ETierSkill Tier { get; set; }
@@ -20,7 +20,7 @@ namespace Rank
         {
             charData.InventoryManager.Add(Item);
         }
-        public void ShowUI(MonsterRankRewardUIContext context)
+        public void ShowUI(RewardUIContext context)
         {
             var itemUi = Object.Instantiate(context.SkillItemPrefab, context.Container);
             itemUi.SetText(GetDescription());
