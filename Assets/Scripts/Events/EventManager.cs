@@ -11,6 +11,13 @@ namespace Events
     {
         [SerializeField] private UIManager uiManager;
         [SerializeField] private RectTransform panelContainer;
+        [SerializeField] private MilestoneEventPanel milestoneEventPanel;
+        public MilestoneEventPanel MilestoneEventPanel => milestoneEventPanel;
+        public static EventManager Instance;
+        private void Awake()
+        {
+            Instance = this;
+        }
         private void Start()
         {
             _ = GetActiveEvents();

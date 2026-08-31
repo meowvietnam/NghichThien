@@ -22,6 +22,10 @@ namespace Events
             var result = reader.MemRead<GetEventResult>();
             if (result.Success)
             {
+                if(panelPrefab == null)
+                {
+                    panelPrefab = EventManager.Instance.MilestoneEventPanel;
+                }
                 if (currentPanel == null)
                 {
                     currentPanel = Instantiate(panelPrefab, containerPanel);
