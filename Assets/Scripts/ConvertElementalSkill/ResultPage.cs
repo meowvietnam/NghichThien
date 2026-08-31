@@ -29,13 +29,13 @@ namespace ConvertElementalSkill
             selfObject.SetActive(true);
             tween?.Kill();
             selfTransform.localScale = Vector3.zero;
-            tween = selfTransform.DOScale(Vector3.one, 0.5f);
+            tween = selfTransform.DOScale(Vector3.one, 0.25f);
         }
 
         public void Hide()
         {
             tween?.Kill();
-            tween = selfTransform.DOScale(Vector3.zero, 0.5f);
+            tween = selfTransform.DOScale(Vector3.zero, 0.25f);
             tween.OnComplete(() => { selfObject.SetActive(false); });
         }
 

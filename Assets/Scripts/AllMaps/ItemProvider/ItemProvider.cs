@@ -87,7 +87,7 @@ namespace AllMaps.ItemProvider
             else if(data is Equipment equipment)
             {
                 levelWithTier += GameManager.tierEquipmentWithLevel.GetValueOrDefault(equipment.GradeConfig.Tier);
-                indexTier = (int)equipment.GradeConfig.Tier;
+                indexTier = (int)equipment.GradeConfig.Tier + 1;
 
             }
             return (levelWithTier - npcLevel,indexTier);

@@ -1,11 +1,10 @@
-using ConvertElementalSkill.Prefabs;
-using LuyenKhi;
+using ItemUI =  ConvertElementalSkill.Prefabs.ItemUI;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Rank
 {
-    public class MonsterRankRewardUIContext
+    public class RewardUIContext
     {
         public int Points { get; init; }
         public Text RequirePointsText { get; init; }
@@ -13,6 +12,6 @@ namespace Rank
         public RectTransform Container { get; init; }
         public ItemRewardUI MoneyVipPrefab { get; init; }
         public ItemRewardUI SkillItemPrefab { get; init; }
-        public LinhDanItem LinhDanItemPrefab { get; init; }
+        public ConvertElementalSkill.Prefabs.ItemUI ItemUIPrefab { get; init; }
     }
 }

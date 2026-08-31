@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Rank
 {
     [MemoryPackable]
-    public partial class LinhDanMonsterRankReward : IMonsterRankReward
+    public partial class LinhDanEventReward : IEventReward
     {
         public ushort Id { get; set; }
         public ushort Count { get; set; }
@@ -28,11 +28,11 @@ namespace Rank
             };
             return itemRef;
         }
-        public void ShowUI(MonsterRankRewardUIContext context)
+        public void ShowUI(RewardUIContext context)
         {
             var itemData = GetData();
             var itemRef = CreateRef();
-            var itemUI = Object.Instantiate(context.LinhDanItemPrefab, context.Container);
+            var itemUI = Object.Instantiate(context.ItemUIPrefab, context.Container);
             itemUI.SetData(itemData, itemRef);
         }
 

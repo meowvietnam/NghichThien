@@ -1,11 +1,9 @@
-﻿using System;
-using AllMaps.ItemProvider;
+﻿using AllMaps.ItemProvider;
 using Base;
 using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using LuyenKhi;
-using Network;
 using Network.Core;
 using Sirenix.OdinInspector;
 using System.Linq;
@@ -117,6 +115,12 @@ public class UIManager : BaseBehaviour
         item.InitIcon(item.icon.sprite, item.frame.sprite);
     }
 
+    public void InsertIcon(GameObject gameObject)
+    {
+        var parent = listIcons.OrderBy(x => x.childCount).FirstOrDefault();
+        gameObject.transform.SetParent(parent);
+        UpdateButtonListPos();
+    }
     public void InitVisualEquipment(ItemInventory item, BaseItemData data, ItemRef itemRef = null)
     {
         Sprite frame = null;

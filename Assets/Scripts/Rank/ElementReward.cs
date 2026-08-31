@@ -1,8 +1,5 @@
-using ConvertElementalSkill.Prefabs;
-using LuyenKhi;
 using UnityEngine;
 using UnityEngine.UI;
-
 namespace Rank
 {
     public class ElementReward : BaseBehaviour
@@ -10,7 +7,7 @@ namespace Rank
         [SerializeField] private Text text;
         [SerializeField] private ItemRewardUI moneyVipPrefab;
         [SerializeField] private ItemRewardUI skillPrefab;
-        [SerializeField] private LinhDanItem linhDanItemPrefab;
+        [SerializeField] private ConvertElementalSkill.Prefabs.ItemUI itemUIPrefab;
         [SerializeField] private Button rewardButton;
         [SerializeField] private RectTransform content;
 
@@ -20,9 +17,9 @@ namespace Rank
             reward.ShowUI(context);
         }
         
-        private MonsterRankRewardUIContext CreateContext(int points)
+        private RewardUIContext CreateContext(int points)
         {
-            return new MonsterRankRewardUIContext()
+            return new RewardUIContext()
             {
                 Points = points,
                 MoneyVipPrefab = moneyVipPrefab,
@@ -30,7 +27,7 @@ namespace Rank
                 RequirePointsText = text,
                 Container =  content,
                 ClaimButton = rewardButton,
-                LinhDanItemPrefab = linhDanItemPrefab
+                ItemUIPrefab = itemUIPrefab
             };
         }
     }

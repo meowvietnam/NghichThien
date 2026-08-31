@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CreateCharacter;
+using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using Network;
@@ -96,6 +97,7 @@ namespace LuyenKhi
                 NotifyGroup.Instance.Show(result.Message);
                 if (result.Success)
                 {
+                    Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
                     ProgressBar.DoKill(() => { ResultPage.Show(result.Item); });
                 }
                 else

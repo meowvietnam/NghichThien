@@ -102,9 +102,9 @@ namespace LuyenDan
             return LinhDans.Where(x => x.ETypeDan == type).OrderBy(x => x.Tier).ThenBy(x => x.Name).ToArray();
         }
         [Button]
-        public LinhDan FindLinhDan(string desc)
+        public LinhDan FindLinhDan(string name)
         {
-            var item = LinhDans.FirstOrDefault(x => x.Description.Contains(desc, StringComparison.InvariantCultureIgnoreCase));
+            var item = LinhDans.FirstOrDefault(x => x.Name.Contains(name, StringComparison.InvariantCultureIgnoreCase));
             return item;
         }
         public string GetHerbDetail(int id, HerbType herbType)
