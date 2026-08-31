@@ -15,7 +15,7 @@ public class PhuTranLuyenTamQuyet : BangTamQuyet, IMemorySerializable<PhuTranLuy
     {
         if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NhieuHon, out SecureInt nhieuHon) && CheckIsEqualETypeSkill(caster))
         {
-            target.AddDamageData(new List<int>{(int)(target.allDamages[0] * buffValues2[CurrentLevelCongPhapInCombat(caster) - 1] / 100)});
+            target.AddDamageData(new List<int>{(int)(target.GetDameBuffForTarget() * buffValues2[CurrentLevelCongPhapInCombat(caster) - 1] / 100)});
         }
     }
 

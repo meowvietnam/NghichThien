@@ -18,7 +18,7 @@ public class KimCuongDiSonQuyet : CongPhap, IMemorySerializable<KimCuongDiSonQuy
     {
         if (caster.characterStatsTemp.hp >= caster.characterStatsTemp.hpMax * (require / 100f))
         {
-            target.AddDamageData(new List<int>{(int)(target.allDamages[0] * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100)});
+            target.AddDamageData(new List<int>{(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100)});
         }
     }
 

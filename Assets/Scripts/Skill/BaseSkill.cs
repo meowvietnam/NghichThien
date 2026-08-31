@@ -914,7 +914,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
 
         return text;
     }
-
+   
     public string GetTextTypeSkill()
     {
         string text = string.Empty;

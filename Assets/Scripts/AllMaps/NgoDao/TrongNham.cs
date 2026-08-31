@@ -14,7 +14,7 @@ public class TrongNham : NgoDaoCombat, IMemorySerializable<TrongNham>
     {
         if (BaseSkill.CheckIsEqualETypeSkill(caster, eTypeRequire) && target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DanLuc, out SecureInt danLuc))
         {
-            target.AddDamageData(new List<int>{(target.allDamages[0] * buff / 100)});
+            target.AddDamageData(new List<int>{(target.GetDameBuffForTarget() * buff / 100)});
         }
     }
 

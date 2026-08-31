@@ -14,7 +14,7 @@ public class QuyNhat : NgoDaoCombat, IMemorySerializable<QuyNhat>
     {
         if (caster.CurrentLinhKhi == caster.totalKhi)
         {
-            target.AddDamageData(new List<int>{target.allDamages[0] * buff / 100});
+            target.AddDamageData(new List<int>{target.GetDameBuffForTarget() * buff / 100});
         }
         else
         {
