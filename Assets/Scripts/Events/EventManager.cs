@@ -13,6 +13,8 @@ namespace Events
         [SerializeField] private RectTransform panelContainer;
         [SerializeField] private MilestoneEventPanel milestoneEventPanel;
         public MilestoneEventPanel MilestoneEventPanel => milestoneEventPanel;
+        [SerializeField] private ItemEventMilestoneUI itemEventMilestoneUIPrefab;
+        public ItemEventMilestoneUI ItemEventMilestoneUIPrefab => itemEventMilestoneUIPrefab;
         public static EventManager Instance;
         private void Awake()
         {
