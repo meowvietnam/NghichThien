@@ -27,7 +27,7 @@ public class LuongNghi : NgoDaoCombat, IMemorySerializable<LuongNghi>
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int count = target.specialThanThongImpactAfterPlaySkill.Count(x => x is TranPhapTT || x.GetEKeywordSkillHave().Contains(BaseSkill.EKeyWord.TranPhap));
-        target.AddDamageData(new List<int>{-target.allDamages[0] * count * 3 / 100});
+        target.AddDamageData(new List<int>{-target.GetDameBuffForTarget() * count * 3 / 100});
     }
 
     public override string GetDes()

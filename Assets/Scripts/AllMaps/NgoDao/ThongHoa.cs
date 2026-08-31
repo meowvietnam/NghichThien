@@ -14,7 +14,7 @@ public class ThongHoa : NgoDaoCombat, IMemorySerializable<ThongHoa>
     {
         if (BaseSkill.CheckIsEqualETypeSkill(caster, eTypeRequire)) // skill caster dùng là hệ hỏa 
         {
-            target.AddDamageData(new List<int>{target.allDamages[0] * buff * caster.CurrentTurn / 100});
+            target.AddDamageData(new List<int>{target.GetDameBuffForTarget() * buff * caster.CurrentTurn / 100});
         }
     }
 

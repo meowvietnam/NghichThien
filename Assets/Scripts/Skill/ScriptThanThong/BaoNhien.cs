@@ -22,9 +22,9 @@ public class BaoNhien : ThanThong, BaseSkill.LienKich, IMemorySerializable<BaoNh
     {
         int dame = dameValues[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
-        Debug.Log("BaoNhien before" + target.allDamages[0]);
+        Debug.Log("BaoNhien before" + target.GetDameBuffForTarget());
         ExcuteDiem(caster, target);
-        Debug.Log("BaoNhien after" + target.allDamages[0]);
+        Debug.Log("BaoNhien after" + target.GetDameBuffForTarget());
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

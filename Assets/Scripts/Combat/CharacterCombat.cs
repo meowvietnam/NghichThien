@@ -244,7 +244,7 @@ public class CharacterCombat : MonoBehaviour
         DOTween.Kill("HideSkillName");
 
         textSkillNameCall.transform.parent.gameObject.SetActive(true);
-        textSkillNameCall.text = thanThong.name;
+        textSkillNameCall.text = thanThong.nameItem;
         DOVirtual.DelayedCall(thanThong.timeDelayTakeDame <=1 ? 1 : thanThong.timeDelayTakeDame/2, () =>
         {
             textSkillNameCall.transform.parent.gameObject.SetActive(false);
@@ -528,6 +528,10 @@ public class CharacterCombat : MonoBehaviour
         {
             // Trừ trực tiếp vào giá trị của Dictionary thông qua Key đã tìm thấy
             skillTichLuy[key] -= require;
+            if (skillTichLuy[key] <= 0)
+            {
+                skillTichLuy.Remove(key);
+            }    
             return true;
         }
 
@@ -1304,7 +1308,20 @@ public class CharacterCombat : MonoBehaviour
        
     }
 
-  
+    public int GetDameBuffForTarget()
+    {
+        int dameBuff = 0;
+        foreach (var item in allDamages)
+        {
+            if (item > 0)
+            {
+                dameBuff = item;
+                break;
+            }
+        }
+        return dameBuff;
+
+    }
 
     public List<int> allDamages = new List<int>();
 
@@ -1352,7 +1369,6 @@ public class CharacterCombat : MonoBehaviour
         
         var listNewDames = CaculateDame(sender, dames, isCongDon, eTypeSkils);
        
-        listDameTaked[listDameTaked.Count - 1] += listNewDames.Sum();
 
         Observer.Notify(EventList.Combat.CACULATE_DAME_BY_THANTHONG, sender, this, listNewDames);
         if (sender.characterStatsBase.ability.HasFlag(CreateCharacter.CharStats.Ability.TuyetAmDocThe))
@@ -1361,12 +1377,14 @@ public class CharacterCombat : MonoBehaviour
             if (sender.characterStatsTemp.danDoc > 50)
             {
 
-                int dameBuff = (int)(allDamages[0] * 0.2f);
-                Debug.Log(allDamages[0] + " co vao buff dame " + dameBuff);
+                int dameBuff = (int)(GetDameBuffForTarget() * 0.2f);
+                Debug.Log(GetDameBuffForTarget() + " co vao buff dame " + dameBuff);
                 AddDamageData(new List<int> { dameBuff });
                
             }
         }
+        listDameTaked[listDameTaked.Count - 1] += allDamages.Sum();
+
 
     }
     private List<int> CaculateDame(CharacterCombat sender, List<int> dames, bool isCongDon = false, BaseSkill.ETypeSkill[] eTypeSkils = null)

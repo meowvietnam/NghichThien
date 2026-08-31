@@ -19,13 +19,24 @@ public class LaHauChanHonQuyet : CongPhap, IMemorySerializable<LaHauChanHonQuyet
     {
         int dame = (int)data[2];
         int indexLevel = CurrentLevelCongPhapInCombat(caster) - 1;
-        if (caster.IsSkillTichLuyCanUse(this, dame, requires[indexLevel]))
-        {
-            int buff = buffValues[indexLevel];
-            caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TinhHonChiLuc, buff);
-        }
-    }
+        if(caster.IsSkillTichLuyCanUse(this, dame, requires[indexLevel]))
+        {  // 1. Tìm chính xác cái Key đang nằm trong Dictionary dựa trên điều kiện của bạn
+            // gọi hàm IsSkillTichLuyCanUse là nó đã trừ 1 lần nên + 1 lần đầu
+            int count = 1;
+            while (caster.IsSkillTichLuyCanUse(this,0,requires[indexLevel]) == true)
+            {
+                count += 1;
+            }
 
+            int buff = buffValues[indexLevel];
+            caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TinhHonChiLuc, count*buff);
+        }    
+       
+
+
+
+    }
+  
     public override string GetDesc(int level)
     {
         return $"Mỗi khi tích lũy gây ra đủ {GetColoredText($"{requires[level - 1]}", "red")} điểm tổn thương thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TinhHonChiLuc)}";
