@@ -174,4 +174,11 @@ public class NPCManager : ActionMapManager
     {
         return npcDatas.FirstOrDefault(x => x.charStats.idChar == id);
     }
+
+    [Button]
+    public NPCData FindNPC(string name)
+    {
+        return npcDatas.FirstOrDefault(x =>
+            x.charStats.nameUser.Contains(name, StringComparison.InvariantCultureIgnoreCase));
+    }
 }

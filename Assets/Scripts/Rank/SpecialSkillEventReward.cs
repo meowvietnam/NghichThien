@@ -29,11 +29,31 @@ namespace Rank
 
         public void ShowUI(RewardUIContext context)
         {
-            var itemUi = Object.Instantiate(context.SkillItemPrefab, context.Container);
-            itemUi.SetText(GetDescription());
+            if (Type == ItemType.ThanThong)
+            {
+                var itemUi = Object.Instantiate(context.SkillItemPrefab, context.Container);
+                itemUi.SetText(GetDescription(Count));
+            }
+            else
+            {
+                var countPerOne = 6;
+                int totalRandomItem = Count / countPerOne;
+                var remaining = Count % countPerOne;
+                for (int i = 0; i < totalRandomItem; i++)
+                {
+                    var itemUi = Object.Instantiate(context.SkillItemPrefab, context.Container);
+                    itemUi.SetText(GetDescription(countPerOne));
+                }
+                if (remaining > 0)
+                {
+                    var itemUi = Object.Instantiate(context.SkillItemPrefab, context.Container);
+                    itemUi.SetText(GetDescription(remaining));
+                }  
+            }
+ 
         }
 
-        private string GetDescription()
+        private string GetDescription(int count)
         {
             var tierText = BaseSkill.GetTextTiersSkill(Tiers);
             var typeItemText = Type switch
@@ -41,7 +61,7 @@ namespace Rank
                 ItemType.ThanThong => "Thần thông",
                 ItemType.CongPhap => "Công pháp",
             };
-            return $"x{Utils.FormatCount(Count)} {tierText} {typeItemText}" +
+            return $"x{Utils.FormatCount(count)} {tierText} {typeItemText}" +
                    (TypeSkill == BaseSkill.ETypeSkill.None
                        ? string.Empty
                        : $" hệ {BaseSkill.GetTextTypeSkill(TypeSkill)}");

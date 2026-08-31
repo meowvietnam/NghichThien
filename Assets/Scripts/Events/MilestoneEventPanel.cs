@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CreateCharacter;
 using DG.Tweening;
@@ -18,7 +19,7 @@ namespace Events
         [SerializeField] private RectTransform content;
         [SerializeField] private ElementMilestone elementMilestonePrefab;
         private Tween tween;
-
+        private List<ElementMilestone> elements = new ();
         private void Start()
         {
             SetEventButton(closeButton, Hide);
@@ -37,10 +38,11 @@ namespace Events
 
         public void Init(Event @event)
         {
-            foreach (Transform child in content)
+            foreach (var e in elements)
             {
-                Destroy(child.gameObject);
+                Destroy(e.gameObject);
             }
+            elements.Clear();
             this.@event = @event;
             DateTime startAt = @event.StartAt.ToLocalTime();
             DateTime endAt = @event.EndAt.ToLocalTime();
@@ -51,6 +53,7 @@ namespace Events
             foreach (var milestone in gameEvent.Milestones)
             {
                 var element = Instantiate(elementMilestonePrefab, content);
+                elements.Add(element);
                 element.Init(this,milestone);
             }
         }
