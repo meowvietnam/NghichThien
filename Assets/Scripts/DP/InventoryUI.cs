@@ -33,7 +33,6 @@ namespace DP
         }
         private void OnAddSeed(Seed seed)
         {
-            Debug.Log($"Add seed: {seed.HerbId}, {seed.Count}");
             var seedUi = Instantiate(seedUIPrefab, container);
             seedUi.Init(seed.HerbId, seed.Count);
             seedUi.Clicked += OnClickSeed;

@@ -76,7 +76,7 @@ namespace ConvertElementalSkill
                 {
                     Id = x.Key.Id,
                     Type = x.Key.Type,
-                    Count = (ushort)x.Sum(y => y.Count)
+                    Count = x.Sum(y => y.Count)
                 })
                 .ToHashSet();
             var request = new Network.Models.ConvertElementalSkill()

@@ -14,7 +14,7 @@ namespace Rank
     public partial class SpecialSkillEventReward : IEventReward
     {
         public List<ItemRef> Items { get; set; }
-        public BaseSkill.ETierSkill Tier { get; set; }
+        public BaseSkill.ETierSkill[] Tiers { get; set; }
         public ItemType Type { get; set; }
         public BaseSkill.ETypeSkill TypeSkill { get; set; }
         public ushort Count { get; set; }
@@ -35,7 +35,7 @@ namespace Rank
 
         private string GetDescription()
         {
-            var tierText = BaseSkill.GetTextTierSkill(Tier);
+            var tierText = BaseSkill.GetTextTiersSkill(Tiers);
             var typeItemText = Type switch
             {
                 ItemType.ThanThong => "Thần thông",

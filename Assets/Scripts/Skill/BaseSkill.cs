@@ -931,6 +931,36 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
         return GetColoredText($"{text}", "#ffb143");
     }
 
+    public static string GetTextTiersSkill(ETierSkill[] tiers)
+    {
+        var tierTexts = new HashSet<string>();
+        foreach (var tier in tiers)
+        {
+            string text = string.Empty;
+            switch (tier)
+            {
+                case ETierSkill.None:
+                    break;
+                case ETierSkill.NhanGiaiHa:
+                case ETierSkill.NhanGiaiTrung:
+                case ETierSkill.NhanGiaiThuong:
+                    text = "Nhân Giai";
+                    break;
+                case ETierSkill.DiaGiaiHa:
+                case ETierSkill.DiaGiaiTrung:
+                case ETierSkill.DiaGiaiThuong:
+                    text = "Địa Giai";
+                    break;
+                case ETierSkill.ThienGiaiHa:
+                case ETierSkill.ThienGiaiTrung:
+                case ETierSkill.ThienGiaiThuong:
+                    text = "Thiên Giai";
+                    break;
+            }
+            tierTexts.Add(text);
+        }
+        return string.Join(", ", tierTexts);
+    } 
     public static string GetTextTierSkill(ETierSkill eTierSkill)
     {
         string text = string.Empty;

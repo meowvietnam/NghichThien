@@ -11,7 +11,7 @@ namespace LuyenDan
     {
         [field: SerializeField] public ushort Id { get; set; } // id này gửi lên server có thể là id bình thường hoặc nó cũng là self id đối với equipment và đan lô
         [field: SerializeField] public ItemType Type { get; set; }
-        [field: SerializeField] public ushort Count { get; set; }
+        [field: SerializeField] public int Count { get; set; }
         [MemoryPackIgnore] public Action<int> OnCountChanged { get; set; }
         [MemoryPackIgnore]
         [field: SerializeField] public ushort TempId { get; set; } // cái này là id của furnace (đan lô) để lấy ref icon và name, tier ....
@@ -26,13 +26,13 @@ namespace LuyenDan
         {
             Id = id;
             Type = type;
-            Count = (ushort)count;
+            Count = count;
             TempId = tempId;
         }
 
         public void SetCount(int count)
         {
-            Count = (ushort)count;
+            Count = count;
             OnCountChanged?.Invoke(count);
         }
 

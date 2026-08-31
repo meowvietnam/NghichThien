@@ -267,7 +267,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         {
             Id = source.Type == ItemType.Furnace ? source.TempId : source.Id,
             Type = source.Type,
-            Count = (ushort)count,
+            Count = count,
             TempId = source.TempId
         };
     }
@@ -278,7 +278,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         {
             Id = source.Id,
             Type = source.Type,
-            Count = (ushort)count,
+            Count = count,
             TempId = source.TempId
         };
     }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using CreateCharacter;
+using Events;
 using LongDHModules;
 using LuyenDan;
 using Network.Models;
@@ -9,7 +11,7 @@ using UnityEngine.UI;
 
 namespace AllMaps.EventReward
 {
-    public class EventRewardPanel : Popup , IUISingleton, INetworkEvent.IWatchAdsCombat, INetworkEvent.IWatchAdsSideQuest
+    public class EventRewardPanel : Popup, IUISingleton, INetworkEvent.IWatchAdsCombat, INetworkEvent.IWatchAdsSideQuest
     {
         [SerializeField] private Text txtDesc;
         [SerializeField] private Sprite spriteEvent;
@@ -17,7 +19,9 @@ namespace AllMaps.EventReward
         [SerializeField] private Sprite spriteLose;
         [SerializeField] private Image imgBGTilte;
         [SerializeField] private GameObject itemRewardPrefab;
-        private ItemInventory itemInventoryPrefab => itemRewardPrefab.transform.GetChild(0).GetComponent<ItemInventory>();
+
+        private ItemInventory itemInventoryPrefab =>
+            itemRewardPrefab.transform.GetChild(0).GetComponent<ItemInventory>();
 
         [SerializeField] private Sprite spriteMoney;
         [SerializeField] private Sprite spriteMoneyVip;
@@ -25,6 +29,7 @@ namespace AllMaps.EventReward
         [SerializeField] private Button rewardAdsButton;
         [SerializeField] private GameObject rewardAdsObject;
         private Action onRewardAdsClick;
+
         [Button]
         public void InitShowEventReward(RewardSnapshot rewardData, string contentText, Action onRewardAdsClick = null)
         {
@@ -40,28 +45,25 @@ namespace AllMaps.EventReward
             var activeRewardAdsButton = onRewardAdsClick != null;
             rewardAdsObject.SetActive(activeRewardAdsButton);
         }
-        public void InitShowCombatReward(RewardSnapshot rewardData, string contentText,ETypeResultCombat resultCombat, Action onRewardAdsClick = null)
+
+        public void InitShowCombatReward(RewardSnapshot rewardData, string contentText, ETypeResultCombat resultCombat,
+            Action onRewardAdsClick = null)
         {
             SetEventRewardAds(onRewardAdsClick);
             InitShow(rewardData, contentText);
-            if(resultCombat == ETypeResultCombat.Win)
+            if (resultCombat == ETypeResultCombat.Win)
             {
                 imgBGTilte.sprite = spriteWin;
-                InitActionClose(() =>
-                {
-                    Pool.Get<GameManager>().BackAllMapFromCombat(resultCombat);
-                });
+                InitActionClose(() => { Pool.Get<GameManager>().BackAllMapFromCombat(resultCombat); });
             }
             else
             {
                 imgBGTilte.sprite = spriteLose;
-                InitActionClose(() =>
-                {
-                    Pool.Get<GameManager>().BackAllMapFromCombat(resultCombat);
-                });
+                InitActionClose(() => { Pool.Get<GameManager>().BackAllMapFromCombat(resultCombat); });
             }
         }
-        private void InitShow(RewardSnapshot rewardData,string contentText)
+
+        private void InitShow(RewardSnapshot rewardData, string contentText)
         {
             Show();
             Transform child = this.transform.GetChild(1);
@@ -72,15 +74,17 @@ namespace AllMaps.EventReward
             SetReward();
             txtDesc.text = contentText;
         }
+
         private void SetVisualRewardMoney()
         {
             var itemReward = GetComponentItemReward();
-            itemReward.itemInventory.InitIcon(spriteMoney,itemInventoryPrefab.frame.sprite);
+            itemReward.itemInventory.InitIcon(spriteMoney, itemInventoryPrefab.frame.sprite);
             itemReward.itemInventory.SetQualityFull(itemInventoryPrefab.qualityFull.sprite);
             itemReward.itemInventory.textName.text = "Linh Thạch";
             itemReward.textCount.text = $"x{rewardDataCurrent.Money}";
             itemReward.itemInventory.btnShowInfor.gameObject.SetActive(false);
         }
+
         private void SetVisualRewardMoneyVip()
         {
             var itemReward = GetComponentItemReward();
@@ -94,12 +98,12 @@ namespace AllMaps.EventReward
         private void SetVisualRewardItem(ItemRef itemRef)
         {
             var itemReward = GetComponentItemReward();
-            ItemTypeHandlerBagFactory.Create(itemRef.Type).Handle(itemReward.itemInventory, itemRef,false);
+            ItemTypeHandlerBagFactory.Create(itemRef.Type).Handle(itemReward.itemInventory, itemRef, false);
             itemReward.textCount.text = $"x{itemRef.Count.ToString()}";
             itemReward.itemInventory.btnShowInfor.gameObject.SetActive(true);
-
         }
-        (ItemInventory itemInventory , Text textCount) GetComponentItemReward()
+
+        (ItemInventory itemInventory, Text textCount) GetComponentItemReward()
         {
             var itemReward = GameManager.GetItemPoolWithPrefabInParent(itemRewardPrefab.transform);
             itemReward.transform.localScale = Vector3.one;
@@ -107,6 +111,7 @@ namespace AllMaps.EventReward
             Text textCountReward = itemReward.transform.GetChild(1).GetComponent<Text>();
             return (itemInventory, textCountReward);
         }
+
         private void SetReward()
         {
             var parent = itemRewardPrefab.transform.parent;
@@ -114,22 +119,44 @@ namespace AllMaps.EventReward
             {
                 parent.GetChild(i).gameObject.SetActive(false);
             }
+
             if (rewardDataCurrent == null) return;
-            if(rewardDataCurrent.Money > 0)
+            if (rewardDataCurrent.Money > 0)
             {
                 SetVisualRewardMoney();
             }
+
             if (rewardDataCurrent.MoneyVip > 0)
             {
                 SetVisualRewardMoneyVip();
-
             }
+
             if (rewardDataCurrent?.ItemRefs != null)
             {
                 foreach (var item in rewardDataCurrent.ItemRefs)
                 {
                     SetVisualRewardItem(item);
                 }
+            }
+            SetEventItems();
+        }
+
+        private void SetEventItems()
+        {
+            var items = rewardDataCurrent.itemEvents;
+            if (items == null)
+            {
+                return;
+            }
+            foreach (var item in items)
+            {
+                var data = item.GetItemEventData();
+                var itemReward = GetComponentItemReward();
+                itemReward.itemInventory.InitIcon(data.Icon, itemInventoryPrefab.frame.sprite);
+                itemReward.itemInventory.SetQualityFull(itemInventoryPrefab.qualityFull.sprite);
+                itemReward.itemInventory.textName.text = data.Name;
+                itemReward.textCount.text = $"x{item.Count}";
+                itemReward.itemInventory.btnShowInfor.gameObject.SetActive(false);
             }
         }
 
@@ -178,7 +205,7 @@ namespace AllMaps.EventReward
                 }
             }
         }
-        
+
         public void FailWatchAdsSideQuest(string message)
         {
             NotifyGroup.Instance.Show(message);

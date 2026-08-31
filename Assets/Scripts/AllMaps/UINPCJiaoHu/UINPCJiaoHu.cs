@@ -253,8 +253,8 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
                 if (slotItemGift.count > 0)
                 {
                     SayDialogManager.Instance.ShowDialogWithSkin(characterStatsTarget.nameUser, characterStatsTarget.Gender, characterStatsTarget.Skins, characterStatsTarget.Colors, new List<string> { $"{xungHo.targetCallMe}, sảng khoái" });
-                    item.Count = (ushort)slotItemGift.count;
-                    ushort count = item.Count;
+                    item.Count = slotItemGift.count;
+                    var count = item.Count;
                     if(item.Type == ItemType.VuKhi || item.Type == ItemType.PhongCu || item.Type == ItemType.TrangSuc)
                     {
                         count = 5;
@@ -267,12 +267,12 @@ public class UINPCJiaoHu : PanelGroup , INetworkEvent.ITangQuaNPC , INetworkEven
                     var InventoryManager = Client.Instance.CharacterData.InventoryManager;
                     if (slotItemGift.itemRef.Type == ItemType.Furnace)
                     {
-                        InventoryManager.RemoveFurnace((ushort)slotItemGift.itemRef.Id);
+                        InventoryManager.RemoveFurnace(slotItemGift.itemRef.Id);
 
                     }
                     else if (slotItemGift.itemRef.Type == ItemType.VuKhi || slotItemGift.itemRef.Type == ItemType.PhongCu || slotItemGift.itemRef.Type == ItemType.TrangSuc)
                     {
-                        InventoryManager.RemoveEquipment((ushort)slotItemGift.itemRef.Id);
+                        InventoryManager.RemoveEquipment(slotItemGift.itemRef.Id);
                     }
                     else
                     {

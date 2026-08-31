@@ -74,7 +74,7 @@ namespace LuyenDan
             {
                 if (ingredient.Item == item)
                 {
-                    count += (ushort)ingredient.Count;
+                    count += ingredient.Count;
                     SelectHerbNum.SetValue(ingredient.Count);
                 }
                 else

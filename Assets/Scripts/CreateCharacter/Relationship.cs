@@ -9,7 +9,7 @@ namespace CreateCharacter
     public partial class Relationship : IEquatable<Relationship>
     {
         [field: SerializeField] public ushort Npc { get; set; }
-        [field: SerializeField] public ushort Points { get; set; }
+        [field: SerializeField] public int Points { get; set; }
 
         public override int GetHashCode()
         {

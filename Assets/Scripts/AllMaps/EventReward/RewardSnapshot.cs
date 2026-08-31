@@ -37,6 +37,23 @@ namespace AllMaps.EventReward
                     }
                 }
             }
+            if (itemEvents != null && reward.itemEvents != null)
+            {
+                Debug.Log(itemEvents.Count);
+                var dict = itemEvents.ToDictionary(x => x.Id);
+                foreach (var item in reward.itemEvents)
+                {
+                    if (dict.TryGetValue(item.Id, out var exist))
+                    {
+                        exist.Count += item.Count;
+                    }
+                    else
+                    {
+                        itemEvents.Add(item);
+                        dict[item.Id] = item;
+                    }
+                }
+            }
         }
         public RewardSnapshot Clone()
         {
