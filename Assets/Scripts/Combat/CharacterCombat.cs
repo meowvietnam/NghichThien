@@ -1387,6 +1387,10 @@ public class CharacterCombat : MonoBehaviour
     }
     public void NotifyEventCaculateDameForCongPhap(CharacterCombat sender)
     {
+        if(allDamages.All(x=>x <=0))
+        {
+            return;
+        }    
         Observer.Notify(EventList.Combat.CACULATE_DAME_BY_THANTHONG, sender, this, allDamages);
         listDameTaked[listDameTaked.Count - 1] += allDamages.Sum();
 
@@ -1466,6 +1470,8 @@ public class CharacterCombat : MonoBehaviour
     {
         if(sender != null)
         {
+            NotifyEventCaculateDameForCongPhap(sender);
+
             if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt hoaDiem))
             {
                 sender.TakeDameByStatic(this, new List<int> { hoaDiem }, false, new[] { BaseSkill.ETypeSkill.Hoa });
