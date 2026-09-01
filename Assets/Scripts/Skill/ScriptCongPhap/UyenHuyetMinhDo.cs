@@ -20,12 +20,12 @@ public class UyenHuyetMinhDo : CPTieuHaoThoNguyen, IMemorySerializable<UyenHuyet
         // caster người gây dame
         // iscanuse là caster 
         // nếu target có chảy máu
+        RemoveCongPhap(caster);
         int dame = (int)data[2];
         if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChayMau, out SecureInt chayMau))
         {
             caster.Healing(dame);
         }
-        RemoveCongPhap(caster);
       
     }
 

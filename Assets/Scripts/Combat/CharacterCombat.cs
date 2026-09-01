@@ -1370,7 +1370,6 @@ public class CharacterCombat : MonoBehaviour
         var listNewDames = CaculateDame(sender, dames, isCongDon, eTypeSkils);
        
 
-        Observer.Notify(EventList.Combat.CACULATE_DAME_BY_THANTHONG, sender, this, listNewDames);
         if (sender.characterStatsBase.ability.HasFlag(CreateCharacter.CharStats.Ability.TuyetAmDocThe))
         {
             Debug.Log("sender có TuyetAmDocThe");
@@ -1383,12 +1382,21 @@ public class CharacterCombat : MonoBehaviour
                
             }
         }
-        listDameTaked[listDameTaked.Count - 1] += allDamages.Sum();
 
+
+    }
+    public void NotifyEventCaculateDameForCongPhap(CharacterCombat sender)
+    {
+        Observer.Notify(EventList.Combat.CACULATE_DAME_BY_THANTHONG, sender, this, allDamages);
+        listDameTaked[listDameTaked.Count - 1] += allDamages.Sum();
 
     }
     private List<int> CaculateDame(CharacterCombat sender, List<int> dames, bool isCongDon = false, BaseSkill.ETypeSkill[] eTypeSkils = null)
     {
+        if (dames.All(x => x <= 0))
+        {
+            return dames;
+        }
         if (sender != null && eTypeSkils != null && dames.Count>0)
         {   // Build decorator chain for this damage value
             IDamageModifier damageModifier = new PlainDamageModifier(dames[0]);
@@ -1441,6 +1449,10 @@ public class CharacterCombat : MonoBehaviour
     }
     public void TakeDameByStatic(CharacterCombat sender, List<int> dames,  bool isCongDon = false , BaseSkill.ETypeSkill[] eTypeSkils = null , bool isDef = true)
     {
+        if(dames.All(x=>x <=0 ))
+        {
+            return;
+        }    
         var newListDames = CaculateDame(sender, dames, isCongDon, eTypeSkils);
         if (sender != null && eTypeSkils != null)
         {
