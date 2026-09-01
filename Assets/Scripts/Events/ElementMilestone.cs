@@ -33,8 +33,13 @@ namespace Events
         {
             this.panel = panel;
             Milestone = milestone;
+           
             for (int i = 0; i < milestone.Targets.Length; i++)
             {
+                if (itemEventMilestoneUIPrefab == null)
+                {
+                    itemEventMilestoneUIPrefab = EventManager.Instance.ItemEventMilestoneUIPrefab;
+                }
                 var target = milestone.Targets[i];
                 var progression = milestone.Progresses[i];
                 var item = Instantiate(itemEventMilestoneUIPrefab, milestoneContent);
