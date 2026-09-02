@@ -230,7 +230,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
 
     public interface ThanThuc
     {
-        public abstract void ExecuteThanThuc(CharacterCombat caster, CharacterCombat target);
+        public abstract void  ExecuteThanThuc(CharacterCombat caster, CharacterCombat target);
     }
 
     public virtual string GetDesc(int daiCanhGioi)
