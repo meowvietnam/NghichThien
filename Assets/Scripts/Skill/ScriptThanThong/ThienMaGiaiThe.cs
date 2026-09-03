@@ -33,7 +33,7 @@ public class ThienMaGiaiThe : ThanThong, IMemorySerializable<ThienMaGiaiThe>
             return;
         if (targetTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is ThienMaGiaiThe))
         {
-            targetTurn.AddDamageData(new List<int>{-(int)(percent * targetTurn.allDamages[0] / 100f)});
+            targetTurn.AddDamageData(new List<int>{-(int)(percent * targetTurn.GetDameBuffForTarget() / 100f)});
         }
     }
 

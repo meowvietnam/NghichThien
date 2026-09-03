@@ -178,12 +178,8 @@ namespace CreateCharacter
                     throw new();
                 }
                 var remaining = item.Count - itemRef.Count;
-                if (remaining < 0)
-                {
-                    throw new();
-                }
-                item.Count = (ushort)remaining;
-                if (remaining == 0)
+                item.Count = remaining;
+                if (remaining <= 0)
                 {
                     c.Remove(item);
                 }
@@ -247,7 +243,7 @@ namespace CreateCharacter
                     }
                     else
                     {
-                        itemRef.Count = (ushort)remaining;
+                        itemRef.Count = remaining;
                     }
                     return;
                 }

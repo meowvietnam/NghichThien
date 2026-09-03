@@ -307,7 +307,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
         // Chỉ xét khi có 2 hoặc 3
         if (list.Count == 1)
-            return false;
+            return true;
 
         if (list.Count >= 4)
             return false;
@@ -489,8 +489,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             {
                 thanThongThanThuc.ExecuteThanThuc(caster, target);
             }
-
-            target.TakeDame(caster, !thanThong.GetEKeywordSkillHave().Contains(BaseSkill.EKeyWord.ChanThucTonThuong));
+            target.TakeDameForThanThong(caster, !thanThong.GetEKeywordSkillHave().Contains(BaseSkill.EKeyWord.ChanThucTonThuong));
             if (thanThong.timeDelayTakeDame > 0)
             {
                 isDelayEffectSkill = true;
@@ -610,7 +609,15 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                     buffInfor.SetText(descIcon);
 
 
-                    buffInfor.DoShow();
+                    
+                    var scrollRect = buffIcon.transform.GetComponentInParent<ScrollRect>();
+                    buffInfor.transform.SetParent(scrollRect.transform);
+                    // Lấy dấu của scale.x từ parent của scrollRect
+                    int parentScaleXSign = (int)Mathf.Sign(scrollRect.transform.parent.localScale.x);
+                    buffInfor.DoShow(parentScaleXSign,null);
+
+
+
                 });
                 isHave = true;
             }

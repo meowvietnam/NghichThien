@@ -28,7 +28,7 @@ public class HoaDiem : NgoDaoCombat, IMemorySerializable<HoaDiem>
     {
         if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt hoaDiem))
         {
-            target.AddDamageData(new List<int>{-(target.allDamages[0] * buff / 100)});
+            target.AddDamageData(new List<int>{-(target.GetDameBuffForTarget() * buff / 100)});
         }
     }
 

@@ -74,7 +74,7 @@ namespace LuyenDan
             {
                 if (ingredient.Item == item)
                 {
-                    count += (ushort)ingredient.Count;
+                    count += ingredient.Count;
                     SelectHerbNum.SetValue(ingredient.Count);
                 }
                 else
@@ -312,7 +312,7 @@ namespace LuyenDan
                     var furnaceName = SelectedFurnace.Data.Name;
                     var durabilityAfter = currentDurability - loss;
                     builder.Append($"Thành công <color=#{colorDanLu}><b>{furnaceName}</b></color> sẽ mất <color=#F59E0B><b>{loss}</b></color> độ bền");
-                    if (durabilityAfter <= 0)
+                    if (durabilityAfter < 0)
                     {
                         builder.AppendLine();
                         builder.AppendLine(

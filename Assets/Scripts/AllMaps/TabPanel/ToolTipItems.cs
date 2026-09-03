@@ -352,7 +352,10 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
     public void Init()
     {
         gameObject.SetActive(true);
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
         gameObject.SetActive(false);
         SetEventButton(btnMask, () => { gameObject.SetActive(false); });
     }

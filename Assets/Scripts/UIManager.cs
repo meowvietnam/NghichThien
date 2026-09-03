@@ -1,11 +1,9 @@
-﻿using System;
-using AllMaps.ItemProvider;
+﻿using AllMaps.ItemProvider;
 using Base;
 using LongDH.LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using LuyenKhi;
-using Network;
 using Network.Core;
 using Sirenix.OdinInspector;
 using System.Linq;
@@ -41,8 +39,16 @@ public class UIManager : BaseBehaviour
     [SerializeField] private Button convertBtn;
     [SerializeField] public Button btnListIconShow;
     [SerializeField] private bool isShowListIcon = true;
-    public Transform ListIcon => btnBXH.transform.parent;
-
+    [SerializeField] private RectTransform[] listIcons;
+    private Sequence listIconTween;
+    public void SetActiveListIcon(bool active)
+    {
+        foreach (var listIcon in listIcons)
+        {
+            listIcon.gameObject.SetActive(active);
+        }
+        btnListIconShow.gameObject.SetActive(active);
+    }
     /// <summary>
     /// Abstract Factory để lấy equipment từ các collection khác nhau
     /// </summary>
@@ -109,6 +115,12 @@ public class UIManager : BaseBehaviour
         item.InitIcon(item.icon.sprite, item.frame.sprite);
     }
 
+    public void InsertIcon(GameObject gameObject)
+    {
+        var parent = listIcons.OrderBy(x => x.childCount).FirstOrDefault();
+        gameObject.transform.SetParent(parent);
+        UpdateButtonListPos();
+    }
     public void InitVisualEquipment(ItemInventory item, BaseItemData data, ItemRef itemRef = null)
     {
         Sprite frame = null;
@@ -206,7 +218,37 @@ public class UIManager : BaseBehaviour
 
     public Image commonMask;
     public GameObject panelGroup;
-    private Tween openListTween;
+
+    private Vector2 GetButtonListPos(RectTransform buttonRectTf)
+    {
+        Canvas.ForceUpdateCanvases();
+        float maxWidth = 0;
+        if (isShowListIcon)
+        {
+            foreach (var listRectTf in listIcons)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(listRectTf);
+                var width = listRectTf.rect.width;
+                if (width > maxWidth)
+                {
+                    maxWidth = width;
+                }
+            }
+        }
+        var anchorPos = buttonRectTf.anchoredPosition;
+        var posX = -(maxWidth + buttonRectTf.rect.width);
+        anchorPos.x = posX;
+        return anchorPos;
+    }
+    public void UpdateButtonListPos()
+    {
+        DOVirtual.DelayedCall(0.1f, () =>
+        {
+            var buttonRectTf = btnListIconShow.GetComponent<RectTransform>();
+            var anchorPos = GetButtonListPos(buttonRectTf);
+            buttonRectTf.anchoredPosition = anchorPos;
+        });
+    }
     private void Awake()
     {
         var existing = Pool.Get<UIManager>();
@@ -227,22 +269,32 @@ public class UIManager : BaseBehaviour
         SetEventButton(btnBXH, () => { Pool.Get<RankPanel>().DoShow(); });
         SetEventButton(btnListIconShow, () =>
         {
-            openListTween?.Kill();
-            var listRectTf = ListIcon.GetComponent<RectTransform>();
-            if (isShowListIcon)
+            listIconTween?.Kill();
+            isShowListIcon = !isShowListIcon;
+            listIconTween = DOTween.Sequence();
+            foreach (var listRectTf in listIcons)
             {
-                openListTween = listRectTf.DOAnchorPosX(0, 0.5f);
-                isShowListIcon = false;
-            }
-            else
-            {
-                var layout = listRectTf.GetComponent<HorizontalLayoutGroup>();
-                var spacing = layout.spacing;
+                if (listRectTf == null)
+                    continue;
                 var width = listRectTf.rect.width;
-                var buttonWidth = btnListIconShow.GetComponent<RectTransform>().rect.width;
-                var xValue = width - buttonWidth - spacing;
-                openListTween = listRectTf.DOAnchorPosX(xValue, 0.5f);
-                isShowListIcon = true;
+                var btnRect = btnListIconShow.GetComponent<RectTransform>();
+                var targetButtonPos = GetButtonListPos(btnRect);
+                listIconTween.Join(
+                    btnRect.DOAnchorPos(targetButtonPos, 0.3f)
+                );
+                var xValue = width;
+                if (!isShowListIcon)
+                {
+                    listIconTween.Join(
+                        listRectTf.DOAnchorPosX(xValue, 0.25f)
+                    );
+                }
+                else
+                {
+                    listIconTween.Join(
+                        listRectTf.DOAnchorPosX(0, 0.25f)
+                    );
+                }
             }
         });
         SetEventButton(btnGacha, () => { Pool.Get<GachaPanel>().SetActive(); });
@@ -271,6 +323,7 @@ public class UIManager : BaseBehaviour
         {
             item.Init();
         }
+        UpdateButtonListPos();
     }
 
     private void OnDestroy()

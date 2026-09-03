@@ -32,14 +32,14 @@ public class ChanLongHuyetNo : ThanThong, IMemorySerializable<ChanLongHuyetNo>
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is ChanLongHuyetNo))
         {
             currentTurn.RemoveOneThanThongImpactAfterPlaySkill(this);
-            targetTurn.AddDamageData(new List<int>{targetTurn.allDamages[0]});
+            targetTurn.AddDamageData(new List<int>{targetTurn.GetDameBuffForTarget()});
         }
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanLongChiHuyet, out SecureInt buff);
-        if (buff > require && base.IsCanUse(caster, target))
+        if (buff >= require && base.IsCanUse(caster, target))
         {
             return true;
         }

@@ -1,4 +1,6 @@
 using Base;
+using LuyenDan;
+using LuyenDan.Inventory;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -37,7 +39,7 @@ namespace ConvertElementalSkill
         private GameObject hoverHighlight;
 
         public SkillData SkillData { get; private set; }
-
+        
         [Button]
         public virtual void GetReference()
         {
@@ -115,6 +117,25 @@ namespace ConvertElementalSkill
             }
         }
 
+        public virtual void SetData(IItemData itemData, ItemRef itemRef)
+        {
+            bool hasItem = itemData != null;
+            if (emptySlot != null) emptySlot.SetActive(!hasItem);
+            if (filledSlot != null) filledSlot.SetActive(hasItem);
+            if (!hasItem) return;
+            if (itemIcon != null) itemIcon.sprite = itemData.Icon;
+            if (itemNameText != null) itemNameText.text = itemData.Name;
+            SetCount(itemRef.Count);
+            var quaility = CoreConfig.Instance.FindQuality(itemData.Tier);
+            SetQuality(quaility);
+        }
+
+        private void SetQuality(Quality quality)
+        {
+            if (qualityBackground != null) qualityBackground.sprite = quality.Background;
+            if (qualityIconUp != null) qualityIconUp.sprite = quality.IconUp;
+            if (itemNameText != null) itemNameText.color = quality.Color;
+        }
         public void SetData(SkillData skillData)
         {
             if (SkillData != null)

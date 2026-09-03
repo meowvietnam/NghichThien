@@ -53,12 +53,12 @@ namespace CreateCharacter
         public void RelationshipAddValue(Relationship relationship, int value)
         {
             var newValue = relationship.Points + value;
-            relationship.Points = (ushort)newValue;
+            relationship.Points = newValue;
         }
         public void RelationshipSetValue(ushort npcId, int value)
         {
             var relationship = GetRelationship(npcId);
-            relationship.Points = (ushort)value;
+            relationship.Points = value;
          
         }
         public void RelationshipAddValue(ushort npcId, int value)

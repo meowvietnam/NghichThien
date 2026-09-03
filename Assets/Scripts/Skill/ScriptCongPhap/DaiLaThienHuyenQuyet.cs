@@ -17,7 +17,7 @@ public class DaiLaThienHuyenQuyet : CongPhap, IMemorySerializable<DaiLaThienHuye
         if (caster.congPhapDynamic.Count(x => x.congPhap is DaiLaThienHuyenQuyet) >= requires[CurrentLevelCongPhapInCombat(caster) - 1])
         {
             RemoveCongPhap(caster);
-            target.AddDamageData(new List<int>{target.allDamages[0]});
+            target.AddDamageData(new List<int>{target.GetDameBuffForTarget()});
         }
         else
         {

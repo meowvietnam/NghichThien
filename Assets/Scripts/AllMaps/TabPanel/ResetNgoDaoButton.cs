@@ -21,7 +21,7 @@ namespace AllMaps.NgoDaoTabPanel
         private void OnClick()
         {
             var popup = Pool.Get<PopupConfirmAction>();
-            popup.ShowPopConfirmAction("Bạn có chắc chắn muốn sử dụng 500 Linh thạch để Tái Ngộ Đạo? Sau khi xác nhận, tiến trình Ngộ Đạo hiện tại sẽ được đặt lại và hoàn lại toàn bộ Ngộ đạo điểm.", Confirm);
+            popup.ShowPopConfirmAction("Bạn có chắc chắn muốn sử dụng 500 Tiên ngọc để Tái Ngộ Đạo? Sau khi xác nhận, tiến trình Ngộ Đạo hiện tại sẽ được đặt lại và hoàn lại toàn bộ Ngộ đạo điểm.", Confirm);
         }
 
         private async void Confirm()
@@ -34,6 +34,7 @@ namespace AllMaps.NgoDaoTabPanel
             if (result.Success)
             {
                 var charData = client.CharacterData;
+                charData.MoneyVip = result.MoneyVip;
                 charData.Progression.NgoDaoDiem = result.NewNgoDaoDiem;
                 charData.InventoryManager.NgoDaos = result.NgoDaos;
                 charData.Stats.ApplyFrom(result.Stats);

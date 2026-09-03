@@ -46,7 +46,7 @@ public class ThongMoc : NgoDaoCombat, IMemorySerializable<ThongMoc>
         // 2. Kiểm tra xem có debuff nào để xóa không
         if (debuffKeys.Count > 0)
         {
-            target.AddDamageData(new List<int>{(int)(target.allDamages[0] * buff * debuffKeys.Count / 100)});
+            target.AddDamageData(new List<int>{(int)(target.GetDameBuffForTarget() * buff * debuffKeys.Count / 100)});
         }
     }
 

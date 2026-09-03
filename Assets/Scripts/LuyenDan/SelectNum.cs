@@ -79,7 +79,7 @@ namespace LuyenDan
         }
         public int GetValue()
         {
-            return (int)slider.value;
+            return Mathf.RoundToInt(slider.value);
         }
 
         private void OnDestroy()

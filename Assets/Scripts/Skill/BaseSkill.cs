@@ -230,7 +230,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
 
     public interface ThanThuc
     {
-        public abstract void ExecuteThanThuc(CharacterCombat caster, CharacterCombat target);
+        public abstract void  ExecuteThanThuc(CharacterCombat caster, CharacterCombat target);
     }
 
     public virtual string GetDesc(int daiCanhGioi)
@@ -652,7 +652,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                 break;
             case EBuffAndDeBuff.QuyTon:
                 text =
-                    $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 4 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 1500";
+                    $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 4 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 1500 + 40% Hp tối đa của người sở hữu";
                 break;
             case EBuffAndDeBuff.HonLuc:
                 text = $"Mỗi tổn thương 1 điểm sẽ giải trừ 1 tầng, tiêu hao hết Quỷ Hồn tiêu tan";
@@ -674,19 +674,19 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                 break;
             case EBuffAndDeBuff.QuyLinh:
                 text =
-                    $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 1 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 150";
+                    $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 1 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 150 + 10% Hp tối đa của người sở hữu";
                 break;
             case EBuffAndDeBuff.QuyBinh:
                 text =
-                    $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 2 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 300";
+                    $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 2 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 300 + 20% Hp tối đa của người sở hữu";
                 break;
             case EBuffAndDeBuff.QuyTuong:
                 text =
-                    $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 3 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 500";
+                    $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 3 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 500 + 30% Hp tối đa của người sở hữu";
                 break;
             case EBuffAndDeBuff.QuyDe:
                 text =
-                    $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 5 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 5000";
+                    $"Bắt đầu hiệp, mỗi {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}, đối thủ nhận ngẫu nhiêu 5 lần trạng thái tiêu cực. Đồng thời, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HonLuc)} khôi phục lại 5000 + 50% Hp tối đa của người sở hữu";
                 break;
             case EBuffAndDeBuff.KiemTam:
                 text =
@@ -914,7 +914,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
 
         return text;
     }
-
+   
     public string GetTextTypeSkill()
     {
         string text = string.Empty;
@@ -931,6 +931,36 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
         return GetColoredText($"{text}", "#ffb143");
     }
 
+    public static string GetTextTiersSkill(ETierSkill[] tiers)
+    {
+        var tierTexts = new HashSet<string>();
+        foreach (var tier in tiers)
+        {
+            string text = string.Empty;
+            switch (tier)
+            {
+                case ETierSkill.None:
+                    break;
+                case ETierSkill.NhanGiaiHa:
+                case ETierSkill.NhanGiaiTrung:
+                case ETierSkill.NhanGiaiThuong:
+                    text = "Nhân Giai";
+                    break;
+                case ETierSkill.DiaGiaiHa:
+                case ETierSkill.DiaGiaiTrung:
+                case ETierSkill.DiaGiaiThuong:
+                    text = "Địa Giai";
+                    break;
+                case ETierSkill.ThienGiaiHa:
+                case ETierSkill.ThienGiaiTrung:
+                case ETierSkill.ThienGiaiThuong:
+                    text = "Thiên Giai";
+                    break;
+            }
+            tierTexts.Add(text);
+        }
+        return string.Join(", ", tierTexts);
+    } 
     public static string GetTextTierSkill(ETierSkill eTierSkill)
     {
         string text = string.Empty;

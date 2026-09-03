@@ -79,7 +79,7 @@ public class ThanKiemQuyet : CongPhap, IMemorySerializable<ThanKiemQuyet>
     {
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
         Observer.AddObserver(EventList.Combat.CHARACTER_TAKE_DAME_BY_STATIC, ExecuteParams2);
-        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ExecuteParams3);
+        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ExecuteParams3);
     }
 
     public override int ByteSize()

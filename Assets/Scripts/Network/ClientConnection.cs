@@ -17,6 +17,12 @@ namespace Network
             AddProtocol(TcpClient);
             TcpClient.StartRead();
         }
+
+        public override bool ValidatePacketSize(int size)
+        {
+            return size < 1024 * 1024 * 128;
+        }
+
         public void AddReconnectedListener(Action onReconnected)
         {
             TcpClient.ReconnectedSuccess += onReconnected;
