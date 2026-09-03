@@ -489,8 +489,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             {
                 thanThongThanThuc.ExecuteThanThuc(caster, target);
             }
-            target.NotifyEventCaculateDameForCongPhap(caster);
-            target.TakeDame(caster, !thanThong.GetEKeywordSkillHave().Contains(BaseSkill.EKeyWord.ChanThucTonThuong));
+            target.TakeDameForThanThong(caster, !thanThong.GetEKeywordSkillHave().Contains(BaseSkill.EKeyWord.ChanThucTonThuong));
             if (thanThong.timeDelayTakeDame > 0)
             {
                 isDelayEffectSkill = true;

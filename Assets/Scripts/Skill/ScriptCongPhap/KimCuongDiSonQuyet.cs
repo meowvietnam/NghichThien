@@ -18,13 +18,15 @@ public class KimCuongDiSonQuyet : CongPhap, IMemorySerializable<KimCuongDiSonQuy
     {
         if (caster.characterStatsTemp.hp >= caster.characterStatsTemp.hpMax * (require / 100f))
         {
-            target.AddDamageData(new List<int>{(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100)});
+            int dame = target.GetDameBuffForTarget();
+            Debug.Log("Kim cuong di son quỷt + " + dame);
+            target.AddDamageData(new List<int>{(int)(dame * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100)});
         }
     }
 
     public override string GetDesc(int level)
     {
-        return $"Nếu HP bản thân cao hơn {GetColoredText($"{require}%", "red")} thì thần thông sát thương tăng lên {GetColoredText($"{buffValues[level - 1]}%", "red")}";
+        return $"Nếu HP bản thân cao hơn {GetColoredText($"{require}%", "red")} thì gây ra tổn thương tăng lên {GetColoredText($"{buffValues[level - 1]}%", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)
