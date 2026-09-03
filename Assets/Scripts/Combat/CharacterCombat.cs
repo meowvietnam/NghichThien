@@ -1519,15 +1519,23 @@ public class CharacterCombat : MonoBehaviour
             Observer.Notify(EventList.Combat.CHARACTER_TAKE_DAME_BY_STATIC, sender, this, newListDames, eTypeSkils);
 
         }
+        TakeDameForStatic(sender,isDef);
+    }
+    public void TakeDameForStatic(CharacterCombat sender, bool isDef)
+    {
+        TakeDame(sender, isDef);
+
+    }
+    public void TakeDameForThanThong(CharacterCombat sender, bool isDef)
+    {
+        NotifyEventCaculateDameForCongPhap(sender);
         TakeDame(sender,isDef);
     }
     [Button]
-    public void  TakeDame(CharacterCombat sender , bool isDef)
+    private void TakeDame(CharacterCombat sender , bool isDef)
     {
         if(sender != null)
         {
-            NotifyEventCaculateDameForCongPhap(sender);
-
             if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt hoaDiem))
             {
                 sender.TakeDameByStatic(this, new List<int> { hoaDiem }, false, new[] { BaseSkill.ETypeSkill.Hoa });
