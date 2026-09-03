@@ -1608,7 +1608,6 @@ public class CharacterCombat : MonoBehaviour
 
         }
         allDamages.Clear();
-        allDamages.Add(0);
     }
     private void TakeDame(CharacterCombat sender ,int dame , bool isDef)
     {
