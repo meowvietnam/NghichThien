@@ -17,7 +17,7 @@ public class VanTuongTrienThanQuyet : CongPhap, IMemorySerializable<VanTuongTrie
     {
         int require = requireActive[CurrentLevelCongPhapInCombat(caster) - 1];
         int trienNhieu = buffValues[CurrentLevelCongPhapInCombat(caster) - 1];
-        int dame = target.allDamages[0];
+        int dame = target.GetDameBuffForTarget();
         if (CheckIsEqualETypeSkill(caster) && dame >= require)
         {
             target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieu);

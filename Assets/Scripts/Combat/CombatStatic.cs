@@ -1,4 +1,5 @@
 ﻿using LongDH.LongDHModules;
+using Skill;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -176,28 +177,29 @@ public class CombatStatic : MonoBehaviour
                 buff.ActiveAnim();
             });
         }
+        int valueBuffHpQuy = (int)((ThanThong.GetDaiCanhGioi(charActive.characterStatsBase.level.Value) * 0.1f) * charActive.characterStatsBase.hpMax.Value);
         if (charActive.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyLinh, out SecureInt QuyLinh))
         {
-            ActiveQuyTon(1,150 , EBuffAndDeBuff.QuyLinh);
+            ActiveQuyTon(1, 150 + valueBuffHpQuy, EBuffAndDeBuff.QuyLinh);
         }
         if (charActive.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyBinh, out SecureInt QuyBinh))
         {
-            ActiveQuyTon(2,300, EBuffAndDeBuff.QuyBinh);
+            ActiveQuyTon(2,300 + valueBuffHpQuy, EBuffAndDeBuff.QuyBinh);
 
         }
         if (charActive.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyTuong, out SecureInt QuyTuong))
         {
-            ActiveQuyTon(3,500, EBuffAndDeBuff.QuyTuong);
+            ActiveQuyTon(3,500 + valueBuffHpQuy, EBuffAndDeBuff.QuyTuong);
 
         }
         if (charActive.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyTon, out SecureInt quyTon))
         {
-            ActiveQuyTon(4,1500, EBuffAndDeBuff.QuyTon);
+            ActiveQuyTon(4,1500 + valueBuffHpQuy, EBuffAndDeBuff.QuyTon);
 
         }
         if (charActive.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyDe, out SecureInt QuyDe))
         {
-            ActiveQuyTon(5,5000, EBuffAndDeBuff.QuyDe);
+            ActiveQuyTon(5,5000 + valueBuffHpQuy, EBuffAndDeBuff.QuyDe);
 
         }
 

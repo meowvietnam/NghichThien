@@ -11,7 +11,7 @@ public class LoanHon : NgoDaoCombat, IMemorySerializable<LoanHon>
     {
         if (target.GetThanThuc() <= 0)
         {
-            target.AddDamageData(new List<int>{target.allDamages[0] * buff / 100});
+            target.AddDamageData(new List<int>{target.GetDameBuffForTarget() * buff / 100});
         }
     }
 

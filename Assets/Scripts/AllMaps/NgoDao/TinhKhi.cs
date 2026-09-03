@@ -14,7 +14,7 @@ public class TinhKhi : NgoDaoCombat, IMemorySerializable<TinhKhi>
     {
         if (target.oldTurnDameTaked != null && target.oldTurnDameTaked.Value <= 0)
         {
-            target.AddDamageData(new List<int>{target.allDamages[0] * buff / 100});
+            target.AddDamageData(new List<int>{target.GetDameBuffForTarget() * buff / 100});
         }
     }
 

@@ -17,6 +17,7 @@ namespace Network.Models
         public int Money { get; set; }
         public int MoneyVip { get; set; }
         public ETypeGacha Type { get; set; }
+        public BaseSkill.ETypeSkill Skill { get; set; }
         public int TotalGacha { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Base;
 using CreateCharacter;
+using LongDHModules;
 using LuyenDan;
 using MemoryPack;
 using Network;
@@ -61,6 +63,7 @@ namespace IAP
             {
                 gameObject.SetActive(false);
             }
+            Pool.Get<UIManager>().UpdateButtonListPos();
         }
 
         public void InitUI(IapUIContext context)
@@ -77,6 +80,7 @@ namespace IAP
             startPackUI.ThisPopup.Hide();
             var btnStartPack = Object.Instantiate(context.BtnStartPackPrefab, context.IconListContainer);
             btnStartPack.transform.SetAsLastSibling();
+            Pool.Get<UIManager>().UpdateButtonListPos();
             BaseBehaviour.SetEventButton(btnStartPack, () => { startPackUI.ThisPopup.Show(); });
             var listGameObjects = new List<GameObject>();
             listGameObjects.Add(startPackUI.gameObject);

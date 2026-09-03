@@ -41,6 +41,7 @@ public class NghichMach : ThanThong, IMemorySerializable<NghichMach>
         {
             List<NghichMach> listThisSkill = currentTurn.specialThanThongImpactAfterPlaySkill.OfType<NghichMach>().ToList();
             int heal = listThisSkill.Count * dames.Sum();
+            Debug.Log("heal "+ heal + "count nghich maach " + listThisSkill.Count + "dame sum" + dames.Sum());
             currentTurn.Healing(heal);
             currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
         }

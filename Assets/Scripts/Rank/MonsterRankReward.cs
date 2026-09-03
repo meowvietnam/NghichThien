@@ -16,10 +16,10 @@ namespace Rank
         public long Id { get; set; }
         public bool IsClaim { get; set; }
         public int RequirePoints { get; set; }
-        public List<IMonsterRankReward> Rewards { get; set; } = new ();
+        public List<IEventReward> Rewards { get; set; } = new ();
         [MemoryPackIgnore]
         private Button claimButton;
-        public void ShowUI(MonsterRankRewardUIContext context)
+        public void ShowUI(RewardUIContext context)
         {
             context.RequirePointsText.text = $"{Utils.FormatCount(context.Points)}/{Utils.FormatCount(RequirePoints)}";
             claimButton = context.ClaimButton;

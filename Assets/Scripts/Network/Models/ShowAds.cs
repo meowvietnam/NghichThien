@@ -10,7 +10,8 @@ namespace Network.Models
         ReloadTask,
         ReloadShop,
         RewardCombat,
-        SideQuest
+        SideQuest,
+        ReloadDpShop
     }
     [MemoryPackable]
     [MemoryPackUnion(0, typeof(ArenaAds))]
@@ -19,6 +20,7 @@ namespace Network.Models
     [MemoryPackUnion(3, typeof(ReloadShopAds))]
     [MemoryPackUnion(4, typeof(RewardCombatAds))]
     [MemoryPackUnion(5, typeof(WatchAdsSideQuest))]
+    [MemoryPackUnion(6, typeof(ReloadDpShopAds))]
     public abstract partial class ShowAds
     {
 		public string Location { get; set; }

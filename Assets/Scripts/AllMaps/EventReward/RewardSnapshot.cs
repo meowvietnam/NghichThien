@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Events;
 using LuyenDan;
 using MemoryPack;
 using Network;
@@ -13,6 +14,7 @@ namespace AllMaps.EventReward
     {
         public RewardItems RewardItems;
         public List<ItemRef> ItemRefs;
+        public List<ItemEvent> itemEvents;
         public int Money;
         public int MoneyVip;
         public void AddReward(RewardSnapshot reward)
@@ -31,6 +33,23 @@ namespace AllMaps.EventReward
                     else
                     {
                         ItemRefs.Add(item);
+                        dict[item.Id] = item;
+                    }
+                }
+            }
+            if (itemEvents != null && reward.itemEvents != null)
+            {
+                Debug.Log(itemEvents.Count);
+                var dict = itemEvents.ToDictionary(x => x.Id);
+                foreach (var item in reward.itemEvents)
+                {
+                    if (dict.TryGetValue(item.Id, out var exist))
+                    {
+                        exist.Count += item.Count;
+                    }
+                    else
+                    {
+                        itemEvents.Add(item);
                         dict[item.Id] = item;
                     }
                 }

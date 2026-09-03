@@ -181,7 +181,7 @@ namespace AllMaps.DauTruong
             var ui = Pool.Get<UIManager>();
             ui.panelGroup.SetActive(false);
             ui.commonMask.gameObject.SetActive(false);
-            ui.ListIcon.gameObject.SetActive(false);
+            ui.SetActiveListIcon(false);
             InitRewards();
             SetProgress();
             parent.SetActive(true);

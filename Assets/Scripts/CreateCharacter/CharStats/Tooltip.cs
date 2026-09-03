@@ -1,5 +1,5 @@
-using System;
 using DG.Tweening;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,12 +47,15 @@ namespace CreateCharacter.CharStats
             this.text.text = text;
         }
         
-        public void DoShow()
+        public void DoShow(int sign = 1,System.Action completeAction = null)
         {
             tween?.Kill();
             thisTransform.localScale = Vector3.zero;
             SetActive(true);
-            tween = thisTransform.DOScale(Vector3.one*1.5f, 0.15f);
+            tween = thisTransform.DOScale(new Vector3(1*sign,1,1)*1.5f, 0.15f).OnComplete(() =>
+            {
+                completeAction?.Invoke();
+            });
         }
 
         public void DoHide()

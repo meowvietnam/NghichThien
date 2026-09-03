@@ -36,7 +36,6 @@ public class PopupInfor : Popup
         textNamePopXemXet.text = characterStatsTarget.nameUser;
         charVisualPopXemXet.SetGender(characterStatsTarget.Gender);
         charVisualPopXemXet.SetSkin(characterStatsTarget.Skins, characterStatsTarget.Colors);
-        Debug.Log(characterStatsTarget.Skins.Count);
         textThanThuc.text = characterStatsTarget.thanThuc.Value.ToString();
         textTocDoBay.text = characterStatsTarget.tocDoBay.Value.ToString();
         textNgoTinh.text = characterStatsTarget.ngoTinh.Value.ToString();

@@ -15,7 +15,8 @@ public class ThonNhatThanVienBien : CongPhap, IMemorySerializable<ThonNhatThanVi
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         // có trong dynamic 
-        target.AddDamageData(new List<int>{(int)(target.allDamages[0] * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100)}, true);
+        Debug.Log($"[ThonNhatThanVienBien] Execute: caster={caster.name}, target={target.name}, buffValue={buffValues[CurrentLevelCongPhapInCombat(caster) - 1]}");
+        target.AddDamageData(new List<int>{(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100)}, true);
         RemoveCongPhap(caster);
     }
 

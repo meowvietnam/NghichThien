@@ -55,6 +55,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         { EMapType.DatPhongThanh, "S20" },
         { EMapType.QuangLangThanh, "S29" },
         { EMapType.ThienCoCac, "S21" },
+        { EMapType.DongPhu, "DongPhu" },
     };
 
     public static Dictionary<EMapType, string> dictMapTypeWithName = new Dictionary<EMapType, string>()
@@ -233,17 +234,17 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         { Tier.NhiPham, 3 },
         { Tier.TamPham, 5 },
         { Tier.TuPham, 8 },
-        { Tier.NguPham, 11 },
-        { Tier.LucPham, 15 },
+        { Tier.NguPham, 15 },
+        { Tier.LucPham, 20 },
     };
 
     public static Dictionary<EquipmentTier, int> tierEquipmentWithLevel = new Dictionary<EquipmentTier, int>
     {
-        { EquipmentTier.PhuKhi, 3 },
-        { EquipmentTier.PhapKhi, 6 },
-        { EquipmentTier.PhapBao, 9 },
-        { EquipmentTier.ThuanDuong, 12 },
-        { EquipmentTier.ThongThien, 15 },
+        { EquipmentTier.PhuKhi, 5},
+        { EquipmentTier.PhapKhi, 8 },
+        { EquipmentTier.PhapBao, 11 },
+        { EquipmentTier.ThuanDuong, 18 },
+        { EquipmentTier.ThongThien, 25 },
     };
 
     public static Dictionary<int, ETypeVisualChar> levelWithVisualChar = new Dictionary<int, ETypeVisualChar>
@@ -300,7 +301,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             return;
         }
         Pool.Get<UIManager>().panelGroup.SetActive(true);
-        Pool.Get<UIManager>().ListIcon.gameObject.SetActive(true);
+        Pool.Get<UIManager>().SetActiveListIcon(true);
         string backScene = listSceneLoaded[index - 1];
         listSceneLoaded.Remove(currentScene);
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
@@ -391,7 +392,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         if (enemyCombat == null) return;
         Pool.Get<UIManager>().panelGroup.SetActive(false);
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
-        Pool.Get<UIManager>().ListIcon.gameObject.SetActive(false);
+        Pool.Get<UIManager>().SetActiveListIcon(false);
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         Observer.Notify(EventList.GamePlay.LOAD_SCENE, "Combat");
 
@@ -408,7 +409,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         
         Pool.Get<UIManager>().panelGroup.SetActive(false);
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
-        Pool.Get<UIManager>().ListIcon.gameObject.SetActive(false);
+        Pool.Get<UIManager>().SetActiveListIcon(false);
         Pool.Get<PrepareCombatPanel>().Hide();
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         if (currentETypeCombat == ETypeCombat.LuanBan)
@@ -487,7 +488,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     {
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         Pool.Get<UIManager>().panelGroup.SetActive(true);
-        Pool.Get<UIManager>().ListIcon.gameObject.SetActive(true);
+        Pool.Get<UIManager>().SetActiveListIcon(true);
         ReleaseGroupSkillEffect();
         currentECombatResult = eCombatResult;
         string backScene = listSceneLoaded[listSceneLoaded.Count-1];

@@ -12,12 +12,12 @@ public class ThongKim : NgoDaoCombat, IMemorySerializable<ThongKim>
     {
         if (target.characterStatsTemp.hp < target.characterStatsTemp.hpMax * 50 / 100)
         {
-            target.AddDamageData(new List<int>{target.allDamages[0]});
+            target.AddDamageData(new List<int>{target.GetDameBuffForTarget()});
         }
         else
         {
             float percentHpLost = (target.characterStatsTemp.hpMax - target.characterStatsTemp.hp) / target.characterStatsTemp.hpMax;
-            target.AddDamageData(new List<int>{(int)(target.allDamages[0] * percentHpLost)});
+            target.AddDamageData(new List<int>{(int)(target.GetDameBuffForTarget() * percentHpLost)});
         }
     }
 
