@@ -163,7 +163,17 @@ namespace AllMaps
                 item.transition = Selectable.Transition.ColorTint;
             }
         }
-
+        [Button]
+        private void FixVisualStrongHoldText(float scale)
+        {
+            foreach (var item in maps)
+            {
+                if(item is Stronghold strongHold)
+                {
+                    strongHold.transform.GetChild(0).transform.localScale = Vector3.one * scale;
+                }    
+            }
+        }
         public void OnMoveToMapResult(MoveToMapResult result)
         {
             NetworkManager.Instance.Invoke(() =>
