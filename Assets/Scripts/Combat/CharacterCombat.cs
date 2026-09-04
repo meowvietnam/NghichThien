@@ -518,10 +518,14 @@ public class CharacterCombat : MonoBehaviour
         if (key == null)
         {
             Debug.Log("key null");
+            key = thanThong;
             skillTichLuy.Add(thanThong, ValueNeedSave);
-            return false;
         }
-        skillTichLuy[key] += ValueNeedSave;
+        else
+        {
+            skillTichLuy[key] += ValueNeedSave;
+
+        }
 
         // 3. Kiểm tra số lượng tích lũy
         if (skillTichLuy[key] >= require)
