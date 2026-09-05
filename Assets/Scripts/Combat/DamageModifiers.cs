@@ -218,7 +218,7 @@ public class GiamTonThuongDecorator : BaseDamageModifier
 
         if (_defender != null && _defender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.GiamTonThuong, out SecureInt giamTonThuong))
         {
-            damage -= giamTonThuong;
+            damage -= (int)(damage * giamTonThuong/100f);
         }
 
         return Mathf.Clamp(damage, 0, int.MaxValue);
@@ -242,7 +242,8 @@ public class BuffDameDecorator : BaseDamageModifier
 
         if (_character != null && _character.buffAndDebuffCount.TryGetValue(_type, out SecureInt value))
         {
-            damage += value;
+
+            damage += (int)(damage * value / 100f);
         }
 
         return Mathf.Clamp(damage, 0, int.MaxValue);

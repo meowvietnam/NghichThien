@@ -1389,7 +1389,7 @@ public class CharacterCombat : MonoBehaviour
 
 
     }
-    public void NotifyEventCaculateDameForCongPhap(CharacterCombat sender)
+    public void NotifyEventCaculateDameForCongPhapFromThanThong(CharacterCombat sender)
     {
         if(allDamages.All(x=>x <=0))
         {
@@ -1428,7 +1428,7 @@ public class CharacterCombat : MonoBehaviour
             damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.NguThanThucHiep, eTypeSkils);
             damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.NguKhiHiep, eTypeSkils);
             // Apply SucLuc and Diem
-            damageModifier = new BuffDameDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.SucLuc);
+            //damageModifier = new BuffDameDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.SucLuc);
             damageModifier = new OffensiveBuffDecorator(damageModifier, dames[0], sender, EBuffAndDeBuff.Diem, eTypeSkils);
 
             // Apply defender's damage reductions (DeTonThuong)
@@ -1532,7 +1532,7 @@ public class CharacterCombat : MonoBehaviour
     }
     public void TakeDameForThanThong(CharacterCombat sender, bool isDef)
     {
-        NotifyEventCaculateDameForCongPhap(sender);
+        NotifyEventCaculateDameForCongPhapFromThanThong(sender);
         TakeDame(sender,isDef);
     }
     [Button]
