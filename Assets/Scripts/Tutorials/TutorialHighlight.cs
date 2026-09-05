@@ -884,8 +884,8 @@ namespace Tutorials
 
         public void Hide()
         {
-            
             if (isMoving) return;
+            if (dialogText.IsTyping) return;            
             if (OnClose == null ||
                 !OnClose())
             {
