@@ -8,17 +8,17 @@ namespace Tutorials
 {
     public class TutorialHighlight : BaseBehaviour
     {
-        [Header("References")]
-        [SerializeField] private Image top;
+        [Header("References")] [SerializeField]
+        private Image top;
+
         [SerializeField] private Image bottom;
         [SerializeField] private Image left;
         [SerializeField] private Image right;
-        
+
         [SerializeField] private RectTransform highlight;
         [SerializeField] private DialogText dialogText;
         [SerializeField] private Vector2 dialogOffset;
-        [Header("Animation")]
-        [SerializeField] private float showDuration = 0.2f;
+        [Header("Animation")] [SerializeField] private float showDuration = 0.2f;
         [SerializeField] private float moveDuration = 0.25f;
         [SerializeField] private float hideDuration = 0.2f;
 
@@ -26,12 +26,10 @@ namespace Tutorials
         [SerializeField] private Ease moveEase = Ease.OutQuad;
         [SerializeField] private Ease hideEase = Ease.InBack;
 
-        [Header("Highlight")]
-        [SerializeField] private Vector2 padding = new Vector2(10f, 10f);
+        [Header("Highlight")] [SerializeField] private Vector2 padding = new Vector2(10f, 10f);
 
-        [Header("Input")]
-        [SerializeField] private bool clickDarkAreaToHide = true;
-        
+        [Header("Input")] [SerializeField] private bool clickDarkAreaToHide = true;
+
         private Canvas canvas;
         private RectTransform canvasRect;
         private Camera worldCamera;
@@ -44,7 +42,8 @@ namespace Tutorials
 
         private bool isMoving;
         private bool isVisible;
-        public event Action OnClose;
+        public event Func<bool> OnClose;
+
         private void Awake()
         {
             canvas = GetComponentInParent<Canvas>();
@@ -89,6 +88,7 @@ namespace Tutorials
 
             ShowInternal(text);
         }
+
         private void UpdateDialogPosition(
             Vector2 targetPosition,
             Vector2 targetSize)
@@ -122,6 +122,7 @@ namespace Tutorials
                     targetRight + dialogOffset.x,
                     targetTop + dialogOffset.y);
         }
+
         private void ShowInternal(string text)
         {
             KillTweens();
@@ -151,8 +152,7 @@ namespace Tutorials
             dialogText.ShowText(text);
         }
 
-
-        public void MoveTo(RectTransform target)
+        public void MoveTo(RectTransform target, string text)
         {
             if (target == null)
                 return;
@@ -160,10 +160,10 @@ namespace Tutorials
             uiTarget = target;
             worldTarget = null;
 
-            MoveToTarget();
+            MoveToTarget(text);
         }
 
-        public void MoveTo(Renderer target)
+        public void MoveTo(Renderer target, string text)
         {
             if (target == null)
                 return;
@@ -171,25 +171,23 @@ namespace Tutorials
             uiTarget = null;
             worldTarget = target;
 
-            MoveToTarget();
+            MoveToTarget(text);
         }
 
-        private void MoveToTarget()
+        private void MoveToTarget(string text)
         {
             if (!isVisible)
             {
-                ShowInternal(string.Empty);
+                ShowInternal(text);
                 return;
             }
 
             highlightTween?.Kill();
-
+            dialogText?.Close();
             GetTargetBounds(
                 out Vector2 targetPosition,
                 out Vector2 targetSize);
-
             isMoving = true;
-
             highlightTween = DOTween.Sequence()
                 .Join(
                     highlight
@@ -211,9 +209,11 @@ namespace Tutorials
                     isMoving = false;
 
                     UpdateHighlightImmediate();
+
+                    // Move xong mới hiện dialog với text mới
+                    dialogText?.ShowText(text);
                 });
         }
-
 
         private void GetTargetBounds(
             out Vector2 position,
@@ -594,41 +594,36 @@ namespace Tutorials
 
         public void Hide()
         {
-            KillTweens();
+            if (OnClose == null || OnClose())
+            {
+                KillTweens();
+                isMoving = false;
+                if (!isVisible)
+                    return;
+                isVisible = false;
+                overlayTween = DOTween.To(
+                        () => GetPanelAlpha(),
+                        SetPanelsAlpha,
+                        0f,
+                        hideDuration)
+                    .SetEase(Ease.Linear);
+                highlightTween = highlight
+                    .DOScale(
+                        Vector3.zero,
+                        hideDuration)
+                    .SetEase(hideEase)
+                    .OnComplete(() =>
+                    {
+                        SetPanelActive(false);
 
-            isMoving = false;
+                        highlight.gameObject
+                            .SetActive(false);
 
-            if (!isVisible)
-                return;
-
-            isVisible = false;
-
-            // Fade panels
-            overlayTween = DOTween.To(
-                    () => GetPanelAlpha(),
-                    SetPanelsAlpha,
-                    0f,
-                    hideDuration)
-                .SetEase(Ease.Linear);
-
-            // Scale highlight
-            highlightTween = highlight
-                .DOScale(
-                    Vector3.zero,
-                    hideDuration)
-                .SetEase(hideEase)
-                .OnComplete(() =>
-                {
-                    SetPanelActive(false);
-
-                    highlight.gameObject
-                        .SetActive(false);
-
-                    uiTarget = null;
-                    worldTarget = null;
-                    OnClose?.Invoke();
-                });
-            dialogText.Close();
+                        uiTarget = null;
+                        worldTarget = null;
+                    });
+                dialogText.Close();
+            }
         }
 
         // ============================================================
