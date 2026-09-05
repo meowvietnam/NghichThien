@@ -32,7 +32,7 @@ public class ThanNiemQuyet : ThanThong, BaseSkill.ThanThuc, IMemorySerializable<
         remainThanThuc = Mathf.Clamp(remainThanThuc, 0, int.MaxValue);
         int dame = remainThanThuc * buffValues[GetIndexLevelThanThong(caster)];
         Debug.Log("dame thần thức " + dame);
-        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int>{dame}, true, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill, true);
     }
 
     public override string GetDesc(int level)

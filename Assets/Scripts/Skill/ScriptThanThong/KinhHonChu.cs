@@ -21,7 +21,7 @@ public class KinhHonChu : ThanThong, BaseSkill.ThanThuc, IMemorySerializable<Kin
     public void ExecuteThanThuc(CharacterCombat caster, CharacterCombat target)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int>{dame}, true, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill,true);
     }
 
     public override string GetDesc(int level)

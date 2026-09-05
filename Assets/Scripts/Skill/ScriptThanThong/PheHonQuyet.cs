@@ -24,7 +24,7 @@ public class PheHonQuyet : ThanThong, BaseSkill.ThanThuc, IMemorySerializable<Ph
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon, out SecureInt hon);
         int dame = hon * buffValues[GetIndexLevelThanThong(caster)];
-        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int>{dame}, true, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill, true);
     }
 
     public override string GetDesc(int level)
