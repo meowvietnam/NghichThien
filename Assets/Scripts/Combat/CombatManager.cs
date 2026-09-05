@@ -206,7 +206,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
         return false;
     }
-
+    public bool IsRealTimeCombat => Pool.Get<GameManager>().currentETypeCombat == ETypeCombat.LuanBanRealTime || Pool.Get<GameManager>().currentETypeCombat == ETypeCombat.TongMonChienRealTime;
     private void Awake()
     {
         Pool.Set(this);
@@ -236,7 +236,15 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             item.LoadFirstDataPrefab();
         }
 
-        char2.isAutoCastSkill = true;
+        if(!IsRealTimeCombat)
+        {
+            char2.isAutoCastSkill = true;
+        }    
+        else
+        {
+            char2.isAutoCastSkill = false;
+
+        }
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, NewTurn);
         SetUIHpBar();
