@@ -779,17 +779,18 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         currentTurn.listDameTaked.Add(0);
         targetTurn.listDameTaked.Add(0);
 
-        CombatStatic.QuyTon(currentTurn, targetTurn);
-        CombatStatic.SucThe(currentTurn, targetTurn);
-        CombatStatic.ThieuDot(targetTurn, currentTurn);
-
-        currentTurn.NewTurn();
-        ExcuteEquipment(currentTurn, targetTurn, EquipmentType.Armor);
-        CombatStatic.AmKinhTTNewTurn(currentTurn, targetTurn);
+        
 
         Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();
         if (!currentTurn.IsKietSuc())
         {
+            CombatStatic.QuyTon(currentTurn, targetTurn);
+            CombatStatic.SucThe(currentTurn, targetTurn);
+            CombatStatic.ThieuDot(targetTurn, currentTurn);
+
+            currentTurn.NewTurn();
+            ExcuteEquipment(currentTurn, targetTurn, EquipmentType.Armor);
+            CombatStatic.AmKinhTTNewTurn(currentTurn, targetTurn);
             currentTurn.HapThuLinhKhiNewTurn(out dictHapThuKhi);
         }
         else

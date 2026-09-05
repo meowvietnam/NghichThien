@@ -519,7 +519,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                 text = "Mỗi tầng ngăn cản 1 điểm sát thương";
                 break;
             case EBuffAndDeBuff.DeTonThuong:
-                text = "Trong hiệp này, mỗi tầng nhận thêm 1% tổn thương. Kết thúc hiệp giải trừ toàn bộ";
+                text = "Trong hiệp này, mỗi tầng nhận thêm 1% tổn thương. Bắt đầu hiệp sau, giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.KiemKhi:
                 text = $"Kết thúc hiệp, mỗi tầng gây 1 điểm sát thương kiếm hệ cho đối phương";
@@ -536,7 +536,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
 
                 break;
             case EBuffAndDeBuff.GiamTonThuong:
-                text = "Trong hiệp này, mỗi tầng ngăn cản 1% sát thương. Kết thúc hiệp giải trừ toàn bộ";
+                text = "Trong hiệp này, mỗi tầng ngăn cản 1% sát thương. Bắt đầu hiệp sau, giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.NoiThuong:
                 text =
