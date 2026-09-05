@@ -12,6 +12,7 @@ using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using CreateCharacter.CharStats;
 using Network.Models;
+using Tutorials;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Analytics.IAnalytic;
@@ -49,7 +50,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
     [SerializeField] private ItemInventory prefabItemThienDaoDotPha;
     [SerializeField] private Button btnConfirmDotPha;
     [SerializeField] private Button btnShowPopDotPha;
-
+    [SerializeField] private TutorialBeQuan tutorial;
     private void SetupPopupDotPha(List<ItemRef> itemRefs, ItemInventory prefab)
     {
         for (int i = 0; i < prefab.transform.parent.childCount; i++)
@@ -78,6 +79,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         {
             popBeQuan.Show();
             btns[0].btn.onClick?.Invoke();
+            tutorial.gameObject.SetActive(true);
         });
         foreach (var item in btns)
         {
