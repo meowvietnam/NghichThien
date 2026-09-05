@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using DG.Tweening;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,9 +17,10 @@ namespace Tutorials
         private Tween tween;
         private Coroutine typingCoroutine;
         private string currentContent;
-
+        public bool IsTyping { get; private set; }
         public void ShowText(string content)
         {
+            IsTyping = true;
             currentContent = content;
 
             gameObject.SetActive(true);
@@ -54,9 +57,11 @@ namespace Tutorials
             }
 
             typingCoroutine = null;
+            IsTyping = false;
         }
         public void Complete()
         {
+            IsTyping = false;
             tween?.Kill();
             tween = null;
 
@@ -70,6 +75,7 @@ namespace Tutorials
         }
         public void Close()
         {
+            IsTyping = false;
             tween?.Kill();
 
             if (typingCoroutine != null)
@@ -95,6 +101,11 @@ namespace Tutorials
                 StopCoroutine(typingCoroutine);
                 typingCoroutine = null;
             }
+        }
+
+        private void OnDisable()
+        {
+            IsTyping = false;
         }
     }
 }
