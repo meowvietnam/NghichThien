@@ -13,6 +13,7 @@ using Network.Extensions;
 using Network.Extensions.MemoryPack;
 using Network.Models;
 using Sirenix.OdinInspector;
+using Tutorials;
 using UnityEngine;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
@@ -324,9 +325,15 @@ namespace Network
             }
         }
         [Button]
-        public void ToDongPhu()
+        public void RenewTutorial()
         {
-            Observer.Notify(EventList.GamePlay.LOAD_SCENE, "DongPhu");
+            PlayerPrefs.DeleteKey(TutorialAllMaps.tutorialAllMapKey);
+            PlayerPrefs.DeleteKey(TutorialBeQuan.tutorialBeQuan);
+            PlayerPrefs.DeleteKey(TutorialHome.tutorialHome);
+            PlayerPrefs.DeleteKey(TutorialBoCao.tutorialBoCao);
+            PlayerPrefs.DeleteKey(TutorialLuyenDan.tutorialLuyenDan);
+            PlayerPrefs.Save();
+            Debug.Log("Renew all tutorial");
         }
         public void OnLeave()
         {

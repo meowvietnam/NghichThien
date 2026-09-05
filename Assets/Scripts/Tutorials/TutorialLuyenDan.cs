@@ -6,13 +6,19 @@ namespace Tutorials
     {
         [SerializeField] private Tutorial tutorial;
         [SerializeField] private RectTransform luyenDan;
-        private string tutorialLuyenDan = "isFirstTutorialLuyenDan";
+        public const string tutorialLuyenDan = "isFirstTutorialLuyenDan";
         
         private void Start()
         {
             var isFirstTutorial = PlayerPrefs.GetInt(tutorialLuyenDan, 0) == 0;
             if(!isFirstTutorial) return;
+            tutorial.OnCompleted += OnCompleted;
             ShowTutorial();
+        }
+
+        private void OnCompleted()
+        {
+            PlayerPrefs.SetInt(tutorialLuyenDan, 1);
         }
         private void ShowTutorial()
         {

@@ -6,13 +6,19 @@ namespace Tutorials
     {
         [SerializeField] private Tutorial tutorial;
         [SerializeField] private RectTransform boCao;
-        private string tutorialBoCao = "isFirstTutorialBoCao";
+        public const string tutorialBoCao = "isFirstTutorialBoCao";
         
         private void Start()
         {
             var isFirstTutorial = PlayerPrefs.GetInt(tutorialBoCao, 0) == 0;
             if(!isFirstTutorial) return;
+            tutorial.OnCompleted += OnCompleted;
             ShowTutorial();
+        }
+
+        private void OnCompleted()
+        {
+            PlayerPrefs.SetInt(tutorialBoCao, 1);
         }
         private void ShowTutorial()
         {

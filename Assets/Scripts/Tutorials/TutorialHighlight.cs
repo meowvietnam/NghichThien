@@ -882,20 +882,10 @@ namespace Tutorials
             UpdateHighlightImmediate();
         }
 
-        // ============================================================
-        // Hide
-        // ============================================================
-
         public void Hide()
         {
-            // --------------------------------------------------------
-            // OnClose trả về true mới thực sự đóng TutorialHighlight.
-            //
-            // Logic này phù hợp với Tutorial hiện tại:
-            // step thường -> chuyển sang step tiếp theo
-            // step cuối -> đóng hẳn.
-            // --------------------------------------------------------
-
+            
+            if (isMoving) return;
             if (OnClose == null ||
                 !OnClose())
             {

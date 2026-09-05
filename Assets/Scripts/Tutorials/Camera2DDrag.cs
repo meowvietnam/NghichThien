@@ -1,3 +1,4 @@
+using System;
 using AllMaps;
 using UnityEngine;
 
@@ -19,6 +20,16 @@ namespace Tutorials
 
         private Vector3 lastWorldPosition;
         private bool isDragging;
+        [SerializeField] private BoxCollider2D boundsBox;
+
+        private void OnValidate()
+        {
+            if (boundsBox != null)
+            {
+                minBounds = boundsBox.bounds.min;
+                maxBounds = boundsBox.bounds.max;
+            }
+        }
 
         private void Awake()
         {

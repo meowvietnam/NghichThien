@@ -15,7 +15,7 @@ namespace Tutorials
         [SerializeField] private MainQuestManager mainQuestManager;
         [SerializeField] private EnemyActionEnterMapManager enemyManager;
         [SerializeField] private SideQuestManager sideQuestManager;
-        private string tutorialAllMapKey = "isFirstTutorialAllMaps";
+        public const string tutorialAllMapKey = "isFirstTutorialAllMaps";
         [SerializeField] private Transform finishedTarget;
 
         private void Start()

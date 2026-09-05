@@ -8,15 +8,20 @@ namespace Tutorials
     {
         [SerializeField] private Tutorial tutorial;
         [SerializeField] private RectTransform beQuan;
-        private string tutorialHome = "isFirstTutorialHome";
+        public const string tutorialHome = "isFirstTutorialHome";
         
         private void Start()
         {
             var isFirstTutorial = PlayerPrefs.GetInt(tutorialHome, 0) == 0;
             if(!isFirstTutorial) return;
+            tutorial.OnCompleted += OnCompleted;
             ShowTutorial();
         }
 
+        private void OnCompleted()
+        {
+            PlayerPrefs.SetInt(tutorialHome, 1);
+        }
         private void ShowTutorial()
         {
             TutorialStep[] steps = new[]
