@@ -24,7 +24,7 @@ public class NhieuHonThuat : ThanThong, BaseSkill.ThanThuc, IMemorySerializable<
     public void ExecuteThanThuc(CharacterCombat caster, CharacterCombat target)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int>{dame}, true, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill, true);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.NhieuHon, 1);
     }
 

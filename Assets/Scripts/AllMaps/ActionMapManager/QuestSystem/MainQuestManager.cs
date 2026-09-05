@@ -51,7 +51,7 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
             {
                 currentMapMainQuests.Add(mapManager.SetDataOnMap(CurrentMainQuest, item));
             }
-            StartCameraCinematic();
+            //StartCameraCinematic();
 
         }
         else

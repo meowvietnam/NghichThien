@@ -16,14 +16,14 @@ public class ToiHuyetChuong : ThanThong, BaseSkill.TuongSinh, IMemorySerializabl
     private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        Action(caster, target, dames);
+        Action(caster, target, dames , false);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
-    private void Action(CharacterCombat caster, CharacterCombat target, int[] dames)
+    private void Action(CharacterCombat caster, CharacterCombat target, int[] dames , bool isCongDon)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill, isCongDon);
         if (caster.listAmKinhTT.Count > 0)
         {
             caster.Healing(dame);
@@ -32,7 +32,7 @@ public class ToiHuyetChuong : ThanThong, BaseSkill.TuongSinh, IMemorySerializabl
 
     public void ExecuteTuongSinh(CharacterCombat caster, CharacterCombat target)
     {
-        Action(caster, target, buffValues);
+        Action(caster, target, buffValues,true);
     }
 
     public override string GetDesc(int level)
