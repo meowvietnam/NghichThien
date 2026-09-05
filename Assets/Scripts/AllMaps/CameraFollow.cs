@@ -13,13 +13,16 @@ namespace AllMaps
         public Transform camTransform;
         private Vector3 velocity;
         public static CameraFollow Instance;
+        public bool IsFollow { get; set; }
         private void Awake()
         {
             Instance = this;
+            IsFollow = true;
         }
 
         private void FixedUpdate()
         {
+            if(!IsFollow) return;
             if (target == null)
             {
                 return;
