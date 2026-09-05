@@ -1193,7 +1193,7 @@ public class CharacterCombat : MonoBehaviour
 
             
 
-            RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieu);
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, 1);
 
         }
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.PhaThe, out SecureInt phaThe))

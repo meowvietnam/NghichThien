@@ -544,7 +544,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                 break;
             case EBuffAndDeBuff.TrienNhieu:
                 text =
-                    "Trong hiệp này, khi bản thân thi pháp nhận mỗi tầng 1 điểm sát thương. Kết thúc hiệp giải trừ toàn bộ";
+                    "Trong hiệp này, khi bản thân thi pháp nhận mỗi tầng 1 điểm sát thương. Kết thúc hiệp giải trừ 1 tầng";
                 break;
             case EBuffAndDeBuff.TriLieu:
                 text = $"Kết thúc hiệp, mỗi tầng khôi phục 1 điểm sinh mệnh sau đó giải trừ 1 tầng";
