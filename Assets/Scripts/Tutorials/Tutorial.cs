@@ -5,25 +5,33 @@ using UnityEngine;
 
 namespace Tutorials
 {
+    public enum DialogPosition { TopLeft, TopRight, BottomLeft, BottomRight }
     [Serializable]
     public class TutorialStep
     {
-        [field: SerializeField] public RectTransform TargetRect { get; private set; }
-        [field: SerializeField] public Renderer TargetRenderer { get; private set; }
-        [field: SerializeField] public string Text { get; private set; }
+        [field: SerializeField] public RectTransform TargetRect { get; set; }
+        [field: SerializeField] public Renderer TargetRenderer { get; set; }
+        [field: SerializeField] public string Text { get; set; }
+        [field: SerializeField] public DialogPosition DialogPosition { get; set; } = DialogPosition.TopRight;
     }
 
     public class Tutorial : BaseBehaviour
     {
         [SerializeField] private TutorialHighlight highlight;
         [SerializeField] private float startDelay = 0.5f;
-        [SerializeField] private TutorialStep[] steps;
+        private TutorialStep[] steps;
         private bool isShowing;
         private int stepIndex;
-
+        public event Action<Renderer> OnSetTarget;
+        public event Action OnCompleted;
         private void Start()
         {
             highlight.OnClose += OnClose;
+        }
+
+        public void ShowTutorial(TutorialStep[] steps)
+        {
+            this.steps = steps;
             if (steps.Length > 0)
             {
                 StartCoroutine(IETutorial());
@@ -32,7 +40,6 @@ namespace Tutorials
 
         private IEnumerator IETutorial()
         {
-            var cam = CameraFollow.Instance;
             yield return new WaitForSeconds(startDelay);
             if (stepIndex == 0)
             {
@@ -40,12 +47,14 @@ namespace Tutorials
                 isShowing = true;
                 if (step.TargetRect != null)
                 {
+                    highlight.SetDialogPosition(step.DialogPosition);
                     highlight.Show(step.TargetRect, step.Text);
                 }
                 else if (step.TargetRenderer != null)
                 {
+                    highlight.SetDialogPosition(step.DialogPosition);
                     highlight.Show(step.TargetRenderer, step.Text);
-                    cam.target = step.TargetRenderer.transform;
+                    OnSetTarget?.Invoke(step.TargetRenderer);
                 }
                 else
                 {
@@ -63,21 +72,25 @@ namespace Tutorials
                 isShowing = true;
                 if (step.TargetRect != null)
                 {
+                    highlight.SetDialogPosition(step.DialogPosition);
                     highlight.MoveTo(step.TargetRect, step.Text);
                 }
                 else if (step.TargetRenderer != null)
                 {
+                    highlight.SetDialogPosition(step.DialogPosition);
                     highlight.MoveTo(step.TargetRenderer, step.Text);
-                    cam.target = step.TargetRenderer.transform;
+                    OnSetTarget?.Invoke(step.TargetRenderer);
                 }
                 else
                 {
                     isShowing = false;
                     throw new Exception("Null target");
                 }
+
                 yield return new WaitWhile(() => isShowing);
                 stepIndex++;
             }
+            OnCompleted?.Invoke();
         }
 
         private bool OnClose()
@@ -85,6 +98,7 @@ namespace Tutorials
             isShowing = false;
             if (stepIndex >= steps.Length - 1)
             {
+                GC.Collect();
                 return true;
             }
             return false;
