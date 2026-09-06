@@ -1579,12 +1579,22 @@ public class CharacterCombat : MonoBehaviour
         {
             Observer.Notify(EventList.Combat.CHARACTER_BEFORE_TAKE_DAME, sender, this);
         }
-
+        List<DameData> listDameData = new List<DameData>();
         for (int i = 0; i < allDamages.Count; i++)
         {
-            if(!isDef)
+            int finalDame = 0;
+            int finalDameHoTrao = 0;
+
+            if (!isDef)
             {
-                TakeDame(sender, allDamages[i], isDef,false);
+                TakeDame(sender, allDamages[i], isDef,false,ref finalDame,ref finalDameHoTrao);
+                listDameData.Add(new DameData
+                {
+                    Dame = finalDame,
+                    IsDef = isDef,
+                    IsNeTranh = false,
+                    DameHoTrao = finalDameHoTrao
+                });
                 continue;
             }    
             if (allDamages[i] != 0)
@@ -1606,12 +1616,17 @@ public class CharacterCombat : MonoBehaviour
             bool isNeTranh = dame == -1;
 
 
-
-            TakeDame(sender, allDamages[i], isDef, isNeTranh);
-
+            TakeDame(sender, allDamages[i], isDef, isNeTranh, ref finalDame, ref finalDameHoTrao);
+            listDameData.Add(new DameData
+            {
+                Dame = finalDame,
+                IsDef = isDef,
+                IsNeTranh = isNeTranh,
+                DameHoTrao = finalDameHoTrao
+            });
 
         }
-        
+        Observer.Notify(EventList.Combat.CHARACTER_AFTER_TAKE_DAME_ALL, sender,this, listDameData);
         allDamages.Clear();
     }
    
@@ -1660,7 +1675,7 @@ public class CharacterCombat : MonoBehaviour
             Observer.Notify(EventList.Combat.NE_TRANH_SUCCESS, sender, this);
         }
     }
-    private void TakeDame(CharacterCombat sender ,int dame , bool isDef , bool isNeTranh)
+    private void TakeDame(CharacterCombat sender ,int dame , bool isDef , bool isNeTranh ,ref int finalDame, ref int finalDameHoTrao)
     {
       
         if(isNeTranh)
