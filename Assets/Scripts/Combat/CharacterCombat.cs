@@ -1108,13 +1108,17 @@ public class CharacterCombat : MonoBehaviour
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, TichDoc);
         }
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out SecureInt value))
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out SecureInt sucThe))
         {
-            RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, value);
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, sucThe);
         }
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhNac, out SecureInt anhNac))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.AnhNac, anhNac);
+        }
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DeTonThuong, out SecureInt deTonThuong))
+        {
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, deTonThuong);
         }
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanLongChiHuyet,out SecureInt chanLongChiHuyet);
         if(chanLongChiHuyet > 0)
@@ -1178,10 +1182,7 @@ public class CharacterCombat : MonoBehaviour
         }
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChayMau, 1);
 
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DeTonThuong, out SecureInt value))
-        {
-            RemoveBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, value);
-        }
+       
         
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TriLieu, out SecureInt triLieu))
         {

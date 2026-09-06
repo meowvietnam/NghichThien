@@ -206,7 +206,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
         return false;
     }
-
+    public bool IsRealTimeCombat => Pool.Get<GameManager>().currentETypeCombat == ETypeCombat.LuanBanRealTime || Pool.Get<GameManager>().currentETypeCombat == ETypeCombat.TongMonChienRealTime;
     private void Awake()
     {
         Pool.Set(this);
@@ -236,7 +236,15 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             item.LoadFirstDataPrefab();
         }
 
-        char2.isAutoCastSkill = true;
+        if(!IsRealTimeCombat)
+        {
+            char2.isAutoCastSkill = true;
+        }    
+        else
+        {
+            char2.isAutoCastSkill = false;
+
+        }
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, NewTurn);
         SetUIHpBar();
@@ -771,17 +779,18 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         currentTurn.listDameTaked.Add(0);
         targetTurn.listDameTaked.Add(0);
 
-        CombatStatic.QuyTon(currentTurn, targetTurn);
-        CombatStatic.SucThe(currentTurn, targetTurn);
-        CombatStatic.ThieuDot(targetTurn, currentTurn);
-
-        currentTurn.NewTurn();
-        ExcuteEquipment(currentTurn, targetTurn, EquipmentType.Armor);
-        CombatStatic.AmKinhTTNewTurn(currentTurn, targetTurn);
+        
 
         Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();
         if (!currentTurn.IsKietSuc())
         {
+            CombatStatic.QuyTon(currentTurn, targetTurn);
+            CombatStatic.SucThe(currentTurn, targetTurn);
+            CombatStatic.ThieuDot(targetTurn, currentTurn);
+
+            currentTurn.NewTurn();
+            ExcuteEquipment(currentTurn, targetTurn, EquipmentType.Armor);
+            CombatStatic.AmKinhTTNewTurn(currentTurn, targetTurn);
             currentTurn.HapThuLinhKhiNewTurn(out dictHapThuKhi);
         }
         else

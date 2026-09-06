@@ -1205,7 +1205,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         }
         return "";
     }
-   
+
 
     //[Button]
     //public void ExportNDTTCP()
@@ -1248,6 +1248,12 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     //    Debug.Log(path);
     //}
 
+    [Button]
+    private void CheckTonTaiCongPhap(int id)
+    {
+        Debug.Log(congPhaps.Any(x=>x == id) == true ? $"Công pháp ID {id} tồn tại." : $"Công pháp ID {id} không tồn tại.");
+    }    
+    
     public void SuccessLoadCharCombat(CharacterSnapshot user)
     {
         this.user = new CharCombatInit
