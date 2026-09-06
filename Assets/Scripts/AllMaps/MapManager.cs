@@ -31,6 +31,7 @@ namespace AllMaps
         private Dictionary<Map, List<Map>> graph;
 
         public bool isDelayAfterLoadScene = true;
+        private static bool isInitPoolPlayer;
 
         public Map FindMap(EMapType eMap)
         {
@@ -42,7 +43,6 @@ namespace AllMaps
                 }    
             } 
             return null;
-                
         }    
         private GameObject SetIconEvent(Map map , GameObject prefabIcon)
         {
@@ -88,6 +88,12 @@ namespace AllMaps
             }
         }
 
+        private void InitPoolPlayer()
+        {
+            if(isInitPoolPlayer) return;
+            isInitPoolPlayer = true;
+            ObjectPool.CreatePool(playerPrefab, 5);
+        }
 
         private void Awake()
         {
@@ -105,6 +111,7 @@ namespace AllMaps
             player.SetInstance();
             current.OnPlayerEnter();
             Pool.Set(this);
+            InitPoolPlayer();
         }
         
         private void Start()
@@ -172,7 +179,7 @@ namespace AllMaps
             }
             player.DoMove(listNodes, () =>
             {
-                player.DestroySelf();
+                player.ReturnPool();
             });
         }
 
@@ -215,7 +222,6 @@ namespace AllMaps
                     OnGetCharacterOnlineThisNode(result.CharactersOnline);
                     Observer.Notify(EventList.GamePlay.TIME_ADJUST);
                     Observer.Notify(EventList.GamePlay.MOVE_MAP_SUCCESS);
-
                 }
             });
         }
@@ -237,7 +243,8 @@ namespace AllMaps
 
         public void OnPlayerMoving(PlayerMoving playerMoving)
         {
-            var player = Instantiate(playerPrefab).GetComponentInChildren<Player>();
+            var player = ObjectPool.Spawn(playerPrefab).GetComponentInChildren<Player>();
+            player.SetActive(true);
             player.Init(playerMoving.Gender, playerMoving.IsSwordRiding, playerMoving.Appearance);
             player.SetName(playerMoving.Name, new Color32(129, 212, 250, 255));
             MoveOtherPlayer(player, playerMoving.Path);
