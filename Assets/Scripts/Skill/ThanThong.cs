@@ -78,7 +78,7 @@ namespace Skill
         public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
         {
         }
-        public void PlayVisualSkill()
+        public void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
         {
 
         }    

@@ -408,22 +408,25 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
     public void GoToCombatArena()
     {
         if (enemyCombat == null) return;
+        currentECombatResult = ETypeResultCombat.None;
+
         Pool.Get<UIManager>().panelGroup.SetActive(false);
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
         Pool.Get<UIManager>().SetActiveListIcon(false);
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
+
         Observer.Notify(EventList.GamePlay.LOAD_SCENE, "Combat");
     }
 
     public void GoToCombat()
     {
         if (enemyCombat == null) return;
+        currentECombatResult = ETypeResultCombat.None;
         if (Client.Instance.CharacterData.Stats.Hp <= 0 && currentETypeCombat == ETypeCombat.AllMaps)
         {
             NotifyGroup.Instance.Show("Khí huyết đã cạn. Hãy bế quan tại khách sạn hoặc sử dụng đan dược để hồi phục");
             return;
         }
-
         Pool.Get<UIManager>().panelGroup.SetActive(false);
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
         Pool.Get<UIManager>().SetActiveListIcon(false);
@@ -447,7 +450,6 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
             eTypeVisual = ETypeVisualChar.Character,
             charStats = CharacterStatsSecureBuilder.ArenaFromCharacterSnapshot(user),
         };
-
         Observer.Notify(EventList.GamePlay.LOAD_SCENE, "Combat");
     }
 
@@ -488,7 +490,6 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
 
         if (enemyCombat.charStats == null) return;
         currentETypeCombat = ETypeCombat.DauTruong;
-        currentECombatResult = ETypeResultCombat.None;
         Client.Instance.CharacterData.EquipmentManager.DanCombatUseds.Clear();
     }
 
@@ -499,7 +500,6 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
 
         currentETypeCombat = eTypeCombat;
         Pool.Get<PrepareCombatPanel>().Show();
-        currentECombatResult = ETypeResultCombat.None;
     }
 
     public void BackAllMapFromCombat(ETypeResultCombat eCombatResult)
