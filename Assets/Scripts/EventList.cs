@@ -35,7 +35,11 @@ public static partial class EventList
         public const string SEND_SYNC_ADJUST_LINHKHI = "Combat.SEND_SYNC_ADJUST_LINHKHI"; // gửi id char và linh khi hien tai 
         public const string RECEIVE_SYNC_ADJUST_LINHKHI = "Combat.RECEIVE_SYNC_ADJUST_LINHKHI"; //  nhận id char và linh khi hien tai 
 
+        public const string SEND_SYNC_BUFF = "Combat.SEND_SYNC_BUFF"; // gửi id char và type buff và new Count 
+        public const string RECEIVE_SYNC_BUFF = "Combat.RECEIVE_SYNC_BUFF"; //  nhận id char và type buff và new Count 
 
+        public const string SEND_SYNC_DAME = "Combat.SEND_SYNC_DAME"; // gửi id char và dame cuối cùng đã đc trừ vào máu 
+        public const string RECEIVE_SYNC_DAME = "Combat.RECEIVE_SYNC_DAME"; //  nhận id char và dame cuối cùng đã đc trừ vào máu  
         public static void RemoveAllCombatObservers()
         {
             // Lấy tất cả các trường const string trong class Combat
