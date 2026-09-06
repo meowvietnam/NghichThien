@@ -239,9 +239,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
         });
-
+        
         if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
         if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
+        char1.Init(gameConfig.user);
+        char2.Init(gameConfig.enemyCombat);
         // test 
         //char1.isAutoCastSkill = true;
         var gameConfig = Pool.Get<GameManager>();
@@ -1033,8 +1035,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     private void StartTurn(CharacterCombat charCombat)
     {
         var gameConfig = Pool.Get<GameManager>();
-        char1.Init(gameConfig.user);
-        char2.Init(gameConfig.enemyCombat);
+        char1.InitStaticCombatEffect();
+        char2.InitStaticCombatEffect();
         currentTurn = charCombat;
        
         StartEquipment(currentTurn);

@@ -780,11 +780,7 @@ public class CharacterCombat : MonoBehaviour
         {
             AddCPDynamic(cp);
         }
-        foreach (var item in GetStaticCombatEffects())
-        {
-            item.InitPosCallExecute(this);
-
-        }
+        
         Debug.Log("dcmmm " + congPhapDynamic.Count);
       
 
@@ -797,6 +793,14 @@ public class CharacterCombat : MonoBehaviour
         
 
 
+    }
+    public void InitStaticCombatEffect()
+    {
+        foreach (var item in GetStaticCombatEffects())
+        {
+            item.InitPosCallExecute(this);
+
+        }
     }
     public List<IStaticCombatEffect> GetStaticCombatEffects()
     {
