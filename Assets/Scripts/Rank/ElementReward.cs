@@ -23,7 +23,7 @@ namespace Rank
             {
                 Points = points,
                 MoneyVipPrefab = moneyVipPrefab,
-                SkillItemPrefab =  skillPrefab,
+                RandomSkillItemPrefab =  skillPrefab,
                 RequirePointsText = text,
                 Container =  content,
                 ClaimButton = rewardButton,

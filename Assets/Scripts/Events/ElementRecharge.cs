@@ -45,7 +45,7 @@ namespace Events
             {
                 Container = content,
                 MoneyVipPrefab = moneyVipPrefab,
-                SkillItemPrefab = skillItemPrefab,
+                RandomSkillItemPrefab = skillItemPrefab,
                 ItemUIPrefab = itemUIPrefab
             };
             UpdateButton();

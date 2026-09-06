@@ -50,7 +50,7 @@ public class UIHeadPanel : PanelGroup
         iconLevel.SetNativeSize();
         nameText.text = charData.Name;
         characterGraphic.SetGender(charData.Gender);
-        characterGraphic.SetSkin(charData.Appearance.Skins);
+        characterGraphic.SetSkin(charData.Appearance.Skins,charData.Appearance.Colors);
     }
 
     private void OnDestroy()

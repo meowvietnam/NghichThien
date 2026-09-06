@@ -50,7 +50,7 @@ namespace Events
             {
                 Container = content,
                 MoneyVipPrefab = moneyVipPrefab,
-                SkillItemPrefab = skillItemPrefab,
+                RandomSkillItemPrefab = skillItemPrefab,
                 ItemUIPrefab = itemUIPrefab
             };
             foreach (var reward in milestone.Rewards)
