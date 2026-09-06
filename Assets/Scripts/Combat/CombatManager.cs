@@ -1436,6 +1436,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         SyncDame SyncDame = data[0] as SyncDame;
         var charCombatSendDame = SyncDame.CharSendDame == char1.characterStatsBase.idChar.Value ? char1 : char2;
         var charCombatTakeDame = SyncDame.CharTakeDame == char1.characterStatsBase.idChar.Value ? char1 : char2;
+        Debug.Log($"Is null: {SyncDame.Datas == null}");
         foreach (var item in SyncDame.Datas)
         {
             charCombatTakeDame.TakeDameVisualPvP(item);

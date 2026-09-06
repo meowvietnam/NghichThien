@@ -40,6 +40,7 @@ namespace Network.ClientState
         private void SyncDame(object[] data)
         {
             var model = data[0] as SyncDame;
+            Debug.Log($"Is data null: {model.Datas == null}");
             client.MemSend(MessageTag.SyncDame, model);
         }
         private void SyncEndTurn(object[] data)
