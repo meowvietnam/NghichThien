@@ -1673,7 +1673,6 @@ public class CharacterCombat : MonoBehaviour
             else
             {
                 TakeVisualDame(dameDataServer.Dame, false);
-
             }
         }
     }

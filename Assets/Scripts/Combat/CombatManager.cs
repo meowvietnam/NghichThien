@@ -1468,6 +1468,10 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                 CharTakeDame = charCombatTake.characterStatsBase.idChar.Value,
                 Datas = listDameData,
             });
+            foreach (var item in listDameData)
+            {
+                charCombatTake.TakeDameVisualPvP(item);
+            }
         }
 
     }
@@ -1481,8 +1485,6 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             charCombatTakeDame.TakeDameVisualPvP(item);
         }
-       
-
     }
     public void ReceiveSyncPhapBao(params object[] data)
     {
