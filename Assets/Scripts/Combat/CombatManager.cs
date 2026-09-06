@@ -242,11 +242,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         
         if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
         if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
+        var gameConfig = Pool.Get<GameManager>();
         char1.Init(gameConfig.user);
         char2.Init(gameConfig.enemyCombat);
         // test 
         //char1.isAutoCastSkill = true;
-        var gameConfig = Pool.Get<GameManager>();
         
         foreach (var item in char1.thanThongEquip)
         {
