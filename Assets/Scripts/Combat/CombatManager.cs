@@ -204,7 +204,6 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                 }
             }    
 
-            EventList.Combat.RemoveAllCombatObservers();
             return true;
         }
 
@@ -317,6 +316,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         if (gameManager.currentETypeCombat == ETypeCombat.LuanBan)
         {
             SuccessResultCombatBase(new(), gameManager.currentECombatResult);
+
         }
         else if(gameManager.currentETypeCombat == ETypeCombat.LuanBanRealTime || gameManager.currentETypeCombat == ETypeCombat.TongMonChienRealTime)
         {
@@ -1350,6 +1350,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             Pool.Get<EventRewardPanel>().InitShowCombatReward(new(), "Ngươi thiêu đốt tinh huyết để bỏ chạy!",
                 ETypeResultCombat.LoseByRun);
         }
+        EventList.Combat.RemoveAllCombatObservers();
+
     }
 
     public void FailResultCombatBase(string message)
