@@ -1423,10 +1423,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             Observer.Notify(EventList.Combat.SEND_SYNC_DAME, new SyncDame
             {
                 CharSendDame = idCharSend,
-
                 CharTakeDame = charCombatTake.characterStatsBase.idChar.Value,
                 Datas = listDameData,
-
             });
         }
 
