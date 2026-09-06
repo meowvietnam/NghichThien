@@ -29,6 +29,13 @@ public static partial class EventList
         public const string UPDATE_AMKINH_THANTHONG = "Combat.UPDATE_AMKINH_THANTHONG";
         public const string CHARACTER_HEALING = "Combat.CHARACTER_HEALING";
 
+        public const string SEND_SYNC_PLAYSKILL = "Combat.SEND_SYNC_PLAYSKILL"; // gửi id char  và id skill 
+        public const string RECEIVE_SYNC_PLAYSKILL = "Combat.SEND_SYNC_PLAYSKILL"; // nhận id char  và id skill 
+
+        public const string SEND_SYNC_ADJUST_LINHKHI = "Combat.SEND_SYNC_ADJUST_LINHKHI"; // gửi id char và linh khi hien tai 
+        public const string RECEIVE_SYNC_ADJUST_LINHKHI = "Combat.RECEIVE_SYNC_ADJUST_LINHKHI"; //  nhận id char và linh khi hien tai 
+
+
         public static void RemoveAllCombatObservers()
         {
             // Lấy tất cả các trường const string trong class Combat
