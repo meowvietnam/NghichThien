@@ -570,6 +570,7 @@ public class CharacterCombat : MonoBehaviour
     [Button]
     public void AddBuffAndDebuffCount(EBuffAndDeBuff type, int count)
     {
+        if (count == 0) return;
 
         buffAndDebuffCount.TryGetValue(type, out var current);
 
@@ -593,7 +594,7 @@ public class CharacterCombat : MonoBehaviour
     {
         if (!buffAndDebuffCount.TryGetValue(type, out SecureInt current))
             return; // không có buff thì khỏi remove
-
+        if (count == 0) return;
         int newValue = current - count;
 
         if (newValue <= 0)
@@ -1557,14 +1558,7 @@ public class CharacterCombat : MonoBehaviour
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, TichKim);
         }
-        void NeTranh()
-        {
-            SetTextDameAnim("Né Tránh!", Color.whiteSmoke);
-            if (sender != null)
-            {
-                Observer.Notify(EventList.Combat.NE_TRANH_SUCCESS, sender, this);
-            }
-        }
+        
         if (allDamages.Count <= 0) return;
         if (sender != null)
         {
@@ -1575,7 +1569,7 @@ public class CharacterCombat : MonoBehaviour
         {
             if(!isDef)
             {
-                TakeDame(sender, allDamages[i], isDef);
+                TakeDame(sender, allDamages[i], isDef,false);
                 continue;
             }    
             if (allDamages[i] != 0)
@@ -1598,25 +1592,44 @@ public class CharacterCombat : MonoBehaviour
 
 
 
+            TakeDame(sender, allDamages[i], isDef, isNeTranh);
 
-            if (isNeTranh)
-            {
-                NeTranh();
-
-               
-            }
-            else
-            {
-
-                TakeDame(sender, allDamages[i] , isDef);
-            }
 
         }
         allDamages.Clear();
     }
-    private void TakeDame(CharacterCombat sender ,int dame , bool isDef)
+   
+    private void TakeVisualDameHoTrao(int dameHoTrao)
     {
-        if(isDef)
+        // hộ tráo đã được đồng bộ từ event sync buff rồi
+        SetTextDameAnim($"-{dameHoTrao}", Color.cyan);
+
+    }
+    private void TakeVisualDame(int dame , bool isDef)
+    {
+        characterStatsTemp.hp -= dame;
+        characterStatsTemp.hp = Mathf.Clamp(characterStatsTemp.hp, 0, characterStatsTemp.hpMax);
+        StartAnimHit();
+        SetTextDameAnim($"-{dame}", isDef ? Color.red : Color.purple);
+        Observer.Notify(EventList.Combat.CHARACTER_ADJUST_HP);
+
+    }
+    private void TakeDame(CharacterCombat sender ,int dame , bool isDef , bool isNeTranh)
+    {
+        void NeTranh()
+        {
+            SetTextDameAnim("Né Tránh!", Color.whiteSmoke);
+            if (sender != null)
+            {
+                Observer.Notify(EventList.Combat.NE_TRANH_SUCCESS, sender, this);
+            }
+        }
+        if(isNeTranh)
+        {
+            NeTranh();
+            return;
+        }
+        if (isDef)
         {
             
             int hotraoMax = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.HoTrao, 0);
@@ -1625,7 +1638,7 @@ public class CharacterCombat : MonoBehaviour
             int textDameHoTrao = hotraoMax > dame ? dame : hotraoMax;
             if(hotraoMax > 0 )
             {
-                SetTextDameAnim($"-{textDameHoTrao}", Color.cyan);
+                TakeVisualDameHoTrao(textDameHoTrao);
             }    
 
             dame -= hotraoMax;
@@ -1636,13 +1649,10 @@ public class CharacterCombat : MonoBehaviour
 
         Debug.Log(this.gameObject.name + "nhận dame là : " + dame);
         
-        characterStatsTemp.hp -= dame;
-        characterStatsTemp.hp = Mathf.Clamp(characterStatsTemp.hp, 0, characterStatsTemp.hpMax);
+      
 
         if (dame > 0)
         {
-            StartAnimHit();
-            SetTextDameAnim($"-{dame}", isDef ? Color.red : Color.purple);
 
             if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HonLuc, out SecureInt honLuc))
             {
@@ -1687,13 +1697,14 @@ public class CharacterCombat : MonoBehaviour
 
 
             }
+            TakeVisualDame(dame, isDef);
+
         }
 
         if (sender != null)
         {
             Observer.Notify(EventList.Combat.CHARACTER_TAKE_DAME, sender, this, dame);
         }
-        Observer.Notify(EventList.Combat.CHARACTER_ADJUST_HP);
         
 
     }
