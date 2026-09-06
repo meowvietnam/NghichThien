@@ -102,6 +102,7 @@ namespace AllMaps
             var appearance = characterData.Appearance;
             player.Init(characterData.Gender, characterData.CanFly, appearance);
             player.SetName(characterData.Name,new Color32(255, 213, 79, 255));
+            player.SetInstance();
             current.OnPlayerEnter();
             Pool.Set(this);
         }
