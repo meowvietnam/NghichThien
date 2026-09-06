@@ -29,21 +29,23 @@ public static partial class EventList
         public const string UPDATE_AMKINH_THANTHONG = "Combat.UPDATE_AMKINH_THANTHONG";
         public const string CHARACTER_HEALING = "Combat.CHARACTER_HEALING";
 
-        public const string SEND_SYNC_PLAYSKILL = "Combat.SEND_SYNC_PLAYSKILL"; // gửi id char  và id skill 
-        public const string RECEIVE_SYNC_PLAYSKILL = "Combat.SEND_SYNC_PLAYSKILL"; // nhận id char  và id skill 
+        public const string SEND_SYNC_PLAYSKILL = "Combat.SEND_SYNC_PLAYSKILL"; // gửi name char  và id skill 
+        public const string RECEIVE_SYNC_PLAYSKILL = "Combat.SEND_SYNC_PLAYSKILL"; // nhận name char  và id skill 
 
-        public const string SEND_SYNC_ADJUST_LINHKHI = "Combat.SEND_SYNC_ADJUST_LINHKHI"; // gửi id char và linh khi hien tai 
-        public const string RECEIVE_SYNC_ADJUST_LINHKHI = "Combat.RECEIVE_SYNC_ADJUST_LINHKHI"; //  nhận id char và linh khi hien tai 
+        public const string SEND_SYNC_ADJUST_LINHKHI = "Combat.SEND_SYNC_ADJUST_LINHKHI"; // gửi name char và linh khi hien tai 
+        public const string RECEIVE_SYNC_ADJUST_LINHKHI = "Combat.RECEIVE_SYNC_ADJUST_LINHKHI"; //  nhận name char và linh khi hien tai 
 
-        public const string SEND_SYNC_BUFF = "Combat.SEND_SYNC_BUFF"; // gửi id char và type buff/int id buff và new Count 
-        public const string RECEIVE_SYNC_BUFF = "Combat.RECEIVE_SYNC_BUFF"; //  nhận id char và type buff/int id buff và new Count 
+        public const string SEND_SYNC_BUFF = "Combat.SEND_SYNC_BUFF"; // gửi name char và type buff/int id buff và new Count 
+        public const string RECEIVE_SYNC_BUFF = "Combat.RECEIVE_SYNC_BUFF"; //  nhận name char và type buff/int id buff và new Count 
 
-        public const string SEND_SYNC_DAME = "Combat.SEND_SYNC_DAME"; //idCharSender dame, gửi id char TakeDame và kèm 1 list calss data dame bao gồm dame , dame ho trao, is ne tranh, isDef
-        public const string RECEIVE_SYNC_DAME = "Combat.RECEIVE_SYNC_DAME"; //  nhận //idCharSender dame, gửi id char TakeDame và kèm 1 list calss data dame bao gồm dame , dame ho trao, is ne tranh, isDef  
+        public const string SEND_SYNC_DAME = "Combat.SEND_SYNC_DAME"; //name CharSender dame, gửi id char TakeDame và kèm 1 list calss data dame bao gồm dame , dame ho trao, is ne tranh, isDef
+        public const string RECEIVE_SYNC_DAME = "Combat.RECEIVE_SYNC_DAME"; //  nhận //name CharSender dame, gửi id char TakeDame và kèm 1 list calss data dame bao gồm dame , dame ho trao, is ne tranh, isDef  
 
-        public const string SEND_SYNC_ENDTURN = "Combat.SEND_SYNC_ENDTURN"; // gửi id char
-        public const string RECEIVE_SYNC_ENDTURN = "Combat.RECEIVE_SYNC_ENDTURN"; // nhận id char
+        public const string SEND_SYNC_ENDTURN = "Combat.SEND_SYNC_ENDTURN"; // gửi name char
+        public const string RECEIVE_SYNC_ENDTURN = "Combat.RECEIVE_SYNC_ENDTURN"; // nhận name char
 
+        public const string SEND_SYNC_HEALING = "Combat.SEND_SYNC_HEALING"; //name Char đc heal , int heal
+        public const string RECEIVE_SEND_SYNC_HEALING = "Combat.RECEIVE_SEND_SYNC_HEALING"; //  nhận  //name Char đc heal , int heal
 
         // khi play skill đồng bộ cho máy kia chỉ play visual không gửi sync
         public static void RemoveAllCombatObservers()
