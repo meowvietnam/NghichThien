@@ -941,13 +941,14 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         currentTurn = char1.GetToDoBay() >= char2.GetToDoBay() ? char1 : char2;
         StartEquipment(currentTurn);
         StartEquipment(targetTurn);
+        NewTurn();
+        StartCoroutine(CheckDieCoroutine());
     }
 
     void Start()
     {
         StartTurn();
-        NewTurn();
-        StartCoroutine(CheckDieCoroutine());
+     
     }
 
     private IEnumerator CheckDieCoroutine()

@@ -38,8 +38,14 @@ public static partial class EventList
         public const string SEND_SYNC_BUFF = "Combat.SEND_SYNC_BUFF"; // gửi id char và type buff/int id buff và new Count 
         public const string RECEIVE_SYNC_BUFF = "Combat.RECEIVE_SYNC_BUFF"; //  nhận id char và type buff/int id buff và new Count 
 
-        public const string SEND_SYNC_DAME = "Combat.SEND_SYNC_DAME"; // gửi id char và dame cuối cùng đã đc trừ vào máu 
-        public const string RECEIVE_SYNC_DAME = "Combat.RECEIVE_SYNC_DAME"; //  nhận id char và dame cuối cùng đã đc trừ vào máu  
+        public const string SEND_SYNC_DAME = "Combat.SEND_SYNC_DAME"; //idCharSender dame, gửi id char TakeDame và kèm 1 list calss data dame bao gồm dame , dame ho trao, is ne tranh, isDef
+        public const string RECEIVE_SYNC_DAME = "Combat.RECEIVE_SYNC_DAME"; //  nhận //idCharSender dame, gửi id char TakeDame và kèm 1 list calss data dame bao gồm dame , dame ho trao, is ne tranh, isDef  
+
+        public const string SEND_SYNC_ENDTURN = "Combat.SEND_SYNC_ENDTURN"; // gửi id char
+        public const string RECEIVE_SYNC_ENDTURN = "Combat.RECEIVE_SYNC_ENDTURN"; // nhận id char
+
+
+        // khi play skill đồng bộ cho máy kia chỉ play visual không gửi sync
         public static void RemoveAllCombatObservers()
         {
             // Lấy tất cả các trường const string trong class Combat

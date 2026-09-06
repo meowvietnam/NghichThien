@@ -6,7 +6,7 @@ using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using CreateCharacter;
-
+using Spine.Unity.AttachmentTools; // THÊM NAMESPACE NÀY Ở ĐẦU FILE
 public enum EVehicleType
 {
     Base,
@@ -31,6 +31,14 @@ public class NewCharacterGraphic : MonoBehaviour
     private void Awake()
     {
         refLocalPos = this.transform.localPosition;
+    }
+    private void OnDestroy()
+    {
+        // Dọn dẹp material/texture instance tự tạo khi object bị xoá
+        if (graphic != null && graphic.Skeleton != null)
+        {
+            AtlasUtilities.ClearCache();
+        }
     }
     public void InitVisual(EVehicleType vehicleType,Gender gender, Dictionary<string, string> combines, Dictionary<string, Color> colors = null)
     {
@@ -66,40 +74,64 @@ public class NewCharacterGraphic : MonoBehaviour
     }
     public void SetSkin(Dictionary<string, string> combines, Dictionary<string, Color> colors = null)
     {
-        var combineSkin = new Skin("character");
+        var combineSkin = new Skin("character_combined");
         var skeleton = graphic.Skeleton;
         var data = skeleton.Data;
-        if (combines == null)
-        {
-            Debug.Log("data set skin null");
-            return;
-        }
+
+        if (combines == null) return;
+
         foreach (var (skinId, skinName) in combines)
         {
             var skin = data.FindSkin(skinName);
-            if (skin == null)
-            {
-                Debug.LogError($"Skin not found: {skinName}");
-                continue;
-            }
+            if (skin == null) continue;
             currentSkins[skinId] = skinName;
             combineSkin.AddSkin(skin);
         }
+
+        // 1. Gán Skin đã kết hợp vào Skeleton
         skeleton.SetSkin(combineSkin);
         skeleton.SetSlotsToSetupPose();
-        graphic.Update(0);
-        if (colors == null) return;
-        foreach (var (skinId, color) in colors)
+
+        // 2. TẠO MATERIAL INSTANCE SEPARATE (Khắc phục lỗi dính Material sang Object khác)
+        if (graphic.SkeletonDataAsset != null)
         {
-            var skinName = currentSkins[skinId];
-            var skin = data.FindSkin(skinName);
-            foreach (var attachment in skin.Attachments)
+            foreach (var atlasAsset in graphic.SkeletonDataAsset.atlasAssets)
             {
-                var slot = skeleton.Slots.Items[attachment.SlotIndex];
-                slot.SetColor(color);
+                if (atlasAsset == null) continue;
+                foreach (var originalMat in atlasAsset.Materials)
+                {
+                    if (originalMat == null) continue;
+
+                    // Nếu chưa có Custom Override cho Material này thì tạo bản sao
+                    if (!graphic.CustomMaterialOverride.ContainsKey(originalMat))
+                    {
+                        Material instanceMat = new Material(originalMat);
+                        instanceMat.name = originalMat.name + " (Instance)";
+                        graphic.CustomMaterialOverride[originalMat] = instanceMat;
+                    }
+                }
             }
-            currentColors[skinId] = color;
         }
+
+        // 3. Đổi màu cho Slot
+        if (colors != null)
+        {
+            foreach (var (skinId, color) in colors)
+            {
+                if (!currentSkins.TryGetValue(skinId, out var skinName)) continue;
+                var skin = data.FindSkin(skinName);
+                if (skin == null) continue;
+
+                foreach (var attachment in skin.Attachments)
+                {
+                    var slot = skeleton.Slots.Items[attachment.SlotIndex];
+                    slot.SetColor(color);
+                }
+                currentColors[skinId] = color;
+            }
+        }
+
+        graphic.Update(0);
     }
     [Button]
     public (Dictionary<string, string> skins, Dictionary<string, Color> colors) RandomSkin(Gender gender, bool useDefaultColors)
