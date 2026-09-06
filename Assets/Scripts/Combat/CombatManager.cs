@@ -1034,10 +1034,10 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     private void StartTurn(CharacterCombat charCombat)
     {
-        var gameConfig = Pool.Get<GameManager>();
+        char1.InitStaticCombatEffect();
+        char2.InitStaticCombatEffect();
         currentTurn = charCombat;
-        currentTurn.InitStaticCombatEffect();
-        targetTurn.InitStaticCombatEffect();
+       
         StartEquipment(currentTurn);
         StartEquipment(targetTurn);
         NewTurn();
