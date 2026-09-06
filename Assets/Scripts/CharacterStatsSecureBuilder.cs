@@ -217,7 +217,11 @@ public class CharacterStatsSecureBuilder
         _stats.danDuocCombat = items ?? new List<CharacterStatsSecure.DataSave>();
         return this;
     }
-
+    public CharacterStatsSecureBuilder WithId(int id)
+    {
+        _stats.idChar = new SecureInt(id);
+        return this;
+    }
     public CharacterStatsSecure Build()
     {
         return _stats;
@@ -227,9 +231,9 @@ public class CharacterStatsSecureBuilder
         var stats = FromCharacterSnapshot(character);
         if (stats != null)
         {
-            // Vì Arena luôn lấy Hp = HpMax (SinhMenh)
             stats.hp = stats.hpMax;
         }
+        stats.isPlayer = true;
         return stats;
     }
     public static CharacterStatsSecure FromCharacterSnapshot(CharacterSnapshot character)
@@ -237,6 +241,7 @@ public class CharacterStatsSecureBuilder
         if (character == null) return null;
 
         return new CharacterStatsSecureBuilder()
+            .WithId(character.Id)
             .WithGender(character.Gender) // KHÔNG QUÊN GENDER NỮA NHÉ BABE!
             .WithTuoiTac(GameManager.GetIntTuoiTac(character.TuoiTac))
             .WithHp(character.Hp)

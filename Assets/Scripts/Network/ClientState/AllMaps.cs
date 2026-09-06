@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using Firebase.Analytics;
 using LongDH.LongDHModules;
 using LongDHModules;
@@ -7,7 +6,6 @@ using Network.Callback;
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
 using Network.Models;
-using UnityEngine;
 
 namespace Network.ClientState
 {
@@ -90,6 +88,22 @@ namespace Network.ClientState
                 NetworkManager.Instance.Invoke(() =>
                 {
                     callback.OnPlayerMoving(playerMoving);
+                });
+            }
+            else if (tag == MessageTag.InvitePvp)
+            {
+                var invitePvp = reader.MemRead<InvitePvp>();
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    callback.OnInvitePvp(invitePvp);
+                });
+            }
+            else if (tag == MessageTag.PvpMatched)
+            {
+                var pvpMatched = reader.MemRead<PvpMatched>();
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    callback.OnPvpMatched(pvpMatched);
                 });
             }
         }

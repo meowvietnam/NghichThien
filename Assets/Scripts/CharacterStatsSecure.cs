@@ -24,7 +24,7 @@ public class CharacterStatsSecure
         public string key;
         public Color value;
     }
-
+    public bool isPlayer;
     // Truyền 0 hoặc 0f vào constructor của SecureInt/SecureFloat
     public SecureInt idChar = new SecureInt(0);
     public SecureFloat percentKim = new SecureFloat(0f);
