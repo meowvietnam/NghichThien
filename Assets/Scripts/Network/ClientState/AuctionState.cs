@@ -1,9 +1,7 @@
-using Auction;
 using Network.Callback;
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
 using Network.Models;
-using Sirenix.Utilities;
 using UnityEngine;
 
 namespace Network.ClientState
@@ -26,7 +24,6 @@ namespace Network.ClientState
 
         private void OnReconnected()
         {
-            Debug.Log("OnReconnected - Join Auction");
             JoinAuction();
         }
 
