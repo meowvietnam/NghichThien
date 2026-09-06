@@ -50,7 +50,7 @@ namespace Network.ClientState
                 CurrentThanThuc = currentThanThuc,
                 CurrentThoNguyen = currentThoNguyen
             };
-            Client.Instance.MemSend(MessageTag.ReadyCombatPvp, resultCombat);
+            client.MemSend(MessageTag.ResultCombatPvp, resultCombat);
         }
 
         private void SyncAdjustLinhKhi(object[] data)
