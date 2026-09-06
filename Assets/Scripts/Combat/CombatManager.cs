@@ -54,7 +54,9 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     [SerializeField] private ItemUI prefabBuffIcon;
     public CharacterCombat currentTurn;
     public CharacterCombat targetTurn => currentTurn == char1 ? char2 : char1;
+    private float counterTime = 30f;
 
+    [SerializeField] private Text counterTimeText;
     public static readonly Dictionary<ELinhKhi, ELinhKhi> linhKhiLienKich = new Dictionary<ELinhKhi, ELinhKhi>()
     {
         { ELinhKhi.Kim, ELinhKhi.Tho }, // trước Kim là Thổ
@@ -430,9 +432,19 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         Observer.Notify(EventList.Combat.PLAY_SKILL, currentTurn, targetTurn, thanThong, new List<LinhKhiTieuTan>());
     }
 
+    private void ResetCounterTime()
+    {
+        counterTime = 30f;
+        counterTimeText.gameObject.SetActive(false);
+        var tf = counterTimeText.transform;
+        tf.DOKill();
+        tf.localScale = Vector2.one * 0.8f;
+        tf.DOScale(Vector2.one, 0.5f).SetLoops(-1, LoopType.Yoyo);
+    }
     public void PlaySkill(params object[] data)
     {
         if (IsDelayGame) return;
+        ResetCounterTime();
         CharacterCombat caster = data[0] as CharacterCombat;
         CharacterCombat target = data[1] as CharacterCombat;
 
@@ -826,24 +838,50 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         }
     }
 
+    private IEnumerator StartCounterTime()
+    {
+        ResetCounterTime();
+        var duration = 1f;
+        var waiter = new WaitForSecondsRealtime(duration);
+        while (currentTurn == char1)
+        {
+            yield return waiter;
+            counterTime -= duration;
+            counterTimeText.text = ((int)counterTime).ToString();
+            if (counterTime <= 0)
+            {
+                counterTimeText.gameObject.SetActive(false);
+                Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn,
+                    currentTurn.GetLinhKhiTieuTanForTotalLinhKhi());
+                yield break;
+            }
+            if (counterTime <= 10)
+            {
+                counterTimeText.gameObject.SetActive(true);
+            }
+        }
+    }
     [Button]
     public void NewTurn()
     {
+        ResetCounterTime();
+        if (IsRealTimeCombat)
+        {
+            if (currentTurn == char1)
+            {
+                StartCoroutine(StartCounterTime());
+            }
+        }
         SetUITextTurn();
         currentTurn.listDameTaked.Add(0);
         targetTurn.listDameTaked.Add(0);
-
-
-
         Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();
         if (!currentTurn.IsKietSuc())
         {
             isSync = false;
-
             CombatStatic.QuyTon(currentTurn, targetTurn);
             CombatStatic.SucThe(currentTurn, targetTurn);
             CombatStatic.ThieuDot(targetTurn, currentTurn);
-
             currentTurn.NewTurn();
             CombatStatic.AmKinhTTNewTurn(currentTurn, targetTurn);
             isSync = true;
@@ -1349,13 +1387,12 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     {
         SyncAdjustLinhKhi syncAdjustLinhKhi = data[0] as SyncAdjustLinhKhi;
         var charCombat = syncAdjustLinhKhi.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
-        char1.khiKim = syncAdjustLinhKhi.Kim;
-        char1.khiMoc = syncAdjustLinhKhi.Moc;
-        char1.khiThuy = syncAdjustLinhKhi.Thuy;
-        char1.khiHoa = syncAdjustLinhKhi.Hoa;
-        char1.khiTho = syncAdjustLinhKhi.Tho;
-        char1.khiMa = syncAdjustLinhKhi.Ma;
-
+        charCombat.khiKim = syncAdjustLinhKhi.Kim;
+        charCombat.khiMoc = syncAdjustLinhKhi.Moc;
+        charCombat.khiThuy = syncAdjustLinhKhi.Thuy;
+        charCombat.khiHoa = syncAdjustLinhKhi.Hoa;
+        charCombat.khiTho = syncAdjustLinhKhi.Tho;
+        charCombat.khiMa = syncAdjustLinhKhi.Ma;
     }
     public void SendSyncBuff(params object[] data)
     {
@@ -1370,7 +1407,6 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                 CharId = charCombat.characterStatsBase.idChar.Value,
                 IdBuff = (int)buffType,
                 NewBuff = newValue,
-
             });
         }
     }
