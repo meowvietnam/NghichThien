@@ -243,8 +243,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         // test 
         //char1.isAutoCastSkill = true;
         var gameConfig = Pool.Get<GameManager>();
-        char1.Init(gameConfig.user);
-        char2.Init(gameConfig.enemyCombat);
+        
         foreach (var item in char1.thanThongEquip)
         {
             item.LoadFirstDataPrefab();
@@ -995,7 +994,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     private void StartTurn(CharacterCombat charCombat)
     {
+        var gameConfig = Pool.Get<GameManager>();
+        char1.Init(gameConfig.user);
+        char2.Init(gameConfig.enemyCombat);
         currentTurn = charCombat;
+       
         StartEquipment(currentTurn);
         StartEquipment(targetTurn);
         NewTurn();
