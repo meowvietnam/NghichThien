@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ExcelDataReader.Log;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
@@ -1434,16 +1435,17 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             {
                 CharId = charCombat.characterStatsBase.idChar.Value,
                 Heal = healValue,
-
             });
+            Debug.Log($"{charCombat.characterStatsBase.nameUser} heal {healValue} hp");
         }
 
     }
     public void ReceiveSyncHealing(params object[] data)
     {
-        SyncHealing SyncHealing = data[0] as SyncHealing;
-        var charCombat = SyncHealing.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
-        charCombat.HealingVisual(SyncHealing.Heal);
+        SyncHealing syncHealing = data[0] as SyncHealing;
+        var charCombat = syncHealing.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
+        Debug.Log($"{charCombat.characterStatsBase.nameUser} heal {syncHealing.Heal} hp");
+        charCombat.HealingVisual(syncHealing.Heal);
 
     }
     public void SendSyncDame(params object[] data)

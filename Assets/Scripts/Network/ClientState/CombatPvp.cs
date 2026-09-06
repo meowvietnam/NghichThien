@@ -88,7 +88,6 @@ namespace Network.ClientState
 
         private void SyncPlaySkill(object[] data)
         {
-            Debug.Log("Sync Play Skill");
             var model = data[0] as SyncPlaySkill;
             client.MemSend(MessageTag.SyncPlaySkill, model);
         }
