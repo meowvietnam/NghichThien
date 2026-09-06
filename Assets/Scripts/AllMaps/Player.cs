@@ -25,7 +25,10 @@ namespace AllMaps
         public bool IsSwordRiding { get; private set; }
         public bool IsMoving { get; private set; }
         public NewCharacterGraphic newVisual;
-
+        public void SetInstance()
+        {
+            Pool.Set(this);
+        }
         public void SetName(string name, Color color)
         {
             nameText.text = name;
@@ -47,7 +50,6 @@ namespace AllMaps
             anim.Skeleton.SetSkin(genderStr);
             anim.timeScale = speed;
             SetMoving(false);
-            Pool.Set(this);
             EVehicleType vehicleType = isSwordRiding ? EVehicleType.Sword : EVehicleType.Base;
            
             newVisual.InitVisual(vehicleType, gender,appearance.Skins,appearance.Colors);
