@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using LongDH.LongDHModules;
+using LongDHModules;
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
 using Network.Models;
@@ -9,6 +11,7 @@ namespace Network.ClientState
     public class CombatPvp : IClientState
     {
         private Client client;
+        private INetworkEvent.IResultCombat resultCombatCallback;
         public CombatPvp()
         {
             client = Client.Instance;
@@ -22,10 +25,33 @@ namespace Network.ClientState
             Observer.AddObserver(EventList.Combat.SEND_SYNC_HEALING, SyncHealing);
             Observer.AddObserver(EventList.Combat.SEND_SYNC_PLAYSKILL, SyncPlaySkill);
             Observer.AddObserver(EventList.Combat.SEND_SYNC_USE_PHAPBAO, SyncUsePhapBao);
+            Observer.AddObserver(EventList.Network.RESULT_COMBAT_REALTIME, ResultCombat);
             client.Send(MessageTag.ReadyCombatPvp);
         }
 
+        private void ResultCombat(object[] data)
+        {
+            resultCombatCallback = data[0] as INetworkEvent.IResultCombat;
+            var eTypeCombat = (ETypeCombat)data[1];
+            var currentHpUser = (int)data[2];
+            var currentThanThuc = (int)data[3];
+            var currentThoNguyen = (int)data[4];
 
+            var listThanThongUse = (List<int>)data[5];
+            var levelEnemy = (int)data[6];
+            var typeResultCombat = (ETypeResultCombat)data[7];
+            var resultCombat = new ResultCombat()
+            {
+                TypeCombat = eTypeCombat,
+                CurrentHPUser = currentHpUser,
+                ListIdThanThong = listThanThongUse,
+                CurrentLevelEnemy = levelEnemy,
+                TypeResultCombat = typeResultCombat,
+                CurrentThanThuc = currentThanThuc,
+                CurrentThoNguyen = currentThoNguyen
+            };
+            Client.Instance.MemSend(MessageTag.ReadyCombatPvp, resultCombat);
+        }
 
         private void SyncAdjustLinhKhi(object[] data)
         {
@@ -116,6 +142,23 @@ namespace Network.ClientState
                 var model = reader.MemRead<SyncUsePhapBao>();
                 Observer.Notify(EventList.Combat.RECEIVE_SYNC_USE_PHAPBAO, model);
             }
+            else if (tag == MessageTag.ResultCombatPvp)
+            {
+                var result = reader.MemRead<ResultCombatResult>();
+                if (result.Success)
+                {
+                    resultCombatCallback.SuccessResultCombatBase(result.Reward, result.TypeResultCombat);
+                }
+                else
+                {
+                    resultCombatCallback.FailResultCombatBase(result.Message);
+                }
+            }
+            else if (tag == MessageTag.YouWinPvp)
+            {
+                var combatManager = Pool.Get<CombatManager>();
+                combatManager.EndCombat(ETypeResultCombat.Win);
+            }
         }
         public void OnLeave()
         {
@@ -126,6 +169,7 @@ namespace Network.ClientState
             Observer.RemoveObserver(EventList.Combat.SEND_SYNC_HEALING, SyncHealing);
             Observer.RemoveObserver(EventList.Combat.SEND_SYNC_PLAYSKILL, SyncPlaySkill);
             Observer.RemoveObserver(EventList.Combat.SEND_SYNC_USE_PHAPBAO, SyncUsePhapBao);
+            Observer.RemoveObserver(EventList.Network.RESULT_COMBAT_REALTIME, ResultCombat);
         }
 
         public MessageState State => MessageState.CombatPvp;
