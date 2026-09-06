@@ -161,12 +161,12 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         CharacterCombat characterDie = null;
         CharacterCombat characterWin = null;
 
-        if (targetTurn.CheckDie())
+        if (targetTurn!= null&&targetTurn.CheckDie())
         {
             characterDie = targetTurn;
             characterWin = currentTurn;
         }
-        else if (currentTurn.CheckDie())
+        else if (currentTurn != null&&currentTurn.CheckDie())
         {
             characterDie = currentTurn;
             characterWin = targetTurn;
@@ -226,8 +226,9 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         Observer.AddObserver(EventList.Combat.REMOVE_BUFF, SendSyncBuff);
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_BUFF, ReceiSyncBuff);
         Observer.AddObserver(EventList.Combat.SYNC_START_TURN, StartTurnPVP);
-        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_HEALING, ReceiSyncHealing);
-        Observer.AddObserver(EventList.Combat.CHARACTER_HEALING, SendSyncHealing);
+        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_HEALING, ReceiveSyncHealing);
+        Observer.AddObserver(EventList.Combat.CHARACTER_AFTER_TAKE_DAME_ALL, SendSyncDame);
+        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_DAME, ReceiveSyncDame);
 
         if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
         if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
@@ -1346,7 +1347,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         }
 
     }
-    public void ReceiSyncHealing(params object[] data)
+    public void ReceiveSyncHealing(params object[] data)
     {
         SyncHealing SyncHealing = data[0] as SyncHealing;
         var charCombat = SyncHealing.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
@@ -1355,21 +1356,32 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     }
     public void SendSyncDame(params object[] data)
     {
-        //CharacterCombat charCombat = data[0] as CharacterCombat;
+        CharacterCombat charCombatSend = data[0] as CharacterCombat;
+        CharacterCombat charCombatTake = data[1] as CharacterCombat;
+        List<DameData> listDameData = data[2] as List<DameData>;
+
         //int healValue = data[2] as int;
+       
 
-        //if (IsRealTimeCombat)
-        //{
-        //    Observer.Notify(EventList.Combat.SEND_SYNC_HEALING, new SyncHealing
-        //    {
-        //        CharId = charCombat.characterStatsBase.idChar.Value,
-        //        Heal = healValue,
+        if (IsRealTimeCombat)
+        {
+            int idCharSend = -1;
+            if(charCombatSend != null) // char combat send cos the bi null
+            {
+                idCharSend = charCombatSend.characterStatsBase.idChar.Value;
+            }
+            Observer.Notify(EventList.Combat.SEND_SYNC_DAME, new SyncDame
+            {
+                CharSendDame = idCharSend,
 
-        //    });
-        //}
+                CharTakeDame = charCombatTake.characterStatsBase.idChar.Value,
+                Datas = listDameData,
+
+            });
+        }
 
     }
-    public void ReceiSyncDame(params object[] data)
+    public void ReceiveSyncDame(params object[] data)
     {
         SyncDame SyncDame = data[0] as SyncDame;
         var charCombatSendDame = SyncDame.CharSendDame == char1.characterStatsBase.idChar.Value ? char1 : char2;

@@ -17,6 +17,7 @@ public static partial class EventList
         public const string CHARACTER_ADJUST_HP = "Combat.CHARACTER_ADJUST_HP";
         public const string CACULATE_DAME_BY_THANTHONG = "Combat.CACULATE_DAME_BY_THANTHONG";
         public const string CHARACTER_TAKE_DAME = "Combat.CHARACTER_TAKE_DAME";
+        public const string CHARACTER_AFTER_TAKE_DAME_ALL = "Combat.CHARACTER_TAKE_DAME";
         public const string CHARACTER_BEFORE_TAKE_DAME = "Combat.CHARACTER_BEFORE_TAKE_DAME";
         public const string BEFORE_EXCUTE_SKILL = "Combat.BEFORE_EXCUTE_SKILL";
 
