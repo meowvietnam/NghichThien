@@ -20,8 +20,12 @@ namespace Network.ClientState
             Observer.AddObserver(EventList.Combat.SEND_SYNC_ENDTURN, SyncEndTurn);
             Observer.AddObserver(EventList.Combat.SEND_SYNC_HEALING, SyncHealing);
             Observer.AddObserver(EventList.Combat.SEND_SYNC_PLAYSKILL, SyncPlaySkill);
+            Observer.AddObserver(EventList.Combat.SEND_SYNC_USE_PHAPBAO, SyncUsePhapBao);
             client.Send(MessageTag.ReadyCombatPvp);
         }
+
+
+
         private void SyncAdjustLinhKhi(object[] data)
         {
             var model = data[0] as SyncAdjustLinhKhi;
@@ -52,7 +56,11 @@ namespace Network.ClientState
             var model = data[0] as SyncPlaySkill;
             client.MemSend(MessageTag.SyncPlaySkill, model);
         }
-
+        private void SyncUsePhapBao(object[] data)
+        {
+            var model = data[0] as SyncUsePhapBao;
+            client.MemSend(MessageTag.SyncUsePhapBao, model);
+        }
         public void Handle(Message<MessageTag> message)
         {
             var tag = message.Tag;
@@ -100,6 +108,11 @@ namespace Network.ClientState
                 var model = reader.MemRead<SyncHealing>();
                 Observer.Notify(EventList.Combat.RECEIVE_SYNC_PLAYSKILL, model);
             }
+            else if (tag == MessageTag.SyncUsePhapBao)
+            {
+                var model = reader.MemRead<SyncUsePhapBao>();
+                Observer.Notify(EventList.Combat.RECEIVE_SYNC_USE_PHAPBAO, model);
+            }
         }
         public void OnLeave()
         {
@@ -109,6 +122,7 @@ namespace Network.ClientState
             Observer.RemoveObserver(EventList.Combat.SEND_SYNC_ENDTURN, SyncEndTurn);
             Observer.RemoveObserver(EventList.Combat.SEND_SYNC_HEALING, SyncHealing);
             Observer.RemoveObserver(EventList.Combat.SEND_SYNC_PLAYSKILL, SyncPlaySkill);
+            Observer.RemoveObserver(EventList.Combat.SEND_SYNC_USE_PHAPBAO, SyncUsePhapBao);
         }
 
         public MessageState State => MessageState.CombatPvp;
