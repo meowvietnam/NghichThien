@@ -1633,12 +1633,17 @@ public class CharacterCombat : MonoBehaviour
    
     private void TakeVisualDameHoTrao(int dameHoTrao)
     {
-        // hộ tráo đã được đồng bộ từ event sync buff rồi
-        SetTextDameAnim($"-{dameHoTrao}", Color.cyan);
-
+        if (dameHoTrao > 0)
+        {
+            SetTextDameAnim($"-{dameHoTrao}", Color.cyan);
+        }
     }
     private void TakeVisualDame(int dame , bool isDef)
     {
+        if (dame <= 0)
+        {
+            return;
+        }
         characterStatsTemp.hp -= dame;
         characterStatsTemp.hp = Mathf.Clamp(characterStatsTemp.hp, 0, characterStatsTemp.hpMax);
         StartAnimHit();
