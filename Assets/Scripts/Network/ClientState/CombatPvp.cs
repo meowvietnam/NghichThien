@@ -12,10 +12,12 @@ namespace Network.ClientState
     {
         private Client client;
         private INetworkEvent.IResultCombat resultCombatCallback;
+
         public CombatPvp()
         {
             client = Client.Instance;
         }
+
         public void OnEnter()
         {
             Observer.AddObserver(EventList.Combat.SEND_SYNC_ADJUST_LINHKHI, SyncAdjustLinhKhi);
@@ -58,46 +60,50 @@ namespace Network.ClientState
             var model = data[0] as SyncAdjustLinhKhi;
             client.MemSend(MessageTag.SyncAdjustLinhKhi, model);
         }
+
         private void SyncBuff(object[] data)
         {
             var model = data[0] as SyncBuff;
             client.MemSend(MessageTag.SyncBuff, model);
         }
+
         private void SyncDame(object[] data)
         {
             var model = data[0] as SyncDame;
             Debug.Log($"Is data null: {model.Datas == null}");
             client.MemSend(MessageTag.SyncDame, model);
         }
+
         private void SyncEndTurn(object[] data)
         {
             var model = data[0] as SyncEndTurn;
             client.MemSend(MessageTag.SyncEndTurn, model);
         }
+
         private void SyncHealing(object[] data)
         {
             var model = data[0] as SyncHealing;
             client.MemSend(MessageTag.SyncHealing, model);
         }
+
         private void SyncPlaySkill(object[] data)
         {
             Debug.Log("Sync Play Skill");
             var model = data[0] as SyncPlaySkill;
             client.MemSend(MessageTag.SyncPlaySkill, model);
         }
+
         private void SyncUsePhapBao(object[] data)
         {
             var model = data[0] as SyncUsePhapBao;
             client.MemSend(MessageTag.SyncUsePhapBao, model);
         }
+
         public void Handle(Message<MessageTag> message)
         {
             var tag = message.Tag;
             var reader = message.Reader;
-            NetworkManager.Instance.Invoke(() =>
-            {
-                OnMessage(tag,reader);
-            });
+            NetworkManager.Instance.Invoke(() => { OnMessage(tag, reader); });
         }
 
         private void OnMessage(MessageTag tag, IReader reader)
@@ -145,8 +151,24 @@ namespace Network.ClientState
             else if (tag == MessageTag.ResultCombatPvp)
             {
                 var result = reader.MemRead<ResultCombatResult>();
+
                 if (result.Success)
                 {
+                    var charData = client.CharacterData;
+                    if (result.Reward != null)
+                    {
+                        charData.Claim(result.Reward);
+                    }
+                    charData.EquipmentManager.ClearDanCombat();
+                    charData.Progression.NgoDaoDiem = result.NewNgoDaoDiem;
+                    charData.ArenaManager.Points = result.NewPointRank;
+                    charData.Stats.TamCanh = result.NewTamCanh;
+                    charData.Stats.Hp = result.NewHP;
+                    foreach (var item in result.NewCamNgo)
+                    {
+                        charData.InventoryManager.AddOrUpdate(item);
+                    }
+                    charData.EquipmentManager.DanCombatUseds.Clear();
                     resultCombatCallback.SuccessResultCombatBase(result.Reward, result.TypeResultCombat);
                 }
                 else
@@ -160,6 +182,7 @@ namespace Network.ClientState
                 combatManager.EndCombat(ETypeResultCombat.Win);
             }
         }
+
         public void OnLeave()
         {
             Observer.RemoveObserver(EventList.Combat.SEND_SYNC_ADJUST_LINHKHI, SyncAdjustLinhKhi);
