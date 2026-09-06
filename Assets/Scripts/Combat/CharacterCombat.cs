@@ -573,11 +573,12 @@ public class CharacterCombat : MonoBehaviour
         if (buffAndDebuffCount.TryGetValue(type, out var current))
         {
             buffAndDebuffCount[type] = newValue;
-
-            Observer.Notify(EventList.Combat.ADD_BUFF_UI, this, type, (int)newValue, (int)current);
-        }    
-     
-
+        }
+        else
+        {
+            buffAndDebuffCount.Add(type,newValue);
+        }
+        Observer.Notify(EventList.Combat.ADD_BUFF_UI, this, type, (int)newValue, (int)current);
     }
     [Button]
     public void AddBuffAndDebuffCount(EBuffAndDeBuff type, int count)
