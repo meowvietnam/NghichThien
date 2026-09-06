@@ -35,7 +35,7 @@ public class BeKhi : NgoDaoCombat, IMemorySerializable<BeKhi>
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.Combat.ADD_BUFF, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.ADD_BUFF_UI, ObserverEffect);
     }
 
     public override int ByteSize()

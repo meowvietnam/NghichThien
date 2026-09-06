@@ -50,7 +50,7 @@ public class LiemTuc : NgoDaoCombat, IMemorySerializable<LiemTuc>
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.Combat.ADD_BUFF, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.REMOVE_BUFF, ObserverEffect);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect2);
     }
 

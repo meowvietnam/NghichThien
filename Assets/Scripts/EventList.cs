@@ -11,6 +11,9 @@ public static partial class EventList
         public const string PLAY_SKILL = "Combat.PLAY_SKILL";
         public const string ADJUST_LINHKHI = "Combat.HAPTHU_LINHKHI";
         public const string ADD_BUFF = "Combat.ADD_BUFF";
+        public const string REMOVE_BUFF = "Combat.REMOVE_BUFF";
+        public const string ADD_BUFF_UI = "Combat.ADD_BUFF_UI";
+
         public const string CHARACTER_ADJUST_HP = "Combat.CHARACTER_ADJUST_HP";
         public const string CACULATE_DAME_BY_THANTHONG = "Combat.CACULATE_DAME_BY_THANTHONG";
         public const string CHARACTER_TAKE_DAME = "Combat.CHARACTER_TAKE_DAME";
@@ -41,11 +44,13 @@ public static partial class EventList
         public const string SEND_SYNC_DAME = "Combat.SEND_SYNC_DAME"; //name CharSender dame, gửi id char TakeDame và kèm 1 list calss data dame bao gồm dame , dame ho trao, is ne tranh, isDef
         public const string RECEIVE_SYNC_DAME = "Combat.RECEIVE_SYNC_DAME"; //  nhận //name CharSender dame, gửi id char TakeDame và kèm 1 list calss data dame bao gồm dame , dame ho trao, is ne tranh, isDef  
 
-        public const string SEND_SYNC_ENDTURN = "Combat.SEND_SYNC_ENDTURN"; // gửi name char
-        public const string RECEIVE_SYNC_ENDTURN = "Combat.RECEIVE_SYNC_ENDTURN"; // nhận name char
+        public const string SEND_SYNC_ENDTURN = "Combat.SEND_SYNC_ENDTURN"; // gửi name char cưỡng chế end turn ở client
+        public const string RECEIVE_SYNC_ENDTURN = "Combat.RECEIVE_SYNC_ENDTURN"; // nhận name char cưỡng chế end turn ở client
 
         public const string SEND_SYNC_HEALING = "Combat.SEND_SYNC_HEALING"; //name Char đc heal , int heal
-        public const string RECEIVE_SEND_SYNC_HEALING = "Combat.RECEIVE_SEND_SYNC_HEALING"; //  nhận  //name Char đc heal , int heal
+        public const string RECEIVE_SYNC_HEALING = "Combat.RECEIVE_SYNC_HEALING"; //  nhận  //name Char đc heal , int heal
+
+        public const string SYNC_START_TURN = "Combat.SYNC_START_TURN"; // sv truyền về 1 id char id này là character đc phép đánh đầu tiên
 
         // khi play skill đồng bộ cho máy kia chỉ play visual không gửi sync
         public static void RemoveAllCombatObservers()

@@ -23,6 +23,7 @@ using static UnityEngine.Networking.UnityWebRequest;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
 using Network;
+using Network.Models;
 
 public enum ETypeVisualChar
 {
@@ -238,7 +239,7 @@ public class CharacterCombat : MonoBehaviour
 
     }
 
-    protected void VisualPlaySkill(ThanThong thanThong)
+    public void VisualPlaySkill(ThanThong thanThong)
     {
         playerCombat?.PlaySkill(thanThong);
         DOTween.Kill("HideSkillName");
@@ -567,6 +568,17 @@ public class CharacterCombat : MonoBehaviour
         else
             thanThongCoolDown[thanThong] = newValue;
     }
+    public void SetBuffLogic(EBuffAndDeBuff type, int newValue)
+    {
+        if (buffAndDebuffCount.TryGetValue(type, out var current))
+        {
+            buffAndDebuffCount[type] = newValue;
+
+            Observer.Notify(EventList.Combat.ADD_BUFF_UI, this, type, (int)newValue, (int)current);
+        }    
+     
+
+    }
     [Button]
     public void AddBuffAndDebuffCount(EBuffAndDeBuff type, int count)
     {
@@ -578,6 +590,7 @@ public class CharacterCombat : MonoBehaviour
         buffAndDebuffCount[type] = newValue;
 
         Observer.Notify(EventList.Combat.ADD_BUFF, this, type, (int)newValue, (int)current);
+        Observer.Notify(EventList.Combat.ADD_BUFF_UI, this, type, (int)newValue, (int)current);
 
     }
     [Button]
@@ -608,7 +621,9 @@ public class CharacterCombat : MonoBehaviour
             buffAndDebuffCount[type] = newValue;
         }
 
-        Observer.Notify(EventList.Combat.ADD_BUFF, this, type, (int)newValue, (int)current);
+        Observer.Notify(EventList.Combat.REMOVE_BUFF, this, type, (int)newValue, (int)current);
+        Observer.Notify(EventList.Combat.ADD_BUFF_UI, this, type, (int)newValue, (int)current);
+
     }
     [Button]
     public int GetThanThuc()
@@ -1596,6 +1611,7 @@ public class CharacterCombat : MonoBehaviour
 
 
         }
+        
         allDamages.Clear();
     }
    
@@ -1614,19 +1630,42 @@ public class CharacterCombat : MonoBehaviour
         Observer.Notify(EventList.Combat.CHARACTER_ADJUST_HP);
 
     }
-    private void TakeDame(CharacterCombat sender ,int dame , bool isDef , bool isNeTranh)
+    public void TakeDameVisualPvP(DameData dameDataServer)
     {
-        void NeTranh()
+        if(dameDataServer != null)
         {
-            SetTextDameAnim("Né Tránh!", Color.whiteSmoke);
-            if (sender != null)
+            if(dameDataServer.IsNeTranh)
             {
-                Observer.Notify(EventList.Combat.NE_TRANH_SUCCESS, sender, this);
+                NeTranh(null);
+                return;
+            }
+            if(dameDataServer.IsDef)
+            {
+                TakeVisualDame(dameDataServer.Dame,true);
+                TakeVisualDameHoTrao(dameDataServer.DameHoTrao);
+
+            }
+            else
+            {
+                TakeVisualDame(dameDataServer.Dame, false);
+
             }
         }
+    }
+    void NeTranh(CharacterCombat sender)
+    {
+        SetTextDameAnim("Né Tránh!", Color.whiteSmoke);
+        if (sender != null)
+        {
+            Observer.Notify(EventList.Combat.NE_TRANH_SUCCESS, sender, this);
+        }
+    }
+    private void TakeDame(CharacterCombat sender ,int dame , bool isDef , bool isNeTranh)
+    {
+      
         if(isNeTranh)
         {
-            NeTranh();
+            NeTranh(sender);
             return;
         }
         if (isDef)
@@ -1729,10 +1768,10 @@ public class CharacterCombat : MonoBehaviour
         StartAnimDie();
     }
 
-    int dataHeal = 0;
+    SecureInt dataHealCurrent = 0;
     public void AddDataHeal(int hp)
     {
-        dataHeal += hp;
+        dataHealCurrent.Value += hp;
     }    
     public void Healing(int hp)
     {
@@ -1742,18 +1781,16 @@ public class CharacterCombat : MonoBehaviour
         float reductionFactor = Mathf.Pow(0.5f, phaThe);
         int finalHpGain = Mathf.RoundToInt(hp * reductionFactor);
         AddDataHeal(finalHpGain);
-        int currentValueHp = (int)characterStatsTemp.hp + dataHeal;
-        Observer.Notify(EventList.Combat.CHARACTER_HEALING, this, currentValueHp, dataHeal);
+        int currentValueHp = (int)characterStatsTemp.hp + dataHealCurrent.Value;
+        Observer.Notify(EventList.Combat.CHARACTER_HEALING, this, currentValueHp, dataHealCurrent.Value);
         Healing();
     }
-    public void Healing()
+    public void HealingVisual(int dataHeal)
     {
-
-        
         // Áp dụng vào chỉ số nhân vật
         characterStatsTemp.hp += dataHeal;
 
-      
+
         characterStatsTemp.hp = Mathf.Clamp(characterStatsTemp.hp, 0, characterStatsTemp.hpMax);
 
         // Hiển thị hiệu ứng số nhảy (Nếu hồi phục > 0 thì mới hiện)
@@ -1774,6 +1811,11 @@ public class CharacterCombat : MonoBehaviour
         }
         dataHeal = 0;
         Observer.Notify(EventList.Combat.CHARACTER_ADJUST_HP);
+    }
+    public void Healing()
+    {
+        HealingVisual(dataHealCurrent.Value);
+        dataHealCurrent.Value = 0;
     }
 
     [Button]

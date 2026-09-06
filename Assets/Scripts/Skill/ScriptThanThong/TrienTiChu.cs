@@ -16,7 +16,7 @@ public class TrienTiChu : ThanThong, IMemorySerializable<TrienTiChu>
     {
         HauKeVoLuc(caster);
         target.AddThanThongImpactAfterPlaySkill(this);
-        Observer.AddObserver(EventList.Combat.ADD_BUFF, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.REMOVE_BUFF, ObserverEffect);
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect2);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }

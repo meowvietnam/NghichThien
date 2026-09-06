@@ -26,7 +26,7 @@ public class ThonDiem : NgoDaoCombat, IMemorySerializable<ThonDiem>
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.Combat.ADD_BUFF, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.REMOVE_BUFF, ObserverEffect);
     }
 
     public override int ByteSize()

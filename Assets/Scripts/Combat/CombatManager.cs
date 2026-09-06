@@ -10,6 +10,7 @@ using LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using LuyenKhi;
+using Network.Models;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
 using Skill;
@@ -213,11 +214,20 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, EndTurn);
         Observer.AddObserver(EventList.Combat.PLAY_SKILL, PlaySkill);
         Observer.AddObserver(EventList.Combat.ADD_SKILL, SetUISkill);
-        Observer.AddObserver(EventList.Combat.ADD_BUFF, SetUIBuff);
+        Observer.AddObserver(EventList.Combat.ADD_BUFF_UI, SetUIBuff);
         Observer.AddObserver(EventList.Combat.UPDATE_AMKINH_THANTHONG, SetUIAmKinh);
 
         Observer.AddObserver(EventList.Combat.CHARACTER_ADJUST_HP, SetUIHpBar);
         Observer.AddObserver(EventList.Combat.CHARACTER_ADJUST_HP, () => { CheckDie(); });
+        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_PLAYSKILL, ReceiSyncPlaySkill);
+        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_ADJUST_LINHKHI, ReceiSyncAdjustLinhKhi);
+        Observer.AddObserver(EventList.Combat.ADJUST_LINHKHI, SendAjustLinhKhi);
+        Observer.AddObserver(EventList.Combat.ADD_BUFF, SendSyncBuff);
+        Observer.AddObserver(EventList.Combat.REMOVE_BUFF, SendSyncBuff);
+        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_BUFF, ReceiSyncBuff);
+        Observer.AddObserver(EventList.Combat.SYNC_START_TURN, StartTurnPVP);
+        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_HEALING, ReceiSyncHealing);
+        Observer.AddObserver(EventList.Combat.CHARACTER_HEALING, SendSyncHealing);
 
         if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
         if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
@@ -423,6 +433,15 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
         if (thanThong != null)
         {
+            if(IsRealTimeCombat)
+            {
+                Observer.Notify(EventList.Combat.SEND_SYNC_PLAYSKILL, new SyncPlaySkill
+                {
+                    CharId = caster.characterStatsBase.idChar.Value,
+                    SkillId = thanThong.Id,
+                });
+            }    
+
             caster.PlaySkill(thanThong, linhKhiTieuTan);
             CombatStatic.TrienNhieu(target, caster);
             Observer.Notify(EventList.Combat.BEFORE_EXCUTE_SKILL, caster, target);
@@ -936,19 +955,29 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         }
     }
 
-    private void StartTurn()
+    private void StartTurn(CharacterCombat charCombat)
     {
-        currentTurn = char1.GetToDoBay() >= char2.GetToDoBay() ? char1 : char2;
+        currentTurn = charCombat;
         StartEquipment(currentTurn);
         StartEquipment(targetTurn);
         NewTurn();
         StartCoroutine(CheckDieCoroutine());
     }
+    private void StartTurnPVP(params object[] data)
+    {
+        int charId = data[0] as int;
 
+        var charCombat = charId == char1.characterStatsBase.idChar.Value ? char1 : char2;
+        StartTurn(charCombat);
+    }
     void Start()
     {
-        StartTurn();
-     
+        if(!IsRealTimeCombat)
+        {
+            var charCb = char1.GetToDoBay() >= char2.GetToDoBay() ? char1 : char2;
+            StartTurn(charCb);
+        }
+
     }
 
     private IEnumerator CheckDieCoroutine()
@@ -1239,8 +1268,117 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     {
         Debug.Log("chỉ có thể là chó hack" + message);
     }
-    public void SendSyncPlaySkill()
+ 
+    public void ReceiSyncPlaySkill(params object[] data)
     {
+        SyncPlaySkill syncPlaySkill = data[0] as SyncPlaySkill;
+        var charCombat = syncPlaySkill.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
+        charCombat.VisualPlaySkill(Pool.Get<GameManager>().GetThanThongWithId(syncPlaySkill.SkillId));
+    }
+    public void SendAjustLinhKhi(params object[] data)
+    {
+        CharacterCombat charCombat = data[0] as CharacterCombat;
+
+        if (IsRealTimeCombat)
+        {
+            Observer.Notify(EventList.Combat.SEND_SYNC_ADJUST_LINHKHI, new SyncAdjustLinhKhi
+            {
+                CharId = charCombat.characterStatsBase.idChar.Value,
+                Kim = charCombat.khiKim,
+                Moc = charCombat.khiMoc,
+                Thuy = charCombat.khiThuy,
+                Hoa = charCombat.khiHoa,
+                Tho = charCombat.khiTho,
+                Ma = charCombat.khiMa,
+
+            });
+        }    
+    }
+    public void ReceiSyncAdjustLinhKhi(params object[] data)
+    {
+        SyncAdjustLinhKhi syncAdjustLinhKhi = data[0] as SyncAdjustLinhKhi;
+        var charCombat = syncAdjustLinhKhi.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
+        char1.khiKim = syncAdjustLinhKhi.Kim;
+        char1.khiMoc = syncAdjustLinhKhi.Moc;
+        char1.khiThuy = syncAdjustLinhKhi.Thuy;
+        char1.khiHoa = syncAdjustLinhKhi.Hoa;
+        char1.khiTho = syncAdjustLinhKhi.Tho;
+        char1.khiMa = syncAdjustLinhKhi.Ma;
+
+    }
+    public void SendSyncBuff(params object[] data)
+    {
+        CharacterCombat charCombat = data[0] as CharacterCombat;
+        EBuffAndDeBuff buffType = data[1] as EBuffAndDeBuff;
+        int newValue = data[2] as int;
+
+        if (IsRealTimeCombat)
+        {
+            Observer.Notify(EventList.Combat.SEND_SYNC_BUFF, new SyncBuff
+            {
+                CharId = charCombat.characterStatsBase.idChar.Value,
+                IdBuff = (int)buffType,
+                NewBuff = newValue,
+
+            });
+        }
+    }
+    public void ReceiSyncBuff(params object[] data)
+    {
+        SyncBuff SyncBuff = data[0] as SyncBuff;
+        var charCombat = SyncBuff.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
+        charCombat.SetBuffLogic((EBuffAndDeBuff)SyncBuff.IdBuff, SyncBuff.NewBuff);
+
+    }
+    public void SendSyncHealing(params object[] data)
+    {
+        CharacterCombat charCombat = data[0] as CharacterCombat;
+        int healValue = data[2] as int;
+
+        if (IsRealTimeCombat)
+        {
+            Observer.Notify(EventList.Combat.SEND_SYNC_HEALING, new SyncHealing
+            {
+                CharId = charCombat.characterStatsBase.idChar.Value,
+                Heal = healValue,
+
+            });
+        }
+
+    }
+    public void ReceiSyncHealing(params object[] data)
+    {
+        SyncHealing SyncHealing = data[0] as SyncHealing;
+        var charCombat = SyncHealing.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
+        charCombat.HealingVisual(SyncHealing.Heal);
+
+    }
+    public void SendSyncDame(params object[] data)
+    {
+        //CharacterCombat charCombat = data[0] as CharacterCombat;
+        //int healValue = data[2] as int;
+
+        //if (IsRealTimeCombat)
+        //{
+        //    Observer.Notify(EventList.Combat.SEND_SYNC_HEALING, new SyncHealing
+        //    {
+        //        CharId = charCombat.characterStatsBase.idChar.Value,
+        //        Heal = healValue,
+
+        //    });
+        //}
+
+    }
+    public void ReceiSyncDame(params object[] data)
+    {
+        SyncDame SyncDame = data[0] as SyncDame;
+        var charCombatSendDame = SyncDame.CharSendDame == char1.characterStatsBase.idChar.Value ? char1 : char2;
+        var charCombatTakeDame = SyncDame.CharTakeDame == char1.characterStatsBase.idChar.Value ? char1 : char2;
+        foreach (var item in SyncDame.Datas)
+        {
+            charCombatTakeDame.TakeDameVisualPvP(item);
+        }
+       
 
     }
 }

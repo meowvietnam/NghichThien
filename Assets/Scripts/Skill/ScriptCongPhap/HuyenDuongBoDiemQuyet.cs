@@ -44,7 +44,7 @@ public class HuyenDuongBoDiemQuyet : CongPhap, IMemorySerializable<HuyenDuongBoD
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.Combat.ADD_BUFF, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.REMOVE_BUFF, ExecuteParams);
     }
 
     public override int ByteSize()
