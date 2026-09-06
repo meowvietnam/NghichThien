@@ -209,8 +209,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         return false;
     }
     public bool IsRealTimeCombat => Pool.Get<GameManager>().currentETypeCombat == ETypeCombat.LuanBanRealTime || Pool.Get<GameManager>().currentETypeCombat == ETypeCombat.TongMonChienRealTime;
-    public bool IsSync => IsRealTimeCombat && currentTurn == char1;
-
+    public bool IsSync => IsRealTimeCombat && currentTurn == char1 && isSync == true;
+    public bool isSync = true;
     private void Awake()
     {
         Pool.Set(this);
@@ -232,6 +232,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_HEALING, ReceiveSyncHealing);
         Observer.AddObserver(EventList.Combat.CHARACTER_AFTER_TAKE_DAME_ALL, SendSyncDame);
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_DAME, ReceiveSyncDame);
+        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_USE_PHAPBAO, ReceiveSyncPhapBao);
+        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_ENDTURN, () =>
+        {
+            Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
+        });
 
         if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
         if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
@@ -444,7 +449,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
         if (thanThong != null)
         {
-            if(IsRealTimeCombat)
+            if(IsSync)
             {
                 Observer.Notify(EventList.Combat.SEND_SYNC_PLAYSKILL, new SyncPlaySkill
                 {
@@ -578,17 +583,19 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         }
         var oldCurrentTurn = currentTurn;
         var oldTargetTurn = targetTurn;
+        if(IsSync)
+        {
+            Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN, new SyncEndTurn { CharId = oldCurrentTurn.characterStatsBase.idChar.Value });
 
+        }
         SwapTurn();
-        Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN,oldCurrentTurn.characterStatsBase.idChar.Value);
-
+        isSync = false;
         CombatStatic.AnhDich(oldCurrentTurn, oldTargetTurn);
         CombatStatic.KiemKhi(oldCurrentTurn, oldTargetTurn);
         CombatStatic.TrungDoc(oldTargetTurn, oldCurrentTurn);
         CombatStatic.ThienKiem(oldCurrentTurn, oldTargetTurn);
         CombatStatic.ChayMau(oldTargetTurn, oldCurrentTurn);
-        oldCurrentTurn.EndTurn();
-        ExcuteEquipment(oldCurrentTurn, oldTargetTurn, EquipmentType.Jewelry);
+       
 
         if (oldCurrentTurn == char1)
         {
@@ -608,6 +615,9 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             }
 
         }
+        isSync = true;
+        oldCurrentTurn.EndTurn();
+        ExcuteEquipment(oldCurrentTurn, oldTargetTurn, EquipmentType.Jewelry);
     }
 
     void LinhKhiBaoLoan(CharacterCombat character) // kết thúc lượt giảm 10% hp nếu turn hiện tại >= 15 tăng tốc độ game
@@ -822,18 +832,21 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         currentTurn.listDameTaked.Add(0);
         targetTurn.listDameTaked.Add(0);
 
-        
+
 
         Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();
         if (!currentTurn.IsKietSuc())
         {
+            isSync = false;
+
             CombatStatic.QuyTon(currentTurn, targetTurn);
             CombatStatic.SucThe(currentTurn, targetTurn);
             CombatStatic.ThieuDot(targetTurn, currentTurn);
 
             currentTurn.NewTurn();
-            ExcuteEquipment(currentTurn, targetTurn, EquipmentType.Armor);
             CombatStatic.AmKinhTTNewTurn(currentTurn, targetTurn);
+            isSync = true;
+            ExcuteEquipment(currentTurn, targetTurn, EquipmentType.Armor);
             currentTurn.HapThuLinhKhiNewTurn(out dictHapThuKhi);
         }
         else
@@ -1027,6 +1040,13 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             {
                 currentTurn.currentVuKhiVisual.ActiveAttack();
             }
+            if(IsSync)
+            {
+                Observer.Notify(EventList.Combat.SEND_SYNC_USE_PHAPBAO, new Network.Models.SyncUsePhapBao
+                {
+                    CharId = currentTurn.characterStatsBase.idChar.Value,
+                });
+            }    
         }
     }
 
@@ -1307,7 +1327,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     {
         CharacterCombat charCombat = data[0] as CharacterCombat;
 
-        if (IsRealTimeCombat)
+        if (IsSync)
         {
             Observer.Notify(EventList.Combat.SEND_SYNC_ADJUST_LINHKHI, new SyncAdjustLinhKhi
             {
@@ -1340,7 +1360,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         EBuffAndDeBuff buffType = (EBuffAndDeBuff)data[1];
         int newValue = (int)data[2];
 
-        if (IsRealTimeCombat)
+        if (IsSync)
         {
             Observer.Notify(EventList.Combat.SEND_SYNC_BUFF, new SyncBuff
             {
@@ -1363,7 +1383,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         CharacterCombat charCombat = data[0] as CharacterCombat;
         int healValue = (int)data[2];
 
-        if (IsRealTimeCombat)
+        if (IsSync)
         {
             Observer.Notify(EventList.Combat.SEND_SYNC_HEALING, new SyncHealing
             {
@@ -1390,7 +1410,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         //int healValue = data[2] as int;
        
 
-        if (IsRealTimeCombat)
+        if (IsSync)
         {
             int idCharSend = -1;
             if(charCombatSend != null) // char combat send cos the bi null
@@ -1418,6 +1438,15 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             charCombatTakeDame.TakeDameVisualPvP(item);
         }
        
+
+    }
+    public void ReceiveSyncPhapBao(params object[] data)
+    {
+        SyncUsePhapBao SyncUsePhapBao = data[0] as SyncUsePhapBao;
+        var charCombat = SyncUsePhapBao.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
+
+        charCombat.currentVuKhiVisual.ActiveAttack();
+
 
     }
 }

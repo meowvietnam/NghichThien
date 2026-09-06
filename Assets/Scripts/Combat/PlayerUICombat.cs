@@ -383,7 +383,7 @@ public class PlayerUICombat : BaseBehaviour
         {
             equipmentWeapon.gameObject.SetActive(false);
         }
-
+        this.gameObject.SetActive(false);
 
     }
     private void SetVisualCDEquipmentWeapon()
