@@ -1678,7 +1678,6 @@ public class CharacterCombat : MonoBehaviour
     }
     private void TakeDame(CharacterCombat sender ,int dame , bool isDef , bool isNeTranh ,ref int finalDame, ref int finalDameHoTrao)
     {
-      
         if(isNeTranh)
         {
             NeTranh(sender);
@@ -1686,7 +1685,6 @@ public class CharacterCombat : MonoBehaviour
         }
         if (isDef)
         {
-            
             int hotraoMax = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.HoTrao, 0);
             hotraoMax = Mathf.Clamp(hotraoMax, 0, int.MaxValue);
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, dame);
@@ -1694,21 +1692,16 @@ public class CharacterCombat : MonoBehaviour
             if(hotraoMax > 0 )
             {
                 TakeVisualDameHoTrao(textDameHoTrao);
-            }    
-
+            }
+            finalDameHoTrao = textDameHoTrao;
             dame -= hotraoMax;
         }    
         dame = Mathf.Clamp(dame, 0, int.MaxValue);
 
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, dame);
-
-        Debug.Log(this.gameObject.name + "nhận dame là : " + dame);
-        
-      
-
         if (dame > 0)
         {
-
+            finalDame = dame;
             if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HonLuc, out SecureInt honLuc))
             {
                 RemoveBuffAndDebuffCount(EBuffAndDeBuff.HonLuc,dame , () =>
@@ -1716,52 +1709,32 @@ public class CharacterCombat : MonoBehaviour
                     if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyLinh, out SecureInt QuyLinh))
                     {
                         RemoveBuffAndDebuffCount(EBuffAndDeBuff.QuyLinh, QuyLinh);
-
-
-
                     }
                     if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyBinh, out SecureInt QuyBinh))
                     {
                         RemoveBuffAndDebuffCount(EBuffAndDeBuff.QuyBinh, QuyBinh);
-
-
-
                     }
                     if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyTuong, out SecureInt QuyTuong))
                     {
                         RemoveBuffAndDebuffCount(EBuffAndDeBuff.QuyTuong, QuyTuong);
-
-
-
                     }
                     if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyTon, out SecureInt quyTon))
                     {
                         RemoveBuffAndDebuffCount(EBuffAndDeBuff.QuyTon, quyTon);
-
-
-
                     }
                     if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyDe, out SecureInt QuyDe))
                     {
                         RemoveBuffAndDebuffCount(EBuffAndDeBuff.QuyDe, QuyDe);
-
-
-
                     }
                 });
-
-
             }
             TakeVisualDame(dame, isDef);
-
         }
 
         if (sender != null)
         {
             Observer.Notify(EventList.Combat.CHARACTER_TAKE_DAME, sender, this, dame);
         }
-        
-
     }
     public void SetHp(int hp)
     {
