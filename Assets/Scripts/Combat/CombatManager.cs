@@ -1238,4 +1238,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     {
         Debug.Log("chỉ có thể là chó hack" + message);
     }
+    public void SendSyncPlaySkill()
+    {
+
+    }
 }
