@@ -1457,6 +1457,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
         if (IsSync)
         {
+            Debug.Log("SendSyncDame" + listDameData.Count);
             int idCharSend = -1;
             if(charCombatSend != null) // char combat send cos the bi null
             {
@@ -1470,7 +1471,9 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             });
             foreach (var item in listDameData)
             {
-                charCombatTake.TakeDameVisualPvP(item);
+               // charCombatTake.TakeDameVisualPvP(item);
+                Debug.Log("listDameData dame item" + item.Dame + "dame ho trao " + item.DameHoTrao);
+
             }
         }
 
