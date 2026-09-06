@@ -965,7 +965,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     }
     private void StartTurnPVP(params object[] data)
     {
-        int charId = data[0] as int;
+        int charId = (int)data[0];
 
         var charCombat = charId == char1.characterStatsBase.idChar.Value ? char1 : char2;
         StartTurn(charCombat);
@@ -1309,8 +1309,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     public void SendSyncBuff(params object[] data)
     {
         CharacterCombat charCombat = data[0] as CharacterCombat;
-        EBuffAndDeBuff buffType = data[1] as EBuffAndDeBuff;
-        int newValue = data[2] as int;
+        EBuffAndDeBuff buffType = (EBuffAndDeBuff)data[1];
+        int newValue = (int)data[2];
 
         if (IsRealTimeCombat)
         {
@@ -1333,7 +1333,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     public void SendSyncHealing(params object[] data)
     {
         CharacterCombat charCombat = data[0] as CharacterCombat;
-        int healValue = data[2] as int;
+        int healValue = (int)data[2];
 
         if (IsRealTimeCombat)
         {
