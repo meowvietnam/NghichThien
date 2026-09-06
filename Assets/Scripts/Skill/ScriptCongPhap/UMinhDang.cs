@@ -11,9 +11,23 @@ using LongDHModules;
 public class UMinhDang : CongPhap, IMemorySerializable<UMinhDang>
 {
     private int[] debuffValues = new int[] { 10, 15, 20, 25, 30 };
+    private int[] debuffValues2 = new int[] { 1, 2, 3, 4, 5 };
+    public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
+    {
+
+        int indexLevel = CurrentLevelCongPhapInCombat(caster) - 1;
+        for (int i = 0; i < debuffValues2[indexLevel]; i++)
+        {
+            target.AddBuffAndDebuffCount(BaseSkill.eDebuffs[UnityEngine.Random.Range(0, BaseSkill.eDebuffs.Count)], 1);
+        }
+
+    }
+
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
+        Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ExecuteParams);
+
         var CombatManager = Pool.Get<CombatManager>();
         var target = CombatManager.char1 == caster ? CombatManager.char2 : CombatManager.char1;
         int indexLevel = CurrentLevelCongPhapInCombat(caster) - 1;
@@ -25,7 +39,7 @@ public class UMinhDang : CongPhap, IMemorySerializable<UMinhDang>
     }
     public override string GetDesc(int level)
     {
-        return $"Bắt đầu chiến đấu, đối thủ nhận phải {GetColoredText($"{debuffValues[level - 1]}", "red")} lần trạng thái tiêu cực ngẫu nhiên";
+        return $"Bắt đầu chiến đấu, đối thủ nhận phải {GetColoredText($"{debuffValues[level - 1]}", "red")} lần trạng thái tiêu cực ngẫu nhiên. Bắt đầu hiệp,  đối thủ nhận phải {GetColoredText($"{debuffValues2[level - 1]}", "red")} lần trạng thái tiêu cực ngẫu nhiê";
     }
 
     public override int ByteSize()

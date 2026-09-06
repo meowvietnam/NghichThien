@@ -27,8 +27,14 @@ public class CuuUHuyetMaCong : CongPhap, IMemorySerializable<CuuUHuyetMaCong>
     }
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        // target là ng nhận dame mục đích giảm dame cp cho target
         int indexCP = CurrentLevelCongPhapInCombat(target) - 1;
+
+        if (target.characterStatsBase.thoNguyen < tieuHao[indexCP])
+        {
+            return;
+        }
+
+        // target là ng nhận dame mục đích giảm dame cp cho target
         float multiplier =   buffValues[indexCP] / 100f;
         target.AddDamageData(new List<int> {-(int)(target.GetDameBuffForTarget() * multiplier) });
         target.characterStatsBase.thoNguyen -= tieuHao[indexCP];
