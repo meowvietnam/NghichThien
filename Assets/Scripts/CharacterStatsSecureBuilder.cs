@@ -8,6 +8,11 @@ using UnityEngine; // Thêm nếu class Color yêu cầu UnityEngine, hoặc dù
 public class CharacterStatsSecureBuilder
 {
     private readonly CharacterStatsSecure _stats = new CharacterStatsSecure();
+    public CharacterStatsSecureBuilder WithID(int value)
+    {
+        _stats.idChar = value;
+        return this;
+    }
 
     public CharacterStatsSecureBuilder WithGender(Gender value)
     {
@@ -237,6 +242,7 @@ public class CharacterStatsSecureBuilder
         if (character == null) return null;
 
         return new CharacterStatsSecureBuilder()
+            .WithID(character.Id)
             .WithGender(character.Gender) // KHÔNG QUÊN GENDER NỮA NHÉ BABE!
             .WithTuoiTac(GameManager.GetIntTuoiTac(character.TuoiTac))
             .WithHp(character.Hp)
