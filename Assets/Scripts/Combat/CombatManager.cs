@@ -1436,7 +1436,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                 CharId = charCombat.characterStatsBase.idChar.Value,
                 Heal = healValue,
             });
-            Debug.Log($"{charCombat.characterStatsBase.nameUser} heal {healValue} hp");
+            Debug.Log($"[SendSyncHealing] {charCombat.characterStatsBase.nameUser} heal {healValue} hp");
         }
 
     }
@@ -1444,7 +1444,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     {
         SyncHealing syncHealing = data[0] as SyncHealing;
         var charCombat = syncHealing.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
-        Debug.Log($"{charCombat.characterStatsBase.nameUser} heal {syncHealing.Heal} hp");
+        Debug.Log($"[ReceiveSyncHealing] {charCombat.characterStatsBase.nameUser} heal {syncHealing.Heal} hp");
         charCombat.HealingVisual(syncHealing.Heal);
 
     }
