@@ -105,7 +105,7 @@ namespace Network.ClientState
             }
             else if (tag == MessageTag.SyncPlaySkill)
             {
-                var model = reader.MemRead<SyncHealing>();
+                var model = reader.MemRead<SyncPlaySkill>();
                 Observer.Notify(EventList.Combat.RECEIVE_SYNC_PLAYSKILL, model);
             }
             else if (tag == MessageTag.SyncUsePhapBao)
