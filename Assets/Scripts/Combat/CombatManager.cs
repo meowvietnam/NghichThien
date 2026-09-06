@@ -1320,9 +1320,9 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         var charCombat = syncPlaySkill.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
         var charTarget = charCombat.characterStatsBase.idChar.Value == char1.characterStatsBase.idChar.Value ? char2 : char1;
         var thanThong = Pool.Get<GameManager>().GetThanThongWithId(syncPlaySkill.SkillId);
-        //Pool.Get<GameManager>().GetThanThongWithId(syncPlaySkill.SkillId).Execute(charCombat, charTarget, data);
+        thanThong.PlayVisualSkill();
         charCombat.VisualPlaySkill(thanThong);
-        charTarget.allDamages.Clear();
+        //charTarget.allDamages.Clear();
 
     }
     public void SendAjustLinhKhi(params object[] data)
