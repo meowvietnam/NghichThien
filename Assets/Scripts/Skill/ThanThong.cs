@@ -78,7 +78,10 @@ namespace Skill
         public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
         {
         }
+        public void PlayVisualSkill()
+        {
 
+        }    
         public static int GetIndexLevelThanThong(CharacterCombat caster)
         {
             return GetIndexLevelThanThong(caster.characterStatsTemp);
