@@ -1315,11 +1315,13 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
  
     public void ReceiSyncPlaySkill(params object[] data)
     {
+        Debug.Log("ReceiSyncPlaySkill");
         SyncPlaySkill syncPlaySkill = data[0] as SyncPlaySkill;
         var charCombat = syncPlaySkill.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
         var charTarget = charCombat.characterStatsBase.idChar.Value == char1.characterStatsBase.idChar.Value ? char2 : char1;
+        var thanThong = Pool.Get<GameManager>().GetThanThongWithId(syncPlaySkill.SkillId);
         //Pool.Get<GameManager>().GetThanThongWithId(syncPlaySkill.SkillId).Execute(charCombat, charTarget, data);
-        charCombat.VisualPlaySkill(Pool.Get<GameManager>().GetThanThongWithId(syncPlaySkill.SkillId));
+        charCombat.VisualPlaySkill(thanThong);
         charTarget.allDamages.Clear();
 
     }
