@@ -53,6 +53,8 @@ public static partial class EventList
 
         public const string SYNC_START_TURN = "Combat.SYNC_START_TURN"; // sv truyền về 1 id char id này là character đc phép đánh đầu tiên
 
+        public const string SEND_SYNC_USE_PHAPBAO = "Combat.SEND_SYNC_USE_PHAPBAO"; // gửi idCharDung
+        public const string RECEIVE_SYNC_USE_PHAPBAO = "Combat.RECEIVE_SYNC_USE_PHAPBAO"; //  nhận idCharDung 
         // khi play skill đồng bộ cho máy kia chỉ play visual không gửi sync
         public static void RemoveAllCombatObservers()
         {
@@ -118,6 +120,8 @@ public static partial class EventList
         public const string COMPLETE_MAINQUEST = "Network.COMPLETE_MAINQUEST";
 
         public const string RESULT_COMBAT = "Network.RESULT_COMBAT";
+        public const string RESULT_COMBAT_REALTIME = "Network.RESULT_COMBAT_REALTIME";
+
         public const string LOAD_CHAR_COMBAT = "Network.LOAD_CHAR_COMBAT";
         public const string LOAD_CHAR_COMBAT_ARENA = "Network.LOAD_CHAR_COMBAT_ARENA";
         public const string GACHA = "Network.GACHA";

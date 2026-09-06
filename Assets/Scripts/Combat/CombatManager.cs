@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class LinhKhiTieuTan
 {
@@ -208,6 +209,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         return false;
     }
     public bool IsRealTimeCombat => Pool.Get<GameManager>().currentETypeCombat == ETypeCombat.LuanBanRealTime || Pool.Get<GameManager>().currentETypeCombat == ETypeCombat.TongMonChienRealTime;
+    public bool IsSync => IsRealTimeCombat && currentTurn == char1;
+
     private void Awake()
     {
         Pool.Set(this);
@@ -306,6 +309,13 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         if (gameManager.currentETypeCombat == ETypeCombat.LuanBan)
         {
             SuccessResultCombatBase(new(), gameManager.currentECombatResult);
+        }
+        else if(gameManager.currentETypeCombat == ETypeCombat.LuanBanRealTime || gameManager.currentETypeCombat == ETypeCombat.TongMonChienRealTime)
+        {
+            Observer.Notify(EventList.Network.RESULT_COMBAT_REALTIME, this, gameManager.currentETypeCombat,
+            char1.characterStatsTemp.hp.Value, char1.characterStatsBase.thanThuc.Value,
+            char1.characterStatsBase.thoNguyen.Value, allThanThongIds, char2.characterStatsBase.level.Value,
+            gameManager.currentECombatResult); // thằng 1 luoon la user thằng 2 là thằng enemy
         }
         else
         {
@@ -545,31 +555,46 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     {
         Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
     }
+    private void SwapTurn()
+    {
+        // swap turn
+        if (currentTurn == char1)
+        {
 
+            currentTurn = char2;
+        }
+        else
+        {
+          
+            currentTurn = char1;
+        }
+    }    
     public void EndTurn(params object[] data)
     {
-        if (IsDelayGame) return;
 
         if (data[2] is List<LinhKhiTieuTan> linhKhiTieuTan)
         {
             TieuTanLinhKhi(linhKhiTieuTan);
         }
+        var oldCurrentTurn = currentTurn;
+        var oldTargetTurn = targetTurn;
 
-        CombatStatic.AnhDich(currentTurn, targetTurn);
-        CombatStatic.KiemKhi(currentTurn, targetTurn);
-        CombatStatic.TrungDoc(targetTurn, currentTurn);
-        CombatStatic.ThienKiem(currentTurn, targetTurn);
-        CombatStatic.ChayMau(targetTurn, currentTurn);
-        currentTurn.EndTurn();
-        ExcuteEquipment(currentTurn, targetTurn, EquipmentType.Jewelry);
+        SwapTurn();
+        Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN,oldCurrentTurn.characterStatsBase.idChar.Value);
 
-        // swap turn
-        if (currentTurn == char1)
+        CombatStatic.AnhDich(oldCurrentTurn, oldTargetTurn);
+        CombatStatic.KiemKhi(oldCurrentTurn, oldTargetTurn);
+        CombatStatic.TrungDoc(oldTargetTurn, oldCurrentTurn);
+        CombatStatic.ThienKiem(oldCurrentTurn, oldTargetTurn);
+        CombatStatic.ChayMau(oldTargetTurn, oldCurrentTurn);
+        oldCurrentTurn.EndTurn();
+        ExcuteEquipment(oldCurrentTurn, oldTargetTurn, EquipmentType.Jewelry);
+
+        if (oldCurrentTurn == char1)
         {
             // nếu user 
-            LinhKhiBaoLoan(currentTurn);
+            LinhKhiBaoLoan(oldCurrentTurn);
 
-            currentTurn = char2;
         }
         else
         {
@@ -579,10 +604,9 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                 gameManager.currentETypeCombat == ETypeCombat.LuanBan ||
                 gameManager.currentETypeCombat == ETypeCombat.DauTruong)
             {
-                LinhKhiBaoLoan(currentTurn);
+                LinhKhiBaoLoan(oldCurrentTurn);
             }
 
-            currentTurn = char1;
         }
     }
 
@@ -794,7 +818,6 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     [Button]
     public void NewTurn()
     {
-        if (IsDelayGame) return;
         SetUITextTurn();
         currentTurn.listDameTaked.Add(0);
         targetTurn.listDameTaked.Add(0);
@@ -1274,7 +1297,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     {
         SyncPlaySkill syncPlaySkill = data[0] as SyncPlaySkill;
         var charCombat = syncPlaySkill.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
+        var charTarget = charCombat.characterStatsBase.idChar.Value == char1.characterStatsBase.idChar.Value ? char2 : char1;
+        Pool.Get<GameManager>().GetThanThongWithId(syncPlaySkill.SkillId).Execute(charCombat, charTarget, data);
         charCombat.VisualPlaySkill(Pool.Get<GameManager>().GetThanThongWithId(syncPlaySkill.SkillId));
+        charTarget.allDamages.Clear();
+
     }
     public void SendAjustLinhKhi(params object[] data)
     {
