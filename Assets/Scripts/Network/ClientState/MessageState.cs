@@ -11,6 +11,7 @@ namespace Network.ClientState
         ConvertElementalSkill,
         Auction,
         TrungSinh,
-        DongPhuState
+        DongPhuState,
+        CombatPvp
     }
 }
