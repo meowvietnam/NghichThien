@@ -232,7 +232,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_BUFF, ReceiSyncBuff);
         Observer.AddObserver(EventList.Combat.SYNC_START_TURN, StartTurnPVP);
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_HEALING, ReceiveSyncHealing);
-        Observer.AddObserver(EventList.Combat.CHARACTER_HEALING, SendSyncHealing);
+        Observer.AddObserver(EventList.Combat.CHARACTER_HEALING_AFTER_CALC, SendSyncHealing);
         Observer.AddObserver(EventList.Combat.CHARACTER_AFTER_TAKE_DAME_ALL, SendSyncDame);
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_DAME, ReceiveSyncDame);
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_USE_PHAPBAO, ReceiveSyncPhapBao);

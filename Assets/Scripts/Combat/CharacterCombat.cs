@@ -1788,6 +1788,7 @@ public class CharacterCombat : MonoBehaviour
         AddDataHeal(finalHpGain);
         int currentValueHp = (int)characterStatsTemp.hp + dataHealCurrent.Value;
         Observer.Notify(EventList.Combat.CHARACTER_HEALING, this, currentValueHp, dataHealCurrent.Value);
+        Observer.Notify(EventList.Combat.CHARACTER_HEALING_AFTER_CALC, this, currentValueHp, dataHealCurrent.Value);
         Healing();
     }
     public void HealingVisual(int dataHeal)
