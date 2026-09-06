@@ -599,7 +599,7 @@ public class CharacterCombat : MonoBehaviour
 
         SecureInt count = 0;
         buffAndDebuffCount.TryGetValue(type, out count);
-        Debug.Log(type + " " + count);
+        Debug.Log(type + " " + count.Value);
 
 
     }
