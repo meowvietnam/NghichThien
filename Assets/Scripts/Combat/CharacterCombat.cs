@@ -12,6 +12,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Combat;
 using LongDHModules;
 using Skill;
 using UnityEngine;
@@ -60,8 +61,6 @@ public enum ETypeVisualChar
 }
 public class CharacterCombat : MonoBehaviour
 {
-  
-  
     public CombatManager CombatManager=>transform.GetComponentInParent<CombatManager>();
     [SerializeField] protected Text textSkillNameCall;
     [SerializeField] public CharacterVisualControl characterVisualControl;
@@ -77,7 +76,7 @@ public class CharacterCombat : MonoBehaviour
     [SerializeField]
     public SecureInt currentTurnDameTaked => listDameTaked.Count > 0 ? listDameTaked[^1] : null;
     public SecureInt oldTurnDameTaked => listDameTaked.Count > 1 ? listDameTaked[^2] : null;
-
+    private IPlayerCombat playerCombat;
     [SerializeField]
     public List<SecureInt> listDameTaked;
 
@@ -241,6 +240,7 @@ public class CharacterCombat : MonoBehaviour
 
     protected void VisualPlaySkill(ThanThong thanThong)
     {
+        playerCombat?.PlaySkill(thanThong);
         DOTween.Kill("HideSkillName");
 
         textSkillNameCall.transform.parent.gameObject.SetActive(true);

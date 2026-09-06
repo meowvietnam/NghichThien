@@ -45,7 +45,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     [SerializeField] public List<BuffOrDebuffIcon> buffOrDebuffIcons;
 
     private Dictionary<CharacterCombat.AmKinhEntry, ItemUI> dictAmKinhItemUI =
-        new Dictionary<CharacterCombat.AmKinhEntry, ItemUI>();
+        new ();
 
     [SerializeField] public CharacterCombat char1;
     [SerializeField] public CharacterCombat char2;
