@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using CreateCharacter;
+using LongDH.Script.ObjectPool;
 using LongDHModules;
 using UnityEngine;
 using Network;
@@ -122,9 +123,15 @@ namespace AllMaps
             }
         }
 
-        public void DestroySelf()
+        public void ReturnPool()
         {
-            Destroy(mainTf.gameObject);
+            mainTf.gameObject.SetActive(false);
+            ObjectPool.Recycle(mainTf.gameObject);
+        }
+
+        public void SetActive(bool active)
+        {
+            mainTf.gameObject.SetActive(active);
         }
     }
 }
