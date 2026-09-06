@@ -34,7 +34,7 @@ public static partial class EventList
         public const string CHARACTER_HEALING = "Combat.CHARACTER_HEALING";
 
         public const string SEND_SYNC_PLAYSKILL = "Combat.SEND_SYNC_PLAYSKILL"; // gửi name char  và id skill 
-        public const string RECEIVE_SYNC_PLAYSKILL = "Combat.SEND_SYNC_PLAYSKILL"; // nhận name char  và id skill 
+        public const string RECEIVE_SYNC_PLAYSKILL = "Combat.RECEIVE_SYNC_PLAYSKILL"; // nhận name char  và id skill 
 
         public const string SEND_SYNC_ADJUST_LINHKHI = "Combat.SEND_SYNC_ADJUST_LINHKHI"; // gửi name char và linh khi hien tai 
         public const string RECEIVE_SYNC_ADJUST_LINHKHI = "Combat.RECEIVE_SYNC_ADJUST_LINHKHI"; //  nhận name char và linh khi hien tai 

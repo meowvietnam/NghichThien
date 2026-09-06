@@ -451,6 +451,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             if(IsSync)
             {
+                Debug.Log($"Toi vua gui sync play skill: Id-{caster.characterStatsBase.idChar.Value}");
                 Observer.Notify(EventList.Combat.SEND_SYNC_PLAYSKILL, new SyncPlaySkill
                 {
                     CharId = caster.characterStatsBase.idChar.Value,

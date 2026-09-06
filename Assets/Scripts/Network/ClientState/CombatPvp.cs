@@ -2,6 +2,7 @@ using LongDH.LongDHModules;
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
 using Network.Models;
+using UnityEngine;
 
 namespace Network.ClientState
 {
@@ -53,6 +54,7 @@ namespace Network.ClientState
         }
         private void SyncPlaySkill(object[] data)
         {
+            Debug.Log("Sync Play Skill");
             var model = data[0] as SyncPlaySkill;
             client.MemSend(MessageTag.SyncPlaySkill, model);
         }
