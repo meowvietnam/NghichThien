@@ -6,5 +6,6 @@ namespace Network.Callback
     {
         void OnMoveToMapResult(MoveToMapResult result);
         void OnGetCharacterOnlineThisNode(GetCharacterOnlineThisNodeResult result);
+        void OnPlayerMoving(PlayerMoving playerMoving);
     }
 }

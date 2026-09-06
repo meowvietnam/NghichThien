@@ -26,6 +26,7 @@ namespace AllMaps
     {
         [SerializeField] public Map[] maps;
         [SerializeField] private Player player;
+        [SerializeField] private Player playerPrefab;
         private Map current;
         private Dictionary<Map, List<Map>> graph;
 
@@ -98,11 +99,13 @@ namespace AllMaps
             var map = FindMap(entryMapId);
             current = map;
             player.SetPosition(map.PlayerPosition);
-            player.Init(characterData.Gender, characterData.CanFly);
+            var appearance = characterData.Appearance;
+            player.Init(characterData.Gender, characterData.CanFly, appearance);
+            player.SetName(characterData.Name,new Color32(255, 213, 79, 255));
             current.OnPlayerEnter();
             Pool.Set(this);
         }
-
+        
         private void Start()
         {
             Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
@@ -129,7 +132,7 @@ namespace AllMaps
         {
             var listMapPath = path.Select(x => FindMap(x)).ToList();
             var map = FindMap(path.Last());
-            var start = current;
+            var start = FindMap(path.First());
             current.OnPlayerExit();
             current = map;
             var listNodes = new List<Node>();
@@ -147,6 +150,29 @@ namespace AllMaps
             }
 
             player.DoMove(listNodes, OnMoveToMapCompleted);
+        }
+
+        private void MoveOtherPlayer(Player player, int[] path)
+        {
+            var listMapPath = path.Select(x => FindMap(x)).ToList();
+            var start = FindMap(path.First());
+            player.SetPosition(start.PlayerPosition);
+            var listNodes = new List<Node>();
+            for (var i = 1; i < listMapPath.Count; i++)
+            {
+                var m = listMapPath[i];
+                var node = start.FindNodeByMap(m);
+                if (node == null)
+                {
+                    continue;
+                }
+                start = m;
+                listNodes.Add(node);
+            }
+            player.DoMove(listNodes, () =>
+            {
+                player.DestroySelf();
+            });
         }
 
         private void OnMoveToMapCompleted()
@@ -206,6 +232,14 @@ namespace AllMaps
                     OnGetCharacterOnlineThisNode(result.CharactersOnline);
                 }
             });
+        }
+
+        public void OnPlayerMoving(PlayerMoving playerMoving)
+        {
+            var player = Instantiate(playerPrefab);
+            player.Init(playerMoving.Gender, playerMoving.IsSwordRiding, playerMoving.Appearance);
+            player.SetName(playerMoving.Name, new Color32(129, 212, 250, 255));
+            MoveOtherPlayer(player, playerMoving.Path);
         }
 
 

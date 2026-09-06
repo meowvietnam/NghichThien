@@ -28,6 +28,9 @@ namespace Network
         MoveToMapResult = 94,
         GetPlayerOnlineThisNode = 101,
         GetPlayerOnlineThisNodeResult = 102,
+        
+        OtherPlayerMoving = 103,
+        
         GetMails = 105,
         GetMailsResult = 106,
         ReadMail = 107,

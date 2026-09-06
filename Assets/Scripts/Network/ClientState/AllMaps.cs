@@ -63,7 +63,6 @@ namespace Network.ClientState
                             });
                     }
                 });
-
                 callback.OnMoveToMapResult(result);
             }
             else if (tag == MessageTag.GetPlayerOnlineThisNodeResult)
@@ -84,6 +83,14 @@ namespace Network.ClientState
                         FirebaseAnalytics.LogEvent("ads_reward_complete");
                     });
                 }
+            }
+            else if (tag == MessageTag.OtherPlayerMoving)
+            {
+                var playerMoving = reader.MemRead<PlayerMoving>();
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    callback.OnPlayerMoving(playerMoving);
+                });
             }
         }
 
