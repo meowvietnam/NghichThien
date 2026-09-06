@@ -46,12 +46,12 @@ namespace Network.ClientState
                 var notify = reader.MemRead<PlantNotify>();
                 panel.OnPlantNotify(notify);
             }
-            else if(tag == MessageTag.HarverstSlotResult)
+            else if(tag == MessageTag.HarvestSlotResult)
             {
                 var result = reader.MemRead<HarvestSlotResult>();
                 panel.OnHarvestSlotResult(result);
             }
-            else if(tag == MessageTag.HarvertSlotNotify)
+            else if(tag == MessageTag.HarvetSlotNotify)
             {
                 var notify = reader.MemRead<HarvestSlotNotify>();
                 panel.OnHarvestSlotNotify(notify);

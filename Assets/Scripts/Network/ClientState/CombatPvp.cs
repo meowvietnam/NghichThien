@@ -1,4 +1,4 @@
-using LongDH.LongDHModules;
+using UnityEngine;
 
 namespace Network.ClientState
 {
@@ -7,6 +7,7 @@ namespace Network.ClientState
         
         public void OnEnter()
         {
+            Debug.Log("Join Combat Pvp");
         }
 
         public void Handle(Message<MessageTag> message)

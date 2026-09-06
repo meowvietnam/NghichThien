@@ -11,7 +11,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ComboSkillResource.NPCData;
+using DG.Tweening;
 using LongDHModules;
+using Network.Extensions.MemoryPack;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,6 +29,7 @@ namespace AllMaps
         [SerializeField] public Map[] maps;
         [SerializeField] private Player player;
         [SerializeField] private GameObject playerPrefab;
+        [SerializeField] private CombatVisual combatVisual;
         private Map current;
         private Dictionary<Map, List<Map>> graph;
 
@@ -250,6 +253,49 @@ namespace AllMaps
             MoveOtherPlayer(player, playerMoving.Path);
         }
 
+        public void OnInvitePvp(InvitePvp invitePvp)
+        {
+            var popup = Pool.Get<PopupConfirmAction>();
+            popup.ShowPopConfirmAction($"{invitePvp.InviterName} mời bạn thách đấu", () =>
+            {
+                var response = new InvitePvpResponse()
+                {
+                    Accept = true
+                };
+                Client.Instance.MemSend(MessageTag.InvitePvpResponse, response);
+            });
+        }
+
+        public void OnPvpMatched(PvpMatched pvpMatched)
+        {
+            var gameManager = Pool.Get<GameManager>();
+            var chars = new []
+            {
+                pvpMatched.Inviter,
+                pvpMatched.Defender
+            };
+            var myId = Client.Instance.CharacterData.Id;
+            var me = chars.First(x => x.Id == myId);
+            var enemy = chars.First(x => x.Id != myId);
+            gameManager.currentETypeCombat = ETypeCombat.LuanBanRealTime;
+            gameManager.user = new GameManager.CharCombatInit()
+            {
+                eTypeVisual = ETypeVisualChar.Character,
+                charStats = CharacterStatsSecureBuilder.ArenaFromCharacterSnapshot(me)
+            };
+            gameManager.enemyCombat = new GameManager.CharCombatInit()
+            {
+                eTypeVisual = ETypeVisualChar.Character,
+                charStats = CharacterStatsSecureBuilder.ArenaFromCharacterSnapshot(enemy)
+            };
+            combatVisual.Show(gameManager.user, gameManager.enemyCombat);
+            DOVirtual.DelayedCall(2f, () =>
+            {
+                gameManager.GoToCombatArena();
+                Client.Instance.ChangeState(new CombatPvp());
+            });
+        }
+
 
         private void OnGetCharacterOnlineThisNode(CharacterSnapshot[] characters)
         {
@@ -258,12 +304,11 @@ namespace AllMaps
             List<CharacterStatsSecure> characterStatsSecures = new List<CharacterStatsSecure>();
             foreach (var character in characters)
             {
-                characterStatsSecures.Add(CharacterStatsSecureBuilder.FromCharacterSnapshot(character));
+                characterStatsSecures.Add(CharacterStatsSecureBuilder.ArenaFromCharacterSnapshot(character));
             }
             List<NPCData> npcOnCurrentMap = Pool.Get<NPCManager>().npcDatas.Where(x => x.charStats.idNode == current.Id).ToList();
             foreach (var character in npcOnCurrentMap)
             {
-
                 characterStatsSecures.Add(character.charStats);
             }
             Pool.Get<UINPCJiaoHu>().ShowNPCList(characterStatsSecures);

@@ -48,7 +48,5 @@ public class PrepareElementArenaCombat : MonoBehaviour
             iconRank.gameObject.SetActive(false);
             iconRankName.gameObject.SetActive(false);
         }    
-        
     }
-
 }
