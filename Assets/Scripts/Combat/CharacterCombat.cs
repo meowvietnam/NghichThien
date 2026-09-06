@@ -1776,6 +1776,10 @@ public class CharacterCombat : MonoBehaviour
     }    
     public void Healing(int hp)
     {
+        if (!Pool.Get<CombatManager>().IsSync)
+        {
+            return;
+        }
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.PhaThe, out SecureInt phaThe);
 
         // Tính toán hệ số giảm hồi phục (mỗi điểm phaThe giảm 50%)
