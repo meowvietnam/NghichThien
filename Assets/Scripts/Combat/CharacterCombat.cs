@@ -473,10 +473,10 @@ public class CharacterCombat : MonoBehaviour
     public CharacterStatsSecure characterStatsTemp = new();
 
     public List<PlaySkillData> thanThongUseThisTurn =>
-        thanThongUseThisComBat.Count > 0 ? thanThongUseThisComBat[^1] : null;
+        thanThongUseThisComBat.Count > 0 ? thanThongUseThisComBat[^1] : new();
 
     public List<PlaySkillData> thanThongUseLastTurn =>
-        thanThongUseThisComBat.Count > 1 ? thanThongUseThisComBat[^2] : null;
+        thanThongUseThisComBat.Count > 1 ? thanThongUseThisComBat[^2] : new();
 
     public List<List<PlaySkillData>> thanThongUseThisComBat = new List<List<PlaySkillData>>();
 
