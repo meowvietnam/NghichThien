@@ -17,6 +17,12 @@ public class HuyetAnhThuat : ThanThong, IMemorySerializable<HuyetAnhThuat>
     {
         caster.TakeDameByStatic(null, new System.Collections.Generic.List<int>{tieuHaos[GetIndexLevelThanThong(caster)]}, false, null, false);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Anh, buffValues[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

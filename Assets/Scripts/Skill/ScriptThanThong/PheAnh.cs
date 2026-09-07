@@ -26,6 +26,12 @@ public class PheAnh : ThanThong, BaseSkill.TuongKhac, IMemorySerializable<PheAnh
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.AnhDich, require);
         caster.HapThuLinhKhi(hapThus1[GetIndexLevelThanThong(caster)]);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, buffValues2);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

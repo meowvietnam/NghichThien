@@ -14,6 +14,12 @@ public class PhanHoaDiCanhThuat : ThanThong, IMemorySerializable<PhanHoaDiCanhTh
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt myThieuDot);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, myThieuDot);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

@@ -17,6 +17,12 @@ public class TuTranThuat : ThanThong, BaseSkill.LienKich, IMemorySerializable<Tu
     {
         int tran = buffValues[GetIndexLevelThanThong(caster)];
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, tran);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

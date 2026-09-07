@@ -18,6 +18,12 @@ public class ManhQuyThamKhongThu : ThanThong, IMemorySerializable<ManhQuyThamKho
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon, out SecureInt hon);
         int dame = dames[GetIndexLevelThanThong(caster)] + hon * buffValues[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

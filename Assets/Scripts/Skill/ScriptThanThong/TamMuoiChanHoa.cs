@@ -20,6 +20,12 @@ public class TamMuoiChanHoa : ThanThong, BaseSkill.TuongDong, IMemorySerializabl
     {
         target.CaculateDameByThanThong(caster, new List<int>{dames[GetIndexLevelThanThong(caster)]}, eTypeSkill);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, thieuDots[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

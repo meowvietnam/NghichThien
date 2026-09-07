@@ -21,6 +21,12 @@ public class NguQuyPhuThanThuat : ThanThong, IMemorySerializable<NguQuyPhuThanTh
         caster.Healing(0);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CHARACTER_BEFORE_TAKE_DAME, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

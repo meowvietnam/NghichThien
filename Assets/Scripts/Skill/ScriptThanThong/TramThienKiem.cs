@@ -19,6 +19,12 @@ public class TramThienKiem : ThanThong, IMemorySerializable<TramThienKiem>
         int dame = dames[GetIndexLevelThanThong(caster)];
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, require);
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

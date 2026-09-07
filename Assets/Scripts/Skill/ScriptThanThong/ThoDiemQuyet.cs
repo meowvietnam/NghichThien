@@ -19,6 +19,12 @@ public class ThoDiemQuyet : ThanThong, BaseSkill.LienKich, IMemorySerializable<T
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.CaculateDameByThanThong(caster, new List<int>{dames[GetIndexLevelThanThong(caster)]}, eTypeSkill, false);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

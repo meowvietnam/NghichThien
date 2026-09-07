@@ -20,6 +20,12 @@ public class DungHoaThuan : ThanThong, IMemorySerializable<DungHoaThuan>
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, require);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, buffValues[GetIndexLevelThanThong(caster)]);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, giamTonThuong[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

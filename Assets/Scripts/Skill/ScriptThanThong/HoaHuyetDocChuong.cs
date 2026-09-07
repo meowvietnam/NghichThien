@@ -18,6 +18,12 @@ public class HoaHuyetDocChuong : ThanThong, IMemorySerializable<HoaHuyetDocChuon
         HauKeVoLuc(caster);
         CombatStatic.TrungDoc(caster, target);
         caster.Healing(trungDoc);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

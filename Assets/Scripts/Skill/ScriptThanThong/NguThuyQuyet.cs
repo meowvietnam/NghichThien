@@ -19,6 +19,12 @@ public class NguThuyQuyet : ThanThong, IMemorySerializable<NguThuyQuyet>
         HauKeVoLuc(caster);
         caster.HapThuLinhKhi(ELinhKhi.Thuy, hapThuLinhKhi);
         caster.characterStatsTemp.percentThuy += buffValues[GetIndexLevelThanThong(caster)];
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

@@ -24,6 +24,12 @@ public class PhanHoaThoDiemQuyet : ThanThong, IMemorySerializable<PhanHoaThoDiem
         .Sum(z => z.count); // Cộng dồn tất cả giá trị của thuộc tính Count lại
         int dameBuff = dameValueBuffs[GetIndexLevelThanThong(caster)] * tongSoLuongHoa;
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame + dameBuff}, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

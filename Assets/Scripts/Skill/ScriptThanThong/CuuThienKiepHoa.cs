@@ -18,6 +18,12 @@ public class CuuThienKiepHoa : ThanThong, IMemorySerializable<CuuThienKiepHoa>
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, deBuffs[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

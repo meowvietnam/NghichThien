@@ -19,6 +19,12 @@ public class TranHonChuong : ThanThong, IMemorySerializable<TranHonChuong>
         int dame = dames[GetIndexLevelThanThong(caster)] + chayMau * buffValues[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
         caster.Healing(dame);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

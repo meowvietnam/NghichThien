@@ -18,6 +18,12 @@ public class ThuyLongDan : ThanThong, BaseSkill.LienKich, IMemorySerializable<Th
     {
         target.CaculateDameByThanThong(caster, new List<int>{dame[GetIndexLevelThanThong(caster)]}, eTypeSkill);
         // ShowSkillEffectNoTarget(delayTimeEffect);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

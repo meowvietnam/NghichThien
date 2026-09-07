@@ -28,6 +28,12 @@ public class PhanLinhQuyet : ThanThong, IMemorySerializable<PhanLinhQuyet>
             target.TieuTanLinhKhi(linhKhi, 1);
         }
 
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

@@ -17,6 +17,12 @@ public class DietLinhChuong : ThanThong, IMemorySerializable<DietLinhChuong>
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.TieuTanAllLinhKhi();
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

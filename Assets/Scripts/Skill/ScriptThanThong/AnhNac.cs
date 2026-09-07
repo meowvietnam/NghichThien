@@ -18,6 +18,12 @@ public class AnhNac : ThanThong, IMemorySerializable<AnhNac>
         HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.AnhNac, buffValues[GetIndexLevelThanThong(caster)]);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Anh, buffValues2[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

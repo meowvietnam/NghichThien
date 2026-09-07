@@ -19,6 +19,12 @@ public class LietHoaChuong : ThanThong, IMemorySerializable<LietHoaChuong>
         int dame = dameValues[GetIndexLevelThanThong(caster)];
         int dameBuff = dameValueBuffs[GetIndexLevelThanThong(caster)] * caster.khiHoa;
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame + dameBuff}, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

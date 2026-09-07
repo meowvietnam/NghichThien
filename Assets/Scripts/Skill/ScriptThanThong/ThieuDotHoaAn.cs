@@ -19,6 +19,12 @@ public class ThieuDotHoaAn : ThanThong, IMemorySerializable<ThieuDotHoaAn>
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect2);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

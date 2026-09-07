@@ -28,6 +28,12 @@ public class PhaPhuTramChu : ThanThong, IMemorySerializable<PhaPhuTramChu>
         }
 
         target.CaculateDameByThanThong(caster, new List<int>{dame}, eTypeSkill, false);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

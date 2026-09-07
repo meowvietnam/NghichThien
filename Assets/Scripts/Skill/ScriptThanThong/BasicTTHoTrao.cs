@@ -16,6 +16,12 @@ public class BasicTTHoTrao : ThanThong, BaseSkill.LienKich, IMemorySerializable<
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, buff[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

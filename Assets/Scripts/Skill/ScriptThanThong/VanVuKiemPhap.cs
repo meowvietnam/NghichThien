@@ -24,6 +24,12 @@ public class VanVuKiemPhap : ThanThong, IMemorySerializable<VanVuKiemPhap>
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, huyenVu * addKiemKhi);
         }
 
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

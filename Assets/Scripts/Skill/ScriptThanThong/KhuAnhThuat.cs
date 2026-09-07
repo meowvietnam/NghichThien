@@ -15,6 +15,12 @@ public class KhuAnhThuat : ThanThong, BaseSkill.TuongSinh, BaseSkill.TuongKhac, 
     private float delayTimeEffect = 1f;
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

@@ -19,6 +19,12 @@ public class HanSuongThu : ThanThong, IMemorySerializable<HanSuongThu>
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new List<int>{dame}, eTypeSkill);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, suongGia);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

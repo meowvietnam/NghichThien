@@ -28,6 +28,12 @@ public class SongKich : ThanThong, BaseSkill.LienKich, IMemorySerializable<SongK
 
         target.CaculateDameByThanThong(caster, dames, eTypeSkill, false);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

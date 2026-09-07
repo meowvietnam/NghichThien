@@ -17,6 +17,12 @@ public class VuTuongHoaThan : NeTranhTT, IMemorySerializable<VuTuongHoaThan>
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CHECK_NE_TRANH, ObserverEffectNeTranh, 0);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HuyenVu, requireHuyenVu);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

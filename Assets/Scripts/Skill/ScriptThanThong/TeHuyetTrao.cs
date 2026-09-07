@@ -17,6 +17,12 @@ public class TeHuyetTrao : ThanThong, IMemorySerializable<TeHuyetTrao>
         int hp = buffValues[GetIndexLevelThanThong(caster)];
         caster.TakeDameByStatic(null, new System.Collections.Generic.List<int>{hp}, false, null, false);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hp);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

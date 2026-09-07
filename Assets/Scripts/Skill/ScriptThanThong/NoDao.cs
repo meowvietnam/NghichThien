@@ -26,6 +26,12 @@ public class NoDao : ThanThong, BaseSkill.LienKich, IMemorySerializable<NoDao>
         }
 
         target.CaculateDameByThanThong(caster, dames, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

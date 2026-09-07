@@ -17,6 +17,12 @@ public class VanTranHoaTho : ThanThong, IMemorySerializable<VanTranHoaTho>
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt tran);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanTho, tran * buffValues[GetIndexLevelThanThong(caster)]);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, tran);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

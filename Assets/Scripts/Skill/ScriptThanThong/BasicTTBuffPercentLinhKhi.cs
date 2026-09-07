@@ -42,6 +42,12 @@ public class BasicTTBuffPercentLinhKhi : ThanThong, IMemorySerializable<BasicTTB
                 break;
         }
 
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

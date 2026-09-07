@@ -19,6 +19,12 @@ public class CuongThuyAn : ThanThong, IMemorySerializable<CuongThuyAn>
         HauKeVoLuc(caster);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect2);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

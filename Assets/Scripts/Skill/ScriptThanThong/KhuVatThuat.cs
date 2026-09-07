@@ -23,6 +23,12 @@ public class KhuVatThuat : ThanThong, IMemorySerializable<KhuVatThuat>
         }
 
         target.CaculateDameByThanThong(caster, dameList, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

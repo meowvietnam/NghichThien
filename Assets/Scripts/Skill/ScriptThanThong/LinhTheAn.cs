@@ -26,6 +26,12 @@ public class LinhTheAn : ThanThong, IMemorySerializable<LinhTheAn>
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hoTraos[GetIndexLevelThanThong(caster)]);
         Observer.AddObserver(EventList.Combat.PLAY_SKILL, ObserverEffect);
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect2);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

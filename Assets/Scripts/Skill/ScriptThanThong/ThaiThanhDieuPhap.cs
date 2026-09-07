@@ -16,6 +16,12 @@ public class ThaiThanhDieuPhap : ThanThong, IMemorySerializable<ThaiThanhDieuPha
         HauKeVoLuc(caster);
         caster.characterStatsTemp.hpMax += buffs[GetIndexLevelThanThong(caster)];
         caster.Healing(0);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

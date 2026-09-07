@@ -44,6 +44,12 @@ public class KhoTanCamLai : ThanThong, IMemorySerializable<KhoTanCamLai>
         caster.AddThanThongImpactAfterPlaySkill(this);
         caster.SetHp(1);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

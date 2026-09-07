@@ -18,6 +18,12 @@ public class SucLuc : ThanThong, IMemorySerializable<SucLuc>
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

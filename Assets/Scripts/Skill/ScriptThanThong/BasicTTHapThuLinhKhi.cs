@@ -23,6 +23,12 @@ public class BasicTTHapThuLinhKhi : ThanThong, BaseSkill.TuongSinh, IMemorySeria
     {
         HauKeVoLuc(caster);
         caster.HapThuLinhKhi(linhKhiHapThu, hapThus[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

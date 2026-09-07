@@ -18,6 +18,12 @@ public class LienNhac : ThanThong, IMemorySerializable<LienNhac>
         HauKeVoLuc(caster);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, require);
         caster.isSkipTieuTanLinhKhi = true;
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

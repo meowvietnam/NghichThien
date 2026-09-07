@@ -18,6 +18,12 @@ public class TrucSonKiemPhap : ThanThong, BaseSkill.LienKich, IMemorySerializabl
     {
         KiemY(caster);
         TakeDame(caster, target, dames, false);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

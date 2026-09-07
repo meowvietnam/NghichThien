@@ -20,6 +20,12 @@ public class ChanLongHuyetNo : ThanThong, IMemorySerializable<ChanLongHuyetNo>
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanLongChiHuyet, require);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

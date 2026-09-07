@@ -27,6 +27,12 @@ public class CuuUThu : ThanThong, IMemorySerializable<CuuUThu>
         caster.TakeDameByStatic(null, new System.Collections.Generic.List<int>{dameHP}, false, null, false);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Anh, anh);
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

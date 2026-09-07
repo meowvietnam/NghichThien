@@ -18,6 +18,12 @@ public class ThaiNhienVoBa : ThanThong, IMemorySerializable<ThaiNhienVoBa>
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out SecureInt kiemKhi);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKiem, chanKiemPerKiemKhiValues[GetIndexLevelThanThong(caster)] * kiemKhi);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, kiemKhi);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

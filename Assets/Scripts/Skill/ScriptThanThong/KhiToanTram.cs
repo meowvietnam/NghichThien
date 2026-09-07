@@ -15,6 +15,12 @@ public class KhiToanTram : ThanThong, IMemorySerializable<KhiToanTram>
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, buff[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

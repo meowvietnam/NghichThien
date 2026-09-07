@@ -18,6 +18,12 @@ public class NghiepHoaAn : ThanThong, BaseSkill.LienKich, IMemorySerializable<Ng
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.LIEN_KICH, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

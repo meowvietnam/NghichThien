@@ -18,6 +18,12 @@ public class HoanAnhLuc : ThanThong, IMemorySerializable<HoanAnhLuc>
         int require = tieuHaos[GetIndexLevelThanThong(caster)];
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Anh, require);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.AnhDich, buffValues[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

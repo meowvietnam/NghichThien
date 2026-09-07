@@ -25,6 +25,12 @@ public class CuongNhuTinhTe : ThanThong, IMemorySerializable<CuongNhuTinhTe>
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, kiemKhiPerKinhDaoValues[GetIndexLevelThanThong(caster)] * kinhDao);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KinhDao, kinhDao);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChiThuy, chiThuy);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

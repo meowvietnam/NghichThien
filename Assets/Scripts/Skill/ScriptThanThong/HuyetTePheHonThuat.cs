@@ -18,6 +18,12 @@ public class HuyetTePheHonThuat : ThanThong, IMemorySerializable<HuyetTePheHonTh
         int heal = hon * buffValues[GetIndexLevelThanThong(caster)];
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Hon, hon);
         caster.Healing(heal);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

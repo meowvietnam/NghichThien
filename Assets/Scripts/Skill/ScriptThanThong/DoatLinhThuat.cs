@@ -18,6 +18,12 @@ public class DoatLinhThuat : ThanThong, IMemorySerializable<DoatLinhThuat>
         caster.HapThuLinhKhi(ELinhKhi.Tho, target.khiTho);
         caster.HapThuLinhKhi(ELinhKhi.Ma, target.khiMa);
         target.TieuTanAllLinhKhi();
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

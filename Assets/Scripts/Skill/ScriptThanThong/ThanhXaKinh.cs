@@ -14,6 +14,12 @@ public class ThanhXaKinh : ThanThong, IMemorySerializable<ThanhXaKinh>
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, trungDoc[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

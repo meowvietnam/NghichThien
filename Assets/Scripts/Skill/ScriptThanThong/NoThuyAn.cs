@@ -18,6 +18,12 @@ public class NoThuyAn : ThanThong, BaseSkill.LienKich, IMemorySerializable<NoThu
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.LIEN_KICH, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

@@ -25,6 +25,12 @@ public class HuyenBangVu : ThanThong, IMemorySerializable<HuyenBangVu>
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new List<int>{dame}, eTypeSkill);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

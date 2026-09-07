@@ -15,6 +15,12 @@ public class HoaCat : ThanThong, IMemorySerializable<HoaCat>
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt tran);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.Cat, tran);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, tran);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

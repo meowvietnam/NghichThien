@@ -25,6 +25,12 @@ public class BaoNhien : ThanThong, BaseSkill.LienKich, IMemorySerializable<BaoNh
         Debug.Log("BaoNhien before" + target.GetDameBuffForTarget());
         ExcuteDiem(caster, target);
         Debug.Log("BaoNhien after" + target.GetDameBuffForTarget());
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

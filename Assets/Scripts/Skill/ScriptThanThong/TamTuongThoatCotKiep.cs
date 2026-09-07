@@ -19,6 +19,12 @@ public class TamTuongThoatCotKiep : ThanThong, IMemorySerializable<TamTuongThoat
         float percent = (float)percentBuffDames[GetIndexLevelThanThong(caster)] / 100f;
         dame += (int)(percent * caster.characterStatsTemp.hpMax);
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

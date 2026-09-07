@@ -27,6 +27,12 @@ public class VanKhiThuat : ThanThong, IMemorySerializable<VanKhiThuat>
 
         HauKeVoLuc(caster);
         caster.HapThuLinhKhi(hapThu);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

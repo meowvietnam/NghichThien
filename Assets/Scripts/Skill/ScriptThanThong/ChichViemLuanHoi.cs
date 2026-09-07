@@ -16,6 +16,12 @@ public class ChichViemLuanHoi : ThanThong, IMemorySerializable<ChichViemLuanHoi>
         HauKeVoLuc(caster);
         caster.TieuTanAllLinhKhi();
         caster.HapThuLinhKhi(hapThu);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

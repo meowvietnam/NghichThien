@@ -19,6 +19,12 @@ public class PhiChamThuat : ThanThong, IMemorySerializable<PhiChamThuat>
         int dame = dames[GetIndexLevelThanThong(caster)];
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, deTonThuong);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

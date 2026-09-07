@@ -24,6 +24,12 @@ public class TinhThuyVoBa : ThanThong, IMemorySerializable<TinhThuyVoBa>
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KinhDao, kinhDao);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChiThuy, chiThuy);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KinhDao, kinhDaoReset[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

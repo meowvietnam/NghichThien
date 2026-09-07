@@ -21,6 +21,12 @@ public class LeHoa : ThanThong, IMemorySerializable<LeHoa>
         int count = caster.thanThongUseThisTurn.Count(x => x.thanThong is LeHoa) - 1;
         int dameBuff = dameBuffs[GetIndexLevelThanThong(caster)] * count;
         target.CaculateDameByThanThong(caster, new List<int>{dame + dameBuff}, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

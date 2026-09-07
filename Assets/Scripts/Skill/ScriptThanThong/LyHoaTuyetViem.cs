@@ -18,6 +18,12 @@ public class LyHoaTuyetViem : ThanThong, IMemorySerializable<LyHoaTuyetViem>
         HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, thieuDot);
         caster.HapThuLinhKhi(ELinhKhi.Hoa, hapThu);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

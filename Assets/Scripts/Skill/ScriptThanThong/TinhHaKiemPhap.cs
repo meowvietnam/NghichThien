@@ -18,6 +18,12 @@ public class TinhHaKiemPhap : ThanThong, BaseSkill.LienKich, IMemorySerializable
     {
         KiemY(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKiem, buffValues[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

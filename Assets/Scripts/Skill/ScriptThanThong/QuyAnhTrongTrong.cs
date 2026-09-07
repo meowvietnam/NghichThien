@@ -20,6 +20,12 @@ public class QuyAnhTrongTrong : ThanThong, IMemorySerializable<QuyAnhTrongTrong>
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhDich, out SecureInt anhDich);
         int count = anhDich / require;
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.AnhDich, count * buffValues[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

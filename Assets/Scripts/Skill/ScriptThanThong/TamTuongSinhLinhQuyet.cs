@@ -19,6 +19,12 @@ public class TamTuongSinhLinhQuyet : ThanThong, IMemorySerializable<TamTuongSinh
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TuKhi, tuKhi);
         float percent = (float)buffs[GetIndexLevelThanThong(caster)] / 100f;
         caster.Healing((int)(percent * (caster.characterStatsTemp.hpMax - caster.characterStatsTemp.hp)));
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

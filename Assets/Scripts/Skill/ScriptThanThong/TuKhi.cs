@@ -15,6 +15,12 @@ public class TuKhi : ThanThong, IMemorySerializable<TuKhi>
     {
         HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TuKhi, buffValues);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

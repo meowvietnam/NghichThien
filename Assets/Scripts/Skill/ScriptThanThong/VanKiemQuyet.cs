@@ -20,6 +20,12 @@ public class VanKiemQuyet : ThanThong, IMemorySerializable<VanKiemQuyet>
         int dame = dames[GetIndexLevelThanThong(caster)] + kiemKhi * buffValues[GetIndexLevelThanThong(caster)];
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, kiemKhi);
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

@@ -18,6 +18,12 @@ public class PhucTheAn : ThanThong, IMemorySerializable<PhucTheAn>
             return;
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, khiKim * buff[GetIndexLevelThanThong(caster)]);
         caster.TieuTanLinhKhi(ELinhKhi.Kim, khiKim);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

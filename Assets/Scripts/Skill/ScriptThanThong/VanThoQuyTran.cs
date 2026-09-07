@@ -16,6 +16,12 @@ public class VanThoQuyTran : ThanThong, IMemorySerializable<VanThoQuyTran>
         HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, caster.khiTho * buffValues[GetIndexLevelThanThong(caster)]);
         caster.TieuTanLinhKhi(ELinhKhi.Tho, caster.khiTho);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

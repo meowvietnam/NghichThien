@@ -14,6 +14,12 @@ public class HuyenVuThuat : ThanThong, IMemorySerializable<HuyenVuThuat>
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HuyenVu, huyenVus[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

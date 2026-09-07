@@ -17,6 +17,12 @@ public class HoTheKiemCuong : ThanThong, IMemorySerializable<HoTheKiemCuong>
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out SecureInt kiemKhi);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, kiemKhi * buffValues[GetIndexLevelThanThong(caster)]);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, kiemKhi);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

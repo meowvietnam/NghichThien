@@ -16,6 +16,12 @@ public class HuyenLinhThuat : ThanThong, IMemorySerializable<HuyenLinhThuat>
         HauKeVoLuc(caster);
         caster.HapThuLinhKhi(buffValues[GetIndexLevelThanThong(caster)]);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, buffValues[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

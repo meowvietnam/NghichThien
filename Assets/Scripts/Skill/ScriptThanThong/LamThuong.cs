@@ -20,6 +20,12 @@ public class LamThuong : ThanThong, IMemorySerializable<LamThuong>
             caster.HapThuLinhKhi(key.Key, key.Value);
         }
 
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 

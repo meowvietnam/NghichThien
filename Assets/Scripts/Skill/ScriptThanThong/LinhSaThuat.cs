@@ -20,6 +20,12 @@ public class LinhSaThuat : ThanThong, IMemorySerializable<LinhSaThuat>
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, require);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.PLAY_SKILL, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
