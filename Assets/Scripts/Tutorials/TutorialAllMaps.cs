@@ -111,7 +111,8 @@ namespace Tutorials
                 new TutorialStep()
                 {
                     TargetRenderer = datPhongThanh,
-                    Text = "Đây là Dật Phong Thành, nơi mua bán các loại vật liệu và trang bị."
+                    Text = "Đây là Dật Phong Thành, nơi mua bán các loại vật liệu và trang bị.",
+                    DialogPosition = DialogPosition.TopLeft
                 },
 
                 new TutorialStep()

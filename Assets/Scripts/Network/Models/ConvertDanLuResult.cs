@@ -6,16 +6,16 @@ namespace Network.Models
 {
     /// <summary>
     /// Server → Client: result of a ConvertDanLuRequest.
-    /// On success: FurnaceSelfIds lists the consumed furnace SelfIds;
-    ///             ItemResult is the newly obtained đan phương (recipe) ItemRef.
+    /// On success: RecipeItems lists the consumed recipe ItemRefs;
+    ///             FurnaceResult is the newly obtained đan lô (FurnaceData).
     /// </summary>
     [MemoryPackable]
     public partial class ConvertDanLuResult : Result
     {
-        /// <summary>SelfIds of the furnaces that were consumed.</summary>
-        public List<ushort> FurnaceSelfIds { get; set; }
+        /// <summary>The recipe ItemRefs that were consumed.</summary>
+        public List<ItemRef> RecipeItems { get; set; }
 
-        /// <summary>The recipe (đan phương) ItemRef received.</summary>
-        public ItemRef ItemResult { get; set; }
+        /// <summary>The đan lô (furnace) received as a result.</summary>
+        public FurnaceData FurnaceResult { get; set; }
     }
 }

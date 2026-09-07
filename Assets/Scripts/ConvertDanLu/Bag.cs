@@ -8,8 +8,8 @@ using UnityEngine.UI;
 namespace ConvertDanLu
 {
     /// <summary>
-    /// Scrollable bag showing the player's owned đan lô (furnaces).
-    /// Each FurnaceData instance is shown as a separate item (count = 1, identified by SelfId).
+    /// Scrollable bag showing the player's owned đan phương (recipes).
+    /// Each recipe ItemRef is shown with its count.
     /// </summary>
     public class Bag : BaseBehaviour
     {
@@ -44,18 +44,16 @@ namespace ConvertDanLu
         }
 
         /// <summary>
-        /// Initialises the bag from a collection of FurnaceData (đan lô).
-        /// Each furnace is represented as a unique ItemRef with SelfId.
+        /// Initialises the bag from the player's recipe inventory (đan phương).
         /// </summary>
-        public void Init(IEnumerable<FurnaceData> furnaces)
+        public void Init(IEnumerable<ItemRef> recipes)
         {
             SetEventButton(maskBtn, Back);
-            var danItems = furnaces
-                .Select(f =>
+            var danItems = recipes
+                .Select(r =>
                 {
-                    var itemRef = f.CreateRefSelfID();
-                    IDanItemData itemData = new FurnaceItemData(f);
-                    return new DanItemData(itemRef, itemData);
+                    IDanItemData itemData = new RecipeItemData(r);
+                    return new DanItemData(r, itemData);
                 })
                 .ToList();
 
@@ -69,9 +67,9 @@ namespace ConvertDanLu
             itemList.UpdateFilter();
         }
 
-        public ItemBag FindItem(ushort selfId)
+        public ItemBag FindItem(ushort id)
         {
-            return itemList.FindItem(selfId);
+            return itemList.FindItem(id);
         }
 
         private void OnDestroy()

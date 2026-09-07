@@ -252,6 +252,10 @@ namespace AllMaps
 
         public void OnPlayerMoving(PlayerMoving playerMoving)
         {
+            if (playerMoving.Path.Length == 0)
+            {
+                return;
+            }
             var player = ObjectPool.Spawn(playerPrefab).GetComponentInChildren<Player>();
             player.SetActive(true);
             player.Init(playerMoving.Gender, playerMoving.IsSwordRiding, playerMoving.Appearance);

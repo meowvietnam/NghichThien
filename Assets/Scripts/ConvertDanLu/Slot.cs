@@ -1,14 +1,11 @@
-using System.Linq;
 using LuyenDan;
-using Network;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace ConvertDanLu
 {
     /// <summary>
-    /// One of the 4 input slots that the player places a đan lô into before converting.
-    /// Mirrors ConvertElementalSkill.Slot adapted for ConvertDanLu.
+    /// One of the 4 input slots that the player places a đan phương (recipe) into before converting.
     /// </summary>
     public class Slot : BaseItemUI, ISelectedItemCallback
     {
@@ -31,10 +28,9 @@ namespace ConvertDanLu
         {
             if (DanData == null) return;
 
-            var instance = ConvertDanLuPanel.Instance;
-            var bag      = instance.Bag;
-            var myItem   = DanData.ItemRef;
-            var itemBag  = bag.FindItem((ushort)myItem.Id);
+            var bag     = ConvertDanLuPanel.Instance.Bag;
+            var myItem  = DanData.ItemRef;
+            var itemBag = bag.FindItem((ushort)myItem.Id);
             if (itemBag != null)
             {
                 var itemRef = itemBag.DanData.ItemRef;
@@ -57,13 +53,10 @@ namespace ConvertDanLu
         protected override void OnShowInfo()
         {
             if (DanData == null) return;
-            var itemRef     = DanData.ItemRef;
-            var furnaceData = Client.Instance.CharacterData.InventoryManager.Furnaces
-                .FirstOrDefault(f => f.SelfId == itemRef.Id);
-            var tempData = LuyenDanResources.Instance.TempFurnaceDatas
-                .Find(x => x.Id == (furnaceData?.Id ?? 0));
-            if (tempData == null) return;
-            ToolTipItems.Instance.ShowInfoItem(tempData, itemRef, furnaceData);
+            var itemRef    = DanData.ItemRef;
+            var recipeData = LuyenDanResources.Instance.FindRecipe(itemRef.Id);
+            if (recipeData == null) return;
+            ToolTipItems.Instance.ShowInfoItem(recipeData, itemRef);
         }
 
         protected override void OnDestroy()
@@ -72,24 +65,22 @@ namespace ConvertDanLu
             clearButton.onClick.RemoveAllListeners();
         }
 
-        // Called back when the player picks an item from the Bag
+        // Called back when the player picks a recipe from the Bag
         public void OnSelected(ItemBag item)
         {
             ClearItem();
 
-            var instance   = ConvertDanLuPanel.Instance;
-            var itemRef    = item.DanData.ItemRef;
-            var cloned     = itemRef.DeepClone();
+            var instance = ConvertDanLuPanel.Instance;
+            var itemRef  = item.DanData.ItemRef;
+            var cloned   = itemRef.DeepClone();
             cloned.SetCount(1);
             itemRef.SetCount(itemRef.Count - 1);
 
             var danData = new DanItemData(cloned, item.DanData.ItemData);
             SetData(danData);
-            bag.ItemList.ApplyFilterOn(item);
+            instance.Bag.ItemList.ApplyFilterOn(item);
             instance.Page.PutItems.OnSelect(this);
             clearButton.gameObject.SetActive(true);
         }
-
-        private Bag bag => ConvertDanLuPanel.Instance.Bag;
     }
 }

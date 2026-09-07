@@ -1,5 +1,4 @@
 using DG.Tweening;
-using LongDHModules;
 using LuyenDan;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,8 +6,7 @@ using UnityEngine.UI;
 namespace ConvertDanLu
 {
     /// <summary>
-    /// Shows the resulting đan phương (recipe) after a successful conversion.
-    /// Mirrors ConvertElementalSkill.ResultPage adapted for RecipeData.
+    /// Shows the resulting đan lô (furnace) after a successful conversion.
     /// </summary>
     public class ResultPage : BaseBehaviour
     {
@@ -39,12 +37,14 @@ namespace ConvertDanLu
         }
 
         /// <summary>
-        /// Displays the received đan phương (recipe) ItemRef in the result slot.
+        /// Displays the received đan lô (furnace) in the result slot.
+        /// The ItemRef uses SelfId as Id and furnace type Id as TempId.
         /// </summary>
-        public void SetItem(ItemRef item)
+        public void SetItem(FurnaceData furnace)
         {
-            IDanItemData itemData = new RecipeItemData(item);
-            var danData = new DanItemData(item, itemData);
+            var itemRef  = furnace.CreateRefSelfID(); // Id=SelfId, TempId=Id, Type=Furnace
+            IDanItemData itemData = new FurnaceItemData(furnace);
+            var danData  = new DanItemData(itemRef, itemData);
             itemUI.SetData(danData);
         }
 

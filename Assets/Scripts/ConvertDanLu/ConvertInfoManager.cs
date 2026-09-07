@@ -70,7 +70,7 @@ namespace ConvertDanLu
             });
 
             var joined = string.Join("  |  ", parts);
-            infoText.text = $"Tỉ lệ đan phương: {joined}";
+            infoText.text = $"Tỉ lệ đan lô: {joined}";
         }
 
         private static string GetTierName(Tier tier) => tier switch

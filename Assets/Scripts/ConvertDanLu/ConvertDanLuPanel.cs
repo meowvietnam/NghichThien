@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Threading.Tasks;
 using CreateCharacter;
 using LongDHModules;
 using LuyenDan;
@@ -9,18 +8,15 @@ using Network.Extensions.MemoryPack;
 using Network.Models;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace ConvertDanLu
 {
     /// <summary>
-    /// Root panel for converting 4 đan lô (furnaces) of the same Tier into 1 đan phương (recipe).
-    /// Mirrors ConvertElementalSkillPanel, adapted for Furnace → Recipe conversion.
-    /// 
-    /// Scene wiring:
-    ///   - Page:       ConvertDanLuPage (holds the 4 slots + info manager)
-    ///   - Bag:        Bag (scroll list of owned furnaces)
-    ///   - ResultPage: ResultPage (pop-up showing the received recipe)
+    /// Root panel for converting 4 đan phương (recipes) of any Tier mix into 1 đan lô (furnace).
+    /// Result Tier is randomly determined based on the proportion of each Tier placed.
+    ///
+    /// Source: Client.Instance.CharacterData.InventoryManager.Recipes
+    /// Result: Client.Instance.CharacterData.InventoryManager.Furnaces
     /// </summary>
     public class ConvertDanLuPanel : BaseBehaviour
     {
@@ -54,16 +50,15 @@ namespace ConvertDanLu
 
         private void Init(InventoryManager inventory)
         {
-            // Each furnace is unique by SelfId — pass them all directly
-            var furnaces = inventory.Furnaces.Select(f => f).ToHashSet();
-            Bag.Init(furnaces);
+            // Clone recipes so bag counts don't conflict with live inventory
+            var recipes = inventory.Recipes.Select(r => r.DeepClone()).ToHashSet();
+            Bag.Init(recipes);
             Page.Init();
         }
 
         /// <summary>
-        /// Sends a ConvertDanLuRequest with the 4 placed furnace SelfIds.
-        /// On success: removes the furnaces from inventory, adds the recipe,
-        ///             clears the slots and shows the result page.
+        /// Sends a ConvertDanLuRequest with the 4 placed recipe ItemRefs.
+        /// On success: decreases recipe counts in inventory, adds the resulting furnace.
         /// </summary>
         [Button]
         public async void Convert()
@@ -71,13 +66,21 @@ namespace ConvertDanLu
             var filledSlots = Page.PutItems.GetFilledSlots();
             if (filledSlots.Length != PutItems.RequiredCount) return;
 
-            var selfIds = filledSlots
-                .Select(s => (ushort)s.DanData.ItemRef.Id)
+            // Group by recipe Id to send compact ItemRefs with counts
+            var recipeItems = filledSlots
+                .Select(s => s.DanData.ItemRef)
+                .GroupBy(r => new { r.Id, r.Type })
+                .Select(g => new ItemRef
+                {
+                    Id    = g.Key.Id,
+                    Type  = g.Key.Type,
+                    Count = g.Sum(r => r.Count)
+                })
                 .ToList();
 
             var request = new ConvertDanLuRequest
             {
-                FurnaceSelfIds = selfIds
+                RecipeItems = recipeItems
             };
 
             var client = Client.Instance;
@@ -91,14 +94,14 @@ namespace ConvertDanLu
             {
                 var inventory = client.CharacterData.InventoryManager;
 
-                // Remove consumed furnaces by SelfId
-                foreach (var selfId in result.FurnaceSelfIds)
+                // Decrease consumed recipes
+                foreach (var consumed in result.RecipeItems)
                 {
-                    inventory.RemoveFurnace(selfId);
+                    inventory.Decrease(consumed);
                 }
 
-                // Add the new recipe to inventory
-                inventory.Add(result.ItemResult);
+                // Add the new furnace
+                inventory.Furnaces.Add(result.FurnaceResult);
             }
 
             NetworkManager.Instance.Invoke(() =>
@@ -107,13 +110,12 @@ namespace ConvertDanLu
                 {
                     Page.PutItems.Clear();
                     Page.InfoManager.Clear();
-                    ResultPage.SetItem(result.ItemResult);
+                    ResultPage.SetItem(result.FurnaceResult);
                 }
 
-                var message = result.Message;
                 progressBar.DoKill(() =>
                 {
-                    NotifyGroup.Instance.Show(message);
+                    NotifyGroup.Instance.Show(result.Message);
                     if (result.Success)
                     {
                         ResultPage.Show();

@@ -82,6 +82,12 @@ namespace AllMaps
 
         private IEnumerator IEDoMove(List<Node> nodes, Action completed)
         {
+            if (!nodes.Any())
+            {
+                SetMoving(false);
+                completed?.Invoke();
+                yield break;
+            }
             if (IsSwordRiding)
             {
                 var lastNode = nodes.Last();
