@@ -472,15 +472,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
         if (thanThong != null)
         {
-            if (IsSync)
-            {
-                Debug.Log($"Toi vua gui sync play skill: Id-{caster.characterStatsBase.idChar.Value}");
-                Observer.Notify(EventList.Combat.SEND_SYNC_PLAYSKILL, new SyncPlaySkill
-                {
-                    CharId = caster.characterStatsBase.idChar.Value,
-                    SkillId = thanThong.Id,
-                });
-            }
+            
 
             caster.PlaySkill(thanThong, linhKhiTieuTan);
             CombatStatic.TrienNhieu(target, caster);
@@ -518,7 +510,15 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                 caster.skillVoHieuHoa.Clear();
                 return;
             }
-
+            if (IsSync)
+            {
+                Debug.Log($"Toi vua gui sync play skill: Id-{caster.characterStatsBase.idChar.Value}");
+                Observer.Notify(EventList.Combat.SEND_SYNC_PLAYSKILL, new SyncPlaySkill
+                {
+                    CharId = caster.characterStatsBase.idChar.Value,
+                    SkillId = thanThong.Id,
+                });
+            }
             ThanThong thanThongOldUse = caster.thanThongOldUse != null ? caster.thanThongOldUse.thanThong : null;
             thanThong.Execute(caster, target, data);
             if (thanThong is BaseSkill.LienKich thanThongLienKich && thanThongOldUse != null)
@@ -908,7 +908,10 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                     currentTurn.RemoveBuffAndDebuffCount(type, count);
             }
 
-            Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
+            if(IsSync)
+            {
+                Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
+            }    
             return;
         }
 
