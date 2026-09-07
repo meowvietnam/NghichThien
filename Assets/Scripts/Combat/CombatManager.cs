@@ -873,17 +873,6 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     }
     public void NewTurn()
     {
-        if(IsRealTimeCombat)
-        {
-            NewTurnPVP();
-        }    
-        else
-        {
-            NewTurnPVE();
-        }    
-    }    
-    public void NewTurnPVP()
-    {
         ResetCounterTime();
         if (IsRealTimeCombat)
         {
@@ -917,10 +906,18 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                     currentTurn.RemoveBuffAndDebuffCount(type, count);
             }
 
-            if(IsSync)
+            if(IsRealTimeCombat)
+            {
+                if (IsSync)
+                {
+                    Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
+                }
+            }
+            else
             {
                 Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
-            }    
+
+            }
             return;
         }
 
@@ -928,52 +925,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         Observer.Notify(EventList.Combat.NEW_TURN_COMBAT, currentTurn, targetTurn, currentTurn == char1 ? true : false,
             dictHapThuKhi);
         AutoPlaySkill();
-    }
-    public void NewTurnPVE()
-    {
-        ResetCounterTime();
-        if (IsRealTimeCombat)
-        {
-            if (currentTurn == char1)
-            {
-                StartCoroutine(StartCounterTime());
-            }
-        }
-
-        SetUITextTurn();
-        currentTurn.listDameTaked.Add(0);
-        targetTurn.listDameTaked.Add(0);
-        Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();
-        if (!currentTurn.IsKietSuc())
-        {
-            isSync = false;
-            CombatStatic.QuyTon(currentTurn, targetTurn);
-            CombatStatic.SucThe(currentTurn, targetTurn);
-            CombatStatic.ThieuDot(targetTurn, currentTurn);
-            currentTurn.NewTurn();
-            CombatStatic.AmKinhTTNewTurn(currentTurn, targetTurn);
-            isSync = true;
-            ExcuteEquipment(currentTurn, targetTurn, EquipmentType.Armor);
-            currentTurn.HapThuLinhKhiNewTurn(out dictHapThuKhi);
-        }
-        else
-        {
-            foreach (var type in new[] { EBuffAndDeBuff.KietSuc, EBuffAndDeBuff.DongKet })
-            {
-                if (currentTurn.buffAndDebuffCount.TryGetValue(type, out var count))
-                    currentTurn.RemoveBuffAndDebuffCount(type, count);
-            }
-
-            Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
-
-            return;
-        }
-
-        // param 0 là bool isPlayer == char1 
-        Observer.Notify(EventList.Combat.NEW_TURN_COMBAT, currentTurn, targetTurn, currentTurn == char1 ? true : false,
-            dictHapThuKhi);
-        AutoPlaySkill();
-    }
+    }    
+   
 
     public void AutoPlaySkill()
     {
