@@ -26,6 +26,11 @@ public class AmDuongKinh : AmKinhTT, BaseSkill.TuongSinh, IMemorySerializable<Am
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddAmKinhTT(this, afterHiep);
+        PlayVisualSkill(caster,target);
+    }
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         if (currentType == TypeAmDuongKinh.AmDuongKinh)
         {
             ShowSkillEffectParticleBase(caster, delayTimeEffect, 5);
@@ -35,7 +40,6 @@ public class AmDuongKinh : AmKinhTT, BaseSkill.TuongSinh, IMemorySerializable<Am
             ShowSkillEffectWorld(target, delayTimeEffect);
         }
     }
-
     public override void ExecuteAmKinh(CharacterCombat caster, CharacterCombat target)
     {
         int dame = dames[GetIndexLevelThanThong(target)];
