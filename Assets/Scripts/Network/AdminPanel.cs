@@ -264,7 +264,7 @@ namespace Network
             var result = reader.MemRead<Result>();
             NotifyGroup.Instance?.Show(result.Message);
         }
-
+        
         private bool IsAuthStateAndNotLogin()
         {
             if (Client == null)

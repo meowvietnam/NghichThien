@@ -9,6 +9,7 @@ namespace Network.ClientState
         LuyenDan,
         LuyenKhi,
         ConvertElementalSkill,
+        ConvertDanLu,
         Auction,
         TrungSinh,
         DongPhuState,
