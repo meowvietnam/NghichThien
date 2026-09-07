@@ -274,9 +274,6 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             char2.isAutoCastSkill = false;
         }
-
-        // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
-        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, NewTurn);
         SetUIHpBar();
         buffInfor.DoHide();
         transform.GetComponentInChildren<PlayerUICombat>().Init();
@@ -613,6 +610,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN,
                 new SyncEndTurn { CharId = oldCurrentTurn.characterStatsBase.idChar.Value });
+            return;
         }
 
         SwapTurn();
@@ -644,6 +642,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         isSync = true;
         oldCurrentTurn.EndTurn();
         ExcuteEquipment(oldCurrentTurn, oldTargetTurn, EquipmentType.Jewelry);
+        NewTurn();
     }
 
     void LinhKhiBaoLoan(CharacterCombat character) // kết thúc lượt giảm 10% hp nếu turn hiện tại >= 15 tăng tốc độ game
@@ -908,10 +907,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                     currentTurn.RemoveBuffAndDebuffCount(type, count);
             }
 
-            if(IsSync)
-            {
-                Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
-            }    
+            Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
+
             return;
         }
 
