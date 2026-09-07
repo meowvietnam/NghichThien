@@ -414,7 +414,7 @@ public class UINPCJiaoHu : PanelGroup, INetworkEvent.ITangQuaNPC, INetworkEvent.
         SetEventButton(btnLuanBan, async () =>
         {
             HideAllPop();
-            if (!characterStatsTarget.isPlayer)
+            if (!characterStatsTarget.isPlayer || characterStatsTarget.nameUser == "Rối")
             {
                 Pool.Get<GameManager>().GoToPrepareCombat(new GameManager.CharCombatInit
                 {
