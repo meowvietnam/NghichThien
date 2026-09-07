@@ -13,9 +13,14 @@ public class HuyenAmKinh : AmKinhTT, IMemorySerializable<HuyenAmKinh>
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddAmKinhTT(this, afterHiep);
-        ShowSkillEffectParticleBase(target, delayTimeEffect, 5);
+        PlayVisualSkill(caster, target);
     }
-
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
+        ShowSkillEffectParticleBase(caster, delayTimeEffect, 5);
+    }
     public override void ExecuteAmKinh(CharacterCombat caster, CharacterCombat target)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NoiThuong, buffValues[GetIndexLevelThanThong(target)]);

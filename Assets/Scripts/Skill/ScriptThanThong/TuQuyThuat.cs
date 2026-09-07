@@ -21,9 +21,14 @@ public class TuQuyThuat : ThanThong, IMemorySerializable<TuQuyThuat>
         int dame = dames[GetIndexLevelThanThong(caster)];
         caster.TakeDameByStatic(null, new System.Collections.Generic.List<int>{dame}, false, null, false);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, buffValues[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
     }
-
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon, out SecureInt hon);

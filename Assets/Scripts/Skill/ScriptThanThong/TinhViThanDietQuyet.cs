@@ -20,9 +20,14 @@ public class TinhViThanDietQuyet : ThanNiemQuyet, IMemorySerializable<TinhViThan
 
     protected override void ShowEffect(CharacterCombat caster, CharacterCombat target)
     {
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
     }
-
     protected override (Action<Transform, Transform>, Action<Transform, Transform>) GetActionControlEffectParticleBase()
     {
         // nếu caster ng nhận effec là enemy thì 

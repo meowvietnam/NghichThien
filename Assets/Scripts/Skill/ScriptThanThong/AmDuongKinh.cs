@@ -28,6 +28,7 @@ public class AmDuongKinh : AmKinhTT, BaseSkill.TuongSinh, IMemorySerializable<Am
         target.AddAmKinhTT(this, afterHiep);
         PlayVisualSkill(caster,target);
     }
+    //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
         base.PlayVisualSkill(caster, target);

@@ -21,9 +21,14 @@ public class HoanLinhChu : ThanThong, IMemorySerializable<HoanLinhChu>
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Hon, tieuHaos[GetIndexLevelThanThong(caster)]);
         caster.AddBuffAndDebuffCount(GetEKeywordBuffSkillQuy(caster.characterStatsTemp.level), 1);
         CombatStatic.QuyTon(caster, target);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
     }
-
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyCuu, out SecureInt quyCuu);

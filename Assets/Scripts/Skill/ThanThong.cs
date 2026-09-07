@@ -469,8 +469,7 @@ namespace Skill
             return effect;
         }
 
-        protected virtual GameObject
-            ShowSkillEffectWorld(CharacterCombat target, float delay,
+        protected virtual GameObject ShowSkillEffectWorld(CharacterCombat target, float delay,
                 bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
         {
             if (prefabEffectSkill == null) return null;

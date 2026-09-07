@@ -18,9 +18,14 @@ public class ChietTinhBoKhiQuyet : ThanThong, IMemorySerializable<ChietTinhBoKhi
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NgungThan, out SecureInt ngungThan);
         caster.Healing(ngungThan * buffValues[GetIndexLevelThanThong(caster)]);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.NgungThan, ngungThan);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
     }
-
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NgungThan, out SecureInt ngungThan);

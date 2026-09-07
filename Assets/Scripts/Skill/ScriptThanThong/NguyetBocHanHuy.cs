@@ -23,7 +23,13 @@ public class NguyetBocHanHuy : ThanThong, IMemorySerializable<NguyetBocHanHuy>
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.PLAY_SKILL, ObserverEffect);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect3);
-        ShowSkillEffectParticleBase(target, delayTimeEffect, cameraSize);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
+        ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
     }
 
     private void ObserverEffect(params object[] data)

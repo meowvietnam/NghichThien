@@ -26,9 +26,15 @@ public class KimHongQuanNhat : ThanThong, IMemorySerializable<KimHongQuanNhat>
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, kiemKhi);
         int dame = this.dame[GetIndexLevelThanThong(caster)] + perDameKiemKhi[GetIndexLevelThanThong(caster)] * kiemKhi + perDameSucThe[GetIndexLevelThanThong(caster)] * sucThe;
         target.CaculateDameByThanThong(caster, new List<int>{dame}, eTypeSkill);
+        
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticle(target, 1f);
     }
-
     public override string GetDesc(int level)
     {
         return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tạo thành {GetColoredText($"{dame[level - 1]}", "red")} điểm sát thương, cũng tiêu hao toàn bộ {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} mỗi tầng tăng thêm {GetColoredText($"{perDameKiemKhi[level - 1]}", "red")} điểm thương tổn và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)} mỗi tầng tăng thêm {GetColoredText($"{perDameSucThe[level - 1]}", "red")} điểm thương tổn. Bạn bị {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KietSuc)}";

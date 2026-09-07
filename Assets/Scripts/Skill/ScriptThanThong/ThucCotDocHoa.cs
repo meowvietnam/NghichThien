@@ -19,9 +19,14 @@ public class ThucCotDocHoa : ThanThong, IMemorySerializable<ThucCotDocHoa>
         target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, deBuffs[GetIndexLevelThanThong(caster)]);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, deBuffs[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticleBase(caster, delayEffect, 3.5f);
     }
-
     public override string GetDesc(int level)
     {
         return $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Đối thủ nhận phải {GetColoredText($"+{deBuffs[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}";

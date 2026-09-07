@@ -36,9 +36,14 @@ public class TinhThanThanNiemThe : ThanThong, IMemorySerializable<TinhThanThanNi
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect3);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
         Observer.AddObserver(EventList.Combat.CHARACTER_BEFORE_TAKE_DAME, ObserverEffect2);
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
     }
-
     private void ObserverEffect(params object[] data)
     {
         CharacterCombat currentTurn = (CharacterCombat)data[0]; // người gây dame

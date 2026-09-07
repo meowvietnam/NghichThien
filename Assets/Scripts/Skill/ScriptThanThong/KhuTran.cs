@@ -19,9 +19,14 @@ public class KhuTran : ThanThong, IMemorySerializable<KhuTran>
         {
             tp.OnExecuteTranPhap(caster, target);
         });
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticleBase(caster, delayTimeEffect, 2.5f);
     }
-
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         if (caster.specialThanThongImpactAfterPlaySkill.Any(x => x is TranPhapTT) && base.IsCanUse(caster, target))

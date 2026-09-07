@@ -25,9 +25,14 @@ public class PhuongLinhYeuHoa : ThanThong, BaseSkill.LienKich, IMemorySerializab
         }
 
         target.CaculateDameByThanThong(caster, dames, eTypeSkill, false);
-        ShowSkillEffectParticleBase(caster, delayEffect, 5f);
+        PlayVisualSkill(caster, target);
     }
-
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
+        ShowSkillEffectParticleBase(caster, delayEffect, 5);
+    }
     public override string GetDesc(int level)
     {
         return $"Tạo thành {GetColoredText($"{countAttack} lần {damePerCountAttack[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} Nếu lần trước sử dụng là {GetTextLinhKhi(ELinhKhi.Moc)} hệ thần thông thì tăng lên {GetColoredText($"{countAttack}*X lần ", "red")} (X là số lần sử dụng thần thông [Nhóm Lửa])";

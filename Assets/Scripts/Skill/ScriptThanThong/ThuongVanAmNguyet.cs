@@ -10,17 +10,24 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ThuongVanAmNguyet), menuName = "Skill/Thần Thông/" + nameof(ThuongVanAmNguyet))]
 public class ThuongVanAmNguyet : ThanThong, IMemorySerializable<ThuongVanAmNguyet>
 {
-    [SerializeField]
-    private int[] dameBuffPercents = new int[]{20, 25, 30, 35, 40};
-    [SerializeField]
-    private float cameraSize = 5;
+    [SerializeField] private int[] dameBuffPercents = new int[] { 20, 25, 30, 35, 40 };
+    [SerializeField] private float cameraSize = 5;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect3);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
-        caster.effectSkillNoDestroy.Add(this, ShowSkillEffectParticleBase(caster, 0, cameraSize, false));
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
+        var gameObject = ShowSkillEffectParticleBase(caster, 0, cameraSize, false);
+        caster.effectSkillNoDestroy.Add(this, gameObject);
     }
 
     private void ObserverEffect(params object[] data)
@@ -64,7 +71,8 @@ public class ThuongVanAmNguyet : ThanThong, IMemorySerializable<ThuongVanAmNguye
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Khi nhận phải tổn thương từ thần thông thì giảm {GetColoredText($"{dameBuffPercents[level - 1]}%", "red")} sát thương. Đồng thời đem lượng sát thương đó phản lại đối thủ";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Khi nhận phải tổn thương từ thần thông thì giảm {GetColoredText($"{dameBuffPercents[level - 1]}%", "red")} sát thương. Đồng thời đem lượng sát thương đó phản lại đối thủ";
     }
 
     public override int ByteSize()
