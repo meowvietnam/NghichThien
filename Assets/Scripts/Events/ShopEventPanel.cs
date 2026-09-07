@@ -12,10 +12,11 @@ namespace Events
         [SerializeField] private RectTransform container;
         [SerializeField] private Text titleText;
         [SerializeField] private Button closeButton;
+        [SerializeField] private RectTransform rootTf;
         private List<ElementShopEvent> elements = new();
         private Event @event;
         private Tween tween;
-
+        
         private void Start()
         {
             SetEventButton(closeButton, Hide);
@@ -41,6 +42,8 @@ namespace Events
                 element.Init(@event.Id, item);
                 elements.Add(element);
             }
+            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rootTf);
         }
 
         public void Hide()

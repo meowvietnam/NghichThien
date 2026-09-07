@@ -1769,7 +1769,8 @@ public class CharacterCombat : MonoBehaviour
     private void TakeDame(CharacterCombat sender, int dame, bool isDef, bool isNeTranh, ref int finalDame,
         ref int finalDameHoTrao)
     {
-        if (!Pool.Get<CombatManager>().IsSync)
+        var combatManager = Pool.Get<CombatManager>();
+        if (!combatManager.isSync && combatManager.IsRealTimeCombat)
         {
             return;
         }
