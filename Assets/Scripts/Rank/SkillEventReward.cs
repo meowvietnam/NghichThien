@@ -17,10 +17,12 @@ namespace Rank
     public partial class SkillEventReward : IEventReward
     {
         public ItemRef Item { get; set; }
+
         public void Claim(CharacterData charData)
         {
             charData.InventoryManager.Add(Item);
         }
+
         public void ShowUI(RewardUIContext context)
         {
             var itemData = GetData();
@@ -40,6 +42,7 @@ namespace Rank
             };
             return new SkillData(Item, skillItemData);
         }
+
         public string GetRichText()
         {
             var item = GetData();

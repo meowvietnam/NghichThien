@@ -146,6 +146,7 @@ namespace MainMenu
                 NotifyGroup.Instance.Show(message);
                 throw new Exception(message);
             }
+
             var credential = await SignInAsync() as LoginWithUsernamePassword;
             return credential;
         }

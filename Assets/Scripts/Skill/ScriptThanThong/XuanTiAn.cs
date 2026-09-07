@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(XuanTiAn), menuName = "Skill/Thần Thông/" + nameof(XuanTiAn))]
 public class XuanTiAn : ThanThong, IMemorySerializable<XuanTiAn>
 {
-    [SerializeField]
-    private int[] dames;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] dames;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -21,6 +20,7 @@ public class XuanTiAn : ThanThong, IMemorySerializable<XuanTiAn>
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect2);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -45,16 +45,19 @@ public class XuanTiAn : ThanThong, IMemorySerializable<XuanTiAn>
         CharacterCombat charTakeDame = (CharacterCombat)data[1];
         if (charSendDame == null)
             return;
-        if (charSendDame.specialThanThongImpactAfterPlaySkill.Any(x => x is XuanTiAn) && CheckIsEqualETypeSkill(charSendDame, new ETypeSkill[]{ETypeSkill.Moc}))
+        if (charSendDame.specialThanThongImpactAfterPlaySkill.Any(x => x is XuanTiAn) &&
+            CheckIsEqualETypeSkill(charSendDame, new ETypeSkill[] { ETypeSkill.Moc }))
         {
-            charTakeDame.AddDamageData(new System.Collections.Generic.List<int>{dames[GetIndexLevelThanThong(charSendDame)]});
+            charTakeDame.AddDamageData(new System.Collections.Generic.List<int>
+                { dames[GetIndexLevelThanThong(charSendDame)] });
             charSendDame.RemoveAllThanThongImpactAfterPlaySkill(this);
         }
     }
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Lần tiếp theo sửa dụng thần thông tạo thành {GetTextLinhKhi(ELinhKhi.Moc)} hệ tổn thương thì sát thương {GetColoredText($"+{dames[level - 1]}", "red")}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Lần tiếp theo sửa dụng thần thông tạo thành {GetTextLinhKhi(ELinhKhi.Moc)} hệ tổn thương thì sát thương {GetColoredText($"+{dames[level - 1]}", "red")}";
     }
 
     public override int ByteSize()

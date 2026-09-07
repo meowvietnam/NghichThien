@@ -16,6 +16,7 @@ namespace LuyenDan
         {
             LuyenDanPanel.Instance.Alchermy.ClearAllSlot();
         }
+
         private void OnDestroy()
         {
             clearButton.onClick.RemoveAllListeners();

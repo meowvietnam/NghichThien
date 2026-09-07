@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(LuongNghiLinhNhanQuyet))]
 public class LuongNghiLinhNhanQuyet : CongPhap, IMemorySerializable<LuongNghiLinhNhanQuyet>
 {
-    [SerializeField]
-    private int[] percentActive;
-    [SerializeField]
-    private ThanThong thanThongActive;
+    [SerializeField] private int[] percentActive;
+    [SerializeField] private ThanThong thanThongActive;
+
     public override void ExecuteParams(params object[] data)
     {
         // target là ng nhận dame 
@@ -39,7 +38,8 @@ public class LuongNghiLinhNhanQuyet : CongPhap, IMemorySerializable<LuongNghiLin
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi lần bị thương tổn, có {GetColoredText($"{percentActive[level - 1]}%", "red")} tỷ lệ phóng thích một lần {GetColoredText("[Kim Nhận]", "red")} lên đối phương";
+        return
+            $"Mỗi lần bị thương tổn, có {GetColoredText($"{percentActive[level - 1]}%", "red")} tỷ lệ phóng thích một lần {GetColoredText("[Kim Nhận]", "red")} lên đối phương";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

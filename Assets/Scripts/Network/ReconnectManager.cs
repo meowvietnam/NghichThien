@@ -175,7 +175,9 @@ namespace Network
                 return;
             }
 
-            var retryMessage = string.IsNullOrEmpty(message) ? reconnectRetryMessage : $"{message}\n{reconnectRetryMessage}";
+            var retryMessage = string.IsNullOrEmpty(message)
+                ? reconnectRetryMessage
+                : $"{message}\n{reconnectRetryMessage}";
             SetProgressText(BuildProgressMessage(retryMessage, currentTry + 1, totalTry));
             Invoke(nameof(StartReconnectAttempt), retryDelay);
         }

@@ -10,10 +10,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(SiMiQuyQuyen))]
 public class SiMiQuyQuyen : CPTieuHaoThoNguyen, IMemorySerializable<SiMiQuyQuyen>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{5, 18, 33, 48, 63};
-    [SerializeField]
-    private int[] donTocs = new int[]{2, 4, 6, 8, 10};
+    [SerializeField] private int[] buffValues = new int[] { 5, 18, 33, 48, 63 };
+    [SerializeField] private int[] donTocs = new int[] { 2, 4, 6, 8, 10 };
+
     public override void EquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
         statsCurrent.tocDoBay += donTocs[daiCanhGioiCongPhap - 1];
@@ -23,6 +22,7 @@ public class SiMiQuyQuyen : CPTieuHaoThoNguyen, IMemorySerializable<SiMiQuyQuyen
     {
         statsCurrent.tocDoBay -= donTocs[daiCanhGioiCongPhap - 1];
     }
+
     public override void EquipCongPhap(CharacterData statsCurrent, int level)
     {
         var stats = statsCurrent.Stats;
@@ -36,13 +36,15 @@ public class SiMiQuyQuyen : CPTieuHaoThoNguyen, IMemorySerializable<SiMiQuyQuyen
         var tocDoBay = stats.TocDoBay - donTocs[level - 1];
         stats.TocDoBay = tocDoBay;
     }
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
     }
 
     public override string GetDesc(int level)
     {
-        return $"Độn tốc {GetColoredText($"+{donTocs[level - 1]}", "red")}. Bắt đầu chiến đấu, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Anh)}. {base.GetDesc(level)}";
+        return
+            $"Độn tốc {GetColoredText($"+{donTocs[level - 1]}", "red")}. Bắt đầu chiến đấu, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Anh)}. {base.GetDesc(level)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

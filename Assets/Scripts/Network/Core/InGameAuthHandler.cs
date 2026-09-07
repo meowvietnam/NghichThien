@@ -29,6 +29,7 @@ namespace Network.Core
                     client.SetUserData(null);
                     client.SetLogout(true);
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -44,11 +45,14 @@ namespace Network.Core
                 });
             }
         }
+
         public void OnLeave()
         {
         }
+
         private static MessageTag[] handlers = { MessageTag.InGameLogoutResult };
         public MessageTag[] HandleTag => handlers;
+
         public void OnDisconnect(IProtocol<MessageTag> protocol)
         {
         }

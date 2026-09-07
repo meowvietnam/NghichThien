@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(HoiPhongAn), menuName = "Skill/Thần Thông/" + nameof(HoiPhongAn))]
 public class HoiPhongAn : ThanThong, IMemorySerializable<HoiPhongAn>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 3, 7, 20, 40};
+    [SerializeField] private int[] buffValues = new int[] { 1, 3, 7, 20, 40 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddThanThongImpactAfterPlaySkill(this);
@@ -39,7 +39,8 @@ public class HoiPhongAn : ThanThong, IMemorySerializable<HoiPhongAn>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Mỗi lần bị tổn thương thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucLuc)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Mỗi lần bị tổn thương thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucLuc)}";
     }
 
     public override int ByteSize()

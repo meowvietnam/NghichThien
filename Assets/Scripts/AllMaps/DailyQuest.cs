@@ -15,12 +15,14 @@ namespace AllMaps
         [ShowInInspector] public IQuestReward QuestReward { get; set; }
         [field: SerializeField] public bool IsRewardClaimed { get; set; }
         [ShowInInspector] public DateTime LastReload { get; set; }
+
         public void Claim()
         {
             if (IsRewardClaimed)
             {
                 return;
             }
+
             var charData = Client.Instance.CharacterData;
             QuestReward.Claim(charData);
             IsRewardClaimed = true;

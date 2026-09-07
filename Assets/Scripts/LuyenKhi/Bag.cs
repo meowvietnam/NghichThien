@@ -18,16 +18,19 @@ namespace LuyenKhi
             selfObject.SetActive(active);
             LuyenKhiPanel.Instance.SetBackContext(this);
         }
+
         public void Init(IEnumerable<ItemRef> items)
         {
             itemListUI.Init(items);
             SetEventButton(maskBtn, Back);
         }
+
         public void OpenWithCallback(ISelectItemBagCallback callback)
         {
             this.callback = callback;
             SetActive(true);
         }
+
         public void OnSelect(ItemBag itemBag)
         {
             callback?.Select(itemBag);

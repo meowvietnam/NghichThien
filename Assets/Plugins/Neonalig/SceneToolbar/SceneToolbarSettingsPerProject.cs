@@ -22,10 +22,13 @@ namespace Plugins.Neonalig.SceneToolbar
         [SerializeField, Tooltip("The play/pause button method.")]
         private PlayButtonMethod playButtonMethod = PlayButtonMethod.PlayBuild;
 
-        [SerializeField, Tooltip("Whether the dropdown opens the scene additively (appends to the current scene) or not (replaces the current scene).")]
+        [SerializeField,
+         Tooltip(
+             "Whether the dropdown opens the scene additively (appends to the current scene) or not (replaces the current scene).")]
         private bool openAdditive = false;
 
-        [SerializeField, Tooltip("Whether to include scenes not present in the build settings when the dropdown is opened.")]
+        [SerializeField,
+         Tooltip("Whether to include scenes not present in the build settings when the dropdown is opened.")]
         private bool includeNotInBuild = false;
 
         /// <summary> Gets the entries of the scene toolbar. </summary>
@@ -116,7 +119,11 @@ namespace Plugins.Neonalig.SceneToolbar
         /// <returns> <see langword="true" /> if the specified scene is marked as favorite; otherwise, <see langword="false" />. </returns>
         internal bool GetIsFavorite([LocalizationRequired(false)] string path)
         {
-            if (string.IsNullOrEmpty(path)) { return false; }
+            if (string.IsNullOrEmpty(path))
+            {
+                return false;
+            }
+
             return entries.Any(entry => entry.Path == path && entry.IsFavorite);
         }
 
@@ -138,5 +145,4 @@ namespace Plugins.Neonalig.SceneToolbar
             }
         }
     }
-
 }

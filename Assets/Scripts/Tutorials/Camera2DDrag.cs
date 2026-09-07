@@ -6,15 +6,12 @@ namespace Tutorials
 {
     public class Camera2DDrag : MonoBehaviour
     {
-        [Header("Camera")]
-        [SerializeField] private Camera targetCamera;
+        [Header("Camera")] [SerializeField] private Camera targetCamera;
 
-        [Header("Settings")]
-        [SerializeField] private float dragSpeed = 1f;
+        [Header("Settings")] [SerializeField] private float dragSpeed = 1f;
         [SerializeField] private bool useUnscaledTime = false;
 
-        [Header("Bounds")]
-        [SerializeField] private bool useBounds = false;
+        [Header("Bounds")] [SerializeField] private bool useBounds = false;
         [SerializeField] private Vector2 minBounds;
         [SerializeField] private Vector2 maxBounds;
 
@@ -98,7 +95,7 @@ namespace Tutorials
         {
             if (!isDragging)
                 return;
-            
+
             Vector3 currentWorldPosition = ScreenToWorld(screenPosition);
 
             Vector3 delta = lastWorldPosition - currentWorldPosition;

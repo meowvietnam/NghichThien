@@ -9,13 +9,16 @@ namespace Network.ClientState
     public class LuyenDan : IClientState
     {
         private ILuyenDanCallback callback;
+
         public LuyenDan(ILuyenDanCallback callback)
         {
             this.callback = callback;
         }
+
         public void OnEnter()
         {
         }
+
         public void Handle(Message<MessageTag> message)
         {
             var tag = message.Tag;
@@ -31,6 +34,7 @@ namespace Network.ClientState
                     charData.ApplyInventoryModify(result.Modify);
                     Debug.Log($"Modify byte size: {result.Modify.ByteSize()}");
                 }
+
                 callback.LuyenDanResult(result);
             }
         }

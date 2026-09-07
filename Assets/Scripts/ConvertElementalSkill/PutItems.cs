@@ -8,6 +8,7 @@ namespace ConvertElementalSkill
     {
         [SerializeField] private Button convertButton;
         [SerializeField] private Slot[] slots;
+
         private void Start()
         {
             SetEventButton(convertButton, OnConvert);
@@ -19,6 +20,7 @@ namespace ConvertElementalSkill
             {
                 slot.ClearNew();
             }
+
             UpdateButton();
         }
 
@@ -28,8 +30,10 @@ namespace ConvertElementalSkill
             {
                 slot.ClearNew();
             }
+
             UpdateButton();
         }
+
         public void OnSelect(Slot slot)
         {
             UpdateButton();
@@ -40,17 +44,19 @@ namespace ConvertElementalSkill
         {
             ConvertElementalSkillPanel.Instance.Page.RateManager.RefreshRateText();
         }
-        
+
         public void OnDeselect(Slot slot)
         {
             UpdateButton();
             UpdateRate();
         }
+
         private void UpdateButton()
         {
             var active = slots.All(x => x.SkillData != null);
             convertButton.interactable = active;
         }
+
         private void OnConvert()
         {
             ConvertElementalSkillPanel.Instance.Convert();

@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(TuLinh), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(TuLinh))]
 public class TuLinh : NgoDaoCombat, IMemorySerializable<TuLinh>
 {
-    [SerializeField]
-    private int buff = 4;
+    [SerializeField] private int buff = 4;
+
     public override void ObserverEffect(params object[] data)
     {
         CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
@@ -36,7 +36,8 @@ public class TuLinh : NgoDaoCombat, IMemorySerializable<TuLinh>
 
     public override string GetDes()
     {
-        return $"Bắt đầu chiến đấu, lần đầu bày ra {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.TranPhap)} thu hoạch được {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TuKhi)}";
+        return
+            $"Bắt đầu chiến đấu, lần đầu bày ra {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.TranPhap)} thu hoạch được {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TuKhi)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

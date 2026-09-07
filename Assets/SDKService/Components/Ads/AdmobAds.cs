@@ -23,6 +23,7 @@ public class AdmobAds : IAdsProvider
     private bool isLoadingRewarded;
 
     #region AdUnit IDs
+
     private string GetBannerId()
     {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD || !BUILD_RELEASE
@@ -91,21 +92,22 @@ public class AdmobAds : IAdsProvider
 #endif
 #endif
     }
+
     #endregion
 
     #region Init
+
     public void InitAds()
     {
         if (isInitialize == 1) return;
 
-        MobileAds.Initialize(initStatus =>
-        {
-            isInitialize = 1;
-        });
+        MobileAds.Initialize(initStatus => { isInitialize = 1; });
     }
+
     #endregion
 
     #region Banner
+
     public void ShowBanner()
     {
         if (bannerView == null)
@@ -132,9 +134,11 @@ public class AdmobAds : IAdsProvider
         bannerView.OnBannerAdLoaded += () => Debug.Log("Banner loaded");
         bannerView.OnBannerAdLoadFailed += (error) => Debug.Log("Banner failed: " + error);
     }
+
     #endregion
 
     #region Interstitial
+
     public void ShowInterstitial(string location, Action closeCallback, Action failedCallback)
     {
         interCloserCallback = closeCallback;
@@ -160,6 +164,7 @@ public class AdmobAds : IAdsProvider
             }, interFailedCallback);
         }
     }
+
     private void RequestInterstitial(Action onLoaded = null, Action onFailed = null)
     {
         if (isLoadingInterstitial) return;
@@ -202,9 +207,11 @@ public class AdmobAds : IAdsProvider
             onLoaded?.Invoke();
         });
     }
+
     #endregion
 
     #region Rewarded
+
     public void ShowRewardVideo(string location, string buttonName,
         Action rewardedCallback, Action closeCallback, Action loadFailCallback)
     {
@@ -264,6 +271,7 @@ public class AdmobAds : IAdsProvider
                 onFailed?.Invoke();
                 return;
             }
+
             rewardedAd?.Destroy();
             rewardedAd = ad;
             rewardedAd.OnAdFullScreenContentClosed += () =>
@@ -286,5 +294,6 @@ public class AdmobAds : IAdsProvider
             onLoaded?.Invoke();
         });
     }
+
     #endregion
 }

@@ -8,19 +8,26 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(HongLienNghiepDiem), menuName = "Skill/Thần Thông/" + nameof(HongLienNghiepDiem))]
 public class HongLienNghiepDiem : ThanThong, IMemorySerializable<HongLienNghiepDiem>
 {
-    [SerializeField]
-    protected int[] thieuDots;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] protected int[] thieuDots;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, thieuDots[GetIndexLevelThanThong(caster)]);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
     public override string GetDesc(int level)
     {
-        return $"Khiến đối thủ nhận phải {GetColoredText($"+{thieuDots[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}";
+        return
+            $"Khiến đối thủ nhận phải {GetColoredText($"+{thieuDots[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}";
     }
 
     public override int ByteSize()

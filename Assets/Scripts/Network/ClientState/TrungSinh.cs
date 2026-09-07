@@ -4,7 +4,6 @@ namespace Network.ClientState
     {
         public void OnEnter()
         {
-            
         }
 
         public void Handle(Message<MessageTag> message)

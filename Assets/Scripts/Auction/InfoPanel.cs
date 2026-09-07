@@ -21,16 +21,19 @@ namespace Auction
             {
                 cell.DestroySelf();
             }
+
             if (sessions == null)
             {
                 RefreshLayout();
                 return;
             }
+
             foreach (var session in sessions)
             {
                 var cell = Instantiate(historyCellPrefab, historyContainer);
                 cell.Init(session);
             }
+
             RefreshLayout();
         }
 

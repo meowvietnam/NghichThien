@@ -15,7 +15,7 @@ namespace AllMaps
 
         private void OnClick()
         {
-            Observer.Notify(EventList.GamePlay.LOAD_SCENE,"DongPhu");
+            Observer.Notify(EventList.GamePlay.LOAD_SCENE, "DongPhu");
         }
     }
 }

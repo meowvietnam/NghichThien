@@ -271,10 +271,12 @@ namespace LuyenDan
             {
                 baseDaysRequired = baseDaysRequiredIfNotOwner;
             }
+
             var selectedDanluTier = SelectedFurnace.Tier;
             var currentDurability = SelectedFurnace.FData.Durability;
             var tierDiff = linhdanTier - selectedDanluTier;
             var baseLossDurability = tierDiff > 0 ? tierDiff * 50 : 2;
+
             void UpdateText()
             {
                 var value = SelectLinhDanNum.GetValue();
@@ -288,12 +290,15 @@ namespace LuyenDan
                     {
                         var config = luyenDan.Config;
                         var furnaceTierDiff = -tierDiff;
-                        var rateFloat = furnaceTierDiff > 0 ? config.MinRate + furnaceTierDiff * config.RatePerTier : config.MinRate;
+                        var rateFloat = furnaceTierDiff > 0
+                            ? config.MinRate + furnaceTierDiff * config.RatePerTier
+                            : config.MinRate;
                         var rate = Mathf.RoundToInt(rateFloat);
                         var textColor = "9CA3AF";
                         builder.AppendLine();
                         var tierColor = GetColorHexByTier(data.Tier);
-                        builder.Append($"<color=#{textColor}>Chưa sở hữu công thức này</color> (<b><color=#{tierColor}>{data.Name}</color></b>)");
+                        builder.Append(
+                            $"<color=#{textColor}>Chưa sở hữu công thức này</color> (<b><color=#{tierColor}>{data.Name}</color></b>)");
                         builder.AppendLine();
                         builder.Append($"<color=#ff8800>Tỉ lệ thành công: <b>{rate}%</b></color>");
                         builder.AppendLine();
@@ -307,11 +312,13 @@ namespace LuyenDan
                         builder.Append(
                             $"<i><color=#aaaaaa>Tiêu hao</color> <color=#ff4444>{baseDaysRequired * value}</color> <color=#aaaaaa>ngày</color></i>");
                     }
+
                     builder.AppendLine();
                     var colorDanLu = GetColorHexByTier(selectedDanluTier);
                     var furnaceName = SelectedFurnace.Data.Name;
                     var durabilityAfter = currentDurability - loss;
-                    builder.Append($"Thành công <color=#{colorDanLu}><b>{furnaceName}</b></color> sẽ mất <color=#F59E0B><b>{loss}</b></color> độ bền");
+                    builder.Append(
+                        $"Thành công <color=#{colorDanLu}><b>{furnaceName}</b></color> sẽ mất <color=#F59E0B><b>{loss}</b></color> độ bền");
                     if (durabilityAfter < 0)
                     {
                         builder.AppendLine();
@@ -336,8 +343,10 @@ namespace LuyenDan
                     builder.Append(
                         $"<i><color=#aaaaaa>Tiêu hao</color> <color=#ff4444>{baseDaysRequired * value}</color> <color=#aaaaaa>ngày</color></i>");
                 }
+
                 SelectLinhDanNum.SetText(builder.ToString());
             }
+
             SelectLinhDanNum.SetMax(max);
             SelectLinhDanNum.SetValue(1);
             UpdateText();

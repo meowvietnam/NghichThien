@@ -11,8 +11,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(UViemQuyet))]
 public class UViemQuyet : CongPhap, IMemorySerializable<UViemQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{3, 6, 9, 12, 20};
+    [SerializeField] private int[] buffValues = new int[] { 3, 6, 9, 12, 20 };
+
     public void ExecuteParams2(params object[] data)
     {
         // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
@@ -30,7 +30,7 @@ public class UViemQuyet : CongPhap, IMemorySerializable<UViemQuyet>
         if (CheckIsEqualETypeSkill(caster))
         {
             Debug.Log("UViemQuyetExcute1");
-            target.AddDamageData(new List<int>{buffValues[CurrentLevelCongPhapInCombat(caster) - 1]});
+            target.AddDamageData(new List<int> { buffValues[CurrentLevelCongPhapInCombat(caster) - 1] });
         }
     }
 
@@ -39,7 +39,7 @@ public class UViemQuyet : CongPhap, IMemorySerializable<UViemQuyet>
         if (CheckIsEqualETypeSkill(caster)) // sender là hỏa hệ thần thông thì giảm dame cho target
         {
             Debug.Log("UViemQuyetExcute2");
-            target.AddDamageData(new List<int>{-buffValues[CurrentLevelCongPhapInCombat(target) - 1]});
+            target.AddDamageData(new List<int> { -buffValues[CurrentLevelCongPhapInCombat(target) - 1] });
         }
     }
 
@@ -58,10 +58,11 @@ public class UViemQuyet : CongPhap, IMemorySerializable<UViemQuyet>
     public void Execute3(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         ETypeSkill[] eTypeSkills = (ETypeSkill[])data[3];
-        if (eTypeSkills != null && CheckIsEqualETypeSkill(eTypeSkills)) // sender là hỏa hệ thần thông thì tăng dame cho target
+        if (eTypeSkills != null &&
+            CheckIsEqualETypeSkill(eTypeSkills)) // sender là hỏa hệ thần thông thì tăng dame cho target
         {
             Debug.Log("UViemQuyetExcute3");
-            target.AddDamageData(new List<int>{buffValues[CurrentLevelCongPhapInCombat(caster) - 1]});
+            target.AddDamageData(new List<int> { buffValues[CurrentLevelCongPhapInCombat(caster) - 1] });
         }
     }
 
@@ -80,16 +81,18 @@ public class UViemQuyet : CongPhap, IMemorySerializable<UViemQuyet>
     public void Execute4(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         ETypeSkill[] eTypeSkills = (ETypeSkill[])data[3];
-        if (eTypeSkills != null && CheckIsEqualETypeSkill(eTypeSkills)) // sender là hỏa hệ thần thông thì giảm dame cho target
+        if (eTypeSkills != null &&
+            CheckIsEqualETypeSkill(eTypeSkills)) // sender là hỏa hệ thần thông thì giảm dame cho target
         {
             Debug.Log("UViemQuyetExcute4");
-            target.AddDamageData(new List<int>{-buffValues[CurrentLevelCongPhapInCombat(target) - 1]});
+            target.AddDamageData(new List<int> { -buffValues[CurrentLevelCongPhapInCombat(target) - 1] });
         }
     }
 
     public override string GetDesc(int level)
     {
-        return $"Nhận {GetTextLinhKhi(ELinhKhi.Hoa)} hệ tổn thương {GetColoredText($"-{buffValues[level - 1]}", "red")}, tăng lên {GetTextLinhKhi(ELinhKhi.Hoa)} hệ tổn thương {GetColoredText($"+{buffValues[level - 1]}", "red")}";
+        return
+            $"Nhận {GetTextLinhKhi(ELinhKhi.Hoa)} hệ tổn thương {GetColoredText($"-{buffValues[level - 1]}", "red")}, tăng lên {GetTextLinhKhi(ELinhKhi.Hoa)} hệ tổn thương {GetColoredText($"+{buffValues[level - 1]}", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

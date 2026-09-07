@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum ETypeCombat 
+public enum ETypeCombat
 {
     None,
     AllMaps,
@@ -10,6 +10,7 @@ public enum ETypeCombat
     LuanBanRealTime,
     TongMonChienRealTime
 }
+
 public enum ETypeResultCombat
 {
     None,

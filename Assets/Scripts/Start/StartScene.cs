@@ -27,6 +27,7 @@ namespace Start
         {
             statusText.text = text;
         }
+
         public void OnConnectResult(ConnectResult connectResult)
         {
             if (connectResult.Success)
@@ -46,18 +47,22 @@ namespace Start
             {
                 return null;
             }
+
             int end = text.IndexOf(']');
             if (end < 0)
             {
                 return null;
             }
+
             if (!int.TryParse(text.Substring(1, end - 1), out var delay))
             {
                 return null;
             }
+
             string message = text[(end + 1)..].Trim();
             return (delay, message);
         }
+
         public void OnCheckVersionResult(CheckVersionResult result)
         {
             var parse = ParseMessage(result.Message);
@@ -72,6 +77,7 @@ namespace Start
                 });
             }
         }
+
         public void OnDisconnect()
         {
             statusText.text = disconnectMessage;

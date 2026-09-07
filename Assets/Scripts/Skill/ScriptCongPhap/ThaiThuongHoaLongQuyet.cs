@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThaiThuongHoaLongQuyet))]
 public class ThaiThuongHoaLongQuyet : ThoNapCongPhap, IMemorySerializable<ThaiThuongHoaLongQuyet>
 {
-    [SerializeField]
-    private int percent = 5;
+    [SerializeField] private int percent = 5;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.Healing((int)(caster.characterStatsTemp.hpMax * percent / 100));

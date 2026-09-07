@@ -11,15 +11,20 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ThuLaoThuat), menuName = "Skill/Thần Thông/" + nameof(ThuLaoThuat))]
 public class ThuLaoThuat : ThanThong, BaseSkill.LienKich, IMemorySerializable<ThuLaoThuat>
 {
-    [SerializeField]
-    private int[] dameBuffs;
-    [SerializeField]
-    private int[] trienNhieu;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] dameBuffs;
+    [SerializeField] private int[] trienNhieu;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.CaculateDameByThanThong(caster, new List<int>{dameBuffs[GetIndexLevelThanThong(caster)]}, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new List<int> { dameBuffs[GetIndexLevelThanThong(caster)] }, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
@@ -30,7 +35,8 @@ public class ThuLaoThuat : ThanThong, BaseSkill.LienKich, IMemorySerializable<Th
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"+{dameBuffs[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} Nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Thuy)} hệ thần thông, làm cho đối phương nhận phải {GetColoredText($"+{trienNhieu[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}";
+        return
+            $"Tạo thành {GetColoredText($"+{dameBuffs[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} Nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Thuy)} hệ thần thông, làm cho đối phương nhận phải {GetColoredText($"+{trienNhieu[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}";
     }
 
     public override int ByteSize()

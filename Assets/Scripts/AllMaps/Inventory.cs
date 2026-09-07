@@ -12,7 +12,7 @@ namespace AllMaps
         private void Start()
         {
             var module = Client.Instance.CoreModule;
-       
+
             var charData = Client.Instance.CharacterData;
             charData.OnInventoryUpdated += OnInventoryUpdated;
             charData.GetInventory();
@@ -20,7 +20,6 @@ namespace AllMaps
 
         public void OnInventoryUpdated(InventoryManager result)
         {
-            
         }
 
         private void OnDestroy()

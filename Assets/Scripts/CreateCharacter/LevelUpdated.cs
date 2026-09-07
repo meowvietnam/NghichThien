@@ -12,6 +12,7 @@ namespace CreateCharacter
         public int DonToc { get; set; }
         public int ThoNguyen { get; set; }
         public int NewNgoDaoDiem { get; set; }
+
         public void ApplyTo(CharacterData charData)
         {
             var progression = charData.Progression;

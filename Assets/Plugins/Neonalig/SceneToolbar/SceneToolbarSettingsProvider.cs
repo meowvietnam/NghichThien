@@ -10,7 +10,6 @@ namespace Plugins.Neonalig.SceneToolbar
     /// <summary> The settings provider for the scene toolbar. </summary>
     sealed class SceneToolbarSettingsProvider : SettingsProvider
     {
-
         /// <summary> The path to the settings window. </summary>
         internal const string Path = "Preferences/Neonalig/Scene Toolbar";
 
@@ -27,7 +26,9 @@ namespace Plugins.Neonalig.SceneToolbar
         private SerializedObject? serialised;
 
         /// <inheritdoc />
-        private SceneToolbarSettingsProvider() : base(Path, Scope) { }
+        private SceneToolbarSettingsProvider() : base(Path, Scope)
+        {
+        }
 
         /// <summary> Creates the settings provider for the overlay. </summary>
         /// <returns> The settings provider for the overlay. </returns>
@@ -82,7 +83,9 @@ namespace Plugins.Neonalig.SceneToolbar
 
             if (serialised == null)
             {
-                EditorGUILayout.HelpBox(nameof(SceneToolbarSettingsProvider) + "." + nameof(OnGUI) + ": " + nameof(serialised) + " is null!", MessageType.Error);
+                EditorGUILayout.HelpBox(
+                    nameof(SceneToolbarSettingsProvider) + "." + nameof(OnGUI) + ": " + nameof(serialised) +
+                    " is null!", MessageType.Error);
             }
             else
             {
@@ -100,19 +103,25 @@ namespace Plugins.Neonalig.SceneToolbar
 
                 // NEW: Show only the settings for the current project.
                 int thisProject = SceneToolbarSettings.GetIndexOfCurrentProject();
-                SerializedProperty projectMappings = serialised.FindProperty(nameof(SceneToolbarSettings.projectMappings));
+                SerializedProperty projectMappings =
+                    serialised.FindProperty(nameof(SceneToolbarSettings.projectMappings));
                 int arraySize = projectMappings.arraySize;
                 if (thisProject < arraySize && thisProject >= 0)
                 {
                     SerializedProperty projectMapping = projectMappings.GetArrayElementAtIndex(thisProject);
-                    SerializedProperty settings = projectMapping.FindPropertyRelative(nameof(SceneToolbarSettings.ProjectMapping.settings));
+                    SerializedProperty settings =
+                        projectMapping.FindPropertyRelative(nameof(SceneToolbarSettings.ProjectMapping.settings));
 
                     // EditorGUILayout.PropertyField(settings, true);
                     bool enterChildren = true;
                     SerializedProperty iterator = settings.Copy();
                     while (iterator.NextVisible(enterChildren))
                     {
-                        if (iterator.name == "m_Script") { continue; }
+                        if (iterator.name == "m_Script")
+                        {
+                            continue;
+                        }
+
                         enterChildren = false;
                         EditorGUILayout.PropertyField(iterator, true);
                     }
@@ -130,22 +139,28 @@ namespace Plugins.Neonalig.SceneToolbar
                 }
 
                 EditorGUILayout.Space();
-                allProjectsFoldout = EditorGUILayout.Foldout(allProjectsFoldout, "All Projects", true, EditorStyles.foldoutHeader);
+                allProjectsFoldout =
+                    EditorGUILayout.Foldout(allProjectsFoldout, "All Projects", true, EditorStyles.foldoutHeader);
                 if (allProjectsFoldout)
                 {
                     EditorGUI.indentLevel++;
                     for (int i = 0; i < arraySize; i++)
                     {
                         SerializedProperty projectMapping = projectMappings.GetArrayElementAtIndex(i);
-                        string projectIdentifier = projectMapping.FindPropertyRelative(nameof(SceneToolbarSettings.ProjectMapping.projectIdentifier)).stringValue;
+                        string projectIdentifier = projectMapping
+                            .FindPropertyRelative(nameof(SceneToolbarSettings.ProjectMapping.projectIdentifier))
+                            .stringValue;
                         Rect rect = EditorGUILayout.GetControlRect();
                         const float deleteButtonWidth = 20f;
-                        Rect idRect = new(rect) { width = rect.width - deleteButtonWidth - EditorGUIUtility.standardVerticalSpacing };
-                        Rect deleteRect = new(rect) { x = idRect.xMax + EditorGUIUtility.standardVerticalSpacing, width = deleteButtonWidth };
+                        Rect idRect = new(rect)
+                            { width = rect.width - deleteButtonWidth - EditorGUIUtility.standardVerticalSpacing };
+                        Rect deleteRect = new(rect)
+                            { x = idRect.xMax + EditorGUIUtility.standardVerticalSpacing, width = deleteButtonWidth };
 
                         EditorGUI.BeginDisabledGroup(i == thisProject);
                         EditorGUI.LabelField(idRect, projectIdentifier);
-                        if (GUI.Button(deleteRect, EditorGUIUtility.TrIconContent("Toolbar Minus"), EditorStyles.iconButton))
+                        if (GUI.Button(deleteRect, EditorGUIUtility.TrIconContent("Toolbar Minus"),
+                                EditorStyles.iconButton))
                         {
                             EditorApplication.delayCall += () =>
                             {
@@ -157,8 +172,10 @@ namespace Plugins.Neonalig.SceneToolbar
                             };
                             break;
                         }
+
                         EditorGUI.EndDisabledGroup();
                     }
+
                     EditorGUI.indentLevel--;
                 }
             }
@@ -166,7 +183,8 @@ namespace Plugins.Neonalig.SceneToolbar
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();
-            if (GUILayout.Button(EditorGUIUtility.TrTextContentWithIcon("Open First Time Window", "Info"), EditorStyles.miniButton))
+            if (GUILayout.Button(EditorGUIUtility.TrTextContentWithIcon("Open First Time Window", "Info"),
+                    EditorStyles.miniButton))
             {
                 FirstTimeWindow.ShowAsUtility();
             }
@@ -174,17 +192,25 @@ namespace Plugins.Neonalig.SceneToolbar
             GUILayout.FlexibleSpace();
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             {
-                EditorGUILayout.LabelField(EditorGUIUtility.TrTextContentWithIcon(Overlay.SceneToolbar.PackageTitle, Overlay.SceneToolbar.IconName), Styles.BoldCenteredLabel);
-                EditorGUILayout.LabelField(EditorGUIUtility.TrTextContent($"Version {Overlay.SceneToolbar.Version}"), EditorStyles.centeredGreyMiniLabel);
+                EditorGUILayout.LabelField(
+                    EditorGUIUtility.TrTextContentWithIcon(Overlay.SceneToolbar.PackageTitle,
+                        Overlay.SceneToolbar.IconName), Styles.BoldCenteredLabel);
+                EditorGUILayout.LabelField(EditorGUIUtility.TrTextContent($"Version {Overlay.SceneToolbar.Version}"),
+                    EditorStyles.centeredGreyMiniLabel);
 
                 EditorGUILayout.Space();
-                if (GUILayout.Button(EditorGUIUtility.TrTextContent("Created by Neonalig \u2764\ufe0f", tooltip: WebsiteURL), Styles.CenteredLinkLabel, GUILayout.ExpandWidth(true)))
+                if (GUILayout.Button(
+                        EditorGUIUtility.TrTextContent("Created by Neonalig \u2764\ufe0f", tooltip: WebsiteURL),
+                        Styles.CenteredLinkLabel, GUILayout.ExpandWidth(true)))
                 {
                     Application.OpenURL(WebsiteURL);
                 }
+
                 if (!string.IsNullOrEmpty(AssetStoreURL))
                 {
-                    if (GUILayout.Button(EditorGUIUtility.TrTextContent("Leave a Review", tooltip: AssetStoreURL, iconName: "Asset Store"), EditorStyles.toolbarButton))
+                    if (GUILayout.Button(
+                            EditorGUIUtility.TrTextContent("Leave a Review", tooltip: AssetStoreURL,
+                                iconName: "Asset Store"), EditorStyles.toolbarButton))
                     {
                         Application.OpenURL(AssetStoreURL);
                     }
@@ -194,7 +220,6 @@ namespace Plugins.Neonalig.SceneToolbar
         }
 
         #endregion
-
     }
 
     sealed class FirstTimeWindow : EditorWindow
@@ -215,14 +240,16 @@ namespace Plugins.Neonalig.SceneToolbar
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             {
-                GUILayout.Label(string.Format(message, Overlay.SceneToolbar.PackageTitle, Overlay.SceneToolbar.Version), Styles.WordWrappedCenteredLabel);
+                GUILayout.Label(string.Format(message, Overlay.SceneToolbar.PackageTitle, Overlay.SceneToolbar.Version),
+                    Styles.WordWrappedCenteredLabel);
             }
             EditorGUILayout.EndVertical();
 
             GUILayout.FlexibleSpace();
             EditorGUILayout.BeginHorizontal();
             {
-                if (GUILayout.Button(EditorGUIUtility.TrTextContentWithIcon("Open Settings", "Settings"), EditorStyles.miniButtonLeft))
+                if (GUILayout.Button(EditorGUIUtility.TrTextContentWithIcon("Open Settings", "Settings"),
+                        EditorStyles.miniButtonLeft))
                 {
                     SettingsService.OpenUserPreferences(SceneToolbarSettingsProvider.Path);
                     Close();
@@ -230,14 +257,16 @@ namespace Plugins.Neonalig.SceneToolbar
 
                 const string AssetStoreURL = SceneToolbarSettingsProvider.AssetStoreURL;
                 bool hasStoreLink = !string.IsNullOrEmpty(AssetStoreURL);
-                if (GUILayout.Button(EditorGUIUtility.TrIconContent("P4_CheckOutLocal"), hasStoreLink ? EditorStyles.miniButtonMid : EditorStyles.miniButtonRight))
+                if (GUILayout.Button(EditorGUIUtility.TrIconContent("P4_CheckOutLocal"),
+                        hasStoreLink ? EditorStyles.miniButtonMid : EditorStyles.miniButtonRight))
                 {
                     Close();
                 }
 
                 if (hasStoreLink)
                 {
-                    if (GUILayout.Button(EditorGUIUtility.TrTextContentWithIcon("Open Asset Store", "Asset Store"), EditorStyles.miniButtonRight))
+                    if (GUILayout.Button(EditorGUIUtility.TrTextContentWithIcon("Open Asset Store", "Asset Store"),
+                            EditorStyles.miniButtonRight))
                     {
                         Application.OpenURL(AssetStoreURL);
                         Close();
@@ -250,7 +279,9 @@ namespace Plugins.Neonalig.SceneToolbar
         internal static void ShowAsUtility()
         {
             var window = GetWindow<FirstTimeWindow>(true, Overlay.SceneToolbar.PackageTitle, true);
-            window.titleContent = EditorGUIUtility.TrTextContentWithIcon(Overlay.SceneToolbar.PackageTitle, Overlay.SceneToolbar.IconName);
+            window.titleContent =
+                EditorGUIUtility.TrTextContentWithIcon(Overlay.SceneToolbar.PackageTitle,
+                    Overlay.SceneToolbar.IconName);
             window.minSize = new Vector2(400f, 350f);
             window.maxSize = new Vector2(400f, 350f);
             window.ShowUtility();
@@ -259,7 +290,6 @@ namespace Plugins.Neonalig.SceneToolbar
         /// <summary> Container class for the styles used by the first time window. </summary>
         private static class Styles
         {
-
             /// <summary> The word-wrapped centered label style. </summary>
             internal static readonly GUIStyle WordWrappedCenteredLabel;
 
@@ -279,6 +309,7 @@ namespace Plugins.Neonalig.SceneToolbar
                     alignment = TextAnchor.MiddleLeft,
                 };
             }
+
             /// <inheritdoc cref="SceneToolbarSettingsProvider.Styles.BoldCenteredLabel" />
             private static GUIStyle BoldCenteredLabel
             {

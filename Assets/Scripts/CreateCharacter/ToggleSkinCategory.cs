@@ -11,6 +11,7 @@ namespace CreateCharacter
         [SerializeField] private GameObject thisObject;
         public string Id { get; private set; }
         private event Action<ToggleSkinCategory> onToggleOn;
+
         public void Init(SkinCategory skinCategory, ToggleGroup toggleGroup, Action<ToggleSkinCategory> onToggleOn)
         {
             Id = skinCategory.Id;
@@ -19,6 +20,7 @@ namespace CreateCharacter
             this.onToggleOn = onToggleOn;
             toggle.onValueChanged.AddListener(OnToggleValueChanged);
         }
+
         public void OnToggleValueChanged(bool isOn)
         {
             if (isOn)
@@ -26,14 +28,17 @@ namespace CreateCharacter
                 onToggleOn?.Invoke(this);
             }
         }
+
         public void SetActive(bool active)
         {
             thisObject.SetActive(active);
         }
+
         public void ToggleOn()
         {
             toggle.isOn = true;
         }
+
         private void OnDestroy()
         {
             toggle.onValueChanged.RemoveListener(OnToggleValueChanged);

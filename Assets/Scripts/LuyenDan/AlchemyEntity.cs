@@ -7,15 +7,18 @@ using UnityEngine.UI;
 
 namespace LuyenDan
 {
-
     public class AlchemyEntity : BaseItemUI
     {
-        [TabGroup("Has Item")]
-        [SerializeField] private Button clickButton;
-        [TabGroup("Has Item")]
-        [SerializeField] private Button clearButton;
+        [TabGroup("Has Item")] [SerializeField]
+        private Button clickButton;
+
+        [TabGroup("Has Item")] [SerializeField]
+        private Button clearButton;
+
         public InventoryItemUI Item { get; protected set; }
+
         public bool IsEmpty => Item == null;
+
         // private void OnValidate()
         // {
         //     clickButton = GetComponent<Button>();

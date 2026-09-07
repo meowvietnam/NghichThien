@@ -17,12 +17,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
 using UnityEngine;
-
 using GoogleMobileAds.Editor;
 
 public static class PListProcessor
@@ -98,6 +96,7 @@ public static class PListProcessor
         {
             array = document.root.CreateArray(KEY_SK_ADNETWORK_ITEMS);
         }
+
         return array;
     }
 
@@ -123,6 +122,7 @@ public static class PListProcessor
             {
                 throw new FileNotFoundException();
             }
+
             using (FileStream fs = File.OpenRead(path))
             {
                 XmlDocument document = new XmlDocument();
@@ -137,9 +137,9 @@ public static class PListProcessor
                 }
             }
         }
-        #pragma warning disable 0168
+#pragma warning disable 0168
         catch (FileNotFoundException e)
-        #pragma warning restore 0168
+#pragma warning restore 0168
         {
             NotifyBuildFailure("GoogleMobileAdsSKAdNetworkItems.xml not found", false);
         }
@@ -187,7 +187,7 @@ public static class PListProcessor
                 }
             }
 #pragma warning disable 0168
-                catch (Exception e)
+            catch (Exception e)
 #pragma warning restore 0168
             {
                 // Do nothing

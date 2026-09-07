@@ -28,9 +28,9 @@ namespace Network
         MoveToMapResult = 94,
         GetPlayerOnlineThisNode = 101,
         GetPlayerOnlineThisNodeResult = 102,
-        
+
         OtherPlayerMoving = 103,
-        
+
         GetMails = 105,
         GetMailsResult = 106,
         ReadMail = 107,
@@ -69,7 +69,7 @@ namespace Network
         SetMoneyResult = 241,
         SetExpRequest = 243,
         TestRequest = 245,
-        
+
         ChangeScene = 256,
         ChangeSceneResult = 257,
         LuyenKhi = 310,
@@ -85,16 +85,16 @@ namespace Network
         EquipThanThongResult = 341,
         UnequipThanThong = 342,
         UnequipThanThongResult = 343,
-        
+
         EquipCongPhap = 352,
         EquipCongPhapResult = 353,
         UnequipCongPhap = 354,
         UnequipCongPhapResult = 355,
-        
-        
+
+
         TuLuyen = 370,
         TuLuyenResult = 371,
-        
+
         LinhNgo = 382,
         LinhNgoResult = 383,
         DotPhaCongPhap = 384,
@@ -110,10 +110,10 @@ namespace Network
         CompleteSideQuestResult = 404,
         GetDailyQuestRequest = 406,
         DoneDailyQuestRequest = 407,
-        
+
         ReloadDailyQuest = 408,
         ReloadDailyQuestResult = 409,
-        
+
         ResultCombat = 413,
         ResultCombatResult = 414,
 
@@ -122,12 +122,12 @@ namespace Network
         LoadCharCombatResult = 416,
         LoadCharCombatArena = 417,
         LoadCharCombatArenaResult = 418,
-        LoadRankRequest = 419,     
+        LoadRankRequest = 419,
         ClaimRankRewardRequest = 420,
-        
+
         WatchAdsForEnergy = 450,
         WatchAdsForEnergyResult = 451,
-        
+
         GetProductsRequest = 511,
         IapPurchase = 520,
         PurchaseIapResult = 521,
@@ -140,56 +140,56 @@ namespace Network
         Gacha = 614,
         GachaResult = 615,
         LoadShopRequest = 635,
-        
+
         ReloadShop = 636,
         ReloadShopResult = 637,
-        
+
         BuyAndSellRequest = 647,
-        
+
         LevelUpdated = 783,
         SpecialLevelUpRequest = 789,
         GetAdsMoneyVipConfigRequest = 843,
-        
+
         WatchAdsMoneyVip = 854,
         WatchAdsMoneyVipResult = 855,
-        
+
         ActiveAdsMoneyVip = 856,
         WatchAdsCombat = 858,
         WatchAdsCombatResult = 859,
         WatchAds = 861,
-        
+
         WatchAdsSideQuest = 872,
         WatchAdsSideQuestResult = 873,
-        
+
         GetRankRequest = 887,
         CompleteAds = 912,
         CloseAds = 913,
         LoadAdsFail = 914,
-        
+
         ResetArenaRank = 923,
-        
+
         LoginRequest = 934,
-        
+
         LogoutRequest = 948,
         PlayRequest = 959,
         DeleteAccountRequest = 969,
-        
-        
+
+
         InGameLogout = 987,
         InGameLogoutResult = 988,
         BackToMainMenuRequest = 992,
         Ping = 1029,
         Pong = 1030,
-        
+
         SyncCharacterData = 1062,
         SyncCharacterDataResult = 1063,
-        
+
         ExperienceReward = 1089,
         DailyReset = 1123,
         Report = 1225,
-        
+
         ConvertElementalSkillRequest = 1232,
-        
+
         JoinAuction = 1234,
         JoinAuctionResult = 1235,
         GetAuctionData = 1256,
@@ -204,12 +204,12 @@ namespace Network
         HostChat = 1346,
         AuctionReward = 1357,
         NewAuctionSession = 1362,
-        
+
         GetAuctionInfo2Request = 1366,
-        
+
         Notify = 1595,
         AdminNotify = 1597,
-        
+
         RegisterRequest = 1634,
         GuestRegisterRequest = 1683,
         ResetNgoDaoRequest = 1752,
@@ -219,12 +219,11 @@ namespace Network
         GetTrungSinhConfigRequest = 1933,
         ToTrungSinhRequest = 1954,
         TrungSinhRequest = 1996,
-        
+
         GetMonsterKillRequest = 2009,
         ClaimMonsterKillRewardRequest = 2032,
-        
-        
-        
+
+
         VisitDongPhuRequest = 2044,
         GetDongPhuInfo = 2086,
         GetDongPhuInfoResult = 2089,
@@ -253,17 +252,17 @@ namespace Network
         OpenLink = 2484,
         ReloadDpShop = 2531,
         ReloadDpShopResult = 2541,
-        
-        
-        GetAllActiveEvents  = 2742,
+
+
+        GetAllActiveEvents = 2742,
         GetEventRequest = 2812,
         HandleEventRequest = 2833,
-    
+
         InvitePvpRequest = 3110,
         InvitePvp = 3133,
         InvitePvpResponse = 3210,
         PvpMatched = 3235,
-        
+
         ReadyCombatPvp = 3368,
         SyncStartTurn = 3498,
         SyncAdjustLinhKhi = 3410,

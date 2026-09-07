@@ -8,12 +8,10 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(HoanLinhChu), menuName = "Skill/Thần Thông/" + nameof(HoanLinhChu))]
 public class HoanLinhChu : ThanThong, IMemorySerializable<HoanLinhChu>
 {
-    [SerializeField]
-    private int[] tieuHaos = new int[]{20, 32, 42, 60, 120};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
-    [SerializeField]
-    private float cameraSize = 5;
+    [SerializeField] private int[] tieuHaos = new int[] { 20, 32, 42, 60, 120 };
+    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] private float cameraSize = 5;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyCuu, out SecureInt quyCuu);
@@ -23,12 +21,14 @@ public class HoanLinhChu : ThanThong, IMemorySerializable<HoanLinhChu>
         CombatStatic.QuyTon(caster, target);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
         base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
     }
+
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyCuu, out SecureInt quyCuu);
@@ -99,7 +99,8 @@ public class HoanLinhChu : ThanThong, IMemorySerializable<HoanLinhChu>
 
     public override string GetDesc(int daiCanhGioi)
     {
-        return $"Bản thân có đủ thì tiêu hao {GetColoredText($"{tieuHaos[daiCanhGioi - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} đánh thức {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.QuyCuu)} triệu hồi {GetKeyWordBuffOrDeBuff(GetEKeywordBuffSkillQuyWithDaiCanhGioi(daiCanhGioi))}";
+        return
+            $"Bản thân có đủ thì tiêu hao {GetColoredText($"{tieuHaos[daiCanhGioi - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} đánh thức {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.QuyCuu)} triệu hồi {GetKeyWordBuffOrDeBuff(GetEKeywordBuffSkillQuyWithDaiCanhGioi(daiCanhGioi))}";
     }
 
     public override int ByteSize()

@@ -8,12 +8,10 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ChuongDocQuyet), menuName = "Skill/Thần Thông/" + nameof(ChuongDocQuyet))]
 public class ChuongDocQuyet : ThanThong, BaseSkill.TuongDong, IMemorySerializable<ChuongDocQuyet>
 {
-    [SerializeField]
-    private int[] dames;
-    [SerializeField]
-    private int[] dameBuffs;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] dames;
+    [SerializeField] private int[] dameBuffs;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
@@ -24,19 +22,27 @@ public class ChuongDocQuyet : ThanThong, BaseSkill.TuongDong, IMemorySerializabl
             dame *= 2;
         }
 
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
     public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)
     {
         int dame = dameBuffs[GetIndexLevelThanThong(caster)];
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill, true);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill, true);
     }
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{dames[level - 1]}", "red")} điểm sát thương. Nếu đối phương có {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)} thì nhận tổn thương gấp đôi. Nếu là {GetKeyWord(EKeyWord.TuongDong)} tăng lên {GetColoredText($"{dameBuffs[level - 1]}", "red")} điểm sát thương";
+        return
+            $"Tạo thành {GetColoredText($"{dames[level - 1]}", "red")} điểm sát thương. Nếu đối phương có {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)} thì nhận tổn thương gấp đôi. Nếu là {GetKeyWord(EKeyWord.TuongDong)} tăng lên {GetColoredText($"{dameBuffs[level - 1]}", "red")} điểm sát thương";
     }
 
     public override int ByteSize()

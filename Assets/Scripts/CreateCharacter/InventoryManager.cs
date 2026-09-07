@@ -20,7 +20,7 @@ namespace CreateCharacter
         [ShowInInspector] public HashSet<ItemRef> Herbs { get; set; } = new();
         [ShowInInspector] public HashSet<ItemRef> ThanThongs { get; set; } = new();
         [ShowInInspector] public HashSet<ItemRef> CongPhaps { get; set; } = new();
-   
+
         [ShowInInspector] public HashSet<ItemRef> LinhDans { get; set; } = new();
 
         [ShowInInspector] public HashSet<NgoDao> NgoDaos { get; set; } = new();
@@ -31,6 +31,7 @@ namespace CreateCharacter
         [ShowInInspector] public HashSet<Equipment> VuKhis { get; set; } = new();
         [ShowInInspector] public HashSet<Equipment> PhongCus { get; set; } = new();
         [ShowInInspector] public HashSet<Equipment> TrangSucs { get; set; } = new();
+
         public int ByteSize()
         {
             return Furnaces.ByteSize() + Recipes.ByteSize() + Herbs.ByteSize() + ThanThongs.ByteSize() +
@@ -56,7 +57,7 @@ namespace CreateCharacter
             writer.WriteArray(ThanThongOwners);
             writer.WriteArray(Materials);
         }
-        
+
         public void Deserialize(IReader reader, ref InventoryManager value)
         {
             value.Furnaces = reader.ReadArray<FurnaceData>().ToHashSet();
@@ -124,6 +125,7 @@ namespace CreateCharacter
             {
                 Furnaces.Add(furnaceData);
             }
+
             foreach (var itemRef in items)
             {
                 Add(itemRef);
@@ -177,6 +179,7 @@ namespace CreateCharacter
                 {
                     throw new();
                 }
+
                 var remaining = item.Count - itemRef.Count;
                 item.Count = remaining;
                 if (remaining <= 0)
@@ -185,6 +188,7 @@ namespace CreateCharacter
                 }
             }
         }
+
         public void Add(ItemRef itemRef)
         {
             var type = itemRef.Type;
@@ -213,6 +217,7 @@ namespace CreateCharacter
                 Add(Materials, itemRef);
             }
         }
+
         public bool RemoveFurnace(ushort selfId)
         {
             var furnace = new FurnaceData()
@@ -221,6 +226,7 @@ namespace CreateCharacter
             };
             return Furnaces.Remove(furnace);
         }
+
         public bool RemoveEquipment(ushort seldId)
         {
             var equipment = new Equipment()
@@ -229,6 +235,7 @@ namespace CreateCharacter
             };
             return Remove(equipment);
         }
+
         public void Add(ItemRef itemRef, int count)
         {
             var array = new[] { Herbs, LinhDans, ThanThongs, CongPhaps, Recipes, Materials };
@@ -245,10 +252,12 @@ namespace CreateCharacter
                     {
                         itemRef.Count = remaining;
                     }
+
                     return;
                 }
             }
         }
+
         private void Add(HashSet<ItemRef> inventory, ItemRef itemRef)
         {
             if (inventory.TryGetValue(itemRef, out var item))
@@ -260,6 +269,7 @@ namespace CreateCharacter
                 inventory.Add(itemRef);
             }
         }
+
         public bool Update(ItemRef itemRef)
         {
             var array = new[]
@@ -275,6 +285,7 @@ namespace CreateCharacter
                 return false;
             });
         }
+
         public bool Remove(ItemRef itemRef)
         {
             var array = new[]
@@ -285,16 +296,19 @@ namespace CreateCharacter
                 {
                     return true;
                 }
+
                 return false;
             });
         }
+
         private void Add(HashSet<Equipment> inventory, Equipment equipment)
         {
             inventory.Add(equipment);
         }
+
         public bool Update(Equipment equipment)
         {
-            var array = new[] { VuKhis,PhongCus,TrangSucs };
+            var array = new[] { VuKhis, PhongCus, TrangSucs };
             return array.Any(x =>
             {
                 if (x.TryGetValue(equipment, out var e))
@@ -302,21 +316,25 @@ namespace CreateCharacter
                     e.Name = equipment.Name;
                     return true;
                 }
+
                 return false;
             });
         }
+
         public bool Remove(Equipment equipment)
         {
-            var array = new[] { VuKhis,PhongCus,TrangSucs };
+            var array = new[] { VuKhis, PhongCus, TrangSucs };
             return array.Any(x =>
             {
                 if (x.Remove(equipment))
                 {
                     return true;
                 }
+
                 return false;
             });
         }
+
         public void Add(Equipment equipment)
         {
             var type = equipment.GetEquipmentType();
@@ -333,10 +351,12 @@ namespace CreateCharacter
                     break;
             }
         }
+
         public void Add(NgoDao ngoDao)
         {
             NgoDaos.Add(ngoDao);
         }
+
         public void AddOrUpdate(CamNgo camNgo)
         {
             if (CamNgos.TryGetValue(camNgo, out var cam))
@@ -348,14 +368,17 @@ namespace CreateCharacter
                 Add(camNgo);
             }
         }
+
         public void Update(CamNgo oldValue, CamNgo newValue)
         {
             oldValue.Value = newValue.Value;
         }
+
         public void Add(CamNgo camNgo)
         {
             CamNgos.Add(camNgo);
         }
+
         public void AddOrUpdate(CongPhap congPhap)
         {
             if (CongPhapOwners.TryGetValue(congPhap, out var congPhapOwner))
@@ -367,10 +390,12 @@ namespace CreateCharacter
                 Add(congPhap);
             }
         }
+
         public void Update(CongPhap oldValue, CongPhap newValue)
         {
             oldValue.Level = newValue.Level;
         }
+
         public void Add(CongPhap congPhap)
         {
             CongPhapOwners.Add(congPhap);
@@ -380,6 +405,7 @@ namespace CreateCharacter
         {
             ThanThongOwners.Add(thanThong);
         }
+
         public void ApplyModify(InventoryModify m)
         {
             m.Apply(this);

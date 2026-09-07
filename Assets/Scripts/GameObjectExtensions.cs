@@ -15,6 +15,7 @@ public static class GameObjectExtensions
             child.gameObject.SetLayerRecursive(newLayer);
         }
     }
+
     public static void SetLayerRecursiveWithCamera(this GameObject obj, int mask)
     {
         if (obj == null) return;

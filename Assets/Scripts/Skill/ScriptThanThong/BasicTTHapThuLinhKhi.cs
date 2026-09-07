@@ -7,24 +7,23 @@ using System;
 using Network;
 using Network.Extensions;
 
-[CreateAssetMenu(fileName = nameof(BasicTTHapThuLinhKhi), menuName = "Skill/Thần Thông/" + nameof(BasicTTHapThuLinhKhi))]
+[CreateAssetMenu(fileName = nameof(BasicTTHapThuLinhKhi),
+    menuName = "Skill/Thần Thông/" + nameof(BasicTTHapThuLinhKhi))]
 public class BasicTTHapThuLinhKhi : ThanThong, BaseSkill.TuongSinh, IMemorySerializable<BasicTTHapThuLinhKhi>
 {
-    [SerializeField]
-    private int[] hapThus;
-    [SerializeField]
-    private int[] hapThuAdds;
-    [SerializeField]
-    private ELinhKhi eLinhKhi;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] hapThus;
+    [SerializeField] private int[] hapThuAdds;
+    [SerializeField] private ELinhKhi eLinhKhi;
+    [SerializeField] private float delayTimeEffect = 1f;
     ELinhKhi linhKhiHapThu => CombatManager.TuongSinh[eLinhKhi];
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.HapThuLinhKhi(linhKhiHapThu, hapThus[GetIndexLevelThanThong(caster)]);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -39,7 +38,8 @@ public class BasicTTHapThuLinhKhi : ThanThong, BaseSkill.TuongSinh, IMemorySeria
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Hấp thụ {GetColoredText($"+{hapThus[level - 1]} điểm", "red")} {GetTextLinhKhi(linhKhiHapThu)}. Nếu {GetKeyWord(EKeyWord.TuongSinh)} hấp thụ thêm {GetColoredText($"+{hapThuAdds[level - 1]} điểm", "red")} {GetTextLinhKhi(linhKhiHapThu)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Hấp thụ {GetColoredText($"+{hapThus[level - 1]} điểm", "red")} {GetTextLinhKhi(linhKhiHapThu)}. Nếu {GetKeyWord(EKeyWord.TuongSinh)} hấp thụ thêm {GetColoredText($"+{hapThuAdds[level - 1]} điểm", "red")} {GetTextLinhKhi(linhKhiHapThu)}";
     }
 
     public override int ByteSize()

@@ -9,6 +9,7 @@ namespace Base
         [field: SerializeField] public int PoolSize { get; private set; } = 10;
 
         readonly Queue<T> pool = new();
+
         public void Init()
         {
             pool.Clear();
@@ -19,6 +20,7 @@ namespace Base
                 pool.Enqueue(obj);
             }
         }
+
         public T Get()
         {
             if (pool.Count == 0)
@@ -27,10 +29,12 @@ namespace Base
                 obj.gameObject.SetActive(false);
                 return obj;
             }
+
             var item = pool.Dequeue();
             item.gameObject.SetActive(true);
             return item;
         }
+
         public void Release(T item)
         {
             item.gameObject.SetActive(false);

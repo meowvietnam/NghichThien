@@ -9,13 +9,10 @@ public class AnswerQuizQuest : BaseBehaviour
     [SerializeField] public int currentIndexAnswer;
     [SerializeField] public Text textQuiz;
 
-    public void Init(int indexAnswer,string textQuiz)
+    public void Init(int indexAnswer, string textQuiz)
     {
         currentIndexAnswer = indexAnswer;
         this.textQuiz.text = textQuiz;
-        SetEventButton(btn, () =>
-        {
-            Pool.Get<SideQuestManager>().AnswerQuest(this);
-        });
+        SetEventButton(btn, () => { Pool.Get<SideQuestManager>().AnswerQuest(this); });
     }
 }

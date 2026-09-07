@@ -9,11 +9,11 @@ namespace AllMaps
         [SerializeField] private Vector3 offset;
         [SerializeField] private float followSpeed;
         [SerializeField] private BoxCollider2D boundsBox;
-        [SerializeField]
-        public Transform camTransform;
+        [SerializeField] public Transform camTransform;
         private Vector3 velocity;
         public static CameraFollow Instance;
         public bool IsFollow { get; set; }
+
         private void Awake()
         {
             Instance = this;
@@ -22,11 +22,12 @@ namespace AllMaps
 
         private void FixedUpdate()
         {
-            if(!IsFollow) return;
+            if (!IsFollow) return;
             if (target == null)
             {
                 return;
             }
+
             var bounds = boundsBox.bounds;
             Vector3 targetPosition = target.position + offset;
             var camPosition = camTransform.position;

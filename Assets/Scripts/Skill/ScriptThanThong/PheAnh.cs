@@ -7,18 +7,13 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(PheAnh), menuName = "Skill/Thần Thông/" + nameof(PheAnh))]
 public class PheAnh : ThanThong, BaseSkill.TuongKhac, IMemorySerializable<PheAnh>
 {
-    [SerializeField]
-    private int[] tieuHaos = new int[]{3, 5, 6, 8, 9};
-    [SerializeField]
-    private int[] hapThus1 = new int[]{6, 7, 8, 9, 10};
-    [SerializeField]
-    private int buffValues2 = 2;
-    [SerializeField]
-    private int tieuHao2 = 15;
-    [SerializeField]
-    private int hapThu2 = 1;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] tieuHaos = new int[] { 3, 5, 6, 8, 9 };
+    [SerializeField] private int[] hapThus1 = new int[] { 6, 7, 8, 9, 10 };
+    [SerializeField] private int buffValues2 = 2;
+    [SerializeField] private int tieuHao2 = 15;
+    [SerializeField] private int hapThu2 = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -28,6 +23,7 @@ public class PheAnh : ThanThong, BaseSkill.TuongKhac, IMemorySerializable<PheAnh
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, buffValues2);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -49,12 +45,13 @@ public class PheAnh : ThanThong, BaseSkill.TuongKhac, IMemorySerializable<PheAnh
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tiêu hao {GetColoredText($"{tieuHaos[level - 1]}", "red")} {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnhDich)} hấp thụ {GetColoredText($"+{hapThus1[level - 1]}", "red")} điểm linh khí và nhận phải {GetColoredText($"+{buffValues2}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}. {GetKeyWord(EKeyWord.TuongKhac)} Tiêu hao {GetColoredText($"{tieuHao2}", "red")} điểm HP hấp thụ {GetColoredText($"+{hapThu2}", "red")} điểm linh khí";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tiêu hao {GetColoredText($"{tieuHaos[level - 1]}", "red")} {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnhDich)} hấp thụ {GetColoredText($"+{hapThus1[level - 1]}", "red")} điểm linh khí và nhận phải {GetColoredText($"+{buffValues2}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}. {GetKeyWord(EKeyWord.TuongKhac)} Tiêu hao {GetColoredText($"{tieuHao2}", "red")} điểm HP hấp thụ {GetColoredText($"+{hapThu2}", "red")} điểm linh khí";
     }
 
     public void ExecuteTuongKhac(CharacterCombat caster, CharacterCombat target)
     {
-        caster.TakeDameByStatic(null, new System.Collections.Generic.List<int>{tieuHao2}, false, null, false);
+        caster.TakeDameByStatic(null, new System.Collections.Generic.List<int> { tieuHao2 }, false, null, false);
         caster.HapThuLinhKhi(hapThu2);
     }
 

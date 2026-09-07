@@ -4,6 +4,7 @@ using UnityEngine;
 public abstract class DanDuocBuffDame : BaseDanDuocCombat
 {
     [SerializeField] protected int buff = 1;
+
     public override void ExecuteDanDuoc(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         var danDuocCombat = GetDanDuocCombat(caster);
@@ -13,7 +14,5 @@ public abstract class DanDuocBuffDame : BaseDanDuocCombat
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
-
     }
-
 }

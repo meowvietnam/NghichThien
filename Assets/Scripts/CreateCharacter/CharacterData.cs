@@ -40,6 +40,7 @@ namespace CreateCharacter
 
         [field: ShowInInspector, TabGroup("Basic")]
         public bool CanFly { get; set; }
+
         [field: ShowInInspector, TabGroup("Basic")]
         public int CurrentFreeAdsMoneyVipCount { get; set; }
 
@@ -69,17 +70,22 @@ namespace CreateCharacter
 
         [field: SerializeField, TabGroup("Arena")]
         public ArenaManager ArenaManager { get; set; } = new();
+
         [field: SerializeField, TabGroup("ShopManager")]
         public ShopManager ShopManager { get; set; } = new();
+
         [field: SerializeField, TabGroup("GachaManager")]
         public GachaManager GachaManager { get; set; } = new();
+
         public event Action<InventoryManager> OnInventoryUpdated;
+
         public static void Sync(CharacterData source, CharacterData target)
         {
             if (target == null)
             {
                 throw new ArgumentNullException(nameof(target));
             }
+
             target.SyncFrom(source);
         }
 
@@ -138,7 +144,7 @@ namespace CreateCharacter
                    + IsInfiniteEnergy.ByteSize()
                    + IsNoAds.ByteSize()
                    + CanFly.ByteSize()
-                    + CurrentFreeAdsMoneyVipCount.ByteSize()
+                   + CurrentFreeAdsMoneyVipCount.ByteSize()
                    + InventoryManager.ByteSize()
                    + CreatedAt.ByteSize()
                    + Social.ByteSize()

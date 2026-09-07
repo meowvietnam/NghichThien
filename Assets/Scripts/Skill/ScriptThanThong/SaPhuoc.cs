@@ -10,18 +10,23 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(SaPhuoc), menuName = "Skill/Thần Thông/" + nameof(SaPhuoc))]
 public class SaPhuoc : ThanThong, IMemorySerializable<SaPhuoc>
 {
-    [SerializeField]
-    private HoanTran hoanTran;
-    [SerializeField]
-    private int[] dames = new int[]{4, 5, 9, 16, 32};
-    [SerializeField]
-    protected float delayTimeEffect = 0.85f;
+    [SerializeField] private HoanTran hoanTran;
+    [SerializeField] private int[] dames = new int[] { 4, 5, 9, 16, 32 };
+    [SerializeField] protected float delayTimeEffect = 0.85f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
         caster.AddThanThongCoolDown(hoanTran, -1);
         Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, hoanTran, new List<LinhKhiTieuTan>());
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
@@ -43,7 +48,7 @@ public class SaPhuoc : ThanThong, IMemorySerializable<SaPhuoc>
         {
             // clone object
             RequireActive clone = new RequireActive()
-            {linhKhiRequire = requireActive.linhKhiRequire, count = requireActive.count};
+                { linhKhiRequire = requireActive.linhKhiRequire, count = requireActive.count };
             if (clone.linhKhiRequire == ELinhKhi.Tho)
             {
                 int extra = caster.thanThongUseThisTurn.Count(x => x.thanThong is SaPhuoc);
@@ -58,7 +63,8 @@ public class SaPhuoc : ThanThong, IMemorySerializable<SaPhuoc>
 
     public override string GetDesc(int level)
     {
-        return $"Đối thủ có trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cat)} mới có thể sử dụng. Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Đồng thời, kích hoạt thần thông {GetColoredText($"[Hoàn Trần]", "red")}. Trong hiệp này, mỗi một lần sử dụng thần thông này thì tiêu hao thêm một điểm {GetTextLinhKhi(ELinhKhi.Tho)} linh khí";
+        return
+            $"Đối thủ có trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cat)} mới có thể sử dụng. Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Đồng thời, kích hoạt thần thông {GetColoredText($"[Hoàn Trần]", "red")}. Trong hiệp này, mỗi một lần sử dụng thần thông này thì tiêu hao thêm một điểm {GetTextLinhKhi(ELinhKhi.Tho)} linh khí";
     }
 
     public override int ByteSize()

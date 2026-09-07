@@ -5,7 +5,7 @@ using System;
 namespace Network.Models
 {
     [MemoryPackable]
-    public partial class LoadCharCombatResult 
+    public partial class LoadCharCombatResult
     {
         public bool Success { get; set; }
         public string? Message { get; set; }

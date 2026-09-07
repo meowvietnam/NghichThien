@@ -47,7 +47,8 @@ namespace CreateCharacter
         {
             var core = CoreConfig.Instance;
             var item = GetItemData();
-            return $"<color=#{ColorUtility.ToHtmlStringRGBA(core.FindQuality(item.Tier).Color)}>{item.Name} x{Money}</color>";
+            return
+                $"<color=#{ColorUtility.ToHtmlStringRGBA(core.FindQuality(item.Tier).Color)}>{item.Name} x{Money}</color>";
         }
     }
 }

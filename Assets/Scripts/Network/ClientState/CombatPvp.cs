@@ -158,6 +158,7 @@ namespace Network.ClientState
                     {
                         charData.Claim(result.Reward);
                     }
+
                     charData.Progression.NgoDaoDiem = result.NewNgoDaoDiem;
                     charData.ArenaManager.Points = result.NewPointRank;
                     charData.Stats.TamCanh = result.NewTamCanh;
@@ -166,6 +167,7 @@ namespace Network.ClientState
                     {
                         charData.InventoryManager.AddOrUpdate(item);
                     }
+
                     charData.EquipmentManager.DanCombatUseds.Clear();
                     resultCombatCallback.SuccessResultCombatBase(result.Reward, result.TypeResultCombat);
                 }

@@ -13,6 +13,7 @@ namespace AllMaps
         [SerializeField] private Text text;
         [SerializeField] private GameObject selection;
         [SerializeField] private RectTransform direct;
+
         private void Start()
         {
             SetEventButton(filterButton, Open);

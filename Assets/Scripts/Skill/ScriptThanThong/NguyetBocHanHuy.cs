@@ -9,14 +9,11 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(NguyetBocHanHuy), menuName = "Skill/Thần Thông/" + nameof(NguyetBocHanHuy))]
 public class NguyetBocHanHuy : ThanThong, IMemorySerializable<NguyetBocHanHuy>
 {
-    [SerializeField]
-    private int percent = 25;
-    [SerializeField]
-    private int[] buffs = new int[]{1, 1, 2, 2, 3};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
-    [SerializeField]
-    private float cameraSize = 5;
+    [SerializeField] private int percent = 25;
+    [SerializeField] private int[] buffs = new int[] { 1, 1, 2, 2, 3 };
+    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] private float cameraSize = 5;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -25,6 +22,7 @@ public class NguyetBocHanHuy : ThanThong, IMemorySerializable<NguyetBocHanHuy>
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect3);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -44,7 +42,8 @@ public class NguyetBocHanHuy : ThanThong, IMemorySerializable<NguyetBocHanHuy>
             if (CombatStatic.IsActiveWithPercent(percent))
             {
                 int sum = currentTurn.thanThongCurrentUse.linhKhiTieuTan.Sum(x => x.count);
-                currentTurn.AddBuffAndDebuffCount(EBuffAndDeBuff.ThanThuong, sum * buffs[GetIndexLevelThanThong(targetTurn)]);
+                currentTurn.AddBuffAndDebuffCount(EBuffAndDeBuff.ThanThuong,
+                    sum * buffs[GetIndexLevelThanThong(targetTurn)]);
             }
         }
     }
@@ -60,7 +59,8 @@ public class NguyetBocHanHuy : ThanThong, IMemorySerializable<NguyetBocHanHuy>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Đối thủ sử dụng thần thông có {GetColoredText($"{percent}%", "red")} nhận phải {GetColoredText($"+{buffs[level - 1]} * X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThanThuong)} (X là tổng số linh khí tiêu hao của thần thông đó)";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Đối thủ sử dụng thần thông có {GetColoredText($"{percent}%", "red")} nhận phải {GetColoredText($"+{buffs[level - 1]} * X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThanThuong)} (X là tổng số linh khí tiêu hao của thần thông đó)";
     }
 
     public override int ByteSize()

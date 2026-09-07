@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThieuDuongQuyet))]
 public class ThieuDuongQuyet : CongPhap, IMemorySerializable<ThieuDuongQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{12, 14, 16, 18, 20};
+    [SerializeField] private int[] buffValues = new int[] { 12, 14, 16, 18, 20 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (CombatStatic.IsActiveWithPercent(buffValues[CurrentLevelCongPhapInCombat(caster) - 1]))
@@ -22,7 +22,8 @@ public class ThieuDuongQuyet : CongPhap, IMemorySerializable<ThieuDuongQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi khi sử dụng thần thông, có {GetColoredText($"{buffValues[level - 1]}%", "red")} hấp thụ một điểm linh khí";
+        return
+            $"Mỗi khi sử dụng thần thông, có {GetColoredText($"{buffValues[level - 1]}%", "red")} hấp thụ một điểm linh khí";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

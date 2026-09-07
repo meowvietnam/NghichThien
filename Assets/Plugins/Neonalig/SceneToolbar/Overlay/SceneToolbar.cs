@@ -47,6 +47,5 @@ namespace Plugins.Neonalig.SceneToolbar.Overlay
         }
 
         #endregion
-
     }
 }

@@ -78,7 +78,6 @@ public class NgoDaoSlot : BaseBehaviour, INetworkEvent.ILearnNgoDao
         TabPanel.SetNgoDaoDiem();
         LearnedVisual();
         Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
-
     }
 
     public void FailLearnNgoDao(string message)

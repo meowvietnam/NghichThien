@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThaiAmLucHuCong))]
 public class ThaiAmLucHuCong : CongPhap, IMemorySerializable<ThaiAmLucHuCong>
 {
-    [SerializeField]
-    private int[] buff;
-    [SerializeField]
-    private int buff2;
+    [SerializeField] private int[] buff;
+    [SerializeField] private int buff2;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, buff[CurrentLevelCongPhapInCombat(caster) - 1]);
@@ -39,7 +38,8 @@ public class ThaiAmLucHuCong : CongPhap, IMemorySerializable<ThaiAmLucHuCong>
 
     public override string GetDesc(int level)
     {
-        return $"Bắt đầu hiệp, địch nhân nhận phải {GetColoredText($"+{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}. Mỗi lần sử dụng thần thông gây tổn thương, khiến đối phương nhận phải {GetColoredText($"+{buff2}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}";
+        return
+            $"Bắt đầu hiệp, địch nhân nhận phải {GetColoredText($"+{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}. Mỗi lần sử dụng thần thông gây tổn thương, khiến đối phương nhận phải {GetColoredText($"+{buff2}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

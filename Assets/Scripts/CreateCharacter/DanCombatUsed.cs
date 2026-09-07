@@ -12,12 +12,14 @@ namespace CreateCharacter
     {
         [field: SerializeField] public ushort Id { get; set; }
         [field: SerializeField] public ushort Count { get; set; }
+
         public bool Equals(DanCombatUsed other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
             return Id == other.Id;
         }
+
         public override int GetHashCode()
         {
             return Id;

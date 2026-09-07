@@ -86,7 +86,6 @@ namespace TrungSinh
                     NotifyGroup.Instance.Show(result.Message);
                 }
             });
-            
         }
 
         public override void OnApplyStatsResult(ApplyStatsResult result)
@@ -102,6 +101,7 @@ namespace TrungSinh
             Pool.Get<UIManager>().gameObject.SetActive(true);
             Observer.Notify(EventList.GamePlay.LOAD_SCENE, "AllMaps");
         }
+
         public override void SelectStatsBack()
         {
             Back();

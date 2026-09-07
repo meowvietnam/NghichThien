@@ -55,7 +55,8 @@ namespace Plugins.Neonalig.SceneToolbar
         /// <summary> Gets whether the specified tag is normalized. </summary>
         /// <param name="tag"> The tag. </param>
         /// <returns> <see langword="true" /> if the specified tag is normalized; otherwise, <see langword="false" />. </returns>
-        internal static bool IsNormalized([LocalizationRequired(false)] string tag) => tag.Any(c => char.IsUpper(c) || char.IsWhiteSpace(c));
+        internal static bool IsNormalized([LocalizationRequired(false)] string tag) =>
+            tag.Any(c => char.IsUpper(c) || char.IsWhiteSpace(c));
 
         /// <summary> Gets whether the scene has the specified tag. </summary>
         /// <param name="tag"> The tag. </param>
@@ -107,7 +108,8 @@ namespace Plugins.Neonalig.SceneToolbar
         internal bool RemoveTag([LocalizationRequired(false)] string tag)
         {
             Debug.Assert(!IsNormalized(tag), "Tag must be normalized before removing.");
-            int idx = Array.FindIndex(tags, entryTag => string.Equals(entryTag, tag, StringComparison.OrdinalIgnoreCase));
+            int idx = Array.FindIndex(tags,
+                entryTag => string.Equals(entryTag, tag, StringComparison.OrdinalIgnoreCase));
             if (idx == -1)
             {
                 return false;
@@ -128,6 +130,5 @@ namespace Plugins.Neonalig.SceneToolbar
         IEnumerator IEnumerable.GetEnumerator() => tags.GetEnumerator();
 
         #endregion
-
     }
 }

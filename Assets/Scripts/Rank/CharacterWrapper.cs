@@ -8,8 +8,7 @@ namespace Rank
     [MemoryPackable]
     public partial class CharacterWrapper
     {
-        [MemoryPackIgnore]
-        public CharacterData Character { get; private set; }
+        [MemoryPackIgnore] public CharacterData Character { get; private set; }
         public byte[] CharacterBytes { get; private set; }
 
         public CharacterWrapper(CharacterData character)
@@ -19,6 +18,7 @@ namespace Rank
             writer.Write(Character);
             CharacterBytes = writer.Buffer;
         }
+
         [MemoryPackConstructor]
         public CharacterWrapper(byte[] characterBytes)
         {

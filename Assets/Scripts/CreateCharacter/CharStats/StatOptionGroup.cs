@@ -4,14 +4,16 @@ using System.Linq;
 using Network;
 using Network.Extensions;
 using UnityEngine;
+
 namespace CreateCharacter.CharStats
 {
     [Serializable]
     public class StatOptionGroup : IMemorySerializable<StatOptionGroup>
     {
         [field: SerializeField] public int Id { get; private set; }
-        [field: SerializeField] public List<StatOption> StatOptions { get; private set; } 
+        [field: SerializeField] public List<StatOption> StatOptions { get; private set; }
         [field: SerializeField] public List<int> Exclusives { get; private set; }
+
         public int ByteSize()
         {
             return Id.ByteSize() + StatOptions.ByteSize() + Exclusives.ByteSize();

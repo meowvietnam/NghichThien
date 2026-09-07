@@ -7,6 +7,7 @@ namespace LuyenDan
     public class AlchermyFurnace : AlchemyEntity
     {
         [SerializeField] private Text durabilityText;
+
         public override void Select(InventoryItemUI item)
         {
             if (item != null && item is not FurnaceInventoryItemUI)
@@ -15,8 +16,10 @@ namespace LuyenDan
                     $"[AlchermyFurnace] Select nhận sai type: {item.GetType().Name}. Bỏ qua.");
                 return;
             }
+
             LuyenDanPanel.Instance.Alchermy.SelectDanLu(item as FurnaceInventoryItemUI);
         }
+
         public void Select(FurnaceInventoryItemUI item)
         {
             Item = item;
@@ -40,6 +43,7 @@ namespace LuyenDan
                 Debug.LogError("Không phải FurnaceInventoryItemUI !!!!!");
                 return;
             }
+
             RefreshDurability(item.FData.Durability);
         }
 
@@ -51,6 +55,7 @@ namespace LuyenDan
             panel.FurnaceInventory.SetActive(true);
             panel.FurnaceInventory.ItemListUI.NoFilter();
         }
+
         private void RefreshDurability(int value)
         {
             if (value <= 0)
@@ -61,6 +66,7 @@ namespace LuyenDan
 
             durabilityText.text = $"{value}/100";
         }
+
         private void ClearSlot()
         {
             Item = null;

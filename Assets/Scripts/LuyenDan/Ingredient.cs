@@ -7,8 +7,9 @@ namespace LuyenDan
 {
     public class Ingredient : AlchemyEntity
     {
-        [TabGroup("Has Item")]
-        [SerializeField] private Text propertyText;
+        [TabGroup("Has Item")] [SerializeField]
+        private Text propertyText;
+
         [SerializeField] private HerbType herbType;
         public int Count { get; private set; }
 
@@ -25,6 +26,7 @@ namespace LuyenDan
             int count = LuyenDanPanel.Instance.Alchermy.SelectHerbNum.GetValue();
             Select(item, count);
         }
+
         public void Select(InventoryItemUI item, int count)
         {
             if (Item != item)
@@ -42,12 +44,14 @@ namespace LuyenDan
             {
                 return;
             }
+
             if (count == 0)
             {
                 ReturnCurrentItemToInventory();
                 ClearSlot();
                 return;
             }
+
             SetCount(count);
             SetData(item.GetData());
             UpdatePropertyText();
@@ -66,9 +70,10 @@ namespace LuyenDan
             }
             else
             {
-                propertyText.text = LuyenDanPanel.Instance.Resources.GetHerbDetail(Item.ItemRef.Id,herbType);
+                propertyText.text = LuyenDanPanel.Instance.Resources.GetHerbDetail(Item.ItemRef.Id, herbType);
             }
         }
+
         public override void OnLuyenDanCompleted()
         {
             if (Item == null) return;
@@ -90,16 +95,18 @@ namespace LuyenDan
             var herbList = inventory.ItemListUI as HerbItemListUI;
             if (herbList != null) herbList.Filter(herbType);
         }
+
         private void ReturnCurrentItemToInventory()
         {
             if (Item == null) return;
             Item.ItemRef.SetCount(Item.ItemRef.Count + Count);
             Count = 0;
         }
+
         private void ClearSlot()
         {
             Count = 0;
-            Item  = null;
+            Item = null;
             SetData(null);
             UpdatePropertyText();
         }

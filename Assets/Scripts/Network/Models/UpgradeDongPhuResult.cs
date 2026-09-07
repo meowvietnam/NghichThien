@@ -1,5 +1,6 @@
 ﻿using MemoryPack;
 using DP;
+
 namespace Network.Models
 {
     [MemoryPackable]
@@ -7,6 +8,7 @@ namespace Network.Models
     {
         public DongPhuLevel NewLevel { get; set; }
     }
+
     [MemoryPackable]
     public partial class UpgradeDongPhuResult : Result
     {

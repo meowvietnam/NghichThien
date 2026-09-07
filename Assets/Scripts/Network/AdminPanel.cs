@@ -187,7 +187,7 @@ namespace Network
             };
             Client.Send(MessageTag.AddCongPhap, cp);
         }
-        
+
         [Button]
         [ShowIf(nameof(IsReady))]
         public void SetMoney(int money)
@@ -222,6 +222,7 @@ namespace Network
                 SecretKey = secretKey
             });
         }
+
         [Button]
         [ShowIf(nameof(IsAuthStateAndNotLogin))]
         private void AdminLoginWithName(string name)
@@ -242,6 +243,7 @@ namespace Network
             {
                 return;
             }
+
             Client.Send(MessageTag.AdminNotify, msg);
         }
 
@@ -262,6 +264,7 @@ namespace Network
             var result = reader.MemRead<Result>();
             NotifyGroup.Instance?.Show(result.Message);
         }
+
         private bool IsAuthStateAndNotLogin()
         {
             if (Client == null)
@@ -324,6 +327,7 @@ namespace Network
                 Client.CharacterData.Stats.LinhThach = money;
             }
         }
+
         [Button]
         public void RenewTutorial()
         {
@@ -335,12 +339,15 @@ namespace Network
             PlayerPrefs.Save();
             Debug.Log("Renew all tutorial");
         }
+
         public void OnLeave()
         {
         }
+
         public void OnDisconnect(IProtocol<MessageTag> protocol)
         {
         }
+
         private static readonly MessageTag[] handler =
         {
             MessageTag.AddItemsResult, MessageTag.SetNgoDaoDiemResult, MessageTag.SetCamNgoResult,

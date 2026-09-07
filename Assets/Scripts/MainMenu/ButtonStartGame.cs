@@ -10,6 +10,7 @@ public class ButtonStartGame : BaseBehaviour, IPointerDownHandler, IPointerUpHan
     [SerializeField] private Sprite spriteDisableGame1;
     [SerializeField] private Sprite spriteStartGame2;
     [SerializeField] private Sprite spriteDisableGame2;
+
     public void OnPointerDown(PointerEventData eventData)
     {
         img1.sprite = spriteStartGame1;

@@ -3,12 +3,14 @@ using Network;
 using UnityEngine;
 using UnityEngine.UI;
 using Network.Extensions;
+
 namespace DP
 {
     public class ReloadDpShop : BaseBehaviour
     {
         [SerializeField] private Button button;
         [SerializeField] private PopupConfirmAction popup;
+
         private void Start()
         {
             SetEventButton(button, OnClick);

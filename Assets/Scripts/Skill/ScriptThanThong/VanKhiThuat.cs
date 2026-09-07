@@ -8,10 +8,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(VanKhiThuat), menuName = "Skill/Thần Thông/" + nameof(VanKhiThuat))]
 public class VanKhiThuat : ThanThong, IMemorySerializable<VanKhiThuat>
 {
-    [SerializeField]
-    private int hapThuSO = 3;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int hapThuSO = 3;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int hapThu = this.hapThuSO;
@@ -29,6 +28,7 @@ public class VanKhiThuat : ThanThong, IMemorySerializable<VanKhiThuat>
         caster.HapThuLinhKhi(hapThu);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {

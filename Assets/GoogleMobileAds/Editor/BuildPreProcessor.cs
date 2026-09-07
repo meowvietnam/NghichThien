@@ -15,10 +15,13 @@ namespace GoogleMobileAds.Editor
     {
         // Set the callback order to be before EDM4U.
         // https://github.com/googlesamples/unity-jar-resolver/blob/master/source/AndroidResolver/src/PlayServicesPreBuild.cs#L39
-        public int callbackOrder { get { return -1; } }
+        public int callbackOrder
+        {
+            get { return -1; }
+        }
 
         private readonly static string _linkXmlAssetsPath =
-                Path.Combine(Application.dataPath, "GoogleMobileAds", "link.xml");
+            Path.Combine(Application.dataPath, "GoogleMobileAds", "link.xml");
 
         public void OnPreprocessBuild(BuildReport report)
         {
@@ -37,18 +40,21 @@ namespace GoogleMobileAds.Editor
             {
                 AssetDatabase.CreateFolder("Assets", "GoogleMobileAds");
             }
+
             var pathUtils = ScriptableObject.CreateInstance<EditorPathUtils>();
             if (pathUtils.IsPackageRootPath())
             {
                 string parentDirectoryPath = pathUtils.GetParentDirectoryAssetPath();
                 string linkXmlPackagePath = Path.Combine(parentDirectoryPath, "link.xml");
-                if(String.IsNullOrEmpty(linkXmlPackagePath))
+                if (String.IsNullOrEmpty(linkXmlPackagePath))
                 {
                     Debug.LogWarning("link.xml not found in the package.");
                     return;
                 }
+
                 AssetDatabase.CopyAsset(linkXmlPackagePath, _linkXmlAssetsPath);
             }
+
             AssetDatabase.Refresh();
         }
     }

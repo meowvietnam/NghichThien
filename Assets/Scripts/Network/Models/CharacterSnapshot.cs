@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Network.Models
 {
     [MemoryPackable]
-    public partial class CharacterSnapshot 
+    public partial class CharacterSnapshot
     {
         public int Id { get; set; }
         public int ThanThuc { get; set; }
@@ -54,6 +54,7 @@ namespace Network.Models
         public CharacterSnapshot()
         {
         }
+
         public CharacterSnapshot(CharacterData c)
         {
             this.Id = Id;

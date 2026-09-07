@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(SucLuc), menuName = "Skill/Thần Thông/" + nameof(SucLuc))]
 public class SucLuc : ThanThong, IMemorySerializable<SucLuc>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{2, 2, 2, 2, 2};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] buffValues = new int[] { 2, 2, 2, 2, 2 };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -20,6 +19,7 @@ public class SucLuc : ThanThong, IMemorySerializable<SucLuc>
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -41,7 +41,8 @@ public class SucLuc : ThanThong, IMemorySerializable<SucLuc>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Hiệp sau, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucLuc)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Hiệp sau, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucLuc)}";
     }
 
     public override int ByteSize()

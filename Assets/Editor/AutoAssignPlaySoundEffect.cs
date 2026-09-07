@@ -11,7 +11,8 @@ public class AutoAssignPlaySoundEffect : EditorWindow
         string[] selectedGuids = Selection.assetGUIDs;
         if (selectedGuids.Length == 0)
         {
-            Debug.LogWarning("Vui lòng chọn các thư mục chứa Prefab (như EffectHeHoa, EffectHeKhi...) trong cửa sổ Project trước!");
+            Debug.LogWarning(
+                "Vui lòng chọn các thư mục chứa Prefab (như EffectHeHoa, EffectHeKhi...) trong cửa sổ Project trước!");
             return;
         }
 
@@ -97,7 +98,8 @@ public class AutoAssignPlaySoundEffect : EditorWindow
         AssetDatabase.Refresh();
 
         EditorUtility.DisplayDialog("Hoàn thành!",
-            $"Đã quét xong.\n- Gắn mới thành công: {totalUpdated} prefabs.\n- Bỏ qua / Không đổi: {skippedPrefabs.Count} prefabs.\nXem chi tiết trong bảng Console.", "OK");
+            $"Đã quét xong.\n- Gắn mới thành công: {totalUpdated} prefabs.\n- Bỏ qua / Không đổi: {skippedPrefabs.Count} prefabs.\nXem chi tiết trong bảng Console.",
+            "OK");
     }
 
     private static void PrintReport(List<string> assigned, List<string> skipped)
@@ -121,6 +123,7 @@ public class AutoAssignPlaySoundEffect : EditorWindow
         {
             foreach (var item in skipped) report.AppendLine($" * {item}");
         }
+
         report.AppendLine("==================================================");
 
         Debug.Log(report.ToString());

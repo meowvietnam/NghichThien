@@ -22,6 +22,7 @@ namespace Auction
         {
             button.onClick.RemoveAllListeners();
         }
+
         private async void OnClick()
         {
             var client = Client.Instance;

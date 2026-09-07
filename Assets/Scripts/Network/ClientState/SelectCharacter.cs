@@ -14,10 +14,11 @@ namespace Network.ClientState
         {
             this.callback = callback;
         }
+
         public void OnEnter()
         {
-            
         }
+
         public void Handle(Message<MessageTag> message)
         {
             var tag = message.Tag;
@@ -39,9 +40,11 @@ namespace Network.ClientState
                 callback.OnSelectCharacter(result);
             }
         }
+
         public void OnLeave()
         {
         }
+
         public MessageState State => MessageState.SelectCharacter;
 
         public void GetCharacters()

@@ -24,7 +24,9 @@ public class CharacterStatsSecure
         public string key;
         public Color value;
     }
+
     public bool isPlayer;
+
     // Truyền 0 hoặc 0f vào constructor của SecureInt/SecureFloat
     public SecureInt idChar = new SecureInt(0);
     public SecureFloat percentKim = new SecureFloat(0f);
@@ -61,6 +63,7 @@ public class CharacterStatsSecure
     public EquipmentClient vuKhi = new EquipmentClient();
     public EquipmentClient phongCu = new EquipmentClient();
     public EquipmentClient trangSuc = new EquipmentClient();
+
     [Serializable]
     public class DataSave
     {
@@ -103,8 +106,4 @@ public class CharacterStatsSecure
 
         return clone;
     }
-
-
-   
- 
 }

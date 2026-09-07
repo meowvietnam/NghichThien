@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThuyLinhDieuPhap))]
 public class ThuyLinhDieuPhap : CongPhap, IMemorySerializable<ThuyLinhDieuPhap>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 1, 2, 3, 4};
+    [SerializeField] private int[] buffValues = new int[] { 1, 1, 2, 3, 4 };
+
     public virtual void ExecuteParams2(params object[] data)
     {
         CharacterCombat caster = (CharacterCombat)data[0];
@@ -27,7 +27,8 @@ public class ThuyLinhDieuPhap : CongPhap, IMemorySerializable<ThuyLinhDieuPhap>
     {
         if (caster.thanThongOldUse == null || caster.thanThongCurrentUse == null)
             return;
-        if (CheckIsEqualETypeSkill(caster) && CombatManager.IsLienKich(caster.thanThongCurrentUse.thanThong, caster.thanThongOldUse.thanThong))
+        if (CheckIsEqualETypeSkill(caster) &&
+            CombatManager.IsLienKich(caster.thanThongCurrentUse.thanThong, caster.thanThongOldUse.thanThong))
         {
             caster.AddCPDynamic(GetCongPhapMono(caster.congPhapEquip));
         }
@@ -43,7 +44,8 @@ public class ThuyLinhDieuPhap : CongPhap, IMemorySerializable<ThuyLinhDieuPhap>
 
     public override string GetDesc(int level)
     {
-        return $"Khi sử dụng {GetTextLinhKhi(ELinhKhi.Thuy)} hệ thần thông, nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Kim)} hệ thần thông thì hiệp sau thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucLuc)} (Có thể cộng dồn)";
+        return
+            $"Khi sử dụng {GetTextLinhKhi(ELinhKhi.Thuy)} hệ thần thông, nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Kim)} hệ thần thông thì hiệp sau thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucLuc)} (Có thể cộng dồn)";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

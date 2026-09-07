@@ -7,7 +7,7 @@ using Network.Extensions;
 namespace Network
 {
     [MemoryPackable]
-    public partial class RewardResult 
+    public partial class RewardResult
     {
         public List<long> Mails { get; set; }
         public List<IMailReward> Rewards { get; set; }

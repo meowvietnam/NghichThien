@@ -11,17 +11,20 @@ namespace LuyenDan.Inventory
         public abstract void Filter(Tier tier);
         public abstract void NoFilter();
     }
+
     public abstract class ItemListUI<T> : ItemListUI where T : InventoryItemUI
     {
-        public List<T> Items { get; private set;} = new List<T>();
+        public List<T> Items { get; private set; } = new List<T>();
         [SerializeField] protected T prefab;
         [SerializeField] protected RectTransform content;
+
         public override void Init(IEnumerable<ItemRef> datas)
         {
             foreach (var inventoryItemUI in Items)
             {
                 inventoryItemUI.Destroy();
             }
+
             Items.Clear();
             foreach (var data in datas)
             {

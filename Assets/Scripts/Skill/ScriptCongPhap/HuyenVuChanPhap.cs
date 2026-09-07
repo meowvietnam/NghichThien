@@ -20,8 +20,8 @@ public class HuyenVuChanPhap : CongPhap, IMemorySerializable<HuyenVuChanPhap>
         }
     }
 
-    [SerializeField]
-    private int[] percentActives;
+    [SerializeField] private int[] percentActives;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         // target là ng né thành công
@@ -40,7 +40,8 @@ public class HuyenVuChanPhap : CongPhap, IMemorySerializable<HuyenVuChanPhap>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi lần né tránh thành công, có {GetColoredText($"{percentActives[level - 1]}%", "red")} tỉ lệ đánh cắp một điểm linh khí bất kỳ của đối thủ";
+        return
+            $"Mỗi lần né tránh thành công, có {GetColoredText($"{percentActives[level - 1]}%", "red")} tỉ lệ đánh cắp một điểm linh khí bất kỳ của đối thủ";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

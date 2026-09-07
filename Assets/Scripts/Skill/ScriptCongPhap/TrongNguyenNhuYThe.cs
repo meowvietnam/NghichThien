@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(TrongNguyenNhuYThe))]
 public class TrongNguyenNhuYThe : CongPhap, IMemorySerializable<TrongNguyenNhuYThe>
 {
-    [SerializeField]
-    private int[] buff;
-    [SerializeField]
-    private int[] require;
+    [SerializeField] private int[] buff;
+    [SerializeField] private int[] require;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out SecureInt sucThe);
@@ -24,7 +23,8 @@ public class TrongNguyenNhuYThe : CongPhap, IMemorySerializable<TrongNguyenNhuYT
 
     public override string GetDesc(int level)
     {
-        return $"Kết thúc hiệp, nếu người có số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)} lớn hơn {GetColoredText($"{require[level - 1]}", "red")} thì thu hoạch được {GetColoredText($"+{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}.";
+        return
+            $"Kết thúc hiệp, nếu người có số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)} lớn hơn {GetColoredText($"{require[level - 1]}", "red")} thì thu hoạch được {GetColoredText($"+{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}.";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

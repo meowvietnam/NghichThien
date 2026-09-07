@@ -8,8 +8,8 @@ using CongPhap = Skill.CongPhap;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(BangTamQuyet))]
 public class BangTamQuyet : CongPhap, IMemorySerializable<BangTamQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{5, 10, 15, 20, 25};
+    [SerializeField] private int[] buffValues = new int[] { 5, 10, 15, 20, 25 };
+
     public override void EquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
         statsCurrent.tamCanh += buffValues[daiCanhGioiCongPhap - 1];
@@ -19,17 +19,18 @@ public class BangTamQuyet : CongPhap, IMemorySerializable<BangTamQuyet>
     {
         statsCurrent.tamCanh -= buffValues[daiCanhGioiCongPhap - 1];
     }
+
     public override void EquipCongPhap(CharacterData statsCurrent, int level)
     {
         var stats = statsCurrent.Stats;
-        var tamCanh = stats.TamCanh + buffValues[level-1];
+        var tamCanh = stats.TamCanh + buffValues[level - 1];
         stats.SetTamCanh(tamCanh);
     }
 
     public override void UnEquipCongPhap(CharacterData statsCurrent, int level)
     {
         var stats = statsCurrent.Stats;
-        var tamCanh = stats.TamCanh - buffValues[level-1];
+        var tamCanh = stats.TamCanh - buffValues[level - 1];
         stats.SetTamCanh(tamCanh);
     }
 

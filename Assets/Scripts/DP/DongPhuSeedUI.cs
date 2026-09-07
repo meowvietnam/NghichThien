@@ -18,22 +18,26 @@ namespace DP
         [SerializeField] private Button button;
         [SerializeField] private Button infoButton;
         public event Action Clicked;
+
         private void Start()
         {
             SetEventButton(infoButton, ShowInfo);
             SetEventButton(button, OnClick);
         }
+
         private void OnClick()
         {
             Clicked?.Invoke();
         }
+
         private void ShowInfo()
         {
             var toolTipItems = DongPhuPanel.Instance.ToolTipItems;
             var herbData = GetItemData();
-            var itemRef = new ItemRef(HerbId,ItemType.Herb, 1);
+            var itemRef = new ItemRef(HerbId, ItemType.Herb, 1);
             toolTipItems.ShowInfoItem(herbData, itemRef);
         }
+
         public void Init(ushort herbId, int count)
         {
             SetHerbId(herbId);
@@ -44,6 +48,7 @@ namespace DP
         {
             return LuyenDanResources.Instance.FindHerb(HerbId);
         }
+
         public void SetHerbId(ushort herbId)
         {
             this.HerbId = herbId;
@@ -55,6 +60,7 @@ namespace DP
             nameText.text = data.Name;
             nameText.color = quality.Color;
         }
+
         public void SetCount(int count)
         {
             countText.text = count > 1 ? Utils.FormatCount(count) : string.Empty;

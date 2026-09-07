@@ -11,6 +11,7 @@ namespace CreateCharacter
         [SerializeField] private Transform content;
         private List<ToggleGroupSkinCategories> toggleGroups = new List<ToggleGroupSkinCategories>();
         [SerializeField] private ItemListGroupContainer itemListGroupContainer;
+
         public void Init(List<SkinGroup> skinGroups)
         {
             foreach (var skinGroup in skinGroups)
@@ -20,6 +21,7 @@ namespace CreateCharacter
                 toggleGroups.Add(t);
             }
         }
+
         public void Active(string id)
         {
             foreach (var item in toggleGroups)

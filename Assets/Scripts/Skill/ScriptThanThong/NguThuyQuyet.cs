@@ -8,12 +8,10 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(NguThuyQuyet), menuName = "Skill/Thần Thông/" + nameof(NguThuyQuyet))]
 public class NguThuyQuyet : ThanThong, IMemorySerializable<NguThuyQuyet>
 {
-    [SerializeField]
-    private int hapThuLinhKhi = 2;
-    [SerializeField]
-    private int[] buffValues;
-    [SerializeField]
-    private float delayTimeEffect = 0.5f;
+    [SerializeField] private int hapThuLinhKhi = 2;
+    [SerializeField] private int[] buffValues;
+    [SerializeField] private float delayTimeEffect = 0.5f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -21,6 +19,7 @@ public class NguThuyQuyet : ThanThong, IMemorySerializable<NguThuyQuyet>
         caster.characterStatsTemp.percentThuy += buffValues[GetIndexLevelThanThong(caster)];
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -30,7 +29,8 @@ public class NguThuyQuyet : ThanThong, IMemorySerializable<NguThuyQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Thu hoạch được {GetColoredText($"+{hapThuLinhKhi}", "red")} điểm {GetTextTypeSkill()} hệ linh khí, {GetTextTypeSkill()} linh căn thuộc tính {GetColoredText($"+{buffValues[level - 1]}", "red")}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Thu hoạch được {GetColoredText($"+{hapThuLinhKhi}", "red")} điểm {GetTextTypeSkill()} hệ linh khí, {GetTextTypeSkill()} linh căn thuộc tính {GetColoredText($"+{buffValues[level - 1]}", "red")}";
     }
 
     public override int ByteSize()

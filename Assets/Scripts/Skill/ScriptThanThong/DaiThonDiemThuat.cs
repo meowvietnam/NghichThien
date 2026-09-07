@@ -7,8 +7,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(DaiThonDiemThuat), menuName = "Skill/Thần Thông/" + nameof(DaiThonDiemThuat))]
 public class DaiThonDiemThuat : ThanThong, IMemorySerializable<DaiThonDiemThuat>
 {
-    [SerializeField]
-    private int[] healValues = new int[]{2, 3, 4, 5, 6};
+    [SerializeField] private int[] healValues = new int[] { 2, 3, 4, 5, 6 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Diem, out SecureInt diem);
@@ -30,7 +30,8 @@ public class DaiThonDiemThuat : ThanThong, IMemorySerializable<DaiThonDiemThuat>
 
     public override string GetDesc(int level)
     {
-        return $"Bản thân gỡ ra trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Diem)} mỗi tầng tiêu hao thì khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm Hp";
+        return
+            $"Bản thân gỡ ra trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Diem)} mỗi tầng tiêu hao thì khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm Hp";
     }
 
     public override int ByteSize()

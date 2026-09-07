@@ -427,6 +427,7 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
             NotifyGroup.Instance.Show("Khí huyết đã cạn. Hãy bế quan tại khách sạn hoặc sử dụng đan dược để hồi phục");
             return;
         }
+
         Pool.Get<UIManager>().panelGroup.SetActive(false);
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
         Pool.Get<UIManager>().SetActiveListIcon(false);
@@ -1258,7 +1259,7 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
         var thanThongs = assets.OfType<ThanThong>().ToList();
         var ngoDaos = assets.OfType<AllMaps.NgoDao.NgoDao>().ToList();
         var congPhaps = assets.OfType<CongPhap>().ToList();
-     
+
         var ndttcp = new NDCPTTManager()
         {
             ThanThongs = thanThongs.ToList(),

@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(LinhQuangAn), menuName = "Skill/Thần Thông/" + nameof(LinhQuangAn))]
 public class LinhQuangAn : ThanThong, IMemorySerializable<LinhQuangAn>
 {
-    [SerializeField]
-    private int[] countHapThu;
-    [SerializeField]
-    protected float delayTimeEffect = 0.85f;
+    [SerializeField] private int[] countHapThu;
+    [SerializeField] protected float delayTimeEffect = 0.85f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -21,6 +20,7 @@ public class LinhQuangAn : ThanThong, IMemorySerializable<LinhQuangAn>
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect2);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -55,7 +55,8 @@ public class LinhQuangAn : ThanThong, IMemorySerializable<LinhQuangAn>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Ở hiệp tiếp theo của đối thủ bản thân bị tổn thương thì thu hoạch được {GetColoredText($"+{countHapThu[level - 1]} điểm", "red")} {GetTextLinhKhi(ELinhKhi.Kim)} linh khí";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Ở hiệp tiếp theo của đối thủ bản thân bị tổn thương thì thu hoạch được {GetColoredText($"+{countHapThu[level - 1]} điểm", "red")} {GetTextLinhKhi(ELinhKhi.Kim)} linh khí";
     }
 
     public override int ByteSize()

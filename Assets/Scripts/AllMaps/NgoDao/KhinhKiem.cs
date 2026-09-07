@@ -8,13 +8,13 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(KhinhKiem), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(KhinhKiem))]
 public class KhinhKiem : NgoDaoCombat, IMemorySerializable<KhinhKiem>
 {
-    [SerializeField]
-    private int buff = 2;
+    [SerializeField] private int buff = 2;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (BaseSkill.CheckIsEqualETypeSkill(caster, eTypeRequire))
         {
-            target.AddDamageData(new List<int>{buff});
+            target.AddDamageData(new List<int> { buff });
         }
     }
 

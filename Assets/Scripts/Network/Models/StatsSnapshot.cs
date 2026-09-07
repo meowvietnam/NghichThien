@@ -22,11 +22,12 @@ namespace Network.Models
         public int ThoNguyen { get; private set; }
         public int TamCanh { get; private set; }
         public int DanDoc { get; private set; }
+
         [MemoryPackConstructor]
         public StatsSnapshot()
         {
-            
         }
+
         public StatsSnapshot(CharacterStats snapshot)
         {
             Kim = snapshot.Kim;

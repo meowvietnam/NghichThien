@@ -65,6 +65,7 @@ namespace Auction
             {
                 return false;
             }
+
             player.SetData(model, IsMe(model.CharId));
             return true;
         }
@@ -82,8 +83,8 @@ namespace Auction
             players.RemoveAt(index);
             return true;
         }
-        
-        public bool TryGetByStatus(PlayerAuctionStatus status,out Player player)
+
+        public bool TryGetByStatus(PlayerAuctionStatus status, out Player player)
         {
             var findPlayer = players.FirstOrDefault(x => x.Model.Status == status);
             player = findPlayer;
@@ -119,6 +120,7 @@ namespace Auction
                 players[i].SetSiblingIndex(i);
             }
         }
+
         public void ResetNewSession()
         {
             foreach (var player in players)

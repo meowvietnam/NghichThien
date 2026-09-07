@@ -50,7 +50,7 @@ public class Test : MonoBehaviour
             }
         }
     }
-    
+
     public void Rescale(Sprite source, float scale)
     {
         SerializedObject so = new SerializedObject(source);
@@ -110,7 +110,7 @@ public class Test : MonoBehaviour
 
     private List<Sprite> GetAllSprites()
     {
-        string[] guids = AssetDatabase.FindAssets("t:Sprite", new []{"Assets"});
+        string[] guids = AssetDatabase.FindAssets("t:Sprite", new[] { "Assets" });
         List<Sprite> sprites = new List<Sprite>();
         HashSet<Sprite> set = new HashSet<Sprite>();
         foreach (string guid in guids)
@@ -146,15 +146,15 @@ public class Test : MonoBehaviour
             var value = pair.Value;
             value.ExceptWith(originalSprites);
             var a = originalSprites.Select(x => x.name).ToHashSet();
-            var b =  value.Select(x => x.name).ToHashSet();
+            var b = value.Select(x => x.name).ToHashSet();
             b.ExceptWith(a);
             foreach (var se in b)
             {
-                Debug.Log($"Missing {se}",pair.Key);
+                Debug.Log($"Missing {se}", pair.Key);
             }
         }
-
     }
+
     [Button]
     public void Optimize()
     {
@@ -197,6 +197,7 @@ public class Test : MonoBehaviour
             {
                 Rescale(sprite, scale);
             }
+
             importer.SaveAndReimport();
         }
     }

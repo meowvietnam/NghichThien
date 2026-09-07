@@ -18,10 +18,12 @@ public class LevelUpPopup : BaseBehaviour
 
     [SerializeField] private Text txtLevel;
     [SerializeField] private Popup mainPopup;
+
     private void Awake()
     {
         Observer.AddObserver(EventList.Network.LEVEL_UP, OnLevelUp);
     }
+
     public void OnLevelUp(object[] datas)
     {
         var snapshot = (CharacterSnapshot)datas[0];
@@ -31,7 +33,8 @@ public class LevelUpPopup : BaseBehaviour
         var oldDonToc = snapshot.TocDoBay;
         InitShow(oldHpMax, oldThoNguyen, oldThanThuc, oldDonToc);
     }
-    private void InitShow(int oldValueKhiHuyet,  int oldValueThoNguyen, int oldValueThanThuc, int oldValueDonToc)
+
+    private void InitShow(int oldValueKhiHuyet, int oldValueThoNguyen, int oldValueThanThuc, int oldValueDonToc)
     {
         var stats = Client.Instance.CharacterData.Stats;
         // Set old values

@@ -10,19 +10,21 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThaiAtKiemQuyet))]
 public class ThaiAtKiemQuyet : CongPhap, IMemorySerializable<ThaiAtKiemQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{19, 23, 27, 31, 35};
+    [SerializeField] private int[] buffValues = new int[] { 19, 23, 27, 31, 35 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (CheckIsEqualETypeSkill(caster))
         {
-            target.AddDamageData(new List<int>{(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100)});
+            target.AddDamageData(new List<int>
+                { (int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100) });
         }
     }
 
     public override string GetDesc(int level)
     {
-        return $"Sử dụng {GetTextTypeSkill(ETypeSkill.Kiem)} hệ thần thông gây tổn thương tăng lên {GetColoredText($"{buffValues[level - 1]}%", "red")}";
+        return
+            $"Sử dụng {GetTextTypeSkill(ETypeSkill.Kiem)} hệ thần thông gây tổn thương tăng lên {GetColoredText($"{buffValues[level - 1]}%", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

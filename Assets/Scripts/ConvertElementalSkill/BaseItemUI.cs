@@ -39,7 +39,7 @@ namespace ConvertElementalSkill
         private GameObject hoverHighlight;
 
         public SkillData SkillData { get; private set; }
-        
+
         [Button]
         public virtual void GetReference()
         {
@@ -54,6 +54,7 @@ namespace ConvertElementalSkill
             itemNameText = transform.Find("HasItem/NameMask/NameText").GetComponent<Text>();
             hoverHighlight = transform.Find("Selected").gameObject;
         }
+
         public void SetActive(bool active)
         {
             if (selfObject != null)
@@ -136,6 +137,7 @@ namespace ConvertElementalSkill
             if (qualityIconUp != null) qualityIconUp.sprite = quality.IconUp;
             if (itemNameText != null) itemNameText.color = quality.Color;
         }
+
         public void SetData(SkillData skillData)
         {
             if (SkillData != null)
@@ -172,10 +174,12 @@ namespace ConvertElementalSkill
             {
                 selectButton.onClick.RemoveAllListeners();
             }
+
             if (infoButton != null)
             {
                 infoButton.onClick.RemoveAllListeners();
             }
+
             if (SkillData != null)
             {
                 SkillData.ItemRef.OnCountChanged -= OnCountChanged;

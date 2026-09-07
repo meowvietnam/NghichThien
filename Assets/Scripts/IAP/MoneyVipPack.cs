@@ -34,11 +34,9 @@ namespace IAP
             var icon = context.MoneyVipSprites[IconIndex];
             ui.SetIcon(icon);
             ui.SetPriceText(product.Price);
-            ui.SetPurchaseAction(() =>
-            {
-                CanBuyProduct(context);
-            });
+            ui.SetPurchaseAction(() => { CanBuyProduct(context); });
         }
+
         private async void CanBuyProduct(IapUIContext context)
         {
             var product = context.OwnerIapProduct.Product;

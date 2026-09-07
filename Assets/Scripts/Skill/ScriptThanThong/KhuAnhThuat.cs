@@ -7,16 +7,15 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(KhuAnhThuat), menuName = "Skill/Thần Thông/" + nameof(KhuAnhThuat))]
 public class KhuAnhThuat : ThanThong, BaseSkill.TuongSinh, BaseSkill.TuongKhac, IMemorySerializable<KhuAnhThuat>
 {
-    [SerializeField]
-    private int buffSinh = 2;
-    [SerializeField]
-    private int buffKhac = 1;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int buffSinh = 2;
+    [SerializeField] private int buffKhac = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -26,7 +25,8 @@ public class KhuAnhThuat : ThanThong, BaseSkill.TuongSinh, BaseSkill.TuongKhac, 
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.TuongSinh)} Mỗi tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnhDich)} thu hoạch thêm {GetColoredText($"+{buffSinh}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Anh)}. {GetKeyWord(EKeyWord.TuongKhac)} {GetColoredText($"{buffKhac} lần", "red")} phát động {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnhDich)}";
+        return
+            $"{GetKeyWord(EKeyWord.TuongSinh)} Mỗi tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnhDich)} thu hoạch thêm {GetColoredText($"+{buffSinh}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Anh)}. {GetKeyWord(EKeyWord.TuongKhac)} {GetColoredText($"{buffKhac} lần", "red")} phát động {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnhDich)}";
     }
 
     public void ExecuteTuongSinh(CharacterCombat caster, CharacterCombat target)

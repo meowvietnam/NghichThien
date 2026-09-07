@@ -17,6 +17,7 @@ namespace CreateCharacter
         [SerializeField] private Image levelImage;
         private CharacterData characterData;
         private CreateCharacterSystem system;
+
         public void Init(CharacterData characterData, SkinResources skinResources, CreateCharacterSystem system)
         {
             this.characterData = characterData;
@@ -29,7 +30,7 @@ namespace CreateCharacter
             {
                 SetGender(characterData.Gender);
                 var appearance = characterData.Appearance;
-                SetSkin(appearance.Skins,appearance.Colors);
+                SetSkin(appearance.Skins, appearance.Colors);
                 var progression = characterData.Progression;
                 nameText.text = characterData.Name;
                 levelText.text = GetLevelText(progression.Level);
@@ -46,6 +47,7 @@ namespace CreateCharacter
         {
             return skinResources.LevelIcons[level - 1];
         }
+
         public static Dictionary<int, string> levelWithText = new Dictionary<int, string>
         {
             // Luyện Khí
@@ -73,19 +75,23 @@ namespace CreateCharacter
             { 14, "Hóa Thần Trung Kì" },
             { 15, "Hóa Thần Hậu Kì" },
         };
+
         private string GetLevelText(int level)
         {
             return levelWithText[level];
         }
+
         private void SelectCharacter()
         {
             system.SelectCharacter(characterData.Id);
         }
+
         [Button]
         private void CreateCharacter()
         {
             Client.Instance.Send(MessageTag.CanCreateCharacter);
         }
+
         private void OnDestroy()
         {
             button.onClick.RemoveAllListeners();

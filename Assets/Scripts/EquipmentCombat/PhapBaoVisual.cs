@@ -14,7 +14,8 @@ public class PhapBaoVisual : MonoBehaviour
     public void ActiveAttack()
     {
         anim.SetTrigger(ActiveTrigger);
-    }    
+    }
+
     public void Init(Sprite spriteVisual)
     {
         gameObject.SetActive(true);
@@ -23,7 +24,5 @@ public class PhapBaoVisual : MonoBehaviour
         {
             item.sprite = spriteVisual;
         }
-
     }
-
 }

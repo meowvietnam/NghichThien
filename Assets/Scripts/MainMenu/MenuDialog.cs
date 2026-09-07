@@ -18,6 +18,7 @@ namespace MainMenu
         [SerializeField] private Popup popAccount;
         [SerializeField] private PopupConfirmPassword popupConfirmPassword;
         [SerializeField] private GuestRegisterButton guestRegisterButton;
+
         private void Start()
         {
             SetEventButton(btnAccount, () =>
@@ -33,14 +34,13 @@ namespace MainMenu
             sliderMusic.value = SoundManager.Instance.volumeMusic;
             sliderSound.value = SoundManager.Instance.volumeSound;
         }
+
         private void OnDeleteAccount()
         {
             var password = Utils.GenerateRandomNumber(4);
             popupConfirmPassword.SetPassword(password);
-            popupConfirmPassword.ShowPopConfirmAction($"Xác nhận xóa tài khoản?\nNhập mã {password} để tiếp tục.", () =>
-            {
-                authService.DeleteAccount();
-            });
+            popupConfirmPassword.ShowPopConfirmAction($"Xác nhận xóa tài khoản?\nNhập mã {password} để tiếp tục.",
+                () => { authService.DeleteAccount(); });
         }
 
         private void OnLogout()
@@ -52,6 +52,7 @@ namespace MainMenu
         {
             authService.Play();
         }
+
         public void SetAccountAlias(string alias)
         {
             accountAlias.text = alias;

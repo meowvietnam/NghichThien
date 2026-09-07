@@ -8,10 +8,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(VuAnThuat), menuName = "Skill/Thần Thông/" + nameof(VuAnThuat))]
 public class VuAnThuat : NeTranhTT, IMemorySerializable<VuAnThuat>
 {
-    [SerializeField]
-    private int requireHuyenVu = 4;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int requireHuyenVu = 4;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
@@ -19,6 +18,7 @@ public class VuAnThuat : NeTranhTT, IMemorySerializable<VuAnThuat>
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -39,13 +39,16 @@ public class VuAnThuat : NeTranhTT, IMemorySerializable<VuAnThuat>
 
     public override string GetDesc(int level)
     {
-        return $"Gỡ ra {GetColoredText($"{requireHuyenVu}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HuyenVu)}. Trong hiệp tiếp theo, né tránh toàn bộ sát thương. {GetColoredText($"Mỗi cuộc chiến chỉ có thể sử dụng một lần", "red")}";
+        return
+            $"Gỡ ra {GetColoredText($"{requireHuyenVu}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HuyenVu)}. Trong hiệp tiếp theo, né tránh toàn bộ sát thương. {GetColoredText($"Mỗi cuộc chiến chỉ có thể sử dụng một lần", "red")}";
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HuyenVu, out SecureInt huyenVu);
-        if (huyenVu >= requireHuyenVu && !caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is VuAnThuat)) && base.IsCanUse(caster, target))
+        if (huyenVu >= requireHuyenVu &&
+            !caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is VuAnThuat)) &&
+            base.IsCanUse(caster, target))
         {
             return true;
         }

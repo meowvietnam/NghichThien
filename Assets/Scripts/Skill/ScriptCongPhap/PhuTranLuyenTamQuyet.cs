@@ -9,19 +9,22 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(PhuTranLuyenTamQuyet))]
 public class PhuTranLuyenTamQuyet : BangTamQuyet, IMemorySerializable<PhuTranLuyenTamQuyet>
 {
-    [SerializeField]
-    private int[] buffValues2 = new int[]{9, 13, 17, 21, 25};
+    [SerializeField] private int[] buffValues2 = new int[] { 9, 13, 17, 21, 25 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NhieuHon, out SecureInt nhieuHon) && CheckIsEqualETypeSkill(caster))
+        if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NhieuHon, out SecureInt nhieuHon) &&
+            CheckIsEqualETypeSkill(caster))
         {
-            target.AddDamageData(new List<int>{(int)(target.GetDameBuffForTarget() * buffValues2[CurrentLevelCongPhapInCombat(caster) - 1] / 100)});
+            target.AddDamageData(new List<int>
+                { (int)(target.GetDameBuffForTarget() * buffValues2[CurrentLevelCongPhapInCombat(caster) - 1] / 100) });
         }
     }
 
     public override string GetDesc(int level)
     {
-        return $"{base.GetDesc(level)}. Nếu đối thủ ở trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NhieuHon)} thì sử dụng {GetTextTypeSkill(ETypeSkill.Than)} hệ thần thông tổn thương tăng lên {GetColoredText($"{buffValues2[level - 1]}%", "red")}";
+        return
+            $"{base.GetDesc(level)}. Nếu đối thủ ở trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NhieuHon)} thì sử dụng {GetTextTypeSkill(ETypeSkill.Than)} hệ thần thông tổn thương tăng lên {GetColoredText($"{buffValues2[level - 1]}%", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

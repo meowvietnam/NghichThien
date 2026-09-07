@@ -7,6 +7,7 @@ namespace Network.Models
         MoneyVip,
         Iap,
     }
+
     [MemoryPackable]
     public partial class UpgradeDongPhu
     {

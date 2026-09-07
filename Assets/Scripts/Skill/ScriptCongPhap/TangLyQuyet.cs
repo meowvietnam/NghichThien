@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(TangLyQuyet))]
 public class TangLyQuyet : CongPhap, IMemorySerializable<TangLyQuyet>
 {
-    [SerializeField]
-    private int[] dameBuffPercent;
-    [SerializeField]
-    private int[] dameDebuffPercent;
+    [SerializeField] private int[] dameBuffPercent;
+    [SerializeField] private int[] dameDebuffPercent;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int level = CurrentLevelCongPhapInCombat(caster);
@@ -26,7 +25,7 @@ public class TangLyQuyet : CongPhap, IMemorySerializable<TangLyQuyet>
         if (noiThuong > 0)
         {
             Debug.Log("tuong dong KimLinhThacThienCong");
-            target.AddDamageData(new List<int>{(int)((percentDame / 100f) * dames[0])});
+            target.AddDamageData(new List<int> { (int)((percentDame / 100f) * dames[0]) });
         }
     }
 
@@ -58,13 +57,14 @@ public class TangLyQuyet : CongPhap, IMemorySerializable<TangLyQuyet>
         if (noiThuong > 0)
         {
             Debug.Log("excute 2 tanglyQuyet");
-            target.AddDamageData(new List<int>{(int)((percentDame / 100f) * dames[0])});
+            target.AddDamageData(new List<int> { (int)((percentDame / 100f) * dames[0]) });
         }
     }
 
     public override string GetDesc(int level)
     {
-        return $"Bản thân có trạng thái nội thương, bản thân nhận sát thương tăng lên {GetColoredText($"{dameDebuffPercent[level - 1]}%", "red")},nhưng có thể tạo thành sát thương thần thông tăng lên là {GetColoredText($"{dameBuffPercent[level - 1]}%", "red")}";
+        return
+            $"Bản thân có trạng thái nội thương, bản thân nhận sát thương tăng lên {GetColoredText($"{dameDebuffPercent[level - 1]}%", "red")},nhưng có thể tạo thành sát thương thần thông tăng lên là {GetColoredText($"{dameBuffPercent[level - 1]}%", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

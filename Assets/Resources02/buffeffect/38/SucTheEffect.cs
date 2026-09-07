@@ -3,9 +3,9 @@ using UnityEngine;
 public class SucTheEffect : BuffEffect
 {
     [SerializeField] private GameObject sucTheAtk;
+
     void Start()
     {
-        
     }
 
     public void ShowSucTheAtk()
@@ -16,8 +16,6 @@ public class SucTheEffect : BuffEffect
         foreach (var par in listPar)
         {
             par.Play();
-        } 
-            
+        }
     }
-
 }

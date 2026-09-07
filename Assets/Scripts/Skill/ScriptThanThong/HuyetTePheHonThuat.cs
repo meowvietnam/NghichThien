@@ -8,10 +8,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(HuyetTePheHonThuat), menuName = "Skill/Thần Thông/" + nameof(HuyetTePheHonThuat))]
 public class HuyetTePheHonThuat : ThanThong, IMemorySerializable<HuyetTePheHonThuat>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{4, 5, 6, 7, 8};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] buffValues = new int[] { 4, 5, 6, 7, 8 };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon, out SecureInt hon);
@@ -20,6 +19,7 @@ public class HuyetTePheHonThuat : ThanThong, IMemorySerializable<HuyetTePheHonTh
         caster.Healing(heal);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -29,7 +29,8 @@ public class HuyetTePheHonThuat : ThanThong, IMemorySerializable<HuyetTePheHonTh
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is HuyetTePheHonThuat)) && base.IsCanUse(caster, target))
+        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is HuyetTePheHonThuat)) &&
+            base.IsCanUse(caster, target))
         {
             return true;
         }
@@ -39,7 +40,8 @@ public class HuyetTePheHonThuat : ThanThong, IMemorySerializable<HuyetTePheHonTh
 
     public override string GetDesc(int level)
     {
-        return $"Tiêu hao tất cả {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} mỗi một tầng khôi phục {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm HP {GetColoredText($"Mỗi cuộc chiến chỉ có thể sử dụng một lần", "red")}";
+        return
+            $"Tiêu hao tất cả {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} mỗi một tầng khôi phục {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm HP {GetColoredText($"Mỗi cuộc chiến chỉ có thể sử dụng một lần", "red")}";
     }
 
     public override int ByteSize()

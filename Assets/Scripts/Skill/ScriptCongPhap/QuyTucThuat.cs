@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(QuyTucThuat))]
 public class QuyTucThuat : CongPhap, IMemorySerializable<QuyTucThuat>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{6, 12, 24, 48, 96};
+    [SerializeField] private int[] buffValues = new int[] { 6, 12, 24, 48, 96 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (target.currentTurnDameTaked <= 0)
@@ -22,7 +22,8 @@ public class QuyTucThuat : CongPhap, IMemorySerializable<QuyTucThuat>
 
     public override string GetDesc(int level)
     {
-        return $"Kết thúc hiệp, nếu chưa sử dụng bất kì thần thông gây tổn thương nào thì khôi phục {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm HP";
+        return
+            $"Kết thúc hiệp, nếu chưa sử dụng bất kì thần thông gây tổn thương nào thì khôi phục {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm HP";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

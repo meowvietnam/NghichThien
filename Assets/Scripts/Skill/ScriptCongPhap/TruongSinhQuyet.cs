@@ -11,10 +11,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(TruongSinhQuyet))]
 public class TruongSinhQuyet : CongPhap, IMemorySerializable<TruongSinhQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{5, 10, 20, 40, 80};
-    [SerializeField]
-    private int require = 25;
+    [SerializeField] private int[] buffValues = new int[] { 5, 10, 20, 40, 80 };
+    [SerializeField] private int require = 25;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (caster.characterStatsTemp.hp <= caster.characterStatsTemp.hpMax * (require / 100f))
@@ -25,7 +24,8 @@ public class TruongSinhQuyet : CongPhap, IMemorySerializable<TruongSinhQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Kết thúc hiệp, nếu HP thấp hơn {GetColoredText($"{require}%", "red")} thì khôi phục {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm HP";
+        return
+            $"Kết thúc hiệp, nếu HP thấp hơn {GetColoredText($"{require}%", "red")} thì khôi phục {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm HP";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

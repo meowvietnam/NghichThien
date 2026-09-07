@@ -27,10 +27,7 @@ public class SecureBool
             Set(realValue);
             return realValue;
         }
-        set
-        {
-            Set(value);
-        }
+        set { Set(value); }
     }
 
     private void Set(bool value)

@@ -22,8 +22,7 @@ namespace Events
         private ItemEventShop itemEvent;
         private ushort eventId;
 
-        [Header("Context")] 
-        [SerializeField] private ConvertElementalSkill.Prefabs.ItemUI itemUIPrefab;
+        [Header("Context")] [SerializeField] private ConvertElementalSkill.Prefabs.ItemUI itemUIPrefab;
         [SerializeField] private SkillItemUI skillItemUIPrefab;
         [SerializeField] private RectTransform itemContainer;
         [SerializeField] private ItemRewardUI moneyVipPrefab;
@@ -60,7 +59,8 @@ namespace Events
         private void OnBuyWithMoneyVip()
         {
             var popup = Pool.Get<PopupConfirmAction>();
-            popup.ShowPopConfirmAction($"Xác nhận mua bằng {Utils.FormatCount(itemEvent.MoneyVip)} Tiên ngọc", ConfirmBuy);
+            popup.ShowPopConfirmAction($"Xác nhận mua bằng {Utils.FormatCount(itemEvent.MoneyVip)} Tiên ngọc",
+                ConfirmBuy);
         }
 
         private async void ConfirmBuy()
@@ -83,6 +83,7 @@ namespace Events
                 UpdateButton();
             }
         }
+
         private void UpdateButton()
         {
             var buttonActive = !itemEvent.HasBuy;
@@ -95,6 +96,7 @@ namespace Events
             moneyVipText.text = Utils.FormatCount(itemEvent.MoneyVip);
             amountText.text = $"{Utils.FormatCount(itemEvent.Amount)} VNĐ";
         }
+
         public void Init(ushort eventId, ItemEventShop item)
         {
             this.eventId = eventId;
@@ -104,7 +106,7 @@ namespace Events
             UpdateButton();
             UpdateTextButton();
         }
-        
+
         private RewardUIContext CreateContext()
         {
             return new RewardUIContext()

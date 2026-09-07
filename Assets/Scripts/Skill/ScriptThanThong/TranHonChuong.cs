@@ -7,20 +7,19 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(TranHonChuong), menuName = "Skill/Thần Thông/" + nameof(TranHonChuong))]
 public class TranHonChuong : ThanThong, IMemorySerializable<TranHonChuong>
 {
-    [SerializeField]
-    private int[] dames = new int[]{6, 8, 14, 26, 52};
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 2, 3, 4, 5};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] dames = new int[] { 6, 8, 14, 26, 52 };
+    [SerializeField] private int[] buffValues = new int[] { 1, 2, 3, 4, 5 };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChayMau, out SecureInt chayMau);
         int dame = dames[GetIndexLevelThanThong(caster)] + chayMau * buffValues[GetIndexLevelThanThong(caster)];
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         caster.Healing(dame);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -30,7 +29,8 @@ public class TranHonChuong : ThanThong, IMemorySerializable<TranHonChuong>
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Mỗi có một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChayMau)} tăng lên {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương. Đồng thời, hồi một lượng HP tương đương sát thương gây ra";
+        return
+            $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Mỗi có một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChayMau)} tăng lên {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương. Đồng thời, hồi một lượng HP tương đương sát thương gây ra";
     }
 
     public override int ByteSize()

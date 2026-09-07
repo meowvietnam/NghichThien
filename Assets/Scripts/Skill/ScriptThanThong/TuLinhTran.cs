@@ -7,8 +7,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(TuLinhTran), menuName = "Skill/Thần Thông/" + nameof(TuLinhTran))]
 public class TuLinhTran : TranPhapTT, IMemorySerializable<TuLinhTran>
 {
-    [SerializeField]
-    private int[] hapThus;
+    [SerializeField] private int[] hapThus;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);

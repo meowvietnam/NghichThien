@@ -12,6 +12,7 @@ namespace LuyenKhi
         [field: SerializeField] public EquipmentTier Tier { get; private set; }
         [field: SerializeField] public EquipmentGrade Grade { get; private set; }
         [field: SerializeField] public string Name { get; private set; }
+
         public void Deserialize(IReader reader, ref EquipmentGradeConfig value)
         {
             value.MinGrade = reader.Read<int>();

@@ -26,6 +26,6 @@ namespace CreateCharacter.CharStats
         SoKhuyMonKinh = 1 << 17, // 2 Tat ca cam ngo dat 1 moc nao do
         MacCaKyXao = 1 << 18,
         GiaTocTuChan = 1 << 19, // 3 ThoNapCongPhap => NguPhuDoanNguyenQuyet (ChuTu1)
-        TienThienDiMach = 1 << 20, 
+        TienThienDiMach = 1 << 20,
     }
 }

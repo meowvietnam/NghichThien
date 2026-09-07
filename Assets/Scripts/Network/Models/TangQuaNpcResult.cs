@@ -1,6 +1,7 @@
 using LuyenDan;
 using MemoryPack;
 using UnityEngine;
+
 namespace Network.Models
 {
     [MemoryPackable]
@@ -10,6 +11,5 @@ namespace Network.Models
         public string? Message { get; set; }
         public int IdChar { get; set; }
         public int NewValueRelationship { get; set; }
-
     }
 }

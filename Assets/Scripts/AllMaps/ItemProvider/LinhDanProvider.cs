@@ -13,7 +13,7 @@ namespace AllMaps.ItemProvider
     {
         public override int BaseValueLevelWithTier => 6;
         public override ItemType SupportedType => ItemType.LinhDan;
-        
+
         public override void Display(ToolTipContext ctx)
         {
             base.Display(ctx);
@@ -26,10 +26,10 @@ namespace AllMaps.ItemProvider
 
                 switch (linhDan.ETypeDan)
                 {
-                    case ETypeDan.DanCombat:  text += " - Chiến Đấu"; break;
-                    case ETypeDan.DanBuff:    text += " - Tăng Chỉ Số"; break;
-                    case ETypeDan.DanDotPha:  text += " - Đột Phá"; break;
-                    case ETypeDan.DanOther:   text += " - Khác"; break;
+                    case ETypeDan.DanCombat: text += " - Chiến Đấu"; break;
+                    case ETypeDan.DanBuff: text += " - Tăng Chỉ Số"; break;
+                    case ETypeDan.DanDotPha: text += " - Đột Phá"; break;
+                    case ETypeDan.DanOther: text += " - Khác"; break;
                 }
 
                 ctx.DescTextItem.text = $"{BaseSkill.GetColoredText("【Đan Độc】", "#d36cd3")} {linhDan.DanDoc}";
@@ -43,7 +43,6 @@ namespace AllMaps.ItemProvider
         public override LinhDan GetDataItemByIdRef(ushort Id)
         {
             return LuyenDanResources.Instance.FindLinhDan(Id);
-
         }
 
         public override int GetPriceItemSell(ushort Id)
@@ -53,20 +52,23 @@ namespace AllMaps.ItemProvider
             {
                 return linhDan.PriceV130;
             }
+
             return 0;
         }
+
         public override int GetCountOwner(ushort id)
         {
             var item = Client.Instance.CharacterData.InventoryManager.LinhDans.FirstOrDefault(x => x.Id == id);
             return item != null ? item.Count : base.GetCountOwner(id);
         }
+
         public void UseItem(ItemInventory itemInventory)
         {
             if (itemInventory.iItemData is LinhDan danDuoc)
             {
                 if (danDuoc.ETypeDan == ETypeDan.DanBuff || danDuoc.ETypeDan == ETypeDan.DanCombat)
                 {
-                    if(danDuoc.ETypeDan == ETypeDan.DanBuff)
+                    if (danDuoc.ETypeDan == ETypeDan.DanBuff)
                     {
                         bool isTuViType = danDuoc.EBuffType switch
                         {
@@ -78,12 +80,14 @@ namespace AllMaps.ItemProvider
                             _ => false // Các loại buff không phải tu vi
                         };
 
-                        if (isTuViType && Client.Instance.CharacterData.Stats.Ability.HasFlag(CreateCharacter.CharStats.Ability.TienThienDiMach))
+                        if (isTuViType &&
+                            Client.Instance.CharacterData.Stats.Ability.HasFlag(CreateCharacter.CharStats.Ability
+                                .TienThienDiMach))
                         {
-                           return;
+                            return;
                         }
+                    }
 
-                    }    
                     var selectNum = Pool.Get<TabPanel>().selectNum;
                     selectNum.SetMin(0);
                     int maxValue = 0;
@@ -93,13 +97,17 @@ namespace AllMaps.ItemProvider
                     }
                     else
                     {
-                        maxValue = itemInventory.itemRef.Count <= Client.Instance.CharacterData.Progression.Level ? itemInventory.itemRef.Count : Client.Instance.CharacterData.Progression.Level; ///
+                        maxValue = itemInventory.itemRef.Count <= Client.Instance.CharacterData.Progression.Level
+                            ? itemInventory.itemRef.Count
+                            : Client.Instance.CharacterData.Progression.Level; ///
                         if (maxValue <= 0)
                         {
-                            NotifyGroup.Instance.Show($"Đã đạt tốt đa số lần sử dụng {itemInventory.iItemData.Name} hãy chiến đấu để làm mới");
+                            NotifyGroup.Instance.Show(
+                                $"Đã đạt tốt đa số lần sử dụng {itemInventory.iItemData.Name} hãy chiến đấu để làm mới");
                             return;
                         }
                     }
+
                     selectNum.SetMax(maxValue);
 
 
@@ -107,25 +115,22 @@ namespace AllMaps.ItemProvider
                     {
                         selectNum.SetText($"{itemInventory.iItemData.Name} x{value}");
                     };
-                    
+
                     selectNum.confirmAction.RemoveAllListeners();
                     selectNum.confirmAction.AddListener(() =>
                     {
                         var value = selectNum.GetValue();
                         if (value >= 1)
                         {
-                            Observer.Notify(EventList.Network.USE_DAN, Pool.Get<TabPanel>(), itemInventory.itemRef.Id, (ushort)value);
+                            Observer.Notify(EventList.Network.USE_DAN, Pool.Get<TabPanel>(), itemInventory.itemRef.Id,
+                                (ushort)value);
                             itemInventory.AddCount(-value);
                         }
-
                     });
                     selectNum.SetText($"{itemInventory.iItemData.Name} x{0}");
 
                     selectNum.Show(0.15f);
-
                 }
-
-
             }
         }
     }

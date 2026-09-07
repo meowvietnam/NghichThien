@@ -62,13 +62,15 @@ namespace AllMaps.ItemProvider
 
         public override RecipeData GetDataItemByIdRef(ushort Id)
         {
-           return LuyenDanResources.Instance.FindRecipe(Id);
+            return LuyenDanResources.Instance.FindRecipe(Id);
         }
+
         public override int GetCountOwner(ushort id)
         {
             var item = Client.Instance.CharacterData.InventoryManager.Recipes.FirstOrDefault(x => x.Id == id);
             return item != null ? item.Count : base.GetCountOwner(id);
         }
+
         public override int GetPriceItemSell(ushort Id)
         {
             var data = GetDataItemByIdRef(Id);
@@ -77,6 +79,7 @@ namespace AllMaps.ItemProvider
             {
                 return recipe.LinhDan.PriceV130 * 5;
             }
+
             return 0;
         }
 

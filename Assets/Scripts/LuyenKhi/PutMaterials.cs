@@ -15,12 +15,15 @@ namespace LuyenKhi
             {
                 itemSlot.Clear();
             }
+
             effectDetailManager.Init();
         }
+
         public Material[] GetSelectedMaterials()
         {
             return slots.Where(x => x.CurrentSelect != null).Select(x => x.CurrentSelect.Material).ToArray();
         }
+
         public void Recalculate()
         {
             var matConfigs = LuyenKhiPanel.Instance.Resources.MaterialGradeConfigs;
@@ -46,7 +49,7 @@ namespace LuyenKhi
                 {
                     Materials = k.ToList(),
                     Effect = lianQiEffects.First(i =>
-                        i.CultivationElement == k.Key.CultivationElement && i.YinYangType == k.Key.YinYangType)
+                            i.CultivationElement == k.Key.CultivationElement && i.YinYangType == k.Key.YinYangType)
                         .Effects.First(i => i.ArtifactType == selectedType),
                 })
                 .GroupBy(x => x.Effect.EffectType)

@@ -10,6 +10,5 @@ namespace Network.Models
         public string Message { get; set; }
         public ushort Id { get; set; }
         public EquipmentType TypeEquipment { get; set; }
-       
     }
 }

@@ -32,6 +32,7 @@ public class TextureOptimizer : EditorWindow
                 importer.SaveAndReimport();
             }
         }
+
         Debug.Log("Đã tối ưu xong toàn bộ Texture!");
     }
 }

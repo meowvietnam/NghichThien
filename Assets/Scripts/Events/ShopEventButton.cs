@@ -10,7 +10,8 @@ namespace Events
     {
         [SerializeField] private ShopEventPanel panelPrefab;
         private ShopEventPanel currentPanel;
-        protected async override  void OnClick()
+
+        protected async override void OnClick()
         {
             var reader = await Client.Instance.MemRequestWait(MessageTag.GetEventRequest, EventId);
             var result = reader.MemRead<GetEventResult>();
@@ -21,6 +22,7 @@ namespace Events
                 {
                     currentPanel = Instantiate(panelPrefab, containerPanel);
                 }
+
                 currentPanel.Init(@event);
                 currentPanel.Show();
             }

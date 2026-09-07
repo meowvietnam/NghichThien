@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(QuyTran), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(QuyTran))]
 public class QuyTran : NgoDaoCombat, IMemorySerializable<QuyTran>
 {
-    [SerializeField]
-    private ThanThong hoanTran;
+    [SerializeField] private ThanThong hoanTran;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Cat, out SecureInt cat))
@@ -21,7 +21,8 @@ public class QuyTran : NgoDaoCombat, IMemorySerializable<QuyTran>
 
     public override string GetDes()
     {
-        return $"Kết thúc hiệp, nếu đối thủ có {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cat)} thì phát động một lần [Hoàn Trần]";
+        return
+            $"Kết thúc hiệp, nếu đối thủ có {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cat)} thì phát động một lần [Hoàn Trần]";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

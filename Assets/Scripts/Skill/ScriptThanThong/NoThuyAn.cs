@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(NoThuyAn), menuName = "Skill/Thần Thông/" + nameof(NoThuyAn))]
 public class NoThuyAn : ThanThong, BaseSkill.LienKich, IMemorySerializable<NoThuyAn>
 {
-    [SerializeField]
-    private int[] triLieus;
-    [SerializeField]
-    private float delayTimeEffect = 0.5f;
+    [SerializeField] private int[] triLieus;
+    [SerializeField] private float delayTimeEffect = 0.5f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -20,6 +19,7 @@ public class NoThuyAn : ThanThong, BaseSkill.LienKich, IMemorySerializable<NoThu
         Observer.AddObserver(EventList.Combat.LIEN_KICH, ObserverEffect);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -34,12 +34,14 @@ public class NoThuyAn : ThanThong, BaseSkill.LienKich, IMemorySerializable<NoThu
         if (currentTurn == null)
             return;
         int count = currentTurn.specialThanThongImpactAfterPlaySkill.Count(x => x is NoThuyAn);
-        currentTurn.AddBuffAndDebuffCount(EBuffAndDeBuff.TriLieu, count * triLieus[GetIndexLevelThanThong(currentTurn)]);
+        currentTurn.AddBuffAndDebuffCount(EBuffAndDeBuff.TriLieu,
+            count * triLieus[GetIndexLevelThanThong(currentTurn)]);
     }
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Trong chiến đấu, mỗi lần phát động ngũ hành {GetKeyWord(EKeyWord.LienKich)} thì thu hoạch được {GetColoredText($"+{triLieus[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)} (Thần thông này có thể cộng dồn)";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Trong chiến đấu, mỗi lần phát động ngũ hành {GetKeyWord(EKeyWord.LienKich)} thì thu hoạch được {GetColoredText($"+{triLieus[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)} (Thần thông này có thể cộng dồn)";
     }
 
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)

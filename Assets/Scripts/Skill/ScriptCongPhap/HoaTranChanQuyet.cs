@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(HoaTranChanQuyet))]
 public class HoaTranChanQuyet : CongPhap, IMemorySerializable<HoaTranChanQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{3, 7, 15, 30, 70};
+    [SerializeField] private int[] buffValues = new int[] { 3, 7, 15, 30, 70 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         ThanThong thanThong = (ThanThong)data[2];
@@ -27,7 +27,8 @@ public class HoaTranChanQuyet : CongPhap, IMemorySerializable<HoaTranChanQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Khi sử dụng thần thông {GetColoredText($"[Hoàn Trần]", "red")} thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}. Khi sử dụng thần thông {GetColoredText($"[Hóa Cát]", "red")} thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChanTho)}";
+        return
+            $"Khi sử dụng thần thông {GetColoredText($"[Hoàn Trần]", "red")} thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}. Khi sử dụng thần thông {GetColoredText($"[Hóa Cát]", "red")} thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChanTho)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

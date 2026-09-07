@@ -51,6 +51,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
     [SerializeField] private Button btnConfirmDotPha;
     [SerializeField] private Button btnShowPopDotPha;
     [SerializeField] private TutorialBeQuan tutorial;
+
     private void SetupPopupDotPha(List<ItemRef> itemRefs, ItemInventory prefab)
     {
         for (int i = 0; i < prefab.transform.parent.childCount; i++)
@@ -130,6 +131,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
                     {
                         return false;
                     }
+
                     return owner.Count >= x.Count;
                 });
                 btnGreyConfirmDotPha.gameObject.SetActive(!canDotPha);
@@ -184,10 +186,12 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
     private CharacterData CharData => Client.Instance.CharacterData;
     public double CostPriceTieuHao1Month => CalculateCost(CharData.Progression.Level);
 
-    public static int GetTotalTuLuyen(float percentTuChat,float percentTamCanh,float tocDoTuLuyenCP,int tongSoThang)
+    public static int GetTotalTuLuyen(float percentTuChat, float percentTamCanh, float tocDoTuLuyenCP, int tongSoThang)
     {
-        var buffExp = GetTotalValueBuffWithMultiplier(new List<float> { percentTuChat, 100, percentTamCanh }, (int)tocDoTuLuyenCP) *
-                            tongSoThang;
+        var buffExp =
+            GetTotalValueBuffWithMultiplier(new List<float> { percentTuChat, 100, percentTamCanh },
+                (int)tocDoTuLuyenCP) *
+            tongSoThang;
         var ability = Client.Instance.CharacterData.Stats.Ability;
         if (ability.HasFlag(Ability.TienThienDaoThe))
         {
@@ -198,8 +202,10 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         {
             buffExp -= (int)MathF.Ceiling(buffExp * 0.1f);
         }
+
         return buffExp;
     }
+
     public static int GetTotalValueBuffWithMultiplier(List<float> percent, int tocDoTuLuyenCP)
     {
         float total = tocDoTuLuyenCP;
@@ -209,7 +215,8 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         }
 
         return (int)total;
-    }    
+    }
+
     public static float GetPercentTamCanhPlayer()
     {
         float percentTamCanh = 0;
@@ -222,11 +229,13 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         {
             percentTamCanh = -50;
         }
+
         return percentTamCanh;
     }
+
     public static int GetTocDoTuLuyenCharData()
     {
-        var charData =Client.Instance.CharacterData;
+        var charData = Client.Instance.CharacterData;
         var cpChuTu = Pool.Get<GameManager>().GetCongPhapWithId(charData.EquipmentManager.ChuTu1Used);
 
         int tocDoTuLuyenCP = 0;
@@ -235,17 +244,19 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
             var congPhapOwners = charData.InventoryManager.CongPhapOwners;
             var level = 0;
             if (congPhapOwners.TryGetValue(new CreateCharacter.CongPhap()
-            {
-                Id = charData.EquipmentManager.ChuTu1Used
-            }, out var congPhap))
+                {
+                    Id = charData.EquipmentManager.ChuTu1Used
+                }, out var congPhap))
             {
                 level = congPhap.Level;
             }
 
             tocDoTuLuyenCP = cpChuTu.GetTocDoTuLuyen(level);
         }
+
         return tocDoTuLuyenCP;
     }
+
     private void InitPageTuLuyen()
     {
         var charData = CharData;
@@ -257,7 +268,6 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         if (cpChuTu != null)
         {
             nameCPstr = cpChuTu.nameItem;
-           
         }
 
         nameCP.text = $"《{nameCPstr}》";
@@ -267,12 +277,12 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         var getTamCanh = GameManager.GetTamCanhValue(Client.Instance.CharacterData.Stats.TamCanh);
         float percentTamCanh = GetPercentTamCanhPlayer();
         tamCanhValueText.text = "Tăng lên";
-        if (percentTamCanh>0)
+        if (percentTamCanh > 0)
         {
             percentTamCanh = +50;
             tamCanhValueText.text = "Tăng lên";
         }
-        else if (percentTamCanh<0)
+        else if (percentTamCanh < 0)
         {
             percentTamCanh = -50;
             tamCanhValueText.text = "Giảm xuống";
@@ -280,7 +290,6 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
 
         percentTamCanhText.text = $"{percentTamCanh}%";
 
-       
 
         tuChatText.text = GameManager.tuChatWithText[charData.Stats.LinhCan];
         tamCanhText.text = getTamCanh.name;
@@ -297,9 +306,8 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
             int tongSoThang = Mathf.RoundToInt(value);
             if (tongSoThang > 0)
             {
-             
-
-                totalValueTuLuyenText.text = $"{GetTotalTuLuyen(percentTuChat,percentTamCanh,tocDoTuLuyenCP,tongSoThang)}";
+                totalValueTuLuyenText.text =
+                    $"{GetTotalTuLuyen(percentTuChat, percentTamCanh, tocDoTuLuyenCP, tongSoThang)}";
             }
             else
             {

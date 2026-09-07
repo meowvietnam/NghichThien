@@ -79,6 +79,7 @@ namespace CreateCharacter
                     break;
             }
         }
+
         public void Deserialize(IReader reader, ref EquipmentManager value)
         {
             value.ThanThongEquips = reader.ReadArray<ThanThongEquip>().ToHashSet();
@@ -124,7 +125,7 @@ namespace CreateCharacter
         {
             var old = ThanThongEquips.FirstOrDefault(x => x.Id == id);
 
-         
+
             ThanThongEquips.Remove(old);
         }
 
@@ -135,9 +136,11 @@ namespace CreateCharacter
             {
                 ThanThongEquips.Remove(old);
             }
+
             ThanThongEquips.Add(thanThong);
             return old;
         }
+
         public void EquipEquipment(EquipEquipmentResult result)
         {
             switch (result.TypeEquipment)

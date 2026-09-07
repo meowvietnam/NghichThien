@@ -4,13 +4,13 @@ using System;
 using Network;
 using Network.Extensions;
 
-[CreateAssetMenu(fileName = nameof(DoThienLietHoaTienTran), menuName = "Skill/Thần Thông/" + nameof(DoThienLietHoaTienTran))]
+[CreateAssetMenu(fileName = nameof(DoThienLietHoaTienTran),
+    menuName = "Skill/Thần Thông/" + nameof(DoThienLietHoaTienTran))]
 public class DoThienLietHoaTienTran : TranPhapTT, IMemorySerializable<DoThienLietHoaTienTran>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 2, 3, 4, 5};
-    [SerializeField]
-    private int hapThu = 2;
+    [SerializeField] private int[] buffValues = new int[] { 1, 2, 3, 4, 5 };
+    [SerializeField] private int hapThu = 2;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
@@ -26,7 +26,8 @@ public class DoThienLietHoaTienTran : TranPhapTT, IMemorySerializable<DoThienLie
 
     public override string GetDescTranPhapTT(int level)
     {
-        return $"Bắt đầu hiệp, Hấp thụ {GetColoredText($"+{hapThu}", "red")} điểm {GetTextLinhKhi(ELinhKhi.Hoa)} hệ linh khí. Đối thủ và bản thân nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}";
+        return
+            $"Bắt đầu hiệp, Hấp thụ {GetColoredText($"+{hapThu}", "red")} điểm {GetTextLinhKhi(ELinhKhi.Hoa)} hệ linh khí. Đối thủ và bản thân nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}";
     }
 
     public override int ByteSize()

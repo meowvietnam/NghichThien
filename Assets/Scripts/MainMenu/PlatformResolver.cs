@@ -15,13 +15,13 @@ namespace MainMenu
 
         public void Run()
         {
-            #if UNITY_IPHONE 
+#if UNITY_IPHONE
             or.SetActive(false);
             googleSignInButton.SetActive(false);
-            #else
+#else
             or.SetActive(true);
             googleSignInButton.SetActive(true);
-            #endif
+#endif
         }
     }
 }

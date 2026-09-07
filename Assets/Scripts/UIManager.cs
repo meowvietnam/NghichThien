@@ -41,14 +41,17 @@ public class UIManager : BaseBehaviour
     [SerializeField] private bool isShowListIcon = true;
     [SerializeField] private RectTransform[] listIcons;
     private Sequence listIconTween;
+
     public void SetActiveListIcon(bool active)
     {
         foreach (var listIcon in listIcons)
         {
             listIcon.gameObject.SetActive(active);
         }
+
         btnListIconShow.gameObject.SetActive(active);
     }
+
     /// <summary>
     /// Abstract Factory để lấy equipment từ các collection khác nhau
     /// </summary>
@@ -121,6 +124,7 @@ public class UIManager : BaseBehaviour
         gameObject.transform.SetParent(parent);
         UpdateButtonListPos();
     }
+
     public void InitVisualEquipment(ItemInventory item, BaseItemData data, ItemRef itemRef = null)
     {
         Sprite frame = null;
@@ -235,11 +239,13 @@ public class UIManager : BaseBehaviour
                 }
             }
         }
+
         var anchorPos = buttonRectTf.anchoredPosition;
         var posX = -(maxWidth + buttonRectTf.rect.width);
         anchorPos.x = posX;
         return anchorPos;
     }
+
     public void UpdateButtonListPos()
     {
         DOVirtual.DelayedCall(0.1f, () =>
@@ -249,6 +255,7 @@ public class UIManager : BaseBehaviour
             buttonRectTf.anchoredPosition = anchorPos;
         });
     }
+
     private void Awake()
     {
         var existing = Pool.Get<UIManager>();
@@ -298,10 +305,7 @@ public class UIManager : BaseBehaviour
             }
         });
         SetEventButton(btnGacha, () => { Pool.Get<GachaPanel>().SetActive(); });
-        SetEventButton(convertBtn, () =>
-        {
-            Observer.Notify(EventList.GamePlay.LOAD_SCENE, "ConvertElementalSkill");
-        });
+        SetEventButton(convertBtn, () => { Observer.Notify(EventList.GamePlay.LOAD_SCENE, "ConvertElementalSkill"); });
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -323,6 +327,7 @@ public class UIManager : BaseBehaviour
         {
             item.Init();
         }
+
         UpdateButtonListPos();
     }
 

@@ -18,6 +18,7 @@ namespace Tutorials
         private Coroutine typingCoroutine;
         private string currentContent;
         public bool IsTyping { get; private set; }
+
         public void ShowText(string content)
         {
             IsTyping = true;
@@ -46,6 +47,7 @@ namespace Tutorials
                     );
                 });
         }
+
         private IEnumerator TypeTextCoroutine(string content, float delay)
         {
             text.text = string.Empty;
@@ -59,6 +61,7 @@ namespace Tutorials
             typingCoroutine = null;
             IsTyping = false;
         }
+
         public void Complete()
         {
             IsTyping = false;
@@ -70,9 +73,11 @@ namespace Tutorials
                 StopCoroutine(typingCoroutine);
                 typingCoroutine = null;
             }
+
             transform.localScale = Vector3.one;
             text.text = currentContent;
         }
+
         public void Close()
         {
             IsTyping = false;
@@ -87,11 +92,9 @@ namespace Tutorials
             tween = transform
                 .DOScale(Vector3.zero, scaleDuration)
                 .SetEase(Ease.InBack)
-                .OnComplete(() =>
-                {
-                    gameObject.SetActive(false);
-                });
+                .OnComplete(() => { gameObject.SetActive(false); });
         }
+
         private void OnDestroy()
         {
             tween?.Kill();

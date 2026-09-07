@@ -28,14 +28,14 @@ using Sirenix.OdinInspector.Modules.Addressables.Editor;
 
 namespace Sirenix.OdinInspector.Modules.Addressables.Editor
 {
-	/// <summary>
-	/// Validator for AssetLabelReference values.
-	/// </summary>
-	public class AssetLabelReferenceValidator : ValueValidator<AssetLabelReference>
+    /// <summary>
+    /// Validator for AssetLabelReference values.
+    /// </summary>
+    public class AssetLabelReferenceValidator : ValueValidator<AssetLabelReference>
     {
         [Tooltip("If enabled, the validator will display an error message if the AssetLabelReference is not set. " +
-            "If disabled, the validator will only display an error message if the AssetLabelReference is set, but the " +
-            "assigned label does not exist.")]
+                 "If disabled, the validator will only display an error message if the AssetLabelReference is set, but the " +
+                 "assigned label does not exist.")]
         [ToggleLeft]
         public bool RequiredByDefault;
 
@@ -92,7 +92,6 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
             }
         }
     }
-
 }
 
 #endif

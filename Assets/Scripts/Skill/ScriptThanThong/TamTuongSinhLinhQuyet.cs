@@ -4,15 +4,14 @@ using System;
 using Network;
 using Network.Extensions;
 
-[CreateAssetMenu(fileName = nameof(TamTuongSinhLinhQuyet), menuName = "Skill/Thần Thông/" + nameof(TamTuongSinhLinhQuyet))]
+[CreateAssetMenu(fileName = nameof(TamTuongSinhLinhQuyet),
+    menuName = "Skill/Thần Thông/" + nameof(TamTuongSinhLinhQuyet))]
 public class TamTuongSinhLinhQuyet : ThanThong, IMemorySerializable<TamTuongSinhLinhQuyet>
 {
-    [SerializeField]
-    private int[] buffs;
-    [SerializeField]
-    private int tuKhi = 2;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] buffs;
+    [SerializeField] private int tuKhi = 2;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -21,6 +20,7 @@ public class TamTuongSinhLinhQuyet : ThanThong, IMemorySerializable<TamTuongSinh
         caster.Healing((int)(percent * (caster.characterStatsTemp.hpMax - caster.characterStatsTemp.hp)));
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -30,7 +30,8 @@ public class TamTuongSinhLinhQuyet : ThanThong, IMemorySerializable<TamTuongSinh
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Hồi phục {GetColoredText($"{buffs[level - 1]}%", "red")} lượng Hp đã mất. Đồng thời thu hoạch được {GetColoredText($"{tuKhi}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TuKhi)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Hồi phục {GetColoredText($"{buffs[level - 1]}%", "red")} lượng Hp đã mất. Đồng thời thu hoạch được {GetColoredText($"{tuKhi}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TuKhi)}";
     }
 
     public override int ByteSize()

@@ -17,11 +17,13 @@ namespace DP
         [SerializeField] private float startPosY;
         [SerializeField] private float targetPosY;
         private Tween tween;
+
         private void Start()
         {
             SetEventButton(HarvestButton, HarvestClick);
             SetEventButton(WaterButton, WaterClick);
         }
+
         private void HarvestClick()
         {
             var slot = DongPhuPanel.Instance.CurrentSelectedSlot;
@@ -30,11 +32,13 @@ namespace DP
                 Debug.Log("Slot null!");
                 return;
             }
+
             if (!slot.HasSeed())
             {
                 Debug.Log("Not has seed");
                 return;
             }
+
             var slotIndex = slot.Slot.SlotIndex;
             var request = new HarvestRequest()
             {
@@ -42,6 +46,7 @@ namespace DP
             };
             Client.Instance.MemSend(MessageTag.HarvestSlot, request);
         }
+
         private void WaterClick()
         {
             var slot = DongPhuPanel.Instance.CurrentSelectedSlot;
@@ -50,11 +55,13 @@ namespace DP
                 Debug.Log("Slot null!");
                 return;
             }
+
             if (!slot.HasSeed())
             {
                 Debug.Log("Not has seed");
                 return;
             }
+
             var slotIndex = slot.Slot.SlotIndex;
             var request = new WateringHelpRequest()
             {
@@ -62,12 +69,14 @@ namespace DP
             };
             Client.Instance.MemSend(MessageTag.WateringHelp, request);
         }
+
         public void Init(bool isMe)
         {
             HarvestButton.gameObject.SetActive(isMe);
             WaterButton.gameObject.SetActive(!isMe);
             Hide();
         }
+
         [Button]
         public void Show()
         {
@@ -75,12 +84,14 @@ namespace DP
             tween?.Kill();
             tween = transform.DOLocalMoveY(targetPosY, 0.3f);
         }
+
         [Button]
         public void Hide()
         {
             tween?.Kill();
             tween = transform.DOLocalMoveY(startPosY, 0.3f);
         }
+
         public void UpdateUI()
         {
             // var dongPhu = DongPhuPanel.Instance;

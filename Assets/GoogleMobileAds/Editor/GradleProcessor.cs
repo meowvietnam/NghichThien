@@ -1,21 +1,23 @@
 using System;
 using System.IO;
 using UnityEditor.Android;
-
 using GoogleMobileAds.Editor;
 
 public class GradleProcessor : IPostGenerateGradleAndroidProject
 {
-    public int callbackOrder { get { return 0; } }
+    public int callbackOrder
+    {
+        get { return 0; }
+    }
 
     private const string GMA_PACKAGING_OPTIONS_LAUNCHER =
-      "apply from: '../unityLibrary/GoogleMobileAdsPlugin.androidlib/packaging_options.gradle'";
+        "apply from: '../unityLibrary/GoogleMobileAdsPlugin.androidlib/packaging_options.gradle'";
 
     private const string GMA_PACKAGING_OPTIONS =
-      "apply from: 'GoogleMobileAdsPlugin.androidlib/packaging_options.gradle'";
+        "apply from: 'GoogleMobileAdsPlugin.androidlib/packaging_options.gradle'";
 
     private const string GMA_VALIDATE_GRADLE_DEPENDENCIES =
-      "gradle.projectsEvaluated { apply from: 'GoogleMobileAdsPlugin.androidlib/validate_dependencies.gradle' }";
+        "gradle.projectsEvaluated { apply from: 'GoogleMobileAdsPlugin.androidlib/validate_dependencies.gradle' }";
 
     public void OnPostGenerateGradleAndroidProject(string path)
     {
@@ -65,12 +67,13 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
             {
                 contents += Environment.NewLine + packagingOptionsLauncher;
             }
+
             File.WriteAllText(gradlepath, contents);
         }
 
         // TODO (b/311555203) Use delete then write approach above to update this Gradle script too.
         var unityLibraryGradle = Directory.GetFiles(rootPath, "unityLibrary/build.gradle",
-                    SearchOption.TopDirectoryOnly);
+            SearchOption.TopDirectoryOnly);
 
         foreach (var gradlePath in unityLibraryGradle)
         {
@@ -94,6 +97,7 @@ public class GradleProcessor : IPostGenerateGradleAndroidProject
                 newFile += line + Environment.NewLine;
             }
         }
+
         return newFile;
     }
 }

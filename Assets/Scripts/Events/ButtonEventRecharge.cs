@@ -12,6 +12,7 @@ namespace Events
     {
         [SerializeField] private EventRechargePanel panelPrefab;
         private EventRechargePanel currentPanel;
+
         protected override void OnClick()
         {
             GetEvent();
@@ -27,6 +28,7 @@ namespace Events
                 {
                     currentPanel = Instantiate(panelPrefab, containerPanel);
                 }
+
                 currentPanel.Init(result.Event);
                 currentPanel.Show();
             }

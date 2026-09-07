@@ -7,12 +7,10 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ToaHoaQuyet), menuName = "Skill/Thần Thông/" + nameof(ToaHoaQuyet))]
 public class ToaHoaQuyet : ThanThong, BaseSkill.TuongDong, IMemorySerializable<ToaHoaQuyet>
 {
-    [SerializeField]
-    private int[] dameValues = new int[]{11, 15, 22, 40, 80};
-    [SerializeField]
-    private int[] dameValueBuffs = new int[]{2, 3, 6, 10, 20};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] dameValues = new int[] { 11, 15, 22, 40, 80 };
+    [SerializeField] private int[] dameValueBuffs = new int[] { 2, 3, 6, 10, 20 };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dameValues[GetIndexLevelThanThong(caster)];
@@ -21,19 +19,27 @@ public class ToaHoaQuyet : ThanThong, BaseSkill.TuongDong, IMemorySerializable<T
             dame *= 2;
         }
 
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
     public void ExecuteTuongDong(CharacterCombat caster, CharacterCombat target)
     {
         int dameBuff = dameValueBuffs[GetIndexLevelThanThong(caster)];
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dameBuff}, eTypeSkill, true);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dameBuff }, eTypeSkill, true);
     }
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"+{dameValues[level - 1]}", "red")} điểm sát thương, nếu như đối thủ không có linh khí thì tổn thương gấp đôi. {GetKeyWord(EKeyWord.TuongDong)} Tăng lên {GetColoredText($"+{dameValueBuffs[level - 1]}", "red")} điểm sát thương ";
+        return
+            $"Tạo thành {GetColoredText($"+{dameValues[level - 1]}", "red")} điểm sát thương, nếu như đối thủ không có linh khí thì tổn thương gấp đôi. {GetKeyWord(EKeyWord.TuongDong)} Tăng lên {GetColoredText($"+{dameValueBuffs[level - 1]}", "red")} điểm sát thương ";
     }
 
     public override int ByteSize()

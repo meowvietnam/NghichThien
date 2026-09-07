@@ -7,17 +7,21 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(BatCucBang), menuName = "Skill/Thần Thông/" + nameof(BatCucBang))]
 public class BatCucBang : ThanThong, BaseSkill.TuongKhac, IMemorySerializable<BatCucBang>
 {
-    [SerializeField]
-    private int[] dames = new int[]{6, 9, 14, 26, 52};
-    [SerializeField]
-    private int[] buffValues = new int[]{3, 4, 6, 11, 23};
-    [SerializeField]
-    private int treKhi = 2;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] dames = new int[] { 6, 9, 14, 26, 52 };
+    [SerializeField] private int[] buffValues = new int[] { 3, 4, 6, 11, 23 };
+    [SerializeField] private int treKhi = 2;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         ActionBCB(caster, target, dames);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
@@ -25,7 +29,8 @@ public class BatCucBang : ThanThong, BaseSkill.TuongKhac, IMemorySerializable<Ba
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, treKhi);
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill, isCongDon);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill,
+            isCongDon);
     }
 
     public void ExecuteTuongKhac(CharacterCombat caster, CharacterCombat target)
@@ -35,7 +40,8 @@ public class BatCucBang : ThanThong, BaseSkill.TuongKhac, IMemorySerializable<Ba
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương, thu hoạch được {GetColoredText($"+{treKhi}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}. {GetKeyWord(EKeyWord.TuongKhac)} cũng tăng lên {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương, thu hoạch được {GetColoredText($"+{treKhi}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}";
+        return
+            $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương, thu hoạch được {GetColoredText($"+{treKhi}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}. {GetKeyWord(EKeyWord.TuongKhac)} cũng tăng lên {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương, thu hoạch được {GetColoredText($"+{treKhi}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}";
     }
 
     public override int ByteSize()

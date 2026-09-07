@@ -6,7 +6,6 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
     [CustomPropertyDrawer(typeof(SceneDropdownAttribute))]
     sealed class SceneDropdownAttributeDrawer : PropertyDrawer
     {
-
         #region Overrides of PropertyDrawer
 
         /// <inheritdoc />
@@ -29,6 +28,5 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
         }
 
         #endregion
-
     }
 }

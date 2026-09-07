@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ShopButton : BaseBehaviour
 {
     [SerializeField] private Button button;
+
     private void Start()
     {
         SetEventButton(button, OpenShop);

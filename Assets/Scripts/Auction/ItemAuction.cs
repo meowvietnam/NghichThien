@@ -39,6 +39,7 @@ namespace Auction
         private GameObject hoverHighlight;
 
         private Item item;
+
         [Button]
         public virtual void GetReference()
         {
@@ -90,6 +91,7 @@ namespace Auction
                 infoButton.gameObject.SetActive(false);
                 return;
             }
+
             var data = item.Data;
             if (itemIcon != null) itemIcon.sprite = data.Icon;
             if (itemNameText != null)
@@ -97,13 +99,14 @@ namespace Auction
                 itemNameText.text = data.Name;
                 itemNameText.color = data.Color;
             }
+
             if (qualityIconUp != null) qualityIconUp.sprite = data.QualityIconUp;
             if (qualityBackground != null) qualityBackground.sprite = data.QualityBackground;
             SetCount(item.Ref.Count);
             infoButton.gameObject.SetActive(true);
             SetEventButton(infoButton, OnShowInfo);
-            
         }
+
         protected virtual void OnSelected()
         {
         }
@@ -113,7 +116,7 @@ namespace Auction
             var toolTip = ToolTipItems.Instance;
             item.Data.ShowInfo(toolTip);
         }
-        
+
         public void DestroySelf()
         {
             Destroy(selfObject);

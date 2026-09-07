@@ -8,14 +8,14 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(KiemKhi), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(KiemKhi))]
 public class KiemKhi : NgoDaoCombat, IMemorySerializable<KiemKhi>
 {
-    [SerializeField]
-    private int buff = 1;
-    [SerializeField]
-    private int percent = 50;
+    [SerializeField] private int buff = 1;
+    [SerializeField] private int percent = 50;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if(caster.thanThongOldUse == null || caster.thanThongCurrentUse == null) return;
-        if (caster.thanThongCurrentUse.thanThong == caster.thanThongOldUse.thanThong && BaseSkill.CheckIsEqualETypeSkill(caster, eTypeRequire))
+        if (caster.thanThongOldUse == null || caster.thanThongCurrentUse == null) return;
+        if (caster.thanThongCurrentUse.thanThong == caster.thanThongOldUse.thanThong &&
+            BaseSkill.CheckIsEqualETypeSkill(caster, eTypeRequire))
         {
             if (CombatStatic.IsActiveWithPercent(percent))
             {
@@ -26,7 +26,8 @@ public class KiemKhi : NgoDaoCombat, IMemorySerializable<KiemKhi>
 
     public override string GetDes()
     {
-        return $"Liên tục dùng cùng một loại Kiếm hệ thần thông có {BaseSkill.GetColoredText($"{percent}%", "red")} thu hoạch được {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}";
+        return
+            $"Liên tục dùng cùng một loại Kiếm hệ thần thông có {BaseSkill.GetColoredText($"{percent}%", "red")} thu hoạch được {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

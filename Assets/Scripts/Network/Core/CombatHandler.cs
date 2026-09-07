@@ -17,6 +17,7 @@ namespace Network.Core
         private ILoadCharCombat loadCharCallback;
         private ILoadCharCombatArena loadCharArenaCallback;
         private IWatchAdsCombat watchAdsCombatCallback;
+
         private static MessageTag[] handler =
         {
             MessageTag.ResultCombatResult,
@@ -41,6 +42,7 @@ namespace Network.Core
                     {
                         charData.Claim(result.Reward);
                     }
+
                     charData.EquipmentManager.ClearDanCombat();
                     charData.Progression.NgoDaoDiem = result.NewNgoDaoDiem;
                     charData.ArenaManager.Points = result.NewPointRank;
@@ -50,8 +52,10 @@ namespace Network.Core
                     {
                         charData.InventoryManager.AddOrUpdate(item);
                     }
+
                     charData.EquipmentManager.DanCombatUseds.Clear();
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)

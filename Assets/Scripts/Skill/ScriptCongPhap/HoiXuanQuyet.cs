@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(HoiXuanQuyet))]
 public class HoiXuanQuyet : CongPhap, IMemorySerializable<HoiXuanQuyet>
 {
-    [SerializeField]
-    private int[] buffValues;
-    [SerializeField]
-    private int require = 5;
+    [SerializeField] private int[] buffValues;
+    [SerializeField] private int require = 5;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         List<LinhKhiTieuTan> linhKhiTieuTans = (List<LinhKhiTieuTan>)data[3];
@@ -34,7 +33,8 @@ public class HoiXuanQuyet : CongPhap, IMemorySerializable<HoiXuanQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi tích lũy sử dụng {GetColoredText($"{require}", "red")} điểm {GetTextTypeSkill()} hệ linh khí, bản thân khôi phục {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm Hp";
+        return
+            $"Mỗi tích lũy sử dụng {GetColoredText($"{require}", "red")} điểm {GetTextTypeSkill()} hệ linh khí, bản thân khôi phục {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm Hp";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

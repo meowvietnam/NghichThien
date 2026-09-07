@@ -26,6 +26,7 @@ namespace ConvertElementalSkill
         [SerializeField] private ProgressBar progressBar;
         public SelectSkillType CurrentSelectedSkill { get; private set; }
         public TypeSkillToggle CurrentSelectedTypeSkill { get; private set; }
+
         private void Awake()
         {
             Instance = this;
@@ -61,17 +62,19 @@ namespace ConvertElementalSkill
             var inventory = Client.Instance.CharacterData.InventoryManager;
             Init(inventory);
         }
+
         public void OnSelect(TypeSkillToggle typeSkillToggle)
         {
             CurrentSelectedTypeSkill = typeSkillToggle;
             Page.RateManager.RefreshRateText();
         }
+
         [Button]
         public async void Convert()
         {
             var availableSlots = Page.PutItems.GetAvailableSlots();
             var itemConverts = availableSlots.Select(x => x.SkillData.ItemRef)
-                .GroupBy(x => new {x.Id,x.Type})
+                .GroupBy(x => new { x.Id, x.Type })
                 .Select(x => new ItemRef()
                 {
                     Id = x.Key.Id,
@@ -100,6 +103,7 @@ namespace ConvertElementalSkill
 
                 inventory.Add(result.ItemResult);
             }
+
             NetworkManager.Instance.Invoke(() =>
             {
                 if (result.Success)
@@ -124,7 +128,9 @@ namespace ConvertElementalSkill
 
         private void Init(InventoryManager inventory)
         {
-            var itemSet = CurrentSelectedSkill.SkillType == SkillType.ThanThong ? inventory.ThanThongs : inventory.CongPhaps;
+            var itemSet = CurrentSelectedSkill.SkillType == SkillType.ThanThong
+                ? inventory.ThanThongs
+                : inventory.CongPhaps;
             var items = itemSet.Select(x => x.DeepClone()).ToHashSet();
             Bag.Init(items);
             Page.Init();
@@ -138,9 +144,9 @@ namespace ConvertElementalSkill
             {
                 charData.OnInventoryUpdated -= OnInventoryUpdated;
             }
+
             Instance = null;
             Pool.Get<GameManager>().Cleanup();
         }
-
     }
 }

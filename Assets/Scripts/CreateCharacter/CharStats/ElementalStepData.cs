@@ -6,22 +6,26 @@ using UnityEngine;
 
 namespace CreateCharacter.CharStats
 {
-    [CreateAssetMenu(menuName =  "Create Character/CharStats/Elemental Step Data", fileName =  "ElementalStepData")]
+    [CreateAssetMenu(menuName = "Create Character/CharStats/Elemental Step Data", fileName = "ElementalStepData")]
     public class ElementalStepData : StepData, IMemorySerializable<ElementalStepData>
     {
         [field: SerializeField] public int GroupId { get; private set; }
         [field: SerializeField] public List<Elemental> Elementals { get; private set; }
         [SerializeField] private ElementalStep elementalStepPrefab;
+
         public override Step CreateUI(SelectStats selectStats, Transform parent)
         {
             var elementalStep = Instantiate(elementalStepPrefab, parent);
-            elementalStep.Init(selectStats,this);
+            elementalStep.Init(selectStats, this);
             return elementalStep;
         }
+
         public override int ByteSize()
         {
-            return StepType.ByteSize() + Id.ByteSize() + Title.ByteSize() + Description.ByteSize() + GroupId.ByteSize() + Elementals.ByteSize();
+            return StepType.ByteSize() + Id.ByteSize() + Title.ByteSize() + Description.ByteSize() +
+                   GroupId.ByteSize() + Elementals.ByteSize();
         }
+
         public override void Serialize(IWriter writer)
         {
             writer.Write(StepType);
@@ -31,6 +35,7 @@ namespace CreateCharacter.CharStats
             writer.Write(GroupId);
             writer.WriteArray(Elementals);
         }
+
         public void Deserialize(IReader reader, ref ElementalStepData value)
         {
             value.StepType = StepType.Elemental;

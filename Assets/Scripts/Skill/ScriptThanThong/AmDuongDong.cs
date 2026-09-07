@@ -8,18 +8,25 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(AmDuongDong), menuName = "Skill/Thần Thông/" + nameof(AmDuongDong))]
 public class AmDuongDong : ThanThong, IMemorySerializable<AmDuongDong>
 {
-    [SerializeField]
-    private float delayTimeEffect = 2f;
+    [SerializeField] private float delayTimeEffect = 2f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddSkillVoHieuHoa(this);
         caster.AddThanThongImpactAfterPlaySkill(this);
+        PlayVisualSkill(caster, target);
+    }
+
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectNoTarget(delayTimeEffect);
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is AmDuongDong)) && base.IsCanUse(caster, target))
+        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is AmDuongDong)) &&
+            base.IsCanUse(caster, target))
         {
             return true;
         }
@@ -29,7 +36,8 @@ public class AmDuongDong : ThanThong, IMemorySerializable<AmDuongDong>
 
     public override string GetDesc(int level)
     {
-        return $"Làm cho đối thủ lần sử dụng thần thông tiếp theo mất đi hiệu lực {GetColoredText($"Mỗi cuộc chiến chỉ có thể sử dụng một lần", "red")}";
+        return
+            $"Làm cho đối thủ lần sử dụng thần thông tiếp theo mất đi hiệu lực {GetColoredText($"Mỗi cuộc chiến chỉ có thể sử dụng một lần", "red")}";
     }
 
     public override int ByteSize()

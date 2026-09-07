@@ -11,8 +11,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(NietBanQuyet))]
 public class NietBanQuyet : CongPhap, IMemorySerializable<NietBanQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 1, 2, 2, 3};
+    [SerializeField] private int[] buffValues = new int[] { 1, 1, 2, 2, 3 };
+
     public override void ExecuteParams(params object[] data)
     {
         // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
@@ -42,7 +42,8 @@ public class NietBanQuyet : CongPhap, IMemorySerializable<NietBanQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Lần đầu nhận sát thương chí tử, làm mới Hp về 1. Sau đó khôi phục một lượng {GetColoredText($"{buffValues[level - 1]} * X", "red")} Hp (X là tổng số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Diem)}, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoaDiem)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)} của bản thân)";
+        return
+            $"Lần đầu nhận sát thương chí tử, làm mới Hp về 1. Sau đó khôi phục một lượng {GetColoredText($"{buffValues[level - 1]} * X", "red")} Hp (X là tổng số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Diem)}, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoaDiem)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)} của bản thân)";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

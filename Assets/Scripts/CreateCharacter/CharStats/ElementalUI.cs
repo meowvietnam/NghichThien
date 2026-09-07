@@ -14,6 +14,7 @@ namespace CreateCharacter.CharStats
         private event Action<ElementalUI> onSelect;
         private event Action<ElementalUI> onUnselect;
         public StatModifier StatModifier { get; private set; }
+
         public void Init(Elemental elemental, Action<ElementalUI> onSelect, Action<ElementalUI> onUnselect)
         {
             StatModifier = new StatModifier(elemental.StatType, Action.Set, 0, 0);
@@ -34,6 +35,7 @@ namespace CreateCharacter.CharStats
             StatModifier.Value = percent;
             percentText.text = percent.ToString("F0") + "%";
         }
+
         private void OnValueChanged(bool isOn)
         {
             if (isOn)
@@ -50,6 +52,7 @@ namespace CreateCharacter.CharStats
         {
             toggle.SetIsOnWithoutNotify(isOn);
         }
+
         private void OnDestroy()
         {
             onSelect = null;

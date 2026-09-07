@@ -18,7 +18,8 @@ public class AnNacThuat : ThanThong, BaseSkill.ThanThuc, IMemorySerializable<AnN
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        if (caster.thanThongUseThisTurn.Count <= 0 && caster.GetThanThuc() > target.GetThanThuc() && base.IsCanUse(caster, target))
+        if (caster.thanThongUseThisTurn.Count <= 0 && caster.GetThanThuc() > target.GetThanThuc() &&
+            base.IsCanUse(caster, target))
         {
             return true;
         }
@@ -28,7 +29,8 @@ public class AnNacThuat : ThanThong, BaseSkill.ThanThuc, IMemorySerializable<AnN
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.ThanThuc)} Đồng thời, hiệp này chưa sử dụng bất kỳ thần thông nào mới có thể sử dụng, thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnNac)}";
+        return
+            $"{GetKeyWord(EKeyWord.ThanThuc)} Đồng thời, hiệp này chưa sử dụng bất kỳ thần thông nào mới có thể sử dụng, thu hoạch được một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnNac)}";
     }
 
     public override int ByteSize()

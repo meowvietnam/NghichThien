@@ -22,6 +22,7 @@ namespace CreateCharacter
         public CanvasGroup CanvasGroup => canvasGroup;
         public Tween Tween { get; set; }
         [SerializeField] private CreateCharacterSystem system;
+
         public void Init(List<CharacterData> characterDatas, int totalSlots, SkinResources skinResources)
         {
             for (int i = 0; i < totalSlots; i++)
@@ -30,8 +31,10 @@ namespace CreateCharacter
                 var createAvatar = Instantiate(createAvatarPrefab, content);
                 createAvatar.Init(charData, skinResources, system);
             }
-            SetEventButton(backBtn,Back);
+
+            SetEventButton(backBtn, Back);
         }
+
         private async void Back()
         {
             var client = Client.Instance;
@@ -49,6 +52,7 @@ namespace CreateCharacter
                 }
             });
         }
+
         public void SetActive(bool active)
         {
             thisObject.SetActive(active);

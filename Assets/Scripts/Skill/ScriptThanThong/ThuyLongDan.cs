@@ -8,18 +8,17 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ThuyLongDan), menuName = "Skill/Thần Thông/" + nameof(ThuyLongDan))]
 public class ThuyLongDan : ThanThong, BaseSkill.LienKich, IMemorySerializable<ThuyLongDan>
 {
-    [SerializeField]
-    private int[] dame;
-    [SerializeField]
-    private int[] healValues;
-    [SerializeField]
-    private float delayTimeEffect = 0.5f;
+    [SerializeField] private int[] dame;
+    [SerializeField] private int[] healValues;
+    [SerializeField] private float delayTimeEffect = 0.5f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.CaculateDameByThanThong(caster, new List<int>{dame[GetIndexLevelThanThong(caster)]}, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new List<int> { dame[GetIndexLevelThanThong(caster)] }, eTypeSkill);
         // ShowSkillEffectNoTarget(delayTimeEffect);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -34,7 +33,8 @@ public class ThuyLongDan : ThanThong, BaseSkill.LienKich, IMemorySerializable<Th
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{dame[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Kim)} hệ kĩ năng thì khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm HP";
+        return
+            $"Tạo thành {GetColoredText($"{dame[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Kim)} hệ kĩ năng thì khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm HP";
     }
 
     public override int ByteSize()

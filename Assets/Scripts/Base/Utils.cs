@@ -13,13 +13,14 @@ namespace Base
         {
             return money.ToString("N0", CultureInfo.GetCultureInfo("vi-VN"));
         }
-        
+
         public static string GetTime(TimeSpan timeSpan)
         {
             if (timeSpan <= TimeSpan.Zero)
             {
                 return "0 giây";
             }
+
             if (timeSpan.Days > 0) return $"{timeSpan.Days} ngày {timeSpan.Hours} giờ";
             if (timeSpan.Hours > 0) return $"{timeSpan.Hours} giờ {timeSpan.Minutes} phút";
             if (timeSpan.Minutes > 0) return $"{timeSpan.Minutes} phút {timeSpan.Seconds} giây";
@@ -44,6 +45,7 @@ namespace Base
 
             return new string(chars);
         }
+
         public static List<T[]> SplitArray<T>(T[] array, int parts)
         {
             if (parts <= 0)
@@ -69,6 +71,7 @@ namespace Base
 
             return result;
         }
+
         public static string FormatTimeOnly(TimeSpan time)
         {
             return $"{time.Hours:D2}:{time.Minutes:D2}";

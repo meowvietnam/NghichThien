@@ -41,6 +41,7 @@ namespace LuyenDan
         [field: SerializeField] public ProgressBar ProgressBar { get; private set; }
         private CharacterData CharacterData => Client.Instance.CharacterData;
         public LuyenDanConfig Config { get; private set; }
+
         private void Start()
         {
             var client = Client.Instance;
@@ -57,6 +58,7 @@ namespace LuyenDan
             Config = reader.MemRead<LuyenDanConfig>();
             CharacterData.GetInventory();
         }
+
         private void OnDestroy()
         {
             CharacterData.OnInventoryUpdated -= OnInventoryUpdated;
@@ -106,7 +108,11 @@ namespace LuyenDan
 
         public void LuyenDanResult(LuyenDanResult result)
         {
-            NetworkManager.Instance.Invoke(() => { OnLuyenDanCompleted(result); Observer.Notify(EventList.GamePlay.TIME_ADJUST);            });
+            NetworkManager.Instance.Invoke(() =>
+            {
+                OnLuyenDanCompleted(result);
+                Observer.Notify(EventList.GamePlay.TIME_ADJUST);
+            });
         }
     }
 }

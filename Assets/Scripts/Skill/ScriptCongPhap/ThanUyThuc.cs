@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThanUyThuc))]
 public class ThanUyThuc : CongPhap, IMemorySerializable<ThanUyThuc>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 1, 2, 2, 3};
+    [SerializeField] private int[] buffValues = new int[] { 1, 1, 2, 2, 3 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int treKhi = buffValues[CurrentLevelCongPhapInCombat(caster) - 1];
@@ -21,7 +21,8 @@ public class ThanUyThuc : CongPhap, IMemorySerializable<ThanUyThuc>
 
     public override string GetDesc(int level)
     {
-        return $"Bắt đầu chiến đấu, đối thủ nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}";
+        return
+            $"Bắt đầu chiến đấu, đối thủ nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

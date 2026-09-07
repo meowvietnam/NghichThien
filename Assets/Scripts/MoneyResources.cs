@@ -1,4 +1,5 @@
 using UnityEngine;
+
 public class MoneyResources : ScriptableObject
 {
     [field: SerializeField] public Sprite MoneyIcon { get; private set; }
@@ -13,6 +14,7 @@ public class MoneyResources : ScriptableObject
             {
                 instance = Resources.Load<MoneyResources>("MoneyResources");
             }
+
             return instance;
         }
     }

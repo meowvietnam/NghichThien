@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThanhXaYeuQuyet))]
 public class ThanhXaYeuQuyet : CongPhap, IMemorySerializable<ThanhXaYeuQuyet>
 {
-    [SerializeField]
-    private int[] debuffValues;
+    [SerializeField] private int[] debuffValues;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (caster.thanThongCurrentUse.thanThong is ThanhXaKinh)
@@ -22,7 +22,8 @@ public class ThanhXaYeuQuyet : CongPhap, IMemorySerializable<ThanhXaYeuQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi lần sử dụng thần thông [Thanh Xà Kình], đối phương nhận phải {GetColoredText($"+{debuffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}";
+        return
+            $"Mỗi lần sử dụng thần thông [Thanh Xà Kình], đối phương nhận phải {GetColoredText($"+{debuffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

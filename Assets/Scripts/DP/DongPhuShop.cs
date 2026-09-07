@@ -12,10 +12,10 @@ namespace DP
 
         public void UpdateSeed(SeedItemShop updatedSeed)
         {
-            if(Seeds.TryGetValue(updatedSeed, out var ownerSeed))
+            if (Seeds.TryGetValue(updatedSeed, out var ownerSeed))
             {
                 ownerSeed.SetCount(updatedSeed.Count);
-                if(ownerSeed.Count <= 0)
+                if (ownerSeed.Count <= 0)
                 {
                     Seeds.Remove(ownerSeed);
                 }

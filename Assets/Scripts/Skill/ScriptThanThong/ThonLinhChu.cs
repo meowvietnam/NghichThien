@@ -17,7 +17,8 @@ public class ThonLinhChu : ThanThong, IMemorySerializable<ThonLinhChu>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Gỡ ra toàn bộ số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} cũng hồi một lượng HP tương đương";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Gỡ ra toàn bộ số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} cũng hồi một lượng HP tương đương";
     }
 
     public override int ByteSize()

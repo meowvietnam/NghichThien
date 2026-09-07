@@ -1,4 +1,3 @@
-
 using Skill;
 
 namespace Combat
@@ -6,6 +5,5 @@ namespace Combat
     public interface IPlayerCombat
     {
         void PlaySkill(ThanThong thanThong);
-        
     }
 }

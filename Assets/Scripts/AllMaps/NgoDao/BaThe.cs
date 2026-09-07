@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(BaThe), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(BaThe))]
 public class BaThe : NgoDaoCombat, IMemorySerializable<BaThe>
 {
-    [SerializeField]
-    private int buff = 30;
+    [SerializeField] private int buff = 30;
+
     public override void ObserverEffect(params object[] data)
     {
         CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
@@ -25,7 +25,7 @@ public class BaThe : NgoDaoCombat, IMemorySerializable<BaThe>
 
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.AddDamageData(new List<int>{-target.GetDameBuffForTarget() * buff / 100});
+        target.AddDamageData(new List<int> { -target.GetDameBuffForTarget() * buff / 100 });
     }
 
     public override string GetDes()

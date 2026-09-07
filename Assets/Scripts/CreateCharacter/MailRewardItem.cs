@@ -46,9 +46,11 @@ namespace CreateCharacter
                 case ItemType.Recipe:
                     return LuyenDanResources.Instance.FindItem(Item);
                 case ItemType.CongPhap:
-                    return new SkillData(Item, new CongPhapItemData(Item, Pool.Get<GameManager>(), Pool.Get<UIManager>()));
+                    return new SkillData(Item,
+                        new CongPhapItemData(Item, Pool.Get<GameManager>(), Pool.Get<UIManager>()));
                 case ItemType.ThanThong:
-                    return new SkillData(Item, new ThanThongItemData(Item,Pool.Get<GameManager>(), Pool.Get<UIManager>()));
+                    return new SkillData(Item,
+                        new ThanThongItemData(Item, Pool.Get<GameManager>(), Pool.Get<UIManager>()));
                 default:
                     return null;
             }
@@ -63,11 +65,13 @@ namespace CreateCharacter
                 return
                     $"<color=#{ColorUtility.ToHtmlStringRGBA(core.FindQuality(i.Tier).Color)}>{i.Name} x{Item.Count}</color>";
             }
+
             if (item is SkillData skillData)
             {
                 return
                     $"<color=#{ColorUtility.ToHtmlStringRGBA(skillData.ItemData.VisualQuality.Color)}>{skillData.ItemData.Name} x{Item.Count}</color>";
             }
+
             return string.Empty;
         }
     }

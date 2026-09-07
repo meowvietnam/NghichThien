@@ -16,11 +16,12 @@ namespace DP
         [SerializeField] private Button close;
         [SerializeField] private UpgradeDongPhuPanel panel;
         private Tween tween;
+
         private void Start()
         {
             SetEventButton(buyWithIap, BuyWithIap);
             SetEventButton(buyWithMoneyVip, BuyWithMoneyVip);
-            SetEventButton(close,Hide);
+            SetEventButton(close, Hide);
         }
 
         private void BuyWithMoneyVip()
@@ -35,13 +36,15 @@ namespace DP
             {
                 By = by
             };
-            Client.Instance.MemSend(MessageTag.UpgradeDongPhu,request);
+            Client.Instance.MemSend(MessageTag.UpgradeDongPhu, request);
         }
+
         private void BuyWithIap()
         {
             BuyWith(UpgradeDongPhuBy.Iap);
             Hide();
         }
+
         public void Show()
         {
             tween?.Kill();
@@ -51,10 +54,7 @@ namespace DP
         private void Hide()
         {
             tween?.Kill();
-            tween = transform.DOScale(Vector3.zero, 0.25f).OnComplete(() =>
-            {
-                panel.Hide();
-            });
+            tween = transform.DOScale(Vector3.zero, 0.25f).OnComplete(() => { panel.Hide(); });
         }
     }
 }

@@ -7,10 +7,12 @@ namespace LuyenDan
     {
         [SerializeField] private Button btn;
         [SerializeField] private GameObject thisObject;
+
         private void Start()
         {
             btn.onClick.AddListener(OnClick);
         }
+
         private void OnClick()
         {
             LuyenDanPanel.Instance.FurnaceInventory.SetActive(true);
@@ -20,6 +22,7 @@ namespace LuyenDan
         {
             thisObject.SetActive(active);
         }
+
         private void OnDestroy()
         {
             btn.onClick.RemoveAllListeners();

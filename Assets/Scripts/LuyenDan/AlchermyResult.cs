@@ -24,6 +24,7 @@ namespace LuyenDan
         {
             Hide(0.15f);
         }
+
         private void OnDestroy()
         {
             okBtn.onClick.RemoveAllListeners();
@@ -33,12 +34,14 @@ namespace LuyenDan
         {
             descriptionText.text = description;
         }
+
         public void SetData(List<ItemRef> itemRefs)
         {
             foreach (var item in items)
             {
                 item.DestroySelf();
             }
+
             items = new List<ItemResult>();
             foreach (var itemRef in itemRefs)
             {
@@ -47,6 +50,7 @@ namespace LuyenDan
                 items.Add(item);
             }
         }
+
         public void SetActive(bool active)
         {
             selfObject.SetActive(active);
@@ -59,13 +63,11 @@ namespace LuyenDan
             result.localScale = Vector3.zero;
             result.DOScale(Vector3.one, time);
         }
+
         public void Hide(float time)
         {
             transform.DOKill();
-            result.DOScale(Vector3.zero, time).OnComplete(() =>
-            {
-                SetActive(false);
-            });
+            result.DOScale(Vector3.zero, time).OnComplete(() => { SetActive(false); });
         }
     }
 }

@@ -18,10 +18,13 @@ using UnityEngine.AddressableAssets;
 
 namespace Sirenix.OdinInspector.Modules.Addressables.Editor
 {
-	/// <summary>
-	/// Validator for the DisallowAddressableSubAssetFieldAttribute.
-	/// </summary>
-	public class DisallowAddressableSubAssetFieldAttributeValidator : AttributeValidator<DisallowAddressableSubAssetFieldAttribute, AssetReference>
+    /// <summary>
+    /// Validator for the DisallowAddressableSubAssetFieldAttribute.
+    /// </summary>
+    public class
+        DisallowAddressableSubAssetFieldAttributeValidator : AttributeValidator<
+        DisallowAddressableSubAssetFieldAttribute,
+        AssetReference>
     {
         protected override void Validate(ValidationResult result)
         {
@@ -32,7 +35,6 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
             }
         }
     }
-
 }
 
 #endif

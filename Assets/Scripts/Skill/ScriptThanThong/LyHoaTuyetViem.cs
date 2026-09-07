@@ -7,12 +7,10 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(LyHoaTuyetViem), menuName = "Skill/Thần Thông/" + nameof(LyHoaTuyetViem))]
 public class LyHoaTuyetViem : ThanThong, IMemorySerializable<LyHoaTuyetViem>
 {
-    [SerializeField]
-    protected int thieuDot = 2;
-    [SerializeField]
-    protected int hapThu = 3;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] protected int thieuDot = 2;
+    [SerializeField] protected int hapThu = 3;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -20,6 +18,7 @@ public class LyHoaTuyetViem : ThanThong, IMemorySerializable<LyHoaTuyetViem>
         caster.HapThuLinhKhi(ELinhKhi.Hoa, hapThu);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -29,7 +28,8 @@ public class LyHoaTuyetViem : ThanThong, IMemorySerializable<LyHoaTuyetViem>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Thu hoạch được {GetColoredText($"+{hapThu}", "red")} điểm {GetTextLinhKhi(ELinhKhi.Hoa)} hệ linh khí. Đồng thời, nhận phải {GetColoredText($"+{thieuDot}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Thu hoạch được {GetColoredText($"+{hapThu}", "red")} điểm {GetTextLinhKhi(ELinhKhi.Hoa)} hệ linh khí. Đồng thời, nhận phải {GetColoredText($"+{thieuDot}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}";
     }
 
     public override int ByteSize()

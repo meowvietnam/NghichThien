@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(DaiDeLuanHoaKinh))]
 public class DaiDeLuanHoaKinh : CongPhap, IMemorySerializable<DaiDeLuanHoaKinh>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{20, 40, 60, 80, 100};
+    [SerializeField] private int[] buffValues = new int[] { 20, 40, 60, 80, 100 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int count = (int)data[2];
@@ -41,7 +41,8 @@ public class DaiDeLuanHoaKinh : CongPhap, IMemorySerializable<DaiDeLuanHoaKinh>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi mất đi một điểm linh khí, có {GetColoredText($"{buffValues[level - 1]}%", "red")} gỡ ra một tầng trạng thái tiêu cực";
+        return
+            $"Mỗi mất đi một điểm linh khí, có {GetColoredText($"{buffValues[level - 1]}%", "red")} gỡ ra một tầng trạng thái tiêu cực";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

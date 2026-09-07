@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThanKiemQuyet))]
 public class ThanKiemQuyet : CongPhap, IMemorySerializable<ThanKiemQuyet>
 {
-    [SerializeField]
-    private int[] buff;
+    [SerializeField] private int[] buff;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (CheckIsEqualETypeSkill(caster))
@@ -19,7 +19,7 @@ public class ThanKiemQuyet : CongPhap, IMemorySerializable<ThanKiemQuyet>
             SecureInt dame = 0;
             caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out dame);
             dame *= buff[CurrentLevelCongPhapInCombat(caster) - 1];
-            target.AddDamageData(new List<int>{dame}, true);
+            target.AddDamageData(new List<int> { dame }, true);
         }
     }
 
@@ -45,7 +45,7 @@ public class ThanKiemQuyet : CongPhap, IMemorySerializable<ThanKiemQuyet>
             SecureInt dame = 0;
             caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out dame);
             dame *= buff[CurrentLevelCongPhapInCombat(caster) - 1];
-            target.AddDamageData(new List<int>{dame}, true);
+            target.AddDamageData(new List<int> { dame }, true);
         }
     }
 
@@ -72,7 +72,8 @@ public class ThanKiemQuyet : CongPhap, IMemorySerializable<ThanKiemQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Kết thúc hiệp, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} bây giờ có thể bị gỡ ra. Khi tạo thành {GetTextTypeSkill()} hệ tổn thương thì đối phương nhận thêm sát thương bằng  {GetColoredText($"{buff[level - 1]} lần", "red")} số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} đang có.";
+        return
+            $"Kết thúc hiệp, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} bây giờ có thể bị gỡ ra. Khi tạo thành {GetTextTypeSkill()} hệ tổn thương thì đối phương nhận thêm sát thương bằng  {GetColoredText($"{buff[level - 1]} lần", "red")} số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} đang có.";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

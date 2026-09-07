@@ -15,7 +15,9 @@ namespace CreateCharacter.CharStats
         private event Action<StatOptionUI> onSelect;
         private event Action<StatOptionUI> onUnselect;
         [SerializeField] private Transform tooltipTransform;
-        public void Init(StatOption statOption, ToggleGroup toggleGroup, Action<StatOptionUI> onSelect, Action<StatOptionUI> onUnselect)
+
+        public void Init(StatOption statOption, ToggleGroup toggleGroup, Action<StatOptionUI> onSelect,
+            Action<StatOptionUI> onUnselect)
         {
             toggle.group = toggleGroup;
             StatOption = statOption;
@@ -26,6 +28,7 @@ namespace CreateCharacter.CharStats
             toggle.onValueChanged.AddListener(OnValueChanged);
             infoButton.onClick.AddListener(ShowInfo);
         }
+
         private void ShowInfo()
         {
             var tooltip = Tooltip.Instance;
@@ -45,10 +48,12 @@ namespace CreateCharacter.CharStats
                 onUnselect(this);
             }
         }
+
         public void SetSelectWithoutNotify(bool isSelect)
         {
             toggle.SetIsOnWithoutNotify(isSelect);
         }
+
         private void OnDestroy()
         {
             toggle.onValueChanged.RemoveListener(OnValueChanged);

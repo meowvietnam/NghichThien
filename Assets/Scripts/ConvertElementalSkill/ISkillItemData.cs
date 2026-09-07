@@ -15,6 +15,7 @@ namespace ConvertElementalSkill
             Color = color;
         }
     }
+
     public interface ISkillItemData
     {
         SkillType SkillType { get; }
@@ -23,7 +24,7 @@ namespace ConvertElementalSkill
         BaseSkill.ETierSkill TierSkill { get; }
         BaseSkill.ETypeSkill[] ETypeSkills { get; }
         string Name { get; }
-        BaseSkill ItemData { get;} 
+        BaseSkill ItemData { get; }
         SkillVisualQuality VisualQuality { get; }
     }
 }

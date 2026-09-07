@@ -7,10 +7,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ChichViemLuanHoi), menuName = "Skill/Thần Thông/" + nameof(ChichViemLuanHoi))]
 public class ChichViemLuanHoi : ThanThong, IMemorySerializable<ChichViemLuanHoi>
 {
-    [SerializeField]
-    private int hapThu = 4;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int hapThu = 4;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -18,6 +17,7 @@ public class ChichViemLuanHoi : ThanThong, IMemorySerializable<ChichViemLuanHoi>
         caster.HapThuLinhKhi(hapThu);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -27,7 +27,8 @@ public class ChichViemLuanHoi : ThanThong, IMemorySerializable<ChichViemLuanHoi>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tiêu tán toàn bộ linh khí. Hấp thụ {GetColoredText($"+{hapThu}", "red")} điểm linh khí";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tiêu tán toàn bộ linh khí. Hấp thụ {GetColoredText($"+{hapThu}", "red")} điểm linh khí";
     }
 
     public override int ByteSize()

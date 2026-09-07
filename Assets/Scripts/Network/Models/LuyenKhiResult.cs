@@ -12,7 +12,7 @@ namespace Network.Models
         public Equipment Item { get; set; }
         public TimeSpan NewTuoiTac { get; set; }
         public InventoryModify Modify { get; set; }
-    
+
         public void Deserialize(IReader reader, ref LuyenKhiResult value)
         {
             value.Success = reader.Read<bool>();
@@ -32,6 +32,7 @@ namespace Network.Models
             {
                 size += Item.ByteSize() + NewTuoiTac.ByteSize() + Modify.ByteSize();
             }
+
             return size;
         }
 

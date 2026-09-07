@@ -7,22 +7,25 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(KhoLinhKinh), menuName = "Skill/Thần Thông/" + nameof(KhoLinhKinh))]
 public class KhoLinhKinh : AmKinhTT, IMemorySerializable<KhoLinhKinh>
 {
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddAmKinhTT(this, afterHiep);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
         base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticleBase(caster, delayTimeEffect, 5);
     }
+
     public override string GetDescAmKinhTT(int level)
     {
-        return $"Nhận phải {GetColoredText($"+1", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KietSuc)} {GetColoredText($"Mỗi cuộc chiến chỉ có thể sử dụng một lần", "red")}";
+        return
+            $"Nhận phải {GetColoredText($"+1", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KietSuc)} {GetColoredText($"Mỗi cuộc chiến chỉ có thể sử dụng một lần", "red")}";
     }
 
     public override void ExecuteAmKinh(CharacterCombat caster, CharacterCombat target)
@@ -32,7 +35,8 @@ public class KhoLinhKinh : AmKinhTT, IMemorySerializable<KhoLinhKinh>
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is KhoLinhKinh)) && base.IsCanUse(caster, target))
+        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is KhoLinhKinh)) &&
+            base.IsCanUse(caster, target))
         {
             return true;
         }

@@ -11,8 +11,7 @@ namespace CreateCharacter
     [MemoryPackable]
     public partial record ThanThong : IDeepClone<ThanThong>
     {
-        [field: SerializeField]
-        public ushort Id { get; set; }
+        [field: SerializeField] public ushort Id { get; set; }
 
         public ThanThong DeepClone()
         {

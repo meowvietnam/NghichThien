@@ -3,11 +3,8 @@ using UnityEngine;
 
 public class BuffEffectTriggerAttack : BuffEffect
 {
-   
     public void ActiveAnim()
     {
-      anim.SetTrigger("Active");
-
-
+        anim.SetTrigger("Active");
     }
 }

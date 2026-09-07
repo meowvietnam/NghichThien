@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Image = UnityEngine.UI.Image;
 using Network.Extensions;
+
 namespace LuyenKhi
 {
     public class ResultPage : BaseBehaviour
@@ -21,7 +22,7 @@ namespace LuyenKhi
 
         private void Start()
         {
-            SetEventButton(confirmButton,OnConfirm);
+            SetEventButton(confirmButton, OnConfirm);
         }
 
         private void OnConfirm()
@@ -59,10 +60,7 @@ namespace LuyenKhi
         public void Hide()
         {
             myTransform.DOKill();
-            myTransform.DOScale(Vector3.zero, 0.25f).OnComplete(() =>
-            {
-                selfObject.SetActive(false);
-            });
+            myTransform.DOScale(Vector3.zero, 0.25f).OnComplete(() => { selfObject.SetActive(false); });
         }
     }
 }

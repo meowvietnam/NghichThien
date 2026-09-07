@@ -31,7 +31,6 @@ namespace ComboSkillResource
             {
                 thanThongIds.Clear();
                 congPhapIds.Clear();
-               
             }
 
             [Button]
@@ -43,7 +42,6 @@ namespace ComboSkillResource
             [Button]
             public void LogTierCongPhap()
             {
-                
             }
 
             [Button]
@@ -65,6 +63,7 @@ namespace ComboSkillResource
 
         public ComboWithType[] comboNPC;
         private static ComboSkillResource instance;
+
         [Button("Convert All Skills To Id")]
         public void ConvertAllSkillsToId()
         {
@@ -112,6 +111,5 @@ namespace ComboSkillResource
             Debug.Log(path);
         }
 #endif
-        
     }
 }

@@ -21,12 +21,14 @@ public class OatToanTaoHoa : ThanThong, IMemorySerializable<OatToanTaoHoa>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KietSuc)} phục chế tất cả linh khí (Mỗi loại linh khí còn lại số lượng tăng gấp đôi) {GetColoredText($"Mỗi cuộc chiến chỉ có thể sử dụng một lần", "red")}";
+        return
+            $"{GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KietSuc)} phục chế tất cả linh khí (Mỗi loại linh khí còn lại số lượng tăng gấp đôi) {GetColoredText($"Mỗi cuộc chiến chỉ có thể sử dụng một lần", "red")}";
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is OatToanTaoHoa)) && base.IsCanUse(caster, target))
+        if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong is OatToanTaoHoa)) &&
+            base.IsCanUse(caster, target))
         {
             return true;
         }

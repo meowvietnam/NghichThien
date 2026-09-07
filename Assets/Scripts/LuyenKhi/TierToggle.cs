@@ -9,6 +9,7 @@ namespace LuyenKhi
     {
         [field: SerializeField] public Tier Tier { get; private set; }
         [field: SerializeField] private Toggle toggle;
+
         public bool IsSelected()
         {
             return toggle.isOn;

@@ -196,6 +196,7 @@ public class AssetOptimize
             AssetDatabase.SaveAssets();
         }
     }
+
     [MenuItem("Tools/InjectRenderDatas")]
     public static void InjectRenderDatas()
     {
@@ -329,8 +330,8 @@ public class AssetOptimize
             var source = $"{{fileID: {fileId}, guid: {guid}, type: 2}}";
             AssetDatabase.TryGetGUIDAndLocalFileIdentifier(
                 x.Item2,
-                out  guid,
-                out  fileId);
+                out guid,
+                out fileId);
             var target = $"{{fileID: {fileId}, guid: {guid}, type: 3}}";
             return new
             {
@@ -344,6 +345,7 @@ public class AssetOptimize
         {
             text = text.Replace(u.source, u.target);
         }
+
         File.WriteAllText(assetPath, text);
         AssetDatabase.ImportAsset(path);
         AssetDatabase.Refresh();

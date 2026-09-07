@@ -36,6 +36,7 @@ namespace Auction
             QualityBackground = VisualQuality.QualityFull;
             Color = VisualQuality.Color;
         }
+
         public void ShowInfo(ToolTipItems toolTip)
         {
             toolTip.ShowInfoSkill(this);

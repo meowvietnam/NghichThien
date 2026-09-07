@@ -22,11 +22,9 @@ namespace Plugins.Neonalig.SceneToolbar
         [Serializable]
         internal sealed class ProjectMapping
         {
-            [SerializeField]
-            internal string projectIdentifier = string.Empty;
+            [SerializeField] internal string projectIdentifier = string.Empty;
 
-            [SerializeField]
-            internal SceneToolbarSettingsPerProject settings = new();
+            [SerializeField] internal SceneToolbarSettingsPerProject settings = new();
 
             [UsedImplicitly]
             public ProjectMapping()
@@ -42,8 +40,7 @@ namespace Plugins.Neonalig.SceneToolbar
             public SceneToolbarSettingsPerProject Settings => settings;
         }
 
-        [SerializeField]
-        internal List<ProjectMapping> projectMappings = new();
+        [SerializeField] internal List<ProjectMapping> projectMappings = new();
 
         internal static string GetProjectIdentifier()
         {
@@ -52,12 +49,14 @@ namespace Plugins.Neonalig.SceneToolbar
             {
                 projectIdentifier = Application.productName;
             }
+
             return projectIdentifier;
         }
 
         internal static SceneToolbarSettingsPerProject GetSettingsForProject(string projectIdentifier)
         {
-            ProjectMapping? mapping = instance.projectMappings.FirstOrDefault(mapping => mapping.ProjectIdentifier == projectIdentifier);
+            ProjectMapping? mapping =
+                instance.projectMappings.FirstOrDefault(mapping => mapping.ProjectIdentifier == projectIdentifier);
             if (mapping == null)
             {
                 mapping = new ProjectMapping(projectIdentifier);
@@ -99,7 +98,11 @@ namespace Plugins.Neonalig.SceneToolbar
             set
             {
                 SceneToolbarSettingsPerProject settings = GetSettingsForCurrentProject();
-                if (settings.PlayButtonMethod == value) { return; }
+                if (settings.PlayButtonMethod == value)
+                {
+                    return;
+                }
+
                 settings.PlayButtonMethod = value;
                 Save();
             }
@@ -112,7 +115,11 @@ namespace Plugins.Neonalig.SceneToolbar
             set
             {
                 SceneToolbarSettingsPerProject settings = GetSettingsForCurrentProject();
-                if (settings.OpenAdditive == value) { return; }
+                if (settings.OpenAdditive == value)
+                {
+                    return;
+                }
+
                 settings.OpenAdditive = value;
                 Save();
             }
@@ -125,7 +132,11 @@ namespace Plugins.Neonalig.SceneToolbar
             set
             {
                 SceneToolbarSettingsPerProject settings = GetSettingsForCurrentProject();
-                if (settings.IncludeNotInBuild == value) { return; }
+                if (settings.IncludeNotInBuild == value)
+                {
+                    return;
+                }
+
                 settings.IncludeNotInBuild = value;
                 Save();
             }
@@ -193,7 +204,11 @@ namespace Plugins.Neonalig.SceneToolbar
         /// <inheritdoc cref="SceneToolbarSettingsPerProject.GetIsFavorite" />
         internal static bool GetIsFavorite([LocalizationRequired(false)] string path)
         {
-            if (string.IsNullOrEmpty(path)) { return false; }
+            if (string.IsNullOrEmpty(path))
+            {
+                return false;
+            }
+
             return GetSettingsForCurrentProject().GetIsFavorite(path);
         }
 

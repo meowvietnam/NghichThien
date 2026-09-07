@@ -10,23 +10,24 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(KimCuongDiSonQuyet))]
 public class KimCuongDiSonQuyet : CongPhap, IMemorySerializable<KimCuongDiSonQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{19, 23, 27, 31, 35};
-    [SerializeField]
-    private int require = 70;
+    [SerializeField] private int[] buffValues = new int[] { 19, 23, 27, 31, 35 };
+    [SerializeField] private int require = 70;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (caster.characterStatsTemp.hp >= caster.characterStatsTemp.hpMax * (require / 100f))
         {
             int dame = target.GetDameBuffForTarget();
             Debug.Log("Kim cuong di son quỷt + " + dame);
-            target.AddDamageData(new List<int>{(int)(dame * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100)});
+            target.AddDamageData(new List<int>
+                { (int)(dame * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100) });
         }
     }
 
     public override string GetDesc(int level)
     {
-        return $"Nếu HP bản thân cao hơn {GetColoredText($"{require}%", "red")} thì gây ra tổn thương tăng lên {GetColoredText($"{buffValues[level - 1]}%", "red")}";
+        return
+            $"Nếu HP bản thân cao hơn {GetColoredText($"{require}%", "red")} thì gây ra tổn thương tăng lên {GetColoredText($"{buffValues[level - 1]}%", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

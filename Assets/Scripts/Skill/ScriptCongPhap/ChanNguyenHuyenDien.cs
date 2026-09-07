@@ -8,8 +8,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ChanNguyenHuyenDien))]
 public class ChanNguyenHuyenDien : CongPhap, IMemorySerializable<ChanNguyenHuyenDien>
 {
-    [SerializeField]
-    private int[] chanMocs;
+    [SerializeField] private int[] chanMocs;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int countDebuff = 0;
@@ -27,12 +27,14 @@ public class ChanNguyenHuyenDien : CongPhap, IMemorySerializable<ChanNguyenHuyen
             caster.AddBuffAndDebuffCount(buff, 1);
         }
 
-        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanMoc, countDebuff * chanMocs[CurrentLevelCongPhapInCombat(caster) - 1]);
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanMoc,
+            countDebuff * chanMocs[CurrentLevelCongPhapInCombat(caster) - 1]);
     }
 
     public override string GetDesc(int level)
     {
-        return $"Kết thúc hiệp, đối thủ mỗi có 1 loại trạng thái tiêu cực thì bản thân thu hoạch được ngẫu nhiên 1 loại trang thái tích cực. Đồng thời, cũng thu hoạch được {GetColoredText($"+{chanMocs[level - 1]}", "red")} {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChanMoc)}";
+        return
+            $"Kết thúc hiệp, đối thủ mỗi có 1 loại trạng thái tiêu cực thì bản thân thu hoạch được ngẫu nhiên 1 loại trang thái tích cực. Đồng thời, cũng thu hoạch được {GetColoredText($"+{chanMocs[level - 1]}", "red")} {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChanMoc)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

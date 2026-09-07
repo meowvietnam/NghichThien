@@ -6,6 +6,7 @@ namespace ConvertElementalSkill
     {
         public ItemRef ItemRef { get; }
         public ISkillItemData ItemData { get; }
+
         public SkillData(ItemRef itemRef, ISkillItemData itemData)
         {
             ItemRef = itemRef;

@@ -14,13 +14,14 @@ namespace Network.Models
         public void Deserialize(IReader reader, ref SetSkinRequest value)
         {
             value.Gender = reader.Read<Gender>();
-            value.Skins = DictionaryUtils.CreateDictionary(reader.ReadArray(),reader.ReadArray());
-            value.Colors = DictionaryUtils.CreateDictionary(reader.ReadArray(),reader.ReadArray<Color>());
+            value.Skins = DictionaryUtils.CreateDictionary(reader.ReadArray(), reader.ReadArray());
+            value.Colors = DictionaryUtils.CreateDictionary(reader.ReadArray(), reader.ReadArray<Color>());
         }
 
         public int ByteSize()
         {
-            return Gender.ByteSize() + Skins.Keys.ByteSize() + Skins.Values.ByteSize() + Colors.Keys.ByteSize() + Colors.Values.ByteSize();
+            return Gender.ByteSize() + Skins.Keys.ByteSize() + Skins.Values.ByteSize() + Colors.Keys.ByteSize() +
+                   Colors.Values.ByteSize();
         }
 
         public void Serialize(IWriter writer)

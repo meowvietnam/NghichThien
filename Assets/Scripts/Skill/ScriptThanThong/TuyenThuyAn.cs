@@ -10,10 +10,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(TuyenThuyAn), menuName = "Skill/Thần Thông/" + nameof(TuyenThuyAn))]
 public class TuyenThuyAn : ThanThong, IMemorySerializable<TuyenThuyAn>
 {
-    [SerializeField]
-    private int[] healValues;
-    [SerializeField]
-    private float delayTimeEffect = 0.5f;
+    [SerializeField] private int[] healValues;
+    [SerializeField] private float delayTimeEffect = 0.5f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -22,6 +21,7 @@ public class TuyenThuyAn : ThanThong, IMemorySerializable<TuyenThuyAn>
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect2);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -51,7 +51,8 @@ public class TuyenThuyAn : ThanThong, IMemorySerializable<TuyenThuyAn>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Ở hiệp tiếp theo, nhận sát thương thì bản thân được khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} Hp";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Ở hiệp tiếp theo, nhận sát thương thì bản thân được khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} Hp";
     }
 
     public override int ByteSize()

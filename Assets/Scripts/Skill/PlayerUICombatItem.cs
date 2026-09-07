@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+
 public class PlayerUICombatItem : BaseItemUI
 {
     [SerializeField] private Image recommentHighLight;
@@ -21,27 +22,26 @@ public class PlayerUICombatItem : BaseItemUI
         btnShowInfor.gameObject.SetActive(itemData != null);
 
         SetLock(itemData == null);
-        SetEventButton(btnShowInfor, () =>
-        {
-            EventHolder();
-
-        });
-       
+        SetEventButton(btnShowInfor, () => { EventHolder(); });
     }
+
     public void SetFullQuality(Sprite sprite)
     {
         fullQuality.sprite = sprite;
         fullQuality.SetNativeSize();
-    }    
+    }
+
     public void SetLock(bool isLock)
     {
         maskCoolDown.gameObject.SetActive(isLock);
     }
+
     public void SetCoolDown(bool isActive, int cd)
     {
         cdText.gameObject.transform.parent.gameObject.SetActive(isActive);
         cdText.text = cd.ToString();
     }
+
     public override void OnPointerUp()
     {
         if (isLock) return;

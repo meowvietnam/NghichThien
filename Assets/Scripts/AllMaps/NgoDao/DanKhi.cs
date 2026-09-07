@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(DanKhi), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(DanKhi))]
 public class DanKhi : NgoDaoCombat, IMemorySerializable<DanKhi>
 {
-    [SerializeField]
-    private int buff = 1;
+    [SerializeField] private int buff = 1;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         CombatStatic.AmKinhTTNewTurn(target, caster);
@@ -20,7 +20,8 @@ public class DanKhi : NgoDaoCombat, IMemorySerializable<DanKhi>
 
     public override string GetDes()
     {
-        return $"Kết thúc hiệp, Tất cả {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.AmKinh)} của đối thủ số hiệp {BaseSkill.GetColoredText($"-{buff}", "red")}. Mỗi một loại {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.AmKinh)} khác biệt thì đối thủ nhận phải {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NoiThuong)}";
+        return
+            $"Kết thúc hiệp, Tất cả {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.AmKinh)} của đối thủ số hiệp {BaseSkill.GetColoredText($"-{buff}", "red")}. Mỗi một loại {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.AmKinh)} khác biệt thì đối thủ nhận phải {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NoiThuong)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

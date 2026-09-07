@@ -10,15 +10,17 @@ public class VisitPlayer : BaseBehaviour
     [SerializeField] private Text nameText;
     [SerializeField] private Button visitButton;
     private string playerName;
-    private void Start() 
+
+    private void Start()
     {
         SetEventButton(visitButton, Visit);
     }
+
     private void Visit()
     {
         DongPhuPanel.Instance.Visit(playerName);
     }
-  
+
     public void Init(string name)
     {
         this.playerName = name;

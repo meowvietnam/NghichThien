@@ -8,15 +8,17 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(HoaDoc), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(HoaDoc))]
 public class HoaDoc : NgoDaoCombat, IMemorySerializable<HoaDoc>
 {
-    [SerializeField]
-    private int buff = 1;
+    [SerializeField] private int buff = 1;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out SecureInt trungDoc) && BaseSkill.CheckIsEqualETypeSkill(caster, new BaseSkill.ETypeSkill[]{BaseSkill.ETypeSkill.Hoa}))
+        if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out SecureInt trungDoc) &&
+            BaseSkill.CheckIsEqualETypeSkill(caster, new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Hoa }))
         {
             target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, buff);
         }
-        else if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt thieuDot) && BaseSkill.CheckIsEqualETypeSkill(caster, new BaseSkill.ETypeSkill[]{BaseSkill.ETypeSkill.Moc}))
+        else if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ThieuDot, out SecureInt thieuDot) &&
+                 BaseSkill.CheckIsEqualETypeSkill(caster, new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Moc }))
         {
             target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, buff);
         }
@@ -24,7 +26,8 @@ public class HoaDoc : NgoDaoCombat, IMemorySerializable<HoaDoc>
 
     public override string GetDes()
     {
-        return $"Đối thủ ở trạng thái {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)} khi sử dụng {BaseSkill.GetTextLinhKhi(ELinhKhi.Hoa)} hệ thần thông làm tổn thương đối thủ nhận phải {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}. Đối thủ ở trạng thái {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)} khi sử dụng {BaseSkill.GetTextLinhKhi(ELinhKhi.Moc)} hệ thần thông làm tổn thương đối thủ nhận phải {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}";
+        return
+            $"Đối thủ ở trạng thái {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)} khi sử dụng {BaseSkill.GetTextLinhKhi(ELinhKhi.Hoa)} hệ thần thông làm tổn thương đối thủ nhận phải {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}. Đối thủ ở trạng thái {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)} khi sử dụng {BaseSkill.GetTextLinhKhi(ELinhKhi.Moc)} hệ thần thông làm tổn thương đối thủ nhận phải {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

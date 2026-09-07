@@ -5,19 +5,20 @@ namespace LongDHModules
 {
     public static class Pool
     {
-
         static readonly Dictionary<Type, object> m_Dict = new Dictionary<Type, object>();
         static readonly Dictionary<Type, Func<object>> m_DictCreate = new Dictionary<Type, Func<object>>();
 
         static Pool()
         {
         }
+
         public static void Set<T>(T t) where T : class, new()
         {
             if (t == null)
             {
                 return;
             }
+
             var type = typeof(T);
             m_Dict[type] = t;
         }
@@ -28,6 +29,7 @@ namespace LongDHModules
             {
                 return;
             }
+
             m_Dict[type] = obj;
         }
 
@@ -38,10 +40,12 @@ namespace LongDHModules
             {
                 return result as T;
             }
+
             var t = new T();
             m_Dict[type] = t;
             return t;
         }
+
         public static void ClearAll()
         {
             m_Dict.Clear();
@@ -59,4 +63,3 @@ namespace LongDHModules
         }
     }
 }
-

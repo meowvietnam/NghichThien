@@ -18,6 +18,7 @@ namespace LuyenDan
         [SerializeField] public UnityEvent confirmAction;
         [SerializeField] private RectTransform selectNumTransform;
         public event Action<int> ValueChanged;
+
         private void Start()
         {
             slider.onValueChanged.AddListener(OnValueChanged);
@@ -51,6 +52,7 @@ namespace LuyenDan
             Hide(0.15f);
             confirmAction?.Invoke();
         }
+
         public void SetActive(bool active)
         {
             selfObject.SetActive(active);
@@ -59,10 +61,12 @@ namespace LuyenDan
                 ValueChanged = null;
             }
         }
+
         private void OnValueChanged(float value)
         {
             ValueChanged?.Invoke((int)value);
         }
+
         public void SetText(string text)
         {
             this.text.text = text;
@@ -72,11 +76,12 @@ namespace LuyenDan
         {
             slider.minValue = min;
         }
-  
+
         public void SetMax(int max)
         {
             slider.maxValue = max;
         }
+
         public int GetValue()
         {
             return Mathf.RoundToInt(slider.value);
@@ -92,6 +97,7 @@ namespace LuyenDan
             confirmAction = null;
             ValueChanged = null;
         }
+
         public void SetValue(int value)
         {
             slider.value = value;
@@ -109,13 +115,11 @@ namespace LuyenDan
             });
             SetValue(0);
         }
+
         public void Hide(float time)
         {
             selectNumTransform.DOKill();
-            selectNumTransform.DOScale(Vector3.zero, time).OnComplete(() =>
-            {
-                SetActive(false);
-            });
+            selectNumTransform.DOScale(Vector3.zero, time).OnComplete(() => { SetActive(false); });
         }
     }
 }

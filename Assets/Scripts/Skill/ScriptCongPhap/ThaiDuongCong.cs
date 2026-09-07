@@ -11,8 +11,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThaiDuongCong))]
 public class ThaiDuongCong : CongPhap, IMemorySerializable<ThaiDuongCong>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{2, 3, 4, 5, 6};
+    [SerializeField] private int[] buffValues = new int[] { 2, 3, 4, 5, 6 };
+
     public override void ExecuteParams(params object[] data)
     {
         // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
@@ -30,13 +30,15 @@ public class ThaiDuongCong : CongPhap, IMemorySerializable<ThaiDuongCong>
         int count = (int)data[2];
         if (count > 0 && type == ELinhKhi.Hoa)
         {
-            caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Diem, count * buffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
+            caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Diem,
+                count * buffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
         }
     }
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi hấp thụ một điểm {GetTextLinhKhi(ELinhKhi.Hoa)} hệ linh khí thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Diem)}";
+        return
+            $"Mỗi hấp thụ một điểm {GetTextLinhKhi(ELinhKhi.Hoa)} hệ linh khí thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Diem)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(VongLuongQuyQuyen))]
 public class VongLuongQuyQuyen : CPTieuHaoThoNguyen, IMemorySerializable<VongLuongQuyQuyen>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{5, 18, 33, 48, 63};
-    [SerializeField]
-    private int[] debuffValues = new int[]{2, 4, 6, 8, 10};
+    [SerializeField] private int[] buffValues = new int[] { 5, 18, 33, 48, 63 };
+    [SerializeField] private int[] debuffValues = new int[] { 2, 4, 6, 8, 10 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int indexLevel = CurrentLevelCongPhapInCombat(caster) - 1;
@@ -23,7 +22,8 @@ public class VongLuongQuyQuyen : CPTieuHaoThoNguyen, IMemorySerializable<VongLuo
 
     public override string GetDesc(int level)
     {
-        return $"Bắt đầu chiến đấu, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Anh)}, đối thủ nhận phải {GetColoredText($"+{debuffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThanThuong)}. {base.GetDesc(level)}";
+        return
+            $"Bắt đầu chiến đấu, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Anh)}, đối thủ nhận phải {GetColoredText($"+{debuffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThanThuong)}. {base.GetDesc(level)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

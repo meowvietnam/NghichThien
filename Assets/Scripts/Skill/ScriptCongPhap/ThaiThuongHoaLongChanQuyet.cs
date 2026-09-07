@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThaiThuongHoaLongChanQuyet))]
 public class ThaiThuongHoaLongChanQuyet : ThoNapCongPhap, IMemorySerializable<ThaiThuongHoaLongChanQuyet>
 {
-    [SerializeField]
-    private int[] buffValues2 = new int[]{1, 1, 1, 2, 2};
-    [SerializeField]
-    private int[] maxs = new int[]{2, 4, 6, 8, 10};
+    [SerializeField] private int[] buffValues2 = new int[] { 1, 1, 1, 2, 2 };
+    [SerializeField] private int[] maxs = new int[] { 2, 4, 6, 8, 10 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int count = caster.congPhapDynamic.Count(x => x.congPhap is ThaiThuongHoaLongChanQuyet);
@@ -28,7 +27,8 @@ public class ThaiThuongHoaLongChanQuyet : ThoNapCongPhap, IMemorySerializable<Th
 
     public override string GetDesc(int level)
     {
-        return $"{base.GetDesc(level)}. Kết thúc hiệp, hấp thụ {GetColoredText($"{buffValues2[level - 1]}*X", "red")} điểm linh khí (X là số lượt hiện tại và giới hạn tối đa là {GetColoredText($"{maxs[level - 1]}", "red")})";
+        return
+            $"{base.GetDesc(level)}. Kết thúc hiệp, hấp thụ {GetColoredText($"{buffValues2[level - 1]}*X", "red")} điểm linh khí (X là số lượt hiện tại và giới hạn tối đa là {GetColoredText($"{maxs[level - 1]}", "red")})";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

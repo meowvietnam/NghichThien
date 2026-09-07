@@ -8,8 +8,9 @@ namespace Tutorials
 {
     public class TutorialHighlight : BaseBehaviour
     {
-        [Header("References")]
-        [SerializeField] private Image top;
+        [Header("References")] [SerializeField]
+        private Image top;
+
         [SerializeField] private Image bottom;
         [SerializeField] private Image left;
         [SerializeField] private Image right;
@@ -18,8 +19,7 @@ namespace Tutorials
         [SerializeField] private DialogText dialogText;
         [SerializeField] private Vector2 dialogOffset;
 
-        [Header("Animation")]
-        [SerializeField] private float showDuration = 0.2f;
+        [Header("Animation")] [SerializeField] private float showDuration = 0.2f;
         [SerializeField] private float moveDuration = 0.25f;
         [SerializeField] private float hideDuration = 0.2f;
 
@@ -27,11 +27,9 @@ namespace Tutorials
         [SerializeField] private Ease moveEase = Ease.OutQuad;
         [SerializeField] private Ease hideEase = Ease.InBack;
 
-        [Header("Highlight")]
-        [SerializeField] private Vector2 padding = new Vector2(10f, 10f);
+        [Header("Highlight")] [SerializeField] private Vector2 padding = new Vector2(10f, 10f);
 
-        [Header("Input")]
-        [SerializeField] private bool clickDarkAreaToHide = true;
+        [Header("Input")] [SerializeField] private bool clickDarkAreaToHide = true;
 
         private Canvas canvas;
         private RectTransform canvasRect;
@@ -885,7 +883,7 @@ namespace Tutorials
         public void Hide()
         {
             if (isMoving) return;
-            if (dialogText.IsTyping) return;            
+            if (dialogText.IsTyping) return;
             if (OnClose == null ||
                 !OnClose())
             {
@@ -1021,4 +1019,3 @@ namespace Tutorials
         }
     }
 }
-

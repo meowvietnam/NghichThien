@@ -15,16 +15,19 @@ namespace CreateCharacter
         [field: SerializeField] public List<string> CategoryIds { get; private set; }
         [field: SerializeField] public Color DefaultColor { get; private set; }
         public Action<Color> OnChanged;
+
         public int ByteSize()
         {
             return Id.ByteSize() + CategoryIds.ByteSize() + DefaultColor.ByteSize();
         }
+
         public void Serialize(IWriter writer)
         {
             writer.Write(Id);
             writer.WriteArray(CategoryIds);
             writer.Write(DefaultColor);
         }
+
         public void Deserialize(IReader reader, ref ColorGroup value)
         {
             value.Id = reader.Read();

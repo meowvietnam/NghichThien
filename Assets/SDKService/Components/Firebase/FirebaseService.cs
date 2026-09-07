@@ -8,6 +8,7 @@ using LongDH.LongDHModules;
 public class FirebaseService : SingletonMonoDontDestroy<AdsService>
 {
     private FirebaseApp app;
+
     private void Awake()
     {
         try
@@ -36,10 +37,12 @@ public class FirebaseService : SingletonMonoDontDestroy<AdsService>
         {
             //
         }
-    }    
+    }
+
     public void LogCompleteSideQuest()
     {
         Firebase.Analytics.FirebaseAnalytics.LogEvent("complete_side_quest",
-            new Firebase.Analytics.Parameter("complete_with_count",Client.Instance.CharacterData.QuestManager.CurrentCountSideQuest+1));
-    }    
+            new Firebase.Analytics.Parameter("complete_with_count",
+                Client.Instance.CharacterData.QuestManager.CurrentCountSideQuest + 1));
+    }
 }

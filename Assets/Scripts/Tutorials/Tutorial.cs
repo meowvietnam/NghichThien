@@ -5,7 +5,14 @@ using UnityEngine;
 
 namespace Tutorials
 {
-    public enum DialogPosition { TopLeft, TopRight, BottomLeft, BottomRight }
+    public enum DialogPosition
+    {
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight
+    }
+
     [Serializable]
     public class TutorialStep
     {
@@ -24,6 +31,7 @@ namespace Tutorials
         private int stepIndex;
         public event Action<Renderer> OnSetTarget;
         public event Action OnCompleted;
+
         private void Start()
         {
             highlight.OnClose += OnClose;
@@ -90,6 +98,7 @@ namespace Tutorials
                 yield return new WaitWhile(() => isShowing);
                 stepIndex++;
             }
+
             OnCompleted?.Invoke();
         }
 
@@ -101,6 +110,7 @@ namespace Tutorials
                 GC.Collect();
                 return true;
             }
+
             return false;
         }
     }

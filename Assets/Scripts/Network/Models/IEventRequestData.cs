@@ -9,6 +9,5 @@ namespace Network.Models
     [MemoryPackUnion(3, typeof(BuyItemEventShop))]
     public partial interface IEventRequestData
     {
-        
     }
 }

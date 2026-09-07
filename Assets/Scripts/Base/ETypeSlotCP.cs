@@ -14,4 +14,3 @@ namespace Base
         PhuTu4,
     }
 }
-

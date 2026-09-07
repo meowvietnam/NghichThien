@@ -7,12 +7,10 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(HoanAnhLuc), menuName = "Skill/Thần Thông/" + nameof(HoanAnhLuc))]
 public class HoanAnhLuc : ThanThong, IMemorySerializable<HoanAnhLuc>
 {
-    [SerializeField]
-    private int[] tieuHaos = new int[]{5, 15, 30, 40, 50};
-    [SerializeField]
-    private int[] buffValues = new int[]{2, 3, 5, 7, 9};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] tieuHaos = new int[] { 5, 15, 30, 40, 50 };
+    [SerializeField] private int[] buffValues = new int[] { 2, 3, 5, 7, 9 };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int require = tieuHaos[GetIndexLevelThanThong(caster)];
@@ -20,6 +18,7 @@ public class HoanAnhLuc : ThanThong, IMemorySerializable<HoanAnhLuc>
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.AnhDich, buffValues[GetIndexLevelThanThong(caster)]);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -41,7 +40,8 @@ public class HoanAnhLuc : ThanThong, IMemorySerializable<HoanAnhLuc>
 
     public override string GetDesc(int level)
     {
-        return $"Tiêu hao {GetColoredText($"{tieuHaos[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Anh)}. Thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnhDich)}";
+        return
+            $"Tiêu hao {GetColoredText($"{tieuHaos[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Anh)}. Thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnhDich)}";
     }
 
     public override int ByteSize()

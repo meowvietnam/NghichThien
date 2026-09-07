@@ -13,6 +13,7 @@ namespace Rank
     {
         public ushort Id { get; set; }
         public ushort Count { get; set; }
+
         public void Claim(CharacterData charData)
         {
             charData.InventoryManager.Add(CreateRef());
@@ -28,6 +29,7 @@ namespace Rank
             };
             return itemRef;
         }
+
         public void ShowUI(RewardUIContext context)
         {
             var itemData = GetData();
@@ -40,6 +42,7 @@ namespace Rank
         {
             return LuyenDanResources.Instance.FindLinhDan(Id);
         }
+
         public string GetRichText()
         {
             var item = GetData();

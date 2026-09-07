@@ -17,11 +17,13 @@ public class BaseData : ScriptableObject, IMemorySerializable<BaseData>
             Id = id;
         }
     }
+
     public void Deserialize(IReader reader, ref BaseData value)
     {
         value.Id = reader.Read<int>();
         value.nameItem = reader.Read();
     }
+
     public virtual int ByteSize()
     {
         return Id.ByteSize() + nameItem.ByteSize();

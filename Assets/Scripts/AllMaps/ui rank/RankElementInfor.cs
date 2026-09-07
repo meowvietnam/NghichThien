@@ -31,6 +31,7 @@ namespace AllMaps.ui_rank
         [SerializeField] private Sprite spriteDietQuai;
         [SerializeField] private Button infoButton;
         private CharacterStatsSecure charData;
+
         public void Init(CharacterData charData, int rank, RankType rankType, int valueRank)
         {
             this.charData = CharacterStatsSecureBuilder.ArenaFromCharacterSnapshot(new CharacterSnapshot(charData));
@@ -47,6 +48,7 @@ namespace AllMaps.ui_rank
         {
             Observer.Notify(EventList.GamePlay.SHOW_RANK_INFO_POPUP, charData);
         }
+
         public void Init(int tuoitac, int sttRank, string nameUser, int valueRank, Gender gender,
             Dictionary<string, string> skin, Dictionary<string, Color> colors, RankType rankType)
         {
@@ -95,6 +97,7 @@ namespace AllMaps.ui_rank
                 txtValue.transform.parent.gameObject.SetActive(false);
                 imageIcon.transform.localScale = Vector3.one * 0.04f;
             }
+
             imageIcon.SetNativeSize();
         }
 

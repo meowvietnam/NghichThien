@@ -10,12 +10,10 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(PhuongLinhYeuHoa), menuName = "Skill/Thần Thông/" + nameof(PhuongLinhYeuHoa))]
 public class PhuongLinhYeuHoa : ThanThong, BaseSkill.LienKich, IMemorySerializable<PhuongLinhYeuHoa>
 {
-    [SerializeField]
-    private int[] damePerCountAttack = new int[]{8, 11, 14, 18, 25};
-    [SerializeField]
-    private int countAttack = 2;
-    [SerializeField]
-    private float delayEffect = 1f;
+    [SerializeField] private int[] damePerCountAttack = new int[] { 8, 11, 14, 18, 25 };
+    [SerializeField] private int countAttack = 2;
+    [SerializeField] private float delayEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         List<int> dames = new List<int>();
@@ -27,15 +25,18 @@ public class PhuongLinhYeuHoa : ThanThong, BaseSkill.LienKich, IMemorySerializab
         target.CaculateDameByThanThong(caster, dames, eTypeSkill, false);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
         base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticleBase(caster, delayEffect, 5);
     }
+
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{countAttack} lần {damePerCountAttack[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} Nếu lần trước sử dụng là {GetTextLinhKhi(ELinhKhi.Moc)} hệ thần thông thì tăng lên {GetColoredText($"{countAttack}*X lần ", "red")} (X là số lần sử dụng thần thông [Nhóm Lửa])";
+        return
+            $"Tạo thành {GetColoredText($"{countAttack} lần {damePerCountAttack[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} Nếu lần trước sử dụng là {GetTextLinhKhi(ELinhKhi.Moc)} hệ thần thông thì tăng lên {GetColoredText($"{countAttack}*X lần ", "red")} (X là số lần sử dụng thần thông [Nhóm Lửa])";
     }
 
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)

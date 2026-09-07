@@ -76,7 +76,6 @@ namespace Tutorials
 
             List<TutorialStep> steps = new List<TutorialStep>
             {
-
                 new TutorialStep()
                 {
                     TargetRenderer = vanTichThanh,

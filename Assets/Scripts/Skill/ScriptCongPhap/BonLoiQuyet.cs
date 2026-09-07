@@ -10,10 +10,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(BonLoiQuyet))]
 public class BonLoiQuyet : CongPhap, IMemorySerializable<BonLoiQuyet>
 {
-    [SerializeField]
-    private int[] sucTheBuff;
-    [SerializeField]
-    private int require = 5;
+    [SerializeField] private int[] sucTheBuff;
+    [SerializeField] private int require = 5;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         Debug.Log("Vao day2");
@@ -27,7 +26,8 @@ public class BonLoiQuyet : CongPhap, IMemorySerializable<BonLoiQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Sử dụng thần thông có linh khí tiêu hao lớn hơn hoặc bằng {GetColoredText($"{require}", "red")} điểm thì thu hoạch được {GetColoredText($"+{sucTheBuff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}";
+        return
+            $"Sử dụng thần thông có linh khí tiêu hao lớn hơn hoặc bằng {GetColoredText($"{require}", "red")} điểm thì thu hoạch được {GetColoredText($"+{sucTheBuff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}";
     }
 
     private bool IsCanActive(List<LinhKhiTieuTan> linhKhiTieuTan)

@@ -56,249 +56,293 @@ using UnityEngine;
 using UnityEditor.Build.Reporting;
 #endif
 
-namespace Spine.Unity.Editor {
-	public class SpineBuildProcessor {
-		internal static bool isBuilding = false;
+namespace Spine.Unity.Editor
+{
+    public class SpineBuildProcessor
+    {
+        internal static bool isBuilding = false;
 
 #if HAS_ON_POSTPROCESS_PREFAB
-		static List<string> prefabsToRestore = new List<string>();
+        static List<string> prefabsToRestore = new List<string>();
 #endif
 #if SPINE_OPTIONAL_ON_DEMAND_LOADING
-		static List<string> textureLoadersToRestore = new List<string>();
+        static List<string> textureLoadersToRestore = new List<string>();
 #endif
-		static Dictionary<string, string> spriteAtlasTexturesToRestore = new Dictionary<string, string>();
+        static Dictionary<string, string> spriteAtlasTexturesToRestore = new Dictionary<string, string>();
 
-		internal static void PreprocessBuild () {
-			isBuilding = true;
+        internal static void PreprocessBuild()
+        {
+            isBuilding = true;
 #if HAS_ON_POSTPROCESS_PREFAB
-			if (SpineEditorUtilities.Preferences.removePrefabPreviewMeshes)
-				PreprocessSpinePrefabMeshes();
+            if (SpineEditorUtilities.Preferences.removePrefabPreviewMeshes)
+                PreprocessSpinePrefabMeshes();
 #endif
 #if SPINE_OPTIONAL_ON_DEMAND_LOADING
-			PreprocessOnDemandTextureLoaders();
+            PreprocessOnDemandTextureLoaders();
 #endif
-			PreprocessSpriteAtlases();
-		}
+            PreprocessSpriteAtlases();
+        }
 
-		internal static void PostprocessBuild () {
-			isBuilding = false;
+        internal static void PostprocessBuild()
+        {
+            isBuilding = false;
 #if HAS_ON_POSTPROCESS_PREFAB
-			if (SpineEditorUtilities.Preferences.removePrefabPreviewMeshes)
-				PostprocessSpinePrefabMeshes();
+            if (SpineEditorUtilities.Preferences.removePrefabPreviewMeshes)
+                PostprocessSpinePrefabMeshes();
 #endif
 #if SPINE_OPTIONAL_ON_DEMAND_LOADING
-			PostprocessOnDemandTextureLoaders();
+            PostprocessOnDemandTextureLoaders();
 #endif
-			PostprocessSpriteAtlases();
-		}
+            PostprocessSpriteAtlases();
+        }
 
 #if HAS_ON_POSTPROCESS_PREFAB
-		internal static void PreprocessSpinePrefabMeshes () {
-			BuildUtilities.IsInSkeletonAssetBuildPreProcessing = true;
-			try {
-				AssetDatabase.StartAssetEditing();
-				prefabsToRestore.Clear();
-				string[] prefabAssets = AssetDatabase.FindAssets("t:Prefab");
-				foreach (string asset in prefabAssets) {
-					string assetPath = AssetDatabase.GUIDToAssetPath(asset);
-					if (!AssetUtility.AssetCanBeModified(assetPath)) continue;
+        internal static void PreprocessSpinePrefabMeshes()
+        {
+            BuildUtilities.IsInSkeletonAssetBuildPreProcessing = true;
+            try
+            {
+                AssetDatabase.StartAssetEditing();
+                prefabsToRestore.Clear();
+                string[] prefabAssets = AssetDatabase.FindAssets("t:Prefab");
+                foreach (string asset in prefabAssets)
+                {
+                    string assetPath = AssetDatabase.GUIDToAssetPath(asset);
+                    if (!AssetUtility.AssetCanBeModified(assetPath)) continue;
 
-					GameObject prefabGameObject = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
-					if (SpineEditorUtilities.CleanupSpinePrefabMesh(prefabGameObject)) {
+                    GameObject prefabGameObject = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
+                    if (SpineEditorUtilities.CleanupSpinePrefabMesh(prefabGameObject))
+                    {
 #if HAS_SAVE_ASSET_IF_DIRTY
 						AssetDatabase.SaveAssetIfDirty(prefabGameObject);
 #endif
-						prefabsToRestore.Add(assetPath);
-					}
-				}
-				EditorUtility.UnloadUnusedAssetsImmediate();
-				AssetDatabase.StopAssetEditing();
-#if !HAS_SAVE_ASSET_IF_DIRTY
-				if (prefabAssets.Length > 0)
-					AssetDatabase.SaveAssets();
-#endif
-			} finally {
-				BuildUtilities.IsInSkeletonAssetBuildPreProcessing = false;
-			}
-		}
+                        prefabsToRestore.Add(assetPath);
+                    }
+                }
 
-		internal static void PostprocessSpinePrefabMeshes () {
-			BuildUtilities.IsInSkeletonAssetBuildPostProcessing = true;
-			try {
-				foreach (string assetPath in prefabsToRestore) {
-					GameObject g = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
-					SpineEditorUtilities.SetupSpinePrefabMesh(g, null);
+                EditorUtility.UnloadUnusedAssetsImmediate();
+                AssetDatabase.StopAssetEditing();
+#if !HAS_SAVE_ASSET_IF_DIRTY
+                if (prefabAssets.Length > 0)
+                    AssetDatabase.SaveAssets();
+#endif
+            }
+            finally
+            {
+                BuildUtilities.IsInSkeletonAssetBuildPreProcessing = false;
+            }
+        }
+
+        internal static void PostprocessSpinePrefabMeshes()
+        {
+            BuildUtilities.IsInSkeletonAssetBuildPostProcessing = true;
+            try
+            {
+                foreach (string assetPath in prefabsToRestore)
+                {
+                    GameObject g = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
+                    SpineEditorUtilities.SetupSpinePrefabMesh(g, null);
 #if HAS_SAVE_ASSET_IF_DIRTY
 					AssetDatabase.SaveAssetIfDirty(g);
 #endif
-				}
+                }
 #if !HAS_SAVE_ASSET_IF_DIRTY
-				if (prefabsToRestore.Count > 0)
-					AssetDatabase.SaveAssets();
+                if (prefabsToRestore.Count > 0)
+                    AssetDatabase.SaveAssets();
 #endif
-				prefabsToRestore.Clear();
-
-			} finally {
-				BuildUtilities.IsInSkeletonAssetBuildPostProcessing = false;
-			}
-		}
+                prefabsToRestore.Clear();
+            }
+            finally
+            {
+                BuildUtilities.IsInSkeletonAssetBuildPostProcessing = false;
+            }
+        }
 #endif
 
 #if SPINE_OPTIONAL_ON_DEMAND_LOADING
-		internal static void PreprocessOnDemandTextureLoaders () {
-			BuildUtilities.IsInSkeletonAssetBuildPreProcessing = true;
-			try {
-				AssetDatabase.StartAssetEditing();
-				textureLoadersToRestore.Clear();
-				string[] loaderAssets = AssetDatabase.FindAssets("t:OnDemandTextureLoader");
-				foreach (string loaderAsset in loaderAssets) {
-					string assetPath = AssetDatabase.GUIDToAssetPath(loaderAsset);
-					OnDemandTextureLoader loader = AssetDatabase.LoadAssetAtPath<OnDemandTextureLoader>(assetPath);
-					bool isLoaderUsed = loader.atlasAsset && loader.atlasAsset.OnDemandTextureLoader == loader &&
-						loader.atlasAsset.TextureLoadingMode == AtlasAssetBase.LoadingMode.OnDemand;
-					if (isLoaderUsed) {
-						IEnumerable<Material> modifiedMaterials;
-						textureLoadersToRestore.Add(assetPath);
-						loader.AssignPlaceholderTextures(out modifiedMaterials);
+        internal static void PreprocessOnDemandTextureLoaders()
+        {
+            BuildUtilities.IsInSkeletonAssetBuildPreProcessing = true;
+            try
+            {
+                AssetDatabase.StartAssetEditing();
+                textureLoadersToRestore.Clear();
+                string[] loaderAssets = AssetDatabase.FindAssets("t:OnDemandTextureLoader");
+                foreach (string loaderAsset in loaderAssets)
+                {
+                    string assetPath = AssetDatabase.GUIDToAssetPath(loaderAsset);
+                    OnDemandTextureLoader loader = AssetDatabase.LoadAssetAtPath<OnDemandTextureLoader>(assetPath);
+                    bool isLoaderUsed = loader.atlasAsset && loader.atlasAsset.OnDemandTextureLoader == loader &&
+                                        loader.atlasAsset.TextureLoadingMode == AtlasAssetBase.LoadingMode.OnDemand;
+                    if (isLoaderUsed)
+                    {
+                        IEnumerable<Material> modifiedMaterials;
+                        textureLoadersToRestore.Add(assetPath);
+                        loader.AssignPlaceholderTextures(out modifiedMaterials);
 
 #if HAS_SAVE_ASSET_IF_DIRTY
 						foreach (Material material in modifiedMaterials) {
 							AssetDatabase.SaveAssetIfDirty(material);
 						}
 #endif
-					}
-				}
-				EditorUtility.UnloadUnusedAssetsImmediate();
-				AssetDatabase.StopAssetEditing();
-#if !HAS_SAVE_ASSET_IF_DIRTY
-				if (textureLoadersToRestore.Count > 0)
-					AssetDatabase.SaveAssets();
-#endif
-			} finally {
-				BuildUtilities.IsInSkeletonAssetBuildPreProcessing = false;
-			}
-		}
+                    }
+                }
 
-		internal static void PostprocessOnDemandTextureLoaders () {
-			BuildUtilities.IsInSkeletonAssetBuildPostProcessing = true;
-			try {
-				foreach (string assetPath in textureLoadersToRestore) {
-					OnDemandTextureLoader loader = AssetDatabase.LoadAssetAtPath<OnDemandTextureLoader>(assetPath);
-					IEnumerable<Material> modifiedMaterials;
-					loader.AssignTargetTextures(out modifiedMaterials);
+                EditorUtility.UnloadUnusedAssetsImmediate();
+                AssetDatabase.StopAssetEditing();
+#if !HAS_SAVE_ASSET_IF_DIRTY
+                if (textureLoadersToRestore.Count > 0)
+                    AssetDatabase.SaveAssets();
+#endif
+            }
+            finally
+            {
+                BuildUtilities.IsInSkeletonAssetBuildPreProcessing = false;
+            }
+        }
+
+        internal static void PostprocessOnDemandTextureLoaders()
+        {
+            BuildUtilities.IsInSkeletonAssetBuildPostProcessing = true;
+            try
+            {
+                foreach (string assetPath in textureLoadersToRestore)
+                {
+                    OnDemandTextureLoader loader = AssetDatabase.LoadAssetAtPath<OnDemandTextureLoader>(assetPath);
+                    IEnumerable<Material> modifiedMaterials;
+                    loader.AssignTargetTextures(out modifiedMaterials);
 #if HAS_SAVE_ASSET_IF_DIRTY
 					foreach (Material material in modifiedMaterials) {
 						AssetDatabase.SaveAssetIfDirty(material);
 					}
 #endif
-				}
+                }
 #if !HAS_SAVE_ASSET_IF_DIRTY
-				if (textureLoadersToRestore.Count > 0)
-					AssetDatabase.SaveAssets();
+                if (textureLoadersToRestore.Count > 0)
+                    AssetDatabase.SaveAssets();
 #endif
-				textureLoadersToRestore.Clear();
-
-			} finally {
-				BuildUtilities.IsInSkeletonAssetBuildPostProcessing = false;
-			}
-		}
+                textureLoadersToRestore.Clear();
+            }
+            finally
+            {
+                BuildUtilities.IsInSkeletonAssetBuildPostProcessing = false;
+            }
+        }
 #endif
-		internal static void PreprocessSpriteAtlases () {
-			BuildUtilities.IsInSpriteAtlasBuildPreProcessing = true;
-			try {
-				AssetDatabase.StartAssetEditing();
-				spriteAtlasTexturesToRestore.Clear();
-				string[] spriteAtlasAssets = AssetDatabase.FindAssets("t:SpineSpriteAtlasAsset");
-				foreach (string asset in spriteAtlasAssets) {
-					string assetPath = AssetDatabase.GUIDToAssetPath(asset);
-					if (!AssetUtility.AssetCanBeModified(assetPath)) continue;
+        internal static void PreprocessSpriteAtlases()
+        {
+            BuildUtilities.IsInSpriteAtlasBuildPreProcessing = true;
+            try
+            {
+                AssetDatabase.StartAssetEditing();
+                spriteAtlasTexturesToRestore.Clear();
+                string[] spriteAtlasAssets = AssetDatabase.FindAssets("t:SpineSpriteAtlasAsset");
+                foreach (string asset in spriteAtlasAssets)
+                {
+                    string assetPath = AssetDatabase.GUIDToAssetPath(asset);
+                    if (!AssetUtility.AssetCanBeModified(assetPath)) continue;
 
-					SpineSpriteAtlasAsset atlasAsset = AssetDatabase.LoadAssetAtPath<SpineSpriteAtlasAsset>(assetPath);
-					if (atlasAsset && atlasAsset.materials.Length > 0) {
-						spriteAtlasTexturesToRestore[assetPath] = AssetDatabase.GetAssetPath(atlasAsset.materials[0].mainTexture);
-						atlasAsset.materials[0].mainTexture = null;
-					}
+                    SpineSpriteAtlasAsset atlasAsset = AssetDatabase.LoadAssetAtPath<SpineSpriteAtlasAsset>(assetPath);
+                    if (atlasAsset && atlasAsset.materials.Length > 0)
+                    {
+                        spriteAtlasTexturesToRestore[assetPath] =
+                            AssetDatabase.GetAssetPath(atlasAsset.materials[0].mainTexture);
+                        atlasAsset.materials[0].mainTexture = null;
+                    }
 #if HAS_SAVE_ASSET_IF_DIRTY
 					AssetDatabase.SaveAssetIfDirty(atlasAsset);
 #endif
-				}
-				EditorUtility.UnloadUnusedAssetsImmediate();
-				AssetDatabase.StopAssetEditing();
-#if !HAS_SAVE_ASSET_IF_DIRTY
-				if (spriteAtlasAssets.Length > 0)
-					AssetDatabase.SaveAssets();
-#endif
-			} finally {
-				BuildUtilities.IsInSpriteAtlasBuildPreProcessing = false;
-			}
-		}
+                }
 
-		internal static void PostprocessSpriteAtlases () {
-			BuildUtilities.IsInSpriteAtlasBuildPostProcessing = true;
-			try {
-				foreach (KeyValuePair<string, string> pair in spriteAtlasTexturesToRestore) {
-					string assetPath = pair.Key;
-					SpineSpriteAtlasAsset atlasAsset = AssetDatabase.LoadAssetAtPath<SpineSpriteAtlasAsset>(assetPath);
-					if (atlasAsset && atlasAsset.materials.Length > 0) {
-						Texture atlasTexture = AssetDatabase.LoadAssetAtPath<Texture>(pair.Value);
-						atlasAsset.materials[0].mainTexture = atlasTexture;
-					}
+                EditorUtility.UnloadUnusedAssetsImmediate();
+                AssetDatabase.StopAssetEditing();
+#if !HAS_SAVE_ASSET_IF_DIRTY
+                if (spriteAtlasAssets.Length > 0)
+                    AssetDatabase.SaveAssets();
+#endif
+            }
+            finally
+            {
+                BuildUtilities.IsInSpriteAtlasBuildPreProcessing = false;
+            }
+        }
+
+        internal static void PostprocessSpriteAtlases()
+        {
+            BuildUtilities.IsInSpriteAtlasBuildPostProcessing = true;
+            try
+            {
+                foreach (KeyValuePair<string, string> pair in spriteAtlasTexturesToRestore)
+                {
+                    string assetPath = pair.Key;
+                    SpineSpriteAtlasAsset atlasAsset = AssetDatabase.LoadAssetAtPath<SpineSpriteAtlasAsset>(assetPath);
+                    if (atlasAsset && atlasAsset.materials.Length > 0)
+                    {
+                        Texture atlasTexture = AssetDatabase.LoadAssetAtPath<Texture>(pair.Value);
+                        atlasAsset.materials[0].mainTexture = atlasTexture;
+                    }
 #if HAS_SAVE_ASSET_IF_DIRTY
 					AssetDatabase.SaveAssetIfDirty(atlasAsset);
 #endif
-				}
+                }
 #if !HAS_SAVE_ASSET_IF_DIRTY
-				if (spriteAtlasTexturesToRestore.Count > 0)
-					AssetDatabase.SaveAssets();
+                if (spriteAtlasTexturesToRestore.Count > 0)
+                    AssetDatabase.SaveAssets();
 #endif
-				spriteAtlasTexturesToRestore.Clear();
-			} finally {
-				BuildUtilities.IsInSpriteAtlasBuildPostProcessing = false;
-			}
-		}
-	}
+                spriteAtlasTexturesToRestore.Clear();
+            }
+            finally
+            {
+                BuildUtilities.IsInSpriteAtlasBuildPostProcessing = false;
+            }
+        }
+    }
 
-	public class SpineBuildPreprocessor :
+    public class SpineBuildPreprocessor :
 #if HAS_BUILD_PROCESS_WITH_REPORT
-		IPreprocessBuildWithReport
+        IPreprocessBuildWithReport
 #else
 		IPreprocessBuild
 #endif
-	{
-		public int callbackOrder {
-			get { return -2000; }
-		}
+    {
+        public int callbackOrder
+        {
+            get { return -2000; }
+        }
 #if HAS_BUILD_PROCESS_WITH_REPORT
-		void IPreprocessBuildWithReport.OnPreprocessBuild (BuildReport report) {
-			SpineBuildProcessor.PreprocessBuild();
-		}
+        void IPreprocessBuildWithReport.OnPreprocessBuild(BuildReport report)
+        {
+            SpineBuildProcessor.PreprocessBuild();
+        }
 #else
 		void IPreprocessBuild.OnPreprocessBuild (BuildTarget target, string path) {
 			SpineBuildProcessor.PreprocessBuild();
 		}
 #endif
-	}
+    }
 
-	public class SpineBuildPostprocessor :
+    public class SpineBuildPostprocessor :
 #if HAS_BUILD_PROCESS_WITH_REPORT
-		IPostprocessBuildWithReport
+        IPostprocessBuildWithReport
 #else
 		IPostprocessBuild
 #endif
-	{
-		public int callbackOrder {
-			get { return 2000; }
-		}
+    {
+        public int callbackOrder
+        {
+            get { return 2000; }
+        }
 
 
 #if HAS_BUILD_PROCESS_WITH_REPORT
-		void IPostprocessBuildWithReport.OnPostprocessBuild (BuildReport report) {
-			SpineBuildProcessor.PostprocessBuild();
-		}
+        void IPostprocessBuildWithReport.OnPostprocessBuild(BuildReport report)
+        {
+            SpineBuildProcessor.PostprocessBuild();
+        }
 #else
 		void IPostprocessBuild.OnPostprocessBuild (BuildTarget target, string path) {
 			SpineBuildProcessor.PostprocessBuild();
 		}
 #endif
-	}
+    }
 }

@@ -8,10 +8,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ThuyLieuThuat), menuName = "Skill/Thần Thông/" + nameof(ThuyLieuThuat))]
 public class ThuyLieuThuat : ThanThong, IMemorySerializable<ThuyLieuThuat>
 {
-    [SerializeField]
-    private int[] healValues;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] healValues;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int heal = healValues[GetIndexLevelThanThong(caster)];
@@ -24,6 +23,7 @@ public class ThuyLieuThuat : ThanThong, IMemorySerializable<ThuyLieuThuat>
         caster.Healing(heal);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -33,7 +33,8 @@ public class ThuyLieuThuat : ThanThong, IMemorySerializable<ThuyLieuThuat>
 
     public override string GetDesc(int level)
     {
-        return $"Khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm Hp. Nếu đã đạt tới Hp tối đa lượng dư thừa con lại sẽ chuyển hóa thành {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}";
+        return
+            $"Khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm Hp. Nếu đã đạt tới Hp tối đa lượng dư thừa con lại sẽ chuyển hóa thành {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}";
     }
 
     public override int ByteSize()

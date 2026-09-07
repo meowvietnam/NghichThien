@@ -10,14 +10,15 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(DaiLaThienHuyenQuyet))]
 public class DaiLaThienHuyenQuyet : CongPhap, IMemorySerializable<DaiLaThienHuyenQuyet>
 {
-    [SerializeField]
-    private int[] requires = new int[]{10, 9, 8, 7, 5};
+    [SerializeField] private int[] requires = new int[] { 10, 9, 8, 7, 5 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if (caster.congPhapDynamic.Count(x => x.congPhap is DaiLaThienHuyenQuyet) >= requires[CurrentLevelCongPhapInCombat(caster) - 1])
+        if (caster.congPhapDynamic.Count(x => x.congPhap is DaiLaThienHuyenQuyet) >=
+            requires[CurrentLevelCongPhapInCombat(caster) - 1])
         {
             RemoveCongPhap(caster);
-            target.AddDamageData(new List<int>{target.GetDameBuffForTarget()});
+            target.AddDamageData(new List<int> { target.GetDameBuffForTarget() });
         }
         else
         {
@@ -39,7 +40,8 @@ public class DaiLaThienHuyenQuyet : CongPhap, IMemorySerializable<DaiLaThienHuye
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi sử dụng {GetColoredText($"{requires[level - 1]}", "red")} lần thần thông gây tổn thương thì lần tiếp theo tổn thương gấp đôi";
+        return
+            $"Mỗi sử dụng {GetColoredText($"{requires[level - 1]}", "red")} lần thần thông gây tổn thương thì lần tiếp theo tổn thương gấp đôi";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

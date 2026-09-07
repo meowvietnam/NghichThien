@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ThaiCuc), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(ThaiCuc))]
 public class ThaiCuc : NgoDaoCombat, IMemorySerializable<ThaiCuc>
 {
-    [SerializeField]
-    private ThanThong khuTran;
+    [SerializeField] private ThanThong khuTran;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         ThanThong thanThong = (ThanThong)data[2];
@@ -23,7 +23,8 @@ public class ThaiCuc : NgoDaoCombat, IMemorySerializable<ThaiCuc>
 
     public override string GetDes()
     {
-        return $"Mỗi lần sử dụng {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.TranPhap)} thì phóng thích một lần thần thông [Khu Trận]";
+        return
+            $"Mỗi lần sử dụng {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.TranPhap)} thì phóng thích một lần thần thông [Khu Trận]";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

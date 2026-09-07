@@ -20,8 +20,8 @@ using System.Text.RegularExpressions;
 namespace GoogleMobileAds.Editor
 {
     /*
-    * Utils class that contains helper methods.
-    */
+     * Utils class that contains helper methods.
+     */
     public static class Utils
     {
         internal static string GradleTemplatePath =
@@ -49,15 +49,16 @@ namespace GoogleMobileAds.Editor
         /// </summary>
         public static string AndroidGradlePluginVersion
         {
-            private set {}
+            private set { }
             get
             {
                 if (!Directory.Exists(AndroidPluginsDir) || !File.Exists(GradleTemplatePath))
                 {
                     return DefaultAndroidGradlePlugin();
                 }
+
                 var gradleTemplates = Directory.GetFiles(AndroidPluginsDir, "*.gradle",
-                                                         SearchOption.TopDirectoryOnly);
+                    SearchOption.TopDirectoryOnly);
                 foreach (var path in gradleTemplates)
                 {
                     foreach (var line in File.ReadAllLines(path))
@@ -67,6 +68,7 @@ namespace GoogleMobileAds.Editor
                         {
                             return match.Result("$1");
                         }
+
                         match = androidGradlePluginVersionExtract.Match(line);
                         if (match != null && match.Success)
                         {
@@ -74,6 +76,7 @@ namespace GoogleMobileAds.Editor
                         }
                     }
                 }
+
                 return DefaultAndroidGradlePlugin();
             }
         }

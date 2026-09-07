@@ -22,6 +22,7 @@ namespace Events
         private bool isInit;
         [SerializeField] private RectTransform content;
         [SerializeField] private ElementRecharge elementRechargePrefab;
+
         private void Start()
         {
             SetEventButton(closeButton, OnClose);
@@ -48,12 +49,12 @@ namespace Events
         public void Init(Event @event)
         {
             this.@event = @event;
-         
+
 
             var gameEvent = @event.GameEvent as RechargeEvent1;
             milestoneDict = gameEvent.Milestones
                 .GroupBy(x => x.Type)
-                .ToDictionary(x => x.Key, x => 
+                .ToDictionary(x => x.Key, x =>
                     x.OrderBy(i => i.Amount).ToList());
             isInit = true;
             SelectSkillType(currentSelect);
@@ -71,19 +72,22 @@ namespace Events
             DateTime startAt = @event.StartAt.ToLocalTime();
             DateTime endAt = @event.EndAt.ToLocalTime();
             detailText.text =
-                $"Sự kiện diễn ra từ {startAt:dd/MM/yyyy HH:mm} đến {endAt:dd/MM/yyyy HH:mm} (không tính vào xếp hạng tổng nạp)" + "\n"+
+                $"Sự kiện diễn ra từ {startAt:dd/MM/yyyy HH:mm} đến {endAt:dd/MM/yyyy HH:mm} (không tính vào xếp hạng tổng nạp)" +
+                "\n" +
                 $"Kỹ năng nhận được hệ {BaseSkill.GetTextTypeSkill(type)}";
             var milestones = milestoneDict[type];
             foreach (Transform child in content)
             {
                 Destroy(child.gameObject);
             }
+
             foreach (var milestone in milestones)
             {
                 var elementRecharge = Instantiate(elementRechargePrefab, content);
-                elementRecharge.Init(this,milestone);
+                elementRecharge.Init(this, milestone);
             }
         }
+
         public async void OnBuy(RechargeMilestone1 milestone)
         {
             var request = new HandleEventRequest()

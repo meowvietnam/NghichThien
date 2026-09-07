@@ -49,6 +49,7 @@ namespace ConvertElementalSkill
             var skillData = new SkillData(item, itemData);
             itemUI.SetData(skillData);
         }
+
         private void OnDestroy()
         {
             tween?.Kill();

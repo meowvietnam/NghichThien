@@ -140,9 +140,10 @@ public class CreateImage : MonoBehaviour
 
         var assetsRoot = Path.GetFullPath(Application.dataPath);
         var outputFolder = Path.GetFullPath(Path.Combine(assetsRoot, relativeFolder));
-        var assetsRootWithSeparator = assetsRoot.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal)
-            ? assetsRoot
-            : assetsRoot + Path.DirectorySeparatorChar;
+        var assetsRootWithSeparator =
+            assetsRoot.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal)
+                ? assetsRoot
+                : assetsRoot + Path.DirectorySeparatorChar;
 
         if (outputFolder != assetsRoot && !outputFolder.StartsWith(assetsRootWithSeparator, StringComparison.Ordinal))
         {
@@ -215,8 +216,10 @@ public class CreateImage : MonoBehaviour
     {
         var assetsRoot = Path.GetFullPath(Application.dataPath).Replace("\\", "/");
         var normalizedOutput = Path.GetFullPath(outputFolder).Replace("\\", "/");
-        var assetsRootWithSeparator = assetsRoot.EndsWith("/", StringComparison.Ordinal) ? assetsRoot : assetsRoot + "/";
-        if (normalizedOutput != assetsRoot && !normalizedOutput.StartsWith(assetsRootWithSeparator, StringComparison.Ordinal))
+        var assetsRootWithSeparator =
+            assetsRoot.EndsWith("/", StringComparison.Ordinal) ? assetsRoot : assetsRoot + "/";
+        if (normalizedOutput != assetsRoot &&
+            !normalizedOutput.StartsWith(assetsRootWithSeparator, StringComparison.Ordinal))
         {
             return;
         }

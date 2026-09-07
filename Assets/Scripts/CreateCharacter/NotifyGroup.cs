@@ -10,6 +10,7 @@ namespace CreateCharacter
     {
         private List<NotifySlot> showings = new List<NotifySlot>();
         private static NotifyGroup instance;
+
         public static NotifyGroup Instance
         {
             get
@@ -18,13 +19,16 @@ namespace CreateCharacter
                 {
                     instance = FindAnyObjectByType<NotifyGroup>();
                 }
+
                 return instance;
             }
         }
+
         private void Awake()
         {
             Init();
         }
+
         public void Show(string text)
         {
             var slot = Get();

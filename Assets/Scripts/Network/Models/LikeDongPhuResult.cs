@@ -7,6 +7,7 @@ namespace Network.Models
     {
         public int NewLike { get; set; }
     }
+
     [MemoryPackable]
     public partial class LikeDongPhuResult : Result
     {

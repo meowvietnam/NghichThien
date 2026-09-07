@@ -13,14 +13,17 @@ namespace LuyenKhi
         [SerializeField] private Image image;
         [SerializeField] private Image imageText;
         [SerializeField] private Button button;
+
         private void Start()
         {
             SetEventButton(button, OnClick);
         }
+
         private void OnClick()
         {
             LuyenKhiPanel.Instance.LuyenKhiPage.LuyenKhi();
         }
+
         public void SetInteractable(bool interactable)
         {
             button.interactable = interactable;

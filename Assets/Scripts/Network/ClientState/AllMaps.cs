@@ -85,26 +85,17 @@ namespace Network.ClientState
             else if (tag == MessageTag.OtherPlayerMoving)
             {
                 var playerMoving = reader.MemRead<PlayerMoving>();
-                NetworkManager.Instance.Invoke(() =>
-                {
-                    callback.OnPlayerMoving(playerMoving);
-                });
+                NetworkManager.Instance.Invoke(() => { callback.OnPlayerMoving(playerMoving); });
             }
             else if (tag == MessageTag.InvitePvp)
             {
                 var invitePvp = reader.MemRead<InvitePvp>();
-                NetworkManager.Instance.Invoke(() =>
-                {
-                    callback.OnInvitePvp(invitePvp);
-                });
+                NetworkManager.Instance.Invoke(() => { callback.OnInvitePvp(invitePvp); });
             }
             else if (tag == MessageTag.PvpMatched)
             {
                 var pvpMatched = reader.MemRead<PvpMatched>();
-                NetworkManager.Instance.Invoke(() =>
-                {
-                    callback.OnPvpMatched(pvpMatched);
-                });
+                NetworkManager.Instance.Invoke(() => { callback.OnPvpMatched(pvpMatched); });
             }
         }
 

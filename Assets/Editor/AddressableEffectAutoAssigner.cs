@@ -94,19 +94,22 @@ public class AddressableEffectAutoAssigner : EditorWindow
 
                 countSuccess++;
                 string prefabPath = AssetDatabase.GUIDToAssetPath(prefabGuid);
-                Debug.Log($"<color=green>[Thành công]</color> SO: '{soObj.name}' | ID: {skillId} -> Prefab: '{System.IO.Path.GetFileName(prefabPath)}' -> Addressable: <b>{newAddressName}</b>");
+                Debug.Log(
+                    $"<color=green>[Thành công]</color> SO: '{soObj.name}' | ID: {skillId} -> Prefab: '{System.IO.Path.GetFileName(prefabPath)}' -> Addressable: <b>{newAddressName}</b>");
             }
             else
             {
                 countSkipped++;
-                Debug.LogWarning($"[Bỏ qua] SO: '{soObj.name}' | Skill ID: {(skillId == -1 ? "KHÔNG ĐỌC ĐƯỢC" : skillId.ToString())} | Prefab GUID: {(string.IsNullOrEmpty(prefabGuid) ? "KHÔNG TÌM THẤY" : prefabGuid)}");
+                Debug.LogWarning(
+                    $"[Bỏ qua] SO: '{soObj.name}' | Skill ID: {(skillId == -1 ? "KHÔNG ĐỌC ĐƯỢC" : skillId.ToString())} | Prefab GUID: {(string.IsNullOrEmpty(prefabGuid) ? "KHÔNG TÌM THẤY" : prefabGuid)}");
             }
         }
 
         settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, null, true);
         AssetDatabase.SaveAssets();
 
-        EditorUtility.DisplayDialog("Hoàn tất", $"Đã xử lý xong!\n- Thành công: {countSuccess} Prefab\n- Bỏ qua: {countSkipped} SO", "OK");
+        EditorUtility.DisplayDialog("Hoàn tất",
+            $"Đã xử lý xong!\n- Thành công: {countSuccess} Prefab\n- Bỏ qua: {countSkipped} SO", "OK");
     }
 
     /// Lấy ID dựa theo đúng Nhãn (DisplayName) hiển thị trên Inspector

@@ -8,8 +8,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(LongTuongThonHaiQuyet))]
 public class LongTuongThonHaiQuyet : CongPhap, IMemorySerializable<LongTuongThonHaiQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 2, 3, 4, 5};
+    [SerializeField] private int[] buffValues = new int[] { 1, 2, 3, 4, 5 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
     }

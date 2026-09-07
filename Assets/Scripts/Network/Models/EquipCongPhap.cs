@@ -1,4 +1,3 @@
-
 using Base;
 
 namespace Network.Models

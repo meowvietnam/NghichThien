@@ -14,6 +14,7 @@ namespace LuyenDan
         {
             btn.onClick.AddListener(OnClick);
         }
+
         private void OnClick()
         {
             var recipeListUI = LuyenDanPanel.Instance.RecipeListUI;

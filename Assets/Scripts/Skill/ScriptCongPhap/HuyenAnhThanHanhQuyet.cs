@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(HuyenAnhThanHanhQuyet))]
 public class HuyenAnhThanHanhQuyet : PhiVanKinh, IMemorySerializable<HuyenAnhThanHanhQuyet>
 {
-    [SerializeField]
-    private int[] percents = new int[]{12, 14, 16, 18, 20};
+    [SerializeField] private int[] percents = new int[] { 12, 14, 16, 18, 20 };
+
     public override void ExecuteParams(params object[] data)
     {
         // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
@@ -43,7 +43,8 @@ public class HuyenAnhThanHanhQuyet : PhiVanKinh, IMemorySerializable<HuyenAnhTha
 
     public override string GetDesc(int level)
     {
-        return $"{base.GetDesc(level)}. Nếu độn tốc lớn hơn đối thủ, Có {GetColoredText($"{percents[level - 1]}%", "red")} tỉ lệ né tránh sát thương";
+        return
+            $"{base.GetDesc(level)}. Nếu độn tốc lớn hơn đối thủ, Có {GetColoredText($"{percents[level - 1]}%", "red")} tỉ lệ né tránh sát thương";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

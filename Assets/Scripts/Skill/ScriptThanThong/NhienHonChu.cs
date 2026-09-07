@@ -10,12 +10,10 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(NhienHonChu), menuName = "Skill/Thần Thông/" + nameof(NhienHonChu))]
 public class NhienHonChu : ThanThong, IMemorySerializable<NhienHonChu>
 {
-    [SerializeField]
-    private int[] dameValues = new int[]{5, 8, 11, 15, 30};
-    [SerializeField]
-    private int addDebuff = 1;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] dameValues = new int[] { 5, 8, 11, 15, 30 };
+    [SerializeField] private int addDebuff = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ThanThuong, addDebuff);
@@ -24,6 +22,7 @@ public class NhienHonChu : ThanThong, IMemorySerializable<NhienHonChu>
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect2);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -37,10 +36,11 @@ public class NhienHonChu : ThanThong, IMemorySerializable<NhienHonChu>
         CharacterCombat targetTurn = (CharacterCombat)data[1];
         if (currentTurn == null)
             return;
-        if (CheckIsEqualETypeSkill(currentTurn) && currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is NhienHonChu))
+        if (CheckIsEqualETypeSkill(currentTurn) &&
+            currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is NhienHonChu))
         {
             int count = currentTurn.specialThanThongImpactAfterPlaySkill.Count(x => x is NhienHonChu);
-            targetTurn.AddDamageData(new List<int>{count * dameValues[GetIndexLevelThanThong(currentTurn)]});
+            targetTurn.AddDamageData(new List<int> { count * dameValues[GetIndexLevelThanThong(currentTurn)] });
         }
     }
 
@@ -55,7 +55,8 @@ public class NhienHonChu : ThanThong, IMemorySerializable<NhienHonChu>
 
     public override string GetDesc(int level)
     {
-        return $"Nhận phải {GetColoredText($"+{addDebuff}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThanThuong)}. Trong hiệp này, sử dụng thần thông tạo thành thần thức tổn thương thì tăng lên {GetColoredText($"+{dameValues[level - 1]}", "red")} điểm sát thương (Có thể cộng dồn). Kết thúc hiệp giải trừ toàn bộ";
+        return
+            $"Nhận phải {GetColoredText($"+{addDebuff}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThanThuong)}. Trong hiệp này, sử dụng thần thông tạo thành thần thức tổn thương thì tăng lên {GetColoredText($"+{dameValues[level - 1]}", "red")} điểm sát thương (Có thể cộng dồn). Kết thúc hiệp giải trừ toàn bộ";
     }
 
     public override int ByteSize()

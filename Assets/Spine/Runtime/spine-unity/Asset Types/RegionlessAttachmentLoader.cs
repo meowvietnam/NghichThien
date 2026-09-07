@@ -30,54 +30,70 @@
 using System;
 using UnityEngine;
 
-namespace Spine.Unity {
+namespace Spine.Unity
+{
+    public class RegionlessAttachmentLoader : AttachmentLoader
+    {
+        static AtlasRegion emptyRegion;
 
-	public class RegionlessAttachmentLoader : AttachmentLoader {
+        static AtlasRegion EmptyRegion
+        {
+            get
+            {
+                if (emptyRegion == null)
+                {
+                    emptyRegion = new AtlasRegion
+                    {
+                        name = "Empty AtlasRegion",
+                        page = new AtlasPage
+                        {
+                            name = "Empty AtlasPage",
+                            rendererObject = new Material(Shader.Find("Spine/Special/HiddenPass"))
+                                { name = "NoRender Material" }
+                        }
+                    };
+                }
 
-		static AtlasRegion emptyRegion;
-		static AtlasRegion EmptyRegion {
-			get {
-				if (emptyRegion == null) {
-					emptyRegion = new AtlasRegion {
-						name = "Empty AtlasRegion",
-						page = new AtlasPage {
-							name = "Empty AtlasPage",
-							rendererObject = new Material(Shader.Find("Spine/Special/HiddenPass")) { name = "NoRender Material" }
-						}
-					};
-				}
-				return emptyRegion;
-			}
-		}
+                return emptyRegion;
+            }
+        }
 
-		public RegionAttachment NewRegionAttachment (Skin skin, string name, string path, Sequence sequence) {
-			RegionAttachment attachment = new RegionAttachment(name) {
-				Region = EmptyRegion
-			};
-			return attachment;
-		}
+        public RegionAttachment NewRegionAttachment(Skin skin, string name, string path, Sequence sequence)
+        {
+            RegionAttachment attachment = new RegionAttachment(name)
+            {
+                Region = EmptyRegion
+            };
+            return attachment;
+        }
 
-		public MeshAttachment NewMeshAttachment (Skin skin, string name, string path, Sequence sequence) {
-			MeshAttachment attachment = new MeshAttachment(name) {
-				Region = EmptyRegion
-			};
-			return attachment;
-		}
+        public MeshAttachment NewMeshAttachment(Skin skin, string name, string path, Sequence sequence)
+        {
+            MeshAttachment attachment = new MeshAttachment(name)
+            {
+                Region = EmptyRegion
+            };
+            return attachment;
+        }
 
-		public BoundingBoxAttachment NewBoundingBoxAttachment (Skin skin, string name) {
-			return new BoundingBoxAttachment(name);
-		}
+        public BoundingBoxAttachment NewBoundingBoxAttachment(Skin skin, string name)
+        {
+            return new BoundingBoxAttachment(name);
+        }
 
-		public PathAttachment NewPathAttachment (Skin skin, string name) {
-			return new PathAttachment(name);
-		}
+        public PathAttachment NewPathAttachment(Skin skin, string name)
+        {
+            return new PathAttachment(name);
+        }
 
-		public PointAttachment NewPointAttachment (Skin skin, string name) {
-			return new PointAttachment(name);
-		}
+        public PointAttachment NewPointAttachment(Skin skin, string name)
+        {
+            return new PointAttachment(name);
+        }
 
-		public ClippingAttachment NewClippingAttachment (Skin skin, string name) {
-			return new ClippingAttachment(name);
-		}
-	}
+        public ClippingAttachment NewClippingAttachment(Skin skin, string name)
+        {
+            return new ClippingAttachment(name);
+        }
+    }
 }

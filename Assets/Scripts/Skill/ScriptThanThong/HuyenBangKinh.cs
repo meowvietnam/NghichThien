@@ -7,10 +7,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(HuyenBangKinh), menuName = "Skill/Thần Thông/" + nameof(HuyenBangKinh))]
 public class HuyenBangKinh : AmKinhTT, IMemorySerializable<HuyenBangKinh>
 {
-    [SerializeField]
-    private int[] suongGias;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] suongGias;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void ExecuteAmKinh(CharacterCombat caster, CharacterCombat target)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, suongGias[GetIndexLevelThanThong(target)]);
@@ -19,12 +18,20 @@ public class HuyenBangKinh : AmKinhTT, IMemorySerializable<HuyenBangKinh>
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddAmKinhTT(this, afterHiep);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
     public override string GetDescAmKinhTT(int level)
     {
-        return $"Nhận phải {GetColoredText($"+{suongGias[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SuongGia)}";
+        return
+            $"Nhận phải {GetColoredText($"+{suongGias[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SuongGia)}";
     }
 
     public override int ByteSize()

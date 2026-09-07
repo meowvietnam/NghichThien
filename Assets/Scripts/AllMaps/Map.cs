@@ -7,11 +7,11 @@ using Network.Extensions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using LongDH.Script.ObjectPool;
+
 namespace AllMaps
 {
     public class Map : BaseBehaviour, IMemorySerializable<Map>, IPointerClickHandler
     {
-        
         [SerializeField] private MapManager mapManager;
         [field: SerializeField] public MapType MapType { get; set; }
         [field: SerializeField] public int Id { get; set; }
@@ -22,8 +22,9 @@ namespace AllMaps
 
         public GameObject iconVisualAction;
 
-        public bool IsEmptyAction => actionMap == null && iconVisualAction == null; 
+        public bool IsEmptyAction => actionMap == null && iconVisualAction == null;
         public Node[] Nodes => nodes;
+
         public Node FindNodeByMap(Map map)
         {
             return nodes.FirstOrDefault(node => node.NextMap == map);
@@ -41,6 +42,7 @@ namespace AllMaps
             // Nếu results.Count > 0 nghĩa là có UI đang nằm tại vị trí chuột/touch
             return results.Count > 0;
         }
+
         public void ResetDataAction()
         {
             actionMap = null;
@@ -49,18 +51,19 @@ namespace AllMaps
                 iconVisualAction.Recycle();
                 iconVisualAction = null;
             }
+
             for (int i = 0; i < this.transform.GetChild(0).childCount; i++)
             {
                 this.transform.GetChild(0).GetChild(i).gameObject.SetActive(false);
-            } 
-                
-        }    
+            }
+        }
+
         public virtual void SetData(IActionMap dataCurrent, GameObject iconVisualAction)
         {
             this.actionMap = dataCurrent;
             this.iconVisualAction = iconVisualAction;
-        }    
-           
+        }
+
         public virtual void OnPlayerEnter()
         {
             Observer.Notify(EventList.GamePlay.USER_ENTER_MAP, this);
@@ -68,16 +71,15 @@ namespace AllMaps
             if (actionMap != null)
             {
                 actionMap.ActiveEventMap(this);
-
             }
+
             ResetDataAction();
-
-
-
         }
+
         public virtual void OnPlayerExit()
         {
         }
+
         public void CopyTo(Map target)
         {
             target.Id = this.Id;

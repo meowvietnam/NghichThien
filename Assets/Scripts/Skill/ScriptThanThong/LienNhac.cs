@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(LienNhac), menuName = "Skill/Thần Thông/" + nameof(LienNhac))]
 public class LienNhac : ThanThong, IMemorySerializable<LienNhac>
 {
-    [SerializeField]
-    private int require = 5;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int require = 5;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -20,6 +19,7 @@ public class LienNhac : ThanThong, IMemorySerializable<LienNhac>
         caster.isSkipTieuTanLinhKhi = true;
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -35,7 +35,8 @@ public class LienNhac : ThanThong, IMemorySerializable<LienNhac>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tiêu hao {GetColoredText($"{require}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)} thì kết thúc hiệp này không cần tiêu tán linh khí";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tiêu hao {GetColoredText($"{require}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)} thì kết thúc hiệp này không cần tiêu tán linh khí";
     }
 
     public override int ByteSize()

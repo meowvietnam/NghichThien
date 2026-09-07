@@ -7,6 +7,7 @@ namespace SignIn.Guest
     public class GuestSignInButton : SignInButton
     {
         [SerializeField] private GuestSignIn guestSignIn;
+
         protected override async Task<ILogin> CreateRequest()
         {
             var credental = await guestSignIn.SignInAsync() as GuestCredential;
@@ -16,6 +17,7 @@ namespace SignIn.Guest
                 DeviceId = credental.DeviceId
             };
         }
+
         public override ISignInService GetSignInService()
         {
             return guestSignIn;

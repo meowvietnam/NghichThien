@@ -8,8 +8,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(TungDiaKimQuang), menuName = "Skill/Thần Thông/" + nameof(TungDiaKimQuang))]
 public class TungDiaKimQuang : ThanThong, IMemorySerializable<TungDiaKimQuang>
 {
-    [SerializeField]
-    private int[] buff;
+    [SerializeField] private int[] buff;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -25,7 +25,8 @@ public class TungDiaKimQuang : ThanThong, IMemorySerializable<TungDiaKimQuang>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Hấp thụ {GetColoredText($"ngẫu nhiên {buff[level - 1]} điểm", "red")} linh khí. Chỉ giữ lại Kim hệ linh khí";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Hấp thụ {GetColoredText($"ngẫu nhiên {buff[level - 1]} điểm", "red")} linh khí. Chỉ giữ lại Kim hệ linh khí";
     }
 
     public override int ByteSize()

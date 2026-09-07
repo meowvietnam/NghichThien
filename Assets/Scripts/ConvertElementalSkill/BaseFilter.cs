@@ -8,10 +8,12 @@ namespace ConvertElementalSkill
         [SerializeField] private Button button;
         [SerializeField] private string text;
         [SerializeField] private FilterGroup filterGroup;
+
         public string GetText()
         {
             return text;
         }
+
         public abstract bool Filter(ItemBag item);
 
         public void Init()

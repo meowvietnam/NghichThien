@@ -13,7 +13,7 @@ namespace CreateCharacter
         [field: SerializeField] public int CurrentEnergy { get; set; }
         [field: SerializeField] public int NgoDaoDiem { get; set; }
         [field: SerializeField] public int IdCurrentNode { get; set; }
-        
+
         public void Deserialize(IReader reader, ref Progression value)
         {
             value.Level = reader.Read<int>();
@@ -25,8 +25,10 @@ namespace CreateCharacter
 
         public int ByteSize()
         {
-            return Level.ByteSize() + CurrentExp.ByteSize() + CurrentEnergy.ByteSize() + NgoDaoDiem.ByteSize() + IdCurrentNode.ByteSize();
+            return Level.ByteSize() + CurrentExp.ByteSize() + CurrentEnergy.ByteSize() + NgoDaoDiem.ByteSize() +
+                   IdCurrentNode.ByteSize();
         }
+
         public void Serialize(IWriter writer)
         {
             writer.Write(Level);

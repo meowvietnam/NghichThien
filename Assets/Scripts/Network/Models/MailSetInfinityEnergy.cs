@@ -7,6 +7,7 @@ namespace Network.Models
     public partial class MailSetInfinityEnergy : IMailReward
     {
         public bool IsInfinityEnergy { get; set; }
+
         public void ClaimReward(CharacterData characterData)
         {
             characterData.IsInfiniteEnergy = IsInfinityEnergy;
@@ -19,7 +20,7 @@ namespace Network.Models
 
         public string GetRichText()
         {
-            return IsInfinityEnergy ? "Vô hạn năng lượng": "Giới hạn năng lượng";
+            return IsInfinityEnergy ? "Vô hạn năng lượng" : "Giới hạn năng lượng";
         }
     }
 }

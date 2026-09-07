@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-[CreateAssetMenu(fileName = nameof(DanDuocBuffLinhCan), menuName = "Đan dược/Đan dược Combat/" + nameof(DanDuocBuffLinhCan))]
 
+[CreateAssetMenu(fileName = nameof(DanDuocBuffLinhCan),
+    menuName = "Đan dược/Đan dược Combat/" + nameof(DanDuocBuffLinhCan))]
 public class DanDuocBuffLinhCan : DanDuocBuffStartGame
 {
     [SerializeField] private int buffLinhCan;

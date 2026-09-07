@@ -7,6 +7,7 @@ namespace LuyenDan.Inventory
     public abstract class HerbFilterItem : FilterItem
     {
         [SerializeField] private Button btn;
+
         private void Awake()
         {
             btn.onClick.AddListener(OnClick);

@@ -78,7 +78,9 @@ namespace SignIn.Google
             var idToken = PlayerPrefs.GetString(PrefKeyIdToken);
             var name = PlayerPrefs.GetString(PrefKeyName);
             var email = PlayerPrefs.GetString(PrefKeyEmail);
-            var imageUrl = Uri.TryCreate(PlayerPrefs.GetString(PrefKeyPicture), UriKind.Absolute, out var uri) ? uri : null;
+            var imageUrl = Uri.TryCreate(PlayerPrefs.GetString(PrefKeyPicture), UriKind.Absolute, out var uri)
+                ? uri
+                : null;
             return new GoogleCredential(email, name, idToken, imageUrl);
         }
 
@@ -124,6 +126,7 @@ namespace SignIn.Google
             {
                 return null;
             }
+
             var form = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("client_id", clientId),
@@ -184,24 +187,25 @@ namespace SignIn.Google
         private void SetResult(GoogleCredential credential)
         {
             if (tcs == null) return;
-            if(!tcs.Task.IsCompleted) 
+            if (!tcs.Task.IsCompleted)
             {
                 tcs.SetResult(credential);
                 if (credential != null)
                 {
                     Stop();
                 }
-            } 
+            }
         }
-    
+
         private void TryThrowNewSession()
         {
-            if(tcs == null) return;
+            if (tcs == null) return;
             if (!tcs.Task.IsCompleted)
             {
                 tcs.SetException(new NewGoogleSignInSessionException());
             }
         }
+
         private async Task<GoogleCredential> SignInWithBrowser()
         {
             if (!isServerStarted)
@@ -209,6 +213,7 @@ namespace SignIn.Google
                 _ = StartServer();
                 isServerStarted = true;
             }
+
             TryThrowNewSession();
             tcs = new TaskCompletionSource<GoogleCredential>();
             Application.OpenURL(
@@ -237,7 +242,7 @@ namespace SignIn.Google
                 }
                 catch (Exception ex)
                 {
-                  //  Debug.LogException(ex);
+                    //  Debug.LogException(ex);
                 }
             }
         }
@@ -249,7 +254,7 @@ namespace SignIn.Google
 
             res.StatusCode = 200;
             res.ContentType = "text/plain; charset=utf-8";
-      
+
 
             if (req.RawUrl.StartsWith(handlerRoute))
             {
@@ -277,8 +282,6 @@ namespace SignIn.Google
                     SetResult(null);
                 }
             }
-
-       
         }
 
 

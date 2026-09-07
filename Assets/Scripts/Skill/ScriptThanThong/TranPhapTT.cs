@@ -18,6 +18,7 @@ public class TranPhapTT : ThanThong, IMemorySerializable<TranPhapTT>
             {
                 PlayVisualSkill(caster, target);
             }
+
             if (!caster.specialThanThongImpactAfterPlaySkill.Any(x => x.Id == this.Id))
             {
                 caster.AddThanThongImpactAfterPlaySkill(this);
@@ -32,12 +33,14 @@ public class TranPhapTT : ThanThong, IMemorySerializable<TranPhapTT>
             }
         }
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
         base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEf);
     }
+
     public override List<RequireActive> GetRequireActive(CharacterCombat caster)
     {
         if (!caster.thanThongUseThisComBat.Any(x => x.Any(y => y.thanThong.Id == this.Id)) || !isCanKhuTran)

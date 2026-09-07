@@ -10,18 +10,16 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(NhienHonQuyet))]
 public class NhienHonQuyet : CongPhap, IMemorySerializable<NhienHonQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 2, 3, 4, 5};
-    [SerializeField]
-    private int debuff = 1;
+    [SerializeField] private int[] buffValues = new int[] { 1, 2, 3, 4, 5 };
+    [SerializeField] private int debuff = 1;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (caster.characterStatsBase.thanThuc <= 0) return;
 
         if (caster.thanThongCurrentUse.thanThong is KinhHonChu)
         {
-
-            target.AddDamageData(new List<int>{buffValues[CurrentLevelCongPhapInCombat(caster) - 1]});
+            target.AddDamageData(new List<int> { buffValues[CurrentLevelCongPhapInCombat(caster) - 1] });
         }
     }
 
@@ -45,7 +43,8 @@ public class NhienHonQuyet : CongPhap, IMemorySerializable<NhienHonQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Thần thông [Kinh Hồn Chú] tạo thành tổn thương {GetColoredText($"+{buffValues[level - 1]}", "red")}. Sử dụng công pháp này khi kết thúc chiến đấu thì thần thức {GetColoredText($"-{debuff}", "red")}";
+        return
+            $"Thần thông [Kinh Hồn Chú] tạo thành tổn thương {GetColoredText($"+{buffValues[level - 1]}", "red")}. Sử dụng công pháp này khi kết thúc chiến đấu thì thần thức {GetColoredText($"-{debuff}", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

@@ -7,6 +7,5 @@ namespace Auction
 {
     public class InfoPanel2 : InfoPanel
     {
-
     }
 }

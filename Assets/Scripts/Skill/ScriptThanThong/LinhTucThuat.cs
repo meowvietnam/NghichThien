@@ -7,8 +7,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(LinhTucThuat), menuName = "Skill/Thần Thông/" + nameof(LinhTucThuat))]
 public class LinhTucThuat : ThanThong, IMemorySerializable<LinhTucThuat>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{3, 4, 5, 7, 11};
+    [SerializeField] private int[] buffValues = new int[] { 3, 4, 5, 7, 11 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -17,7 +17,8 @@ public class LinhTucThuat : ThanThong, IMemorySerializable<LinhTucThuat>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)}";
     }
 
     public override int ByteSize()

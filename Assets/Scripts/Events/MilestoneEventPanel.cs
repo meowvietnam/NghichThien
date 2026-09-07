@@ -19,16 +19,19 @@ namespace Events
         [SerializeField] private RectTransform content;
         [SerializeField] private ElementMilestone elementMilestonePrefab;
         private Tween tween;
-        private List<ElementMilestone> elements = new ();
+        private List<ElementMilestone> elements = new();
+
         private void Start()
         {
             SetEventButton(closeButton, Hide);
         }
+
         public void Hide()
         {
             tween?.Kill();
             tween = transform.DOScale(Vector3.zero, 0.25f).OnComplete(() => { gameObject.SetActive(false); });
         }
+
         public void Show()
         {
             tween?.Kill();
@@ -42,19 +45,20 @@ namespace Events
             {
                 Destroy(e.gameObject);
             }
+
             elements.Clear();
             this.@event = @event;
             DateTime startAt = @event.StartAt.ToLocalTime();
             DateTime endAt = @event.EndAt.ToLocalTime();
             detailText.text =
-                $"Sự kiện diễn ra từ {startAt:dd/MM/yyyy HH:mm} đến {endAt:dd/MM/yyyy HH:mm}" + "\n"+
+                $"Sự kiện diễn ra từ {startAt:dd/MM/yyyy HH:mm} đến {endAt:dd/MM/yyyy HH:mm}" + "\n" +
                 $"Thu thập vật phẩm đạt mốc nhận phần thưởng";
             var gameEvent = @event.GameEvent as MilestoneEvent;
             foreach (var milestone in gameEvent.Milestones)
             {
                 var element = Instantiate(elementMilestonePrefab, content);
                 elements.Add(element);
-                element.Init(this,milestone);
+                element.Init(this, milestone);
             }
         }
 
@@ -77,7 +81,9 @@ namespace Events
                 {
                     reward.Claim(Client.Instance.CharacterData);
                 }
-                NotifyGroup.Instance.Show($"Bạn nhận được: {string.Join(", ", result.Rewards.Select(x => x.GetRichText()))}");
+
+                NotifyGroup.Instance.Show(
+                    $"Bạn nhận được: {string.Join(", ", result.Rewards.Select(x => x.GetRichText()))}");
                 milestone.IsClaim = true;
                 elementMilestone.UpdateButton();
             }

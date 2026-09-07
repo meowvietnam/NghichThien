@@ -10,10 +10,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(LacThachTran), menuName = "Skill/Thần Thông/" + nameof(LacThachTran))]
 public class LacThachTran : TranPhapTT, IMemorySerializable<LacThachTran>
 {
-    [SerializeField]
-    private int require = 5;
-    [SerializeField]
-    private ThanThong thanThongActive;
+    [SerializeField] private int require = 5;
+    [SerializeField] private ThanThong thanThongActive;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
@@ -49,7 +48,8 @@ public class LacThachTran : TranPhapTT, IMemorySerializable<LacThachTran>
 
     public override string GetDescTranPhapTT(int level)
     {
-        return $"Mỗi nhận {GetColoredText($"{require}", "red")} lần công kích thì phóng thích một lần [Lạc Thạch] phản kích đối thủ";
+        return
+            $"Mỗi nhận {GetColoredText($"{require}", "red")} lần công kích thì phóng thích một lần [Lạc Thạch] phản kích đối thủ";
     }
 
     public override int ByteSize()

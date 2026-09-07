@@ -17,6 +17,7 @@ namespace AllMaps
         [ShowInInspector] public Shop ShopVatLieu { get; set; } = new MaterialShop();
         [ShowInInspector] public Shop ShopSkill { get; set; } = new SkillShop();
         [ShowInInspector] public Shop ShopSkillAll { get; set; } = new SkillShop();
+
         public Shop GetShop(LoadShopRequest request)
         {
             var shopType = request.ShopType;
@@ -32,11 +33,13 @@ namespace AllMaps
                     {
                         return ShopSkillAll;
                     }
+
                     return ShopSkill;
                 default:
                     throw new();
             }
         }
+
         public void SetShop(Shop shop, EMonPhai monPhai)
         {
             var shopType = shop.GetTypeShop();
@@ -57,6 +60,7 @@ namespace AllMaps
                     {
                         ShopSkill = shop;
                     }
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(shopType), shopType, null);

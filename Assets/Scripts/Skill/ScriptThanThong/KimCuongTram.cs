@@ -8,15 +8,20 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(KimCuongTram), menuName = "Skill/Thần Thông/" + nameof(KimCuongTram))]
 public class KimCuongTram : ThanThong, BaseSkill.LienKich, IMemorySerializable<KimCuongTram>
 {
-    [SerializeField]
-    private int[] dame;
-    [SerializeField]
-    private int[] hapThu;
-    [SerializeField]
-    private float delayTimeEffect = 0.5f;
+    [SerializeField] private int[] dame;
+    [SerializeField] private int[] hapThu;
+    [SerializeField] private float delayTimeEffect = 0.5f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.CaculateDameByThanThong(caster, new List<int>{dame[GetIndexLevelThanThong(caster)]}, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new List<int> { dame[GetIndexLevelThanThong(caster)] }, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
@@ -27,7 +32,8 @@ public class KimCuongTram : ThanThong, BaseSkill.LienKich, IMemorySerializable<K
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{dame[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} nếu trước đó dùng Thổ hệ kĩ năng thì hấp thụ {GetColoredText($"+{hapThu[level-1]}", "red")} điểm linh khí";
+        return
+            $"Tạo thành {GetColoredText($"{dame[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} nếu trước đó dùng Thổ hệ kĩ năng thì hấp thụ {GetColoredText($"+{hapThu[level - 1]}", "red")} điểm linh khí";
     }
 
     public override int ByteSize()

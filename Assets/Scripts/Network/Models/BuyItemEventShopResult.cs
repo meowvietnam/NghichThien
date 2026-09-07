@@ -6,6 +6,7 @@ namespace Network.Models
     public partial class BuyItemEventShopResult : Result, IEventResultData
     {
         public int NewMoneyVip { get; set; }
+
         public bool IsSuccess()
         {
             return Success;

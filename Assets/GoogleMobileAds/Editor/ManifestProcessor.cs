@@ -38,7 +38,7 @@ public class ManifestProcessor : IPreprocessBuild
     private const string PROPERTIES_RELATIVE_PATH =
             "Plugins/Android/GoogleMobileAdsPlugin.androidlib/project.properties";
 
-    private const string METADATA_APPLICATION_ID  =
+    private const string METADATA_APPLICATION_ID =
             "com.google.android.gms.ads.APPLICATION_ID";
 
     private const string METADATA_DELAY_APP_MEASUREMENT_INIT =
@@ -51,7 +51,7 @@ public class ManifestProcessor : IPreprocessBuild
             "com.google.android.gms.ads.flag.OPTIMIZE_AD_LOADING";
 
     // LINT.IfChange
-    private const string METADATA_UNITY_VERSION  = "com.google.unity.ads.UNITY_VERSION";
+    private const string METADATA_UNITY_VERSION = "com.google.unity.ads.UNITY_VERSION";
     // LINT.ThenChange(//depot/google3/javatests/com/google/android/gmscore/integ/modules/admob/tests/robolectric/src/com/google/android/gms/ads/nonagon/signals/StaticDeviceSignalSourceTest.java)
 
     private XNamespace ns = "http://schemas.android.com/apk/res/android";

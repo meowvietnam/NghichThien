@@ -8,12 +8,10 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(KhuVatThuat), menuName = "Skill/Thần Thông/" + nameof(KhuVatThuat))]
 public class KhuVatThuat : ThanThong, IMemorySerializable<KhuVatThuat>
 {
-    [SerializeField]
-    private int[] dames = new int[]{2, 3, 5, 9, 18};
-    [SerializeField]
-    private int countAttack = 1;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] dames = new int[] { 2, 3, 5, 9, 18 };
+    [SerializeField] private int countAttack = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         List<int> dameList = new List<int>();
@@ -25,6 +23,7 @@ public class KhuVatThuat : ThanThong, IMemorySerializable<KhuVatThuat>
         target.CaculateDameByThanThong(caster, dameList, eTypeSkill);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {

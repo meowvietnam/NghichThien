@@ -23,6 +23,7 @@ public class BtnInforStats : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         tooltip.SetScale(Vector2.one * 1.5f);
         tooltip.SetPosition(eventData.position - new Vector2(100, -40));
     }
+
     public void OnPointerExit(PointerEventData eventData)
     {
         var tooltip = Pool.Get<TabPanel>().toolTipBtnStats;

@@ -31,26 +31,29 @@ namespace LuyenKhi
                 }
             }
         }
+
         [field: SerializeField] public ArtifactType ArtifactType { get; set; }
+
         private EffectTypeConfig Config
         {
-            get
-            {
-                return LuyenKhiResources.Instance.EffectTypeConfigs.First(x => x.Type == EffectType);
-            }
+            get { return LuyenKhiResources.Instance.EffectTypeConfigs.First(x => x.Type == EffectType); }
         }
+
         [field: SerializeField] public EffectType EffectType { get; set; }
         [ShowInInspector] public string Name => Config.Name;
         [ShowInInspector] public int Value => Config.Value;
+
         public void Deserialize(IReader reader, ref ArtifactEffect value)
         {
-           value.ArtifactType = reader.Read<ArtifactType>();
-           value.EffectType = reader.Read<EffectType>();
+            value.ArtifactType = reader.Read<ArtifactType>();
+            value.EffectType = reader.Read<EffectType>();
         }
+
         public int ByteSize()
         {
             return ArtifactType.ByteSize() + EffectType.ByteSize();
         }
+
         public void Serialize(IWriter writer)
         {
             writer.Write(ArtifactType);

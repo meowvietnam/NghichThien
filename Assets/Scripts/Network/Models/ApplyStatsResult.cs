@@ -6,6 +6,7 @@ namespace Network.Models
     {
         public bool Success { get; set; }
         public string Message { get; set; }
+
         public void Deserialize(IReader reader, ref ApplyStatsResult value)
         {
             value.Success = reader.Read<bool>();
@@ -14,6 +15,7 @@ namespace Network.Models
                 value.Message = reader.Read();
             }
         }
+
         public int ByteSize()
         {
             if (Success)
@@ -25,6 +27,7 @@ namespace Network.Models
                 return Success.ByteSize() + Message.ByteSize();
             }
         }
+
         public void Serialize(IWriter writer)
         {
             writer.Write(Success);

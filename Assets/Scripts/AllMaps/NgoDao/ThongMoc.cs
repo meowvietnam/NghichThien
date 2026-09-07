@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ThongMoc), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(ThongMoc))]
 public class ThongMoc : NgoDaoCombat, IMemorySerializable<ThongMoc>
 {
-    [SerializeField]
-    private int buff = 10;
+    [SerializeField] private int buff = 10;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (BaseSkill.CheckIsEqualETypeSkill(caster, eTypeRequire))
@@ -46,13 +46,15 @@ public class ThongMoc : NgoDaoCombat, IMemorySerializable<ThongMoc>
         // 2. Kiểm tra xem có debuff nào để xóa không
         if (debuffKeys.Count > 0)
         {
-            target.AddDamageData(new List<int>{(int)(target.GetDameBuffForTarget() * buff * debuffKeys.Count / 100)});
+            target.AddDamageData(new List<int>
+                { (int)(target.GetDameBuffForTarget() * buff * debuffKeys.Count / 100) });
         }
     }
 
     public override string GetDes()
     {
-        return $"Đối thủ mỗi có một loại trạng thái tiêu cực khác biệt thì nhận {BaseSkill.GetTextLinhKhi(ELinhKhi.Moc)} hệ tổn thương tăng lên {BaseSkill.GetColoredText($"{buff}%", "red")}";
+        return
+            $"Đối thủ mỗi có một loại trạng thái tiêu cực khác biệt thì nhận {BaseSkill.GetTextLinhKhi(ELinhKhi.Moc)} hệ tổn thương tăng lên {BaseSkill.GetColoredText($"{buff}%", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

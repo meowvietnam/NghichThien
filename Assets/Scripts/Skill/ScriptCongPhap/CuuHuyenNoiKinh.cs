@@ -10,18 +10,20 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(CuuHuyenNoiKinh))]
 public class CuuHuyenNoiKinh : CongPhap, IMemorySerializable<CuuHuyenNoiKinh>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{4, 5, 6, 7, 8};
+    [SerializeField] private int[] buffValues = new int[] { 4, 5, 6, 7, 8 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        int count = target.listAmKinhTT.Where(x => x.ThanThong is AmKinhTT).Select(x => x.ThanThong.name).Distinct().Count();
+        int count = target.listAmKinhTT.Where(x => x.ThanThong is AmKinhTT).Select(x => x.ThanThong.name).Distinct()
+            .Count();
         float multiplier = count * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100f;
-        target.AddDamageData(new List<int>{(int)(target.GetDameBuffForTarget() * multiplier)});
+        target.AddDamageData(new List<int> { (int)(target.GetDameBuffForTarget() * multiplier) });
     }
 
     public override string GetDesc(int level)
     {
-        return $"Đối thủ mỗi có một loại {GetKeyWord(EKeyWord.AmKinh)} khác biệt thì nhận tổn thương tăng lên {GetColoredText($"+{buffValues[level - 1]}%", "red")}";
+        return
+            $"Đối thủ mỗi có một loại {GetKeyWord(EKeyWord.AmKinh)} khác biệt thì nhận tổn thương tăng lên {GetColoredText($"+{buffValues[level - 1]}%", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

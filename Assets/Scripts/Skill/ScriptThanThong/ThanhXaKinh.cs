@@ -7,15 +7,15 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ThanhXaKinh), menuName = "Skill/Thần Thông/" + nameof(ThanhXaKinh))]
 public class ThanhXaKinh : ThanThong, IMemorySerializable<ThanhXaKinh>
 {
-    [SerializeField]
-    private int[] trungDoc;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] trungDoc;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, trungDoc[GetIndexLevelThanThong(caster)]);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -25,7 +25,8 @@ public class ThanhXaKinh : ThanThong, IMemorySerializable<ThanhXaKinh>
 
     public override string GetDesc(int level)
     {
-        return $"Đối phương nhận phải {GetColoredText($"+{trungDoc[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}";
+        return
+            $"Đối phương nhận phải {GetColoredText($"+{trungDoc[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}";
     }
 
     public override int ByteSize()

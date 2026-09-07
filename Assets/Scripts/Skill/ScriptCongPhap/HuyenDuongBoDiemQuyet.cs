@@ -12,13 +12,15 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(HuyenDuongBoDiemQuyet))]
 public class HuyenDuongBoDiemQuyet : CongPhap, IMemorySerializable<HuyenDuongBoDiemQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 1, 2, 2, 3};
+    [SerializeField] private int[] buffValues = new int[] { 1, 1, 2, 2, 3 };
+
     public override void ExecuteParams(params object[] data)
     {
         // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
         CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
-        CharacterCombat target = caster != Pool.Get<CombatManager>().char1 ? Pool.Get<CombatManager>().char1 : Pool.Get<CombatManager>().char2;
+        CharacterCombat target = caster != Pool.Get<CombatManager>().char1
+            ? Pool.Get<CombatManager>().char1
+            : Pool.Get<CombatManager>().char2;
         // Tìm trong danh sách trang bị của caster
         if (caster != null && IsCanUse(caster))
         {
@@ -39,7 +41,8 @@ public class HuyenDuongBoDiemQuyet : CongPhap, IMemorySerializable<HuyenDuongBoD
 
     public override string GetDesc(int level)
     {
-        return $"Thoát khỏi trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoaDiem)}, đối thủ nhận phải {GetColoredText($"+{buffValues[level - 1]}*X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)} (X là số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoaDiem)})";
+        return
+            $"Thoát khỏi trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoaDiem)}, đối thủ nhận phải {GetColoredText($"+{buffValues[level - 1]}*X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)} (X là số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoaDiem)})";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

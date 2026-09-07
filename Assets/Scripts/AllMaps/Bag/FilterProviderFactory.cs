@@ -12,7 +12,9 @@ public interface IFilterProvider
 {
     int OptionCount { get; }
     string GetOptionText(int index);
-    bool Matches(ItemRef item, ItemType currentType, Tier tierCurrent, BaseSkill.ETierSkill eTierSkillCurrent, EquipmentTier eTierEquipmentCurrent);
+
+    bool Matches(ItemRef item, ItemType currentType, Tier tierCurrent, BaseSkill.ETierSkill eTierSkillCurrent,
+        EquipmentTier eTierEquipmentCurrent);
 }
 
 public static class FilterProviderFactory
@@ -51,7 +53,8 @@ public class SkillFilterProvider : IFilterProvider
         return BaseSkill.GetTextTierSkill(listTierSkill[index]);
     }
 
-    public bool Matches(ItemRef item, ItemType currentType, Tier tierCurrent, BaseSkill.ETierSkill eTierSkillCurrent, EquipmentTier eTierEquipmentCurrent)
+    public bool Matches(ItemRef item, ItemType currentType, Tier tierCurrent, BaseSkill.ETierSkill eTierSkillCurrent,
+        EquipmentTier eTierEquipmentCurrent)
     {
         if (currentType != ItemType.ThanThong && currentType != ItemType.CongPhap)
             return false;
@@ -82,16 +85,20 @@ public class EquipmentFilterProvider : IFilterProvider
         return GameManager.TextWithTierEquirement.GetValueOrDefault(listTierEquipment[index]);
     }
 
-    public bool Matches(ItemRef item, ItemType currentType, Tier tierCurrent, BaseSkill.ETierSkill eTierSkillCurrent, EquipmentTier eTierEquipmentCurrent)
+    public bool Matches(ItemRef item, ItemType currentType, Tier tierCurrent, BaseSkill.ETierSkill eTierSkillCurrent,
+        EquipmentTier eTierEquipmentCurrent)
     {
         if (currentType != ItemType.VuKhi && currentType != ItemType.PhongCu && currentType != ItemType.TrangSuc)
             return false;
 
         CreateCharacter.Equipment equipment = currentType switch
         {
-            ItemType.VuKhi => Client.Instance.CharacterData.InventoryManager.VuKhis.FirstOrDefault(x => x.SelfId == item.Id),
-            ItemType.PhongCu => Client.Instance.CharacterData.InventoryManager.PhongCus.FirstOrDefault(x => x.SelfId == item.Id),
-            ItemType.TrangSuc => Client.Instance.CharacterData.InventoryManager.TrangSucs.FirstOrDefault(x => x.SelfId == item.Id),
+            ItemType.VuKhi => Client.Instance.CharacterData.InventoryManager.VuKhis.FirstOrDefault(x =>
+                x.SelfId == item.Id),
+            ItemType.PhongCu => Client.Instance.CharacterData.InventoryManager.PhongCus.FirstOrDefault(x =>
+                x.SelfId == item.Id),
+            ItemType.TrangSuc => Client.Instance.CharacterData.InventoryManager.TrangSucs.FirstOrDefault(x =>
+                x.SelfId == item.Id),
             _ => null
         };
 
@@ -118,7 +125,8 @@ public class DefaultFilterProvider : IFilterProvider
         return GameManager.TextWithTier.GetValueOrDefault(listTier[index]);
     }
 
-    public bool Matches(ItemRef item, ItemType currentType, Tier tierCurrent, BaseSkill.ETierSkill eTierSkillCurrent, EquipmentTier eTierEquipmentCurrent)
+    public bool Matches(ItemRef item, ItemType currentType, Tier tierCurrent, BaseSkill.ETierSkill eTierSkillCurrent,
+        EquipmentTier eTierEquipmentCurrent)
     {
         if (currentType == ItemType.Material)
         {

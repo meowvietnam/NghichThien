@@ -8,8 +8,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(HoaVuQuyet))]
 public class HoaVuQuyet : CongPhap, IMemorySerializable<HoaVuQuyet>
 {
-    [SerializeField]
-    private int[] healValues;
+    [SerializeField] private int[] healValues;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.Healing(healValues[CurrentLevelCongPhapInCombat(caster) - 1]);
@@ -17,7 +17,7 @@ public class HoaVuQuyet : CongPhap, IMemorySerializable<HoaVuQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Kết thúc hiệp, bản thân khôi phục {GetColoredText($"+{healValues[level-1]}", "red")} điểm Hp";
+        return $"Kết thúc hiệp, bản thân khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm Hp";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

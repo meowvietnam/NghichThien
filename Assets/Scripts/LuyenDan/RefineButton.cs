@@ -11,11 +11,13 @@ namespace LuyenDan
         {
             refine.onClick.AddListener(OnClick);
         }
+
         public void UpdateCanRefine()
         {
             var canRefine = LuyenDanPanel.Instance.Alchermy.CanRefine();
             refine.interactable = canRefine;
         }
+
         private void OnClick()
         {
             LuyenDanPanel.Instance.Alchermy.Refine();

@@ -19,7 +19,7 @@ public class ThaiThanhHuyenThuat : NeTranhTT, IMemorySerializable<ThaiThanhHuyen
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
         base.PlayVisualSkill(caster, target);
-        var gameObject = ShowSkillEffectParticleBase(caster, 0, cameraSize,false);
+        var gameObject = ShowSkillEffectParticleBase(caster, 0, cameraSize, false);
         caster.effectSkillNoDestroy.Add(this, gameObject);
     }
 

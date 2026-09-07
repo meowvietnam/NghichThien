@@ -24,7 +24,7 @@ namespace Network.Core
         public int PageSize => pageSize;
         public bool HasNext => hasNext;
         public bool GetLock => getLock;
-        
+
         public MailHandler(IMailCallback callback)
         {
             Debug.Log("Initializing mail handler");
@@ -51,6 +51,7 @@ namespace Network.Core
                 SendGetMails();
             }
         }
+
         private void SendGetMails()
         {
             var request = new GetMails()
@@ -60,6 +61,7 @@ namespace Network.Core
             };
             Client.Send(MessageTag.GetMails, request);
         }
+
         public void OnEnter()
         {
             GetMails();
@@ -80,7 +82,7 @@ namespace Network.Core
                     if (mails.Count != 0)
                     {
                         var loadedMailIds = charData.Social.Mails.Select(x => x.Id).ToHashSet();
-                        Debug.Log($"Loaded {string.Join(", ",  loadedMailIds.Select(x => x.ToString()))}");
+                        Debug.Log($"Loaded {string.Join(", ", loadedMailIds.Select(x => x.ToString()))}");
                         charData.Social.Mails.AddRange(mails.Where(x => !loadedMailIds.Contains(x.Id)));
                         startId = mails.Last().Id;
                         if (hasNext)
@@ -89,6 +91,7 @@ namespace Network.Core
                         }
                     }
                 }
+
                 callback.OnGetMails(result);
                 getLock = false;
             }
@@ -101,6 +104,7 @@ namespace Network.Core
                 {
                     mail.IsRead = true;
                 }
+
                 callback.MarkMailRead(id);
             }
             else if (tag == MessageTag.RemoveMailId)
@@ -157,6 +161,7 @@ namespace Network.Core
                     mail.IsClaim = true;
                 }
             }
+
             var rewards = result.Rewards;
             var charData = Client.CharacterData;
             foreach (var reward in rewards)
@@ -164,7 +169,6 @@ namespace Network.Core
                 reward.ClaimReward(charData);
             }
         }
-
 
 
         public void OnLeave()

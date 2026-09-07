@@ -1,5 +1,6 @@
 using CreateCharacter;
 using MemoryPack;
+
 namespace DP
 {
     [MemoryPackable]

@@ -160,7 +160,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         var gameConfig = Pool.Get<GameManager>();
         List<ItemRef> itemDatas = new List<ItemRef>();
 
-    
+
         // itemDatas.AddRange(characterData.InventoryManager.VuKhis.ToList());
         // itemDatas.AddRange(characterData.InventoryManager.PhongCus.ToList());
         // itemDatas.AddRange(characterData.InventoryManager.TrangSucs.ToList());
@@ -177,7 +177,6 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
             itemDatas.AddRange(characterData.InventoryManager.LinhDans.ToList());
             var furnaceRefs = characterData.InventoryManager.Furnaces.Select(f => f.CreateRefSelfID()).ToList();
             itemDatas.AddRange(furnaceRefs);
-
         }
         else if (eShopType == EShopType.ShopVatLieu)
         {
@@ -212,8 +211,8 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
                     {
                         slotItemGift.gameObject.SetActive(true);
                         var tradeItemRef = CreateItemRefSellOrBase(ItemInventory.itemRef, 0);
-                        InventoryUIFacade.RenderBagItem(slotItemGift,tradeItemRef,false);
-                        
+                        InventoryUIFacade.RenderBagItem(slotItemGift, tradeItemRef, false);
+
                         AddCountItemToItem(ItemInventory, slotItemGift);
                         slotItemGift.InitAction(null, null,
                             () => { AddCountItemToItem(slotItemGift, ItemInventory); });

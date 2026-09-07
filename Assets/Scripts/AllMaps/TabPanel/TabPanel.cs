@@ -799,7 +799,8 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
                 var id = ttEquip.Id;
                 thanThongData =
                     GameConfig.GetThanThongWithId(id);
-            }   
+            }
+
             Pool.Get<UIManager>().InitVisualItemSkill(item, thanThongData);
         }
 
@@ -816,10 +817,10 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
 
                     return;
                 }
+
                 Observer.Notify(EventList.Network.UNEQUIP_THANTHONG, this, thanThong.Id);
                 Pool.Get<UIManager>().InitVisualItemSkill(currentItem, null);
                 CharacterDatas.EquipmentManager.UnEquipThanThong((ushort)(thanThong.Id));
-
             });
         }
 

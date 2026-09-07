@@ -12,9 +12,7 @@ namespace CreateCharacter
     [MemoryPackable]
     public partial class Appearance
     {
-        [ShowInInspector]
-        public Dictionary<string, string> Skins { get; set; } = new();
-        [ShowInInspector]
-        public Dictionary<string, Color> Colors { get; set; } = new();
+        [ShowInInspector] public Dictionary<string, string> Skins { get; set; } = new();
+        [ShowInInspector] public Dictionary<string, Color> Colors { get; set; } = new();
     }
 }

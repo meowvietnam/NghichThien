@@ -9,14 +9,11 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(TinhThanThanNiemThe), menuName = "Skill/Thần Thông/" + nameof(TinhThanThanNiemThe))]
 public class TinhThanThanNiemThe : ThanThong, IMemorySerializable<TinhThanThanNiemThe>
 {
-    [SerializeField]
-    private int dameBuffPercent = 15;
-    [SerializeField]
-    private int takeDameBuffPercent = 30;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
-    [SerializeField]
-    private float cameraSize = 5;
+    [SerializeField] private int dameBuffPercent = 15;
+    [SerializeField] private int takeDameBuffPercent = 30;
+    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] private float cameraSize = 5;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -38,21 +35,25 @@ public class TinhThanThanNiemThe : ThanThong, IMemorySerializable<TinhThanThanNi
         Observer.AddObserver(EventList.Combat.CHARACTER_BEFORE_TAKE_DAME, ObserverEffect2);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
         base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
     }
+
     private void ObserverEffect(params object[] data)
     {
         CharacterCombat currentTurn = (CharacterCombat)data[0]; // người gây dame
         CharacterCombat targetTurn = (CharacterCombat)data[1]; // người nhận dame
         if (currentTurn == null)
             return;
-        if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is TinhThanThanNiemThe) && CheckIsEqualETypeSkill(currentTurn))
+        if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is TinhThanThanNiemThe) &&
+            CheckIsEqualETypeSkill(currentTurn))
         {
-            targetTurn.AddDamageData(new System.Collections.Generic.List<int>{(int)(targetTurn.GetDameBuffForTarget() * dameBuffPercent / 100f)});
+            targetTurn.AddDamageData(new System.Collections.Generic.List<int>
+                { (int)(targetTurn.GetDameBuffForTarget() * dameBuffPercent / 100f) });
         }
     }
 
@@ -63,7 +64,8 @@ public class TinhThanThanNiemThe : ThanThong, IMemorySerializable<TinhThanThanNi
             return;
         if (targetTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is TinhThanThanNiemThe))
         {
-            targetTurn.AddDamageData(new System.Collections.Generic.List<int>{(int)(targetTurn.GetDameBuffForTarget() * takeDameBuffPercent / 100f)});
+            targetTurn.AddDamageData(new System.Collections.Generic.List<int>
+                { (int)(targetTurn.GetDameBuffForTarget() * takeDameBuffPercent / 100f) });
         }
     }
 
@@ -78,7 +80,8 @@ public class TinhThanThanNiemThe : ThanThong, IMemorySerializable<TinhThanThanNi
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Bản thân gỡ ra toàn bộ trạng thái tiêu cực. Nhận tất cả tổn thương tăng lên {GetColoredText($"{takeDameBuffPercent}%", "red")}. Sử dụng thần thông tạo thành thần thức tổn thương tăng lên {GetColoredText($"{dameBuffPercent}%", "red")}. Sử dụng thần thông này sẽ không giải trừ {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnNac)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Bản thân gỡ ra toàn bộ trạng thái tiêu cực. Nhận tất cả tổn thương tăng lên {GetColoredText($"{takeDameBuffPercent}%", "red")}. Sử dụng thần thông tạo thành thần thức tổn thương tăng lên {GetColoredText($"{dameBuffPercent}%", "red")}. Sử dụng thần thông này sẽ không giải trừ {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnNac)}";
     }
 
     public override int ByteSize()

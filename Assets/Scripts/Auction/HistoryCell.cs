@@ -35,6 +35,7 @@ namespace Auction
                 highestBidder.SetActive(false);
             }
         }
+
         public void SetStatus(AuctionSessionStatus status)
         {
             var data = statusResource.Datas.First(x => x.Status == status);

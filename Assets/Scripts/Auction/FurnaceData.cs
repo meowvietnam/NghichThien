@@ -15,6 +15,7 @@ namespace Auction
         public Color Color { get; }
         public Sprite QualityBackground { get; }
         public Sprite QualityIconUp { get; }
+
         public FurnaceData(int id)
         {
             Id = id;
@@ -28,6 +29,7 @@ namespace Auction
             QualityBackground = quality.Background;
             QualityIconUp = quality.IconUp;
         }
+
         public void ShowInfo(ToolTipItems toolTip)
         {
             var itemRef = new ItemRef()

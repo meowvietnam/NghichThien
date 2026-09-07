@@ -19,14 +19,17 @@ namespace AllMaps.ItemProvider
         public Sprite[] SpriteLinhKhis { get; set; }
         public ItemRef ItemRef { get; set; }
         public IItemData IItemData { get; set; }
-        public Equipment EquipmentData => ItemProviderFactory.GetProvider<Equipment>(ItemRef.Type)?.GetDataItemByIdRef(ItemRef.Id);
+
+        public Equipment EquipmentData =>
+            ItemProviderFactory.GetProvider<Equipment>(ItemRef.Type)?.GetDataItemByIdRef(ItemRef.Id);
+
         public FurnaceData FurnaceData { get; set; }
         public EActionShowItemInfor ActionShowItem;
         public System.Action<int> SetPriceText;
         public BaseItemData BaseItemData { get; set; }
         public Text PriceText { get; set; }
-
     }
+
     public interface IItemProvider
     {
         ItemType SupportedType { get; }
@@ -43,61 +46,65 @@ namespace AllMaps.ItemProvider
     {
         T GetDataItemByIdRef(ushort id);
     }
+
     public interface IUseItemProvider
     {
         void UseItem(ItemInventory itemInventory);
     }
+
     public abstract class ItemProvider<T> : IItemProvider<T>
     {
         public abstract T GetDataItemByIdRef(ushort id);
         public abstract ItemType SupportedType { get; }
+
         public virtual void Display(ToolTipContext ctx)
         {
             ctx.SetPriceText?.Invoke(GetPrice(ctx));
         }
+
         public virtual int GetPrice(ToolTipContext ctx)
         {
             return ctx.ActionShowItem == EActionShowItemInfor.None || ctx.ActionShowItem == EActionShowItemInfor.Sell
                 ? GetPriceItemSell(ctx.ItemRef.Id)
                 : GetPriceItemBuy(ctx.ItemRef.Id);
         }
+
         public abstract int GetPriceItemSell(ushort id);
 
         public virtual int GetPriceItemBuy(ushort id)
         {
             return GetPriceItemSell(id) * 3;
         }
+
         public virtual int BaseValueLevelWithTier => 0;
-        public virtual (int,int) ValueTangQuaNPCWithItem(ushort id , int npcLevel)
+
+        public virtual (int, int) ValueTangQuaNPCWithItem(ushort id, int npcLevel)
         {
             var data = GetDataItemByIdRef(id);
             int levelWithTier = BaseValueLevelWithTier;
             int indexTier = 1;
-            if(data is IItemData itemData)
+            if (data is IItemData itemData)
             {
                 levelWithTier += GameManager.tierItemWithLevel.GetValueOrDefault(itemData.Tier);
                 indexTier = (int)itemData.Tier;
             }
-            else if(data is BaseSkill baseSkill)
+            else if (data is BaseSkill baseSkill)
             {
                 levelWithTier += GameManager.tierSkillWithLevel.GetValueOrDefault(baseSkill.eTierSkill);
                 indexTier = (int)baseSkill.eTierSkill;
-
             }
-            else if(data is Equipment equipment)
+            else if (data is Equipment equipment)
             {
                 levelWithTier += GameManager.tierEquipmentWithLevel.GetValueOrDefault(equipment.GradeConfig.Tier);
                 indexTier = (int)equipment.GradeConfig.Tier + 1;
-
             }
-            return (levelWithTier - npcLevel,indexTier);
+
+            return (levelWithTier - npcLevel, indexTier);
         }
 
         public virtual int GetCountOwner(ushort id)
         {
             return 0;
         }
-      
     }
-
 }

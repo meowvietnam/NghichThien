@@ -38,7 +38,7 @@ namespace Network.Models
             {
                 writer.Write(ThanThong);
             }
-            else 
+            else
             {
                 writer.Write(Message);
             }

@@ -8,10 +8,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(TuongSinh), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(TuongSinh))]
 public class TuongSinh : NgoDaoCombat, IMemorySerializable<TuongSinh>
 {
-    [SerializeField]
-    private ELinhKhi elinhKhi;
-    [SerializeField]
-    private int buff = 6;
+    [SerializeField] private ELinhKhi elinhKhi;
+    [SerializeField] private int buff = 6;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddNgoDaoCombatDynamic(this);
@@ -40,7 +39,8 @@ public class TuongSinh : NgoDaoCombat, IMemorySerializable<TuongSinh>
 
     public override string GetDes()
     {
-        return $"Mỗi hiệp lần đầu sử dụng {BaseSkill.GetTextLinhKhi(elinhKhi)} hệ thần thông. Đồng thời phát động ngũ hành {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.LienKich)} thu hoạch được {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TuKhi)}";
+        return
+            $"Mỗi hiệp lần đầu sử dụng {BaseSkill.GetTextLinhKhi(elinhKhi)} hệ thần thông. Đồng thời phát động ngũ hành {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.LienKich)} thu hoạch được {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TuKhi)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

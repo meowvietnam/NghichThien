@@ -8,15 +8,15 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(KhiToanTram), menuName = "Skill/Thần Thông/" + nameof(KhiToanTram))]
 public class KhiToanTram : ThanThong, IMemorySerializable<KhiToanTram>
 {
-    [SerializeField]
-    private int[] buff;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] buff;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, buff[GetIndexLevelThanThong(caster)]);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -26,7 +26,8 @@ public class KhiToanTram : ThanThong, IMemorySerializable<KhiToanTram>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Bản thân gỡ ra {GetColoredText($"{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Bản thân gỡ ra {GetColoredText($"{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}";
     }
 
     public override int ByteSize()

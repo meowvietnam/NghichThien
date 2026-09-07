@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(KyMonDonGiapLuc))]
 public class KyMonDonGiapLuc : CongPhap, IMemorySerializable<KyMonDonGiapLuc>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 1, 2, 2, 3};
+    [SerializeField] private int[] buffValues = new int[] { 1, 1, 2, 2, 3 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         ThanThong thanThong = (ThanThong)data[2];
@@ -23,7 +23,8 @@ public class KyMonDonGiapLuc : CongPhap, IMemorySerializable<KyMonDonGiapLuc>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi một lần sử dụng thần thông loại trận pháp, hấp thụ {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm linh khí";
+        return
+            $"Mỗi một lần sử dụng thần thông loại trận pháp, hấp thụ {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm linh khí";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

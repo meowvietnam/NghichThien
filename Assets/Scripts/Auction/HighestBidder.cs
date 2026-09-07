@@ -19,6 +19,7 @@ namespace Auction
         {
             priceText.text = Utils.FormatCount(price);
         }
+
         public void SetActive(bool active)
         {
             selfObject.SetActive(active);

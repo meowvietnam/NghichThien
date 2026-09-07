@@ -20,7 +20,8 @@ public class NguHanh : NgoDaoCombat, IMemorySerializable<NguHanh>
 
     public override string GetDes()
     {
-        return $"Khi phát động ngũ hành {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.LienKich)} thì tự động phát động thêm một lần nữa";
+        return
+            $"Khi phát động ngũ hành {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.LienKich)} thì tự động phát động thêm một lần nữa";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

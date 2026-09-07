@@ -21,6 +21,7 @@ namespace Events
         {
             return milestone.Id == id;
         }
+
         private void Awake()
         {
             SetEventButton(buyButton, OnBuy);
@@ -36,7 +37,7 @@ namespace Events
             panel.OnBuy(milestone);
         }
 
-        public void Init(EventRechargePanel panel,RechargeMilestone1 milestone)
+        public void Init(EventRechargePanel panel, RechargeMilestone1 milestone)
         {
             this.panel = panel;
             this.milestone = milestone;

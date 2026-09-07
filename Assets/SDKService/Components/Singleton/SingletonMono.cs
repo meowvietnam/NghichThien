@@ -21,16 +21,14 @@ public abstract class SingletonMono<T> : MonoBehaviour where T : MonoBehaviour
                     }
                 }
             }
+
             return instance;
         }
     }
 
     public static bool IsNull
     {
-        get
-        {
-            return instance == null;
-        }
+        get { return instance == null; }
     }
 
     /// <summary>

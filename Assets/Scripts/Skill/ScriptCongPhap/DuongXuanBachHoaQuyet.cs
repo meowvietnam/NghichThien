@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(DuongXuanBachHoaQuyet))]
 public class DuongXuanBachHoaQuyet : CongPhap, IMemorySerializable<DuongXuanBachHoaQuyet>
 {
-    [SerializeField]
-    private int require = 4;
-    [SerializeField]
-    private int[] hapThu;
+    [SerializeField] private int require = 4;
+    [SerializeField] private int[] hapThu;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int countDebuff = 0;
@@ -37,7 +36,8 @@ public class DuongXuanBachHoaQuyet : CongPhap, IMemorySerializable<DuongXuanBach
 
     public override string GetDesc(int level)
     {
-        return $"Lúc bắt đầu hiệp, nếu đối thủ có ít nhất {GetColoredText($"{require} loại", "red")} trạng thái tiêu cực thì bản thân hấp thụ thêm {GetColoredText($"+{hapThu[level - 1]}", "red")} linh khí";
+        return
+            $"Lúc bắt đầu hiệp, nếu đối thủ có ít nhất {GetColoredText($"{require} loại", "red")} trạng thái tiêu cực thì bản thân hấp thụ thêm {GetColoredText($"+{hapThu[level - 1]}", "red")} linh khí";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

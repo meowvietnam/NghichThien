@@ -15,48 +15,59 @@ using LongDHModules;
 using UnityEditor;
 #endif
 
-[CreateAssetMenu(fileName = nameof(SideQuizQuestResource), menuName = "Action Map/Side Quest/" + nameof(SideQuizQuestResource))]
+[CreateAssetMenu(fileName = nameof(SideQuizQuestResource),
+    menuName = "Action Map/Side Quest/" + nameof(SideQuizQuestResource))]
 public class SideQuizQuestResource : SideQuestResource
 {
-    public override ETypeSideQuest Type =>  ETypeSideQuest.Quiz;
-    public override List<CharacterStatsSecure> listNPCInteractive => new List<CharacterStatsSecure> { Pool.Get<SideQuestManager>().characterProviderQuest};
-    [Serializable]
-    public class Quiz {
+    public override ETypeSideQuest Type => ETypeSideQuest.Quiz;
 
+    public override List<CharacterStatsSecure> listNPCInteractive => new List<CharacterStatsSecure>
+        { Pool.Get<SideQuestManager>().characterProviderQuest };
+
+    [Serializable]
+    public class Quiz
+    {
         public string quiz;
         public string[] answer;
         public int rightAnswerIndex;
     }
+
     public Quiz[] quizDatas;
+
     public List<string> GetQuizDialogs(string quizQuestion)
     {
         return new List<string>
-    {
-        "Đạo hữu dừng bước! Ta thấy ngươi căn cốt kinh kỳ, nhưng đường tu tiên cốt ở ngộ tính, chứ không chỉ có man lực.",
-        "Ta có vài câu hỏi về thiên địa quy luật. Trả lời đúng, ta sẽ tặng ngươi tiên ngọc.",
-        "Ngươi đã sẵn sàng chưa? Hãy nghe kỹ câu hỏi đầu tiên...",
-        $"{quizQuestion}" // Truyền thẳng câu hỏi vào đây, không gọi qua Pool nữa
-    };
+        {
+            "Đạo hữu dừng bước! Ta thấy ngươi căn cốt kinh kỳ, nhưng đường tu tiên cốt ở ngộ tính, chứ không chỉ có man lực.",
+            "Ta có vài câu hỏi về thiên địa quy luật. Trả lời đúng, ta sẽ tặng ngươi tiên ngọc.",
+            "Ngươi đã sẵn sàng chưa? Hãy nghe kỹ câu hỏi đầu tiên...",
+            $"{quizQuestion}" // Truyền thẳng câu hỏi vào đây, không gọi qua Pool nữa
+        };
     }
+
     public override List<string> CompleteQuest => new List<string>
     {
-            "Ha ha ha! Khá khen cho câu trả lời của ngươi! Không hổ danh là đứa con của trời.",
-            "Đây là phần thưởng xứng đáng dành cho ngộ tính đỉnh cao của ngươi. Cầm lấy đi!"
+        "Ha ha ha! Khá khen cho câu trả lời của ngươi! Không hổ danh là đứa con của trời.",
+        "Đây là phần thưởng xứng đáng dành cho ngộ tính đỉnh cao của ngươi. Cầm lấy đi!"
     };
+
     public List<string> wrongDialog = new List<string>
     {
-            "Sai rồi! Tiếc thay cho một tâm trí còn quá nhiều tạp niệm, chưa thấu hiểu được chân lý.",
+        "Sai rồi! Tiếc thay cho một tâm trí còn quá nhiều tạp niệm, chưa thấu hiểu được chân lý.",
     };
+
     public override void ActiveEventMap(Map map)
     {
         base.ActiveEventMap(map);
-        Pool.Get<SideQuestManager>().QuizQuestInitShow(quizDatas[UnityEngine.Random.Range(0,quizDatas.Length)]);
+        Pool.Get<SideQuestManager>().QuizQuestInitShow(quizDatas[UnityEngine.Random.Range(0, quizDatas.Length)]);
     }
+
     public override void QuestDoneUI()
     {
         var sideQManager = Pool.Get<SideQuestManager>();
 
-        sideQManager.DoneQuest(sideQManager.characterProviderQuest, () => { sideQManager.characterProviderQuest = null; });
+        sideQManager.DoneQuest(sideQManager.characterProviderQuest,
+            () => { sideQManager.characterProviderQuest = null; });
     }
 #if UNITY_EDITOR
     // Sử dụng [Button] của Odin để tạo nút bấm tùy chỉnh siêu nhanh
@@ -69,7 +80,7 @@ public class SideQuizQuestResource : SideQuestResource
         if (string.IsNullOrEmpty(filePath)) return;
 
         // Đăng ký provider để đọc đúng định dạng font tiếng Việt có dấu (UTF-8)
-      //  System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+        //  System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
         try
         {
@@ -79,7 +90,8 @@ public class SideQuizQuestResource : SideQuestResource
                 {
                     var result = reader.AsDataSet(new ExcelDataSetConfiguration()
                     {
-                        ConfigureDataTable = (_) => new ExcelDataTableConfiguration() { UseHeaderRow = true } // Bỏ qua dòng tiêu đề (Header) đầu tiên trong Excel
+                        ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
+                            { UseHeaderRow = true } // Bỏ qua dòng tiêu đề (Header) đầu tiên trong Excel
                     });
 
                     DataTable table = result.Tables[0];
@@ -89,7 +101,7 @@ public class SideQuizQuestResource : SideQuestResource
                     {
                         string quizText = row[0]?.ToString();
                         if (string.IsNullOrEmpty(quizText)) continue; // Bỏ qua nếu dòng bị trống
-                        
+
                         // Đọc 4 đáp án từ cột index 1 đến 4
                         string[] answers = new string[4];
                         answers[0] = row[1]?.ToString() ?? "";
@@ -121,7 +133,8 @@ public class SideQuizQuestResource : SideQuestResource
                     EditorUtility.SetDirty(this);
                     AssetDatabase.SaveAssets();
 
-                    Debug.Log($"<color=green>[Odin Import] Thành công! Đã nạp {quizDatas.Length} câu hỏi vào ScriptableObject.</color>");
+                    Debug.Log(
+                        $"<color=green>[Odin Import] Thành công! Đã nạp {quizDatas.Length} câu hỏi vào ScriptableObject.</color>");
                 }
             }
         }
@@ -131,10 +144,6 @@ public class SideQuizQuestResource : SideQuestResource
         }
     }
 
-   
-
-
 
 #endif
-
 }

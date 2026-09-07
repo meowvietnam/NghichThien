@@ -1,5 +1,6 @@
 ﻿using MemoryPack;
 using LuyenKhi;
+
 namespace Network.Models
 {
     [MemoryPackable]

@@ -11,10 +11,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(NghichMach), menuName = "Skill/Thần Thông/" + nameof(NghichMach))]
 public class NghichMach : ThanThong, IMemorySerializable<NghichMach>
 {
-    [SerializeField]
-    private int treKhi = 2;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int treKhi = 2;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -24,6 +23,7 @@ public class NghichMach : ThanThong, IMemorySerializable<NghichMach>
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect2);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -33,7 +33,8 @@ public class NghichMach : ThanThong, IMemorySerializable<NghichMach>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Bản thân nhận phải {GetColoredText($"+{treKhi}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}. Trong hiệp này, sử dụng thần thông tiếp theo gây tổn thương thì bản thân được hồi lượng Hp bằng lượng sát thương gây ra";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Bản thân nhận phải {GetColoredText($"+{treKhi}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}. Trong hiệp này, sử dụng thần thông tiếp theo gây tổn thương thì bản thân được hồi lượng Hp bằng lượng sát thương gây ra";
     }
 
     private void ObserverEffect(params object[] data)
@@ -45,9 +46,10 @@ public class NghichMach : ThanThong, IMemorySerializable<NghichMach>
             return;
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is NghichMach))
         {
-            List<NghichMach> listThisSkill = currentTurn.specialThanThongImpactAfterPlaySkill.OfType<NghichMach>().ToList();
+            List<NghichMach> listThisSkill =
+                currentTurn.specialThanThongImpactAfterPlaySkill.OfType<NghichMach>().ToList();
             int heal = listThisSkill.Count * dames.Sum();
-            Debug.Log("heal "+ heal + "count nghich maach " + listThisSkill.Count + "dame sum" + dames.Sum());
+            Debug.Log("heal " + heal + "count nghich maach " + listThisSkill.Count + "dame sum" + dames.Sum());
             currentTurn.Healing(heal);
             currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
         }

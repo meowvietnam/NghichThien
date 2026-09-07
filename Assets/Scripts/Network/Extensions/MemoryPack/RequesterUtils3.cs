@@ -12,14 +12,17 @@ namespace Network.Extensions.MemoryPack
             where T : unmanaged, Enum
         {
             var task = new TaskCompletionSource<IReader>();
+
             void OnResponse(IReader reader)
             {
                 task.TrySetResult(reader);
             }
+
             void OnError(Exception ex)
             {
                 task.TrySetException(ex);
             }
+
             @this.AddRequest(tag, OnResponse, timeoutMilliseconds, OnError);
             @this.MemSend(tag, body);
             return await task.Task;

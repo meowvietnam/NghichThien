@@ -6,7 +6,6 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
     [CustomPropertyDrawer(typeof(EnumToolbarAttribute))]
     sealed class EnumToolbarAttributeDrawer : PropertyDrawer
     {
-
         #region Overrides of PropertyDrawer
 
         /// <inheritdoc />
@@ -23,10 +22,10 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
             {
                 prop.enumValueIndex = newValue;
             }
+
             EditorGUI.EndProperty();
         }
 
         #endregion
-
     }
 }

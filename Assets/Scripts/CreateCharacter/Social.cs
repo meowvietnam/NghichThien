@@ -17,6 +17,7 @@ namespace CreateCharacter
     {
         [field: SerializeField] public List<Mail> Mails { get; set; } = new();
         [field: ShowInInspector] public HashSet<Relationship> Relationships { get; set; } = new();
+
         public int GetRelationshipWithNPC(int npcId)
         {
             var r = new Relationship()
@@ -27,9 +28,10 @@ namespace CreateCharacter
             {
                 return relationship.Points;
             }
+
             return 0;
         }
-      
+
         public Relationship GetRelationship(ushort npcId)
         {
             var relationshipRef = new Relationship()
@@ -40,27 +42,32 @@ namespace CreateCharacter
             {
                 return relationship;
             }
+
             if (!Relationships.Contains(relationshipRef))
             {
                 Relationships.Add(relationshipRef);
             }
+
             return relationshipRef;
         }
+
         public void RemoveRelationship(Relationship relationship)
         {
             Relationships.Remove(relationship);
         }
+
         public void RelationshipAddValue(Relationship relationship, int value)
         {
             var newValue = relationship.Points + value;
             relationship.Points = newValue;
         }
+
         public void RelationshipSetValue(ushort npcId, int value)
         {
             var relationship = GetRelationship(npcId);
             relationship.Points = value;
-         
         }
+
         public void RelationshipAddValue(ushort npcId, int value)
         {
             var relationship = GetRelationship(npcId);

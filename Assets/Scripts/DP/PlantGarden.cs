@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using MemoryPack;
+
 namespace DP
 {
     [MemoryPackable]
@@ -19,18 +20,21 @@ namespace DP
             {
                 return mySlot;
             }
+
             return null;
         }
+
         public PlantSeed GetPlantSeed(ushort slotIndex)
         {
             var seed = new PlantSeed()
             {
                 SlotIndex = slotIndex
             };
-            if(Seeds.TryGetValue(seed, out var mySeed))
+            if (Seeds.TryGetValue(seed, out var mySeed))
             {
                 return mySeed;
             }
+
             return null;
         }
     }

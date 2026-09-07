@@ -15,26 +15,31 @@ namespace Auction
         public int MinPrice { get; private set; }
         public int MaxPrice { get; private set; }
         public int CurrentPrice { get; private set; }
+
         public void SetItem(ItemRef itemRef)
         {
             var item = ItemFactory.CreateItem(itemRef);
             this.item.SetItem(item);
         }
+
         public void SetMinPrice(int minPrice)
         {
             MinPrice = minPrice;
             this.minPrice.text = Utils.FormatCount(minPrice);
         }
+
         public void SetMaxPrice(int maxPrice)
         {
             MaxPrice = maxPrice;
             this.maxPrice.text = Utils.FormatCount(maxPrice);
         }
+
         public void SetCurrentPrice(int currentPrice)
         {
             CurrentPrice = currentPrice;
             this.currentPrice.text = Utils.FormatCount(currentPrice);
         }
+
         public void SetCurrentPlayerBid(string playerName)
         {
             var baseText = "Giá hiện tại";

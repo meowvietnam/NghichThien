@@ -24,6 +24,7 @@ namespace AllMaps
     {
         void ActiveEventMap(Map map);
     }
+
     public class MapManager : MonoBehaviour, IAllMapsCallback
     {
         [SerializeField] public Map[] maps;
@@ -40,41 +41,45 @@ namespace AllMaps
         {
             foreach (Map map in maps)
             {
-                if(map is Stronghold strongHold && strongHold.eCurrentMapType == eMap)
+                if (map is Stronghold strongHold && strongHold.eCurrentMapType == eMap)
                 {
                     return map;
-                }    
-            } 
+                }
+            }
+
             return null;
-        }    
-        private GameObject SetIconEvent(Map map , GameObject prefabIcon)
+        }
+
+        private GameObject SetIconEvent(Map map, GameObject prefabIcon)
         {
             GameObject iconAction = null;
 
             if (map is Stronghold)
             {
                 iconAction = prefabIcon.Spawn(map.transform.GetChild(1).transform);
-
             }
             else
             {
                 iconAction = prefabIcon.Spawn(map.transform.GetChild(0).transform);
-
             }
+
             return iconAction;
         }
-        public Map SetDataOnMap(ActionMapResourceSO Data,int nodeId)
+
+        public Map SetDataOnMap(ActionMapResourceSO Data, int nodeId)
         {
             Map map = FindMap(nodeId);
-          
+
             map.SetData(Data, SetIconEvent(map, Data.prefabIcon));
 
             return map;
         }
+
         public void SetDataOnMap(GameObject prefabIcon, Map map)
         {
             map.SetData(null, SetIconEvent(map, prefabIcon));
         }
+
         public Map FindMap(int id)
         {
             return maps.FirstOrDefault(map => map.Id == id);
@@ -93,7 +98,7 @@ namespace AllMaps
 
         private void InitPoolPlayer()
         {
-            if(isInitPoolPlayer) return;
+            if (isInitPoolPlayer) return;
             isInitPoolPlayer = true;
             ObjectPool.CreatePool(playerPrefab, 5);
         }
@@ -110,13 +115,13 @@ namespace AllMaps
             player.SetPosition(map.PlayerPosition);
             var appearance = characterData.Appearance;
             player.Init(characterData.Gender, characterData.CanFly, appearance);
-            player.SetName(characterData.Name,new Color32(255, 213, 79, 255));
+            player.SetName(characterData.Name, new Color32(255, 213, 79, 255));
             player.SetInstance();
             current.OnPlayerEnter();
             Pool.Set(this);
             InitPoolPlayer();
         }
-        
+
         private void Start()
         {
             Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
@@ -128,8 +133,8 @@ namespace AllMaps
         {
             yield return new WaitForSeconds(time);
             isDelayAfterLoadScene = false;
-
         }
+
         public void PlayerMoveTo(Map map)
         {
             if (CameraFollow.Instance.target != player.transform) return;
@@ -177,13 +182,12 @@ namespace AllMaps
                 {
                     continue;
                 }
+
                 start = m;
                 listNodes.Add(node);
             }
-            player.DoMove(listNodes, () =>
-            {
-                player.ReturnPool();
-            });
+
+            player.DoMove(listNodes, () => { player.ReturnPool(); });
         }
 
         private void OnMoveToMapCompleted()
@@ -200,17 +204,19 @@ namespace AllMaps
                 item.transition = Selectable.Transition.ColorTint;
             }
         }
+
         [Button]
         private void FixVisualStrongHoldText(float scale)
         {
             foreach (var item in maps)
             {
-                if(item is Stronghold strongHold)
+                if (item is Stronghold strongHold)
                 {
                     strongHold.transform.GetChild(0).transform.localScale = Vector3.one * scale;
-                }    
+                }
             }
         }
+
         public void OnMoveToMapResult(MoveToMapResult result)
         {
             NetworkManager.Instance.Invoke(() =>
@@ -269,7 +275,7 @@ namespace AllMaps
         public void OnPvpMatched(PvpMatched pvpMatched)
         {
             var gameManager = Pool.Get<GameManager>();
-            var chars = new []
+            var chars = new[]
             {
                 pvpMatched.Inviter,
                 pvpMatched.Defender
@@ -299,21 +305,23 @@ namespace AllMaps
 
         private void OnGetCharacterOnlineThisNode(CharacterSnapshot[] characters)
         {
-          
             Debug.Log($"Có {characters.Length} players online trong node");
             List<CharacterStatsSecure> characterStatsSecures = new List<CharacterStatsSecure>();
             foreach (var character in characters)
             {
                 characterStatsSecures.Add(CharacterStatsSecureBuilder.ArenaFromCharacterSnapshot(character));
             }
-            List<NPCData> npcOnCurrentMap = Pool.Get<NPCManager>().npcDatas.Where(x => x.charStats.idNode == current.Id).ToList();
+
+            List<NPCData> npcOnCurrentMap =
+                Pool.Get<NPCManager>().npcDatas.Where(x => x.charStats.idNode == current.Id).ToList();
             foreach (var character in npcOnCurrentMap)
             {
                 characterStatsSecures.Add(character.charStats);
             }
+
             Pool.Get<UINPCJiaoHu>().ShowNPCList(characterStatsSecures);
         }
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
 
         [Button]
         public void ChangeSprites()
@@ -325,14 +333,15 @@ namespace AllMaps
             var res = GetAllSpritesInFolder("Assets/Texture2D");
             foreach (var sr in renderers)
             {
-                if(sr.sprite == null) continue; 
+                if (sr.sprite == null) continue;
                 var spriteName = sr.sprite.name;
                 var newSprite = res.FirstOrDefault(x => x.name == spriteName);
                 if (newSprite == null)
                 {
-                    Debug.Log($"Sprite {spriteName} not found",sr);
+                    Debug.Log($"Sprite {spriteName} not found", sr);
                     continue;
                 }
+
                 sr.sprite = newSprite;
             }
         }
@@ -358,9 +367,9 @@ namespace AllMaps
                     }
                 }
             }
+
             return result;
         }
 #endif
-
     }
 }

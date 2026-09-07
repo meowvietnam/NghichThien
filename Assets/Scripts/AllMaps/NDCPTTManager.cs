@@ -12,6 +12,7 @@ namespace AllMaps
         public List<NgoDao.NgoDao> NgoDaos { get; set; }
         public List<Skill.CongPhap> CongPhaps { get; set; }
         public List<Skill.ThanThong> ThanThongs { get; set; }
+
         private Type[] types =
         {
             typeof(AmDuongDong),
@@ -520,6 +521,7 @@ namespace AllMaps
             typeof(CuuUHuyetMaCong),
             typeof(UMinhDang)
         };
+
         private object Read(Type type, IReader reader)
         {
             var instance = Activator.CreateInstance(type);
@@ -557,6 +559,7 @@ namespace AllMaps
             var ttCount = reader.Read<int>();
             value.ThanThongs = Enumerable.Range(0, ttCount).Select(_ => Read<Skill.ThanThong>(reader)).ToList();
         }
+
         public int ByteSize()
         {
             return 12
@@ -564,6 +567,7 @@ namespace AllMaps
                    + CongPhaps.Sum(x => x.ByteSize() + 2)
                    + ThanThongs.Sum(x => x.ByteSize() + 2);
         }
+
         public void Serialize(IWriter writer)
         {
             writer.Write(NgoDaos.Count);

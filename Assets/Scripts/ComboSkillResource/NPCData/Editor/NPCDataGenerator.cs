@@ -21,7 +21,8 @@ public class NPCDataGenerator : EditorWindow
     private void OnGUI()
     {
         GUILayout.Label("NPC Generation Settings", EditorStyles.boldLabel);
-        comboResource = (ComboSkillResource.ComboSkillResource)EditorGUILayout.ObjectField("Combo Resource", comboResource, typeof(ComboSkillResource.ComboSkillResource), false);
+        comboResource = (ComboSkillResource.ComboSkillResource)EditorGUILayout.ObjectField("Combo Resource",
+            comboResource, typeof(ComboSkillResource.ComboSkillResource), false);
 
         if (GUILayout.Button("Generate NPCs (Check Type & Auto ID)"))
         {
@@ -30,6 +31,7 @@ public class NPCDataGenerator : EditorWindow
                 EditorUtility.DisplayDialog("Error", "Please assign ComboSkillResource!", "OK");
                 return;
             }
+
             Generate();
         }
     }
@@ -40,7 +42,8 @@ public class NPCDataGenerator : EditorWindow
 
         // 1. Thay đổi cấu trúc: Lưu lại danh sách Level đã tồn tại cho TỪNG loại Combo
         // Key: Combo Type, Value: Bộ danh sách các Level đã có file NPCData
-        Dictionary<ComboSkillResource.ETypeCombo, HashSet<int>> existingComboLevels = new Dictionary<ComboSkillResource.ETypeCombo, HashSet<int>>();
+        Dictionary<ComboSkillResource.ETypeCombo, HashSet<int>> existingComboLevels =
+            new Dictionary<ComboSkillResource.ETypeCombo, HashSet<int>>();
         int maxId = 0;
 
         // Tìm tất cả NPCData hiện có trong thư mục
@@ -66,6 +69,7 @@ public class NPCDataGenerator : EditorWindow
                     {
                         existingComboLevels[type] = new HashSet<int>();
                     }
+
                     existingComboLevels[type].Add(lv);
                 }
             }
@@ -76,7 +80,7 @@ public class NPCDataGenerator : EditorWindow
         // Định nghĩa danh sách các bộ Level cần sinh theo đúng yêu cầu của bạn:
         // 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 1, 1, 12, 13, 14, 15
         // LƯU Ý: Đoạn chuỗi bạn ghi "1 1 12" tôi hiểu là bạn gõ nhầm số 11 thành số 1, nên mảng dưới đây sẽ sửa lại chuẩn từ 1 đến 15 nhé.
-        int[] levelsToGenerate = new int[] { 1, 2, 3,  4,  5,  6,  7, 8,  9,  10, 11, 12, 13, 14, 15 };
+        int[] levelsToGenerate = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
 
         // 2. Duyệt qua danh sách Combo từ Resource
         foreach (var comboType in comboResource.comboNPC)
@@ -109,11 +113,13 @@ public class NPCDataGenerator : EditorWindow
 
             if (countCreatedInBatch > 0)
             {
-                Debug.Log($"<color=green>Success:</color> Đã cập nhật bổ sung {countCreatedInBatch} NPC mới cho Type: {comboType.typeCombo}");
+                Debug.Log(
+                    $"<color=green>Success:</color> Đã cập nhật bổ sung {countCreatedInBatch} NPC mới cho Type: {comboType.typeCombo}");
             }
             else
             {
-                Debug.Log($"<color=cyan>Skip:</color> Combo Type <b>{comboType.typeCombo}</b> đã có đầy đủ các file level từ trước. Không tạo thêm.");
+                Debug.Log(
+                    $"<color=cyan>Skip:</color> Combo Type <b>{comboType.typeCombo}</b> đã có đầy đủ các file level từ trước. Không tạo thêm.");
             }
         }
 
@@ -121,7 +127,9 @@ public class NPCDataGenerator : EditorWindow
         AssetDatabase.Refresh();
         EditorUtility.DisplayDialog("Success", "NPC Generation/Update Completed!", "OK");
     }
-    private int CreateNPCBatch(string path, ComboSkillResource.ComboSkillResource.ComboWithType comboType, int count, int minLv, int maxLv, int startId)
+
+    private int CreateNPCBatch(string path, ComboSkillResource.ComboSkillResource.ComboWithType comboType, int count,
+        int minLv, int maxLv, int startId)
     {
         int runningId = startId;
         for (int i = 0; i < count; i++)
@@ -151,7 +159,6 @@ public class NPCDataGenerator : EditorWindow
             npc.charStatsCreateRef.monPhai = comboType.monPhai;
             npc.charStatsCreateRef.Gender = (Gender)Random.Range(0, 2);
 
-       
 
             npc.charStatsCreateRef.hpMax = new SecureInt(Random.Range(30, 61));
             npc.charStatsCreateRef.hp = new SecureInt(npc.charStatsCreateRef.hpMax.Value);
@@ -165,6 +172,7 @@ public class NPCDataGenerator : EditorWindow
             AssetDatabase.CreateAsset(npc, assetPath);
             EditorUtility.SetDirty(npc);
         }
+
         return runningId; // Trả về ID lớn nhất sau khi tạo batch
     }
 

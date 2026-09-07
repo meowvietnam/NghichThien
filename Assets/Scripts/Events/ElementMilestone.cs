@@ -21,7 +21,7 @@ namespace Events
 
         private void Start()
         {
-            SetEventButton(button,OnClick);
+            SetEventButton(button, OnClick);
         }
 
         private void OnClick()
@@ -33,13 +33,14 @@ namespace Events
         {
             this.panel = panel;
             Milestone = milestone;
-           
+
             for (int i = 0; i < milestone.Targets.Length; i++)
             {
                 if (itemEventMilestoneUIPrefab == null)
                 {
                     itemEventMilestoneUIPrefab = EventManager.Instance.ItemEventMilestoneUIPrefab;
                 }
+
                 var target = milestone.Targets[i];
                 var progression = milestone.Progresses[i];
                 var item = Instantiate(itemEventMilestoneUIPrefab, milestoneContent);
@@ -57,6 +58,7 @@ namespace Events
             {
                 reward.ShowUI(context);
             }
+
             UpdateButton();
         }
 

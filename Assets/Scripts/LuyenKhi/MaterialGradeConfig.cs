@@ -11,11 +11,13 @@ namespace LuyenKhi
     {
         [field: SerializeField] public Tier Tier { get; private set; }
         [field: SerializeField] public int Grade { get; private set; }
+
         public void Deserialize(IReader reader, ref MaterialGradeConfig value)
         {
             value.Tier = reader.Read<Tier>();
             value.Grade = reader.Read<int>();
         }
+
         public int ByteSize()
         {
             return Tier.ByteSize() + Grade.ByteSize();

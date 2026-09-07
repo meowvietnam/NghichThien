@@ -18,20 +18,17 @@ namespace IngameDebugConsole
         // NOTE: To assign values to serialized variables, unfortunately we need to set the Inspector to Debug Mode because the inspector is overridden by TMP_InputField's custom editor.
         // ===============================================================================================================================================================================
 
-        [SerializeField]
-        private RectTransform commandSuggestionsContainer;
-        [SerializeField]
-        private TextMeshProUGUI commandSuggestionPrefab;
+        [SerializeField] private RectTransform commandSuggestionsContainer;
+        [SerializeField] private TextMeshProUGUI commandSuggestionPrefab;
 
-        [SerializeField]
-        private string commandSuggestionHighlightStart = "<color=orange>";
-        [SerializeField]
-        private string commandSuggestionHighlightEnd = "</color>";
+        [SerializeField] private string commandSuggestionHighlightStart = "<color=orange>";
+        [SerializeField] private string commandSuggestionHighlightEnd = "</color>";
 
         private DebugLogManager manager;
 
         /// <summary>Command suggestions that match the currently entered command.</summary>
         private List<ConsoleMethodInfo> matchingCommandSuggestions;
+
         private List<TextMeshProUGUI> commandSuggestionInstances;
         private int visibleCommandSuggestionInstances = 0;
 
@@ -45,20 +42,30 @@ namespace IngameDebugConsole
 
         /// <summary>Value of the command input field when autocomplete was first requested.</summary>
         private string autoCompleteBase;
+
         /// <summary><c>true</c> immediately after the user presses Tab to initiate auto-complete.</summary>
         private bool hasAutoCompletedNow;
 
         /// <summary>History of the previously entered commands.</summary>
         private CircularBuffer<string> commandHistory;
+
         private int commandHistoryIndex = -1;
         private string commandBeforeNavigatingHistory;
 
         private readonly Event poppedEvent = new Event();
 
         private delegate object FieldInfoGetDelegate(object obj);
+
         private delegate void FieldInfoSetDelegate(object obj, object value);
-        private readonly FieldInfoGetDelegate m_IsCompositionActiveGetter = typeof(TMP_InputField).GetField("m_IsCompositionActive", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).GetValue;
-        private readonly FieldInfoSetDelegate m_IsTextComponentUpdateRequiredSetter = typeof(TMP_InputField).GetField("m_IsTextComponentUpdateRequired", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).SetValue;
+
+        private readonly FieldInfoGetDelegate m_IsCompositionActiveGetter = typeof(TMP_InputField)
+            .GetField("m_IsCompositionActive", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+            .GetValue;
+
+        private readonly FieldInfoSetDelegate m_IsTextComponentUpdateRequiredSetter = typeof(TMP_InputField)
+            .GetField("m_IsTextComponentUpdateRequired",
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).SetValue;
+
         private readonly object boxedTrueValue = true;
 
         public void Initialize(DebugLogManager manager)
@@ -148,7 +155,8 @@ namespace IngameDebugConsole
                         consumedEvent = true;
 
                         // Special handling on OSX which produces more events which need to be suppressed.
-                        if (poppedEvent.character == 0 && poppedEvent.modifiers == EventModifiers.None && caretPositionInternal == m_CaretPosition && (bool)m_IsCompositionActiveGetter(this))
+                        if (poppedEvent.character == 0 && poppedEvent.modifiers == EventModifiers.None &&
+                            caretPositionInternal == m_CaretPosition && (bool)m_IsCompositionActiveGetter(this))
                             break;
 
                         char ch = poppedEvent.keyCode switch
@@ -255,17 +263,25 @@ namespace IngameDebugConsole
 #endif
 
                 Canvas canvas = textComponent.canvas;
-                Camera canvasCamera = (canvas.renderMode == RenderMode.ScreenSpaceOverlay || (canvas.renderMode == RenderMode.ScreenSpaceCamera && canvas.worldCamera == null)) ? null : (canvas.worldCamera != null) ? canvas.worldCamera : Camera.main;
-                if (RectTransformUtility.RectangleContainsScreenPoint(commandSuggestionsContainer, pointerPosition, canvasCamera) && RectTransformUtility.ScreenPointToLocalPointInRectangle(commandSuggestionsContainer, pointerPosition, canvasCamera, out Vector2 localPoint))
+                Camera canvasCamera =
+                    (canvas.renderMode == RenderMode.ScreenSpaceOverlay ||
+                     (canvas.renderMode == RenderMode.ScreenSpaceCamera && canvas.worldCamera == null)) ? null :
+                    (canvas.worldCamera != null) ? canvas.worldCamera : Camera.main;
+                if (RectTransformUtility.RectangleContainsScreenPoint(commandSuggestionsContainer, pointerPosition,
+                        canvasCamera) && RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                        commandSuggestionsContainer, pointerPosition, canvasCamera, out Vector2 localPoint))
                 {
                     /// <see cref="commandSuggestionInstances"/> have their Pivot Y set to 1 so we need localPoint to have the same pivot value.
                     localPoint.y -= commandSuggestionsContainer.rect.height;
 
                     for (int i = 0; i < visibleCommandSuggestionInstances; i++)
                     {
-                        if (localPoint.y >= commandSuggestionInstances[i].rectTransform.anchoredPosition.y - commandSuggestionInstances[i].rectTransform.sizeDelta.y * commandSuggestionInstances[i].rectTransform.pivot.y)
+                        if (localPoint.y >= commandSuggestionInstances[i].rectTransform.anchoredPosition.y -
+                            commandSuggestionInstances[i].rectTransform.sizeDelta.y *
+                            commandSuggestionInstances[i].rectTransform.pivot.y)
                         {
-                            text = matchingCommandSuggestions[i].command + ((matchingCommandSuggestions[i].parameters.Length > 0) ? " " : null);
+                            text = matchingCommandSuggestions[i].command +
+                                   ((matchingCommandSuggestions[i].parameters.Length > 0) ? " " : null);
                             StartCoroutine(ActivateCommandInputFieldCoroutine());
                             return;
                         }
@@ -318,7 +334,8 @@ namespace IngameDebugConsole
                 commandCaretIndexIncrements.Clear();
 
                 string prevCommandName = previousCommandName;
-                DebugLogConsole.GetCommandSuggestions(command, matchingCommandSuggestions, commandCaretIndexIncrements, ref previousCommandName, out int numberOfParameters);
+                DebugLogConsole.GetCommandSuggestions(command, matchingCommandSuggestions, commandCaretIndexIncrements,
+                    ref previousCommandName, out int numberOfParameters);
                 if (prevCommandName != previousCommandName || numberOfParameters != previousParameterCount)
                 {
                     previousParameterCount = numberOfParameters;
@@ -357,7 +374,8 @@ namespace IngameDebugConsole
                     if (i >= visibleCommandSuggestionInstances)
                     {
                         if (i >= suggestionInstancesCount)
-                            commandSuggestionInstances.Add(Instantiate(commandSuggestionPrefab, commandSuggestionsContainer, false));
+                            commandSuggestionInstances.Add(Instantiate(commandSuggestionPrefab,
+                                commandSuggestionsContainer, false));
                         else
                             commandSuggestionInstances[i].gameObject.SetActive(true);
 
@@ -369,7 +387,8 @@ namespace IngameDebugConsole
                     if (caretArgumentIndex > 0)
                         sb.Append(suggestedCommand.command);
                     else
-                        sb.Append(commandSuggestionHighlightStart).Append(matchingCommandSuggestions[i].command).Append(commandSuggestionHighlightEnd);
+                        sb.Append(commandSuggestionHighlightStart).Append(matchingCommandSuggestions[i].command)
+                            .Append(commandSuggestionHighlightEnd);
 
                     if (suggestedCommand.parameters.Length > 0)
                     {
@@ -385,7 +404,8 @@ namespace IngameDebugConsole
                             if (caretParameterIndex != j)
                                 sb.Append(suggestedCommand.parameters[j]);
                             else
-                                sb.Append(commandSuggestionHighlightStart).Append(suggestedCommand.parameters[j]).Append(commandSuggestionHighlightEnd);
+                                sb.Append(commandSuggestionHighlightStart).Append(suggestedCommand.parameters[j])
+                                    .Append(commandSuggestionHighlightEnd);
                         }
                     }
 

@@ -9,6 +9,7 @@ namespace Base
         {
             PlayerPrefs.SetString(key, Convert.ToBase64String(value));
         }
+
         public static byte[] GetBytes(string key)
         {
             string value = PlayerPrefs.GetString(key, "");

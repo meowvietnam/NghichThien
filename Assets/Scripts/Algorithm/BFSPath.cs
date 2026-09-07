@@ -29,6 +29,7 @@ namespace Algorithm
                     }
                 }
             }
+
             if (!visited.Contains(goal))
                 return null;
             var path = new List<T>();
@@ -39,6 +40,7 @@ namespace Algorithm
                 path.Add(cur);
                 cur = parent[cur];
             }
+
             path.Add(start);
             path.Reverse();
             return path;

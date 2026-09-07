@@ -14,6 +14,7 @@ namespace AllMaps.ui_rank
             var text = $"Trả thưởng sau: {Utils.GetTime(time)}";
             endTimeText.text = text;
         }
+
         public void SetActive(bool active)
         {
             gameObject.SetActive(active);

@@ -7,25 +7,30 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(LaYenBo), menuName = "Skill/Thần Thông/" + nameof(LaYenBo))]
 public class LaYenBo : ThanThong, IMemorySerializable<LaYenBo>
 {
-    [SerializeField]
-    private int[] dames = new int[]{3, 5, 8, 15, 30};
-    [SerializeField]
-    private int require = 5;
-    [SerializeField]
-    private int dameBuffs = 1;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] dames = new int[] { 3, 5, 8, 15, 30 };
+    [SerializeField] private int require = 5;
+    [SerializeField] private int dameBuffs = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int X = (int)caster.GetToDoBay() / require;
         int dame = dames[GetIndexLevelThanThong(caster)] + X * dameBuffs;
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Mỗi có {GetColoredText($"{require}", "red")} điểm độn tốc thì tăng lên {GetColoredText($"+{dameBuffs}", "red")} điểm sát thương";
+        return
+            $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Mỗi có {GetColoredText($"{require}", "red")} điểm độn tốc thì tăng lên {GetColoredText($"+{dameBuffs}", "red")} điểm sát thương";
     }
 
     public override int ByteSize()

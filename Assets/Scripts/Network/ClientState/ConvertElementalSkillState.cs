@@ -5,12 +5,15 @@ namespace Network.ClientState
         public void OnEnter()
         {
         }
+
         public void Handle(Message<MessageTag> message)
         {
         }
+
         public void OnLeave()
         {
         }
+
         public MessageState State => MessageState.ConvertElementalSkill;
     }
 }

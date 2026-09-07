@@ -10,14 +10,11 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(KhoTanCamLai), menuName = "Skill/Thần Thông/" + nameof(KhoTanCamLai))]
 public class KhoTanCamLai : ThanThong, IMemorySerializable<KhoTanCamLai>
 {
-    [SerializeField]
-    private int[] kinhDaoReset;
-    [SerializeField]
-    private int[] healValues;
-    [SerializeField]
-    private int[] healPerChiThuyValues;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] kinhDaoReset;
+    [SerializeField] private int[] healValues;
+    [SerializeField] private int[] healPerChiThuyValues;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     private void ObserverEffect(params object[] data)
     {
         CharacterCombat currentTurn = (CharacterCombat)data[0];
@@ -37,7 +34,8 @@ public class KhoTanCamLai : ThanThong, IMemorySerializable<KhoTanCamLai>
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TriLieu, healValues[GetIndexLevelThanThong(caster)]);
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KinhDao, out SecureInt kinhDao);
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChiThuy, out SecureInt chiThuy);
-        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TriLieu, healPerChiThuyValues[GetIndexLevelThanThong(caster)] * chiThuy);
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TriLieu,
+            healPerChiThuyValues[GetIndexLevelThanThong(caster)] * chiThuy);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KinhDao, kinhDao);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChiThuy, chiThuy);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KinhDao, kinhDaoReset[GetIndexLevelThanThong(caster)]);
@@ -46,6 +44,7 @@ public class KhoTanCamLai : ThanThong, IMemorySerializable<KhoTanCamLai>
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -55,7 +54,8 @@ public class KhoTanCamLai : ThanThong, IMemorySerializable<KhoTanCamLai>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Đưa Hp của bản thân về 1, thu hoạch được {GetColoredText($"+{healValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)}. Tiêu hao tất cả {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChiThuy)}. Mỗi có một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChiThuy)} thu hoạch được {GetColoredText($"+{healPerChiThuyValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)}, Làm mới {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KinhDao)} thành {GetColoredText($"{kinhDaoReset[level - 1]}", "red")} tầng. Hiệp sau hồi toàn bộ Hp";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Đưa Hp của bản thân về 1, thu hoạch được {GetColoredText($"+{healValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)}. Tiêu hao tất cả {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChiThuy)}. Mỗi có một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChiThuy)} thu hoạch được {GetColoredText($"+{healPerChiThuyValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)}, Làm mới {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KinhDao)} thành {GetColoredText($"{kinhDaoReset[level - 1]}", "red")} tầng. Hiệp sau hồi toàn bộ Hp";
     }
 
     public override int ByteSize()

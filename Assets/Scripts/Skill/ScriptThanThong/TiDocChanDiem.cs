@@ -8,10 +8,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(TiDocChanDiem), menuName = "Skill/Thần Thông/" + nameof(TiDocChanDiem))]
 public class TiDocChanDiem : ThanThong, IMemorySerializable<TiDocChanDiem>
 {
-    [SerializeField]
-    private int[] requires = new int[]{1, 2, 3, 5, 7};
-    [SerializeField]
-    private int[] healValues = new int[]{8, 9, 12, 15, 21};
+    [SerializeField] private int[] requires = new int[] { 1, 2, 3, 5, 7 };
+    [SerializeField] private int[] healValues = new int[] { 8, 9, 12, 15, 21 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, requires[GetIndexLevelThanThong(caster)]);
@@ -31,7 +30,8 @@ public class TiDocChanDiem : ThanThong, IMemorySerializable<TiDocChanDiem>
 
     public override string GetDesc(int level)
     {
-        return $"Bản thân gỡ ra {GetColoredText($"{requires[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}, khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm HP";
+        return
+            $"Bản thân gỡ ra {GetColoredText($"{requires[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}, khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm HP";
     }
 
     public override int ByteSize()

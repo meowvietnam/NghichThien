@@ -15,6 +15,4 @@ public class EnemyActionEnterMapManager : ActionEnterMapManager
     {
         return actionMapResourceSOs.First();
     }
-
- 
 }

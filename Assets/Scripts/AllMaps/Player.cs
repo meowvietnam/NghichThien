@@ -26,15 +26,18 @@ namespace AllMaps
         public bool IsSwordRiding { get; private set; }
         public bool IsMoving { get; private set; }
         public NewCharacterGraphic newVisual;
+
         public void SetInstance()
         {
             Pool.Set(this);
         }
+
         public void SetName(string name, Color color)
         {
             nameText.text = name;
             nameText.color = color;
         }
+
         public void Init(Gender gender, bool isSwordRiding, Appearance appearance)
         {
             this.IsSwordRiding = isSwordRiding;
@@ -48,14 +51,15 @@ namespace AllMaps
                     genderStr = "10";
                     break;
             }
+
             anim.Skeleton.SetSkin(genderStr);
             anim.timeScale = speed;
             SetMoving(false);
             EVehicleType vehicleType = isSwordRiding ? EVehicleType.Sword : EVehicleType.Base;
-           
-            newVisual.InitVisual(vehicleType, gender,appearance.Skins,appearance.Colors);
+
+            newVisual.InitVisual(vehicleType, gender, appearance.Skins, appearance.Colors);
         }
-          
+
         public void SetPosition(Vector2 position)
         {
             mainTf.position = position;
@@ -69,13 +73,14 @@ namespace AllMaps
             var animationName = $"{moving}{swordRiding}";
             anim.AnimationState.SetAnimation(0, animationName, true);
         }
-        public void DoMove(List<Node> nodes,Action completed)
+
+        public void DoMove(List<Node> nodes, Action completed)
         {
             SetMoving(true);
-            StartCoroutine(IEDoMove(nodes,completed));
+            StartCoroutine(IEDoMove(nodes, completed));
         }
-        
-        private IEnumerator IEDoMove(List<Node> nodes,Action completed)
+
+        private IEnumerator IEDoMove(List<Node> nodes, Action completed)
         {
             if (IsSwordRiding)
             {
@@ -97,17 +102,21 @@ namespace AllMaps
                         {
                             nodePositions = nodePositions.Reverse().ToArray();
                         }
+
                         foreach (var nodePosition in nodePositions)
                         {
                             yield return MoveTo(nodePosition);
                         }
                     }
+
                     var mapPos = node.NextMap.PlayerPosition;
                     yield return MoveTo(mapPos);
                 }
             }
+
             SetMoving(false);
             completed?.Invoke();
+
             IEnumerator MoveTo(Vector2 target)
             {
                 var position = mainTf.position;
@@ -116,9 +125,9 @@ namespace AllMaps
                 tf.eulerAngles = new Vector3(0, y, 0);
                 while (Vector2.Distance(position, target) > 0.05f)
                 {
-                    position= Vector2.MoveTowards(position, target, speed * Time.deltaTime);
+                    position = Vector2.MoveTowards(position, target, speed * Time.deltaTime);
                     mainTf.position = position;
-                    yield return  null;
+                    yield return null;
                 }
             }
         }

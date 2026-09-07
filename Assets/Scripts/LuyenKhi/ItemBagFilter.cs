@@ -9,18 +9,22 @@ namespace LuyenKhi
         [SerializeField] private Button button;
         [SerializeField] private FilterBase filterBase;
         [field: SerializeField] public string FilterName { get; private set; }
+
         private void Start()
         {
-            SetEventButton(button,OnSelect);
+            SetEventButton(button, OnSelect);
         }
+
         private void OnSelect()
         {
             filterBase.OnFilter(this);
         }
+
         private void OnDestroy()
         {
             button.onClick.RemoveAllListeners();
         }
+
         public abstract bool Filter(ItemBag item);
     }
 }

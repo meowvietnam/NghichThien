@@ -17,6 +17,7 @@ namespace AllMaps.EventReward
         public List<ItemEvent> itemEvents;
         public int Money;
         public int MoneyVip;
+
         public void AddReward(RewardSnapshot reward)
         {
             Money += reward.Money;
@@ -37,6 +38,7 @@ namespace AllMaps.EventReward
                     }
                 }
             }
+
             if (itemEvents != null && reward.itemEvents != null)
             {
                 Debug.Log(itemEvents.Count);
@@ -55,6 +57,7 @@ namespace AllMaps.EventReward
                 }
             }
         }
+
         public RewardSnapshot Clone()
         {
             return new RewardSnapshot()

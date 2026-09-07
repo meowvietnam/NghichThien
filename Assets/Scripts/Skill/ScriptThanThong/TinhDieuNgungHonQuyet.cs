@@ -6,13 +6,13 @@ using System;
 using Network;
 using Network.Extensions;
 
-[CreateAssetMenu(fileName = nameof(TinhDieuNgungHonQuyet), menuName = "Skill/Thần Thông/" + nameof(TinhDieuNgungHonQuyet))]
+[CreateAssetMenu(fileName = nameof(TinhDieuNgungHonQuyet),
+    menuName = "Skill/Thần Thông/" + nameof(TinhDieuNgungHonQuyet))]
 public class TinhDieuNgungHonQuyet : ThanThong, IMemorySerializable<TinhDieuNgungHonQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{3, 6, 9, 17, 35};
-    [SerializeField]
-    private int[] debuffValues = new int[]{1, 2, 3, 4, 5};
+    [SerializeField] private int[] buffValues = new int[] { 3, 6, 9, 17, 35 };
+    [SerializeField] private int[] debuffValues = new int[] { 1, 2, 3, 4, 5 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -22,7 +22,8 @@ public class TinhDieuNgungHonQuyet : ThanThong, IMemorySerializable<TinhDieuNgun
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TinhHonChiLuc)}. Đồng thời nhận phải {GetColoredText($"+{debuffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}.";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TinhHonChiLuc)}. Đồng thời nhận phải {GetColoredText($"+{debuffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}.";
     }
 
     public override int ByteSize()

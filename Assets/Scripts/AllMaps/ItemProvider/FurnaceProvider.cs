@@ -33,10 +33,12 @@ namespace AllMaps.ItemProvider
             var fData = ctx.FurnaceData;
             if (fData != null)
             {
-                return ctx.ActionShowItem == EActionShowItemInfor.None || ctx.ActionShowItem == EActionShowItemInfor.Sell
+                return ctx.ActionShowItem == EActionShowItemInfor.None ||
+                       ctx.ActionShowItem == EActionShowItemInfor.Sell
                     ? GetPriceItemSell(fData.SelfId)
                     : GetPriceItemBuy(fData.SelfId);
             }
+
             return base.GetPrice(ctx);
         }
 
@@ -68,6 +70,7 @@ namespace AllMaps.ItemProvider
                     Durability = 100,
                 };
             }
+
             var item = LuyenDanResources.Instance.FindItem(furnaceData);
             var basePrice = GameManager.PriceFurnaceWithTierPerDurability[item.Tier];
             return furnaceData.Durability * basePrice;

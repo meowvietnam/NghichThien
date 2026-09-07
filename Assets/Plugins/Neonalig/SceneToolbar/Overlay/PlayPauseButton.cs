@@ -42,8 +42,10 @@ namespace Plugins.Neonalig.SceneToolbar.Overlay
         private static void ContextMenuCallback(ContextClickEvent evt)
         {
             GenericMenu menu = new();
-            menu.AddItem(EditorGUIUtility.TrTextContent("Play the First Scene in the Build Index"), SceneToolbarSettings.PlayButtonMethod == PlayButtonMethod.PlayBuild, PlayBuild_Clicked);
-            menu.AddItem(EditorGUIUtility.TrTextContent("Play the Current Scene"), SceneToolbarSettings.PlayButtonMethod == PlayButtonMethod.PlayCurrent, PlayCurrent_Clicked);
+            menu.AddItem(EditorGUIUtility.TrTextContent("Play the First Scene in the Build Index"),
+                SceneToolbarSettings.PlayButtonMethod == PlayButtonMethod.PlayBuild, PlayBuild_Clicked);
+            menu.AddItem(EditorGUIUtility.TrTextContent("Play the Current Scene"),
+                SceneToolbarSettings.PlayButtonMethod == PlayButtonMethod.PlayCurrent, PlayCurrent_Clicked);
             menu.ShowAsContext();
 
             void PlayBuild_Clicked() => SceneToolbarSettings.PlayButtonMethod = PlayButtonMethod.PlayBuild;
@@ -60,7 +62,8 @@ namespace Plugins.Neonalig.SceneToolbar.Overlay
             UpdateIcon();
         }
 
-        private static Texture2D GetIcon([LocalizationRequired(false)] string name) => (Texture2D)EditorGUIUtility.IconContent(name).image;
+        private static Texture2D GetIcon([LocalizationRequired(false)] string name) =>
+            (Texture2D)EditorGUIUtility.IconContent(name).image;
 
         private void UpdateIcon()
         {
@@ -100,7 +103,8 @@ namespace Plugins.Neonalig.SceneToolbar.Overlay
                     PlayCurrent();
                     break;
                 default:
-                    Debug.LogError("Unknown " + nameof(PlayButtonMethod) + " value: " + SceneToolbarSettings.PlayButtonMethod);
+                    Debug.LogError("Unknown " + nameof(PlayButtonMethod) + " value: " +
+                                   SceneToolbarSettings.PlayButtonMethod);
                     break;
             }
         }
@@ -112,6 +116,7 @@ namespace Plugins.Neonalig.SceneToolbar.Overlay
                 PlayCurrent();
                 return;
             }
+
             SwapToScene(0, true);
         }
 
@@ -122,6 +127,7 @@ namespace Plugins.Neonalig.SceneToolbar.Overlay
                 Debug.LogError("Invalid scene index: " + index);
                 return;
             }
+
             int currentIndex = CurrentSceneIndex;
             if (currentIndex != index)
             {
@@ -151,6 +157,7 @@ namespace Plugins.Neonalig.SceneToolbar.Overlay
     {
         /// <summary> Plays the scene at build index 0. </summary>
         PlayBuild,
+
         /// <summary> Plays the currently open scene. </summary>
         PlayCurrent,
     }

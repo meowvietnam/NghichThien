@@ -7,17 +7,16 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(BasicTTHoTrao), menuName = "Skill/Thần Thông/" + nameof(BasicTTHoTrao))]
 public class BasicTTHoTrao : ThanThong, BaseSkill.LienKich, IMemorySerializable<BasicTTHoTrao>
 {
-    [SerializeField]
-    private int[] buff;
-    [SerializeField]
-    private ELinhKhi elinhKhi;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] buff;
+    [SerializeField] private ELinhKhi elinhKhi;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, buff[GetIndexLevelThanThong(caster)]);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -32,7 +31,8 @@ public class BasicTTHoTrao : ThanThong, BaseSkill.LienKich, IMemorySerializable<
 
     public override string GetDesc(int level)
     {
-        return $"Cơ sở {GetTextLinhKhi(elinhKhi)} hệ thần thông, thu hoạch được {GetColoredText($"+{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}. {GetKeyWord(EKeyWord.LienKich)} nếu trước đó dùng {GetTextLinhKhi(CombatManager.linhKhiLienKich[elinhKhi])} hệ kĩ năng thì {GetColoredText($"hiệu quả gấp đôi", "red")}";
+        return
+            $"Cơ sở {GetTextLinhKhi(elinhKhi)} hệ thần thông, thu hoạch được {GetColoredText($"+{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}. {GetKeyWord(EKeyWord.LienKich)} nếu trước đó dùng {GetTextLinhKhi(CombatManager.linhKhiLienKich[elinhKhi])} hệ kĩ năng thì {GetColoredText($"hiệu quả gấp đôi", "red")}";
     }
 
     public override int ByteSize()

@@ -11,6 +11,7 @@ namespace AllMaps.UI_Gacha__NTK_OS
         [SerializeField] private GameObject active;
         [SerializeField] private GameObject inactive;
         [field: SerializeField] public BaseSkill.ETypeSkill Type { get; private set; }
+
         private void OnEnable()
         {
             OnToggle(toggle.isOn);
@@ -20,6 +21,7 @@ namespace AllMaps.UI_Gacha__NTK_OS
         {
             toggle.onValueChanged.AddListener(OnToggle);
         }
+
         private void OnToggle(bool isOn)
         {
             active.SetActive(isOn);

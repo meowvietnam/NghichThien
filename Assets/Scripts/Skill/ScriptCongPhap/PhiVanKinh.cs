@@ -11,8 +11,8 @@ using CongPhap = Skill.CongPhap;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(PhiVanKinh))]
 public class PhiVanKinh : CongPhap, IMemorySerializable<PhiVanKinh>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 2, 3, 4, 5};
+    [SerializeField] private int[] buffValues = new int[] { 1, 2, 3, 4, 5 };
+
     public override void EquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
         statsCurrent.tocDoBay += buffValues[daiCanhGioiCongPhap - 1];
@@ -22,6 +22,7 @@ public class PhiVanKinh : CongPhap, IMemorySerializable<PhiVanKinh>
     {
         statsCurrent.tocDoBay -= buffValues[daiCanhGioiCongPhap - 1];
     }
+
     public override void EquipCongPhap(CharacterData statsCurrent, int level)
     {
         var stats = statsCurrent.Stats;
@@ -35,6 +36,7 @@ public class PhiVanKinh : CongPhap, IMemorySerializable<PhiVanKinh>
         var tocDoBay = stats.TocDoBay - buffValues[level - 1];
         stats.TocDoBay = tocDoBay;
     }
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
     }

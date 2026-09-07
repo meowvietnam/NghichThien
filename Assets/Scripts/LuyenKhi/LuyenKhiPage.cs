@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Network.Extensions;
 using CreateCharacter;
+
 namespace LuyenKhi
 {
     public class LuyenKhiPage : MonoBehaviour
@@ -57,6 +58,7 @@ namespace LuyenKhi
                 NotifyGroup.Instance.Show("Hãy chọn ít nhất 1 nguyên liệu");
                 return;
             }
+
             var materialIds = materials.Select(x => (ushort)x.Id).ToArray();
             var request = new LuyenKhiRequest()
             {
@@ -66,7 +68,7 @@ namespace LuyenKhi
             var progressBar = LuyenKhiPanel.Instance.ProgressBar;
             Client.Instance.Send(MessageTag.LuyenKhi, request);
             progressBar.SetText("Đang luyện khí...");
-            progressBar.DoShow(0.25f,0.15f,null);
+            progressBar.DoShow(0.25f, 0.15f, null);
         }
     }
 }

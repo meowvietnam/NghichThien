@@ -5,6 +5,7 @@ using LuyenKhi;
 using Network;
 using CreateCharacter;
 using UnityEngine;
+
 namespace AllMaps.ItemProvider
 {
     /// <summary>
@@ -12,14 +13,12 @@ namespace AllMaps.ItemProvider
     /// </summary>
     public class VuKhiEquipmentProvider : EquipmentProvider
     {
-
         public override ItemType SupportedType => ItemType.VuKhi;
 
         public override EquipmentType EquipemtType => EquipmentType.Weapon;
 
         protected override string GetTextNameEquipment(ArtifactType artifactType)
         {
-
             return $"Vũ Khí {base.GetTextNameEquipment(artifactType)}";
         }
 

@@ -10,10 +10,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(TanNguyenCoKhiCong))]
 public class TanNguyenCoKhiCong : CongPhap, IMemorySerializable<TanNguyenCoKhiCong>
 {
-    [SerializeField]
-    private int[] percents = new int[]{10, 11, 12, 13, 15};
-    [SerializeField]
-    private int tuKhi = 1;
+    [SerializeField] private int[] percents = new int[] { 10, 11, 12, 13, 15 };
+    [SerializeField] private int tuKhi = 1;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int count = (int)data[2];
@@ -31,7 +30,8 @@ public class TanNguyenCoKhiCong : CongPhap, IMemorySerializable<TanNguyenCoKhiCo
 
     public override string GetDesc(int level)
     {
-        return $"Bất cứ khi nào, Mỗi tiêu tán một điểm linh khí thì có {GetColoredText($"{percents[level - 1]}%", "red")} tỉ lệ thu hoạch được {GetColoredText($"+{tuKhi}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TuKhi)}";
+        return
+            $"Bất cứ khi nào, Mỗi tiêu tán một điểm linh khí thì có {GetColoredText($"{percents[level - 1]}%", "red")} tỉ lệ thu hoạch được {GetColoredText($"+{tuKhi}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TuKhi)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

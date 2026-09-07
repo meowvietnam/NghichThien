@@ -8,10 +8,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(CuuCungSatTran), menuName = "Skill/Thần Thông/" + nameof(CuuCungSatTran))]
 public class CuuCungSatTran : TranPhapTT, IMemorySerializable<CuuCungSatTran>
 {
-    [SerializeField]
-    private int[] dames = new int[]{2, 7, 20, 32, 80};
-    [SerializeField]
-    private int[] buffValues = new int[]{9, 9, 9, 9, 9};
+    [SerializeField] private int[] dames = new int[] { 2, 7, 20, 32, 80 };
+    [SerializeField] private int[] buffValues = new int[] { 9, 9, 9, 9, 9 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
@@ -22,13 +21,14 @@ public class CuuCungSatTran : TranPhapTT, IMemorySerializable<CuuCungSatTran>
     {
         int count = caster.specialThanThongImpactAfterPlaySkill.Count(x => x is CuuCungSatTran);
         int dame = dames[GetIndexLevelThanThong(caster)] + (count - 1) * (buffValues[GetIndexLevelThanThong(caster)]);
-        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int>{dame}, false, eTypeSkill);
+        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int> { dame }, false, eTypeSkill);
         caster.AddThanThongImpactAfterPlaySkill(this);
     }
 
     public override string GetDescTranPhapTT(int level)
     {
-        return $"Kết thúc hiệp, Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Mỗi lần như vậy tăng lên {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương";
+        return
+            $"Kết thúc hiệp, Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Mỗi lần như vậy tăng lên {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương";
     }
 
     public override int ByteSize()

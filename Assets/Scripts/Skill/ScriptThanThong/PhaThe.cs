@@ -7,17 +7,16 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(PhaThe), menuName = "Skill/Thần Thông/" + nameof(PhaThe))]
 public class PhaThe : ThanThong, BaseSkill.TuongDong, IMemorySerializable<PhaThe>
 {
-    [SerializeField]
-    private int[] debuffValues;
-    [SerializeField]
-    private int[] debuffTuongDong;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] debuffValues;
+    [SerializeField] private int[] debuffTuongDong;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, debuffValues[GetIndexLevelThanThong(caster)]);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -32,7 +31,8 @@ public class PhaThe : ThanThong, BaseSkill.TuongDong, IMemorySerializable<PhaThe
 
     public override string GetDesc(int level)
     {
-        return $"Đối thủ {GetColoredText($"+{debuffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}. Nếu {GetKeyWord(EKeyWord.TuongDong)} đối phương nhận thêm {GetColoredText($"+{debuffTuongDong[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}";
+        return
+            $"Đối thủ {GetColoredText($"+{debuffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}. Nếu {GetKeyWord(EKeyWord.TuongDong)} đối phương nhận thêm {GetColoredText($"+{debuffTuongDong[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DeTonThuong)}";
     }
 
     public override int ByteSize()

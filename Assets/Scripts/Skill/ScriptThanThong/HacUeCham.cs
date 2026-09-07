@@ -7,19 +7,18 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(HacUeCham), menuName = "Skill/Thần Thông/" + nameof(HacUeCham))]
 public class HacUeCham : ThanThong, IMemorySerializable<HacUeCham>
 {
-    [SerializeField]
-    private int[] dames;
-    [SerializeField]
-    private int cham = 1;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] dames;
+    [SerializeField] private int cham = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Cham, cham);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -29,7 +28,8 @@ public class HacUeCham : ThanThong, IMemorySerializable<HacUeCham>
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{dames[level - 1]}", "red")} điểm sát thương. Thu hoạch được {GetColoredText($"+{cham}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cham)}";
+        return
+            $"Tạo thành {GetColoredText($"{dames[level - 1]}", "red")} điểm sát thương. Thu hoạch được {GetColoredText($"+{cham}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cham)}";
     }
 
     public override int ByteSize()

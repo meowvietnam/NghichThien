@@ -16,16 +16,17 @@ namespace Plugins.Neonalig.SceneToolbar
 {
     static class EditorUtilities
     {
-
         private const float chipPadding = 4f;
 
         private static readonly Stack<bool> enabledStack = new();
 
         private static readonly Stack<float> labelWidthStack = new();
+
         private static GUIStyle ChipLabelStyle
         {
             get => EditorStyles.miniButtonLeft;
         }
+
         private static GUIStyle ChipDismissStyle
         {
             get => EditorStyles.miniButtonRight;
@@ -38,7 +39,8 @@ namespace Plugins.Neonalig.SceneToolbar
         /// <param name="value"> The value of the enum. </param>
         /// <param name="changed"> [out] Whether the value was changed. </param>
         /// <returns> The new value of the enum. </returns>
-        internal static TEnum DrawEnumToolbar<TEnum>(Rect r, GUIContent? lbl, TEnum value, out bool changed) where TEnum : Enum
+        internal static TEnum DrawEnumToolbar<TEnum>(Rect r, GUIContent? lbl, TEnum value, out bool changed)
+            where TEnum : Enum
         {
             bool hasLbl = lbl is not null;
             if (hasLbl)
@@ -53,9 +55,11 @@ namespace Plugins.Neonalig.SceneToolbar
                 changed = true;
                 return Enum<TEnum>.ElementAt(newIdx);
             }
+
             changed = false;
             return value;
         }
+
         /// <summary> Begins a GUI enabled group. </summary>
         /// <param name="enabled"> Whether the group should be enabled. </param>
         internal static void BeginEnabled(bool enabled = true)
@@ -63,12 +67,14 @@ namespace Plugins.Neonalig.SceneToolbar
             enabledStack.Push(GUI.enabled);
             GUI.enabled = enabled;
         }
+
         /// <summary> Begins a GUI disabled group. </summary>
         /// <param name="disabled"> Whether the group should be disabled. </param>
         internal static void BeginDisabled(bool disabled = true) => BeginEnabled(!disabled);
 
         /// <summary> Ends a GUI enabled group. </summary>
         internal static void EndEnabled() => GUI.enabled = enabledStack.Pop();
+
         /// <summary> Ends a GUI disabled group. </summary>
         internal static void EndDisabled() => EndEnabled();
 
@@ -80,7 +86,8 @@ namespace Plugins.Neonalig.SceneToolbar
         /// <param name="onSelection"> The action to perform when an item is selected. </param>
         /// <param name="allowAssets"> Whether to allow assets to be selected. </param>
         /// <param name="allowSceneObjects"> Whether to allow scene objects to be selected. </param>
-        internal static void DrawObjectFieldWithDropdown<TObject>(Rect r, GUIContent? lbl, TObject? value, Action<TObject?> onSelection, bool allowAssets = true, bool allowSceneObjects = true) where TObject : Object
+        internal static void DrawObjectFieldWithDropdown<TObject>(Rect r, GUIContent? lbl, TObject? value,
+            Action<TObject?> onSelection, bool allowAssets = true, bool allowSceneObjects = true) where TObject : Object
         {
             DrawFieldWithDropdown(r, lbl, value, onSelection, DrawField, GetItems, GetObjectLabel, true);
 
@@ -88,7 +95,8 @@ namespace Plugins.Neonalig.SceneToolbar
             {
                 if (allowAssets)
                 {
-                    foreach (TObject item in AssetDatabase.FindAssets($"t:{typeof(TObject).Name}").Select(AssetDatabase.GUIDToAssetPath).Select(AssetDatabase.LoadAssetAtPath<TObject>))
+                    foreach (TObject item in AssetDatabase.FindAssets($"t:{typeof(TObject).Name}")
+                                 .Select(AssetDatabase.GUIDToAssetPath).Select(AssetDatabase.LoadAssetAtPath<TObject>))
                     {
                         yield return item;
                     }
@@ -110,6 +118,7 @@ namespace Plugins.Neonalig.SceneToolbar
                 {
                     return null;
                 }
+
                 return newV;
             }
         }
@@ -126,7 +135,8 @@ namespace Plugins.Neonalig.SceneToolbar
         /// <param name="lbl"> The label of the field. Value may be <see langword="null" />. </param>
         /// <param name="value"> The value of the field. </param>
         /// <param name="onSelection"> The action to perform when an item is selected. </param>
-        internal static void DrawSceneFieldWithDropdown(Rect r, GUIContent? lbl, SceneAsset? value, Action<SceneAsset?> onSelection)
+        internal static void DrawSceneFieldWithDropdown(Rect r, GUIContent? lbl, SceneAsset? value,
+            Action<SceneAsset?> onSelection)
         {
             DrawFieldWithDropdown(r, lbl, value, onSelection, DrawField, GetItems, GetSceneLabel, true);
 
@@ -138,7 +148,8 @@ namespace Plugins.Neonalig.SceneToolbar
                 }
             }
 
-            SceneAsset? DrawField(Rect r, SceneAsset? v) => (SceneAsset?)EditorGUI.ObjectField(r, v, typeof(SceneAsset), false);
+            SceneAsset? DrawField(Rect r, SceneAsset? v) =>
+                (SceneAsset?)EditorGUI.ObjectField(r, v, typeof(SceneAsset), false);
         }
 
         /// <summary> Draws a scene field with a dropdown menu. </summary>
@@ -146,7 +157,8 @@ namespace Plugins.Neonalig.SceneToolbar
         /// <param name="lbl"> The label of the field. Value may be <see langword="null" />. </param>
         /// <param name="value"> The value of the field. </param>
         /// <param name="onSelection"> The action to perform when an item is selected. </param>
-        internal static void DrawSceneFieldWithDropdown(Rect r, GUIContent? lbl, string value, Action<string> onSelection)
+        internal static void DrawSceneFieldWithDropdown(Rect r, GUIContent? lbl, string value,
+            Action<string> onSelection)
         {
             bool? duplicateNames = null;
             DrawFieldWithDropdown(r, lbl, value, onSelection!, DrawField!, GetItems, GetSceneLabel, true);
@@ -161,7 +173,8 @@ namespace Plugins.Neonalig.SceneToolbar
 
             static string DrawField(Rect r, string v) => DrawFilePathPicker(r, null, v, "unity", "Assets");
 
-            bool DuplicateNames() => duplicateNames ??= GetItems().GroupBy(SysPath.GetFileNameWithoutExtension).Any(group => group.Count() > 1);
+            bool DuplicateNames() => duplicateNames ??=
+                GetItems().GroupBy(SysPath.GetFileNameWithoutExtension).Any(group => group.Count() > 1);
 
             GUIContent GetSceneLabel(string path)
             {
@@ -174,7 +187,8 @@ namespace Plugins.Neonalig.SceneToolbar
         /// <param name="scene"> The scene. </param>
         /// <returns> The label for the specified scene. </returns>
         internal static GUIContent GetSceneLabel(SceneAsset scene) =>
-            EditorGUIUtility.TrTextContentWithIcon(scene.name, AssetDatabase.GetAssetPath(scene), AssetPreview.GetMiniTypeThumbnail(typeof(SceneAsset)));
+            EditorGUIUtility.TrTextContentWithIcon(scene.name, AssetDatabase.GetAssetPath(scene),
+                AssetPreview.GetMiniTypeThumbnail(typeof(SceneAsset)));
 
         /// <summary> Gets the label for the specified scene. </summary>
         /// <param name="path"> The path to the scene. </param>
@@ -184,7 +198,8 @@ namespace Plugins.Neonalig.SceneToolbar
         /// </param>
         /// <returns> The label for the specified scene. </returns>
         internal static GUIContent GetSceneLabel(string path, bool nameIsPath = true) =>
-            EditorGUIUtility.TrTextContentWithIcon(nameIsPath ? path : SysPath.GetFileNameWithoutExtension(path), path, AssetPreview.GetMiniTypeThumbnail(typeof(SceneAsset)));
+            EditorGUIUtility.TrTextContentWithIcon(nameIsPath ? path : SysPath.GetFileNameWithoutExtension(path), path,
+                AssetPreview.GetMiniTypeThumbnail(typeof(SceneAsset)));
 
         private static void DrawFieldWithDropdown<T>(
             Rect r,
@@ -241,7 +256,8 @@ namespace Plugins.Neonalig.SceneToolbar
         /// <param name="extension"> The extension of the file. </param>
         /// <param name="location"> The location of the file. </param>
         /// <returns> The new value of the field. </returns>
-        internal static string DrawFilePathPicker(Rect r, GUIContent? lbl, string value, string extension, string location)
+        internal static string DrawFilePathPicker(Rect r, GUIContent? lbl, string value, string extension,
+            string location)
         {
             bool hasLbl = lbl is not null;
             if (hasLbl)
@@ -271,12 +287,14 @@ namespace Plugins.Neonalig.SceneToolbar
                     }
                 }
             }
+
             return newValue;
         }
 
         private static float CalculateChipWidth(GUIContent label) =>
             ChipLabelStyle.CalcSize(label).x + chipPadding * 2f
-            + ChipDismissStyle.CalcSize(EditorGUIUtility.TrIconContent("Toolbar Minus")).x;
+                                             + ChipDismissStyle
+                                                 .CalcSize(EditorGUIUtility.TrIconContent("Toolbar Minus")).x;
 
         /// <summary> Draws a chip. </summary>
         /// <param name="r"> The rect to draw the chip in. </param>
@@ -361,9 +379,11 @@ namespace Plugins.Neonalig.SceneToolbar
 
                     menu.AddItem(getLabel(value), false, () => onAdd(value));
                 }
+
                 menu.DropDown(btnR);
             }
         }
+
         /// <summary> Begins a label width group. </summary>
         /// <param name="f"> The label width. </param>
         internal static void BeginLabelWidth(float f)
@@ -382,7 +402,8 @@ namespace Plugins.Neonalig.SceneToolbar
 
             /// <summary> The labels of the enum. </summary>
             // ReSharper disable once StaticMemberInGenericType
-            internal static readonly GUIContent[] Labels; // Ideally we wouldn't expose an array here, and instead use IReadOnlyList<T>, but Unity editor methods only support arrays.
+            internal static readonly GUIContent[]
+                Labels; // Ideally we wouldn't expose an array here, and instead use IReadOnlyList<T>, but Unity editor methods only support arrays.
 
             static Enum()
             {
@@ -394,7 +415,8 @@ namespace Plugins.Neonalig.SceneToolbar
                 {
                     // 1. Find member via reflection
                     string memberName = enumValues.GetValue(I).ToString();
-                    MemberInfo member = typeof(TEnum).GetMember(memberName).FirstOrDefault() ?? throw new MissingMemberException(typeof(TEnum).Name, memberName);
+                    MemberInfo member = typeof(TEnum).GetMember(memberName).FirstOrDefault() ??
+                                        throw new MissingMemberException(typeof(TEnum).Name, memberName);
                     // 2. Get any custom display attributes (InspectorName, Tooltip, etc.)
                     string name, tooltip;
                     Texture? icon;
@@ -406,6 +428,7 @@ namespace Plugins.Neonalig.SceneToolbar
                     {
                         name = ObjectNames.NicifyVariableName(memberName);
                     }
+
                     if (member.GetCustomAttribute<TooltipAttribute>() is { } tooltipAttribute)
                     {
                         tooltip = tooltipAttribute.tooltip;
@@ -414,6 +437,7 @@ namespace Plugins.Neonalig.SceneToolbar
                     {
                         tooltip = string.Empty;
                     }
+
                     if (member.GetCustomAttribute<IconAttribute>() is { } iconAttribute)
                     {
                         string path = iconAttribute.path;
@@ -427,6 +451,7 @@ namespace Plugins.Neonalig.SceneToolbar
                     {
                         icon = null;
                     }
+
                     // 3. Create GUIContent
                     values[I] = (TEnum)enumValues.GetValue(I);
                     Labels[I] = EditorGUIUtility.TrTextContentWithIcon(name, tooltip, icon);

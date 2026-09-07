@@ -7,6 +7,7 @@ namespace Network.Models
     public partial class MailSetAds : IMailReward
     {
         public bool NoAds { get; set; }
+
         public void ClaimReward(CharacterData characterData)
         {
             characterData.IsNoAds = NoAds;

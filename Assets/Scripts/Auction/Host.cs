@@ -13,12 +13,13 @@ namespace Auction
         [SerializeField] private Image progressBar;
         private TimeSpan auctionDuration = TimeSpan.FromSeconds(160);
         private TimeSpan endAfter = TimeSpan.FromSeconds(155);
+
         private void FixedUpdate()
         {
             var deltaTime = TimeSpan.FromSeconds(Time.fixedUnscaledDeltaTime);
             SetEndAfter(endAfter - deltaTime);
-            
         }
+
         public void SetAuctionDuration(TimeSpan auctionDuration)
         {
             this.auctionDuration = auctionDuration;
@@ -30,6 +31,7 @@ namespace Auction
             {
                 return;
             }
+
             this.endAfter = endAfter > TimeSpan.Zero ? endAfter : TimeSpan.Zero;
             endAfterText.text = $"Phiên đấu giá kết thúc sau {Utils.GetTime(this.endAfter)}";
             if (auctionDuration == TimeSpan.Zero)
@@ -41,6 +43,7 @@ namespace Auction
                 progressBar.fillAmount = this.endAfter.Ticks * 1f / auctionDuration.Ticks;
             }
         }
+
         public void Chat(string message, float duration)
         {
             sayDialog.Chat(message, duration);

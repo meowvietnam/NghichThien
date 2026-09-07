@@ -10,20 +10,18 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(SaTang), menuName = "Skill/Thần Thông/" + nameof(SaTang))]
 public class SaTang : ThanThong, BaseSkill.LienKich, IMemorySerializable<SaTang>
 {
-    [SerializeField]
-    private HoaCat hoaCat;
-    [SerializeField]
-    private int[] dames = new int[]{16, 24, 38, 70, 140};
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 2, 4, 8, 16};
-    [SerializeField]
-    protected float delayTimeEffect = 0.85f;
+    [SerializeField] private HoaCat hoaCat;
+    [SerializeField] private int[] dames = new int[] { 16, 24, 38, 70, 140 };
+    [SerializeField] private int[] buffValues = new int[] { 1, 2, 4, 8, 16 };
+    [SerializeField] protected float delayTimeEffect = 0.85f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -33,7 +31,8 @@ public class SaTang : ThanThong, BaseSkill.LienKich, IMemorySerializable<SaTang>
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} Nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Hoa)} hệ thần thông thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)}. Đồng thời, kích hoạt thần thông {GetColoredText($"[Hóa Cát]", "red")}";
+        return
+            $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} Nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Hoa)} hệ thần thông thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)}. Đồng thời, kích hoạt thần thông {GetColoredText($"[Hóa Cát]", "red")}";
     }
 
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)

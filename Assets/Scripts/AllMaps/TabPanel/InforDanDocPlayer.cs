@@ -16,6 +16,5 @@ public class InforDanDocPlayer : BtnInforStats
         var CharacterStats = CharacterDatas.Stats;
         var getDanDoc = GameManager.GetDanDocValue(CharacterDatas.Stats.DanDoc);
         return listTextInforDanDoc[getDanDoc.index];
-
     }
 }

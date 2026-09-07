@@ -10,19 +10,20 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(DuongDaoThuat))]
 public class DuongDaoThuat : CongPhap, IMemorySerializable<DuongDaoThuat>
 {
-    [SerializeField]
-    private int[] dameBuff;
+    [SerializeField] private int[] dameBuff;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         // CHỈ REMOVE KHI ĐÃ THỰC THI BUFF THÀNH CÔNG
         RemoveCongPhap(caster);
         int dame = dameBuff[CurrentLevelCongPhapInCombat(caster) - 1];
-        target.AddDamageData(new List<int>{dame});
+        target.AddDamageData(new List<int> { dame });
     }
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi cuộc chiến đấu lần thứ nhất tạo thành tổn thương {GetColoredText($"+{dameBuff[level - 1]}", "red")}";
+        return
+            $"Mỗi cuộc chiến đấu lần thứ nhất tạo thành tổn thương {GetColoredText($"+{dameBuff[level - 1]}", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

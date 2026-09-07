@@ -25,6 +25,7 @@ public class SecureInt
                 Set(fakeValue);
                 return fakeValue;
             }
+
             int partA = encA ^ keyA;
             int partB = encB ^ keyB;
 
@@ -39,10 +40,7 @@ public class SecureInt
 
             return real;
         }
-        set
-        {
-            Set(value);
-        }
+        set { Set(value); }
     }
 
     void Set(int value)

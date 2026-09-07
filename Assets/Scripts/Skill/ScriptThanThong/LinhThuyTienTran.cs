@@ -7,8 +7,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(LinhThuyTienTran), menuName = "Skill/Thần Thông/" + nameof(LinhThuyTienTran))]
 public class LinhThuyTienTran : TranPhapTT, IMemorySerializable<LinhThuyTienTran>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{7, 9, 13, 19, 35};
+    [SerializeField] private int[] buffValues = new int[] { 7, 9, 13, 19, 35 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);

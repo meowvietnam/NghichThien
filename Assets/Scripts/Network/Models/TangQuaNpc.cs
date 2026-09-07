@@ -1,6 +1,7 @@
 using LuyenDan;
 using MemoryPack;
 using UnityEngine;
+
 namespace Network.Models
 {
     [MemoryPackable]
@@ -8,7 +9,5 @@ namespace Network.Models
     {
         public int IdChar { get; set; }
         public ItemRef ItemRef { get; set; }
-
     }
 }
-

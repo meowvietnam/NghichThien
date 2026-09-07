@@ -13,9 +13,9 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
     [CustomPropertyDrawer(typeof(SceneTagCollection))]
     sealed class SceneTagCollectionDrawer : PropertyDrawer
     {
-
         /// <inheritdoc />
-        public override float GetPropertyHeight(SerializedProperty prop, GUIContent lbl) => base.GetPropertyHeight(prop, lbl);
+        public override float GetPropertyHeight(SerializedProperty prop, GUIContent lbl) =>
+            base.GetPropertyHeight(prop, lbl);
 
         #region Overrides of PropertyDrawer
 
@@ -30,7 +30,11 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
             bool enterChildren = true;
             while (iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, end))
             {
-                if (iterator.name == "m_Script") { continue; }
+                if (iterator.name == "m_Script")
+                {
+                    continue;
+                }
+
                 enterChildren = false;
                 if (iterator.name == "_Tags")
                 {
@@ -40,6 +44,7 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
                 {
                     EditorGUI.PropertyField(pos, iterator, true);
                 }
+
                 pos.y += EditorGUI.GetPropertyHeight(iterator, true);
             }
         }
@@ -68,7 +73,8 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
                 }
                 else
                 {
-                    Debug.LogError($"Failed to remove tag \"{tag}\" from property \"{propPath}\" (could not refresh property).");
+                    Debug.LogError(
+                        $"Failed to remove tag \"{tag}\" from property \"{propPath}\" (could not refresh property).");
                 }
             }
 
@@ -92,7 +98,8 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
                 }
                 else
                 {
-                    Debug.LogError($"Failed to add tag \"{tag}\" to property \"{propPath}\" (could not refresh property).");
+                    Debug.LogError(
+                        $"Failed to add tag \"{tag}\" to property \"{propPath}\" (could not refresh property).");
                 }
             }
 
@@ -107,6 +114,7 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
                 {
                     menu.AddSeparator(string.Empty);
                 }
+
                 return menu;
             }
 
@@ -117,19 +125,25 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
             }
         }
 
-        private static SerializedProperty? GetRefreshedProperty(SerializedObject serializedObject, string propertyPath) =>
+        private static SerializedProperty?
+            GetRefreshedProperty(SerializedObject serializedObject, string propertyPath) =>
             serializedObject.FindProperty(propertyPath);
 
         private static IEnumerable<string> IterateStrings(SerializedProperty prop)
         {
-            Debug.Assert(prop.isArray, $"{prop.name} ({prop.propertyPath}) is not an array; actual type: {prop.propertyType}");
+            Debug.Assert(prop.isArray,
+                $"{prop.name} ({prop.propertyPath}) is not an array; actual type: {prop.propertyType}");
             SerializedProperty iterator = prop.Copy();
             int ln = iterator.arraySize;
 
             for (int idx = 0; idx < ln; idx++)
             {
                 SerializedProperty element = iterator.GetArrayElementAtIndex(idx);
-                if (element.propertyType != SerializedPropertyType.String) { continue; }
+                if (element.propertyType != SerializedPropertyType.String)
+                {
+                    continue;
+                }
+
                 yield return element.stringValue;
             }
         }
@@ -169,7 +183,9 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
                 tagExistsWarning = currentTags.Contains(tag);
                 if (tagExistsWarning)
                 {
-                    EditorGUILayout.LabelField(EditorGUIUtility.TrIconContent("console.warnicon.sml", "This tag is already in use."), GUILayout.Width(20f));
+                    EditorGUILayout.LabelField(
+                        EditorGUIUtility.TrIconContent("console.warnicon.sml", "This tag is already in use."),
+                        GUILayout.Width(20f));
                 }
             }
             EditorGUILayout.EndHorizontal();
@@ -180,10 +196,12 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
                 GUILayout.FlexibleSpace();
                 const float BtnW = 100f;
                 EditorUtilities.BeginDisabled(tagExistsWarning);
-                if (GUILayout.Button(EditorGUIUtility.TrTextContent("Create", "Create the tag."), GUILayout.Width(BtnW)))
+                if (GUILayout.Button(EditorGUIUtility.TrTextContent("Create", "Create the tag."),
+                        GUILayout.Width(BtnW)))
                 {
                     CreateTag(tag);
                 }
+
                 EditorUtilities.EndDisabled();
             }
             EditorGUILayout.EndHorizontal();
@@ -224,7 +242,8 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
             window.currentTags = currentTags.ToArray();
             window.titleContent = EditorGUIUtility.TrTextContent("Create Tag", "Create a new tag.", iconName);
 
-            Vector2 size = new(300f, EditorGUIUtility.singleLineHeight * 2f + EditorGUIUtility.standardVerticalSpacing * 3f);
+            Vector2 size = new(300f,
+                EditorGUIUtility.singleLineHeight * 2f + EditorGUIUtility.standardVerticalSpacing * 3f);
             window.minSize = size;
             window.maxSize = size;
 

@@ -13,9 +13,11 @@ namespace CreateCharacter.CharStats
         private List<StatOptionGroupUI> exclusives;
         public int Id { get; private set; }
         private event Action<StatOptionGroupUI, StatOptionUI> onSelect;
-        private event  Action<StatOptionGroupUI, StatOptionUI> onUnselect;
+        private event Action<StatOptionGroupUI, StatOptionUI> onUnselect;
         private StatOptionUI currentSelect;
-        public void Init(Transform content,StatOptionGroup statOptionGroup, List<StatOptionGroupUI> exclusives, Action<StatOptionGroupUI, StatOptionUI> onSelect, Action<StatOptionGroupUI, StatOptionUI> onUnselect)
+
+        public void Init(Transform content, StatOptionGroup statOptionGroup, List<StatOptionGroupUI> exclusives,
+            Action<StatOptionGroupUI, StatOptionUI> onSelect, Action<StatOptionGroupUI, StatOptionUI> onUnselect)
         {
             Id = statOptionGroup.Id;
             this.exclusives = exclusives;
@@ -29,6 +31,7 @@ namespace CreateCharacter.CharStats
                 statOptionUIs.Add(statOptionUI);
             }
         }
+
         private void OnSelect(StatOptionUI statOptionUI)
         {
             currentSelect = statOptionUI;
@@ -36,19 +39,23 @@ namespace CreateCharacter.CharStats
             {
                 statOptionGroupUI.DisableGroup();
             }
+
             onSelect(this, statOptionUI);
         }
+
         private void OnUnselect(StatOptionUI statOptionUI)
         {
             currentSelect = null;
             onUnselect(this, statOptionUI);
         }
+
         private void DisableGroup()
         {
             if (currentSelect != null)
             {
                 onUnselect(this, currentSelect);
             }
+
             currentSelect = null;
             foreach (var statOptionUI in statOptionUIs)
             {
@@ -61,6 +68,7 @@ namespace CreateCharacter.CharStats
             onSelect = null;
             onUnselect = null;
         }
+
         public void SetId(int id)
         {
             Id = id;

@@ -44,6 +44,7 @@ namespace Rank
             {
                 myRank = 999;
             }
+
             Init(panel.myRank, charData, myRank + 1);
         }
 

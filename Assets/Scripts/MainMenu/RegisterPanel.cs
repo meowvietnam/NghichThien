@@ -34,6 +34,7 @@ namespace MainMenu
                     TogglePassword(passwordInputField, value);
                 });
             }
+
             if (showConfirmPasswordToggle != null)
             {
                 showConfirmPasswordToggle.onValueChanged.AddListener((value) =>
@@ -48,6 +49,7 @@ namespace MainMenu
             inputField.contentType = value ? InputField.ContentType.Standard : InputField.ContentType.Password;
             inputField.ForceLabelUpdate();
         }
+
         private async void Register()
         {
             var username = usernameInputField.text.Trim();
@@ -88,6 +90,7 @@ namespace MainMenu
                     authService.RegisterSuccess(model);
                     Hide();
                 }
+
                 authService.OnRegisterResult(result);
             }
             catch (Exception ex)
@@ -101,57 +104,68 @@ namespace MainMenu
             }
         }
 
-        private static bool TryValidateRegister(string username, string password, string confirmPassword, out string message)
+        private static bool TryValidateRegister(string username, string password, string confirmPassword,
+            out string message)
         {
             if (string.IsNullOrWhiteSpace(username))
             {
                 message = "Vui lòng nhập tên đăng nhập";
                 return false;
             }
+
             if (username.Length < 4)
             {
                 message = "Tên đăng nhập phải có ít nhất 4 ký tự";
                 return false;
             }
+
             if (username.Length > 32)
             {
                 message = "Tên đăng nhập không được quá 32 ký tự";
                 return false;
             }
+
             foreach (var character in username)
             {
                 if (!char.IsWhiteSpace(character))
                 {
                     continue;
                 }
+
                 message = "Tên đăng nhập không được chứa khoảng trắng";
                 return false;
             }
+
             if (string.IsNullOrEmpty(password))
             {
                 message = "Vui lòng nhập mật khẩu";
                 return false;
             }
+
             if (password.Length < 6)
             {
                 message = "Mật khẩu phải có ít nhất 6 ký tự";
                 return false;
             }
+
             if (password.Length > 64)
             {
                 message = "Mật khẩu không được quá 64 ký tự";
                 return false;
             }
+
             if (string.IsNullOrEmpty(confirmPassword))
             {
                 message = "Vui lòng nhập lại mật khẩu";
                 return false;
             }
+
             if (password != confirmPassword)
             {
                 message = "Mật khẩu xác nhận không khớp";
                 return false;
             }
+
             message = string.Empty;
             return true;
         }
@@ -171,6 +185,7 @@ namespace MainMenu
                 passwordInputField.text = defaultModel.Password;
                 confirmPasswordInputField.text = string.Empty;
             }
+
             tween?.Kill();
             selfObject.SetActive(true);
             tween = panel.DOScale(Vector3.one, duration);

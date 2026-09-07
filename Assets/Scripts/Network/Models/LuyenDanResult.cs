@@ -11,7 +11,7 @@ namespace Network.Models
     public class LuyenDanResult : IMemorySerializable<LuyenDanResult>
     {
         public bool Success { get; set; }
-        public string Message { get;  set; }
+        public string Message { get; set; }
         public List<ItemRef> ItemRefs { get; set; }
         public TimeSpan NewTuoiTac { get; set; }
         public InventoryModify Modify { get; set; }
@@ -24,8 +24,10 @@ namespace Network.Models
             {
                 return baseSize;
             }
+
             return baseSize + ItemRefs.ByteSize() + NewTuoiTac.ByteSize() + Modify.ByteSize();
         }
+
         public void Serialize(IWriter writer)
         {
             writer.Write(Success);
@@ -37,6 +39,7 @@ namespace Network.Models
                 writer.Write(Modify);
             }
         }
+
         public void Deserialize(IReader reader, ref LuyenDanResult value)
         {
             value.Success = reader.Read<bool>();

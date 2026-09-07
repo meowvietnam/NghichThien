@@ -45,11 +45,13 @@ namespace AllMaps
             if (mail.Rewards.Count > 0 && !mail.IsClaim)
             {
                 var popup = Pool.Get<PopupConfirmAction>();
-                popup.ShowPopConfirmAction(confirmRemoveMessage,ConfirmRemove);
+                popup.ShowPopConfirmAction(confirmRemoveMessage, ConfirmRemove);
                 return;
             }
+
             ConfirmRemove();
         }
+
         private void ConfirmRemove()
         {
             Client.Instance.Send(MessageTag.RemoveMail, mail.Id);

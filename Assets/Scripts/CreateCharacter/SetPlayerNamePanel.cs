@@ -5,6 +5,7 @@ using Network;
 using UnityEngine;
 using UnityEngine.UI;
 using Network.Extensions;
+
 namespace CreateCharacter
 {
     public class SetPlayerNamePanel : MonoBehaviour, IPanel
@@ -17,6 +18,7 @@ namespace CreateCharacter
         public CanvasGroup CanvasGroup => canvasGroup;
         public Tween Tween { get; set; }
         [SerializeField] private CreateCharacterSystem system;
+
         private void Start()
         {
             backBtn.onClick.AddListener(Back);
@@ -33,15 +35,18 @@ namespace CreateCharacter
         {
             NotifyGroup.Instance.Show(message);
         }
+
         public void NextSuccess()
         {
             system.NewCharacter.Name = nameInput.text;
             system.NextToCreateCharacterPanel();
         }
+
         private void Back()
         {
             Client.Instance.Send(MessageTag.BackToSelectChar);
         }
+
         public void SetActive(bool active)
         {
             thisObject.SetActive(active);

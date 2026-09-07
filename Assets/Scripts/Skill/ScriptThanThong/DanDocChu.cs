@@ -21,7 +21,7 @@ public class DanDocChu : ThanThong, IMemorySerializable<DanDocChu>
         {
             // clone object
             RequireActive clone = new RequireActive()
-            {linhKhiRequire = requireActive.linhKhiRequire, count = requireActive.count};
+                { linhKhiRequire = requireActive.linhKhiRequire, count = requireActive.count };
             if (clone.linhKhiRequire == ELinhKhi.Moc)
             {
                 int extra = caster.thanThongUseThisTurn.Count(x => x.thanThong is DanDocChu);
@@ -43,7 +43,8 @@ public class DanDocChu : ThanThong, IMemorySerializable<DanDocChu>
 
     public override string GetDesc(int level)
     {
-        return $"Đối phương bị kích phát hiệu quả {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}. Trong hiệp này, mỗi một lần sử dụng thần thông này thì tiêu hao thêm một điểm {GetTextLinhKhi(ELinhKhi.Moc)} linh khí";
+        return
+            $"Đối phương bị kích phát hiệu quả {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}. Trong hiệp này, mỗi một lần sử dụng thần thông này thì tiêu hao thêm một điểm {GetTextLinhKhi(ELinhKhi.Moc)} linh khí";
     }
 
     public override int ByteSize()

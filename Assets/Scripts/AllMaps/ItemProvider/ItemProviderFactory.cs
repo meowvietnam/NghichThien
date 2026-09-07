@@ -19,6 +19,7 @@ namespace AllMaps.ItemProvider
         {
             return GetRawProvider(itemType) as IItemProvider;
         }
+
         public static IUseItemProvider GetUseItemProvider(ItemType itemType)
         {
             return itemType switch
@@ -36,10 +37,12 @@ namespace AllMaps.ItemProvider
                 _ => null,
             };
         }
+
         public static IItemProvider<T> GetProvider<T>(ItemType itemType)
         {
             return GetRawProvider(itemType) as IItemProvider<T>;
         }
+
         private static object GetRawProvider(ItemType itemType)
         {
             var tabPanel = Pool.Get<TabPanel>();
@@ -53,15 +56,30 @@ namespace AllMaps.ItemProvider
                 ItemType.LinhDan => new LinhDanProvider(),
                 ItemType.Recipe => new RecipeProvider(),
                 ItemType.Material => new MaterialProvider(),
-                ItemType.ThanThong => (tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.ThanThong) || IsBaseSkillVisual()? new ThanThongProvider()  : new ThanThongBookProvider(),
-                ItemType.CongPhap => (tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.CongPhap)|| IsBaseSkillVisual() ? new CongPhapProvider() : new CongPhapBookProvider(),
+                ItemType.ThanThong => (tabPanel.gameObject.activeSelf &&
+                                       tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.ThanThong) ||
+                                      IsBaseSkillVisual()
+                    ? new ThanThongProvider()
+                    : new ThanThongBookProvider(),
+                ItemType.CongPhap => (tabPanel.gameObject.activeSelf &&
+                                      tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.CongPhap) ||
+                                     IsBaseSkillVisual()
+                    ? new CongPhapProvider()
+                    : new CongPhapBookProvider(),
                 _ => null,
             };
         }
+
         public static bool IsBaseSkillVisual()
         {
             var beQuan = Pool.Get<UIBeQuan>();
-            return !Pool.Get<TabPanel>().gameObject.activeSelf&& (Pool.Get<UIManager>().currentPopup is PopupInfor || (beQuan != null && beQuan.popBeQuan.gameObject.activeSelf && beQuan.currentBtnWithPage.typePage == UIBeQuan.ETypePage.Update) || Pool.Get<RankPanel>().popupInfor.gameObject.activeSelf);
+            return !Pool.Get<TabPanel>().gameObject.activeSelf && (Pool.Get<UIManager>().currentPopup is PopupInfor ||
+                                                                   (beQuan != null &&
+                                                                    beQuan.popBeQuan.gameObject.activeSelf &&
+                                                                    beQuan.currentBtnWithPage.typePage ==
+                                                                    UIBeQuan.ETypePage.Update) ||
+                                                                   Pool.Get<RankPanel>().popupInfor.gameObject
+                                                                       .activeSelf);
         }
     }
 }

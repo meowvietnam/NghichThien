@@ -13,6 +13,7 @@ namespace LuyenDan.Inventory
             {
                 furnaceInventoryItemUI.Destroy();
             }
+
             Items.Clear();
             foreach (var data in furnaceDatas)
             {
@@ -21,15 +22,18 @@ namespace LuyenDan.Inventory
                 Items.Add(instance);
             }
         }
+
         public override void Filter(Tier tier)
         {
             var selectedFurnace = LuyenDanPanel.Instance.Alchermy.SelectedFurnace;
             foreach (var item in Items)
             {
-                var active = item.IsHasItem && item.Tier == tier && item != selectedFurnace && item.FData.Durability > 0;
+                var active = item.IsHasItem && item.Tier == tier && item != selectedFurnace &&
+                             item.FData.Durability > 0;
                 item.SetActive(active);
             }
         }
+
         public override void NoFilter()
         {
             var selectedFurnace = LuyenDanPanel.Instance.Alchermy.SelectedFurnace;

@@ -5,7 +5,7 @@ using MemoryPack;
 namespace Network
 {
     [MemoryPackable]
-    public partial class TuLuyenResult 
+    public partial class TuLuyenResult
     {
         public bool Success { get; set; }
         public string Message { get; set; }

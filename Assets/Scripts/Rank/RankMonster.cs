@@ -14,12 +14,14 @@ namespace Rank
         public TimeSpan NextResetTime { get; private set; }
         public List<MonsterRankEntity> Tops { get; private set; }
         public int MyPoints { get; private set; }
+
         public RankMonster(List<MonsterRankEntity> tops, TimeSpan nextResetTime, int myPoints)
         {
             Tops = tops;
             NextResetTime = nextResetTime;
             MyPoints = myPoints;
         }
+
         public void Init(RankPanel panel)
         {
             var container = panel.rankContainer;
@@ -32,6 +34,7 @@ namespace Rank
                 Init(instance, top, i + 1);
                 tops.Add(instance);
             }
+
             var top3 = Tops.Take(3).ToList();
             for (var i = 0; i < top3.Count; i++)
             {
@@ -40,14 +43,17 @@ namespace Rank
                 uiTop.SetActive(true);
                 Init(uiTop, top, i + 1);
             }
+
             var charData = Client.Instance.CharacterData;
             var myRank = Tops.FindIndex(x => x.CharacterWrapper.Character.Id == charData.Id);
             if (myRank < 0)
             {
                 myRank = 999;
             }
+
             panel.myRank.Init(charData, myRank + 1, Type, MyPoints);
         }
+
         private void Init(RankElementInfor instance, MonsterRankEntity top, int rank)
         {
             instance.Init(top.CharacterWrapper.Character, rank, Type, top.Point);

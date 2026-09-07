@@ -22,6 +22,7 @@ namespace CreateCharacter.CharStats
                     return Color.chartreuse;
                 }
             }
+
             return Color.white;
         }
 

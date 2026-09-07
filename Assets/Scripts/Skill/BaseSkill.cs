@@ -230,7 +230,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
 
     public interface ThanThuc
     {
-        public abstract void  ExecuteThanThuc(CharacterCombat caster, CharacterCombat target);
+        public abstract void ExecuteThanThuc(CharacterCombat caster, CharacterCombat target);
     }
 
     public virtual string GetDesc(int daiCanhGioi)
@@ -597,7 +597,8 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                 text = $"Chỉ thị vật";
                 break;
             case EBuffAndDeBuff.SucLuc:
-                text = "Trong hiệp này, thần thông gây tổn thương mỗi tầng tăng thêm 1%. Kết thúc hiệp giải trừ toàn bộ";
+                text =
+                    "Trong hiệp này, thần thông gây tổn thương mỗi tầng tăng thêm 1%. Kết thúc hiệp giải trừ toàn bộ";
                 break;
             case EBuffAndDeBuff.ThieuDot:
                 text = $"Bắt đầu hiệp, mỗi tầng nhận 1 điểm sát thương sau đó giải trừ 1 tầng";
@@ -914,7 +915,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
 
         return text;
     }
-   
+
     public string GetTextTypeSkill()
     {
         string text = string.Empty;
@@ -957,10 +958,13 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                     text = "Thiên Giai";
                     break;
             }
+
             tierTexts.Add(text);
         }
+
         return string.Join(", ", tierTexts);
-    } 
+    }
+
     public static string GetTextTierSkill(ETierSkill eTierSkill)
     {
         string text = string.Empty;

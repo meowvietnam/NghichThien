@@ -7,6 +7,6 @@ namespace CreateCharacter
     {
         public long Id { get; set; }
         public ETypeArenaRank Type { get; set; }
-        public bool IsClaim {get; set;}
+        public bool IsClaim { get; set; }
     }
 }

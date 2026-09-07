@@ -14,10 +14,9 @@ public class HauThoAn : ThanThong, BaseSkill.LienKich, IMemorySerializable<HauTh
         return;
     }
 
-    [SerializeField]
-    private int[] buffValues = new int[]{4, 6, 8, 12, 22};
-    [SerializeField]
-    private float delayTimeEffect = 0.65f;
+    [SerializeField] private int[] buffValues = new int[] { 4, 6, 8, 12, 22 };
+    [SerializeField] private float delayTimeEffect = 0.65f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -25,6 +24,7 @@ public class HauThoAn : ThanThong, BaseSkill.LienKich, IMemorySerializable<HauTh
         Observer.AddObserver(EventList.Combat.LIEN_KICH, ObserverEffect);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -40,13 +40,15 @@ public class HauThoAn : ThanThong, BaseSkill.LienKich, IMemorySerializable<HauTh
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is HauThoAn))
         {
             int count = currentTurn.specialThanThongImpactAfterPlaySkill.Count(x => x is HauThoAn);
-            currentTurn.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, count * buffValues[GetIndexLevelThanThong(currentTurn)]);
+            currentTurn.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao,
+                count * buffValues[GetIndexLevelThanThong(currentTurn)]);
         }
     }
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Trong cuộc chiến, Mỗi lần phát động ngũ hành {GetKeyWord(EKeyWord.LienKich)} thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} (Có thể cộng dồn)";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Trong cuộc chiến, Mỗi lần phát động ngũ hành {GetKeyWord(EKeyWord.LienKich)} thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} (Có thể cộng dồn)";
     }
 
     public override int ByteSize()

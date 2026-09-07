@@ -11,17 +11,19 @@ namespace Rank
     {
         [SerializeField] private ElementReward elementPrefab;
         [SerializeField] private RectTransform content;
-        private List<ElementReward> elements = new ();
+        private List<ElementReward> elements = new();
+
         public override void Show(float delay = 0.5f, Action actionComplete = null)
         {
             foreach (var element in elements)
             {
                 Destroy(element.gameObject);
             }
+
             elements.Clear();
             GetData();
         }
-        
+
         private async void GetData()
         {
             var reader = await Client.Instance.RequestWait(MessageTag.GetMonsterKillRequest);
@@ -32,6 +34,7 @@ namespace Rank
                 element.Init(monsterKill.Points, reward);
                 elements.Add(element);
             }
+
             base.Show();
         }
     }

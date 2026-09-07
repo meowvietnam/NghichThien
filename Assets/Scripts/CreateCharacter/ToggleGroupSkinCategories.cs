@@ -14,6 +14,7 @@ namespace CreateCharacter
         private List<ToggleSkinCategory> toggleSkinCategories = new List<ToggleSkinCategory>();
         public string Id { get; private set; }
         private ItemListGroupContainer itemListGroupContainer;
+
         public void Init(SkinGroup skinGroup, ItemListGroupContainer itemListGroupContainer)
         {
             Id = skinGroup.Id;
@@ -21,22 +22,26 @@ namespace CreateCharacter
             foreach (var skinCategory in skinGroup.Categories)
             {
                 var toggleSkinCategory = Instantiate(toggleSkinCategoryPrefab, content);
-                toggleSkinCategory.Init(skinCategory, toggleGroup,OnToggleOn);
+                toggleSkinCategory.Init(skinCategory, toggleGroup, OnToggleOn);
                 toggleSkinCategories.Add(toggleSkinCategory);
             }
         }
+
         public void SetActive(bool isActive)
         {
             thisObject.SetActive(isActive);
         }
+
         private void OnToggleOn(ToggleSkinCategory toggleCategory)
         {
             Active(toggleCategory.Id);
         }
+
         public void Active(string id)
         {
             itemListGroupContainer.ActiveItemList(id);
         }
+
         public void ActiveFirst()
         {
             //toggleSkinCategories[0].ToggleOn();

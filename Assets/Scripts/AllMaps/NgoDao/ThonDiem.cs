@@ -21,7 +21,8 @@ public class ThonDiem : NgoDaoCombat, IMemorySerializable<ThonDiem>
 
     public override string GetDes()
     {
-        return $"Thoát khỏi trạng thái {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoaDiem)} thì khôi phục HP một lượng tương đương số tầng";
+        return
+            $"Thoát khỏi trạng thái {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoaDiem)} thì khôi phục HP một lượng tương đương số tầng";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

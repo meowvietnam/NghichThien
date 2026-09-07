@@ -93,9 +93,10 @@ namespace DumpGame
                 {
                     var key = $"{gender}.{skinData.Name}";
                     var icon = GetOriginalSprite(skinRes.sprites[key].First());
-                    skinData.Icon =  icon;
+                    skinData.Icon = icon;
                 }
             }
+
             EditorUtility.SetDirty(skinResources);
             AssetDatabase.SaveAssets();
             Debug.Log("Completed");

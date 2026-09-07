@@ -18,6 +18,7 @@ namespace DP
         private Tween tween;
         private string key = "visit_history";
         private bool isInit;
+
         private void Start()
         {
             SetEventButton(visitButton, Visit);
@@ -27,28 +28,27 @@ namespace DP
         private void Hide()
         {
             tween?.Kill();
-            tween = panel.DOScale(Vector3.zero, 0.25f).OnComplete(() =>
-            {
-                gameObject.SetActive(false);
-            });
+            tween = panel.DOScale(Vector3.zero, 0.25f).OnComplete(() => { gameObject.SetActive(false); });
         }
 
         private void Visit()
         {
             var name = nameField.text;
-            if(string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 return;
             }
+
             DongPhuPanel.Instance.Visit(name);
         }
+
         public void Show()
         {
             tween?.Kill();
-            if(!isInit)
+            if (!isInit)
             {
                 var histories = GetHistories();
-                foreach(var history in histories)
+                foreach (var history in histories)
                 {
                     var player = Instantiate(visitPlayerPrefab, content);
                     player.Init(history);
@@ -56,13 +56,15 @@ namespace DP
 
                 isInit = true;
             }
+
             gameObject.SetActive(true);
             panel.localScale = Vector3.zero;
             tween = panel.DOScale(Vector3.one, 0.25f);
         }
+
         private HashSet<string> GetHistories()
         {
-            if(PlayerPrefs.HasKey(key))
+            if (PlayerPrefs.HasKey(key))
             {
                 var json = PlayerPrefs.GetString(key);
                 try
@@ -74,17 +76,20 @@ namespace DP
                     return new HashSet<string>();
                 }
             }
+
             return new HashSet<string>();
         }
+
         public void AddHistory(string name)
         {
             var histories = GetHistories();
             histories.Add(name);
-            if(histories.Count > 15)
+            if (histories.Count > 15)
             {
                 var first = histories.First();
                 histories.Remove(first);
             }
+
             var json = JsonConvert.SerializeObject(histories);
             PlayerPrefs.SetString(key, json);
             PlayerPrefs.Save();

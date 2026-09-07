@@ -6,12 +6,9 @@ namespace IngameDebugConsole
 {
     public class CopyLogsOnResizeButtonClick : MonoBehaviour, IPointerClickHandler
     {
-        [SerializeField]
-        private DebugLogManager manager;
-        [SerializeField]
-        private int maxLogCount = int.MaxValue;
-        [SerializeField]
-        private float maxElapsedTime = float.PositiveInfinity;
+        [SerializeField] private DebugLogManager manager;
+        [SerializeField] private int maxLogCount = int.MaxValue;
+        [SerializeField] private float maxElapsedTime = float.PositiveInfinity;
 
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {

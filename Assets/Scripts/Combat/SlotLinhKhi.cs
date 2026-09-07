@@ -15,7 +15,8 @@ public enum ELinhKhi
     Tho,
     Ma
 }
-public class SlotLinhKhi : MonoBehaviour , IPointerDownHandler
+
+public class SlotLinhKhi : MonoBehaviour, IPointerDownHandler
 {
     public SecureInt count;
     public ELinhKhi eLinhKhi;
@@ -24,22 +25,24 @@ public class SlotLinhKhi : MonoBehaviour , IPointerDownHandler
     public Action actionPointerDown;
     public bool isLock;
     public SecureInt countRequire;
+
     public void AddCountRequire(int countRequire)
     {
         this.countRequire += countRequire;
-
     }
-    public void SetCountRequire(int countRequire , ELinhKhi eLinhKhi = ELinhKhi.None)
+
+    public void SetCountRequire(int countRequire, ELinhKhi eLinhKhi = ELinhKhi.None)
     {
         this.countRequire = countRequire;
         this.eLinhKhi = eLinhKhi;
-
     }
+
     public void SetLock(bool isLock)
     {
         this.isLock = isLock;
     }
-    public void AddCount(int count , Action eventEndCount = null )
+
+    public void AddCount(int count, Action eventEndCount = null)
     {
         this.count += count;
 
@@ -48,12 +51,13 @@ public class SlotLinhKhi : MonoBehaviour , IPointerDownHandler
         {
             icon?.gameObject.SetActive(false);
             eventEndCount?.Invoke();
-        }    
+        }
         else
         {
             icon?.gameObject.SetActive(true);
-        }    
+        }
     }
+
     public void SetCount(int count, Action eventEndCount = null)
     {
         this.count = count;
@@ -69,11 +73,12 @@ public class SlotLinhKhi : MonoBehaviour , IPointerDownHandler
             icon?.gameObject.SetActive(true);
         }
     }
+
     public void Init(Action action)
     {
         actionPointerDown = action;
     }
-  
+
     public void OnPointerDown(PointerEventData eventData)
     {
         if (count <= 0 || isLock) return;

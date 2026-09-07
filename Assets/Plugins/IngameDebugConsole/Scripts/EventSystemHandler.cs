@@ -7,12 +7,11 @@ using UnityEngine.InputSystem.UI;
 
 namespace IngameDebugConsole
 {
-	// Avoid multiple EventSystems in the scene by activating the embedded EventSystem only if one doesn't already exist in the scene
-	[DefaultExecutionOrder( 1000 )]
-	public class EventSystemHandler : MonoBehaviour
-	{
-		[SerializeField]
-		private GameObject embeddedEventSystem;
+    // Avoid multiple EventSystems in the scene by activating the embedded EventSystem only if one doesn't already exist in the scene
+    [DefaultExecutionOrder(1000)]
+    public class EventSystemHandler : MonoBehaviour
+    {
+        [SerializeField] private GameObject embeddedEventSystem;
 
 #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
 		private void Awake()
@@ -26,46 +25,46 @@ namespace IngameDebugConsole
 		}
 #endif
 
-		private void OnEnable()
-		{
-			SceneManager.sceneLoaded -= OnSceneLoaded;
-			SceneManager.sceneLoaded += OnSceneLoaded;
-			SceneManager.sceneUnloaded -= OnSceneUnloaded;
-			SceneManager.sceneUnloaded += OnSceneUnloaded;
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
 
-			ActivateEventSystemIfNeeded();
-		}
+            ActivateEventSystemIfNeeded();
+        }
 
-		private void OnDisable()
-		{
-			SceneManager.sceneLoaded -= OnSceneLoaded;
-			SceneManager.sceneUnloaded -= OnSceneUnloaded;
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
 
-			DeactivateEventSystem();
-		}
+            DeactivateEventSystem();
+        }
 
-		private void OnSceneLoaded( Scene scene, LoadSceneMode mode )
-		{
-			DeactivateEventSystem();
-			ActivateEventSystemIfNeeded();
-		}
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            DeactivateEventSystem();
+            ActivateEventSystemIfNeeded();
+        }
 
-		private void OnSceneUnloaded( Scene current )
-		{
-			// Deactivate the embedded EventSystem before changing scenes because the new scene might have its own EventSystem
-			DeactivateEventSystem();
-		}
+        private void OnSceneUnloaded(Scene current)
+        {
+            // Deactivate the embedded EventSystem before changing scenes because the new scene might have its own EventSystem
+            DeactivateEventSystem();
+        }
 
-		private void ActivateEventSystemIfNeeded()
-		{
-			if( embeddedEventSystem && !EventSystem.current )
-				embeddedEventSystem.SetActive( true );
-		}
+        private void ActivateEventSystemIfNeeded()
+        {
+            if (embeddedEventSystem && !EventSystem.current)
+                embeddedEventSystem.SetActive(true);
+        }
 
-		private void DeactivateEventSystem()
-		{
-			if( embeddedEventSystem )
-				embeddedEventSystem.SetActive( false );
-		}
-	}
+        private void DeactivateEventSystem()
+        {
+            if (embeddedEventSystem)
+                embeddedEventSystem.SetActive(false);
+        }
+    }
 }

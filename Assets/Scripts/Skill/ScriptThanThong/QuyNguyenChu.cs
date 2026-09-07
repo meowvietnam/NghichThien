@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(QuyNguyenChu), menuName = "Skill/Thần Thông/" + nameof(QuyNguyenChu))]
 public class QuyNguyenChu : ThanThong, IMemorySerializable<QuyNguyenChu>
 {
-    [SerializeField]
-    private int hapThu = 5;
+    [SerializeField] private int hapThu = 5;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddThanThongImpactAfterPlaySkill(this);
@@ -33,7 +33,8 @@ public class QuyNguyenChu : ThanThong, IMemorySerializable<QuyNguyenChu>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Kết thúc hiệp, hấp thụ {GetColoredText($"{hapThu}", "red")} điểm linh khí";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Kết thúc hiệp, hấp thụ {GetColoredText($"{hapThu}", "red")} điểm linh khí";
     }
 
     public override int ByteSize()

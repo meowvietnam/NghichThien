@@ -21,8 +21,10 @@ namespace Base
                 Dict.Add(value);
                 return index;
             }
+
             return result;
         }
+
         public string this[int key] => Dict[key];
 
         public void Deserialize(IReader reader, ref StringDict value)
@@ -34,6 +36,7 @@ namespace Base
         {
             return Dict.ByteSize();
         }
+
         public void Serialize(IWriter writer)
         {
             writer.WriteArray(Dict);

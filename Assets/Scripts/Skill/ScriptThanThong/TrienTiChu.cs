@@ -10,14 +10,21 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(TrienTiChu), menuName = "Skill/Thần Thông/" + nameof(TrienTiChu))]
 public class TrienTiChu : ThanThong, IMemorySerializable<TrienTiChu>
 {
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         target.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.REMOVE_BUFF, ObserverEffect);
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect2);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
@@ -29,10 +36,11 @@ public class TrienTiChu : ThanThong, IMemorySerializable<TrienTiChu>
         int currentValue = (int)data[3];
         if (currentTurn == null)
             return;
-        if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is TrienTiChu) && newValue <= 0 && type == EBuffAndDeBuff.TrienNhieu)
+        if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is TrienTiChu) && newValue <= 0 &&
+            type == EBuffAndDeBuff.TrienNhieu)
         {
             currentTurn.AddBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, currentValue / 2);
-        // end turn giữ lại 1 nữa được xử lí ở character combat
+            // end turn giữ lại 1 nữa được xử lí ở character combat
         }
     }
 
@@ -44,7 +52,7 @@ public class TrienTiChu : ThanThong, IMemorySerializable<TrienTiChu>
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is TrienTiChu))
         {
             currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
-        // end turn giữ lại 1 nữa được xử lí ở character combat
+            // end turn giữ lại 1 nữa được xử lí ở character combat
         }
     }
 
@@ -57,7 +65,8 @@ public class TrienTiChu : ThanThong, IMemorySerializable<TrienTiChu>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Đối thủ kết thúc hiệp, thì giữ lại một nửa số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Đối thủ kết thúc hiệp, thì giữ lại một nửa số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}";
     }
 
     public override int ByteSize()

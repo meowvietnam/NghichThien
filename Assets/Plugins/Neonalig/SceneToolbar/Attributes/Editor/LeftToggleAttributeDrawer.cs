@@ -6,7 +6,6 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
     [CustomPropertyDrawer(typeof(LeftToggleAttribute))]
     sealed class LeftToggleAttributeDrawer : PropertyDrawer
     {
-
         #region Overrides of PropertyDrawer
 
         /// <inheritdoc />
@@ -22,6 +21,5 @@ namespace Plugins.Neonalig.SceneToolbar.Attributes
         }
 
         #endregion
-
     }
 }

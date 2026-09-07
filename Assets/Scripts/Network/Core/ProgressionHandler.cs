@@ -32,11 +32,13 @@ namespace Network.Core
                 {
                     inventory.Decrease(buffItem);
                 }
+
                 var camNgos = result.CamNgos;
-                inventory.CamNgos =  camNgos;
+                inventory.CamNgos = camNgos;
                 var currentExp = result.CurrentExp;
                 charData.Progression.CurrentExp = currentExp;
             }
+
             NetworkManager.Instance.Invoke(() =>
             {
                 if (result.Success)
@@ -65,7 +67,6 @@ namespace Network.Core
                     Observer.Notify(EventList.Network.LEVEL_UP, snapshot);
                     FirebaseAnalytics.LogEvent("level_up", "level", levelUpdated.Level);
                 });
-                
             }
             else if (tag == MessageTag.ExperienceReward)
             {
@@ -92,7 +93,7 @@ namespace Network.Core
         {
         }
 
-        private static readonly MessageTag[] handler = { MessageTag.LevelUpdated , MessageTag.ExperienceReward };
+        private static readonly MessageTag[] handler = { MessageTag.LevelUpdated, MessageTag.ExperienceReward };
         public MessageTag[] HandleTag => handler;
     }
 }

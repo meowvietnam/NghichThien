@@ -53,10 +53,12 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
             {
                 return null;
             }
+
             if (itemRef.Type != ItemType.Furnace)
             {
                 return null;
             }
+
             var furnaceData =
                 Client.Instance.CharacterData.InventoryManager.Furnaces.FirstOrDefault(x => x.SelfId == itemRef.Id);
             return furnaceData;
@@ -69,18 +71,21 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
     private CharacterData CharData => Client.Instance.CharacterData;
 
 
-    public void ShowInfoSkill(ISkillItemData skillItemData, EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)
+    public void ShowInfoSkill(ISkillItemData skillItemData,
+        EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)
     {
         if (skillItemData?.ItemData == null)
         {
             return;
         }
+
         var skill = skillItemData.ItemData;
         var skillItemRef = CreateSkillItemRef(skill);
         if (skillItemRef == null)
         {
             return;
         }
+
         var visual = skillItemData.VisualQuality;
         gameObject.SetActive(true);
         priceText.transform.parent.gameObject.SetActive(false);
@@ -100,10 +105,12 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
         RefreshTooltipLayout();
     }
 
-    public void ShowInfoItem(ISkillItemData skillItemData, EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)
+    public void ShowInfoItem(ISkillItemData skillItemData,
+        EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)
     {
         ShowInfoSkill(skillItemData, eTypeActionShow);
     }
+
     public void ShowInfoItem(IItemData itemData, ItemRef itemRef, FurnaceData furnaceData = null)
     {
         iItemData = itemData;
@@ -175,8 +182,10 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
 
         RefreshTooltipLayout();
     }
+
     public void InitShowForCombat(BaseItemData itemData, Sprite frameSprite, Sprite qualityFull, Color colorName,
-       ItemRef itemRef, EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None, CharacterCombat charCombat = null)
+        ItemRef itemRef, EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None,
+        CharacterCombat charCombat = null)
     {
         if (itemData == null) return;
         gameObject.SetActive(true);
@@ -201,6 +210,7 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
 
         RefreshTooltipLayout();
     }
+
     private void SetQualityText(Tier tier)
     {
         var quality = CoreConfig.Instance.FindQuality(tier);
@@ -259,7 +269,7 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
     {
         if (itemRef == null) return;
         var displayer = ItemProviderFactory.GetProvider(itemRef.Type);
-     
+
         if (displayer != null)
         {
             var ctx = BuildContext();
@@ -267,7 +277,8 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
             {
                 ctx.PrefabIconRequire.transform.parent.GetChild(i).gameObject.SetActive(false);
             }
-            if(displayer is ThanThongProviderCombat thanThongProviderCombat)
+
+            if (displayer is ThanThongProviderCombat thanThongProviderCombat)
             {
                 thanThongProviderCombat.DisplayCombat(ctx, charCombat);
             }
@@ -356,6 +367,7 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
         {
             Instance = this;
         }
+
         gameObject.SetActive(false);
         SetEventButton(btnMask, () => { gameObject.SetActive(false); });
     }

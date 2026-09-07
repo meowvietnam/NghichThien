@@ -14,29 +14,29 @@ namespace LuyenDan
     {
         [SerializeField] protected GameObject selfObject;
 
-        [TabGroup("Null Item")]
-        [SerializeField] protected GameObject emptySlot;
+        [TabGroup("Null Item")] [SerializeField]
+        protected GameObject emptySlot;
 
-        [TabGroup("Has Item")]
-        [SerializeField] protected GameObject filledSlot;
+        [TabGroup("Has Item")] [SerializeField]
+        protected GameObject filledSlot;
 
-        [TabGroup("Has Item")]
-        [SerializeField] protected Image itemIcon;
+        [TabGroup("Has Item")] [SerializeField]
+        protected Image itemIcon;
 
-        [TabGroup("Has Item")]
-        [SerializeField] protected Image qualityBackground;
+        [TabGroup("Has Item")] [SerializeField]
+        protected Image qualityBackground;
 
-        [TabGroup("Has Item")]
-        [SerializeField] protected Image qualityIconUp;
+        [TabGroup("Has Item")] [SerializeField]
+        protected Image qualityIconUp;
 
-        [TabGroup("Has Item")]
-        [SerializeField] protected Text countText;
+        [TabGroup("Has Item")] [SerializeField]
+        protected Text countText;
 
-        [TabGroup("Has Item")]
-        [SerializeField] protected Text itemNameText;
+        [TabGroup("Has Item")] [SerializeField]
+        protected Text itemNameText;
 
-        [TabGroup("Has Item")]
-        [SerializeField] protected GameObject hoverHighlight;
+        [TabGroup("Has Item")] [SerializeField]
+        protected GameObject hoverHighlight;
 
         public virtual void SetActive(bool active)
         {
@@ -82,9 +82,10 @@ namespace LuyenDan
 
             if (itemIcon != null) itemIcon.sprite = data.Icon;
             if (itemNameText != null) itemNameText.text = data.Name;
-            
+
             SetTier(data.Tier);
         }
+
         public void SetSkill(SkillData skillData)
         {
             if (skillData != null)
@@ -98,12 +99,14 @@ namespace LuyenDan
                 SetSkillData(null);
             }
         }
+
         private void SetQuality(SkillVisualQuality quality)
         {
             if (qualityBackground != null) qualityBackground.sprite = quality.Frame;
             if (qualityIconUp != null) qualityIconUp.sprite = quality.QualityFull;
             if (itemNameText != null) itemNameText.color = quality.Color;
         }
+
         private void SetSkillData(ISkillItemData data)
         {
             bool hasItem = data != null;

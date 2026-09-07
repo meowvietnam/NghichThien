@@ -161,7 +161,8 @@ namespace Plugins.Neonalig.SceneToolbar.Overlay
                 }
             }
 
-            EditorSceneManager.OpenScene(path, SceneToolbarSettings.OpenAdditive ? OpenSceneMode.Additive : OpenSceneMode.Single);
+            EditorSceneManager.OpenScene(path,
+                SceneToolbarSettings.OpenAdditive ? OpenSceneMode.Additive : OpenSceneMode.Single);
             UpdateView();
         }
 

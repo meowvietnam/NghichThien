@@ -23,7 +23,7 @@ namespace MainMenu
         private void Start()
         {
             selfTransform.position = startPosition;
-            selfTransform.DOMove(endPosition,time);
+            selfTransform.DOMove(endPosition, time);
         }
     }
 }

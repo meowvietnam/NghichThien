@@ -17,6 +17,7 @@ namespace AllMaps
         private int moneyVip;
         private AdsHandler adsHandler;
         private static AdsMoneyVip instance;
+
         private void Start()
         {
             if (instance == null)
@@ -27,6 +28,7 @@ namespace AllMaps
             {
                 return;
             }
+
             selfObject.SetActive(false);
             SetEventButton(btn, Claim);
             var coreModule = Client.Instance.CoreModule;
@@ -64,7 +66,7 @@ namespace AllMaps
         {
             selfObject.SetActive(active);
         }
-    
+
         public void SuccessClaim(WatchAdsMoneyVipResult result)
         {
             var count = result.MoneyVip;

@@ -3,8 +3,8 @@ using System.IO;
 
 public class EditorScreenshot : MonoBehaviour
 {
-    [Header("Cấu hình lưu ảnh")]
-    [SerializeField] private string folderName = "Screenshots";
+    [Header("Cấu hình lưu ảnh")] [SerializeField]
+    private string folderName = "Screenshots";
 
     void Update()
     {

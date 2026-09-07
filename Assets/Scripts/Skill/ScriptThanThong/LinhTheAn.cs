@@ -12,14 +12,11 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(LinhTheAn), menuName = "Skill/Thần Thông/" + nameof(LinhTheAn))]
 public class LinhTheAn : ThanThong, IMemorySerializable<LinhTheAn>
 {
-    [SerializeField]
-    private int[] hoTraos;
-    [SerializeField]
-    private int[] hoTraoAdds;
-    [SerializeField]
-    private int require = 1;
-    [SerializeField]
-    private float delayTimeEffect = 0.5f;
+    [SerializeField] private int[] hoTraos;
+    [SerializeField] private int[] hoTraoAdds;
+    [SerializeField] private int require = 1;
+    [SerializeField] private float delayTimeEffect = 0.5f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddThanThongImpactAfterPlaySkill(this);
@@ -28,6 +25,7 @@ public class LinhTheAn : ThanThong, IMemorySerializable<LinhTheAn>
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect2);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -44,7 +42,8 @@ public class LinhTheAn : ThanThong, IMemorySerializable<LinhTheAn>
             return;
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is LinhTheAn))
         {
-            List<LinhTheAn> listThisSkill = currentTurn.specialThanThongImpactAfterPlaySkill.OfType<LinhTheAn>().ToList();
+            List<LinhTheAn> listThisSkill =
+                currentTurn.specialThanThongImpactAfterPlaySkill.OfType<LinhTheAn>().ToList();
             int requireNew = require * listThisSkill.Count;
             int hoTraoAdd = hoTraoAdds[GetIndexLevelThanThong(currentTurn)] * listThisSkill.Count;
             if (CheckIsEqualETypeSkill(currentTurn) && currentTurn.khiKim >= requireNew)
@@ -68,7 +67,8 @@ public class LinhTheAn : ThanThong, IMemorySerializable<LinhTheAn>
 
     public override string GetDesc(int level)
     {
-        return $"Thu hoạch được {GetColoredText($"+{hoTraos[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}. Trong hiệp này, nếu sử dụng {GetTextLinhKhi(ELinhKhi.Kim)} hệ thần thông, tiêu hao {GetColoredText($"X điểm", "red")} {GetTextLinhKhi(ELinhKhi.Kim)} linh khí sẽ thu hoạch được {GetColoredText($"+{hoTraoAdds[level - 1]}*X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} (X là số lần sử dụng thần thông này trong hiệp)";
+        return
+            $"Thu hoạch được {GetColoredText($"+{hoTraos[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}. Trong hiệp này, nếu sử dụng {GetTextLinhKhi(ELinhKhi.Kim)} hệ thần thông, tiêu hao {GetColoredText($"X điểm", "red")} {GetTextLinhKhi(ELinhKhi.Kim)} linh khí sẽ thu hoạch được {GetColoredText($"+{hoTraoAdds[level - 1]}*X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} (X là số lần sử dụng thần thông này trong hiệp)";
     }
 
     public override int ByteSize()

@@ -11,62 +11,66 @@ using LongDHModules;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class QuestManager : BaseBehaviour , IUISingleton
+public class QuestManager : BaseBehaviour, IUISingleton
 {
     public List<NPCData> enemyCombats;
     [SerializeField] public QuestResource currentQuest;
-   
-   
+
+
     public virtual void InitQuest(QuestResource quest)
     {
         this.currentQuest = quest;
     }
+
     private void OnCheckSceneToTrigger(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "AllMaps")
         {
             LoadAfterBackAllMaps();
         }
-
     }
+
     public virtual void LoadAfterBackAllMaps()
     {
         StartCoroutine(DelayTime(0.01f));
-
     }
+
     private IEnumerator DelayTime(float time)
     {
         yield return new WaitForSeconds(time);
         var gameManager = Pool.Get<GameManager>();
         QuestCombatTrigger(gameManager.enemyCombat, gameManager.currentETypeCombat, gameManager.currentECombatResult);
-    }    
-    
-    public void QuestCombatTrigger(GameManager.CharCombatInit charCombat, ETypeCombat typeCombat, ETypeResultCombat result)
+    }
+
+    public void QuestCombatTrigger(GameManager.CharCombatInit charCombat, ETypeCombat typeCombat,
+        ETypeResultCombat result)
     {
         Debug.Log(" vào QuestCombatTrigger");
         if (typeCombat == ETypeCombat.AllMaps && result == ETypeResultCombat.Win)
         {
             if (enemyCombats.Any(x => x.charStats.idChar == charCombat.charStats.idChar))
             {
-                enemyCombats.Remove(enemyCombats.FirstOrDefault(x => x.charStats.idChar == charCombat.charStats.idChar));
+                enemyCombats.Remove(enemyCombats.FirstOrDefault(x =>
+                    x.charStats.idChar == charCombat.charStats.idChar));
                 if (enemyCombats.Count <= 0)
                 {
                     QuestDone();
 
                     enemyCombats.Clear();
-
                 }
                 else
                 {
-                    Pool.Get<GameManager>().GoToPrepareCombat(new GameManager.CharCombatInit { eTypeVisual = enemyCombats[0].eTypeVisualChar, charStats = enemyCombats[0].charStats }, ETypeCombat.AllMaps);
-
-
+                    Pool.Get<GameManager>()
+                        .GoToPrepareCombat(
+                            new GameManager.CharCombatInit
+                            {
+                                eTypeVisual = enemyCombats[0].eTypeVisualChar, charStats = enemyCombats[0].charStats
+                            }, ETypeCombat.AllMaps);
                 }
             }
-               
         }
-        
     }
+
     public void QuestDone()
     {
         if (currentQuest != null)

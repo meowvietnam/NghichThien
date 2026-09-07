@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThongUMinhDo))]
 public class ThongUMinhDo : HoanAnhDien, IMemorySerializable<ThongUMinhDo>
 {
-    [SerializeField]
-    private int[] buffValues2 = new int[]{1, 2, 3, 4, 5};
+    [SerializeField] private int[] buffValues2 = new int[] { 1, 2, 3, 4, 5 };
+
     public override void ExecuteParams(params object[] data)
     {
         // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
@@ -32,7 +32,8 @@ public class ThongUMinhDo : HoanAnhDien, IMemorySerializable<ThongUMinhDo>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi lần né tránh thành công thu hoạch được {GetColoredText($"+{buffValues2[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnhDich)}. {base.GetDesc(level)}";
+        return
+            $"Mỗi lần né tránh thành công thu hoạch được {GetColoredText($"+{buffValues2[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnhDich)}. {base.GetDesc(level)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

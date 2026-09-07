@@ -44,13 +44,13 @@ namespace Rank
                     var itemUi = Object.Instantiate(context.RandomSkillItemPrefab, context.Container);
                     itemUi.SetText(GetDescription(countPerOne));
                 }
+
                 if (remaining > 0)
                 {
                     var itemUi = Object.Instantiate(context.RandomSkillItemPrefab, context.Container);
                     itemUi.SetText(GetDescription(remaining));
-                }  
+                }
             }
- 
         }
 
         private string GetDescription(int count)
@@ -88,6 +88,7 @@ namespace Rank
             return
                 $"<color=#{ColorUtility.ToHtmlStringRGBA(skillData.ItemData.VisualQuality.Color)}>{skillData.ItemData.Name} x{skillData.ItemRef.Count}</color>";
         }
+
         public string GetRichText()
         {
             var skillDatas = GetItemDatas();

@@ -9,8 +9,9 @@ using UnityEngine.UI;
 
 public class PopupInfor : Popup
 {
-    [Header("--- Pop Do Xet ---")]
-    [SerializeField] public CharacterGraphic charVisualPopXemXet;
+    [Header("--- Pop Do Xet ---")] [SerializeField]
+    public CharacterGraphic charVisualPopXemXet;
+
     [SerializeField] public CharacterVisualControl charVisualControl;
     [SerializeField] private Text textThanThuc;
     [SerializeField] private Text textTocDoBay;
@@ -24,12 +25,13 @@ public class PopupInfor : Popup
     [SerializeField] private Text textHaoCam;
     [SerializeField] private List<ItemInventory> listThanThongItemSlot;
     [SerializeField] private List<ItemInventory> listCongPhapItemSlot;
+
     protected override void ActionBtnClose()
     {
         base.ActionBtnClose();
         Pool.Get<GameManager>().Cleanup();
-
     }
+
     public void InitPopDoXet(CharacterStatsSecure characterStatsTarget)
     {
         Show();
@@ -44,7 +46,8 @@ public class PopupInfor : Popup
         textTuoiTac.text = characterStatsTarget.tuoiTac.Value.ToString();
         textSinhMenh.text = characterStatsTarget.hpMax.Value.ToString();
         textLevel.text = GameManager.levelWithText[characterStatsTarget.level];
-        textHaoCam.text = Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar).ToString();
+        textHaoCam.text = Client.Instance.CharacterData.Social.GetRelationshipWithNPC(characterStatsTarget.idChar)
+            .ToString();
         List<Skill.ThanThong> listThanThongData = new List<Skill.ThanThong>();
         var gameConfig = Pool.Get<GameManager>();
         var ui = Pool.Get<UIManager>();
@@ -52,6 +55,7 @@ public class PopupInfor : Popup
         {
             listThanThongData.Add(gameConfig.GetThanThongWithId(item.Value));
         }
+
         for (int i = 0; i < listThanThongItemSlot.Count; i++)
         {
             var item = listThanThongItemSlot[i];
@@ -59,11 +63,18 @@ public class PopupInfor : Popup
 
             ui.InitVisualItemSkill(item, data);
         }
-        ui.InitVisualItemSkill(listCongPhapItemSlot[0], gameConfig.GetCongPhapWithId(characterStatsTarget.chuTu1Used.Value));
-        ui.InitVisualItemSkill(listCongPhapItemSlot[1], gameConfig.GetCongPhapWithId(characterStatsTarget.chuTu2Used.Value));
-        ui.InitVisualItemSkill(listCongPhapItemSlot[2], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu1Used.Value));
-        ui.InitVisualItemSkill(listCongPhapItemSlot[3], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu2Used.Value));
-        ui.InitVisualItemSkill(listCongPhapItemSlot[4], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu3Used.Value));
-        ui.InitVisualItemSkill(listCongPhapItemSlot[5], gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu4Used.Value));
+
+        ui.InitVisualItemSkill(listCongPhapItemSlot[0],
+            gameConfig.GetCongPhapWithId(characterStatsTarget.chuTu1Used.Value));
+        ui.InitVisualItemSkill(listCongPhapItemSlot[1],
+            gameConfig.GetCongPhapWithId(characterStatsTarget.chuTu2Used.Value));
+        ui.InitVisualItemSkill(listCongPhapItemSlot[2],
+            gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu1Used.Value));
+        ui.InitVisualItemSkill(listCongPhapItemSlot[3],
+            gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu2Used.Value));
+        ui.InitVisualItemSkill(listCongPhapItemSlot[4],
+            gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu3Used.Value));
+        ui.InitVisualItemSkill(listCongPhapItemSlot[5],
+            gameConfig.GetCongPhapWithId(characterStatsTarget.phuTu4Used.Value));
     }
 }

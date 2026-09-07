@@ -28,7 +28,7 @@ namespace Network.Models
         public int ByteSize()
         {
             var baseSize = Success.ByteSize();
-            var exSize = !Success ? Message.ByteSize() : Slot.ByteSize() + Id.ByteSize() ;
+            var exSize = !Success ? Message.ByteSize() : Slot.ByteSize() + Id.ByteSize();
             return baseSize + exSize;
         }
 

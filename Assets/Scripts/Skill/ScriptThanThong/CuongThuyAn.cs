@@ -10,10 +10,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(CuongThuyAn), menuName = "Skill/Thần Thông/" + nameof(CuongThuyAn))]
 public class CuongThuyAn : ThanThong, IMemorySerializable<CuongThuyAn>
 {
-    [SerializeField]
-    private int[] dames;
-    [SerializeField]
-    private float delayTimeEffect = 0.5f;
+    [SerializeField] private int[] dames;
+    [SerializeField] private float delayTimeEffect = 0.5f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -21,6 +20,7 @@ public class CuongThuyAn : ThanThong, IMemorySerializable<CuongThuyAn>
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
         PlayVisualSkill(caster, target);
     }
+
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
@@ -34,10 +34,11 @@ public class CuongThuyAn : ThanThong, IMemorySerializable<CuongThuyAn>
         CharacterCombat targetTurn = (CharacterCombat)data[1];
         if (currentTurn == null)
             return;
-        if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is CuongThuyAn) && CheckIsEqualETypeSkill(currentTurn))
+        if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is CuongThuyAn) &&
+            CheckIsEqualETypeSkill(currentTurn))
         {
             int dame = dames[GetIndexLevelThanThong(currentTurn)];
-            targetTurn.AddDamageData(new List<int>{dame});
+            targetTurn.AddDamageData(new List<int> { dame });
         }
     }
 
@@ -67,7 +68,8 @@ public class CuongThuyAn : ThanThong, IMemorySerializable<CuongThuyAn>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Sử dụng {GetTextTypeSkill()} hệ thần thông thì tổn thương {GetColoredText($"+{dames[level - 1]}", "red")} (tồn tại ở hiệp sau)";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Sử dụng {GetTextTypeSkill()} hệ thần thông thì tổn thương {GetColoredText($"+{dames[level - 1]}", "red")} (tồn tại ở hiệp sau)";
     }
 
     public override int ByteSize()

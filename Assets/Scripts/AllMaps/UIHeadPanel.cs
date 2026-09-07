@@ -19,6 +19,7 @@ public class UIHeadPanel : PanelGroup
     [SerializeField] private Sprite[] listSpriteIconLevel;
     [SerializeField] private CharacterGraphic characterGraphic;
     public MailButton mailBtn;
+
     public override void Init()
     {
         base.Init();
@@ -31,7 +32,7 @@ public class UIHeadPanel : PanelGroup
             tabPanel.transform.SetAsLastSibling();
         });
     }
-   
+
     private void UpdatePlayerStats()
     {
         var charData = Client.Instance.CharacterData;
@@ -42,15 +43,17 @@ public class UIHeadPanel : PanelGroup
         Slider hpSlider = hpText.transform.parent.GetComponent<Slider>();
         hpSlider.value = (float)stats.Hp / stats.SinhMenh;
 
-        tuviText.text = $"{progression.CurrentExp}/{gameConfig.inforLevels[progression.Level-1].tuviRequireNextLevel}";
+        tuviText.text =
+            $"{progression.CurrentExp}/{gameConfig.inforLevels[progression.Level - 1].tuviRequireNextLevel}";
         Slider expSlider = tuviText.transform.parent.GetComponent<Slider>();
-        expSlider.value = (float)progression.CurrentExp / gameConfig.inforLevels[progression.Level-1].tuviRequireNextLevel;
+        expSlider.value = (float)progression.CurrentExp /
+                          gameConfig.inforLevels[progression.Level - 1].tuviRequireNextLevel;
 
-        iconLevel.sprite = listSpriteIconLevel[progression.Level-1];
+        iconLevel.sprite = listSpriteIconLevel[progression.Level - 1];
         iconLevel.SetNativeSize();
         nameText.text = charData.Name;
         characterGraphic.SetGender(charData.Gender);
-        characterGraphic.SetSkin(charData.Appearance.Skins,charData.Appearance.Colors);
+        characterGraphic.SetSkin(charData.Appearance.Skins, charData.Appearance.Colors);
     }
 
     private void OnDestroy()

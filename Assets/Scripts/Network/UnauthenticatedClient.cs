@@ -13,13 +13,16 @@ namespace Network
             ConnectState,
             CheckVersionState
         }
+
         private class CheckVersionState : IMessageState<MessageTag, MessageState>
         {
             private UnauthenticatedClient client;
+
             public CheckVersionState(UnauthenticatedClient client)
             {
                 this.client = client;
             }
+
             public void OnEnter()
             {
                 NetworkManager.Instance.Invoke(() =>
@@ -36,25 +39,26 @@ namespace Network
                 {
                     var result = reader.MemRead<CheckVersionResult>();
                     var net = NetworkManager.Instance;
-                    net.Invoke(() =>
-                    {
-                        client.callback.OnCheckVersionResult(result);
-                    });
+                    net.Invoke(() => { client.callback.OnCheckVersionResult(result); });
                 }
             }
+
             public void OnLeave()
             {
             }
+
             public MessageState State => MessageState.CheckVersionState;
         }
 
-        private class ConnectState: IMessageState<MessageTag, MessageState>
+        private class ConnectState : IMessageState<MessageTag, MessageState>
         {
             private UnauthenticatedClient client;
+
             public ConnectState(UnauthenticatedClient client)
             {
                 this.client = client;
             }
+
             public MessageState State => MessageState.ConnectState;
 
             public void OnEnter()
@@ -64,6 +68,7 @@ namespace Network
                     client.TcpClient.Send(MessageTag.Connect);
                 }
             }
+
             public void Handle(Message<MessageTag> message)
             {
                 var tag = message.Tag;
@@ -71,15 +76,13 @@ namespace Network
                 if (tag == MessageTag.ConnectResult)
                 {
                     var result = reader.Read<ConnectResult>();
-                    
+
                     if (result.Success)
                     {
                         client.ChangeState(new CheckVersionState(client));
                     }
-                    NetworkManager.Instance.Invoke(() =>
-                    {
-                        client.callback.OnConnectResult(result);
-                    });
+
+                    NetworkManager.Instance.Invoke(() => { client.callback.OnConnectResult(result); });
                 }
                 else if (tag == MessageTag.ReconnectResult)
                 {
@@ -87,22 +90,24 @@ namespace Network
                     var net = NetworkManager.Instance;
                     if (result.Success)
                     {
-                        net.ReconnectSuccess();   
+                        net.ReconnectSuccess();
                     }
-                    net.Invoke(() =>
-                    {
-                        client.callback.OnReconnectResult(result);
-                    });
+
+                    net.Invoke(() => { client.callback.OnReconnectResult(result); });
                 }
             }
+
             public void OnLeave()
             {
             }
         }
+
         private MessageStateHandler<MessageTag, MessageState> module;
         private IUnauthenticatedClientCallback callback;
         private bool isReconnect;
-        public UnauthenticatedClient(NativeTcp client, IUnauthenticatedClientCallback callback, bool isReconnect) : base(client)
+
+        public UnauthenticatedClient(NativeTcp client, IUnauthenticatedClientCallback callback, bool isReconnect) :
+            base(client)
         {
             this.isReconnect = isReconnect;
             this.callback = callback;
@@ -110,16 +115,15 @@ namespace Network
             module.ChangeState(new ConnectState(this));
             AddModule(module);
         }
+
         private void ChangeState(IMessageState<MessageTag, MessageState> state)
         {
             module.ChangeState(state);
         }
+
         protected override void OnDisconnected(IProtocol<MessageTag> protocol)
         {
-            NetworkManager.Instance.Invoke(() =>
-            {
-                callback.OnDisconnect();  
-            });          
+            NetworkManager.Instance.Invoke(() => { callback.OnDisconnect(); });
         }
     }
 }

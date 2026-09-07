@@ -47,7 +47,8 @@ public class ThanHoangAn : ThanThong, IMemorySerializable<ThanHoangAn>
 
     public override string GetDesc(int level)
     {
-        return $"Nếu {GetKeyWord(EKeyWord.TuongDong)} thì số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)} tăng gấp đôi. Nếu không thì, chuyển toàn bộ tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} đang có thành {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}*2";
+        return
+            $"Nếu {GetKeyWord(EKeyWord.TuongDong)} thì số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)} tăng gấp đôi. Nếu không thì, chuyển toàn bộ tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} đang có thành {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}*2";
     }
 
     public override int ByteSize()

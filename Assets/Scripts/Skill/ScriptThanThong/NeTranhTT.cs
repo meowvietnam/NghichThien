@@ -29,7 +29,10 @@ public class NeTranhTT : ThanThong, IMemorySerializable<NeTranhTT>
         }
     }
 
-    protected virtual void NeTranhSuccess(CharacterCombat takeDameChar) {}
+    protected virtual void NeTranhSuccess(CharacterCombat takeDameChar)
+    {
+    }
+
     public void Deserialize(IReader reader, ref NeTranhTT value)
     {
         ThanThong baseValue = value;

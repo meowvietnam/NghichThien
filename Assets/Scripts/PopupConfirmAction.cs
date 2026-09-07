@@ -5,20 +5,17 @@ using UnityEngine.UI;
 using LongDH.LongDHModules;
 using LongDHModules;
 
-public class PopupConfirmAction : Popup,IUISingleton
+public class PopupConfirmAction : Popup, IUISingleton
 {
     [SerializeField] private Button btnConfirm;
     [SerializeField] private Text contentText;
 
     [Button]
-    public void ShowPopConfirmAction(string content,Action actionConfirm)
+    public void ShowPopConfirmAction(string content, Action actionConfirm)
     {
         Show();
         contentText.text = content;
-        SetEventButton(btnConfirm, () =>
-        {
-           OnClickEvent(actionConfirm);
-        });
+        SetEventButton(btnConfirm, () => { OnClickEvent(actionConfirm); });
         var fitter = contentText.GetComponent<ContentSizeFitter>();
         if (fitter != null)
         {
@@ -37,6 +34,7 @@ public class PopupConfirmAction : Popup,IUISingleton
         Hide();
         actionConfirm?.Invoke();
     }
+
     public void Init()
     {
         Pool.Set(this);

@@ -19,7 +19,7 @@ namespace Skill
             public ELinhKhi linhKhiRequire;
             public int count;
         }
-        
+
         [SerializeField] protected List<RequireActive> requireActives;
         public List<RequireActive> BaseRequireActive => requireActives;
 
@@ -27,6 +27,7 @@ namespace Skill
         {
             baseTimeLearn = 165 * (int)eTierSkill;
         }
+
         public virtual List<RequireActive> GetRequireActive(CharacterCombat caster)
         {
             return requireActives;
@@ -52,12 +53,12 @@ namespace Skill
         }
 
         [SerializeField] protected GameObject prefabEffectSkill => LoadFirstDataPrefab();
-      
+
         public GameObject LoadFirstDataPrefab()
         {
             string addressKey = $"PrefabEffectSkill_{Id}";
             GameObject handle = null;
-           // Kiểm tra xem Key này có tồn tại trong Addressables Catalog hay không
+            // Kiểm tra xem Key này có tồn tại trong Addressables Catalog hay không
             bool hasKey = false;
             foreach (var locator in Addressables.ResourceLocators)
             {
@@ -73,15 +74,18 @@ namespace Skill
             {
                 handle = Addressables.LoadAssetAsync<GameObject>(addressKey).WaitForCompletion();
             }
+
             return handle;
         }
+
         public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
         {
         }
+
         public virtual void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
         {
+        }
 
-        }    
         public static int GetIndexLevelThanThong(CharacterCombat caster)
         {
             return GetIndexLevelThanThong(caster.characterStatsTemp);
@@ -378,10 +382,12 @@ namespace Skill
         {
             return caster.congPhapDynamic.Count(x => x.congPhap is DietLinhQuyet) <= DietLinhQuyet.require - 1;
         }
+
         public bool IsCanUseGlobal(CharacterCombat caster, CharacterCombat target)
         {
-            return IsCanUse(caster,target) && !caster.thanThongCoolDown.ContainsKey(this);
+            return IsCanUse(caster, target) && !caster.thanThongCoolDown.ContainsKey(this);
         }
+
         protected GameObject ShowSkillEffectParticleBase(CharacterCombat caster, float delay, float cameraSize = 50f,
             bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
         {
@@ -470,7 +476,7 @@ namespace Skill
         }
 
         protected virtual GameObject ShowSkillEffectWorld(CharacterCombat target, float delay,
-                bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
+            bool isDestroy = true) // particle thì chỉnh camerasize còn base thì chỉnh scale thôi
         {
             if (prefabEffectSkill == null) return null;
 

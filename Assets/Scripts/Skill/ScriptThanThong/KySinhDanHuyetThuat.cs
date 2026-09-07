@@ -7,14 +7,13 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(KySinhDanHuyetThuat), menuName = "Skill/Thần Thông/" + nameof(KySinhDanHuyetThuat))]
 public class KySinhDanHuyetThuat : ThanThong, IMemorySerializable<KySinhDanHuyetThuat>
 {
-    [SerializeField]
-    private int[] dames;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] dames;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
         SecureInt trienNhieu = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out trienNhieu);
         if (trienNhieu > 0)
@@ -22,12 +21,20 @@ public class KySinhDanHuyetThuat : ThanThong, IMemorySerializable<KySinhDanHuyet
             caster.Healing(dame);
         }
 
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"+{dames[level - 1]} điểm", "red")} sát thương, nếu đối phương đang ở dưới trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)} thì khôi phục khí huyết tương ứng";
+        return
+            $"Tạo thành {GetColoredText($"+{dames[level - 1]} điểm", "red")} sát thương, nếu đối phương đang ở dưới trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)} thì khôi phục khí huyết tương ứng";
     }
 
     public override int ByteSize()

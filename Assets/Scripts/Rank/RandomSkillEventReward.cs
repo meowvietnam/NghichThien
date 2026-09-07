@@ -16,10 +16,12 @@ namespace Rank
         public BaseSkill.ETierSkill Tier { get; set; }
         public ItemType Type { get; set; }
         public ushort Count { get; set; }
+
         public void Claim(CharacterData charData)
         {
             charData.InventoryManager.Add(Item);
         }
+
         public void ShowUI(RewardUIContext context)
         {
             var itemUi = Object.Instantiate(context.RandomSkillItemPrefab, context.Container);
@@ -36,6 +38,7 @@ namespace Rank
             };
             return $"x{Utils.FormatCount(Count)} {tierText} {typeItemText}";
         }
+
         private SkillData GetItemData()
         {
             var type = Item.Type;
@@ -49,11 +52,12 @@ namespace Rank
             var skillData = new SkillData(Item, skillItemData);
             return skillData;
         }
+
         public string GetRichText()
         {
             var skillData = GetItemData();
             return
-            $"<color=#{ColorUtility.ToHtmlStringRGBA(skillData.ItemData.VisualQuality.Color)}>{skillData.ItemData.Name} x{Item.Count}</color>";
+                $"<color=#{ColorUtility.ToHtmlStringRGBA(skillData.ItemData.VisualQuality.Color)}>{skillData.ItemData.Name} x{Item.Count}</color>";
         }
     }
 }

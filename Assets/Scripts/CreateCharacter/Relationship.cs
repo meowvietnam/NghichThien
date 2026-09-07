@@ -15,6 +15,7 @@ namespace CreateCharacter
         {
             return Npc;
         }
+
         public bool Equals(Relationship? other)
         {
             if (other is null) return false;

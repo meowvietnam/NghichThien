@@ -86,27 +86,32 @@ namespace LuyenDan
             var herb = HerbDatas.FirstOrDefault(x => x.Id == id);
             return herb;
         }
+
         public LinhDan FindLinhDanWithName(string name)
         {
             var item = LinhDans.FirstOrDefault(x => x.Name == name);
             return item;
         }
+
         public LinhDan FindLinhDan(int id)
         {
             var item = LinhDans.FirstOrDefault(x => x.Id == id);
             return item;
         }
+
         [Button]
         public LinhDan[] FindLinhDans(ETypeDan type)
         {
             return LinhDans.Where(x => x.ETypeDan == type).OrderBy(x => x.Tier).ThenBy(x => x.Name).ToArray();
         }
+
         [Button]
         public LinhDan FindLinhDan(string name)
         {
             var item = LinhDans.FirstOrDefault(x => x.Name.Contains(name, StringComparison.InvariantCultureIgnoreCase));
             return item;
         }
+
         public string GetHerbDetail(int id, HerbType herbType)
         {
             var herb = HerbDatas.FirstOrDefault(x => x.Id == id);
@@ -132,6 +137,7 @@ namespace LuyenDan
         {
             return Recipes.FirstOrDefault(x => x.Id == i);
         }
+
         public void Deserialize(IReader reader, ref LuyenDanResources value)
         {
             value.TempFurnaceDatas = reader.ReadArray<TempFurnaceData>().ToList();
@@ -166,12 +172,14 @@ namespace LuyenDan
         [Button]
         public void FindHerbs(string name)
         {
-            var item = HerbDatas.FirstOrDefault(x => x.Name.Contains(name, StringComparison.InvariantCultureIgnoreCase));
+            var item = HerbDatas.FirstOrDefault(x =>
+                x.Name.Contains(name, StringComparison.InvariantCultureIgnoreCase));
             if (item == null)
             {
                 Debug.Log(name + " not found");
                 return;
             }
+
             Debug.Log($"{item.Name} - Id: {item.Id}");
         }
     }

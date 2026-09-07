@@ -1,7 +1,6 @@
 namespace Network.ClientState
 {
-    public interface IClientState : IMessageState<MessageTag,MessageState>
+    public interface IClientState : IMessageState<MessageTag, MessageState>
     {
-        
     }
 }

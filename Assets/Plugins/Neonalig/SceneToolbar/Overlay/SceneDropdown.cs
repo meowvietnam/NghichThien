@@ -59,16 +59,12 @@ namespace Plugins.Neonalig.SceneToolbar.Overlay
         {
             GenericMenu menu = new();
             menu.AddItem(
-                EditorGUIUtility.TrTextContent("Open Additive"), SceneToolbarSettings.OpenAdditive, () =>
-                {
-                    SceneToolbarSettings.OpenAdditive = !SceneToolbarSettings.OpenAdditive;
-                }
+                EditorGUIUtility.TrTextContent("Open Additive"), SceneToolbarSettings.OpenAdditive,
+                () => { SceneToolbarSettings.OpenAdditive = !SceneToolbarSettings.OpenAdditive; }
             );
             menu.AddItem(
-                EditorGUIUtility.TrTextContent("Include not in Build"), SceneToolbarSettings.IncludeNotInBuild, () =>
-                {
-                    SceneToolbarSettings.IncludeNotInBuild = !SceneToolbarSettings.IncludeNotInBuild;
-                }
+                EditorGUIUtility.TrTextContent("Include not in Build"), SceneToolbarSettings.IncludeNotInBuild,
+                () => { SceneToolbarSettings.IncludeNotInBuild = !SceneToolbarSettings.IncludeNotInBuild; }
             );
             menu.AddSeparator(string.Empty);
 
@@ -124,6 +120,7 @@ namespace Plugins.Neonalig.SceneToolbar.Overlay
                     paths.Add(scene.path);
                 }
             }
+
             return paths;
         }
 
@@ -139,7 +136,9 @@ namespace Plugins.Neonalig.SceneToolbar.Overlay
                     return;
                 }
             }
-            EditorSceneManager.OpenScene(path, SceneToolbarSettings.OpenAdditive ? OpenSceneMode.Additive : OpenSceneMode.Single);
+
+            EditorSceneManager.OpenScene(path,
+                SceneToolbarSettings.OpenAdditive ? OpenSceneMode.Additive : OpenSceneMode.Single);
             UpdateView();
         }
 
@@ -157,7 +156,11 @@ namespace Plugins.Neonalig.SceneToolbar.Overlay
             for (int I = 0; I < buildScenes; I++)
             {
                 string path = SceneUtility.GetScenePathByBuildIndex(I);
-                if (string.IsNullOrEmpty(path)) { continue; }
+                if (string.IsNullOrEmpty(path))
+                {
+                    continue;
+                }
+
                 paths.Add(path);
             }
 
@@ -169,9 +172,17 @@ namespace Plugins.Neonalig.SceneToolbar.Overlay
                     .ToArray();
                 foreach (SceneAsset asset in assets)
                 {
-                    if (asset == null) { continue; }
+                    if (asset == null)
+                    {
+                        continue;
+                    }
+
                     string path = AssetDatabase.GetAssetPath(asset);
-                    if (string.IsNullOrEmpty(path)) { continue; }
+                    if (string.IsNullOrEmpty(path))
+                    {
+                        continue;
+                    }
+
                     paths.Add(path);
                 }
             }
@@ -179,6 +190,7 @@ namespace Plugins.Neonalig.SceneToolbar.Overlay
             return paths;
         }
 
-        private static Texture2D GetIcon([LocalizationRequired(false)] string name) => (Texture2D)EditorGUIUtility.IconContent(name).image;
+        private static Texture2D GetIcon([LocalizationRequired(false)] string name) =>
+            (Texture2D)EditorGUIUtility.IconContent(name).image;
     }
 }

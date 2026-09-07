@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public interface IStaticCombatEffect 
+public interface IStaticCombatEffect
 {
     void InitPosCallExecute(CharacterCombat caster);
-
 }

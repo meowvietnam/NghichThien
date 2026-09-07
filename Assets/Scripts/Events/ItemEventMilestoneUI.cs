@@ -10,6 +10,7 @@ namespace Events
         [SerializeField] private Text progressText;
         [SerializeField] private Color completed;
         [SerializeField] private Color incompleted;
+
         public void Init(ItemEvent target, int progress)
         {
             itemUI.Init(target);

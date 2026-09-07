@@ -7,11 +7,11 @@ namespace Tutorials
         [SerializeField] private Tutorial tutorial;
         [SerializeField] private RectTransform luyenDan;
         public const string tutorialLuyenDan = "isFirstTutorialLuyenDan";
-        
+
         private void Start()
         {
             var isFirstTutorial = PlayerPrefs.GetInt(tutorialLuyenDan, 0) == 0;
-            if(!isFirstTutorial) return;
+            if (!isFirstTutorial) return;
             tutorial.OnCompleted += OnCompleted;
             ShowTutorial();
         }
@@ -20,6 +20,7 @@ namespace Tutorials
         {
             PlayerPrefs.SetInt(tutorialLuyenDan, 1);
         }
+
         private void ShowTutorial()
         {
             TutorialStep[] steps = new[]

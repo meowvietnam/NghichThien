@@ -9,17 +9,23 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(CuLinhTrao), menuName = "Skill/Thần Thông/" + nameof(CuLinhTrao))]
 public class CuLinhTrao : ThanThong, IMemorySerializable<CuLinhTrao>
 {
-    [SerializeField]
-    private int[] dames;
-    [SerializeField]
-    private int[] dameBuffs;
-    [SerializeField]
-    private float delayTimeEffect = 0.5f;
+    [SerializeField] private int[] dames;
+    [SerializeField] private int[] dameBuffs;
+    [SerializeField] private float delayTimeEffect = 0.5f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
         int countUse = GetListSkillUseCheck(caster).Count(data => data.thanThong is CuLinhTrao);
-        target.CaculateDameByThanThong(caster, new List<int>{dame + (countUse * dameBuffs[GetIndexLevelThanThong(caster)])}, eTypeSkill);
+        target.CaculateDameByThanThong(caster,
+            new List<int> { dame + (countUse * dameBuffs[GetIndexLevelThanThong(caster)]) }, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
@@ -35,7 +41,8 @@ public class CuLinhTrao : ThanThong, IMemorySerializable<CuLinhTrao>
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương,{GetColoredText($"{GetLogicText()}", "red")} mỗi lần sử dụng {GetColoredText($"[Cự Linh Trảo]", "green")} thì tổn thương {GetColoredText($"+{dameBuffs[level - 1]}", "red")} điểm sát thương";
+        return
+            $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương,{GetColoredText($"{GetLogicText()}", "red")} mỗi lần sử dụng {GetColoredText($"[Cự Linh Trảo]", "green")} thì tổn thương {GetColoredText($"+{dameBuffs[level - 1]}", "red")} điểm sát thương";
     }
 
     public override int ByteSize()

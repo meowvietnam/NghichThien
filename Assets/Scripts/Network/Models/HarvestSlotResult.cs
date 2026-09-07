@@ -1,6 +1,7 @@
 ﻿using MemoryPack;
 using DP;
 using System.Collections.Generic;
+
 namespace Network.Models
 {
     [MemoryPackable]
@@ -8,6 +9,7 @@ namespace Network.Models
     {
         public ushort SlotIndex { get; set; }
     }
+
     [MemoryPackable]
     public partial class HarvestSlotResult : Result
     {

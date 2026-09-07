@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(DaiThonDietThuat), menuName = "Skill/Thần Thông/" + nameof(DaiThonDietThuat))]
 public class DaiThonDietThuat : ThanThong, IMemorySerializable<DaiThonDietThuat>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{9, 15, 28, 50, 86};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] buffValues = new int[] { 9, 15, 28, 50, 86 };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt hoTraoTarget);
@@ -21,6 +20,13 @@ public class DaiThonDietThuat : ThanThong, IMemorySerializable<DaiThonDietThuat>
         target.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, hoTraoTarget);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
@@ -49,7 +55,8 @@ public class DaiThonDietThuat : ThanThong, IMemorySerializable<DaiThonDietThuat>
 
     public override string GetDesc(int level)
     {
-        return $"Gỡ ra toàn bộ số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} của bản thân và đối thủ. Hiệp kết thúc, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} {GetColoredText($"Mỗi cuộc chiến chỉ có thể sử dụng một lần", "red")}";
+        return
+            $"Gỡ ra toàn bộ số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} của bản thân và đối thủ. Hiệp kết thúc, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} {GetColoredText($"Mỗi cuộc chiến chỉ có thể sử dụng một lần", "red")}";
     }
 
     public override int ByteSize()

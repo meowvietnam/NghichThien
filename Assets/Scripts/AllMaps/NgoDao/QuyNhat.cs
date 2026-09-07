@@ -8,13 +8,13 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(QuyNhat), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(QuyNhat))]
 public class QuyNhat : NgoDaoCombat, IMemorySerializable<QuyNhat>
 {
-    [SerializeField]
-    private int buff = 50;
+    [SerializeField] private int buff = 50;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (caster.CurrentLinhKhi == caster.totalKhi)
         {
-            target.AddDamageData(new List<int>{target.GetDameBuffForTarget() * buff / 100});
+            target.AddDamageData(new List<int> { target.GetDameBuffForTarget() * buff / 100 });
         }
         else
         {
@@ -24,7 +24,8 @@ public class QuyNhat : NgoDaoCombat, IMemorySerializable<QuyNhat>
 
     public override string GetDes()
     {
-        return $"Mỗi lần sử dụng thần thông tạo thành tổn thương, nếu số lượng linh khí của ngươi sau đó tương đương linh khí tối đa thì lần này sát thương tăng lên {BaseSkill.GetColoredText($"{buff}%", "red")}. Nếu không, khôi phục điểm HP tương đương số lượng linh khí hiện tại của ngươi";
+        return
+            $"Mỗi lần sử dụng thần thông tạo thành tổn thương, nếu số lượng linh khí của ngươi sau đó tương đương linh khí tối đa thì lần này sát thương tăng lên {BaseSkill.GetColoredText($"{buff}%", "red")}. Nếu không, khôi phục điểm HP tương đương số lượng linh khí hiện tại của ngươi";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

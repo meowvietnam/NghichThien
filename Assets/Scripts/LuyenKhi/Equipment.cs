@@ -7,6 +7,7 @@ namespace LuyenKhi
         [field: SerializeField] public EquipmentType Type { get; private set; }
         [SerializeField] private SelectTypePage selectTypePage;
         [SerializeField] private GameObject selfObject;
+
         public void SetActive(bool active)
         {
             selfObject.SetActive(active);

@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(HonThienThuat))]
 public class HonThienThuat : ThoNapCongPhap, IMemorySerializable<HonThienThuat>
 {
-    [SerializeField]
-    private int[] dames = new int[]{1, 2, 3, 4, 5};
+    [SerializeField] private int[] dames = new int[] { 1, 2, 3, 4, 5 };
+
     public override void ExecuteParams(params object[] data)
     {
         // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
@@ -25,12 +25,13 @@ public class HonThienThuat : ThoNapCongPhap, IMemorySerializable<HonThienThuat>
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.AddDamageData(new List<int>{(int)(dames[CurrentLevelCongPhapInCombat(target) - 1])});
+        target.AddDamageData(new List<int> { (int)(dames[CurrentLevelCongPhapInCombat(target) - 1]) });
     }
 
     public override string GetDesc(int level)
     {
-        return $"{base.GetDesc(level)} nhưng nhận tất cả tổn thương tăng {GetColoredText($"+{dames[level - 1]}", "red")}";
+        return
+            $"{base.GetDesc(level)} nhưng nhận tất cả tổn thương tăng {GetColoredText($"+{dames[level - 1]}", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)
