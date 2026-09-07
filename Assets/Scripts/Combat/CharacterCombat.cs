@@ -1770,7 +1770,7 @@ public class CharacterCombat : MonoBehaviour
         ref int finalDameHoTrao)
     {
         var combatManager = Pool.Get<CombatManager>();
-        if (!combatManager.isSync && combatManager.IsRealTimeCombat)
+        if (!combatManager.IsSync && combatManager.IsRealTimeCombat)
         {
             return;
         }
@@ -1873,7 +1873,7 @@ public class CharacterCombat : MonoBehaviour
 
     public void Healing(int hp)
     {
-        if (!Pool.Get<CombatManager>().IsSync)
+        if (!Pool.Get<CombatManager>().IsSync && Pool.Get<CombatManager>().IsRealTimeCombat)
         {
             return;
         }
