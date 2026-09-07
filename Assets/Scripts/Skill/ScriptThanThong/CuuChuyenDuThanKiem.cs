@@ -39,8 +39,7 @@ public class CuuChuyenDuThanKiem : ThanThong, IMemorySerializable<CuuChuyenDuTha
             }
 
             target.CaculateDameByThanThong(caster, dames, eTypeSkill);
-            // Nếu không đủ linh khí yêu cầu ban đầu, tiến hành gỡ hiệu ứng sau khoảng thời gian delay
-            DOVirtual.DelayedCall(delayTimeEffect, () => { caster.RemoveEffectSkillNoDestroy(this); });
+          
         }
     }
 
@@ -60,6 +59,8 @@ public class CuuChuyenDuThanKiem : ThanThong, IMemorySerializable<CuuChuyenDuTha
     {
         base.PlayVisualSkill(caster, target);
         caster.effectSkillNoDestroy.Add(this, ShowSkillEffectWorld(target, 0, false));
+        // Nếu không đủ linh khí yêu cầu ban đầu, tiến hành gỡ hiệu ứng sau khoảng thời gian delay
+        DOVirtual.DelayedCall(delayTimeEffect, () => { caster.RemoveEffectSkillNoDestroy(this); });
     }
 
     public override string GetDesc(int level)
