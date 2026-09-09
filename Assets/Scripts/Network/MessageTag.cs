@@ -276,5 +276,8 @@ namespace Network
         SyncUsePhapBao = 3476,
         ResultCombatPvp = 3524,
         YouWinPvp = 3534,
+        ClanCommand = 3600,
+        ClanQuery = 3601,
+        ClanChanged = 3602,
     }
 }
