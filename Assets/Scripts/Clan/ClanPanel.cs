@@ -36,7 +36,12 @@ namespace Clan
 
         protected virtual void OnClanChanged(ClanModel clan)
         {
-            if (clan == null) Hide(0f);
+            if (clan == null)
+            {
+                Hide();
+                return;
+            }
+            
         }
 
         protected virtual void OnMemberAdded(ClanMember member)
