@@ -1,6 +1,7 @@
 using LuyenDan;
 using MemoryPack;
 using UnityEngine;
+
 namespace Network.Models
 {
     [MemoryPackable]
@@ -11,4 +12,3 @@ namespace Network.Models
         public ItemType TypeSkill { get; set; }
     }
 }
-

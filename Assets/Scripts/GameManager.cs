@@ -31,14 +31,19 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEditor;
 #endif
 
-public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
+public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
 {
     [SerializeField] public List<string> listSceneLoaded = new List<string>
     {
         "AllMaps",
     };
 
-    [SerializeField] public EMapType currentEMapType => Pool.Get<MapManager>().FindMap(Client.Instance.CharacterData.Progression.IdCurrentNode) is Stronghold strongHold ? strongHold.eCurrentMapType : EMapType.None;
+    [SerializeField]
+    public EMapType currentEMapType =>
+        Pool.Get<MapManager>().FindMap(Client.Instance.CharacterData.Progression.IdCurrentNode) is Stronghold strongHold
+            ? strongHold.eCurrentMapType
+            : EMapType.None;
+
     public EMonPhai CurrentEMonPhai => ConvertEMapToEMonPhai(currentEMapType);
 
     public static Dictionary<EMapType, string> dictMapTypeWithSceneName = new Dictionary<EMapType, string>()
@@ -201,6 +206,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
 
         return EMonPhai.None;
     }
+
     public static EMapType ConvertEMonPhaiToEMap(EMonPhai eMonPhai)
     {
         return eMonPhai switch
@@ -215,6 +221,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             _ => EMapType.None // Dấu gạch dưới '_' thay thế cho 'default' nếu truyền vào một giá trị lạ
         };
     }
+
     public static Dictionary<BaseSkill.ETierSkill, int> tierSkillWithLevel = new Dictionary<BaseSkill.ETierSkill, int>
     {
         { BaseSkill.ETierSkill.NhanGiaiHa, 1 },
@@ -240,7 +247,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
 
     public static Dictionary<EquipmentTier, int> tierEquipmentWithLevel = new Dictionary<EquipmentTier, int>
     {
-        { EquipmentTier.PhuKhi, 5},
+        { EquipmentTier.PhuKhi, 5 },
         { EquipmentTier.PhapKhi, 8 },
         { EquipmentTier.PhapBao, 11 },
         { EquipmentTier.ThuanDuong, 18 },
@@ -266,17 +273,20 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         { 14, ETypeVisualChar.EnemyNguyenAnhSoKi },
         { 15, ETypeVisualChar.EnemyTrucCoHauKi },
     };
+
     public InfoLevel[] inforLevels => LevelResource.Instance.inforLevels;
 
     public static string GetChucVuText(EMonPhai monPhai, int level)
     {
         string textChucVu = monPhaiText[monPhai];
-        if(monPhai != EMonPhai.None)
+        if (monPhai != EMonPhai.None)
         {
             textChucVu += " " + chucVuText[ThanThong.GetDaiCanhGioi(level)];
         }
+
         return textChucVu;
     }
+
     public static string GetChucVuTextBase(EMonPhai monPhai, int level)
     {
         string textChucVu = "";
@@ -284,14 +294,15 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         {
             textChucVu = chucVuText[ThanThong.GetDaiCanhGioi(level)];
         }
+
         return textChucVu;
     }
+
     public static string GetMonPhaiTextBase(EMonPhai monPhai)
     {
-        
-
         return monPhaiText[monPhai];
     }
+
     public void OnBackScene()
     {
         string currentScene = SceneManager.GetActiveScene().name;
@@ -300,6 +311,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         {
             return;
         }
+
         Pool.Get<UIManager>().panelGroup.SetActive(true);
         Pool.Get<UIManager>().SetActiveListIcon(true);
         string backScene = listSceneLoaded[index - 1];
@@ -317,31 +329,34 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             if (data.Length > 2)
             {
                 Map currentMapLoad = (Map)data[2];
-                if(!currentMapLoad.IsEmptyAction)
+                if (!currentMapLoad.IsEmptyAction)
                 {
                     return;
-                }    
+                }
             }
+
             SetDialogGacCong("xin dừng bước hiện tại nơi này chưa thể vào hãy kiên nhẫn chờ bản cập nhật tiếp theo!");
             return;
         }
-        
+
         if (data.Length > 1)
         {
             EMapType eMap = (EMapType)data[1];
         }
+
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         var sceneManger = Client.Instance.CoreModule.GetHandler<Network.Core.SceneManager>();
         sceneManger.ChangeScene(nameScene, OnChangeSceneResult);
     }
-    public static void SetDialogGacCong(string content , System.Action action = null,bool isAutoHide=true)
+
+    public static void SetDialogGacCong(string content, System.Action action = null, bool isAutoHide = true)
     {
         System.Random _random = new System.Random();
         Array values = Enum.GetValues(typeof(Gender));
         Gender randomGender = (Gender)values.GetValue(_random.Next(values.Length));
         var xungHo = XungHoText(6, randomGender);
         SayDialogManager.Instance.ShowDialogRandomSkin("Người Gác Cổng", randomGender,
-           new List<string> { $"{xungHo.targetCallMe} {content}" },null,null,action,isAutoHide);
+            new List<string> { $"{xungHo.targetCallMe} {content}" }, null, null, action, isAutoHide);
     }
 
     private void OnChangeSceneResult(ChangeSceneResult result)
@@ -360,6 +375,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
                 {
                     notify.Show(result.Message);
                 }
+
                 Pool.Get<UIManager>().loadScene.gameObject.SetActive(false);
                 Debug.Log(result.Message);
             }
@@ -377,36 +393,41 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         public ETypeVisualChar eTypeVisual;
         public CharacterStatsSecure charStats;
     }
+
     public CharCombatInit enemyCombat = null;
     public CharCombatInit user = null;
     public ETypeCombat currentETypeCombat = ETypeCombat.None;
     public ETypeResultCombat currentECombatResult = ETypeResultCombat.None;
     public Sprite spriteBGCombat;
 
-    public void SetBGCombat(Sprite  sprite)
+    public void SetBGCombat(Sprite sprite)
     {
         this.spriteBGCombat = sprite;
     }
+
     public void GoToCombatArena()
     {
         if (enemyCombat == null) return;
+        currentECombatResult = ETypeResultCombat.None;
+
         Pool.Get<UIManager>().panelGroup.SetActive(false);
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
         Pool.Get<UIManager>().SetActiveListIcon(false);
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
+
         Observer.Notify(EventList.GamePlay.LOAD_SCENE, "Combat");
-
-
     }
+
     public void GoToCombat()
     {
         if (enemyCombat == null) return;
+        currentECombatResult = ETypeResultCombat.None;
         if (Client.Instance.CharacterData.Stats.Hp <= 0 && currentETypeCombat == ETypeCombat.AllMaps)
         {
             NotifyGroup.Instance.Show("Khí huyết đã cạn. Hãy bế quan tại khách sạn hoặc sử dụng đan dược để hồi phục");
             return;
         }
-        
+
         Pool.Get<UIManager>().panelGroup.SetActive(false);
         Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
         Pool.Get<UIManager>().SetActiveListIcon(false);
@@ -420,11 +441,9 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         {
             Observer.Notify(EventList.Network.LOAD_CHAR_COMBAT, this);
             Client.Instance.CharacterData.EquipmentManager.DanCombatUseds.Clear();
-
         }
-
-
     }
+
     public void GoToLuanBan(CharacterSnapshot user)
     {
         this.user = new CharCombatInit
@@ -432,18 +451,17 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             eTypeVisual = ETypeVisualChar.Character,
             charStats = CharacterStatsSecureBuilder.ArenaFromCharacterSnapshot(user),
         };
-
         Observer.Notify(EventList.GamePlay.LOAD_SCENE, "Combat");
     }
 
-    public void GoToPrepareCombatArena(CharacterSnapshot user,CharacterSnapshot enemy)
+    public void GoToPrepareCombatArena(CharacterSnapshot user, CharacterSnapshot enemy)
     {
         this.user = new CharCombatInit
         {
             eTypeVisual = ETypeVisualChar.Character,
             charStats = CharacterStatsSecureBuilder.ArenaFromCharacterSnapshot(user),
         };
-        if(enemy != null)
+        if (enemy != null)
         {
             this.enemyCombat = new CharCombatInit
             {
@@ -452,7 +470,8 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             };
         }
         else
-        {// 1. Lấy tất cả NPC trùng level
+        {
+            // 1. Lấy tất cả NPC trùng level
             var matchingNPCs = Pool.Get<NPCManager>().npcDatas
                 .Where(x => x.charStats.level.Value == user.Level)
                 .ToList();
@@ -469,21 +488,21 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
                 charStats = randomNPC?.charStats // Thêm dấu '?' để an toàn nếu randomNPC bị null
             };
         }
+
         if (enemyCombat.charStats == null) return;
         currentETypeCombat = ETypeCombat.DauTruong;
-        currentECombatResult = ETypeResultCombat.None;
         Client.Instance.CharacterData.EquipmentManager.DanCombatUseds.Clear();
-
     }
+
     public void GoToPrepareCombat(CharCombatInit enemyCombat, ETypeCombat eTypeCombat)
     {
         this.enemyCombat = enemyCombat;
         if (enemyCombat == null) return;
-          
+
         currentETypeCombat = eTypeCombat;
         Pool.Get<PrepareCombatPanel>().Show();
-        currentECombatResult = ETypeResultCombat.None;
     }
+
     public void BackAllMapFromCombat(ETypeResultCombat eCombatResult)
     {
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
@@ -491,14 +510,12 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         Pool.Get<UIManager>().SetActiveListIcon(true);
         ReleaseGroupSkillEffect();
         currentECombatResult = eCombatResult;
-        string backScene = listSceneLoaded[listSceneLoaded.Count-1];
+        string backScene = listSceneLoaded[listSceneLoaded.Count - 1];
         Debug.Log($"This back scene is {backScene}");
         Observer.Notify(EventList.GamePlay.BACK_SCENE, backScene);
         SoundManager.Instance.PlayMusicHome();
         Cleanup();
     }
-
-
 
 
     private void Awake()
@@ -533,8 +550,13 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
 
     private Dictionary<int, CongPhap> _cpCache = new Dictionary<int, CongPhap>();
     private Dictionary<int, ThanThong> _ttCache = new Dictionary<int, ThanThong>();
-    private Dictionary<int, AsyncOperationHandle<CongPhap>> _cpHandles = new Dictionary<int, AsyncOperationHandle<CongPhap>>();
-    private Dictionary<int, AsyncOperationHandle<ThanThong>> _ttHandles = new Dictionary<int, AsyncOperationHandle<ThanThong>>();
+
+    private Dictionary<int, AsyncOperationHandle<CongPhap>> _cpHandles =
+        new Dictionary<int, AsyncOperationHandle<CongPhap>>();
+
+    private Dictionary<int, AsyncOperationHandle<ThanThong>> _ttHandles =
+        new Dictionary<int, AsyncOperationHandle<ThanThong>>();
+
     public void PreloaderSkill(List<int> ids, bool isThanThong)
     {
         foreach (var id in ids)
@@ -550,6 +572,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             }
         }
     }
+
     public CongPhap GetCongPhapWithId(int id)
     {
         if (id == ushort.MaxValue || id < 0) return null;
@@ -563,6 +586,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             _cpCache[id] = data;
             _cpHandles[id] = handle; // Lưu handle lại để sau này Release
         }
+
         return data;
     }
 
@@ -580,16 +604,19 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             _ttCache[id] = data;
             _ttHandles[id] = handle; // Đã thêm: Lưu handle lại
         }
+
         return data;
     }
+
     public void Cleanup()
     {
         if (Client.Instance == null)
         {
             return;
         }
+
         var charData = Client.Instance.CharacterData;
-        
+
         // Combine all ThanThong IDs into one list
         var allThanThongIds = new List<int>();
         allThanThongIds.AddRange(charData.EquipmentManager.ThanThongEquips.Select(itemRef => (int)itemRef.Id));
@@ -608,6 +635,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         // --- Dọn dẹp Thần Thông ---
         CleanupCache(_ttCache, _ttHandles, allCongPhapIds, "Thần Thông");
     }
+
     public static void ReleaseGroupSkillEffect()
     {
         // 1. Lấy vị trí tất cả asset thuộc Label "skilleffect"
@@ -625,8 +653,10 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
 
         Debug.Log("[Addressables] Đã xả RAM toàn bộ group skilleffect!");
     }
+
     // Hàm hỗ trợ để tránh viết lặp lại code
-    private void CleanupCache<T>(Dictionary<int, T> cache, Dictionary<int, AsyncOperationHandle<T>> handles, IEnumerable<int> ownedIds, string logName)
+    private void CleanupCache<T>(Dictionary<int, T> cache, Dictionary<int, AsyncOperationHandle<T>> handles,
+        IEnumerable<int> ownedIds, string logName)
     {
         // Tạo danh sách ID cần xóa để tránh lỗi "Collection modified" khi đang lặp
         List<int> idsToRemove = new List<int>();
@@ -648,10 +678,12 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
                 Addressables.Release(handle);
                 handles.Remove(id);
             }
+
             cache.Remove(id);
             Debug.Log($"Đã giải phóng RAM cho {logName} ID: {id}");
         }
     }
+
     public AllMaps.NgoDao.NgoDao GetNgoDaoWithId(int id)
     {
         return ngoDaos.FirstOrDefault(x => x.Id == id);
@@ -661,20 +693,17 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     {
         return danDuocs.FirstOrDefault(x => x.Id == id);
     }
+
     public BaseSkill FindThanThongWithItemRef(ItemRef itemRef)
     {
         return GetThanThongWithId(itemRef.Id); // Chuyền Action vào đây
-
-
     }
 
     public BaseSkill FindCongPhapWithItemRef(ItemRef itemRef)
     {
         return GetCongPhapWithId(itemRef.Id);
-
-
     }
-    
+
     public static Dictionary<Tier, string> TextWithTier = new Dictionary<Tier, string>
     {
         { Tier.NhatPham, "Nhất Phẩm" },
@@ -684,6 +713,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         { Tier.NguPham, "Ngũ Phẩm" },
         { Tier.LucPham, "Lục Phẩm" },
     };
+
     public static Dictionary<EquipmentTier, string> TextWithTierEquirement = new Dictionary<EquipmentTier, string>
     {
         { EquipmentTier.PhuKhi, "Phù Khí" },
@@ -692,7 +722,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         { EquipmentTier.ThuanDuong, "Thuần Dương" },
         { EquipmentTier.ThongThien, "Thông Thiên" },
     };
-   
+
 
     public static Dictionary<Tier, int> PriceVatLieuWithTier = new Dictionary<Tier, int>
     {
@@ -715,13 +745,14 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     };
 
     public static Dictionary<Tier, int> PriceFurnaceWithTierPerDurability => PriceHerbWithTier;
+
     public static Dictionary<ItemType, EquipmentType> ItemTypeToEquipemtType = new Dictionary<ItemType, EquipmentType>
     {
         { ItemType.VuKhi, EquipmentType.Weapon },
         { ItemType.PhongCu, EquipmentType.Armor },
         { ItemType.TrangSuc, EquipmentType.Jewelry },
-
     };
+
     public static Dictionary<BaseSkill.ETierSkill, int> PriceTTWithTier = new Dictionary<BaseSkill.ETierSkill, int>
     {
         { BaseSkill.ETierSkill.NhanGiaiHa, 25 },
@@ -747,10 +778,6 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         { BaseSkill.ETierSkill.ThienGiaiTrung, 400000 },
         { BaseSkill.ETierSkill.ThienGiaiThuong, 600000 },
     };
-
-
-
-
 
 
     [Button]
@@ -796,42 +823,44 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     private void OnUpdateDataNgoDao()
     {
 #if UNITY_EDITOR
-    // Xác định folder quét để tránh quét nhầm các asset khác cùng type
-    string[] foldersToSearch = { "Assets/Scripts/AllMaps/NgoDao" };
-    
-    // Tìm GUID của các asset có type là NgoDaoCombat (ScriptableObject)
-    string[] guids = AssetDatabase.FindAssets("t:NgoDaoCombat", foldersToSearch);
+        // Xác định folder quét để tránh quét nhầm các asset khác cùng type
+        string[] foldersToSearch = { "Assets/Scripts/AllMaps/NgoDao" };
 
-    ngoDaos = guids
-        .Select(guid => AssetDatabase.LoadAssetAtPath<ScriptableObject>(AssetDatabase.GUIDToAssetPath(guid)))
-        // Ép kiểu về NgoDao an toàn, nếu NgoDao không kế thừa UnityEngine.Object trực tiếp thì ép qua ScriptableObject trước
-        .OfType<AllMaps.NgoDao.NgoDao>() 
-        .ToArray();
+        // Tìm GUID của các asset có type là NgoDaoCombat (ScriptableObject)
+        string[] guids = AssetDatabase.FindAssets("t:NgoDaoCombat", foldersToSearch);
 
-    EditorUtility.SetDirty(this);
-    Debug.Log($"Đã cập nhật {ngoDaos.Length} Ngộ Đạo từ thư mục AllMaps/NgoDao.");
+        ngoDaos = guids
+            .Select(guid => AssetDatabase.LoadAssetAtPath<ScriptableObject>(AssetDatabase.GUIDToAssetPath(guid)))
+            // Ép kiểu về NgoDao an toàn, nếu NgoDao không kế thừa UnityEngine.Object trực tiếp thì ép qua ScriptableObject trước
+            .OfType<AllMaps.NgoDao.NgoDao>()
+            .ToArray();
+
+        EditorUtility.SetDirty(this);
+        Debug.Log($"Đã cập nhật {ngoDaos.Length} Ngộ Đạo từ thư mục AllMaps/NgoDao.");
 #endif
     }
+
     [Button]
     private void OnUpdateDataDanDuoc()
     {
 #if UNITY_EDITOR
-    // Xác định folder quét
-    string[] foldersToSearch = { "Assets/Scripts/Combat/DanDuocCombat" };
+        // Xác định folder quét
+        string[] foldersToSearch = { "Assets/Scripts/Combat/DanDuocCombat" };
 
-    // Tìm tất cả GUID của các asset có type gốc là BaseDanDuocCombat
-    string[] guids = AssetDatabase.FindAssets("t:BaseDanDuocCombat", foldersToSearch);
+        // Tìm tất cả GUID của các asset có type gốc là BaseDanDuocCombat
+        string[] guids = AssetDatabase.FindAssets("t:BaseDanDuocCombat", foldersToSearch);
 
-    danDuocs = guids
-        .Select(guid => AssetDatabase.LoadAssetAtPath<ScriptableObject>(AssetDatabase.GUIDToAssetPath(guid)))
-        // Cần đảm bảo Class đích (BaseDanDuocCombat hoặc DanDuocCombat) tồn tại trong Namespace
-        .OfType<BaseDanDuocCombat>() 
-        .ToArray();
+        danDuocs = guids
+            .Select(guid => AssetDatabase.LoadAssetAtPath<ScriptableObject>(AssetDatabase.GUIDToAssetPath(guid)))
+            // Cần đảm bảo Class đích (BaseDanDuocCombat hoặc DanDuocCombat) tồn tại trong Namespace
+            .OfType<BaseDanDuocCombat>()
+            .ToArray();
 
-    EditorUtility.SetDirty(this);
-    Debug.Log($"Đã cập nhật {danDuocs.Length} Đan Dược từ thư mục Combat/DanDuocCombat.");
+        EditorUtility.SetDirty(this);
+        Debug.Log($"Đã cập nhật {danDuocs.Length} Đan Dược từ thư mục Combat/DanDuocCombat.");
 #endif
     }
+
     public static string[] tamCanh = new string[]
     {
         "Tâm phiền ý loạn",
@@ -855,20 +884,20 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
 
     public static string[] danDocText = new string[]
     {
-        "Thân thể khỏe mạnh",  // i = 0
+        "Thân thể khỏe mạnh", // i = 0
         "Thân thể không ngại", // i = 1
-        "Có chút khó chịu",    // i = 2
-        "Gân mạch ngưng trệ",  // i = 3
-        "Bệnh nguy kịch",      // i = 4
+        "Có chút khó chịu", // i = 2
+        "Gân mạch ngưng trệ", // i = 3
+        "Bệnh nguy kịch", // i = 4
     };
 
     public static int[] danDocRequireEnd = new int[]
     {
-        20,  // Tương ứng với "Thân thể khỏe mạnh" (<= 20)
-        50,  // Tương ứng với "Thân thể không ngại" (21 - 50)
-        70,  // Tương ứng với "Có chút khó chịu" (51 - 70)
+        20, // Tương ứng với "Thân thể khỏe mạnh" (<= 20)
+        50, // Tương ứng với "Thân thể không ngại" (21 - 50)
+        70, // Tương ứng với "Có chút khó chịu" (51 - 70)
         100, // Tương ứng với "Gân mạch ngưng trệ" (71 - 100)
-             // Đã xóa mốc 120
+        // Đã xóa mốc 120
     };
 
     public static (string text, int nextMilestone, int index) GetDanDocValue(int currentDanDoc)
@@ -880,9 +909,11 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
                 return (danDocText[i], danDocRequireEnd[i], i);
             }
         }
+
         // Khi vượt quá 100 điểm, trả về "Bệnh nguy kịch"
         return (danDocText[danDocText.Length - 1], currentDanDoc, danDocText.Length - 1);
     }
+
     public static (string name, int nextMilestone, int index) GetTamCanhValue(int currentPoint)
     {
         // Trường hợp đặc biệt: Nhỏ hơn 0
@@ -907,19 +938,20 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         }
 
         // Trường hợp cuối cùng: Lớn hơn mốc cao nhất (> 1999)
-        return (tamCanh[tamCanh.Length - 1], (int)danDocRequireEnd[danDocRequireEnd.Length-1], tamCanh.Length - 1);
+        return (tamCanh[tamCanh.Length - 1], (int)danDocRequireEnd[danDocRequireEnd.Length - 1], tamCanh.Length - 1);
     }
 
-  
- 
+
     public static int GetIntTuoiTac(TimeSpan timeSpanTuoiTac)
     {
         return (int)(timeSpanTuoiTac.TotalDays / 365);
     }
+
     public static TimeSpan ConvertMonthToTimeSpan(float months)
     {
         return TimeSpan.FromDays(months * 30);
     }
+
     // Quy ước tu tiên
     private const int DAYS_IN_MONTH = 30;
     private const int MONTHS_IN_YEAR = 12;
@@ -931,10 +963,12 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         int totalDays = (int)originalTime.TotalDays;
         return totalDays - (15 * MONTHS_IN_YEAR * DAYS_IN_MONTH); // Trừ 15 tuổi gốc
     }
+
     public static float GetMonthTimeWorldIntPlayer()
     {
-        return (float)GetDayTimeWorldIntPlayer()/(float)DAYS_IN_MONTH; // Trừ 15 tuổi gốc
+        return (float)GetDayTimeWorldIntPlayer() / (float)DAYS_IN_MONTH; // Trừ 15 tuổi gốc
     }
+
     // 2. HÀM SHOW TEXT MỚI: Truyền thẳng TimeSpan tuổi vào để bóc tách
     public static string GetDateTimeText(int day)
     {
@@ -1003,6 +1037,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         // Nếu không tìm thấy cái nào rảnh, khởi tạo cái mới
         return item;
     }
+
     // Phương thức overload hỗ trợ kiểu cụ thể Effect
     // Chỉ cần 1 hàm duy nhất cho cả hai loại Effect
     public static string GetDescEquipment(IEnumerable<IEffect> effects, EquipmentType equipmentType)
@@ -1011,10 +1046,10 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
         string textDesc = GetDescEquipment(equipmentType);
 
         var listEffectTypeStartCombat = new HashSet<EffectType>
-    {
-        EffectType.KimTrong, EffectType.MocTrong, EffectType.ThuyTrong,
-        EffectType.HoaTrong, EffectType.ThoTrong,
-    };
+        {
+            EffectType.KimTrong, EffectType.MocTrong, EffectType.ThuyTrong,
+            EffectType.HoaTrong, EffectType.ThoTrong,
+        };
 
         // Nhóm các effect dựa trên việc nó là Special hay không
         var groupedEffects = effects
@@ -1047,7 +1082,7 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
     }
     // Nếu bạn còn code cũ sử dụng dynamic, hãy xóa hoặc convert sang version mới
 
-    private static string GetEffectDescription(EffectType type,string Value)
+    private static string GetEffectDescription(EffectType type, string Value)
     {
         switch (type)
         {
@@ -1096,7 +1131,8 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             case EffectType.TriLieuLieu:
                 return $"Thu hoạch được {Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)}.";
             case EffectType.NguThanHiep:
-                return $"Thu hoạch được {Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguThanThucHiep)}.";
+                return
+                    $"Thu hoạch được {Value} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguThanThucHiep)}.";
 
             // --- NHÓM ĐỐI THỦ NHẬN PHẢI (DEBUFF) ---
             case EffectType.Cat:
@@ -1161,13 +1197,14 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
                 return "";
         }
     }
- 
+
     public static string GetEffectDescription(EffectType type)
     {
         string suffix = " (X là giá trị ngẫu nhiên được luyện thành)";
-        string description = GetEffectDescription(type,"X");
+        string description = GetEffectDescription(type, "X");
         return description + suffix;
     }
+
     private static string GetDescEquipment(EquipmentType equipmentType)
     {
         switch (equipmentType)
@@ -1181,11 +1218,13 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
             default:
                 break;
         }
+
         return "";
     }
-    private static string GetDescEquipment(EquipmentType equipmentType,bool isSpecial)
+
+    private static string GetDescEquipment(EquipmentType equipmentType, bool isSpecial)
     {
-        if(!isSpecial)
+        if (!isSpecial)
         {
             switch (equipmentType)
             {
@@ -1198,55 +1237,62 @@ public class GameManager : BaseBehaviour , INetworkEvent.ILoadCharCombat
                 default:
                     break;
             }
-        }    
+        }
         else
         {
             return "<color=#6495ED>[Bắt đầu chiến đấu] </color>";
         }
+
         return "";
     }
-   
 
-    //[Button]
-    //public void ExportNDTTCP()
-    //{
-    //    var guids = AssetDatabase.FindAssets("t:BaseData");
-    //    var assets = guids.Select(x => AssetDatabase.GUIDToAssetPath(x))
-    //        .Select(x => AssetDatabase.LoadAssetAtPath<BaseData>(x))
-    //        .OrderBy(x => x.GetType().Name)
-    //        .ToList();
+#if UNITY_EDITOR
+    [Button]
+    public void ExportNDTTCP()
+    {
+        var guids = AssetDatabase.FindAssets("t:BaseData");
+        var assets = guids.Select(x => AssetDatabase.GUIDToAssetPath(x))
+            .Select(x => AssetDatabase.LoadAssetAtPath<BaseData>(x))
+            .OrderBy(x => x.GetType().Name)
+            .ToList();
 
-    //    var thanThongs = assets.OfType<ThanThong>().ToList();
-    //    var ngoDaos = assets.OfType<AllMaps.NgoDao.NgoDao>().ToList();
-    //    var congPhaps = assets.OfType<CongPhap>().ToList();
-    //    this.thanThongs = thanThongs.ToArray();
-    //    this.ngoDaos = ngoDaos.ToArray();
-    //    this.congPhaps = congPhaps.ToArray();
-    //    var ndttcp = new NDCPTTManager()
-    //    {
-    //        ThanThongs = thanThongs.ToList(),
-    //        NgoDaos = ngoDaos.ToList(),
-    //        CongPhaps = congPhaps.ToList(),
-    //    };
-    //    var writer = new Writer(ndttcp.ByteSize());
-    //    writer.Write(ndttcp);
-    //    var path = Path.Combine(Application.dataPath, "Exports", "NDCPTTManager.bin");
-    //    File.WriteAllBytes(path, writer.Buffer);
-    //}
+        var thanThongs = assets.OfType<ThanThong>().ToList();
+        var ngoDaos = assets.OfType<AllMaps.NgoDao.NgoDao>().ToList();
+        var congPhaps = assets.OfType<CongPhap>().ToList();
 
-    //[Button]
-    //public void ExportNDResources()
-    //{
-    //    var guids = AssetDatabase.FindAssets("t:NgoDaoResource");
-    //    var assets = guids.Select(x => AssetDatabase.GUIDToAssetPath(x))
-    //        .Select(x => AssetDatabase.LoadAssetAtPath<NgoDaoResource>(x))
-    //        .ToList();
-    //    var writer = new Writer(assets.ByteSize());
-    //    writer.WriteArray(assets);
-    //    var path = Path.Combine(Application.dataPath, "Exports", "NgoDaoManager.bin");
-    //    File.WriteAllBytes(path, writer.Buffer);
-    //    Debug.Log(path);
-    //}
+        var ndttcp = new NDCPTTManager()
+        {
+            ThanThongs = thanThongs.ToList(),
+            NgoDaos = ngoDaos.ToList(),
+            CongPhaps = congPhaps.ToList(),
+        };
+        var writer = new Writer(ndttcp.ByteSize());
+        writer.Write(ndttcp);
+        var path = Path.Combine(Application.dataPath, "Exports", "NDCPTTManager.bin");
+        File.WriteAllBytes(path, writer.Buffer);
+    }
+
+    [Button]
+    public void ExportNDResources()
+    {
+        var guids = AssetDatabase.FindAssets("t:NgoDaoResource");
+        var assets = guids.Select(x => AssetDatabase.GUIDToAssetPath(x))
+            .Select(x => AssetDatabase.LoadAssetAtPath<NgoDaoResource>(x))
+            .ToList();
+        var writer = new Writer(assets.ByteSize());
+        writer.WriteArray(assets);
+        var path = Path.Combine(Application.dataPath, "Exports", "NgoDaoManager.bin");
+        File.WriteAllBytes(path, writer.Buffer);
+        Debug.Log(path);
+    }
+#endif
+    [Button]
+    private void CheckTonTaiCongPhap(int id)
+    {
+        Debug.Log(congPhaps.Any(x => x == id) == true
+            ? $"Công pháp ID {id} tồn tại."
+            : $"Công pháp ID {id} không tồn tại.");
+    }
 
     public void SuccessLoadCharCombat(CharacterSnapshot user)
     {

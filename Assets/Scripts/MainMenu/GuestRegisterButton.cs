@@ -15,6 +15,7 @@ namespace MainMenu
         [SerializeField] private Button button;
         [SerializeField] private GameObject selfObject;
         [SerializeField] private RegisterPanel registerPanel;
+
         public void TryValidate()
         {
             var provider = AuthService.GetSignInProvider();
@@ -23,6 +24,7 @@ namespace MainMenu
                 selfObject.SetActive(false);
                 return;
             }
+
             var active = provider.Value == SignInProvider.Guest;
             selfObject.SetActive(active);
         }
@@ -47,7 +49,7 @@ namespace MainMenu
             var guestUsername = PlayerPrefs.GetString(GuestSignIn.USERNAME_KEY);
             var request = new GuestRegister()
             {
-                GuestUsername =  guestUsername,
+                GuestUsername = guestUsername,
                 Model = model
             };
             var reader = await Client.Instance.MemRequestWait(MessageTag.GuestRegisterRequest, request);

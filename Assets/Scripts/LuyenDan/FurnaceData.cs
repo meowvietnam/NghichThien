@@ -27,6 +27,7 @@ namespace LuyenDan
                 TempId = Id,
             };
         }
+
         public ItemRef CreateRef()
         {
             return new ItemRef()
@@ -43,6 +44,7 @@ namespace LuyenDan
             Durability = (sbyte)durability;
             OnDurabilityChanged?.Invoke(durability);
         }
+
         public override int GetHashCode()
         {
             return SelfId;

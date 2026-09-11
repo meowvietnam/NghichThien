@@ -39,6 +39,7 @@ namespace IAP
                 Debug.Log($"Null congphap {id}");
                 return;
             }
+
             congPhapText.text = congPhap.nameItem;
             congPhapIcon.sprite = congPhap.spriteItem;
         }

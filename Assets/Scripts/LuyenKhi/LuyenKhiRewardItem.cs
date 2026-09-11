@@ -27,6 +27,7 @@ namespace LuyenKhi
                 {
                     icon = Resources.Load<Sprite>(IconPath);
                 }
+
                 return icon;
             }
         }
@@ -39,10 +40,12 @@ namespace LuyenKhi
                 {
                     return iconFight;
                 }
+
                 if (iconFight == null)
                 {
                     iconFight = Resources.Load<Sprite>(IconFightPath);
                 }
+
                 return iconFight;
             }
         }
@@ -54,17 +57,19 @@ namespace LuyenKhi
             value.Tier = reader.Read<EquipmentTier>();
             value.Type = reader.Read<ArtifactType>();
         }
+
         public int ByteSize()
         {
             return Id.ByteSize() + Tier.ByteSize() + Type.ByteSize();
         }
+
         public void Serialize(IWriter writer)
         {
             writer.Write(Id);
             writer.Write(Tier);
             writer.Write(Type);
         }
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         public void Move()
         {
             var icon = Icon;
@@ -78,6 +83,6 @@ namespace LuyenKhi
                 AssetOptimize.Move(iconFight.texture, fightPath);
             }
         }
-        #endif
+#endif
     }
 }

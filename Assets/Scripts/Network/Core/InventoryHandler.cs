@@ -15,6 +15,7 @@ namespace Network.Core
         private Action<GetInventoryResult> getInventoryCallback;
         private InventoryManager Inventory => Client.Instance.CharacterData.InventoryManager;
         private INetworkEvent.IEquipEquipment equipEquipmentCallBack;
+
         public InventoryHandler()
         {
         }
@@ -23,12 +24,13 @@ namespace Network.Core
         {
             Observer.AddObserver(EventList.Network.EQUIP_EQUIPMENT, EquipEquipment);
         }
+
         private void EquipEquipment(object[] data)
         {
             equipEquipmentCallBack = data[0] as INetworkEvent.IEquipEquipment;
             var SelfId = (ushort)data[1];
             var TypeEquipment = (LuyenKhi.EquipmentType)data[2];
-          
+
             var equipEquipment = new EquipEquipment()
             {
                 Id = SelfId,
@@ -36,6 +38,7 @@ namespace Network.Core
             };
             Client.Instance.Send(MessageTag.EquipEquipment, equipEquipment);
         }
+
         public void Handle(Message<MessageTag> message)
         {
             var tag = message.Tag;
@@ -61,6 +64,7 @@ namespace Network.Core
                     var charData = Client.Instance.CharacterData;
                     charData.EquipmentManager.EquipEquipment(result);
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -71,7 +75,6 @@ namespace Network.Core
                     {
                         equipEquipmentCallBack.FailEquipEquipment(result.Message);
                     }
-
                 });
             }
         }
@@ -85,7 +88,9 @@ namespace Network.Core
         {
         }
 
-        private static readonly MessageTag[] handlerTag = { MessageTag.GetInventoryResult , MessageTag.EquipEquipmentResult };
+        private static readonly MessageTag[] handlerTag =
+            { MessageTag.GetInventoryResult, MessageTag.EquipEquipmentResult };
+
         public MessageTag[] HandleTag => handlerTag;
     }
 }

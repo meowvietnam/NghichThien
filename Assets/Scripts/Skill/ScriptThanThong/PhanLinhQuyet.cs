@@ -7,12 +7,10 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(PhanLinhQuyet), menuName = "Skill/Thần Thông/" + nameof(PhanLinhQuyet))]
 public class PhanLinhQuyet : ThanThong, IMemorySerializable<PhanLinhQuyet>
 {
-    [SerializeField]
-    private int tieuTan = 2;
-    [SerializeField]
-    private int tieuTanBuff = 2;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int tieuTan = 2;
+    [SerializeField] private int tieuTanBuff = 2;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int countRemove = tieuTan;
@@ -28,12 +26,20 @@ public class PhanLinhQuyet : ThanThong, IMemorySerializable<PhanLinhQuyet>
             target.TieuTanLinhKhi(linhKhi, 1);
         }
 
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public override string GetDesc(int level)
     {
-        return $"Ngẫu nhiên tiêu tán {GetColoredText($"{tieuTan}", "red")} điểm linh khí của đối thủ. Nếu đối phương có trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)} thì tiêu tán thêm {GetColoredText($"{tieuTanBuff}", "red")} điểm linh khí của đối thủ";
+        return
+            $"Ngẫu nhiên tiêu tán {GetColoredText($"{tieuTan}", "red")} điểm linh khí của đối thủ. Nếu đối phương có trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)} thì tiêu tán thêm {GetColoredText($"{tieuTanBuff}", "red")} điểm linh khí của đối thủ";
     }
 
     public override int ByteSize()

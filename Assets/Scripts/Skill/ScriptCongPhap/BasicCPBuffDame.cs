@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(BasicCPBuffDame))]
 public class BasicCPBuffDame : CongPhap, IMemorySerializable<BasicCPBuffDame>
 {
-    [SerializeField]
-    private int[] dameBuff;
+    [SerializeField] private int[] dameBuff;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         // Kiểm tra hệ của Skill đang dùng có khớp với Công Pháp (SO) này không
@@ -21,7 +21,7 @@ public class BasicCPBuffDame : CongPhap, IMemorySerializable<BasicCPBuffDame>
             // CHỈ REMOVE KHI ĐÃ THỰC THI BUFF THÀNH CÔNG (Lần thứ 1 của mỗi hiệp) 
             RemoveCongPhap(caster);
             int dame = dameBuff[CurrentLevelCongPhapInCombat(caster) - 1];
-            target.AddDamageData(new List<int>{dame});
+            target.AddDamageData(new List<int> { dame });
         }
         else
         {
@@ -51,7 +51,8 @@ public class BasicCPBuffDame : CongPhap, IMemorySerializable<BasicCPBuffDame>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi hiệp lần thứ nhất tạo thành {GetTextTypeSkill()} hệ thần thông sát thương {GetColoredText($"+{dameBuff[level - 1]}", "red")}";
+        return
+            $"Mỗi hiệp lần thứ nhất tạo thành {GetTextTypeSkill()} hệ thần thông sát thương {GetColoredText($"+{dameBuff[level - 1]}", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

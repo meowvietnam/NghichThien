@@ -13,12 +13,15 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
-public class MainQuestManager : BaseBehaviour , IUISingleton
+public class MainQuestManager : BaseBehaviour, IUISingleton
 {
     public List<MainQuestResource> mainQuestResources;
     public SecureInt currentMainQuest = new SecureInt(0);
-    public MainQuestResource CurrentMainQuest => currentMainQuest.Value < mainQuestResources.Count ?mainQuestResources[currentMainQuest.Value] : null;
-   
+
+    public MainQuestResource CurrentMainQuest => currentMainQuest.Value < mainQuestResources.Count
+        ? mainQuestResources[currentMainQuest.Value]
+        : null;
+
     public List<Map> currentMapMainQuests = new();
 
     public bool isFirstOpenGame = false;
@@ -34,12 +37,12 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
                 CurrentMainQuest.ActiveEventMap(null);
             }
         }
-    }    
-  
+    }
+
     public void CheckSpawnQuest()
     {
         if (CurrentMainQuest == null) return;
-        
+
         if (currentMapMainQuests.Count <= 0)
         {
             var mapManager = Pool.Get<MapManager>();
@@ -47,19 +50,20 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
             {
                 return;
             }
+
             foreach (var item in CurrentMainQuest.IdNode)
             {
                 currentMapMainQuests.Add(mapManager.SetDataOnMap(CurrentMainQuest, item));
             }
-            StartCameraCinematic();
-
+            //StartCameraCinematic();
         }
         else
         {
-            if(currentMapMainQuests.All(x=>x == null))
+            if (currentMapMainQuests.All(x => x == null))
             {
                 currentMapMainQuests.Clear();
-            }    
+            }
+
             // Tìm ngay thằng DailyQuest đầu tiên xuất hiện trong danh sách Map hiện tại
             var firstMainQuest = currentMapMainQuests
                 .Select(x => x.actionMap as MainQuestResource)
@@ -68,7 +72,8 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
             // KIỂM TRA ĐỔI QUEST: Nếu tìm thấy Main Quest cũ trên map, mà ID của nó đã khác với ID Quest hiện tại của Player
             if (firstMainQuest != null && firstMainQuest.Id != CurrentMainQuest.Id)
             {
-                Debug.Log($"[Quest System] Phát hiện đổi Main Quest từ ID: {firstMainQuest.Id} sang ID mới: {CurrentMainQuest.Id}. Tiến hành dọn dẹp Map cũ.");
+                Debug.Log(
+                    $"[Quest System] Phát hiện đổi Main Quest từ ID: {firstMainQuest.Id} sang ID mới: {CurrentMainQuest.Id}. Tiến hành dọn dẹp Map cũ.");
 
                 // Xóa dữ liệu quest cũ trên các node map
                 currentMapMainQuests.ForEach(x => x?.ResetDataAction());
@@ -78,8 +83,8 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
                 CheckSpawnQuest();
             }
         }
-
     }
+
     // Gọi hàm này để bắt đầu chuỗi sự kiện camera
     public void StartCameraCinematic()
     {
@@ -88,13 +93,13 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
 
     private IEnumerator FollowItemsOneByOneRoutine()
     {
-        var player = Pool.Get<AllMaps.Player>();    
+        var player = Pool.Get<AllMaps.Player>();
         while (player.IsMoving)
         {
             yield return null; // Chờ đến frame tiếp theo và kiểm tra lại trạng thái di chuyển của player
             yield return null; // Chờ đến frame tiếp theo và kiểm tra lại trạng thái di chuyển của player
-
         }
+
         // 1. Duyệt qua từng quest item
         foreach (var item in currentMapMainQuests)
         {
@@ -113,12 +118,14 @@ public class MainQuestManager : BaseBehaviour , IUISingleton
             CameraFollow.Instance.target = player.transform;
         }
     }
+
     private void RemoveMap(params object[] data)
     {
         Map map = (Map)data[0];
-        if (currentMapMainQuests.Count<=0) return;
+        if (currentMapMainQuests.Count <= 0) return;
         currentMapMainQuests.RemoveAll(x => x != null && x.Id == map.Id);
     }
+
     public void MainQuestDone()
     {
         Pool.Get<QuestManager>().currentQuest.QuestDoneData(); // gửi lên sv quest id cũ

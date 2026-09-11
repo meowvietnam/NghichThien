@@ -20,6 +20,7 @@ namespace Snapshot
         public AppearanceSnapshot Appearance { get; set; } = new();
         public InventorySnapshot Inventory { get; set; } = new();
         public EquipmentSnapshot Equipment { get; set; } = new();
+
         [MemoryPackConstructor]
         public CharacterStatsSecureSnapshot()
         {
@@ -31,6 +32,7 @@ namespace Snapshot
             {
                 return;
             }
+
             Id = stats.idChar;
             Gender = stats.Gender;
             Name = stats.nameUser;
@@ -110,7 +112,8 @@ namespace Snapshot
                     Id = ToUShort(id),
                     SlotIndex = (byte)index
                 }).ToHashSet() ?? new HashSet<ThanThongEquip>(),
-                DanCombatUseds = stats.danDuocCombat?.Select(ToDanCombatUsed).ToHashSet() ?? new HashSet<DanCombatUsed>(),
+                DanCombatUseds = stats.danDuocCombat?.Select(ToDanCombatUsed).ToHashSet() ??
+                                 new HashSet<DanCombatUsed>(),
                 DonThuatUsed = ToUShort(stats.donThuatUsed),
                 PhuTu1Used = ToUShort(stats.phuTu1Used),
                 PhuTu2Used = ToUShort(stats.phuTu2Used),

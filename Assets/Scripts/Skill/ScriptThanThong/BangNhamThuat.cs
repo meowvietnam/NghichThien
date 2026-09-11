@@ -7,12 +7,10 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(BangNhamThuat), menuName = "Skill/Thần Thông/" + nameof(BangNhamThuat))]
 public class BangNhamThuat : ThanThong, IMemorySerializable<BangNhamThuat>
 {
-    [SerializeField]
-    private int[] dames = new int[]{6, 10, 18, 35, 70};
-    [SerializeField]
-    private int[] buffValues = new int[]{6, 7, 9, 20, 40};
-    [SerializeField]
-    protected float delayTimeEffect = 0.85f;
+    [SerializeField] private int[] dames = new int[] { 6, 10, 18, 35, 70 };
+    [SerializeField] private int[] buffValues = new int[] { 6, 7, 9, 20, 40 };
+    [SerializeField] protected float delayTimeEffect = 0.85f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
@@ -27,13 +25,21 @@ public class BangNhamThuat : ThanThong, IMemorySerializable<BangNhamThuat>
             }
         }
 
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Hấp thụ một điểm linh khí, nếu là {GetTextLinhKhi(ELinhKhi.Tho)} hệ linh khí thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}";
+        return
+            $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Hấp thụ một điểm linh khí, nếu là {GetTextLinhKhi(ELinhKhi.Tho)} hệ linh khí thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}";
     }
 
     public override int ByteSize()

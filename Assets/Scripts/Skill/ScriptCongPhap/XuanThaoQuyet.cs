@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(XuanThaoQuyet))]
 public class XuanThaoQuyet : CongPhap, IMemorySerializable<XuanThaoQuyet>
 {
-    [SerializeField]
-    private int[] buffValues;
+    [SerializeField] private int[] buffValues;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         bool isUserWin = (bool)data[2];

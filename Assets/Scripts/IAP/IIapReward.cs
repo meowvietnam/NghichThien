@@ -21,6 +21,7 @@ namespace IAP
         public RectTransform IapProductContainer { get; init; }
         public RectTransform IconListContainer { get; init; }
     }
+
     [MemoryPackable]
     [MemoryPackUnion(0, typeof(StartPack))]
     [MemoryPackUnion(1, typeof(MoneyVipPack))]

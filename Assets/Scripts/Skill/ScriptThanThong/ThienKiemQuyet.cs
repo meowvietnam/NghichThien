@@ -8,12 +8,10 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ThienKiemQuyet), menuName = "Skill/Thần Thông/" + nameof(ThienKiemQuyet))]
 public class ThienKiemQuyet : ThanThong, IMemorySerializable<ThienKiemQuyet>
 {
-    [SerializeField]
-    protected int[] dames = new int[]{13, 20, 30, 54, 108};
-    [SerializeField]
-    private int require = 10;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] protected int[] dames = new int[] { 13, 20, 30, 54, 108 };
+    [SerializeField] private int require = 10;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         KiemY(caster);
@@ -24,13 +22,21 @@ public class ThienKiemQuyet : ThanThong, IMemorySerializable<ThienKiemQuyet>
             dame *= 2;
         }
 
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.KiemY)} Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Nếu số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} lớn hơn {GetColoredText($"{require}", "red")} thì tổn thương gấp đôi";
+        return
+            $"{GetKeyWord(EKeyWord.KiemY)} Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Nếu số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} lớn hơn {GetColoredText($"{require}", "red")} thì tổn thương gấp đôi";
     }
 
     public override int ByteSize()

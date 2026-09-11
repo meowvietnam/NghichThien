@@ -11,15 +11,16 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(LietDiemQuyet))]
 public class LietDiemQuyet : CongPhap, IMemorySerializable<LietDiemQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 1, 2, 2, 3};
+    [SerializeField] private int[] buffValues = new int[] { 1, 1, 2, 2, 3 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
     }
 
     public override string GetDesc(int level)
     {
-        return $"Bắt đầu chiến đấu, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm {GetTextLinhKhi(ELinhKhi.Hoa)} hệ linh khí";
+        return
+            $"Bắt đầu chiến đấu, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm {GetTextLinhKhi(ELinhKhi.Hoa)} hệ linh khí";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

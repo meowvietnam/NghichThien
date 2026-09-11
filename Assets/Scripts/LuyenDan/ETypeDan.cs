@@ -1,4 +1,5 @@
 using UnityEngine;
+
 namespace LuyenDan
 {
     public enum ETypeDan
@@ -8,6 +9,7 @@ namespace LuyenDan
         DanDotPha,
         DanOther,
     }
+
     public enum EDanBuffType
     {
         None,
@@ -41,4 +43,3 @@ namespace LuyenDan
         ThoNguyen,
     }
 }
-   

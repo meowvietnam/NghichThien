@@ -17,6 +17,7 @@ namespace Network
         public IClientState State => stateModule.State as IClientState;
         public bool IsLogout { get; private set; }
         public event Action OnDisconnect;
+
         public Client(UnauthenticatedClient client)
         {
             var tcpClient = client.TcpClient;
@@ -31,11 +32,12 @@ namespace Network
             AddModule(CoreModule);
             AddModule(stateModule);
         }
-        
+
         public void SetLogout(bool isLogout)
         {
             IsLogout = isLogout;
         }
+
         public void SetUserData(UserData userData)
         {
             UserData = userData;
@@ -54,10 +56,7 @@ namespace Network
         protected override void OnDisconnected(IProtocol<MessageTag> protocol)
         {
             base.OnDisconnected(protocol);
-            NetworkManager.Instance.Invoke(() =>
-            {
-                OnDisconnect?.Invoke();
-            });
+            NetworkManager.Instance.Invoke(() => { OnDisconnect?.Invoke(); });
         }
 
         public void Send(Span<byte> data)
@@ -80,11 +79,11 @@ namespace Network
             var skillHandler = new SkillHandler();
             module.RemoveHandler<SkillHandler>();
             module.AddHandler(skillHandler);
-            
+
             var inventoryHandler = new InventoryHandler();
             module.RemoveHandler<InventoryHandler>();
             module.AddHandler(inventoryHandler);
-            
+
             var monPhaiHandler = new MonPhaiHandler();
             module.RemoveHandler<MonPhaiHandler>();
             module.AddHandler(monPhaiHandler);
@@ -100,19 +99,19 @@ namespace Network
             var socialHandler = new SocialHandler();
             module.RemoveHandler<SocialHandler>();
             module.AddHandler(socialHandler);
-            
+
             var shopHandler = new ShopHandler();
             module.RemoveHandler<ShopHandler>();
             module.AddHandler(shopHandler);
-            
+
             var progressionHandler = new ProgressionHandler();
             module.RemoveHandler<ProgressionHandler>();
             module.AddHandler(progressionHandler);
-            
+
             var adsHandler = new AdsHandler();
             module.RemoveHandler<AdsHandler>();
             module.AddHandler(adsHandler);
-            
+
             var rankHandler = new RankHandler();
             module.RemoveHandler<RankHandler>();
             module.AddHandler(rankHandler);
@@ -120,28 +119,30 @@ namespace Network
             var inGameAuthHandler = new InGameAuthHandler();
             module.RemoveHandler<InGameAuthHandler>();
             module.AddHandler(inGameAuthHandler);
-            
+
             var dailyHandler = new DailyHandler();
             module.RemoveHandler<DailyHandler>();
             module.AddHandler(dailyHandler);
-            
+
             var auctionHandler = new AuctionHandler();
             module.RemoveHandler<AuctionHandler>();
             module.AddHandler(auctionHandler);
-            
+
             var syncHandler = new SyncHandler();
             module.RemoveHandler<SyncHandler>();
             module.AddHandler(syncHandler);
-            
+
             var notifyHandler = new NotifyHandler();
             module.RemoveHandler<NotifyHandler>();
             module.AddHandler(notifyHandler);
-            
+
             AdminPanel.Instance.StartListen();
         }
-        public void AddRequest(MessageTag tag, Action<IReader> response, int timeoutMilliseconds = 0, Action<Exception> onError = null)
+
+        public void AddRequest(MessageTag tag, Action<IReader> response, int timeoutMilliseconds = 0,
+            Action<Exception> onError = null)
         {
-            AddRequest(TcpClient ,tag, response, timeoutMilliseconds, onError);
+            AddRequest(TcpClient, tag, response, timeoutMilliseconds, onError);
         }
     }
 }

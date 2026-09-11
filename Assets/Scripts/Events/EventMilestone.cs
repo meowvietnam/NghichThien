@@ -12,6 +12,7 @@ namespace Events
         public List<IEventReward> Rewards { get; set; }
         public bool IsClaim { get; set; }
         public int[] Progresses { get; private set; }
+
         public bool IsCompleted()
         {
             var progresses = Progresses;
@@ -24,6 +25,7 @@ namespace Events
                     return false;
                 }
             }
+
             return true;
         }
     }

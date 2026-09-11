@@ -11,5 +11,5 @@ public class ItemUI : BaseItemUI
     {
         this.count += count;
         countText.text = this.count.ToString();
-    }    
+    }
 }

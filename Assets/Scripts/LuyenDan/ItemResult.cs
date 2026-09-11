@@ -12,16 +12,17 @@ namespace LuyenDan
         [SerializeField] private Button showInfoButton;
         private IItemData itemData;
         private ItemRef itemRef;
+
         protected virtual void Init(IItemData data)
         {
-            SetEventButton(showInfoButton,ShowInfo);
+            SetEventButton(showInfoButton, ShowInfo);
             itemData = data;
             SetData(data);
         }
 
         private void ShowInfo()
         {
-            ToolTipItems.Instance.ShowInfoItem(itemData,itemRef);
+            ToolTipItems.Instance.ShowInfoItem(itemData, itemRef);
         }
 
         public virtual void Init(ItemRef itemRef)
@@ -31,7 +32,7 @@ namespace LuyenDan
             this.itemRef = itemRef;
             Init(data);
         }
-        
+
         public void DestroySelf()
         {
             Destroy(selfObject);

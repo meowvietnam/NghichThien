@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(DichMach), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(DichMach))]
 public class DichMach : NgoDaoCombat, IMemorySerializable<DichMach>
 {
-    [SerializeField]
-    private int buff = 1;
+    [SerializeField] private int buff = 1;
+
     public override void ObserverEffect(params object[] data)
     {
         CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;

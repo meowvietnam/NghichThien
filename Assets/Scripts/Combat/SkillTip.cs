@@ -18,33 +18,36 @@ public class SkillTip : Tooltip
 
     protected override void Awake()
     {
-        
     }
-    public void ShowSkillTip(string nameTip,string desTip,string typeTip, List<ThanThong.RequireActive> requireLinhKhi,ThanThong thanThong, int level)
+
+    public void ShowSkillTip(string nameTip, string desTip, string typeTip,
+        List<ThanThong.RequireActive> requireLinhKhi, ThanThong thanThong, int level)
     {
         for (int i = 0; i < requireLinhKhiParent.transform.childCount; i++)
         {
             requireLinhKhiParent.transform.GetChild(i).gameObject.SetActive(false);
         }
+
         Debug.Log("dmmm req" + requireLinhKhi.Count);
         int currentIndex = 0;
         for (int i = 0; i < requireLinhKhi.Count; i++)
         {
             var item = requireLinhKhi[i];
-            Image img = requireLinhKhiParent.transform.GetChild(i+currentIndex).transform.GetComponent<Image>();
-            Text textCount = requireLinhKhiParent.transform.GetChild(i+1+currentIndex).transform.GetComponent<Text>();
+            Image img = requireLinhKhiParent.transform.GetChild(i + currentIndex).transform.GetComponent<Image>();
+            Text textCount = requireLinhKhiParent.transform.GetChild(i + 1 + currentIndex).transform
+                .GetComponent<Text>();
             img.gameObject.SetActive(true);
             textCount.gameObject.SetActive(true);
             img.sprite = spriteLinhKhiTip[(int)item.linhKhiRequire];
             textCount.text = $"x{item.count}";
-            currentIndex++; 
-
+            currentIndex++;
         }
+
         var lines = thanThong.GetEKeywordSkillHave()
-      .Select(item => BaseSkill.GetDescKeyWord(item));
+            .Select(item => BaseSkill.GetDescKeyWord(item));
 
         var lines2 = thanThong.GetEKeywordBuffSkillHave(level)
-             .Select(item => BaseSkill.GetDescBuffOrDeBuff(item));
+            .Select(item => BaseSkill.GetDescBuffOrDeBuff(item));
 
         // Gán danh sách 1
         textKeyword.text = string.Join("\n", lines);
@@ -64,8 +67,8 @@ public class SkillTip : Tooltip
         textKeyword.gameObject.SetActive(!string.IsNullOrEmpty(textKeyword.text));
         DoShow();
     }
+
     public void ShowWeaponTip()
     {
-       
-    }    
+    }
 }

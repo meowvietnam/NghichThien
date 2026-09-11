@@ -1,4 +1,3 @@
-
 using AllMaps;
 using MemoryPack;
 using Network.Models;
@@ -8,6 +7,7 @@ public class MailRewardUIContext
 {
     public RewardUI RewardUI { get; set; }
 }
+
 namespace CreateCharacter
 {
     [MemoryPackable]

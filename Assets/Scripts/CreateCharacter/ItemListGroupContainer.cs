@@ -10,7 +10,8 @@ namespace CreateCharacter
         [SerializeField] private Transform content;
         private List<ItemListContainer> itemListContainers = new List<ItemListContainer>();
         private ItemListContainer currentActive;
-        public void Init(List<SkinGroup> skinGroups,List<Color> pallete)
+
+        public void Init(List<SkinGroup> skinGroups, List<Color> pallete)
         {
             foreach (var skinGroup in skinGroups)
             {
@@ -19,6 +20,7 @@ namespace CreateCharacter
                 itemListContainers.Add(t);
             }
         }
+
         public void Active(string id)
         {
             foreach (var item in itemListContainers)
@@ -32,10 +34,12 @@ namespace CreateCharacter
                 }
             }
         }
+
         public void ActiveItemList(string id)
         {
             currentActive.Active(id);
         }
+
         public void RandomSelector()
         {
             foreach (var itemList in itemListContainers)
@@ -43,6 +47,7 @@ namespace CreateCharacter
                 itemList.RandomSelector();
             }
         }
+
         public void DefaultSelector()
         {
             foreach (var item in itemListContainers)

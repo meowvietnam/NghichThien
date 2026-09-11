@@ -15,6 +15,7 @@ namespace CreateCharacter
         public static SetPlayerAvatar Instance { get; private set; }
         [SerializeField] private Button randomBtn;
         [SerializeField] private GameObject thisObject;
+
         public void Init(SkinResources skinResources)
         {
             Instance = this;
@@ -28,46 +29,55 @@ namespace CreateCharacter
                 genderSkinGroupUIs.Add(genderSkinGroupUI);
             }
         }
+
         public void SetGender(Gender gender)
         {
             foreach (var item in genderSkinGroupUIs)
             {
                 var active = item.Gender == gender;
                 item.SetActive(active);
-                if(active)
+                if (active)
                 {
                     CurrentSelect = item;
                 }
             }
+
             avatar.SetGender(gender);
-            if(!CurrentSelect.IsUsedToSelect)
+            if (!CurrentSelect.IsUsedToSelect)
             {
                 CurrentSelect.DefaultSelector();
             }
+
             UpdateAvatar();
         }
+
         private void Random()
         {
             CurrentSelect.RandomSelector();
             UpdateAvatar();
         }
-        public void SetSkin(string key,string value)
+
+        public void SetSkin(string key, string value)
         {
             CurrentSelect.SetSkin(key, value);
         }
-        public void SetSkinImmediate(string key,string value)
+
+        public void SetSkinImmediate(string key, string value)
         {
             CurrentSelect.SetSkin(key, value);
             UpdateAvatar();
         }
+
         public void SetColor(string key, Color value)
         {
             CurrentSelect.SetColor(key, value);
         }
+
         private void OnDestroy()
         {
             randomBtn.onClick.RemoveAllListeners();
         }
+
         public void UpdateAvatar()
         {
             avatar.SetSkin(CurrentSelect.Skin, CurrentSelect.Colors);

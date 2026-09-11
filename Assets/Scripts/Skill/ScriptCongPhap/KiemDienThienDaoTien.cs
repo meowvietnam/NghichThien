@@ -7,8 +7,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(KiemDienThienDaoTien))]
 public class KiemDienThienDaoTien : KiemDienNhanDiaThien, IMemorySerializable<KiemDienThienDaoTien>
 {
-    [SerializeField]
-    private int[] buffValues2;
+    [SerializeField] private int[] buffValues2;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
@@ -17,7 +17,8 @@ public class KiemDienThienDaoTien : KiemDienNhanDiaThien, IMemorySerializable<Ki
 
     public override string GetDesc(int level)
     {
-        return $"{base.GetDesc(level)}. Mỗi lần phát động {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} thu hoạch được {GetColoredText($"+{buffValues2[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}";
+        return
+            $"{base.GetDesc(level)}. Mỗi lần phát động {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} thu hoạch được {GetColoredText($"+{buffValues2[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

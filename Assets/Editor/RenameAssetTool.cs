@@ -64,6 +64,7 @@ public class RenameAssetTool : EditorWindow
                 }
             }
         }
+
         Debug.Log($"Đã xử lý xong thư mục {folderPath}. Tổng số file đổi tên: {count}");
     }
 

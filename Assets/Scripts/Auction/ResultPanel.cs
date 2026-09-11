@@ -8,6 +8,7 @@ namespace Auction
     {
         [SerializeField] private Text contentText;
         [SerializeField] private ItemAuction itemAuction;
+
         public void SetData(AuctionReward reward)
         {
             contentText.text = reward.Content;

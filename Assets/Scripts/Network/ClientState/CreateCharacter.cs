@@ -7,10 +7,12 @@ namespace Network.ClientState
     public class CreateCharacter : IClientState
     {
         private ICreateCharacterCallback callback;
+
         public CreateCharacter(ICreateCharacterCallback callback)
         {
             this.callback = callback;
         }
+
         public void OnEnter()
         {
         }

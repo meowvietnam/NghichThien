@@ -10,15 +10,15 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(NguKiemCuuQuyet))]
 public class NguKiemCuuQuyet : CongPhap, IMemorySerializable<NguKiemCuuQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 2, 4, 8, 12};
+    [SerializeField] private int[] buffValues = new int[] { 1, 2, 4, 8, 12 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (caster.thanThongCurrentUse == null) return;
         ThanThong thanThong = caster.thanThongCurrentUse.thanThong;
         if (thanThong is NguKiemThuat)
         {
-            target.AddDamageData(new List<int>{buffValues[CurrentLevelCongPhapInCombat(caster) - 1]});
+            target.AddDamageData(new List<int> { buffValues[CurrentLevelCongPhapInCombat(caster) - 1] });
         }
     }
 

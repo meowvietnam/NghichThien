@@ -7,6 +7,7 @@ namespace Network.Models
         public ushort SelfId { get; set; }
         public ushort Id { get; set; }
         public string Name { get; set; }
+
         public void Deserialize(IReader reader, ref SetEquipmentName value)
         {
             value.SelfId = reader.Read<ushort>();

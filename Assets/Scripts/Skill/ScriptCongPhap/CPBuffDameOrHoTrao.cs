@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(CPBuffDameOrHoTrao))]
 public class CPBuffDameOrHoTrao : CongPhap, IMemorySerializable<CPBuffDameOrHoTrao>
 {
-    [SerializeField]
-    private int[] dameBuffPercent;
-    [SerializeField]
-    private int[] xHoTraos;
+    [SerializeField] private int[] dameBuffPercent;
+    [SerializeField] private int[] xHoTraos;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         // Kiểm tra hệ của Skill đang dùng có khớp với Công Pháp (SO) này không
@@ -24,7 +23,7 @@ public class CPBuffDameOrHoTrao : CongPhap, IMemorySerializable<CPBuffDameOrHoTr
             if (CombatManager.IsTuongDong(caster.thanThongCurrentUse.linhKhiTieuTan))
             {
                 Debug.Log("tuong dong KimLinhThacThienCong");
-                target.AddDamageData(new List<int>{(int)((percent / 100f) * dames[0])});
+                target.AddDamageData(new List<int> { (int)((percent / 100f) * dames[0]) });
             }
             else if (CombatManager.GetETuongQuan(caster.thanThongCurrentUse.linhKhiTieuTan) == ETuongQuan.TuongSinh)
             {
@@ -42,7 +41,8 @@ public class CPBuffDameOrHoTrao : CongPhap, IMemorySerializable<CPBuffDameOrHoTr
 
     public override string GetDesc(int level)
     {
-        return $"Sử dụng {GetTextTypeSkill()} hệ thần thông sát thương. Nếu linh khí được phóng thích là {GetKeyWord(EKeyWord.TuongDong)} thì tạo thành tổn thương tăng thêm {GetColoredText($"{dameBuffPercent[level - 1]}%", "red")}, Còn nếu là {GetKeyWord(EKeyWord.TuongSinh)} thì thu hoạch được {GetColoredText($"+{xHoTraos[level - 1]}*X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} (X là số linh khí kĩ năng này tiêu hao)";
+        return
+            $"Sử dụng {GetTextTypeSkill()} hệ thần thông sát thương. Nếu linh khí được phóng thích là {GetKeyWord(EKeyWord.TuongDong)} thì tạo thành tổn thương tăng thêm {GetColoredText($"{dameBuffPercent[level - 1]}%", "red")}, Còn nếu là {GetKeyWord(EKeyWord.TuongSinh)} thì thu hoạch được {GetColoredText($"+{xHoTraos[level - 1]}*X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} (X là số linh khí kĩ năng này tiêu hao)";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

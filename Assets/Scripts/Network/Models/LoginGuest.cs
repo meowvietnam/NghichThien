@@ -8,6 +8,7 @@ namespace Network.Models
     {
         public string Username { get; set; }
         public string DeviceId { get; set; }
+
         public SignInProvider GetSignInProvider()
         {
             return SignInProvider.Guest;

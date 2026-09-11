@@ -108,7 +108,7 @@ namespace LuyenDan
 
             public int ByteSize()
             {
-                return Id.ByteSize() + ChuDuoc.ByteSize() 
+                return Id.ByteSize() + ChuDuoc.ByteSize()
                                      + PhuDuoc1.ByteSize() + PhuDuoc2.ByteSize()
                                      + DuocDan.ByteSize();
             }
@@ -146,11 +146,12 @@ namespace LuyenDan
             get { return LuyenDanResources.Instance.LinhDans.FirstOrDefault(x => x.Id == LinhDanId); }
         }
 
-        public string Name => $"Đan phương {LinhDan.Name}" ;
+        public string Name => $"Đan phương {LinhDan.Name}";
 
         public Tier Tier => LinhDan.Tier;
 
         public string Description => $"Công thức chế tạo {LinhDan.Name}";
+
         public void Deserialize(IReader reader, ref RecipeData value)
         {
             value.Id = reader.Read<int>();
@@ -183,6 +184,7 @@ namespace LuyenDan
             {
                 return recipe.Count > 0;
             }
+
             return false;
         }
     }

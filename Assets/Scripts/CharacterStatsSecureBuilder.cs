@@ -80,6 +80,7 @@ public class CharacterStatsSecureBuilder
         _stats.monPhai = monPhai;
         return this;
     }
+
     public CharacterStatsSecureBuilder WithPointArena(int value)
     {
         _stats.pointArena = new SecureInt(value);
@@ -218,25 +219,35 @@ public class CharacterStatsSecureBuilder
         return this;
     }
 
+    public CharacterStatsSecureBuilder WithId(int id)
+    {
+        _stats.idChar = new SecureInt(id);
+        return this;
+    }
+
     public CharacterStatsSecure Build()
     {
         return _stats;
     }
+
     public static CharacterStatsSecure ArenaFromCharacterSnapshot(CharacterSnapshot character)
     {
         var stats = FromCharacterSnapshot(character);
         if (stats != null)
         {
-            // Vì Arena luôn lấy Hp = HpMax (SinhMenh)
             stats.hp = stats.hpMax;
         }
+
+        stats.isPlayer = true;
         return stats;
     }
+
     public static CharacterStatsSecure FromCharacterSnapshot(CharacterSnapshot character)
     {
         if (character == null) return null;
 
         return new CharacterStatsSecureBuilder()
+            .WithId(character.Id)
             .WithGender(character.Gender) // KHÔNG QUÊN GENDER NỮA NHÉ BABE!
             .WithTuoiTac(GameManager.GetIntTuoiTac(character.TuoiTac))
             .WithHp(character.Hp)
@@ -267,42 +278,49 @@ public class CharacterStatsSecureBuilder
             .WithPercentMa(character.Ma)
             .WithDanDoc(character.DanDoc)
             .WithNgoDaoSaves(character.NgoDaos?.Select(x => new SecureInt(x.Id)).ToList())
-            .WithSkinList(character.Skins?.Select(kvp => new CharacterStatsSecure.SkinData { key = kvp.Key, value = kvp.Value }).ToList())
-            .WithColorList(character.Colors?.Select(kvp => new CharacterStatsSecure.ColorData { key = kvp.Key, value = kvp.Value }).ToList())
-           // Giả định class EquipmentClientBuilder của bạn xử lý nhận Id ushort gốc từ snapshot
-           .WithVuKhi(character.VuKhi != null ? new EquipmentClient
-           {
-               id = new SecureInt(character.VuKhi.Id),
-               nameEquip = character.VuKhi.Name,
-               listEffectEquip = character.VuKhi.Effects?.Select(e => new EquipmentClient.EffectClient
-               {
-                   Type = e.Type,
-                   Value = new SecureInt(e.Value)
-               }).ToList()
-           } : new EquipmentClient())
-
-            .WithPhongCu(character.PhongCu != null ? new EquipmentClient
-            {
-                id = new SecureInt(character.PhongCu.Id),
-                nameEquip = character.PhongCu.Name,
-                listEffectEquip = character.PhongCu.Effects?.Select(e => new EquipmentClient.EffectClient
+            .WithSkinList(character.Skins?.Select(kvp => new CharacterStatsSecure.SkinData
+                { key = kvp.Key, value = kvp.Value }).ToList())
+            .WithColorList(character.Colors?.Select(kvp => new CharacterStatsSecure.ColorData
+                { key = kvp.Key, value = kvp.Value }).ToList())
+            // Giả định class EquipmentClientBuilder của bạn xử lý nhận Id ushort gốc từ snapshot
+            .WithVuKhi(character.VuKhi != null
+                ? new EquipmentClient
                 {
-                    Type = e.Type,
-                    Value = new SecureInt(e.Value)
-                }).ToList()
-            } : new EquipmentClient())
-
-            .WithTrangSuc(character.TrangSuc != null ? new EquipmentClient
-            {
-                id = new SecureInt(character.TrangSuc.Id),
-                nameEquip = character.TrangSuc.Name,
-                listEffectEquip = character.TrangSuc.Effects?.Select(e => new EquipmentClient.EffectClient
+                    id = new SecureInt(character.VuKhi.Id),
+                    nameEquip = character.VuKhi.Name,
+                    listEffectEquip = character.VuKhi.Effects?.Select(e => new EquipmentClient.EffectClient
+                    {
+                        Type = e.Type,
+                        Value = new SecureInt(e.Value)
+                    }).ToList()
+                }
+                : new EquipmentClient())
+            .WithPhongCu(character.PhongCu != null
+                ? new EquipmentClient
                 {
-                    Type = e.Type,
-                    Value = new SecureInt(e.Value)
-                }).ToList()
-            } : new EquipmentClient())
-            .WithDanDuocCombat(character.DanCombatUseds?.Select(x => new CharacterStatsSecure.DataSave { id = new SecureInt(x.Id), value = new SecureInt(x.Count) }).ToList())
+                    id = new SecureInt(character.PhongCu.Id),
+                    nameEquip = character.PhongCu.Name,
+                    listEffectEquip = character.PhongCu.Effects?.Select(e => new EquipmentClient.EffectClient
+                    {
+                        Type = e.Type,
+                        Value = new SecureInt(e.Value)
+                    }).ToList()
+                }
+                : new EquipmentClient())
+            .WithTrangSuc(character.TrangSuc != null
+                ? new EquipmentClient
+                {
+                    id = new SecureInt(character.TrangSuc.Id),
+                    nameEquip = character.TrangSuc.Name,
+                    listEffectEquip = character.TrangSuc.Effects?.Select(e => new EquipmentClient.EffectClient
+                    {
+                        Type = e.Type,
+                        Value = new SecureInt(e.Value)
+                    }).ToList()
+                }
+                : new EquipmentClient())
+            .WithDanDuocCombat(character.DanCombatUseds?.Select(x => new CharacterStatsSecure.DataSave
+                { id = new SecureInt(x.Id), value = new SecureInt(x.Count) }).ToList())
             .Build();
     }
 }

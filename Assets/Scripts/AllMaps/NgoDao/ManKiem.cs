@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ManKiem), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(ManKiem))]
 public class ManKiem : NgoDaoCombat, IMemorySerializable<ManKiem>
 {
-    [SerializeField]
-    private int buff = 20;
+    [SerializeField] private int buff = 20;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (BaseSkill.CheckIsEqualETypeSkill(caster, eTypeRequire))
@@ -21,7 +21,7 @@ public class ManKiem : NgoDaoCombat, IMemorySerializable<ManKiem>
 
     public virtual void Action(CharacterCombat caster, CharacterCombat target)
     {
-        target.AddDamageData(new List<int>{target.GetDameBuffForTarget() * buff / 100});
+        target.AddDamageData(new List<int> { target.GetDameBuffForTarget() * buff / 100 });
     }
 
     public void ObserverEffect3(params object[] data)
@@ -32,7 +32,8 @@ public class ManKiem : NgoDaoCombat, IMemorySerializable<ManKiem>
         if (caster == null)
             return;
         // kiểm tra dame được truyền vào có phải là mộc linh khí không
-        if (caster.ngoDaoCombats.Any(x => x.Id == this.Id) && eTypeSkills != null && BaseSkill.CheckIsEqualETypeSkill(eTypeSkills, eTypeRequire))
+        if (caster.ngoDaoCombats.Any(x => x.Id == this.Id) && eTypeSkills != null &&
+            BaseSkill.CheckIsEqualETypeSkill(eTypeSkills, eTypeRequire))
         {
             Action(caster, target);
         }

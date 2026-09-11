@@ -13,9 +13,10 @@ namespace LuyenKhi
         [SerializeField] public ItemListUI itemListUI;
         private ItemBagFilter currentFilter;
         private bool isOpen;
+
         private void Start()
         {
-            SetEventButton(selectButton,OnClick);
+            SetEventButton(selectButton, OnClick);
         }
 
         private void OnClick()
@@ -29,6 +30,7 @@ namespace LuyenKhi
                 Close();
             }
         }
+
         private void Open()
         {
             isOpen = true;
@@ -49,12 +51,14 @@ namespace LuyenKhi
             {
                 itemListUI.RemoveFilter(currentFilter);
             }
+
             currentFilter = itemBagFilter;
             currentSelect.text = itemBagFilter.FilterName;
             itemListUI.AddFilter(currentFilter);
             itemListUI.Refresh();
             Close();
         }
+
         private void OnDestroy()
         {
             selectButton.onClick.RemoveAllListeners();

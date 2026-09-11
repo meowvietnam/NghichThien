@@ -85,6 +85,7 @@ public class NgoDaoResource : BaseData, IMemorySerializable<NgoDaoResource>
                                + ngoDao.Sum(x => x.list.Select(y => y.Id).ByteSize())
                                + eTypeSkill.ByteSize();
     }
+
     public void Deserialize(IReader reader, ref NgoDaoResource value)
     {
         BaseData baseValue = value;
@@ -105,6 +106,7 @@ public class NgoDaoResource : BaseData, IMemorySerializable<NgoDaoResource>
 
         value.eTypeSkill = reader.Read<BaseSkill.ETypeSkill>();
     }
+
     public override void Serialize(IWriter writer)
     {
         base.Serialize(writer);
@@ -114,6 +116,7 @@ public class NgoDaoResource : BaseData, IMemorySerializable<NgoDaoResource>
             var ngoDaoList = nd.list;
             writer.WriteArray(ngoDaoList.Select(x => x.Id));
         }
+
         writer.Write(eTypeSkill);
     }
 }

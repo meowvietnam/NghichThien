@@ -8,21 +8,28 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(VuTuongHoaThan), menuName = "Skill/Thần Thông/" + nameof(VuTuongHoaThan))]
 public class VuTuongHoaThan : NeTranhTT, IMemorySerializable<VuTuongHoaThan>
 {
-    [SerializeField]
-    private int requireHuyenVu = 2;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int requireHuyenVu = 2;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CHECK_NE_TRANH, ObserverEffectNeTranh, 0);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.HuyenVu, requireHuyenVu);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public override string GetDesc(int level)
     {
-        return $"Gỡ ra {GetColoredText($"{requireHuyenVu}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HuyenVu)}. Triệu hoán sương mù làm thế thân giúp ngươi né tránh sát thương (Có thể cộng dồn)";
+        return
+            $"Gỡ ra {GetColoredText($"{requireHuyenVu}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HuyenVu)}. Triệu hoán sương mù làm thế thân giúp ngươi né tránh sát thương (Có thể cộng dồn)";
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)

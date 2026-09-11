@@ -8,8 +8,8 @@ using CongPhap = Skill.CongPhap;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThoNapCongPhap))]
 public class ThoNapCongPhap : CongPhap, IMemorySerializable<ThoNapCongPhap>
 {
-    [SerializeField]
-    private int[] buffValues;
+    [SerializeField] private int[] buffValues;
+
     public override void EquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
         statsCurrent.hpMax += buffValues[daiCanhGioiCongPhap - 1];
@@ -23,6 +23,7 @@ public class ThoNapCongPhap : CongPhap, IMemorySerializable<ThoNapCongPhap>
             statsCurrent.hp -= buffValues[daiCanhGioiCongPhap - 1];
         }
     }
+
     public override void EquipCongPhap(CharacterData statsCurrent, int level)
     {
         var stats = statsCurrent.Stats;
@@ -40,6 +41,7 @@ public class ThoNapCongPhap : CongPhap, IMemorySerializable<ThoNapCongPhap>
             stats.Hp = sinhMenh;
         }
     }
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         return;

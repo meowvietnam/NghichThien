@@ -10,10 +10,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(HuyenVuThoNapThuat))]
 public class HuyenVuThoNapThuat : CongPhap, IMemorySerializable<HuyenVuThoNapThuat>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 2, 3, 4, 5};
-    [SerializeField]
-    private int[] percent = new int[]{10, 15, 20, 25, 30};
+    [SerializeField] private int[] buffValues = new int[] { 1, 2, 3, 4, 5 };
+    [SerializeField] private int[] percent = new int[] { 10, 15, 20, 25, 30 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int count = (int)data[2];
@@ -31,7 +30,8 @@ public class HuyenVuThoNapThuat : CongPhap, IMemorySerializable<HuyenVuThoNapThu
 
     public override string GetDesc(int level)
     {
-        return $"Bắt đầu chiến đấu, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HuyenVu)}. Mỗi hấp thụ một điểm linh khí có {GetColoredText($"{percent[level - 1]}%", "red")} tỉ lệ thu hoạch được {GetColoredText($"X tầng", "red")} {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)} (X là số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HuyenVu)} của bản thân)";
+        return
+            $"Bắt đầu chiến đấu, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HuyenVu)}. Mỗi hấp thụ một điểm linh khí có {GetColoredText($"{percent[level - 1]}%", "red")} tỉ lệ thu hoạch được {GetColoredText($"X tầng", "red")} {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TriLieu)} (X là số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HuyenVu)} của bản thân)";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

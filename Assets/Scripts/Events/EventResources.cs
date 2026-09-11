@@ -10,8 +10,11 @@ namespace Events
     {
         [field: SerializeField] public ushort Id { get; private set; }
         [field: SerializeField] public string Name { get; private set; }
-        [field: SerializeField, PreviewField(50)] public Sprite Icon { get; private set; }
+
+        [field: SerializeField, PreviewField(50)]
+        public Sprite Icon { get; private set; }
     }
+
     [CreateAssetMenu(menuName = "Events", fileName = "EventResources")]
     public class EventResources : ScriptableObject
     {

@@ -1,4 +1,3 @@
-using ItemUI =  ConvertElementalSkill.Prefabs.ItemUI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +10,8 @@ namespace Rank
         public Button ClaimButton { get; init; }
         public RectTransform Container { get; init; }
         public ItemRewardUI MoneyVipPrefab { get; init; }
-        public ItemRewardUI SkillItemPrefab { get; init; }
+        public ItemRewardUI RandomSkillItemPrefab { get; init; }
         public ConvertElementalSkill.Prefabs.ItemUI ItemUIPrefab { get; init; }
+        public ConvertElementalSkill.Prefabs.SkillItemUI SkillItemUIPrefab { get; init; }
     }
 }

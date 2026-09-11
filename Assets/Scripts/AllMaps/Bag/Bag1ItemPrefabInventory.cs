@@ -18,15 +18,15 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
     private const int LoadMoreCount = 10;
 
     public bool isLoadingMore = false;
-    
-   
+
+
     [SerializeField] private ItemInventory prefabItemBag;
     [SerializeField] private Sprite[] spriteQualityFulls => Pool.Get<UIManager>().spriteQualityFulls;
     [SerializeField] private Sprite[] spriteFrames => Pool.Get<UIManager>().spriteFrames;
     [SerializeField] private Color[] colorQualitys => Pool.Get<UIManager>().colorQualitys;
     public ScrollRect scrollRectBagUpdate => prefabItemBag.GetComponentInParent<ScrollRect>();
     public List<ItemRef> itemFullDatas = new List<ItemRef>();
-    public List<ItemRef> itemDataShows= new List<ItemRef>();
+    public List<ItemRef> itemDataShows = new List<ItemRef>();
     public Action<ItemInventory> actionItemInventory;
     public bool isIconSkillBase = false;
     public FilterControl filterControl;
@@ -45,15 +45,14 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             StartCoroutine(TriggerLoadMore(loadBagFunc));
         }
     }
+
     private void OnEnable()
     {
         isLoadingMore = false;
         scrollRectBagUpdate.onValueChanged.RemoveAllListeners();
-        scrollRectBagUpdate.onValueChanged.AddListener((vec) => {
-            OnScrollChanged(vec, InitBag);
-        });
-
+        scrollRectBagUpdate.onValueChanged.AddListener((vec) => { OnScrollChanged(vec, InitBag); });
     }
+
     private ItemInventory GetItemCurrentActiveFromBag(GameObject prefab)
     {
         for (int j = prefab.transform.parent.childCount - 1; j > 0; j--)
@@ -63,6 +62,7 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             {
                 continue;
             }
+
             var currentItem = child.GetComponent<ItemInventory>();
             if (currentItem.itemData != null)
             {
@@ -70,8 +70,10 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
                 return currentItem;
             }
         }
+
         return null;
     }
+
     IEnumerator TriggerLoadMore(Action<bool> loadBagFunc)
     {
         if (!CanLoadMore())
@@ -93,7 +95,7 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
     {
         return loadedCount < itemDataShows.Count;
     }
-  
+
     public void SetItemDataShow(List<ItemRef> itemDatas)
     {
         var equipment = Client.Instance.CharacterData.EquipmentManager;
@@ -115,7 +117,9 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             return true;
         }).ToList();
     }
-    public void InitDataItem(List<ItemRef> itemDatas , Action<ItemInventory> actionItemInventory , bool isIconSkillBase = false , bool isShowTextCount = false,
+
+    public void InitDataItem(List<ItemRef> itemDatas, Action<ItemInventory> actionItemInventory,
+        bool isIconSkillBase = false, bool isShowTextCount = false,
         EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
     {
         this.itemFullDatas = itemDatas;
@@ -130,8 +134,8 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
         this.isTriggerShowTextCount = isShowTextCount;
         this.eActionShowItemInfor = eActionShowItemInfor;
     }
-   
-    public void InitBag(bool isAdd=false)
+
+    public void InitBag(bool isAdd = false)
     {
         var gameConfig = Pool.Get<GameManager>();
 
@@ -164,17 +168,17 @@ public class Bag1ItemPrefabInventory : BaseBehaviour
             {
                 break;
             }
+
             var itemRef = itemDataShows[index];
-            
+
             InventoryUIFacade.RenderBagItem(currentItem, itemRef, isIconSkillBase, eActionShowItemInfor);
             if (isTriggerShowTextCount)
             {
                 currentItem.textCount.gameObject.SetActive(true);
             }
+
             actionItemInventory?.Invoke(currentItem);
             renderedCount++;
-                
-
         }
 
         loadedCount += renderedCount;

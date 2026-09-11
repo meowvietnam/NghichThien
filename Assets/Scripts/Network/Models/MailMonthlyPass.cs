@@ -8,9 +8,9 @@ namespace Network.Models
     {
         public string PassName { get; set; }
         public int MoneyVipPerDay { get; set; }
+
         public void ClaimReward(CharacterData characterData)
         {
-            
         }
 
         public void ShowUI(MailRewardUIContext context)

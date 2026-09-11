@@ -138,6 +138,7 @@ namespace AllMaps.EventReward
                     SetVisualRewardItem(item);
                 }
             }
+
             SetEventItems();
         }
 
@@ -148,6 +149,7 @@ namespace AllMaps.EventReward
             {
                 return;
             }
+
             foreach (var item in items)
             {
                 var data = item.GetItemEventData();

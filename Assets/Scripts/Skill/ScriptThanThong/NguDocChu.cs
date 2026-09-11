@@ -9,17 +9,22 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(NguDocChu), menuName = "Skill/Thần Thông/" + nameof(NguDocChu))]
 public class NguDocChu : ThanThong, IMemorySerializable<NguDocChu>
 {
-    [SerializeField]
-    private int[] trungDocPerRequire;
-    [SerializeField]
-    private int require = 10;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] trungDocPerRequire;
+    [SerializeField] private int require = 10;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
@@ -32,14 +37,16 @@ public class NguDocChu : ThanThong, IMemorySerializable<NguDocChu>
             SecureInt trungDoc = 0;
             target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrungDoc, out trungDoc);
             int count = (trungDoc / require);
-            target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, count * trungDocPerRequire[GetIndexLevelThanThong(caster)]);
+            target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc,
+                count * trungDocPerRequire[GetIndexLevelThanThong(caster)]);
             caster.RemoveAllThanThongImpactAfterPlaySkill(this);
         }
     }
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Bắt đầu hiệp, đối phương mỗi có {GetColoredText($"{require}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)} thì nhận phải {GetColoredText($"+{trungDocPerRequire[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Bắt đầu hiệp, đối phương mỗi có {GetColoredText($"{require}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)} thì nhận phải {GetColoredText($"+{trungDocPerRequire[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)}";
     }
 
     public override int ByteSize()

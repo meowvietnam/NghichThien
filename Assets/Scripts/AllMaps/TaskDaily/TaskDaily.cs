@@ -22,6 +22,7 @@ public class TaskDaily : BaseBehaviour
     [SerializeField] private Image btnCantConfirm;
     [SerializeField] private Image imgDone;
     public DailyQuest DailyQuest { get; private set; }
+
     public void InitTask(DailyQuest quest)
     {
         DailyQuest = quest;
@@ -42,17 +43,18 @@ public class TaskDaily : BaseBehaviour
             moneyVip = 0;
             isGap = false;
         }
+
         imgDone.gameObject.SetActive(false);
         imgGap.gameObject.SetActive(isGap);
         var provider = ItemProviderFactory.GetProvider<IItemData>(itemRef.Type);
         var iItemData = provider.GetDataItemByIdRef(itemRef.Id);
         linhThachText.text = $"{money}";
         tienNgocText.text = $"{moneyVip}";
-        Pool.Get<UIManager>().InitVisualItemInventory(itemRequire,iItemData,itemRef);
-        
+        Pool.Get<UIManager>().InitVisualItemInventory(itemRequire, iItemData, itemRef);
+
         var characterData = Client.Instance.CharacterData;
         var collection = characterData.InventoryManager.GetCollection(itemRef.Type) as HashSet<ItemRef>;
-        if(!collection.TryGetValue(itemRef, out var itemUserHave))
+        if (!collection.TryGetValue(itemRef, out var itemUserHave))
         {
             itemRequire.InitCount(0);
         }
@@ -60,30 +62,34 @@ public class TaskDaily : BaseBehaviour
         {
             itemRequire.InitCount(itemUserHave.Count);
         }
+
         itemRequire.InitCountRequire(itemRef.Count);
         bool isConfirm = itemRequire.count >= itemRequire.countRequire;
         btnConfirm.gameObject.SetActive(isConfirm);
         btnCantConfirm.gameObject.SetActive(!isConfirm);
         SetEventButton(btnConfirm, () =>
         {
-            if(itemRequire.count >= itemRequire.countRequire)
+            if (itemRequire.count >= itemRequire.countRequire)
             {
                 DoneTask();
                 Pool.Get<TaskDailyPanel>().DoneTask(this);
             }
         });
-        if(isDone)
+        if (isDone)
         {
             DoneTask();
         }
+
         itemRequire.textCount.gameObject.SetActive(true);
     }
+
     public void DoneTask()
     {
         imgDone.gameObject.SetActive(true);
         btnConfirm.gameObject.SetActive(false);
         btnCantConfirm.gameObject.SetActive(false);
     }
+
     public static Dictionary<Tier, int> PriceTienNgocVatLieuAndHerbTask = new Dictionary<Tier, int>
     {
         { Tier.NhatPham, 20 },
@@ -96,7 +102,5 @@ public class TaskDaily : BaseBehaviour
 
     private void OnDestroy()
     {
-        
     }
 }
-

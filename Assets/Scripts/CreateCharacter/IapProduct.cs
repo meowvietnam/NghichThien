@@ -7,7 +7,7 @@ namespace CreateCharacter
     public partial class IapProduct
     {
         public int Id { get; set; }
-        public string StoreProductId { get; set; }      
+        public string StoreProductId { get; set; }
         public long Price { get; set; }
         public IapProductType ProductType { get; set; }
         public Store Store { get; set; }

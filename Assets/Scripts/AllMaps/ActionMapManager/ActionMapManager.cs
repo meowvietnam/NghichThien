@@ -6,10 +6,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Network;
 
-public abstract class ActionMapManager : MonoBehaviour , IUISingleton
+public abstract class ActionMapManager : MonoBehaviour, IUISingleton
 {
-    public abstract int TimeMonthRandom { get;  }
-    public abstract string fileSaveTime { get;  }
+    public abstract int TimeMonthRandom { get; }
+    public abstract string fileSaveTime { get; }
     public string FileSaveTime => $"{Client.Instance.CharacterData.Name}_{fileSaveTime}";
 
 
@@ -19,18 +19,20 @@ public abstract class ActionMapManager : MonoBehaviour , IUISingleton
         {
             LoadAfterBackAllMaps();
         }
-
     }
+
     public virtual void LoadAfterBackAllMaps()
     {
         OnTimeAdjust();
     }
+
     private void OnTimeAdjust()
     {
         if (SceneManager.GetActiveScene().name != Pool.Get<GameManager>().listSceneLoaded[0])
         {
             return;
         }
+
         // 1. Lấy tổng số tháng hiện tại của thế giới
         float monthTimeWordCurrent = GameManager.GetMonthTimeWorldIntPlayer();
 
@@ -41,14 +43,11 @@ public abstract class ActionMapManager : MonoBehaviour , IUISingleton
         // --- XỬ LÝ RANDOM NPC (Mỗi 5 tháng) ---
         if (oldTimeRandomInt == -1 || (monthTimeWordCurrent - oldTimeRandomInt) >= TimeMonthRandom)
         {
-            RandomAction();            // Lưu lại mốc thời gian mới
+            RandomAction(); // Lưu lại mốc thời gian mới
             Debug.Log($"<color=cyan>NPC Spawned</color> at month: {monthTimeWordCurrent}");
         }
-
-     
-
-
     }
+
     public virtual void RandomAction()
     {
         PlayerPrefs.SetFloat(FileSaveTime, GameManager.GetMonthTimeWorldIntPlayer());

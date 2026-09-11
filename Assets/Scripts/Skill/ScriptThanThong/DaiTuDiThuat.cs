@@ -10,13 +10,20 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(DaiTuDiThuat), menuName = "Skill/Thần Thông/" + nameof(DaiTuDiThuat))]
 public class DaiTuDiThuat : ThanThong, IMemorySerializable<DaiTuDiThuat>
 {
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
@@ -41,7 +48,8 @@ public class DaiTuDiThuat : ThanThong, IMemorySerializable<DaiTuDiThuat>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Lần tiếp theo sử dụng thần thông tổn thương gấp đôi (Có thể cộng dồn)";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Lần tiếp theo sử dụng thần thông tổn thương gấp đôi (Có thể cộng dồn)";
     }
 
     public override int ByteSize()

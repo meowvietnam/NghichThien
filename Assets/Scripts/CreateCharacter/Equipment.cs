@@ -20,8 +20,10 @@ namespace CreateCharacter
         [field: SerializeField] public string Name { get; set; }
         [field: SerializeField] public Effect[] Effects { get; set; }
         [field: SerializeField] public ushort[] MaterialIds { get; set; }
+
         [MemoryPackIgnore]
         public LuyenKhiRewardItem Item => LuyenKhiResources.Instance.RewardItems.FirstOrDefault(x => x.Id == Id);
+
         [MemoryPackIgnore]
         public Material[] Materials
         {
@@ -31,8 +33,10 @@ namespace CreateCharacter
                 return MaterialIds.Select(x => materials.FirstOrDefault(y => y.Id == x)).ToArray();
             }
         }
+
         [MemoryPackIgnore]
-        public EquipmentGradeConfig GradeConfig => LuyenKhiResources.Instance.EquipmentGrades.FirstOrDefault(x=>x.Grade == GetGrade());
+        public EquipmentGradeConfig GradeConfig =>
+            LuyenKhiResources.Instance.EquipmentGrades.FirstOrDefault(x => x.Grade == GetGrade());
 
         public Material[] GetMaterialsWithEffectType(EffectType effectType)
         {
@@ -46,6 +50,7 @@ namespace CreateCharacter
                 m.YinYangType == config.YinYangType
             ).ToArray();
         }
+
         public (int min, int max) GetMinMaxValue(EffectType effectType)
         {
             var artifactType = Item.Type;
@@ -55,21 +60,24 @@ namespace CreateCharacter
                 c.Effects.Any(e => e.EffectType == effectType && e.ArtifactType == artifactType)
             ).ToList();
             if (validConfigs.Count == 0) return (0, 0);
-            var effectData = validConfigs[0].Effects.First(e => e.EffectType == effectType && e.ArtifactType == artifactType);
+            var effectData = validConfigs[0].Effects
+                .First(e => e.EffectType == effectType && e.ArtifactType == artifactType);
             if (effectData.Value == 0) return (0, 0);
             int sumGrade = 0;
             foreach (var config in validConfigs)
             {
                 sumGrade += Materials
                     .Where(m => m.CultivationElement == config.CultivationElement
-                             && m.YinYangType == config.YinYangType)
+                                && m.YinYangType == config.YinYangType)
                     .Sum(m => LuyenKhiResources.Instance.MaterialGradeConfigs
                         .FirstOrDefault(x => x.Tier == m.Tier)?.Grade ?? 0);
             }
+
             int maxValue = Mathf.RoundToInt(1.0f * sumGrade / effectData.Value);
             int minValue = Mathf.RoundToInt(0.5f * maxValue);
             return (minValue, maxValue);
         }
+
         public ItemRef CreateRefSelfId()
         {
             var itemType = GetItemType();
@@ -81,6 +89,7 @@ namespace CreateCharacter
                 TempId = Id,
             };
         }
+
         public ItemType GetItemType()
         {
             var equipmentType = GetEquipmentType();
@@ -90,7 +99,6 @@ namespace CreateCharacter
                 EquipmentType.Armor => ItemType.PhongCu,
                 EquipmentType.Jewelry => ItemType.TrangSuc,
                 _ => ItemType.VuKhi
-
             };
         }
 
@@ -113,6 +121,7 @@ namespace CreateCharacter
                     return EquipmentType.Jewelry;
             }
         }
+
         public EquipmentGrade GetGrade()
         {
             var materials = Materials;
@@ -124,9 +133,11 @@ namespace CreateCharacter
                 var matConfig = matConfigs.First(x => x.Tier == material.Tier);
                 grade += matConfig.Grade;
             }
+
             var equipmentGradeConfig = res.EquipmentGrades.Last(x => x.MinGrade <= grade);
             return equipmentGradeConfig.Grade;
         }
+
         public bool Equals(Equipment? other)
         {
             if (other is null) return false;

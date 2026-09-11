@@ -10,6 +10,7 @@ namespace Network.Models
         Ads,
         NotFree
     }
+
     [MemoryPackable]
     public partial class LoadRankResult
     {

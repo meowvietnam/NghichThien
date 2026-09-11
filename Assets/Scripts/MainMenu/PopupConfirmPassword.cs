@@ -10,7 +10,7 @@ namespace MainMenu
     {
         [SerializeField] private InputField textField;
         private string password = string.Empty;
-        
+
         public void SetPassword(string password)
         {
             this.password = password;
@@ -24,6 +24,7 @@ namespace MainMenu
                 NotifyGroup.Instance.Show("Mã xác nhận không đúng!");
                 return;
             }
+
             textField.text = string.Empty;
             Hide();
             actionConfirm?.Invoke();

@@ -8,8 +8,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(QuanKhi), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(QuanKhi))]
 public class QuanKhi : NgoDaoCombat, IMemorySerializable<QuanKhi>
 {
-    [SerializeField]
-    private int buff = 8;
+    [SerializeField] private int buff = 8;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         List<LinhKhiTieuTan> linhKhiTieuTans = (List<LinhKhiTieuTan>)data[3];
@@ -19,7 +19,8 @@ public class QuanKhi : NgoDaoCombat, IMemorySerializable<QuanKhi>
             count += item.count;
         }
 
-        if (BaseSkill.CheckIsEqualETypeSkill(caster, eTypeRequire) && CombatManager.GetETuongQuan(linhKhiTieuTans) == ETuongQuan.TuongSinh)
+        if (BaseSkill.CheckIsEqualETypeSkill(caster, eTypeRequire) &&
+            CombatManager.GetETuongQuan(linhKhiTieuTans) == ETuongQuan.TuongSinh)
         {
             caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, buff * count);
         }
@@ -27,7 +28,8 @@ public class QuanKhi : NgoDaoCombat, IMemorySerializable<QuanKhi>
 
     public override string GetDes()
     {
-        return $"Sử dụng thần thức hệ thần thông tiêu hao {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.TuongSinh)} linh khí thì thu hoạch được {BaseSkill.GetColoredText($"+{buff} * X", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} (X là số linh khí thần thông này tiêu hao)";
+        return
+            $"Sử dụng thần thức hệ thần thông tiêu hao {BaseSkill.GetKeyWord(BaseSkill.EKeyWord.TuongSinh)} linh khí thì thu hoạch được {BaseSkill.GetColoredText($"+{buff} * X", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} (X là số linh khí thần thông này tiêu hao)";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

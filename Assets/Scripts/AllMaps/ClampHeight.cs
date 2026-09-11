@@ -14,6 +14,7 @@ namespace AllMaps
         {
             Clamp();
         }
+
         [Button]
         public void Clamp()
         {

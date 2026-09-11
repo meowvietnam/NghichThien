@@ -14,19 +14,23 @@ public class ControlVisualScene : BaseBehaviour
         public Sprite sprite;
         public EMapType eMapType;
     }
+
     [SerializeField] protected Image bg;
     [SerializeField] private SpriteWithEMapType[] listSprites;
-    [SerializeField] private SpriteWithEMapType CurrentSpriteWithMap => listSprites.FirstOrDefault(x=>x.eMapType == Pool.Get<GameManager>().currentEMapType);
+
+    [SerializeField]
+    private SpriteWithEMapType CurrentSpriteWithMap =>
+        listSprites.FirstOrDefault(x => x.eMapType == Pool.Get<GameManager>().currentEMapType);
 
     [SerializeField] public virtual Sprite CurrentSprite => CurrentSpriteWithMap.sprite;
+
     private void Awake()
     {
         InitBG();
     }
+
     public virtual void InitBG()
     {
         bg.sprite = CurrentSprite;
-
     }
-
 }

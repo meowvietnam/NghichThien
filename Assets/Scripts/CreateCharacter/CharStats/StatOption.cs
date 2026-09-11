@@ -16,9 +16,11 @@ namespace CreateCharacter.CharStats
         [field: SerializeField] public List<StatModifier> Modifiers { get; private set; }
         [field: SerializeField, TextArea] public string Effective { get; private set; }
         [field: SerializeField, TextArea] public string Description { get; private set; }
+
         public int ByteSize()
         {
-            return Id.ByteSize() + Name.ByteSize() + Modifiers.ByteSize() + Effective.ByteSize() + Description.ByteSize();
+            return Id.ByteSize() + Name.ByteSize() + Modifiers.ByteSize() + Effective.ByteSize() +
+                   Description.ByteSize();
         }
 
         public void Serialize(IWriter writer)
@@ -29,9 +31,10 @@ namespace CreateCharacter.CharStats
             writer.Write(Effective);
             writer.Write(Description);
         }
+
         public void Deserialize(IReader reader, ref StatOption value)
         {
-            value.Id =  reader.Read<int>();
+            value.Id = reader.Read<int>();
             value.Name = reader.Read();
             value.Modifiers = reader.ReadArray<StatModifier>().ToList();
             value.Effective = reader.Read();

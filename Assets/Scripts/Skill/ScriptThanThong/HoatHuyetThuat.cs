@@ -6,8 +6,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(HoatHuyetThuat), menuName = "Skill/Thần Thông/" + nameof(HoatHuyetThuat))]
 public class HoatHuyetThuat : AmKinhTT, IMemorySerializable<HoatHuyetThuat>
 {
-    [SerializeField]
-    private int[] healValues;
+    [SerializeField] private int[] healValues;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.AddAmKinhTT(this, afterHiep);

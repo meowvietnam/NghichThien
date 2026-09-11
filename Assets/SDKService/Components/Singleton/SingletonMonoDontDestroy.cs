@@ -5,7 +5,7 @@ public class SingletonMonoDontDestroy<T> : MonoBehaviour where T : MonoBehaviour
     private static T _instance;
 
     private static object _lock = new object();
-    
+
     protected string className;
 
     public string GetClassName()
@@ -17,7 +17,6 @@ public class SingletonMonoDontDestroy<T> : MonoBehaviour where T : MonoBehaviour
     {
         get
         {
-            
             lock (_lock)
             {
                 if (applicationIsQuitting)
@@ -42,6 +41,7 @@ public class SingletonMonoDontDestroy<T> : MonoBehaviour where T : MonoBehaviour
                         DontDestroyOnLoad(_instance.gameObject);
                     }
                 }
+
                 return _instance;
             }
         }

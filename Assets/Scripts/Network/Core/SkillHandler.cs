@@ -82,11 +82,13 @@ namespace Network.Core
                 {
                     inventory.CamNgos = camNgos;
                 }
+
                 var exp = result.CurrentExp;
                 if (exp != null)
                 {
                     charData.Progression.CurrentExp = exp.Value;
                 }
+
                 charData.Progression.NgoDaoDiem = result.NgoDaoDiem;
                 var linhDan = LuyenDanResources.Instance.FindLinhDan(id);
                 inventory.Decrease(new ItemRef()

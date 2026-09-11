@@ -9,17 +9,22 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(LinhSaThuat), menuName = "Skill/Thần Thông/" + nameof(LinhSaThuat))]
 public class LinhSaThuat : ThanThong, IMemorySerializable<LinhSaThuat>
 {
-    [SerializeField]
-    protected float delayTimeEffect = 1f;
-    [SerializeField]
-    private int require = 1;
-    [SerializeField]
-    private int hapThu = 1;
+    [SerializeField] protected float delayTimeEffect = 1f;
+    [SerializeField] private int require = 1;
+    [SerializeField] private int hapThu = 1;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, require);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.PLAY_SKILL, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
@@ -60,7 +65,8 @@ public class LinhSaThuat : ThanThong, IMemorySerializable<LinhSaThuat>
 
     public override string GetDesc(int level)
     {
-        return $"Tiêu hao {GetColoredText($"{require}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)}, sử dụng thần thông lần sau nếu là {GetColoredText($"[Hoàn Trần]", "red")} thì ngẫu nhiên hấp thụ {GetColoredText($"{hapThu}", "red")} điểm linh khí của đối thủ (Có thể cộng dồn)";
+        return
+            $"Tiêu hao {GetColoredText($"{require}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)}, sử dụng thần thông lần sau nếu là {GetColoredText($"[Hoàn Trần]", "red")} thì ngẫu nhiên hấp thụ {GetColoredText($"{hapThu}", "red")} điểm linh khí của đối thủ (Có thể cộng dồn)";
     }
 
     public override int ByteSize()

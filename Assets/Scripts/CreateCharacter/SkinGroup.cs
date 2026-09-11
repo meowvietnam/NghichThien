@@ -21,6 +21,7 @@ namespace CreateCharacter
         {
             return Id.ByteSize() + Name.ByteSize() + Categories.ByteSize() + ColorGroups.ByteSize();
         }
+
         public void Serialize(IWriter writer)
         {
             writer.Write(Id);
@@ -28,6 +29,7 @@ namespace CreateCharacter
             writer.WriteArray(Categories);
             writer.WriteArray(ColorGroups);
         }
+
         public void Deserialize(IReader reader, ref SkinGroup value)
         {
             value.Id = reader.Read();

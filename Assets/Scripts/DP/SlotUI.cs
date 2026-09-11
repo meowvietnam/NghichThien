@@ -25,10 +25,12 @@ namespace DP
         private void OnSeedClick()
         {
         }
+
         public bool HasSeed()
         {
             return Seed != null;
         }
+
         private void OnClick()
         {
             var panel = DongPhuPanel.Instance;
@@ -36,10 +38,12 @@ namespace DP
             {
                 return;
             }
+
             if (Seed != null)
             {
                 return;
             }
+
             panel.SetCurrentSelectedSlot(this);
             panel.OpenInventoryWithContext(this);
         }
@@ -63,6 +67,7 @@ namespace DP
         {
             SetLocked(isLocked);
         }
+
         public void SetSeed(PlantSeed seed)
         {
             Seed = seed;
@@ -77,14 +82,17 @@ namespace DP
             {
                 seedUI.gameObject.SetActive(false);
             }
+
             UpdateSlotText();
         }
+
         private void OnSeedClicked()
         {
             var dongPhu = DongPhuPanel.Instance;
             dongPhu.HideInventory();
             dongPhu.SetCurrentSelectedSlot(this);
         }
+
         private void UpdateSlotText()
         {
             var isLocked = Slot.IsLocked;
@@ -114,18 +122,22 @@ namespace DP
 
             UpdateSlotText();
         }
+
         public void PlayEffect()
         {
             effect.Play();
         }
+
         private void OnHarvest(PlantSeed plantSeed)
         {
             SetSeed(null);
         }
+
         public void OnClose()
         {
             DongPhuPanel.Instance.SetCurrentSelectedSlot(null);
         }
+
         public void OnSelect(DongPhuSeedUI seedUI)
         {
             var herbId = seedUI.HerbId;

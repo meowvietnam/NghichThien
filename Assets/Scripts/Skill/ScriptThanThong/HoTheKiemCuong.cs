@@ -7,16 +7,22 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(HoTheKiemCuong), menuName = "Skill/Thần Thông/" + nameof(HoTheKiemCuong))]
 public class HoTheKiemCuong : ThanThong, IMemorySerializable<HoTheKiemCuong>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{4, 4, 4, 4, 4};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] buffValues = new int[] { 4, 4, 4, 4, 4 };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out SecureInt kiemKhi);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, kiemKhi * buffValues[GetIndexLevelThanThong(caster)]);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, kiemKhi);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
@@ -33,7 +39,8 @@ public class HoTheKiemCuong : ThanThong, IMemorySerializable<HoTheKiemCuong>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tiêu hao tất cả {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}, mỗi một tầng thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tiêu hao tất cả {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}, mỗi một tầng thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}";
     }
 
     public override int ByteSize()

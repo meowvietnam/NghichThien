@@ -50,6 +50,7 @@ namespace Network.ClientState
                     inventory.Update(equipment);
                     charData.InventoryChanged();
                 }
+
                 callback.OnSetEquipmentNameResult(result);
             }
         }
@@ -57,6 +58,7 @@ namespace Network.ClientState
         public void OnLeave()
         {
         }
+
         public MessageState State => MessageState.LuyenKhi;
     }
 }

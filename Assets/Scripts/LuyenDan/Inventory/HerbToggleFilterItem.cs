@@ -6,6 +6,7 @@ namespace LuyenDan.Inventory
     {
         [SerializeField] private HerbType herbType;
         [SerializeField] private HerbItemListUI target;
+
         protected override void OnValueChanged(bool isOn)
         {
             base.OnValueChanged(isOn);

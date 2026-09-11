@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(TrongNguyenVoPhongCong))]
 public class TrongNguyenVoPhongCong : CongPhap, IMemorySerializable<TrongNguyenVoPhongCong>
 {
-    [SerializeField]
-    private int[] buff;
-    [SerializeField]
-    private int require = 2;
+    [SerializeField] private int[] buff;
+    [SerializeField] private int require = 2;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         ThanThong thanThongUse = (ThanThong)data[2];
@@ -25,7 +24,8 @@ public class TrongNguyenVoPhongCong : CongPhap, IMemorySerializable<TrongNguyenV
 
     public override string GetDesc(int level)
     {
-        return $"Sử dụng thần thông {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)} thì sẽ tiêu hao thêm {GetColoredText($"{require} điểm kim", "red")} linh khí thì thu hoạch được {GetColoredText($"+{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}";
+        return
+            $"Sử dụng thần thông {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)} thì sẽ tiêu hao thêm {GetColoredText($"{require} điểm kim", "red")} linh khí thì thu hoạch được {GetColoredText($"+{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

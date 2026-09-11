@@ -20,6 +20,5 @@ namespace CreateCharacter
         [field: SerializeField] public EffectType Type { get; set; }
         [field: SerializeField] public byte Value { get; set; }
         public int GetValue() => Value;
-
     }
 }

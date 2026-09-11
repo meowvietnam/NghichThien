@@ -8,8 +8,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(DucHoa), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(DucHoa))]
 public class DucHoa : NgoDaoCombat, IMemorySerializable<DucHoa>
 {
-    [SerializeField]
-    private int percent = 20;
+    [SerializeField] private int percent = 20;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
     }
@@ -30,7 +30,8 @@ public class DucHoa : NgoDaoCombat, IMemorySerializable<DucHoa>
 
     public override string GetDes()
     {
-        return $"Nếu bản thân số tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)} thấp hơn {BaseSkill.GetColoredText($"{percent}%", "red")} HP tối đa thì lúc này {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)} không còn gây tổn thương mà là khôi phục HP";
+        return
+            $"Nếu bản thân số tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)} thấp hơn {BaseSkill.GetColoredText($"{percent}%", "red")} HP tối đa thì lúc này {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)} không còn gây tổn thương mà là khôi phục HP";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

@@ -9,15 +9,16 @@ namespace Snapshot
     public partial class ComboWithType
     {
         public string NameCombo { get; set; }
-        public Combo[] ComboWithDaiCanhGioi  { get; set; }
+        public Combo[] ComboWithDaiCanhGioi { get; set; }
         public BaseSkill.ETypeSkill[] ETypeSkill { get; set; }
         public ETypeCombo TypeCombo { get; set; }
         public EMonPhai MonPhai { get; set; }
+
         [MemoryPackConstructor]
         public ComboWithType()
         {
-            
         }
+
         public ComboWithType(global::ComboSkillResource.ComboSkillResource.ComboWithType clone)
         {
             NameCombo = clone.nameCombo;

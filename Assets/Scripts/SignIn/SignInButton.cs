@@ -40,19 +40,17 @@ namespace SignIn
             }
             finally
             {
-                NetworkManager.Instance.Invoke(() =>
-                {
-                    Observer.Notify(EventList.Network.SIGN_IN_END, this);
-                });
+                NetworkManager.Instance.Invoke(() => { Observer.Notify(EventList.Network.SIGN_IN_END, this); });
             }
         }
+
         protected abstract Task<ILogin> CreateRequest();
         public abstract ISignInService GetSignInService();
 
         protected virtual void OnLoginResult(LoginResult result)
         {
-            
         }
+
         public async Task SignOut()
         {
             await GetSignInService().SignOutAsync();

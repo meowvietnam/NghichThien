@@ -12,6 +12,7 @@ namespace Network.ClientState
     public class AuthState : IClientState
     {
         private IAuthCallback callback;
+
         public AuthState(IAuthCallback callback)
         {
             this.callback = callback;
@@ -20,6 +21,7 @@ namespace Network.ClientState
         public void OnEnter()
         {
         }
+
         public void Handle(Message<MessageTag> message)
         {
             var tag = message.Tag;

@@ -8,8 +8,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(HoiNguyen), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(HoiNguyen))]
 public class HoiNguyen : NgoDaoCombat, IMemorySerializable<HoiNguyen>
 {
-    [SerializeField]
-    private int buff = 5;
+    [SerializeField] private int buff = 5;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.Healing(buff);
@@ -17,7 +17,8 @@ public class HoiNguyen : NgoDaoCombat, IMemorySerializable<HoiNguyen>
 
     public override string GetDes()
     {
-        return $"Mỗi sử dụng thần thông gây tổn thương, khôi phục {BaseSkill.GetColoredText($"+{buff}", "red")} điểm HP";
+        return
+            $"Mỗi sử dụng thần thông gây tổn thương, khôi phục {BaseSkill.GetColoredText($"+{buff}", "red")} điểm HP";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

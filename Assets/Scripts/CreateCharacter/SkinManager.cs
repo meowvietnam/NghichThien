@@ -13,6 +13,7 @@ namespace CreateCharacter
         {
             RandomSkin();
         }
+
         [Button]
         private void RandomSkin()
         {

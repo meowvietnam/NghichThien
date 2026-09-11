@@ -5,6 +5,7 @@ using LuyenKhi;
 using Network;
 using UnityEngine;
 using CreateCharacter;
+
 namespace AllMaps.ItemProvider
 {
     /// <summary>
@@ -12,16 +13,15 @@ namespace AllMaps.ItemProvider
     /// </summary>
     public class TrangSucEquipmentProvider : EquipmentProvider
     {
-
         public override ItemType SupportedType => ItemType.TrangSuc;
 
         public override EquipmentType EquipemtType => EquipmentType.Jewelry;
 
         protected override string GetTextNameEquipment(ArtifactType artifactType)
         {
-
             return $"Trang Sức {base.GetTextNameEquipment(artifactType)}";
         }
+
         public override CreateCharacter.Equipment GetDataItemByIdRef(ushort equipmentId)
         {
             return _inventoryManager.TrangSucs.FirstOrDefault(x => x.SelfId == equipmentId);

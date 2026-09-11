@@ -9,6 +9,7 @@ namespace DP
         [SerializeField] private SlotUI slotUIPrefab;
         [SerializeField] private RectTransform container;
         private List<SlotUI> slots = new List<SlotUI>();
+
         public void Init(PlantGarden garden)
         {
             var slots = garden.Slots.OrderBy(x => x.SlotIndex).ToList();
@@ -21,13 +22,14 @@ namespace DP
                 };
                 if (seeds.TryGetValue(seedRef, out var seed))
                 {
-                    
                 }
+
                 var slotUI = Instantiate(slotUIPrefab, container);
                 slotUI.Init(slot, seed);
                 this.slots.Add(slotUI);
             }
         }
+
         public SlotUI FindSlot(ushort slotIndex)
         {
             return slots.First(x => x.Slot.SlotIndex == slotIndex);

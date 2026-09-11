@@ -9,6 +9,7 @@ namespace Network.Core
     public class SceneManager : IClientHandler
     {
         private Action<ChangeSceneResult> onChangeSceneResult;
+
         public void OnEnter()
         {
         }
@@ -37,11 +38,12 @@ namespace Network.Core
         {
         }
 
-        public void ChangeScene(string sceneName,Action<ChangeSceneResult> callback)
+        public void ChangeScene(string sceneName, Action<ChangeSceneResult> callback)
         {
             onChangeSceneResult = callback;
-            Client.Instance.Send(MessageTag.ChangeScene,sceneName);
+            Client.Instance.Send(MessageTag.ChangeScene, sceneName);
         }
+
         private static readonly MessageTag[] handlers = { MessageTag.ChangeSceneResult };
         public MessageTag[] HandleTag => handlers;
     }

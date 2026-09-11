@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(LiemTuc), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(LiemTuc))]
 public class LiemTuc : NgoDaoCombat, IMemorySerializable<LiemTuc>
 {
-    [SerializeField]
-    private int buff = 50;
+    [SerializeField] private int buff = 50;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         EBuffAndDeBuff eBuffParam = (EBuffAndDeBuff)data[1];
@@ -40,17 +40,18 @@ public class LiemTuc : NgoDaoCombat, IMemorySerializable<LiemTuc>
     public void ExecuteNgoDao2(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.RemoveNgoDaoCombatDynamic(this);
-        target.AddDamageData(new List<int>{target.GetDameBuffForTarget() * buff / 100});
+        target.AddDamageData(new List<int> { target.GetDameBuffForTarget() * buff / 100 });
     }
 
     public override string GetDes()
     {
-        return $"Thoát khỏi trạng thái {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnNac)} thì một lần sử dụng thần thông tổn thương tăng lên {BaseSkill.GetColoredText($"{buff}%", "red")} điểm sát thương";
+        return
+            $"Thoát khỏi trạng thái {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnNac)} thì một lần sử dụng thần thông tổn thương tăng lên {BaseSkill.GetColoredText($"{buff}%", "red")} điểm sát thương";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.Combat.ADD_BUFF, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.REMOVE_BUFF, ObserverEffect);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect2);
     }
 

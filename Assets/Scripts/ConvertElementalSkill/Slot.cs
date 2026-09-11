@@ -6,17 +6,20 @@ namespace ConvertElementalSkill
     public class Slot : BaseItemUI, ISelectedItemCallback
     {
         [SerializeField] private Button clearButton;
+
         protected override void Start()
         {
             base.Start();
             SetEventButton(clearButton, Clear);
         }
+
         public void Clear()
         {
             ClearItem();
             ConvertElementalSkillPanel.Instance.Page.PutItems.OnDeselect(this);
             ClearNew();
         }
+
         private void ClearItem()
         {
             if (SkillData != null)
@@ -31,21 +34,25 @@ namespace ConvertElementalSkill
                 itemList.ApplyFilterOn(itemBag);
             }
         }
+
         public void ClearNew()
         {
             SetData(null);
             clearButton.gameObject.SetActive(false);
         }
+
         protected override void OnSelected()
         {
             var instance = ConvertElementalSkillPanel.Instance;
             instance.Bag.OpenWithCallback(this);
         }
+
         protected override void OnDestroy()
         {
             base.OnDestroy();
             clearButton.onClick.RemoveAllListeners();
         }
+
         public void OnSelected(ItemBag item)
         {
             ClearItem();

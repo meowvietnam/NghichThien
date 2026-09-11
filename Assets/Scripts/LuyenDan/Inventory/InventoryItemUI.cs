@@ -8,13 +8,15 @@ namespace LuyenDan.Inventory
 {
     public class InventoryItemUI : BaseItemUI
     {
-        [TabGroup("Has Item")]
-        [SerializeField] private Button infoButton;
-        [TabGroup("Has Item")]
-        [SerializeField] private Button selectButton;
+        [TabGroup("Has Item")] [SerializeField]
+        private Button infoButton;
+
+        [TabGroup("Has Item")] [SerializeField]
+        private Button selectButton;
+
         private ItemRef itemRef;
-        [ShowInInspector, ReadOnly]
-        public ItemRef ItemRef => itemRef;
+        [ShowInInspector, ReadOnly] public ItemRef ItemRef => itemRef;
+
         public bool IsHasItem { get; private set; }
         // private void OnValidate()
         // {
@@ -37,8 +39,8 @@ namespace LuyenDan.Inventory
             SetData(data);
             if (IsHasItem)
             {
-                SetEventButton(selectButton,OnSelected);
-                SetEventButton(infoButton,ShowInfo);
+                SetEventButton(selectButton, OnSelected);
+                SetEventButton(infoButton, ShowInfo);
             }
             else
             {
@@ -59,17 +61,21 @@ namespace LuyenDan.Inventory
             {
                 itemRef.OnCountChanged += OnCountChanged;
             }
+
             Init(data);
         }
+
         protected virtual void OnSelected()
         {
             Debug.Log("OnSelected");
         }
+
         private void OnCountChanged(int count)
         {
             SetCount(count);
             SetActive(count > 0);
         }
+
         private void OnDestroy()
         {
             if (IsHasItem && itemRef != null)
@@ -78,10 +84,12 @@ namespace LuyenDan.Inventory
                 selectButton.onClick.RemoveListener(OnSelected);
             }
         }
+
         public void Destroy()
         {
             Destroy(selfObject);
         }
+
         public virtual IItemData GetData()
         {
             return null;

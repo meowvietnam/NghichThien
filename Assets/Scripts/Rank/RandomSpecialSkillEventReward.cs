@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Rank
 {
     [MemoryPackable]
-    public partial class SpecialSkillEventReward : IEventReward
+    public partial class RandomSpecialSkillEventReward : IEventReward
     {
         public List<ItemRef> Items { get; set; }
         public BaseSkill.ETierSkill[] Tiers { get; set; }
@@ -31,7 +31,7 @@ namespace Rank
         {
             if (Type == ItemType.ThanThong)
             {
-                var itemUi = Object.Instantiate(context.SkillItemPrefab, context.Container);
+                var itemUi = Object.Instantiate(context.RandomSkillItemPrefab, context.Container);
                 itemUi.SetText(GetDescription(Count));
             }
             else
@@ -41,16 +41,16 @@ namespace Rank
                 var remaining = Count % countPerOne;
                 for (int i = 0; i < totalRandomItem; i++)
                 {
-                    var itemUi = Object.Instantiate(context.SkillItemPrefab, context.Container);
+                    var itemUi = Object.Instantiate(context.RandomSkillItemPrefab, context.Container);
                     itemUi.SetText(GetDescription(countPerOne));
                 }
+
                 if (remaining > 0)
                 {
-                    var itemUi = Object.Instantiate(context.SkillItemPrefab, context.Container);
+                    var itemUi = Object.Instantiate(context.RandomSkillItemPrefab, context.Container);
                     itemUi.SetText(GetDescription(remaining));
-                }  
+                }
             }
- 
         }
 
         private string GetDescription(int count)
@@ -88,6 +88,7 @@ namespace Rank
             return
                 $"<color=#{ColorUtility.ToHtmlStringRGBA(skillData.ItemData.VisualQuality.Color)}>{skillData.ItemData.Name} x{skillData.ItemRef.Count}</color>";
         }
+
         public string GetRichText()
         {
             var skillDatas = GetItemDatas();

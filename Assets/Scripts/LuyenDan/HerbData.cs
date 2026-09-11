@@ -23,6 +23,7 @@ namespace LuyenDan
         [field: SerializeField] public string Description { get; private set; }
         private Sprite icon;
         [field: SerializeField] public string IconPath { get; private set; }
+
         public Sprite Icon
         {
             get
@@ -31,9 +32,11 @@ namespace LuyenDan
                 {
                     icon = Resources.Load<Sprite>(IconPath);
                 }
+
                 return icon;
             }
         }
+
         [ShowInInspector]
         public HerbType HerbType
         {
@@ -139,7 +142,7 @@ namespace LuyenDan
             value.Locations = reader.Read();
             value.Description = reader.Read();
         }
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         public void Move()
         {
             var icon = Icon;
@@ -147,6 +150,6 @@ namespace LuyenDan
             var path = Path.GetDirectoryName(root + IconPath);
             AssetOptimize.Move(icon.texture, path);
         }
-        #endif
+#endif
     }
 }

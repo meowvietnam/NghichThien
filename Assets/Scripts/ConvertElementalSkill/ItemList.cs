@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
 namespace ConvertElementalSkill
 {
     public class ItemList : BaseBehaviour, IFilter
@@ -9,12 +10,14 @@ namespace ConvertElementalSkill
         [SerializeField] private Transform content;
         private List<ItemBag> items = new();
         private List<IFilter> filters = new();
+
         public void Init(IEnumerable<SkillData> skillDatas)
         {
             foreach (var itemBag in items)
             {
                 itemBag.DestroySelf();
             }
+
             items.Clear();
             foreach (var skillData in skillDatas)
             {
@@ -23,12 +26,14 @@ namespace ConvertElementalSkill
                 items.Add(item);
             }
         }
+
         public void AddItem(SkillData skillData)
         {
             var item = Instantiate(itemPrefab, content);
             item.SetData(skillData);
             items.Add(item);
         }
+
         public void ApplyFilterOn(ItemBag item)
         {
             var active = true;
@@ -36,21 +41,26 @@ namespace ConvertElementalSkill
             {
                 active = active && filter.Filter(item);
             }
+
             item.SetActive(active);
         }
+
         public void AddFilter(IFilter filter)
         {
             filters.Add(filter);
         }
+
         public void RemoveFilter(IFilter filter)
         {
             filters.Remove(filter);
         }
+
         public void ClearFilters()
         {
             filters.Clear();
             AddFilter(this);
         }
+
         public void UpdateFilter()
         {
             foreach (var itemBag in items)
@@ -58,6 +68,7 @@ namespace ConvertElementalSkill
                 ApplyFilterOn(itemBag);
             }
         }
+
         public ItemBag FindItem(ushort id)
         {
             return items.FirstOrDefault(x => x.SkillData.ItemRef.Id == id);
@@ -67,6 +78,5 @@ namespace ConvertElementalSkill
         {
             return item.SkillData.ItemRef.Count > 0;
         }
-
     }
 }

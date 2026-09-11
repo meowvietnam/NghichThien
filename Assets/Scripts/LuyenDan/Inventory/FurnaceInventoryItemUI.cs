@@ -8,7 +8,8 @@ namespace LuyenDan.Inventory
         public TempFurnaceData Data { get; private set; }
         public int FurnaceId => FData.SelfId;
         public Tier Tier => Data.Tier;
-        public FurnaceData FData { get;  private set; }
+        public FurnaceData FData { get; private set; }
+
         protected override void Init(IItemData data)
         {
             base.Init(data);
@@ -27,6 +28,7 @@ namespace LuyenDan.Inventory
             };
             Init(itemRef);
         }
+
         protected override void OnSelected()
         {
             LuyenDanPanel.Instance.SelectDanLu(this);
@@ -34,7 +36,7 @@ namespace LuyenDan.Inventory
 
         protected override void ShowInfo()
         {
-            ToolTipItems.Instance.ShowInfoItem(Data,ItemRef,FData);
+            ToolTipItems.Instance.ShowInfoItem(Data, ItemRef, FData);
         }
 
         public override IItemData GetData()

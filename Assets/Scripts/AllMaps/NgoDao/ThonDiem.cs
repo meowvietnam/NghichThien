@@ -21,12 +21,13 @@ public class ThonDiem : NgoDaoCombat, IMemorySerializable<ThonDiem>
 
     public override string GetDes()
     {
-        return $"Thoát khỏi trạng thái {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoaDiem)} thì khôi phục HP một lượng tương đương số tầng";
+        return
+            $"Thoát khỏi trạng thái {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoaDiem)} thì khôi phục HP một lượng tương đương số tầng";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.Combat.ADD_BUFF, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.REMOVE_BUFF, ObserverEffect);
     }
 
     public override int ByteSize()

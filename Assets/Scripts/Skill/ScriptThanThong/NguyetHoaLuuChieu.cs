@@ -10,14 +10,11 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(NguyetHoaLuuChieu), menuName = "Skill/Thần Thông/" + nameof(NguyetHoaLuuChieu))]
 public class NguyetHoaLuuChieu : ThanThong, IMemorySerializable<NguyetHoaLuuChieu>
 {
-    [SerializeField]
-    private int percent = 20;
-    [SerializeField]
-    private int[] buffs = new int[]{4, 4, 6, 6, 8};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
-    [SerializeField]
-    private float cameraSize = 5;
+    [SerializeField] private int percent = 20;
+    [SerializeField] private int[] buffs = new int[] { 4, 4, 6, 6, 8 };
+    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] private float cameraSize = 5;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -25,6 +22,13 @@ public class NguyetHoaLuuChieu : ThanThong, IMemorySerializable<NguyetHoaLuuChie
         target.HapThuLinhKhi(buffs[GetIndexLevelThanThong(caster)]);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect3);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
     }
 
@@ -57,7 +61,8 @@ public class NguyetHoaLuuChieu : ThanThong, IMemorySerializable<NguyetHoaLuuChie
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Đối thủ hấp thụ {GetColoredText($"+{buffs[level - 1]} * X", "red")} điểm linh khí. Bản thân nhận thần thông tổn thương giảm {GetColoredText($"{percent}%", "red")}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Đối thủ hấp thụ {GetColoredText($"+{buffs[level - 1]} * X", "red")} điểm linh khí. Bản thân nhận thần thông tổn thương giảm {GetColoredText($"{percent}%", "red")}";
     }
 
     public override int ByteSize()

@@ -7,6 +7,7 @@ using Network.Extensions;
 public class QuyNguyenKiemKhi : TietMach, IMemorySerializable<QuyNguyenKiemKhi>
 {
     protected override EBuffAndDeBuff eBuffOrDebuff => EBuffAndDeBuff.ChayMau;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);

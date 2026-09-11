@@ -1,13 +1,16 @@
 using UnityEngine;
 
-public enum ETypeCombat 
+public enum ETypeCombat
 {
     None,
     AllMaps,
     LuanBan,
     DauTruong,
     Boss,
+    LuanBanRealTime,
+    TongMonChienRealTime
 }
+
 public enum ETypeResultCombat
 {
     None,

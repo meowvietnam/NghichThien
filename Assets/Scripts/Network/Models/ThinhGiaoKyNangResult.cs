@@ -12,7 +12,5 @@ namespace Network.Models
         public int IdChar { get; set; }
         public int NewValueRelationship { get; set; }
         public ItemRef ItemRefSkill { get; set; }
-
     }
 }
-

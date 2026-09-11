@@ -31,10 +31,12 @@ namespace Network.Core
                 }
             }
         }
+
         public void OnLeave()
         {
             Client.Instance.RemoveReconnectedListener(OnReconnected);
         }
+
         public void OnDisconnect(IProtocol<MessageTag> protocol)
         {
         }

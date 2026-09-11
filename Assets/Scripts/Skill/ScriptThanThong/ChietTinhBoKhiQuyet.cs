@@ -7,17 +7,22 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ChietTinhBoKhiQuyet), menuName = "Skill/Thần Thông/" + nameof(ChietTinhBoKhiQuyet))]
 public class ChietTinhBoKhiQuyet : ThanThong, IMemorySerializable<ChietTinhBoKhiQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{8, 12, 16, 20, 24};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
-    [SerializeField]
-    private float cameraSize = 5;
+    [SerializeField] private int[] buffValues = new int[] { 8, 12, 16, 20, 24 };
+    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] private float cameraSize = 5;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NgungThan, out SecureInt ngungThan);
         caster.Healing(ngungThan * buffValues[GetIndexLevelThanThong(caster)]);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.NgungThan, ngungThan);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
     }
 
@@ -34,7 +39,8 @@ public class ChietTinhBoKhiQuyet : ThanThong, IMemorySerializable<ChietTinhBoKhi
 
     public override string GetDesc(int level)
     {
-        return $"Gỡ ra toàn bộ {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NgungThan)} Mỗi có một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NgungThan)} hồi phục {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm HP";
+        return
+            $"Gỡ ra toàn bộ {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NgungThan)} Mỗi có một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NgungThan)} hồi phục {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm HP";
     }
 
     public override int ByteSize()

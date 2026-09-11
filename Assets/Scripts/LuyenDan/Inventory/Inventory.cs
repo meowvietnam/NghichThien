@@ -15,11 +15,9 @@ namespace LuyenDan.Inventory
         private void Start()
         {
             closeButton.onClick.AddListener(Close);
-            maskBtn.onClick.AddListener(() =>
-            {
-                SetActive(false);
-            });
+            maskBtn.onClick.AddListener(() => { SetActive(false); });
         }
+
         protected void InitFilterGroup()
         {
             foreach (var filterGroup in filterGroups)
@@ -27,6 +25,7 @@ namespace LuyenDan.Inventory
                 filterGroup.Init();
             }
         }
+
         public void Close()
         {
             thisObject.SetActive(false);

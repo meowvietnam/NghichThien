@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(NgungSa), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(NgungSa))]
 public class NgungSa : NgoDaoCombat, IMemorySerializable<NgungSa>
 {
-    [SerializeField]
-    private int buff = 30;
+    [SerializeField] private int buff = 30;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         ThanThong thanThong = (ThanThong)data[2];
@@ -35,13 +35,14 @@ public class NgungSa : NgoDaoCombat, IMemorySerializable<NgungSa>
 
     public void ExecuteNgoDao2(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.AddDamageData(new List<int>{(target.GetDameBuffForTarget() * buff / 100)});
+        target.AddDamageData(new List<int> { (target.GetDameBuffForTarget() * buff / 100) });
         caster.RemoveNgoDaoCombatDynamic(this);
     }
 
     public override string GetDes()
     {
-        return $"Mỗi lần phát động [Hóa Cát] thì lần tiếp theo sử dụng thần thông gây tổn thương tăng lên {BaseSkill.GetColoredText($"{buff}%", "red")} điểm sát thương";
+        return
+            $"Mỗi lần phát động [Hóa Cát] thì lần tiếp theo sử dụng thần thông gây tổn thương tăng lên {BaseSkill.GetColoredText($"{buff}%", "red")} điểm sát thương";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

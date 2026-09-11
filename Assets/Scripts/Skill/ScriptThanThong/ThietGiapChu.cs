@@ -9,16 +9,22 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ThietGiapChu), menuName = "Skill/Thần Thông/" + nameof(ThietGiapChu))]
 public class ThietGiapChu : ThanThong, IMemorySerializable<ThietGiapChu>
 {
-    [SerializeField]
-    protected float delayTimeEffect = 1f;
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 2, 3, 4, 6};
+    [SerializeField] protected float delayTimeEffect = 1f;
+    [SerializeField] private int[] buffValues = new int[] { 1, 2, 3, 4, 6 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect2);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
@@ -44,7 +50,8 @@ public class ThietGiapChu : ThanThong, IMemorySerializable<ThietGiapChu>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Trong hiệp của đối thủ, mỗi lần bản thân nhận sát thương từ thần thông thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.GiamTonThuong)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Trong hiệp của đối thủ, mỗi lần bản thân nhận sát thương từ thần thông thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.GiamTonThuong)}";
     }
 
     public override int ByteSize()

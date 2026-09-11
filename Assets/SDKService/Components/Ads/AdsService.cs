@@ -1,4 +1,5 @@
 ﻿//using GamePlay.Script;
+
 using GoogleMobileAds.Api;
 using Network;
 using SdkService.Components;
@@ -7,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class AdsService : SingletonMonoDontDestroy<AdsService>
 {
     private IAdsProvider adsProvider;
@@ -21,6 +23,7 @@ public class AdsService : SingletonMonoDontDestroy<AdsService>
     {
         Init();
     }
+
     public void Init()
     {
         if (adsProvider == null)
@@ -32,21 +35,17 @@ public class AdsService : SingletonMonoDontDestroy<AdsService>
         lastTimeCloseInter = DateTime.Now.AddDays(-1);
         HideBanner();
     }
+
     [Button]
     public void ShowInterstitialAds(string location, Action closeCallback, Action failedCallback)
     {
-        Action closeCallback2 = () =>
-        {
-            closeCallback?.Invoke();
-        };
-        Action failCallback2 = () =>
-        {
-            failedCallback?.Invoke();
-        };
+        Action closeCallback2 = () => { closeCallback?.Invoke(); };
+        Action failCallback2 = () => { failedCallback?.Invoke(); };
         adsProvider.ShowInterstitial(location, closeCallback2, failCallback2);
     }
+
     public void ShowRewardVideoAds(string location, string buttonName,
-    Action rewardedCallback, Action closeCallback, Action loadFailCallback)
+        Action rewardedCallback, Action closeCallback, Action loadFailCallback)
     {
         float startTime = Time.realtimeSinceStartup;
         Action closeCallback2 = () =>
@@ -54,19 +53,18 @@ public class AdsService : SingletonMonoDontDestroy<AdsService>
             float duration = Time.realtimeSinceStartup - startTime;
             if (duration < 5f)
             {
-                NetworkManager.Instance.Invoke(() => {
+                NetworkManager.Instance.Invoke(() =>
+                {
                     loadFailCallback?.Invoke();
                     Debug.LogWarning("Xem quảng cáo quá nhanh, nghi vấn hack/skip!");
                 });
                 return;
             }
+
             closeCallback?.Invoke();
         };
 
-        Action rewardCallback2 = () =>
-        {
-            rewardedCallback?.Invoke();
-        };
+        Action rewardCallback2 = () => { rewardedCallback?.Invoke(); };
 
         Action failCallback2 = () =>
         {
@@ -100,10 +98,10 @@ public class AdsService : SingletonMonoDontDestroy<AdsService>
 
         adsProvider.ShowRewardVideo(location, buttonName, rewardCallback2, closeCallback2, failCallback2);
     }
+
     [Button]
     public void HideBanner()
     {
         adsProvider.HideBanner();
-    }    
-
+    }
 }

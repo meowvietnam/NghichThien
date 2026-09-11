@@ -6,14 +6,20 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(HuyenAmKinh), menuName = "Skill/Thần Thông/" + nameof(HuyenAmKinh))]
 public class HuyenAmKinh : AmKinhTT, IMemorySerializable<HuyenAmKinh>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{9, 9, 9, 10, 10};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] buffValues = new int[] { 9, 9, 9, 10, 10 };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.AddAmKinhTT(this, afterHiep);
-        ShowSkillEffectParticleBase(target, delayTimeEffect, 5);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
+        ShowSkillEffectParticleBase(caster, delayTimeEffect, 5);
     }
 
     public override void ExecuteAmKinh(CharacterCombat caster, CharacterCombat target)
@@ -23,7 +29,8 @@ public class HuyenAmKinh : AmKinhTT, IMemorySerializable<HuyenAmKinh>
 
     public override string GetDescAmKinhTT(int level)
     {
-        return $"Đối thủ nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NoiThuong)}";
+        return
+            $"Đối thủ nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NoiThuong)}";
     }
 
     public override int ByteSize()

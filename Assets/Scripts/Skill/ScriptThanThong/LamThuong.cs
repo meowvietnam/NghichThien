@@ -7,8 +7,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(LamThuong), menuName = "Skill/Thần Thông/" + nameof(LamThuong))]
 public class LamThuong : ThanThong, IMemorySerializable<LamThuong>
 {
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -20,12 +20,20 @@ public class LamThuong : ThanThong, IMemorySerializable<LamThuong>
             caster.HapThuLinhKhi(key.Key, key.Value);
         }
 
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Hấp thụ số linh khí thẳng đến số linh khí tối đa (Nên dùng khi số linh khí còn lại ít hơn số linh khí tối đa)";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Hấp thụ số linh khí thẳng đến số linh khí tối đa (Nên dùng khi số linh khí còn lại ít hơn số linh khí tối đa)";
     }
 
     public override int ByteSize()

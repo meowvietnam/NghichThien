@@ -8,10 +8,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(KyTruongQuyet), menuName = "Skill/Thần Thông/" + nameof(KyTruongQuyet))]
 public class KyTruongQuyet : ThanThong, IMemorySerializable<KyTruongQuyet>
 {
-    [SerializeField]
-    private int hapThuLinhKhi = 3;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int hapThuLinhKhi = 3;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -27,12 +26,20 @@ public class KyTruongQuyet : ThanThong, IMemorySerializable<KyTruongQuyet>
             caster.HapThuLinhKhi(item.Key, countHapThu);
         }
 
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Hấp thụ {GetColoredText($"+{hapThuLinhKhi} điểm", "red")} linh khí, nếu là {GetTextLinhKhi(ELinhKhi.Moc)} hệ linh khí thì hấp thụ gấp đôi";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Hấp thụ {GetColoredText($"+{hapThuLinhKhi} điểm", "red")} linh khí, nếu là {GetTextLinhKhi(ELinhKhi.Moc)} hệ linh khí thì hấp thụ gấp đôi";
     }
 
     public override int ByteSize()

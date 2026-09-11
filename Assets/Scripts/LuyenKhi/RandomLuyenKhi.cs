@@ -15,6 +15,7 @@ namespace LuyenKhi
         [SerializeField] private SelectNum selectNum;
         [SerializeField] private TierToggle[] tierToggles;
         [SerializeField] private ProgressBar progressBar;
+
         private void Start()
         {
             selectNum.confirmAction.AddListener(OnConfirm);
@@ -28,7 +29,8 @@ namespace LuyenKhi
         {
             var text = $"Luyện ngẫu nhiên {value} lần, hãy chọn độ hiếm vật liệu";
             selectNum.SetText(text);
-        } 
+        }
+
         private async void OnConfirm()
         {
             var tiers = tierToggles.Where(x => x.IsSelected()).Select(x => x.Tier).ToHashSet();
@@ -43,7 +45,7 @@ namespace LuyenKhi
             };
             var client = Client.Instance;
             progressBar.SetText("Đang luyện khí...");
-            progressBar.DoShow(0.25f,0.15f,null);
+            progressBar.DoShow(0.25f, 0.15f, null);
             var reader = await client.MemRequestWait(MessageTag.RandomLuyenKhiRequest, request);
             var result = reader.MemRead<RandomLuyenKhiResult>();
             if (result.Success)
@@ -51,13 +53,12 @@ namespace LuyenKhi
                 var charData = client.CharacterData;
                 charData.Stats.TuoiTac = result.TuoiTac;
                 Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
-                charData.GetInventory();       
+                charData.GetInventory();
             }
-            progressBar.DoKill(() =>
-            {
-                NotifyGroup.Instance.Show(result.Message);
-            });
+
+            progressBar.DoKill(() => { NotifyGroup.Instance.Show(result.Message); });
         }
+
         public void Show()
         {
             selectNum.ValueChanged += OnValueChanged;

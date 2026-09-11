@@ -10,13 +10,13 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(LeKiemQuyet))]
 public class LeKiemQuyet : CongPhap, IMemorySerializable<LeKiemQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 4, 7, 10, 15};
+    [SerializeField] private int[] buffValues = new int[] { 1, 4, 7, 10, 15 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (CheckIsEqualETypeSkill(caster))
         {
-            target.AddDamageData(new List<int>{buffValues[CurrentLevelCongPhapInCombat(caster) - 1]});
+            target.AddDamageData(new List<int> { buffValues[CurrentLevelCongPhapInCombat(caster) - 1] });
         }
     }
 
@@ -38,7 +38,7 @@ public class LeKiemQuyet : CongPhap, IMemorySerializable<LeKiemQuyet>
         if (eTypeSkills != null && CheckIsEqualETypeSkill(eTypeSkills))
         {
             Debug.Log("UViemQuyetExcute3");
-            target.AddDamageData(new List<int>{buffValues[CurrentLevelCongPhapInCombat(caster) - 1]});
+            target.AddDamageData(new List<int> { buffValues[CurrentLevelCongPhapInCombat(caster) - 1] });
         }
     }
 

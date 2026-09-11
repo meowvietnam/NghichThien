@@ -22,31 +22,39 @@ namespace ConvertElementalSkill
         {
             selfObject.SetActive(active);
         }
+
         public void SetIcon(Sprite spriteIcon)
         {
             icon.sprite = spriteIcon;
         }
+
         public void SetName(string name)
         {
             nameText.text = name;
         }
+
         public void Init()
         {
             PutItems.Init();
             RateManager.Init();
             SetEventButton(btnShowFullSkill, () =>
             {
-                var itemSet = ConvertElementalSkillPanel.Instance.CurrentSelectedSkill.SkillType == SkillType.ThanThong ? Pool.Get<GameManager>().thanThongs : Pool.Get<GameManager>().congPhaps;
+                var itemSet = ConvertElementalSkillPanel.Instance.CurrentSelectedSkill.SkillType == SkillType.ThanThong
+                    ? Pool.Get<GameManager>().thanThongs
+                    : Pool.Get<GameManager>().congPhaps;
                 var skills = new List<ItemRef>();
                 foreach (var item in itemSet)
                 {
                     skills.Add(new ItemRef
                     {
                         Id = (ushort)item,
-                        Type = ConvertElementalSkillPanel.Instance.CurrentSelectedSkill.SkillType == SkillType.ThanThong ? ItemType.ThanThong: ItemType.CongPhap,
+                        Type = ConvertElementalSkillPanel.Instance.CurrentSelectedSkill.SkillType == SkillType.ThanThong
+                            ? ItemType.ThanThong
+                            : ItemType.CongPhap,
                         Count = 1,
                     });
                 }
+
                 bagShowFullSkill.Init(skills);
                 bagShowFullSkill.SetActive(true);
             });

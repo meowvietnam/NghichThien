@@ -7,16 +7,21 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(TuTranThuat), menuName = "Skill/Thần Thông/" + nameof(TuTranThuat))]
 public class TuTranThuat : ThanThong, BaseSkill.LienKich, IMemorySerializable<TuTranThuat>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{4, 6, 9, 16, 32};
-    [SerializeField]
-    private int[] buff2Values = new int[]{2, 3, 4, 6, 9};
-    [SerializeField]
-    protected float delayTimeEffect = 0.5f;
+    [SerializeField] private int[] buffValues = new int[] { 4, 6, 9, 16, 32 };
+    [SerializeField] private int[] buff2Values = new int[] { 2, 3, 4, 6, 9 };
+    [SerializeField] protected float delayTimeEffect = 0.5f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int tran = buffValues[GetIndexLevelThanThong(caster)];
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, tran);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
@@ -28,7 +33,8 @@ public class TuTranThuat : ThanThong, BaseSkill.LienKich, IMemorySerializable<Tu
 
     public override string GetDesc(int level)
     {
-        return $"Thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)}, {GetKeyWord(EKeyWord.LienKich)} Nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Hoa)} hệ thần thông thì thu hoạch được {GetColoredText($"+{buff2Values[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)}";
+        return
+            $"Thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)}, {GetKeyWord(EKeyWord.LienKich)} Nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Hoa)} hệ thần thông thì thu hoạch được {GetColoredText($"+{buff2Values[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Tran)}";
     }
 
     public override int ByteSize()

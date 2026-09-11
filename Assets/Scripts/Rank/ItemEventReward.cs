@@ -14,16 +14,19 @@ namespace Rank
     public partial class ItemEventReward : IEventReward
     {
         public ItemRef Item { get; set; }
+
         public void Claim(CharacterData charData)
         {
             charData.InventoryManager.Add(Item);
         }
+
         public void ShowUI(RewardUIContext context)
         {
             var itemData = GetData();
             var itemUI = Object.Instantiate(context.ItemUIPrefab, context.Container);
             itemUI.SetData(itemData, Item);
         }
+
         private IItemData GetData()
         {
             var id = Item.Id;
@@ -40,6 +43,7 @@ namespace Rank
                     throw new Exception("Không hỗ trợ item type này");
             }
         }
+
         public string GetRichText()
         {
             var item = GetData();

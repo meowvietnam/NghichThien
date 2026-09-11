@@ -6,8 +6,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(KimHongKiemPhap), menuName = "Skill/Thần Thông/" + nameof(KimHongKiemPhap))]
 public class KimHongKiemPhap : KhuVatThuat, BaseSkill.LienKich, IMemorySerializable<KimHongKiemPhap>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 1, 1, 1, 1};
+    [SerializeField] private int[] buffValues = new int[] { 1, 1, 1, 1, 1 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
@@ -21,7 +21,8 @@ public class KimHongKiemPhap : KhuVatThuat, BaseSkill.LienKich, IMemorySerializa
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.KiemY)} {base.GetDesc(level)}. {GetKeyWord(EKeyWord.LienKich)} Nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Tho)} hệ thần thông thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}";
+        return
+            $"{GetKeyWord(EKeyWord.KiemY)} {base.GetDesc(level)}. {GetKeyWord(EKeyWord.LienKich)} Nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Tho)} hệ thần thông thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}";
     }
 
     public override int ByteSize()

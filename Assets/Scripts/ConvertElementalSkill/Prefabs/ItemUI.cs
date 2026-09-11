@@ -8,6 +8,7 @@ namespace ConvertElementalSkill.Prefabs
     {
         private IItemData itemData;
         private ItemRef itemRef;
+
         public override void SetData(IItemData itemData, ItemRef itemRef)
         {
             base.SetData(itemData, itemRef);
@@ -17,7 +18,7 @@ namespace ConvertElementalSkill.Prefabs
 
         protected override void OnShowInfo()
         {
-            ToolTipItems.Instance.ShowInfoItem(itemData,itemRef);
+            ToolTipItems.Instance.ShowInfoItem(itemData, itemRef);
         }
     }
 }

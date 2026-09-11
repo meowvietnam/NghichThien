@@ -102,8 +102,8 @@ namespace AllMaps.DauTruong
         {
             var gameManager = Pool.Get<GameManager>();
             gameManager.GoToPrepareCombatArena(user, enemy);
-            userUI.InitVisual(gameManager.user.charStats,user);
-            enemyUI.InitVisual(gameManager.enemyCombat.charStats,enemy);
+            userUI.InitVisual(gameManager.user.charStats, user);
+            enemyUI.InitVisual(gameManager.enemyCombat.charStats, enemy);
             parentPrepareCombat.gameObject.SetActive(true);
             gameManager.SetBGCombat(spriteCombat);
             DOVirtual.DelayedCall(2f, () => { gameManager.GoToCombatArena(); });
@@ -251,10 +251,12 @@ namespace AllMaps.DauTruong
         {
             NotifyGroup.Instance.Show(message);
         }
+
         private void OnResetRank()
         {
             Init();
         }
+
         private void OnDestroy()
         {
             Observer.RemoveObserver(EventList.Network.RESET_ARENA_RANK, OnResetRank);

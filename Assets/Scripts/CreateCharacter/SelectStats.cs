@@ -38,9 +38,9 @@ namespace CreateCharacter
         [SerializeField] private Sprite nextSprite;
         [SerializeField] private Sprite finalSprite;
         [SerializeField] private PopupConfirmAction popupConfirmAction;
-        private List<SelectionModel> selectionModels = new ();
-        private List<StatModifier> statModifiers = new ();
-        
+        private List<SelectionModel> selectionModels = new();
+        private List<StatModifier> statModifiers = new();
+
         public void Init(CreateCharacterPanel createCharacterPanel, int money, CharacterStats characterStats = null)
         {
             if (characterStats != null)
@@ -166,16 +166,15 @@ namespace CreateCharacter
                     }
                 }
             }
+
             return selectionNames;
         }
 
         private void Final()
         {
             var singleLineRichText = string.Join(" <color=#888888>|</color> ", GetSelection(selectionModels));
-            popupConfirmAction.ShowPopConfirmAction($"Xác nhận lựa chọn:\n{singleLineRichText}", () =>
-            {
-                system.Final(selectionModels);
-            });
+            popupConfirmAction.ShowPopConfirmAction($"Xác nhận lựa chọn:\n{singleLineRichText}",
+                () => { system.Final(selectionModels); });
         }
 
         public void PreviousStep()

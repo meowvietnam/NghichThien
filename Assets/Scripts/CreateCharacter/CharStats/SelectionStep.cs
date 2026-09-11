@@ -14,6 +14,7 @@ namespace CreateCharacter.CharStats
         private SelectStats selectStats;
         private SelectionStepData selectionStepData;
         private List<StatOptionUI> selecteds = new List<StatOptionUI>();
+
         public void Init(SelectStats selectStats, SelectionStepData data)
         {
             this.selectStats = selectStats;
@@ -25,6 +26,7 @@ namespace CreateCharacter.CharStats
                 groupUI.SetId(group.Id);
                 statOptionGroupUIs.Add(groupUI);
             }
+
             for (int i = 0; i < statOptionGroupUIs.Count; i++)
             {
                 var groupData = groups[i];
@@ -36,7 +38,8 @@ namespace CreateCharacter.CharStats
                 statOptionGroupUI.Init(content, groupData, exclusives, OnSelect, OnUnselect);
             }
         }
-        private void OnSelect(StatOptionGroupUI groupUI,StatOptionUI optionUI)
+
+        private void OnSelect(StatOptionGroupUI groupUI, StatOptionUI optionUI)
         {
             selecteds.Add(optionUI);
             var statOption = optionUI.StatOption;
@@ -45,9 +48,11 @@ namespace CreateCharacter.CharStats
             {
                 selectStats.Apply(modifier);
             }
-            selectStats.Select(selectionStepData.Id,groupUI.Id,statOption.Id);
+
+            selectStats.Select(selectionStepData.Id, groupUI.Id, statOption.Id);
         }
-        private void OnUnselect(StatOptionGroupUI groupUI,StatOptionUI optionUI)
+
+        private void OnUnselect(StatOptionGroupUI groupUI, StatOptionUI optionUI)
         {
             selecteds.Remove(optionUI);
             var statOption = optionUI.StatOption;
@@ -56,14 +61,17 @@ namespace CreateCharacter.CharStats
             {
                 selectStats.Remove(modifier);
             }
-            selectStats.UnSelect(selectionStepData.Id,groupUI.Id,statOption.Id);
+
+            selectStats.UnSelect(selectionStepData.Id, groupUI.Id, statOption.Id);
         }
+
         public override void OnEnter()
         {
             selectStats.SetTitle(selectionStepData.Title);
             selectStats.SetDescription(selectionStepData.Description);
             SetActive(true);
         }
+
         public override void OnExit()
         {
             SetActive(false);
@@ -76,6 +84,7 @@ namespace CreateCharacter.CharStats
                 NotifyGroup.Instance.Show("Hãy chọn 1 thiên phú");
                 return false;
             }
+
             return true;
         }
     }

@@ -9,9 +9,10 @@ namespace Rank
     {
         [SerializeField] private Button showButton;
         [SerializeField] private MonsterKillPanel panel;
+
         private void Start()
         {
-            SetEventButton(showButton,ShowPanel);
+            SetEventButton(showButton, ShowPanel);
         }
 
         private void ShowPanel()

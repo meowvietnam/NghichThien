@@ -64,23 +64,26 @@ public class FilterControl : BaseBehaviour
     [SerializeField] private EquipmentTier eTierEquipmentCurrent;
 
     private InventoryFilterFacade inventoryFilterFacade;
-    private InventoryFilterFacade InventoryFilterFacade => inventoryFilterFacade ?? (inventoryFilterFacade = new InventoryFilterFacade(transform.GetComponentInParent<Bag1ItemPrefabInventory>()));
+
+    private InventoryFilterFacade InventoryFilterFacade => inventoryFilterFacade ?? (inventoryFilterFacade =
+        new InventoryFilterFacade(transform.GetComponentInParent<Bag1ItemPrefabInventory>()));
 
     private void OnEnable()
     {
         Init();
         Observer.AddObserver(DONE_FILTER, OnDoneFilter);
-
     }
+
     private void OnDisable()
     {
         Observer.RemoveObserver(DONE_FILTER, OnDoneFilter);
     }
+
     private void OnDoneFilter()
     {
         filterRightAnim.gameObject.SetActive(false);
-
     }
+
     public void InitFilterType(List<ItemType> listFilterType)
     {
         this.listFilterType = listFilterType;
@@ -101,8 +104,6 @@ public class FilterControl : BaseBehaviour
             ItemType.VuKhi,
             ItemType.PhongCu,
             ItemType.TrangSuc,
-
-
         });
     }
 
@@ -129,18 +130,20 @@ public class FilterControl : BaseBehaviour
                             Observer.Notify(DONE_FILTER);
                             return;
                         }
+
                         typeCurrent = listFilterType[indexType];
                     }
-                       
+
                     filterLeftB.gameObject.SetActive(true);
                     isAllFilterA = false;
-                   
+
 
                     filterLeftA.transform.GetChild(0).GetComponent<Text>().text =
                         filtersRight[index].transform.GetChild(0).GetComponent<Text>().text;
                     filterRightAnim.gameObject.SetActive(false);
                     isAllFilterB = true;
-                    filterLeftB.transform.GetChild(0).GetComponent<Text>().text = filtersRight[0].transform.GetChild(0).GetComponent<Text>().text;
+                    filterLeftB.transform.GetChild(0).GetComponent<Text>().text =
+                        filtersRight[0].transform.GetChild(0).GetComponent<Text>().text;
                     Filter();
                 });
             }
@@ -184,12 +187,11 @@ public class FilterControl : BaseBehaviour
         };
         List<EquipmentTier> listTierEquipment = new List<EquipmentTier>
         {
-           EquipmentTier.PhuKhi,
-           EquipmentTier.PhapKhi,
-           EquipmentTier.PhapBao,
-           EquipmentTier.ThuanDuong,
-           EquipmentTier.ThongThien,
-
+            EquipmentTier.PhuKhi,
+            EquipmentTier.PhapKhi,
+            EquipmentTier.PhapBao,
+            EquipmentTier.ThuanDuong,
+            EquipmentTier.ThongThien,
         };
         SetEventButton(filterLeftB, () =>
         {
@@ -205,7 +207,6 @@ public class FilterControl : BaseBehaviour
 
                     if (typeCurrent == ItemType.ThanThong || typeCurrent == ItemType.CongPhap)
                     {
-                        
                         if (indexType <= listTierSkill.Count - 1)
                         {
                             if (eTierSkillCurrent == listTierSkill[indexType] && !isAllFilterB)
@@ -213,10 +214,12 @@ public class FilterControl : BaseBehaviour
                                 Observer.Notify(DONE_FILTER);
                                 return;
                             }
+
                             eTierSkillCurrent = listTierSkill[indexType];
                         }
                     }
-                    else if (typeCurrent == ItemType.VuKhi || typeCurrent == ItemType.PhongCu || typeCurrent == ItemType.TrangSuc)
+                    else if (typeCurrent == ItemType.VuKhi || typeCurrent == ItemType.PhongCu ||
+                             typeCurrent == ItemType.TrangSuc)
                     {
                         if (indexType <= listTierSkill.Count - 1)
                         {
@@ -225,6 +228,7 @@ public class FilterControl : BaseBehaviour
                                 Observer.Notify(DONE_FILTER);
                                 return;
                             }
+
                             eTierEquipmentCurrent = listTierEquipment[indexType];
                         }
                     }
@@ -237,9 +241,11 @@ public class FilterControl : BaseBehaviour
                                 Observer.Notify(DONE_FILTER);
                                 return;
                             }
+
                             tierCurrent = listTier[indexType];
                         }
                     }
+
                     isAllFilterB = false;
 
                     filterLeftB.transform.GetChild(0).GetComponent<Text>().text =
@@ -248,6 +254,7 @@ public class FilterControl : BaseBehaviour
                     Filter();
                 });
             }
+
             var secondaryOptions = InventoryFilterFacade.GetSecondaryFilterOptions(typeCurrent);
 
             for (int i = 0; i < secondaryOptions.Count; i++)
@@ -266,15 +273,15 @@ public class FilterControl : BaseBehaviour
 
         SetEventButton(filtersRight[0], () =>
         {
-            
             if (currentFilterLeftSelect == filterLeftA)
             {
-                if(isAllFilterA)
+                if (isAllFilterA)
                 {
                     Observer.Notify(DONE_FILTER);
 
                     return;
-                }    
+                }
+
                 isAllFilterA = true;
                 filterLeftB.gameObject.SetActive(false);
             }
@@ -286,6 +293,7 @@ public class FilterControl : BaseBehaviour
 
                     return;
                 }
+
                 isAllFilterB = true;
             }
 

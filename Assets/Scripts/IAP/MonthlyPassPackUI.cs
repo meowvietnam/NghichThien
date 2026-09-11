@@ -10,6 +10,7 @@ namespace IAP
         [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public MonthlyPassPackPanel Panel { get; private set; }
     }
+
     public class MonthlyPassPackUI : BaseBehaviour
     {
         [SerializeField] private Text packNameText;
@@ -22,6 +23,7 @@ namespace IAP
         {
             return panel;
         }
+
         private void Start()
         {
             SetEventButton(viewButton, View);
@@ -33,6 +35,7 @@ namespace IAP
             {
                 return;
             }
+
             var data = datas[index];
             SetIcon(data.Icon);
             panel = Instantiate(data.Panel, container);
@@ -43,6 +46,7 @@ namespace IAP
         {
             panel.Show();
         }
+
         public void SetIcon(Sprite sprite)
         {
             iconImage.sprite = sprite;

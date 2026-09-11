@@ -50,6 +50,7 @@ public class RenderData : MonoBehaviour
             {
                 Debug.Log("Not found sprite: " + SpriteName);
             }
+
             EditorUtility.SetDirty(image);
         }
         else
@@ -60,6 +61,7 @@ public class RenderData : MonoBehaviour
                 Debug.LogError($"{nameof(RenderData)} requires a sprite renderer");
                 return;
             }
+
             if (spriteRenderer.sprite != null)
             {
                 Texture = spriteRenderer.sprite.texture;
@@ -68,9 +70,9 @@ public class RenderData : MonoBehaviour
                     return;
                 }
             }
-        
+
             var sprites = GetSprites(Texture);
-            var s =  sprites.FirstOrDefault(s => s.name == SpriteName);
+            var s = sprites.FirstOrDefault(s => s.name == SpriteName);
             if (s != null)
             {
                 spriteRenderer.sprite = s;
@@ -79,6 +81,7 @@ public class RenderData : MonoBehaviour
             {
                 Debug.Log("Not found sprite: " + SpriteName);
             }
+
             EditorUtility.SetDirty(gameObject);
         }
     }

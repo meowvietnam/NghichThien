@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+
 public class SetIDTools
 {
     [MenuItem("Tools/MyGame/Set IDs for Selected Folder")]

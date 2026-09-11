@@ -19,23 +19,23 @@ namespace Network.Core
         {
             adsMoneyVipCallback = adsCallback;
         }
+
         public async void GetAdsMoneyVipConfig()
         {
             var reader = await Client.Instance.RequestWait(MessageTag.GetAdsMoneyVipConfigRequest);
             var config = reader.Read<AdsMoneyVipConfig>();
-            NetworkManager.Instance.Invoke(() =>
-            {
-                adsMoneyVipCallback?.Init(config);
-            });
+            NetworkManager.Instance.Invoke(() => { adsMoneyVipCallback?.Init(config); });
         }
-        
+
         public void ClaimMoneyVip()
         {
             Client.Instance.Send(MessageTag.WatchAdsMoneyVip);
         }
+
         public void OnEnter()
         {
         }
+
         public void Handle(Message<MessageTag> message)
         {
             var tag = message.Tag;
@@ -44,10 +44,7 @@ namespace Network.Core
             if (tag == MessageTag.ActiveAdsMoneyVip)
             {
                 var active = reader.Read<bool>();
-                NetworkManager.Instance.Invoke(() =>
-                {
-                    adsMoneyVipCallback?.ActiveAds(active);
-                });
+                NetworkManager.Instance.Invoke(() => { adsMoneyVipCallback?.ActiveAds(active); });
             }
             else if (tag == MessageTag.WatchAdsMoneyVipResult)
             {
@@ -74,10 +71,7 @@ namespace Network.Core
             else if (tag == MessageTag.WatchAds)
             {
                 var showAds = reader.MemRead<ShowAds>();
-                NetworkManager.Instance.Invoke(() =>
-                {
-                    showAds.Show();
-                });
+                NetworkManager.Instance.Invoke(() => { showAds.Show(); });
             }
         }
 
@@ -89,11 +83,13 @@ namespace Network.Core
         {
         }
 
-        private static MessageTag[] handler = { 
-            MessageTag.ActiveAdsMoneyVip, 
+        private static MessageTag[] handler =
+        {
+            MessageTag.ActiveAdsMoneyVip,
             MessageTag.WatchAdsMoneyVipResult,
             MessageTag.WatchAds
         };
+
         public MessageTag[] HandleTag => handler;
     }
 }

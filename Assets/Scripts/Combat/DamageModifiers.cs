@@ -61,7 +61,8 @@ public class OffensiveBuffDecorator : BaseDamageModifier
     {
         int damage = base.Calculate();
 
-        if (_sender != null && _eTypeSkils != null && _sender.buffAndDebuffCount.TryGetValue(_buffType, out SecureInt buffValue))
+        if (_sender != null && _eTypeSkils != null &&
+            _sender.buffAndDebuffCount.TryGetValue(_buffType, out SecureInt buffValue))
         {
             // Check if this buff applies to current skill types
             bool applies = false;
@@ -78,6 +79,7 @@ public class OffensiveBuffDecorator : BaseDamageModifier
             {
                 damage += buffValue;
             }
+
             if (_sender != null && _eTypeSkils != null && CanRemove(_buffType))
             {
                 _sender.RemoveBuffAndDebuffCount(_buffType, buffValue.Value);
@@ -87,7 +89,6 @@ public class OffensiveBuffDecorator : BaseDamageModifier
         return damage;
     }
 
-   
 
     private bool MatchesBuffType(EBuffAndDeBuff buffType, BaseSkill.ETypeSkill skillType)
     {
@@ -99,7 +100,6 @@ public class OffensiveBuffDecorator : BaseDamageModifier
                (buffType == EBuffAndDeBuff.ChanKiem && skillType == BaseSkill.ETypeSkill.Kiem) ||
                (buffType == EBuffAndDeBuff.ChanThan && skillType == BaseSkill.ETypeSkill.Than) ||
                (buffType == EBuffAndDeBuff.ChanKhi && skillType == BaseSkill.ETypeSkill.Khi) ||
-
                (buffType == EBuffAndDeBuff.NguKhiHiep && skillType == BaseSkill.ETypeSkill.Khi) ||
                (buffType == EBuffAndDeBuff.NguKimHiep && skillType == BaseSkill.ETypeSkill.Kim) ||
                (buffType == EBuffAndDeBuff.NguMocHiep && skillType == BaseSkill.ETypeSkill.Moc) ||
@@ -108,7 +108,6 @@ public class OffensiveBuffDecorator : BaseDamageModifier
                (buffType == EBuffAndDeBuff.NguThoHiep && skillType == BaseSkill.ETypeSkill.Tho) ||
                (buffType == EBuffAndDeBuff.NguKiemHiep && skillType == BaseSkill.ETypeSkill.Kiem) ||
                (buffType == EBuffAndDeBuff.NguThanThucHiep && skillType == BaseSkill.ETypeSkill.Than) ||
-
                (buffType == EBuffAndDeBuff.Diem && skillType == BaseSkill.ETypeSkill.Hoa);
     }
 
@@ -166,11 +165,16 @@ public class DefenseDebuffDecorator : BaseDamageModifier
     {
         if (_eTypeSkils == null) return false;
 
-        return (debuffType == EBuffAndDeBuff.NguKim && System.Array.Exists(_eTypeSkils, e => e == BaseSkill.ETypeSkill.Kim)) ||
-               (debuffType == EBuffAndDeBuff.NguMoc && System.Array.Exists(_eTypeSkils, e => e == BaseSkill.ETypeSkill.Moc)) ||
-               (debuffType == EBuffAndDeBuff.NguThuy && System.Array.Exists(_eTypeSkils, e => e == BaseSkill.ETypeSkill.Thuy)) ||
-               (debuffType == EBuffAndDeBuff.NguHoa && System.Array.Exists(_eTypeSkils, e => e == BaseSkill.ETypeSkill.Hoa)) ||
-               (debuffType == EBuffAndDeBuff.NguTho && System.Array.Exists(_eTypeSkils, e => e == BaseSkill.ETypeSkill.Tho));
+        return (debuffType == EBuffAndDeBuff.NguKim &&
+                System.Array.Exists(_eTypeSkils, e => e == BaseSkill.ETypeSkill.Kim)) ||
+               (debuffType == EBuffAndDeBuff.NguMoc &&
+                System.Array.Exists(_eTypeSkils, e => e == BaseSkill.ETypeSkill.Moc)) ||
+               (debuffType == EBuffAndDeBuff.NguThuy &&
+                System.Array.Exists(_eTypeSkils, e => e == BaseSkill.ETypeSkill.Thuy)) ||
+               (debuffType == EBuffAndDeBuff.NguHoa &&
+                System.Array.Exists(_eTypeSkils, e => e == BaseSkill.ETypeSkill.Hoa)) ||
+               (debuffType == EBuffAndDeBuff.NguTho &&
+                System.Array.Exists(_eTypeSkils, e => e == BaseSkill.ETypeSkill.Tho));
     }
 }
 
@@ -193,15 +197,16 @@ public class SuongGiaDecorator : BaseDamageModifier
         {
             damage -= suongGia;
         }
+
         if (_sender != null)
         {
             _sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, 1);
         }
+
         return Mathf.Clamp(damage, 0, int.MaxValue);
     }
-
-   
 }
+
 public class GiamTonThuongDecorator : BaseDamageModifier
 {
     private readonly CharacterCombat _defender;
@@ -216,20 +221,23 @@ public class GiamTonThuongDecorator : BaseDamageModifier
     {
         int damage = base.Calculate();
 
-        if (_defender != null && _defender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.GiamTonThuong, out SecureInt giamTonThuong))
+        if (_defender != null &&
+            _defender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.GiamTonThuong, out SecureInt giamTonThuong))
         {
-            damage -= giamTonThuong;
+            damage -= (int)(damage * giamTonThuong / 100f);
         }
 
         return Mathf.Clamp(damage, 0, int.MaxValue);
     }
 }
+
 public class BuffDameDecorator : BaseDamageModifier
 {
     private readonly CharacterCombat _character;
     private readonly EBuffAndDeBuff _type;
 
-    public BuffDameDecorator(IDamageModifier innerModifier, int baseDamage, CharacterCombat character , EBuffAndDeBuff typeBuff)
+    public BuffDameDecorator(IDamageModifier innerModifier, int baseDamage, CharacterCombat character,
+        EBuffAndDeBuff typeBuff)
         : base(innerModifier, baseDamage)
     {
         _character = character;
@@ -242,10 +250,9 @@ public class BuffDameDecorator : BaseDamageModifier
 
         if (_character != null && _character.buffAndDebuffCount.TryGetValue(_type, out SecureInt value))
         {
-            damage += value;
+            damage += (int)(damage * value / 100f);
         }
 
         return Mathf.Clamp(damage, 0, int.MaxValue);
     }
 }
-

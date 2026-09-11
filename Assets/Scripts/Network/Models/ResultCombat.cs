@@ -8,7 +8,6 @@ namespace Network.Models
     [MemoryPackable]
     public partial class ResultCombat
     {
-       
         public List<int> ListIdThanThong { get; set; }
         public ETypeCombat TypeCombat { get; set; }
         public int CurrentHPUser { get; set; }
@@ -16,6 +15,5 @@ namespace Network.Models
         public ETypeResultCombat TypeResultCombat { get; set; }
         public int CurrentThanThuc { get; set; }
         public int CurrentThoNguyen { get; set; }
-
     }
 }

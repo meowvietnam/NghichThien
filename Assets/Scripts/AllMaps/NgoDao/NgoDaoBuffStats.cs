@@ -4,13 +4,13 @@ using Network;
 using Network.Extensions;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = nameof(NgoDaoBuffStats), menuName = "Ngộ Đạo/Ngộ Đạo Buff Stats/" + nameof(NgoDaoBuffStats))]
+[CreateAssetMenu(fileName = nameof(NgoDaoBuffStats),
+    menuName = "Ngộ Đạo/Ngộ Đạo Buff Stats/" + nameof(NgoDaoBuffStats))]
 public class NgoDaoBuffStats : NgoDao, IMemorySerializable<NgoDaoBuffStats>
 {
-    [SerializeField]
-    private EBuffStats currentEBuffStat;
-    [SerializeField]
-    private int buff;
+    [SerializeField] private EBuffStats currentEBuffStat;
+    [SerializeField] private int buff;
+
     public enum EBuffStats
     {
         None,

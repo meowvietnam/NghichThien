@@ -8,6 +8,7 @@ namespace AllMaps
     {
         [field: SerializeField] public Map NextMap { get; private set; }
         [field: SerializeField] public MapMoveNode MoveNode { get; private set; }
+
         public Node(Map nextMap, MapMoveNode moveNode)
         {
             NextMap = nextMap;

@@ -17,6 +17,7 @@ namespace Rank
         public TimeSpan NextResetTime { get; private set; }
         public Dictionary<ETypeArenaRank, int> TypeRankArenaWithValue { get; private set; }
         public Dictionary<ETypeArenaRank, int> TypeRankArenaWithReward { get; private set; }
+
         public void Init(RankPanel panel)
         {
             ArenaManager.TypeRankArenaWithValue = TypeRankArenaWithValue;
@@ -47,6 +48,7 @@ namespace Rank
             {
                 myRank = 999;
             }
+
             Init(panel.myRank, charData, myRank + 1);
         }
 
@@ -59,7 +61,10 @@ namespace Rank
         {
             instance.Init(top, rank, Type, top.ArenaManager.Points);
         }
-        public RankArena(List<CharacterWrapper> tops, TimeSpan nextResetTime,  Dictionary<ETypeArenaRank, int> typeRankArenaWithValue, Dictionary<ETypeArenaRank, int> typeRankArenaWithReward)
+
+        public RankArena(List<CharacterWrapper> tops, TimeSpan nextResetTime,
+            Dictionary<ETypeArenaRank, int> typeRankArenaWithValue,
+            Dictionary<ETypeArenaRank, int> typeRankArenaWithReward)
         {
             Tops = tops;
             NextResetTime = nextResetTime;

@@ -14,26 +14,31 @@ namespace LuyenDan
         private bool isCompleted;
         private bool hideOnCompleted = true;
         private Action completed;
+
         public void SetText(string text)
         {
             this.text.text = text;
         }
+
         public void SetProgress(float progress)
         {
             progressBar.fillAmount = progress;
         }
+
         public void SetActive(bool active)
         {
             selfObject.SetActive(active);
         }
-        public void DoShow(float minTime,float completedTime,Action<float> progressChanged)
+
+        public void DoShow(float minTime, float completedTime, Action<float> progressChanged)
         {
             isCompleted = false;
             hideOnCompleted = true;
             SetActive(true);
-            StartCoroutine(Show(minTime,completedTime,progressChanged));
+            StartCoroutine(Show(minTime, completedTime, progressChanged));
         }
-        private IEnumerator Show(float minTime,float completedTime,Action<float> progressChanged)
+
+        private IEnumerator Show(float minTime, float completedTime, Action<float> progressChanged)
         {
             float timer = 0f;
             float currentProgress = 0f;
@@ -48,10 +53,12 @@ namespace LuyenDan
                 {
                     currentProgress = Mathf.Lerp(0.9f, 0.99f, (timer - minTime) / (minTime + 1f));
                 }
+
                 SetProgress(currentProgress);
                 progressChanged?.Invoke(currentProgress);
                 yield return null;
             }
+
             if (completedTime > 0)
             {
                 float finishTimer = 0f;
@@ -66,6 +73,7 @@ namespace LuyenDan
                     yield return null;
                 }
             }
+
             SetProgress(1f);
             progressChanged?.Invoke(1f);
             completed?.Invoke();
@@ -74,7 +82,7 @@ namespace LuyenDan
                 SetActive(false);
             }
         }
-       
+
         public void DoKill(Action completed)
         {
             DoKill(completed, true);
@@ -84,6 +92,7 @@ namespace LuyenDan
         {
             return isCompleted;
         }
+
         public void DoKill(Action completed, bool hideOnCompleted)
         {
             isCompleted = true;

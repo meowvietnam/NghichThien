@@ -12,10 +12,10 @@ public enum ETypeSound
     Music,
     Haptic
 }
+
 public class SoundManager : BaseBehaviour
 {
-    [SerializeField]
-    private GameObject audioPrefab;
+    [SerializeField] private GameObject audioPrefab;
     private List<AudioSource> listAudio = new List<AudioSource>();
     private AudioInfo infoCombat => new AudioInfo(sfxCombat[0], true, true);
     private AudioInfo infoHome => new AudioInfo(sfxMap, true, true);
@@ -44,18 +44,17 @@ public class SoundManager : BaseBehaviour
         DontDestroyOnLoad(this.gameObject);
         Observer.AddObserver(EventList.Combat.END_COMBAT, EndCombat);
     }
+
     private void EndCombat(params object[] data)
     {
         bool isUserWin = (bool)data[2];
         if (isUserWin)
         {
             PlayVictory();
-
         }
         else
         {
             PlayLose();
-
         }
     }
 
@@ -82,40 +81,48 @@ public class SoundManager : BaseBehaviour
 
         Debug.Log($"[Audio] Đã load cấu hình - Music Volume: {volumeMusic} | Sound Volume: {volumeSound}");
     }
+
     public void PlaySoundButtonClick()
     {
-        PlayOne(new AudioInfo { clip = sfxBtnClick,isLoop = false, isMusic = false},false,volumeSound);
+        PlayOne(new AudioInfo { clip = sfxBtnClick, isLoop = false, isMusic = false }, false, volumeSound);
     }
+
     public void PlayVictory()
     {
         PlayOne(new AudioInfo { clip = sfxVictory, isLoop = false, isMusic = false }, false, volumeSound);
     }
+
     public void PlayLose()
     {
         PlayOne(new AudioInfo { clip = sfxLose, isLoop = false, isMusic = false }, false, volumeSound);
     }
+
     public void PlaySound(AudioInfo info, bool isReplay = false)
     {
-        PlayOne(info,isReplay,volumeSound);
-    }    
+        PlayOne(info, isReplay, volumeSound);
+    }
+
     public void StopMusic()
     {
         StopSound(infoCombat);
         StopSound(infoHome);
         StopSound(infoOpening);
     }
+
     public void PlayMusicHome()
     {
         StopSound(infoCombat); // stop sound bg gamePlay
         StopSound(infoOpening); // stop sound bg opening
-        PlayOne(infoHome, true,volumeMusic);
+        PlayOne(infoHome, true, volumeMusic);
     }
+
     public void PlayMusicCombat()
     {
         StopSound(infoHome); // stop sound bg gamePlay
         StopSound(infoOpening); // stop sound bg opening
         PlayOne(infoCombat, true, volumeMusic);
     }
+
     public void StopSound(AudioInfo info)
     {
         listAudio.ForEach(x =>
@@ -134,6 +141,7 @@ public class SoundManager : BaseBehaviour
         listAudio.Add(audio);
         return audio;
     }
+
     AudioSource GetSource(AudioInfo info, bool isOnlyOne = false)
     {
         var audio = listAudio.Find(x => isOnlyOne ? x.clip == info.clip : !x.isPlaying);
@@ -141,12 +149,12 @@ public class SoundManager : BaseBehaviour
         {
             audio = CreateAudio();
         }
+
         return audio;
     }
+
     public void PlayOne(AudioInfo info, bool isReplay = false, float volume = 1f)
     {
-       
-
         var audio = GetSource(info, true);
 
         audio.clip = info.clip;
@@ -164,13 +172,14 @@ public class SoundManager : BaseBehaviour
         //    Debug.LogWarning($"Sound OFF — Không phát: {info.clip?.name}");
         //    return;
         //}
-        
+
 
         if (audio.isPlaying && !isReplay) return;
         if (isReplay) audio.Stop();
 
         audio.Play();
     }
+
     public void SetMusicVolume(float volume)
     {
         this.volumeMusic = volume;
@@ -178,13 +187,13 @@ public class SoundManager : BaseBehaviour
 
         foreach (var audio in listAudio)
         {
-            
             if (audio.clip == infoCombat.clip || audio.clip == infoHome.clip || audio.clip == infoOpening.clip)
             {
                 audio.volume = volume;
             }
         }
     }
+
     public void SetSoundVolume(float volume)
     {
         this.volumeSound = volume;
@@ -196,27 +205,19 @@ public class SoundManager : BaseBehaviour
             {
                 audio.volume = volume;
             }
-           
         }
-
-       
     }
-    public void SetSliderAudio(Slider slider,bool isMusic)
+
+    public void SetSliderAudio(Slider slider, bool isMusic)
     {
-        if(isMusic)
+        if (isMusic)
         {
-            slider.onValueChanged.AddListener((value) =>
-            {
-                SetMusicVolume(value);
-            });
-        }    
+            slider.onValueChanged.AddListener((value) => { SetMusicVolume(value); });
+        }
         else
         {
-            slider.onValueChanged.AddListener((value) =>
-            {
-                SetSoundVolume(value);
-            });
-        }    
+            slider.onValueChanged.AddListener((value) => { SetSoundVolume(value); });
+        }
     }
 
     public void LocateAwake()
@@ -242,7 +243,6 @@ public class SoundManager : BaseBehaviour
 
     public struct AudioInfo
     {
-
         public AudioClip clip;
         public bool isLoop;
         public bool isMusic;
@@ -253,14 +253,13 @@ public class SoundManager : BaseBehaviour
             this.clip = clip;
             this.isLoop = isLoop;
             this.isMusic = isMusic;
-
         }
+
         public AudioInfo(AudioClip[] clips, bool isLoop, bool isMusic)
         {
             this.clip = clips[Random.Range(0, clips.Length)];
             this.isLoop = isLoop;
             this.isMusic = isMusic;
-
         }
     }
 }

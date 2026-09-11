@@ -7,6 +7,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+
 public class ItemInventory : BaseItemUI
 {
     [SerializeField] private GameObject hasItem;
@@ -23,7 +24,7 @@ public class ItemInventory : BaseItemUI
     public override void InitIcon(Sprite spriteIcon, Sprite frameSprite)
     {
         base.InitIcon(spriteIcon, frameSprite);
-        if(itemRef != null)
+        if (itemRef != null)
         {
             if (itemRef.Type == ItemType.VuKhi)
             {
@@ -36,7 +37,6 @@ public class ItemInventory : BaseItemUI
             else
             {
                 icon.rectTransform.localScale = Vector3.one;
-
             }
         }
     }
@@ -46,6 +46,7 @@ public class ItemInventory : BaseItemUI
         if (selectHighLight == null) return;
         selectHighLight.gameObject.SetActive(false);
     }
+
     public void InitCount(int count)
     {
         this.count = count;
@@ -55,23 +56,21 @@ public class ItemInventory : BaseItemUI
             if (!this.gameObject.activeSelf)
             {
                 this.gameObject.SetActive(true);
+            }
 
-            }    
             textCount.gameObject.SetActive(true);
-
         }
         else
         {
             textCount.gameObject.SetActive(false);
-
         }
-
     }
+
     public void AddCount(int count)
     {
         this.count += count;
         textCount.text = this.count.ToString();
-        if(this.count <= 0 && this.gameObject.activeSelf)
+        if (this.count <= 0 && this.gameObject.activeSelf)
         {
             this.gameObject.SetActive(false);
         }
@@ -80,21 +79,24 @@ public class ItemInventory : BaseItemUI
             this.gameObject.SetActive(true);
         }
     }
+
     public void InitCountRequire(int countRequire)
     {
         this.countRequire = countRequire;
         textCount.text = $"{this.count}/{this.countRequire}";
     }
+
     public void InitItemRef(ItemRef itemRef)
     {
         this.itemRef = itemRef;
     }
-    public void InitInventory(ItemRef itemRefInven,IItemData iItemData , EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
-    {
 
+    public void InitInventory(ItemRef itemRefInven, IItemData iItemData,
+        EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
+    {
         this.itemRef = itemRefInven;
         this.iItemData = iItemData;
-        if(itemData == null)
+        if (itemData == null)
         {
             btnShowInfor?.gameObject.SetActive(false);
             InitCount(0);
@@ -107,54 +109,62 @@ public class ItemInventory : BaseItemUI
             hasItem.SetActive(true);
             btnShowInfor?.gameObject.SetActive(true);
             textName.gameObject.SetActive(true);
-
         }
+
         if (btnShowInfor != null)
         {
-            SetEventButton(btnShowInfor, () =>
-            {
-                ToolTipItems.Instance.InitShow(this,frame.sprite,qualityFull.sprite,textName.color, itemRefInven, iItemData , eActionShowItemInfor);
-            });
-        }    
+            SetEventButton(btnShowInfor,
+                () =>
+                {
+                    ToolTipItems.Instance.InitShow(this, frame.sprite, qualityFull.sprite, textName.color, itemRefInven,
+                        iItemData, eActionShowItemInfor);
+                });
+        }
+
         textName.text = itemData.nameItem;
         var tabPanel = Pool.Get<TabPanel>();
-        if (tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.VatPham )
+        if (tabPanel.gameObject.activeSelf && tabPanel.currentBtnWithPanel.typePanel == TabPanel.ETypePanel.VatPham)
         {
             textCount.gameObject.SetActive(true);
         }
         else
         {
             textCount.gameObject.SetActive(false);
-        }    
+        }
+
         leftUpMask.gameObject.SetActive(false);
         if (itemRef != null)
         {
-            if (itemRef.Type == ItemType.Furnace || itemRef.Type == ItemType.VuKhi || itemRef.Type == ItemType.PhongCu || itemRef.Type == ItemType.TrangSuc)
+            if (itemRef.Type == ItemType.Furnace || itemRef.Type == ItemType.VuKhi ||
+                itemRef.Type == ItemType.PhongCu || itemRef.Type == ItemType.TrangSuc)
             {
                 textCount.gameObject.SetActive(false);
             }
-        }    
+        }
     }
+
     public override void OnPointerDown(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);
         SetSelectHighlight(true);
-
     }
+
     public override void OnPointerUp()
     {
         SetSelectHighlight(false);
-
     }
+
     public void SetColorName(Color color)
     {
         textName.color = color;
     }
+
     public void SetQualityFull(Sprite sprite)
     {
         qualityFull.sprite = sprite;
         qualityFull.SetNativeSize();
     }
+
     [Button]
     private void FixVisualItemSkill()
     {
@@ -191,8 +201,8 @@ public class ItemInventory : BaseItemUI
         {
             Debug.LogError("Không tìm thấy Sprite! Hãy kiểm tra lại đường dẫn trong thư mục Resources.");
         }
-
     }
+
     [Button]
     private void GetComponentBag()
     {
@@ -200,12 +210,12 @@ public class ItemInventory : BaseItemUI
         selectHighLight = transform.GetChild(2).GetComponent<Image>();
         textCount = transform.GetChild(1).transform.GetChild(4).GetComponent<Text>();
         icon = transform.GetChild(1).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>();
-        frame  = transform.GetChild(1).transform.GetChild(0).transform.GetChild(0).GetComponent<Image>();
+        frame = transform.GetChild(1).transform.GetChild(0).transform.GetChild(0).GetComponent<Image>();
         qualityFull = transform.GetChild(1).transform.GetChild(0).GetComponent<Image>();
-        textName  = transform.GetChild(1).transform.GetChild(2).transform.GetChild(0).GetComponent<Text>();
+        textName = transform.GetChild(1).transform.GetChild(2).transform.GetChild(0).GetComponent<Text>();
         leftUpMask = transform.GetChild(1).transform.GetChild(3).gameObject;
-
     }
+
     [Button]
     private void GetComponentThanThong()
     {
@@ -217,8 +227,8 @@ public class ItemInventory : BaseItemUI
         qualityFull = transform.GetChild(1).transform.GetChild(0).GetComponent<Image>();
         textName = transform.GetChild(1).transform.GetChild(2).transform.GetChild(0).GetComponent<Text>();
         leftUpMask = transform.GetChild(1).transform.GetChild(3).gameObject;
-
     }
+
     [Button]
     private void GetComponentCongPhap()
     {
@@ -230,39 +240,40 @@ public class ItemInventory : BaseItemUI
         qualityFull = transform.GetChild(2).transform.GetChild(0).GetComponent<Image>();
         textName = transform.GetChild(2).transform.GetChild(2).transform.GetChild(0).GetComponent<Text>();
         leftUpMask = transform.GetChild(2).transform.GetChild(3).gameObject;
-
     }
+
     [Button]
     private void SetUpMask()
     {
         qualityFull.transform.localScale = Vector3.one * 1.03f;
         RectMask2D parent = icon.transform.parent.GetComponent<RectMask2D>();
-        if(parent == null)
+        if (parent == null)
         {
             parent = parent.gameObject.AddComponent<RectMask2D>();
-
         }
-        parent.softness =  new Vector2Int(25, 25);
 
+        parent.softness = new Vector2Int(25, 25);
     }
+
     [Button]
     private void FixVisualTextCount()
     {
         RectTransform rect = textCount.GetComponent<RectTransform>();
         rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, -24f);
     }
+
     [Button]
     private void GetBtnShowInfor()
     {
         btnShowInfor = transform.GetChild(3).GetComponent<Button>();
-
     }
+
     [Button]
     private void SetHasItemFalse()
     {
-       hasItem.gameObject.SetActive(false);
-
+        hasItem.gameObject.SetActive(false);
     }
+
     [Button]
     private void ReplaceSpriteBGNullItem()
     {

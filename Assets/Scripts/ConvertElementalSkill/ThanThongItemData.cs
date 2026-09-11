@@ -15,11 +15,12 @@ namespace ConvertElementalSkill
         public BaseSkill.ETierSkill TierSkill { get; private set; }
         public BaseSkill ItemData { get; private set; }
         public SkillVisualQuality VisualQuality { get; private set; }
-        
+
         public ThanThongItemData(ItemRef itemRef, GameManager gameManager, UIManager ui)
         {
             Init(itemRef, gameManager, ui);
         }
+
         private void Init(ItemRef itemRef, GameManager gameManager, UIManager ui)
         {
             var item = gameManager.GetThanThongWithId(itemRef.Id);

@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ToKimChanPhap))]
 public class ToKimChanPhap : CongPhap, IMemorySerializable<ToKimChanPhap>
 {
-    [SerializeField]
-    private int[] dame;
+    [SerializeField] private int[] dame;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         List<LinhKhiTieuTan> linhKhiTieuTan = data[2] as List<LinhKhiTieuTan>;
@@ -21,12 +21,15 @@ public class ToKimChanPhap : CongPhap, IMemorySerializable<ToKimChanPhap>
         }
 
         Debug.Log("lmm" + count);
-        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int>{count * dame[CurrentLevelCongPhapInCombat(caster) - 1]}, true, eTypeSkill);
+        target.TakeDameByStatic(caster,
+            new System.Collections.Generic.List<int> { count * dame[CurrentLevelCongPhapInCombat(caster) - 1] }, true,
+            eTypeSkill);
     }
 
     public override string GetDesc(int level)
     {
-        return $"Giai đoạn tiêu tán linh khí, mỗi tiêu tán 1 điểm linh khí đối phương nhận {GetColoredText($"+{dame[level - 1]}", "red")} sát thương";
+        return
+            $"Giai đoạn tiêu tán linh khí, mỗi tiêu tán 1 điểm linh khí đối phương nhận {GetColoredText($"+{dame[level - 1]}", "red")} sát thương";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

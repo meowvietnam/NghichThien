@@ -10,10 +10,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(LuuQuangChanQuyet))]
 public class LuuQuangChanQuyet : CongPhap, IMemorySerializable<LuuQuangChanQuyet>
 {
-    [SerializeField]
-    private int[] dameBuff;
-    [SerializeField]
-    private int noiThuong = 1;
+    [SerializeField] private int[] dameBuff;
+    [SerializeField] private int noiThuong = 1;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         // Ki?m tra h? c?a Skill ?ang dùng có kh?p v?i Công Pháp (SO) này không
@@ -22,7 +21,7 @@ public class LuuQuangChanQuyet : CongPhap, IMemorySerializable<LuuQuangChanQuyet
             int countCongDon = caster.congPhapDynamic.Count(x => x.congPhap is LuuQuangChanQuyet);
             RemoveCongPhap(caster);
             int dame = countCongDon * dameBuff[CurrentLevelCongPhapInCombat(caster) - 1];
-            target.AddDamageData(new List<int>{dame});
+            target.AddDamageData(new List<int> { dame });
         }
     }
 
@@ -47,7 +46,8 @@ public class LuuQuangChanQuyet : CongPhap, IMemorySerializable<LuuQuangChanQuyet
 
     public override string GetDesc(int level)
     {
-        return $"Bắt Đầu hiệp, nhận phải {GetColoredText($"{noiThuong}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NoiThuong)}, sử dụng thần thông {GetTextTypeSkill()} hệ gây tổn thương đồng thời phát động Ngũ Hành {GetKeyWord(EKeyWord.LienKich)} thì tăng lên {GetColoredText($"+{dameBuff[level - 1]}", "red")} sát thương (Nếu không kích hoạt hiệu ứng thì lượng sát thương có thể cộng dồn)";
+        return
+            $"Bắt Đầu hiệp, nhận phải {GetColoredText($"{noiThuong}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NoiThuong)}, sử dụng thần thông {GetTextTypeSkill()} hệ gây tổn thương đồng thời phát động Ngũ Hành {GetKeyWord(EKeyWord.LienKich)} thì tăng lên {GetColoredText($"+{dameBuff[level - 1]}", "red")} sát thương (Nếu không kích hoạt hiệu ứng thì lượng sát thương có thể cộng dồn)";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

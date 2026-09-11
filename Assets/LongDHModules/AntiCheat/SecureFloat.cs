@@ -26,6 +26,7 @@ public class SecureFloat
                 Set(fakeValue);
                 return fakeValue;
             }
+
             float partA = IntToFloat(encA ^ keyA);
             float partB = IntToFloat(encB ^ keyB);
 
@@ -39,10 +40,7 @@ public class SecureFloat
             Set(real);
             return real;
         }
-        set
-        {
-            Set(value);
-        }
+        set { Set(value); }
     }
 
     void Set(float value)

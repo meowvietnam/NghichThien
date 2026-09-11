@@ -9,10 +9,11 @@ namespace AllMaps.NgoDao
         [SerializeField] public int require;
         [SerializeField] public BaseSkill.ETypeSkill[] eTypeRequire;
         public virtual string GetDes() => string.Empty;
+
         public override int ByteSize()
         {
             var byteSize = base.ByteSize();
-            return byteSize + require.ByteSize() + eTypeRequire.ByteSize(); 
+            return byteSize + require.ByteSize() + eTypeRequire.ByteSize();
         }
 
         public void Deserialize(IReader reader, ref NgoDao value)
@@ -22,6 +23,7 @@ namespace AllMaps.NgoDao
             value.require = reader.Read<int>();
             value.eTypeRequire = reader.ReadArray<BaseSkill.ETypeSkill>();
         }
+
         public override void Serialize(IWriter writer)
         {
             base.Serialize(writer);

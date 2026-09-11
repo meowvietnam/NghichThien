@@ -11,11 +11,13 @@ namespace IAP
         [SerializeField] private Text priceText;
         [SerializeField] private Image icon;
         [SerializeField] private Button purchaseButton;
+
         public void SetMoneyVipText(int moneyVip)
         {
             var text = $"{Utils.FormatCount(moneyVip)} Tiên ngọc";
             moneyVipText.text = text;
         }
+
         public void SetPriceText(long price)
         {
             var text = $"{Utils.FormatCount(price)} VNĐ";
@@ -26,6 +28,7 @@ namespace IAP
         {
             this.icon.sprite = icon;
         }
+
         public void SetPurchaseAction(Action action)
         {
             purchaseButton.onClick.RemoveAllListeners();

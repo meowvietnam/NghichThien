@@ -10,6 +10,7 @@ namespace SignIn.Guest
     {
         public const string USERNAME_KEY = "guest-username";
         public override SignInProvider Provider => SignInProvider.Guest;
+
         public override Task<ISignInCredential> SignInAsync()
         {
             string username;
@@ -22,6 +23,7 @@ namespace SignIn.Guest
             {
                 username = PlayerPrefs.GetString(USERNAME_KEY);
             }
+
             return Task.FromResult<ISignInCredential>(new GuestCredential()
             {
                 Username = username,

@@ -10,16 +10,19 @@ namespace Rank
     public partial class MoneyVipEventReward : IEventReward
     {
         public int MoneyVip { get; set; }
+
         public void Claim(CharacterData charData)
         {
             var newMoneyVip = charData.MoneyVip + MoneyVip;
             charData.MoneyVip = newMoneyVip;
         }
+
         private IItemData GetItemData()
         {
             var icon = MoneyResources.Instance.MoneyVipIcon;
             return new MoneyVipItem(icon);
         }
+
         public string GetRichText()
         {
             var icon = MoneyResources.Instance.MoneyVipIcon;
@@ -28,6 +31,7 @@ namespace Rank
             return
                 $"<color=#{ColorUtility.ToHtmlStringRGBA(core.FindQuality(item.Tier).Color)}>{item.Name} x{MoneyVip}</color>";
         }
+
         public void ShowUI(RewardUIContext context)
         {
             var item = Object.Instantiate(context.MoneyVipPrefab, context.Container);

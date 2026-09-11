@@ -20,12 +20,14 @@ namespace CreateCharacter.CharStats
         {
             return Id.ByteSize() + ElementalType.ByteSize() + Name.ByteSize();
         }
+
         public void Serialize(IWriter writer)
         {
             writer.Write(Id);
             writer.Write(ElementalType);
             writer.Write(Name);
         }
+
         public void Deserialize(IReader reader, ref Elemental value)
         {
             value.Id = reader.Read<int>();

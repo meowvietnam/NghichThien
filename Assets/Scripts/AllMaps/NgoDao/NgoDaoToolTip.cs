@@ -13,7 +13,8 @@ public class NgoDaoToolTip : BaseBehaviour
     [SerializeField] private Button btnGreyCamNgo;
     [SerializeField] private Button btnMask;
     [SerializeField] private NgoDao ngoDaoSO;
-    public void Init(NgoDaoSlot ngoDaoSlot , int levelNgoDaoRequire)
+
+    public void Init(NgoDaoSlot ngoDaoSlot, int levelNgoDaoRequire)
     {
         bool canLearn = ngoDaoSlot.canLearn;
         this.ngoDaoSO = ngoDaoSlot.ngoDaoSO;
@@ -24,32 +25,23 @@ public class NgoDaoToolTip : BaseBehaviour
 
         btnCamNgo.gameObject.SetActive(canLearn && !ngoDaoSlot.isLearned);
         btnGreyCamNgo.gameObject.SetActive(!btnCamNgo.gameObject.activeSelf);
-        SetEventButton(btnMask, () =>
-        {
-            gameObject.SetActive(false);
-
-        });
+        SetEventButton(btnMask, () => { gameObject.SetActive(false); });
         if (canLearn && !ngoDaoSlot.isLearned)
         {
             SetEventButton(btnCamNgo, () =>
             {
                 gameObject.SetActive(false);
                 ngoDaoSlot.LearnAndUpdateData();
-
             });
         }
         else
         {
-            SetEventButton(btnGreyCamNgo, () =>
-            {
-                gameObject.SetActive(false);
-
-            });
+            SetEventButton(btnGreyCamNgo, () => { gameObject.SetActive(false); });
         }
+
         RefreshTooltipLayout();
-
-
     }
+
     private void RefreshTooltipLayout()
     {
         var fitter = this.transform.GetComponentsInChildren<ContentSizeFitter>();
@@ -67,30 +59,34 @@ public class NgoDaoToolTip : BaseBehaviour
             }
         }
     }
+
     private void InitData(int levelNgoDaoRequire)
     {
         nameText.text = ngoDaoSO.name;
         icon.sprite = ngoDaoSO.spriteItem;
         icon.SetNativeSize();
-        requireCountText.text =$"<color=#ffb143>【Yêu cầu điểm số】</color> {ngoDaoSO.require}";
-        if(levelNgoDaoRequire > 0)
+        requireCountText.text = $"<color=#ffb143>【Yêu cầu điểm số】</color> {ngoDaoSO.require}";
+        if (levelNgoDaoRequire > 0)
         {
-            requireText.text = $"<color=#ffb143>【Điều kiện lĩnh ngộ】</color> {GetRequireText(ngoDaoSO.eTypeRequire)} chi đạo cảm ngộ đạt tới {NgoDaoResource.CamNgoText[levelNgoDaoRequire - 1]}";
-
+            requireText.text =
+                $"<color=#ffb143>【Điều kiện lĩnh ngộ】</color> {GetRequireText(ngoDaoSO.eTypeRequire)} chi đạo cảm ngộ đạt tới {NgoDaoResource.CamNgoText[levelNgoDaoRequire - 1]}";
         }
+
         descriptionText.text = ngoDaoSO.GetDes();
     }
+
     private string GetRequireText(BaseSkill.ETypeSkill[] requires)
     {
         string baseStr = "";
         for (int i = 0; i < requires.Length; i++)
         {
             baseStr += BaseSkill.GetTextTypeSkill(requires[i]);
-            if(i<requires.Length)
+            if (i < requires.Length)
             {
                 baseStr += ", ";
-            }    
+            }
         }
+
         return baseStr;
-    }    
+    }
 }

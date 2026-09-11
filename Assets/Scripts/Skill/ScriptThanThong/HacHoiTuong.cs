@@ -10,23 +10,29 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(HacHoiTuong), menuName = "Skill/Thần Thông/" + nameof(HacHoiTuong))]
 public class HacHoiTuong : ThanThong, IMemorySerializable<HacHoiTuong>
 {
-    [SerializeField]
-    private ThanThong thanThongActive;
-    [SerializeField]
-    private float delayTimeEffect = 0.5f;
+    [SerializeField] private ThanThong thanThongActive;
+    [SerializeField] private float delayTimeEffect = 0.5f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         SecureInt cham = 0;
-        Sequence seq = DOTween.Sequence();
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Cham, out cham);
         for (int i = 0; i < cham; i++)
         {
             Debug.Log("HacHoiTuong");
             Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, thanThongActive, new List<LinhKhiTieuTan>());
-            seq.AppendCallback(() =>
-            {
-                ShowSkillEffectWorld(caster, delayTimeEffect);
-            });
+        }
+        PlayVisualSkill(caster, target);
+    }
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
+        Sequence seq = DOTween.Sequence();
+        caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Cham, out var cham);
+        for (int i = 0; i < cham; i++)
+        {
+            seq.AppendCallback(() => { ShowSkillEffectWorld(caster, delayTimeEffect); });
             seq.AppendInterval(delayTimeEffect);
         }
     }
@@ -40,7 +46,8 @@ public class HacHoiTuong : ThanThong, IMemorySerializable<HacHoiTuong>
 
     public override string GetDesc(int level)
     {
-        return $"Liên tục phóng thích X lần thần thông [Phi Châm Thuật] (X là số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cham)} bạn đang có)";
+        return
+            $"Liên tục phóng thích X lần thần thông [Phi Châm Thuật] (X là số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Cham)} bạn đang có)";
     }
 
     public override int ByteSize()

@@ -60,8 +60,10 @@ namespace Auction
                     NotifyGroup.Instance.Show(result.Message);
                     return;
                 }
+
                 Init(result.AuctionData);
             }
+
             if (progressBar.IsCompleted())
             {
                 Action();
@@ -81,6 +83,7 @@ namespace Auction
                     NotifyGroup.Instance.Show(result.Message);
                     return;
                 }
+
                 Init(result.AuctionData);
             }
 
@@ -113,6 +116,7 @@ namespace Auction
             Host.SetAuctionDuration(totalTime);
             Host.SetEndAfter(remainingTime);
         }
+
         public void NewAuctionSession(Network.Models.CurrentAuctionItem currentItem)
         {
             UpdateHostTime(currentItem.TotalTime, currentItem.RemainingTime);
@@ -121,14 +125,17 @@ namespace Auction
             {
                 playerList.ResetNewSession();
             }
+
             Me.ResetNewSession();
             UpdateMyBidAmount();
         }
+
         private void Init(AuctionData data)
         {
             Init(data.CurrentItem, data.Players, data.MyPlayer);
             root.SetActive(true);
         }
+
         private void Init
             (Network.Models.CurrentAuctionItem currentItem, PlayerAuctionModel[] players, PlayerAuctionModel me)
         {
@@ -155,10 +162,11 @@ namespace Auction
             {
                 var text = "Ra giá vật phẩm này" + "\n"
                                                  + $"Số tiên ngọc còn lại: {Utils.FormatCount(totalAmount)}"
-                                                 +"\n"
+                                                 + "\n"
                                                  + $"Giá bạn đặt: {Utils.FormatCount(value)}";
                 SelectBidAmount.SetText(text);
             }
+
             SelectBidAmount.SetMin(CurrentAuctionItem.MinPrice);
             SelectBidAmount.SetMax(CurrentAuctionItem.MaxPrice);
             SelectBidAmount.SetValue(CurrentAuctionItem.MinPrice);
@@ -179,6 +187,7 @@ namespace Auction
 
             auctionState.AuctionBid(value);
         }
+
         public void OnAuctionBidResult(AuctionBidResult result)
         {
             if (result.Success)
@@ -213,20 +222,22 @@ namespace Auction
             Player leadingPlayer = null;
             foreach (var playerList in PlayerLists)
             {
-                if (playerList.TryGetByStatus(PlayerAuctionStatus.HasBid,out var player))
+                if (playerList.TryGetByStatus(PlayerAuctionStatus.HasBid, out var player))
                 {
                     oldPlayerHasBid = player;
                     break;
                 }
             }
+
             foreach (var playerList in PlayerLists)
             {
-                if (playerList.TryGetByStatus(PlayerAuctionStatus.Leading,out var player))
+                if (playerList.TryGetByStatus(PlayerAuctionStatus.Leading, out var player))
                 {
                     newPlayerHasBid = player;
                     break;
                 }
             }
+
             foreach (var playerList in PlayerLists)
             {
                 if (playerList.TryGetPlayer(playerId, out var player))
@@ -235,6 +246,7 @@ namespace Auction
                     break;
                 }
             }
+
             if (newPlayerHasBid != null)
             {
                 if (newPlayerHasBid != leadingPlayer)
@@ -244,17 +256,19 @@ namespace Auction
                     newPlayerHasBid.SetAmount(0);
                 }
             }
+
             if (leadingPlayer != null)
             {
                 leadingPlayer.SetStatus(PlayerAuctionStatus.Leading);
                 leadingPlayer.SetAmount(highestBid.Amount);
                 CurrentAuctionItem.SetCurrentPlayerBid(leadingPlayer.Model.Name);
             }
+
             CurrentAuctionItem.SetCurrentPrice(highestBid.Amount);
             CurrentAuctionItem.SetMinPrice(highestBid.MinAmount);
             CurrentAuctionItem.SetMaxPrice(highestBid.MaxAmount);
         }
-        
+
         public void RefundAuctionBid(RefundAuctionBid refundBid)
         {
             Me.Amount = 0;
@@ -303,12 +317,11 @@ namespace Auction
             var player = replacePlayer.Player;
             foreach (var playerList in PlayerLists)
             {
-                if (playerList.TryReplacePlayer(playerId,player))
+                if (playerList.TryReplacePlayer(playerId, player))
                 {
                     return;
                 }
             }
         }
-
     }
 }

@@ -11,6 +11,7 @@ namespace DP
         [SerializeField] private Slider slider;
         private PlantSeed seed;
         private bool isStop;
+
         public void SetSeed(PlantSeed seed)
         {
             isStop = false;
@@ -20,20 +21,24 @@ namespace DP
                 slider.value = 0f;
             }
         }
+
         private bool HasSeed()
         {
             return seed != null;
         }
+
         private bool CanHarvest()
         {
             return DateTime.UtcNow >= seed.EstimateHarvestAt;
         }
+
         private void FixedUpdate()
         {
             if (!HasSeed() || isStop)
             {
                 return;
             }
+
             UpdateProgress();
         }
 
@@ -49,6 +54,7 @@ namespace DP
             {
                 progress = 1f - (float)(totalTime / harvestTime);
             }
+
             slider.value = progress;
             var canHarvest = CanHarvest();
             var text = canHarvest
@@ -57,6 +63,7 @@ namespace DP
             SetInfoText(text);
             isStop = canHarvest;
         }
+
         public void SetInfoText(string text)
         {
             textInfo.text = text;

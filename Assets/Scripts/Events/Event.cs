@@ -11,10 +11,11 @@ namespace Events
         public DateTime StartAt { get; set; }
         public DateTime EndAt { get; set; }
         public IGameEvent GameEvent { get; set; }
+
         public bool IsInEvent()
         {
             var now = DateTime.UtcNow;
-            return now > StartAt &&  now < EndAt;
+            return now > StartAt && now < EndAt;
         }
     }
 }

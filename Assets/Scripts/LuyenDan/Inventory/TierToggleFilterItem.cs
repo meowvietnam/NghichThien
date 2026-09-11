@@ -7,10 +7,11 @@ namespace LuyenDan.Inventory
     {
         [SerializeField] private ItemListUI target;
         [SerializeField] private Tier tier;
+
         protected override void OnValueChanged(bool isOn)
         {
             base.OnValueChanged(isOn);
-            if(!isOn) return;
+            if (!isOn) return;
             target.Filter(tier);
         }
     }

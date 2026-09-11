@@ -6,6 +6,7 @@ namespace DP
     public class UpgradeDongPhuPanel : BaseBehaviour
     {
         [SerializeField] private List<UpgradePopup> popups;
+
         public void ShowPopup(DongPhuLevel level)
         {
             gameObject.SetActive(true);

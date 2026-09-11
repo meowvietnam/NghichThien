@@ -8,7 +8,8 @@ namespace Network.Models
         public ushort Id { get; set; }
         public bool Success { get; set; }
         public string Message { get; set; }
-        public string Name {get; set;}
+        public string Name { get; set; }
+
         public void Deserialize(IReader reader, ref SetEquipmentNameResult value)
         {
             value.Success = reader.Read<bool>();

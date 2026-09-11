@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThatSatKiemQuyet))]
 public class ThatSatKiemQuyet : CongPhap, IMemorySerializable<ThatSatKiemQuyet>
 {
-    [SerializeField]
-    private int[] percent;
+    [SerializeField] private int[] percent;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         Debug.Log("Data length: " + (data != null ? data.Length.ToString() : "null"));
@@ -49,7 +49,8 @@ public class ThatSatKiemQuyet : CongPhap, IMemorySerializable<ThatSatKiemQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Khi tạo thành {GetTextTypeSkill()} hệ tổn thương, có {GetColoredText($"{percent[level - 1]}%", "red")} xác suất khiến đối thủ nhận phải 1 tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChayMau)}";
+        return
+            $"Khi tạo thành {GetTextTypeSkill()} hệ tổn thương, có {GetColoredText($"{percent[level - 1]}%", "red")} xác suất khiến đối thủ nhận phải 1 tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChayMau)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

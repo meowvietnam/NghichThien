@@ -9,9 +9,9 @@ namespace DP
     {
         public string Name { get; set; }
         public DongPhuLevel Level { get; set; }
-        public ushort SlotMaxWaterHelpPerDay  { get; set; }
+        public ushort SlotMaxWaterHelpPerDay { get; set; }
         public ushort MyMaxWaterHelpPerDay { get; set; }
-        public TimeSpan ReduceTime { get; set; }  
+        public TimeSpan ReduceTime { get; set; }
         public int RequireMoneyVip { get; set; }
         public Color Color { get; set; }
         public float Alpha { get; set; }

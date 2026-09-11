@@ -12,18 +12,20 @@ public class ThongKim : NgoDaoCombat, IMemorySerializable<ThongKim>
     {
         if (target.characterStatsTemp.hp < target.characterStatsTemp.hpMax * 50 / 100)
         {
-            target.AddDamageData(new List<int>{target.GetDameBuffForTarget()});
+            target.AddDamageData(new List<int> { target.GetDameBuffForTarget() });
         }
         else
         {
-            float percentHpLost = (target.characterStatsTemp.hpMax - target.characterStatsTemp.hp) / target.characterStatsTemp.hpMax;
-            target.AddDamageData(new List<int>{(int)(target.GetDameBuffForTarget() * percentHpLost)});
+            float percentHpLost = (target.characterStatsTemp.hpMax - target.characterStatsTemp.hp) /
+                                  target.characterStatsTemp.hpMax;
+            target.AddDamageData(new List<int> { (int)(target.GetDameBuffForTarget() * percentHpLost) });
         }
     }
 
     public override string GetDes()
     {
-        return $"Đối thủ mỗi tổn thất 1% lượng máu, nhận tổn thương cũng tăng lên 1%. Nếu đối thủ HP thấp hơn 50% thì nhận tổn thương gấp đôi";
+        return
+            $"Đối thủ mỗi tổn thất 1% lượng máu, nhận tổn thương cũng tăng lên 1%. Nếu đối thủ HP thấp hơn 50% thì nhận tổn thương gấp đôi";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

@@ -35,7 +35,7 @@ namespace LuyenDan
 
         public int ByteSize()
         {
-            return Id.ByteSize() + PricePerDurability.ByteSize() 
+            return Id.ByteSize() + PricePerDurability.ByteSize()
                                  + Name.ByteSize() + Tier.ByteSize() + Description.ByteSize();
         }
 

@@ -9,30 +9,34 @@ using System.Linq;
 using LongDHModules;
 using UnityEngine;
 
-public abstract class EquipmentProvider : ItemProvider<CreateCharacter.Equipment> , INetworkEvent.IEquipEquipment , IUseItemProvider
+public abstract class EquipmentProvider : ItemProvider<CreateCharacter.Equipment>, INetworkEvent.IEquipEquipment,
+    IUseItemProvider
 {
     public override int BaseValueLevelWithTier => 6;
 
-    public override abstract  ItemType SupportedType { get; }
+    public override abstract ItemType SupportedType { get; }
     public abstract EquipmentType EquipemtType { get; }
 
     protected InventoryManager _inventoryManager => Client.Instance.CharacterData.InventoryManager;
 
     public abstract override CreateCharacter.Equipment GetDataItemByIdRef(ushort Id);
 
-    public override  void Display(ToolTipContext ctx)
+    public override void Display(ToolTipContext ctx)
     {
         base.Display(ctx);
         ctx.TypeText.text = $"{GetTextNameEquipment(ctx.EquipmentData.Item.Type)}";
-        ctx.DescriptionText.text = $"{GetTextNameEquipment(ctx.EquipmentData.Item.Type)} do {ctx.EquipmentData.Name} luyện thành";
+        ctx.DescriptionText.text =
+            $"{GetTextNameEquipment(ctx.EquipmentData.Item.Type)} do {ctx.EquipmentData.Name} luyện thành";
         ctx.DescTextItem.transform.parent.gameObject.SetActive(true);
         ctx.DescTextItem.text = $"{GameManager.GetDescEquipment(ctx.EquipmentData.Effects.ToList(), EquipemtType)}";
         ctx.QualityText.text = ctx.EquipmentData.GradeConfig.Name;
     }
+
     protected virtual string GetTextNameEquipment(ArtifactType artifactType)
     {
         return $" - {GetArtifactName(artifactType)}";
     }
+
     public static string GetArtifactName(ArtifactType artifactType)
     {
         string artifactName = "";
@@ -79,6 +83,7 @@ public abstract class EquipmentProvider : ItemProvider<CreateCharacter.Equipment
             default:
                 break;
         }
+
         return artifactName;
     }
 
@@ -136,10 +141,11 @@ public abstract class EquipmentProvider : ItemProvider<CreateCharacter.Equipment
             default:
                 break;
         }
+
         Pool.Get<TabPanel>().LoadEquipment(itemEquipmentSlot, itemInventory.itemRef.Type, itemInventory.itemRef.Id);
 
-        Observer.Notify(EventList.Network.EQUIP_EQUIPMENT, this, itemInventory.itemRef.Id, equipmentType); // id equipment này là self id
-
+        Observer.Notify(EventList.Network.EQUIP_EQUIPMENT, this, itemInventory.itemRef.Id,
+            equipmentType); // id equipment này là self id
     }
 
     public void SuccessEquipEquipment()
@@ -152,6 +158,3 @@ public abstract class EquipmentProvider : ItemProvider<CreateCharacter.Equipment
         NotifyGroup.Instance.Show(message);
     }
 }
-
-
-

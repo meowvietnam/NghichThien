@@ -7,10 +7,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(TietLinhThu), menuName = "Skill/Thần Thông/" + nameof(TietLinhThu))]
 public class TietLinhThu : ThanThong, IMemorySerializable<TietLinhThu>
 {
-    [SerializeField]
-    private int[] dames = new int[]{3, 4, 6, 10, 20};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] dames = new int[] { 3, 4, 6, 10, 20 };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int dame = dames[GetIndexLevelThanThong(caster)];
@@ -19,13 +18,21 @@ public class TietLinhThu : ThanThong, IMemorySerializable<TietLinhThu>
             dame *= 2;
         }
 
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Nếu như đối thủ không có linh khí thì tổn thương gấp đôi";
+        return
+            $"Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Nếu như đối thủ không có linh khí thì tổn thương gấp đôi";
     }
 
     public override int ByteSize()

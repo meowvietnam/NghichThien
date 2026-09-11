@@ -10,13 +10,17 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThonNhatThanVienBien))]
 public class ThonNhatThanVienBien : CongPhap, IMemorySerializable<ThonNhatThanVienBien>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{22, 26, 30, 34, 38};
+    [SerializeField] private int[] buffValues = new int[] { 22, 26, 30, 34, 38 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         // có trong dynamic 
-        Debug.Log($"[ThonNhatThanVienBien] Execute: caster={caster.name}, target={target.name}, buffValue={buffValues[CurrentLevelCongPhapInCombat(caster) - 1]}");
-        target.AddDamageData(new List<int>{(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100)}, true);
+        Debug.Log(
+            $"[ThonNhatThanVienBien] Execute: caster={caster.name}, target={target.name}, buffValue={buffValues[CurrentLevelCongPhapInCombat(caster) - 1]}");
+        target.AddDamageData(
+            new List<int>
+                { (int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100) },
+            true);
         RemoveCongPhap(caster);
     }
 
@@ -39,7 +43,8 @@ public class ThonNhatThanVienBien : CongPhap, IMemorySerializable<ThonNhatThanVi
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi hiệp, lần đầu sử dụng thần thông tổn thương thì sát thương tăng lên {GetColoredText($"{buffValues[level - 1]}%", "red")}";
+        return
+            $"Mỗi hiệp, lần đầu sử dụng thần thông tổn thương thì sát thương tăng lên {GetColoredText($"{buffValues[level - 1]}%", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

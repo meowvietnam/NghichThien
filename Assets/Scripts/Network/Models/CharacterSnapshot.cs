@@ -11,8 +11,9 @@ using UnityEngine;
 namespace Network.Models
 {
     [MemoryPackable]
-    public partial class CharacterSnapshot 
+    public partial class CharacterSnapshot
     {
+        public int Id { get; set; }
         public int ThanThuc { get; set; }
         public int TocDoBay { get; set; }
         public int NgoTinh { get; set; }
@@ -53,9 +54,10 @@ namespace Network.Models
         public CharacterSnapshot()
         {
         }
-        //Stats,Progression, Appearance, Equipment, Inventory, ArenaManager
+
         public CharacterSnapshot(CharacterData c)
         {
+            this.Id = Id;
             var equipment = c.EquipmentManager;
             this.Name = c.Name;
             this.Gender = c.Gender;

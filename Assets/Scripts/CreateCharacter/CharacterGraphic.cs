@@ -24,13 +24,16 @@ namespace CreateCharacter
                 refLocalPos = this.transform.localPosition;
             }
         }
+
         private void Awake()
         {
-           refLocalPos = this.transform.localPosition;
+            refLocalPos = this.transform.localPosition;
         }
+
         public void SetGender(Gender gender)
         {
-            var skeletonDataAsset = skinResources.GenderSkinGroups.FirstOrDefault(skinResource => skinResource.Gender == gender)?.SkeletonDataAsset;
+            var skeletonDataAsset = skinResources.GenderSkinGroups
+                .FirstOrDefault(skinResource => skinResource.Gender == gender)?.SkeletonDataAsset;
             graphic.skeletonDataAsset = skeletonDataAsset;
             currentSkins.Clear();
             currentColors.Clear();
@@ -40,26 +43,29 @@ namespace CreateCharacter
             {
                 refLocalPos = this.transform.localPosition;
             }
+
             // lấy localpos male làm chuẩn
             if (gender == Gender.Female)
             {
                 this.transform.localPosition = refLocalPos + new Vector3(0, addLocalY, 0);
-            }    
+            }
             else
             {
                 this.transform.localPosition = refLocalPos;
-            }    
+            }
         }
+
         public void SetSkin(Dictionary<string, string> combines, Dictionary<string, Color> colors = null)
         {
             var combineSkin = new Skin("character");
             var skeleton = graphic.Skeleton;
             var data = skeleton.Data;
-            if(combines == null)
+            if (combines == null)
             {
                 Debug.Log("data set skin null");
                 return;
-            }    
+            }
+
             foreach (var (skinId, skinName) in combines)
             {
                 var skin = data.FindSkin(skinName);
@@ -68,9 +74,11 @@ namespace CreateCharacter
                     Debug.LogError($"Skin not found: {skinName}");
                     continue;
                 }
+
                 currentSkins[skinId] = skinName;
                 combineSkin.AddSkin(skin);
             }
+
             skeleton.SetSkin(combineSkin);
             skeleton.SetSlotsToSetupPose();
             graphic.Update(0);
@@ -84,11 +92,14 @@ namespace CreateCharacter
                     var slot = skeleton.Slots.Items[attachment.SlotIndex];
                     slot.SetColor(color);
                 }
+
                 currentColors[skinId] = color;
             }
         }
+
         [Button]
-        public (Dictionary<string, string> skins, Dictionary<string, Color> colors) RandomSkin(Gender gender, bool useDefaultColors)
+        public (Dictionary<string, string> skins, Dictionary<string, Color> colors) RandomSkin(Gender gender,
+            bool useDefaultColors)
         {
             var skins = new Dictionary<string, string>();
             var colors = new Dictionary<string, Color>();
@@ -106,16 +117,21 @@ namespace CreateCharacter
                 {
                     foreach (var colorGroupCategoryId in colorGroup.CategoryIds)
                     {
-                        var color = useDefaultColors ? colorGroup.DefaultColor : palette[Random.Range(0, palette.Count)];
+                        var color = useDefaultColors
+                            ? colorGroup.DefaultColor
+                            : palette[Random.Range(0, palette.Count)];
                         colors[colorGroupCategoryId] = color;
                     }
                 }
             }
+
             SetGender(gender);
             SetSkin(skins, colors);
-            return (skins,colors);
+            return (skins, colors);
         }
-        public static (Dictionary<string, string> skins, Dictionary<string, Color> colors) RandomSkinStatic(Gender gender, bool useDefaultColors)
+
+        public static (Dictionary<string, string> skins, Dictionary<string, Color> colors) RandomSkinStatic(
+            Gender gender, bool useDefaultColors)
         {
             var skins = new Dictionary<string, string>();
             var colors = new Dictionary<string, Color>();
@@ -133,12 +149,14 @@ namespace CreateCharacter
                 {
                     foreach (var colorGroupCategoryId in colorGroup.CategoryIds)
                     {
-                        var color = useDefaultColors ? colorGroup.DefaultColor : palette[Random.Range(0, palette.Count)];
+                        var color = useDefaultColors
+                            ? colorGroup.DefaultColor
+                            : palette[Random.Range(0, palette.Count)];
                         colors[colorGroupCategoryId] = color;
                     }
                 }
             }
-           
+
             return (skins, colors);
         }
     }

@@ -30,6 +30,7 @@ namespace Network.Core
         private List<OwnerIapProduct> ownerIapProducts;
         [SerializeField] private IapService iapService;
         [SerializeField] private MonthlyPassPackUI monthlyPassUIPrefab;
+
         private static MessageTag[] handler =
         {
             MessageTag.PurchaseIapResult
@@ -37,6 +38,7 @@ namespace Network.Core
 
         public MessageTag[] HandleTag => handler;
         public Dictionary<string, List<GameObject>> IapObjects { get; private set; } = new();
+
         public override void Init()
         {
             base.Init();
@@ -99,6 +101,7 @@ namespace Network.Core
                     NotifyGroup.Instance.Show("IAP chưa được cấu hình");
                     return;
                 }
+
                 await iapService.InitializeIAP();
                 iapService.PurchasePending -= OnPurchasePending;
                 iapService.PurchasePending += OnPurchasePending;
@@ -123,11 +126,12 @@ namespace Network.Core
                             OwnerIapProduct = ownerIapProduct,
                             IapProductContainer = iapProductContainer,
                             BtnStartPackPrefab = btnStartPackPrefab,
-                            IconListContainer =  iconListContainer,
+                            IconListContainer = iconListContainer,
                             MonthlyPassPackUIPrefab = monthlyPassUIPrefab,
                         };
                         ownerIapProduct.Product.Reward?.InitUI(uiContext);
                     }
+
                     popupMain.Show();
                     var fitter = transform.GetComponentsInChildren<ContentSizeFitter>();
                     if (fitter != null)
@@ -143,13 +147,17 @@ namespace Network.Core
                             }
                         }
                     }
+
                     DOVirtual.DelayedCall(0, () => { popupMain.Hide(); });
                 });
             }
             catch (Exception ex)
             {
                 Debug.LogException(ex);
-                NetworkManager.Instance.Invoke(() => { NotifyGroup.Instance.Show($"Khởi tạo IAP thất bại: {ex.Message}"); });
+                NetworkManager.Instance.Invoke(() =>
+                {
+                    NotifyGroup.Instance.Show($"Khởi tạo IAP thất bại: {ex.Message}");
+                });
             }
         }
 
@@ -168,6 +176,7 @@ namespace Network.Core
             var reader = await Client.Instance.MemRequestWait(MessageTag.CanBuyProductRequest, request);
             return reader.MemRead<Result>();
         }
+
         private void OnIapFailed(string message)
         {
             NetworkManager.Instance.Invoke(() => { NotifyGroup.Instance.Show(message); });
@@ -268,6 +277,7 @@ namespace Network.Core
         public void OnLeave()
         {
         }
+
         private void OnDestroy()
         {
             if (iapService == null)

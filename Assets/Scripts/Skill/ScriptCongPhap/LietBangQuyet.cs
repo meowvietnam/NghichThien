@@ -12,10 +12,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(LietBangQuyet))]
 public class LietBangQuyet : CongPhap, IMemorySerializable<LietBangQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 1, 2, 2, 3};
-    [SerializeField]
-    private int require = 2;
+    [SerializeField] private int[] buffValues = new int[] { 1, 1, 2, 2, 3 };
+    [SerializeField] private int require = 2;
+
     public override void ExecuteParams(params object[] data)
     {
         CharacterCombat caster = (CharacterCombat)data[0];
@@ -36,7 +35,7 @@ public class LietBangQuyet : CongPhap, IMemorySerializable<LietBangQuyet>
         if (count >= require)
         {
             float percent = (float)buffValues[CurrentLevelCongPhapInCombat(caster) - 1] * suongGia / 100f;
-            target.AddDamageData(new List<int>{(int)(dame * percent)});
+            target.AddDamageData(new List<int> { (int)(dame * percent) });
             RemoveCongPhap(caster);
         }
         else
@@ -47,7 +46,8 @@ public class LietBangQuyet : CongPhap, IMemorySerializable<LietBangQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi khi sử dụng đủ {GetColoredText($"{require} lần", "red")} thần thông gây tổn thương, lần tiếp theo thần thông tạo thành tổn thương tăng lên {GetColoredText($"{buffValues[level - 1]}*X%", "red")} (X là số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SuongGia)} của đối thủ)";
+        return
+            $"Mỗi khi sử dụng đủ {GetColoredText($"{require} lần", "red")} thần thông gây tổn thương, lần tiếp theo thần thông tạo thành tổn thương tăng lên {GetColoredText($"{buffValues[level - 1]}*X%", "red")} (X là số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SuongGia)} của đối thủ)";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

@@ -23,6 +23,7 @@ namespace Network.Extensions.MemoryPack
                 Sender.MemSend(Tag, Result);
             }
         }
+
         public static ISendActionResult MemSend<T, V>(this IMessageController<V> @this, V tag, T result)
             where V : unmanaged, Enum
         {

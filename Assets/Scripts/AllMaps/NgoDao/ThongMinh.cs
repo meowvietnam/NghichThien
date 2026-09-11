@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ThongMinh), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(ThongMinh))]
 public class ThongMinh : NgoDaoCombat, IMemorySerializable<ThongMinh>
 {
-    [SerializeField]
-    private int buff = 1;
+    [SerializeField] private int buff = 1;
+
     public override void ObserverEffect(params object[] data)
     {
         CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
@@ -28,7 +28,7 @@ public class ThongMinh : NgoDaoCombat, IMemorySerializable<ThongMinh>
 
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.AddDamageData(new List<int>{-buff});
+        target.AddDamageData(new List<int> { -buff });
     }
 
     public void ObserverEffect2(params object[] data)
@@ -39,7 +39,8 @@ public class ThongMinh : NgoDaoCombat, IMemorySerializable<ThongMinh>
         if (target == null)
             return;
         // kiểm tra dame được truyền vào có phải là mộc linh khí không
-        if (target.ngoDaoCombats.Any(x => x.Id == this.Id) && eTypeSkills != null && BaseSkill.CheckIsEqualETypeSkill(eTypeSkills, eTypeRequire))
+        if (target.ngoDaoCombats.Any(x => x.Id == this.Id) && eTypeSkills != null &&
+            BaseSkill.CheckIsEqualETypeSkill(eTypeSkills, eTypeRequire))
         {
             ExecuteNgoDao(caster, target);
         }

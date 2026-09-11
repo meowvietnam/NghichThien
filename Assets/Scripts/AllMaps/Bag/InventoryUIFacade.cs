@@ -26,6 +26,7 @@ public class InventoryUIFacade
             currentItem.gameObject.SetActive(false);
             return;
         }
+
         listItemUI.Add(currentItem);
         var handler = ItemTypeHandlerBagFactory.Create(itemRef.Type);
         handler.Handle(currentItem, itemRef, isIconSkillBase, eActionShowItemInfor);

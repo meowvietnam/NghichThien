@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(NguHanhKiemQuyet))]
 public class NguHanhKiemQuyet : CongPhap, IMemorySerializable<NguHanhKiemQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 2, 4, 6, 10};
+    [SerializeField] private int[] buffValues = new int[] { 1, 2, 4, 6, 10 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (CheckIsEqualETypeSkill(caster))
@@ -44,7 +44,9 @@ public class NguHanhKiemQuyet : CongPhap, IMemorySerializable<NguHanhKiemQuyet>
         ThanThong thanThong = (ThanThong)data[2];
         bool isEqualType = CheckIsEqualETypeSkill(caster);
         // 1. Extract the complex check into a descriptive variable
-        bool isLienKichTrigger = thanThong is LienKich && CombatManager.IsLienKich(caster.thanThongCurrentUse.thanThong, caster.thanThongOldUse.thanThong);
+        bool isLienKichTrigger = thanThong is LienKich &&
+                                 CombatManager.IsLienKich(caster.thanThongCurrentUse.thanThong,
+                                     caster.thanThongOldUse.thanThong);
         // 2. The logic simplified: 
         // Reset if types don't match, OR it's not a combo skill, OR it's a valid combo sequence.
         if (!isEqualType || (isEqualType && !isLienKichTrigger))
@@ -56,7 +58,8 @@ public class NguHanhKiemQuyet : CongPhap, IMemorySerializable<NguHanhKiemQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Sử dụng {GetTextTypeSkill(ETypeSkill.Kiem)} hệ thần thông và kích hoạt ngũ hành {GetKeyWord(EKeyWord.LienKich)} thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}*X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiemHiep)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChanKiem)} (X là số lần kích hoạt công pháp này liên tục nếu không làm mới về 1)";
+        return
+            $"Sử dụng {GetTextTypeSkill(ETypeSkill.Kiem)} hệ thần thông và kích hoạt ngũ hành {GetKeyWord(EKeyWord.LienKich)} thì thu hoạch được {GetColoredText($"+{buffValues[level - 1]}*X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiemHiep)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChanKiem)} (X là số lần kích hoạt công pháp này liên tục nếu không làm mới về 1)";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

@@ -49,10 +49,8 @@ namespace Network.Core
                 {
                     arenaReward.IsClaim = false;
                 }
-                NetworkManager.Instance.Invoke(() =>
-                {
-                    Observer.Notify(EventList.Network.RESET_ARENA_RANK);
-                });
+
+                NetworkManager.Instance.Invoke(() => { Observer.Notify(EventList.Network.RESET_ARENA_RANK); });
             }
         }
 

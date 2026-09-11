@@ -10,17 +10,16 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(NguyetPhaDanHuQuyet))]
 public class NguyetPhaDanHuQuyet : CongPhap, IMemorySerializable<NguyetPhaDanHuQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{22, 26, 30, 34, 40};
-    [SerializeField]
-    private int percent = 30;
-    [SerializeField]
-    private int[] debuffValues = new int[]{1, 2, 3, 4, 5};
+    [SerializeField] private int[] buffValues = new int[] { 22, 26, 30, 34, 40 };
+    [SerializeField] private int percent = 30;
+    [SerializeField] private int[] debuffValues = new int[] { 1, 2, 3, 4, 5 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (CheckIsEqualETypeSkill(caster))
         {
-            target.AddDamageData(new List<int>{(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100f)});
+            target.AddDamageData(new List<int>
+                { (int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100f) });
         }
     }
 
@@ -40,13 +39,15 @@ public class NguyetPhaDanHuQuyet : CongPhap, IMemorySerializable<NguyetPhaDanHuQ
     {
         if (CombatStatic.IsActiveWithPercent(percent))
         {
-            caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ThanThuong, debuffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
+            caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ThanThuong,
+                debuffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
         }
     }
 
     public override string GetDesc(int level)
     {
-        return $"{GetTextTypeSkill(ETypeSkill.Than)} hệ thần thông tổn thương tăng lên {GetColoredText($"{buffValues[level - 1]}%", "red")} nhưng khi sử dụng thần thông có  {GetColoredText($"{percent}%", "red")} nhận phải {GetColoredText($"+{debuffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThanThuong)}";
+        return
+            $"{GetTextTypeSkill(ETypeSkill.Than)} hệ thần thông tổn thương tăng lên {GetColoredText($"{buffValues[level - 1]}%", "red")} nhưng khi sử dụng thần thông có  {GetColoredText($"{percent}%", "red")} nhận phải {GetColoredText($"+{debuffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThanThuong)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

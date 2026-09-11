@@ -8,8 +8,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(BeKhi), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(BeKhi))]
 public class BeKhi : NgoDaoCombat, IMemorySerializable<BeKhi>
 {
-    [SerializeField]
-    private int buff = 5;
+    [SerializeField] private int buff = 5;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         EBuffAndDeBuff eBuffParam = (EBuffAndDeBuff)data[1];
@@ -30,12 +30,13 @@ public class BeKhi : NgoDaoCombat, IMemorySerializable<BeKhi>
 
     public override string GetDes()
     {
-        return $"Bản thân ở trạng thái {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnNac)} thì linh khí tối đa {BaseSkill.GetColoredText($"+{buff}", "red")}";
+        return
+            $"Bản thân ở trạng thái {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.AnNac)} thì linh khí tối đa {BaseSkill.GetColoredText($"+{buff}", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.Combat.ADD_BUFF, ObserverEffect);
+        Observer.AddObserver(EventList.Combat.ADD_BUFF_UI, ObserverEffect);
     }
 
     public override int ByteSize()

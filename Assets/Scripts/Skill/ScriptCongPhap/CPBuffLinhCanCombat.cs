@@ -9,17 +9,17 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(CPBuffLinhCanCombat))]
 public class CPBuffLinhCanCombat : CongPhap, IMemorySerializable<CPBuffLinhCanCombat>
 {
-    [SerializeField]
-    private int[] buffs;
-    [SerializeField]
-    private ELinhKhi eLinhKhi;
+    [SerializeField] private int[] buffs;
+    [SerializeField] private ELinhKhi eLinhKhi;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
     }
 
     public override string GetDesc(int level)
     {
-        return $"Bắt đầu chiến đấu, {GetTextLinhKhi(eLinhKhi)} linh căn thuộc tính {GetColoredText($"+{buffs[level - 1]}", "red")}";
+        return
+            $"Bắt đầu chiến đấu, {GetTextLinhKhi(eLinhKhi)} linh căn thuộc tính {GetColoredText($"+{buffs[level - 1]}", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

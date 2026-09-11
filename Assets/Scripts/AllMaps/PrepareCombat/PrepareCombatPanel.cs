@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
-public class PrepareCombatPanel : Popup , IUISingleton
+public class PrepareCombatPanel : Popup, IUISingleton
 {
     [SerializeField] private CharacterStatsSecure charTarget => Pool.Get<GameManager>().enemyCombat.charStats;
     [SerializeField] private PopupInfor popupInfor;
@@ -31,56 +31,44 @@ public class PrepareCombatPanel : Popup , IUISingleton
         {
             popupInfor.InitPopDoXet(charTarget);
             SetVisualHaveEnemyAndCharacter(popupInfor.charVisualControl);
-
-
-
         });
         SetEventButton(btnAttack, () =>
         {
-            var gameManager =  Pool.Get<GameManager>();
+            var gameManager = Pool.Get<GameManager>();
             gameManager.GoToCombat();
-
         });
-        SetEventButton(btnPrepare, () =>
-        {
-            Pool.Get<TabPanel>().gameObject.SetActive(true);
-
-        });
-
+        SetEventButton(btnPrepare, () => { Pool.Get<TabPanel>().gameObject.SetActive(true); });
     }
+
     public void CanActiveButtonPrepare(bool isActive)
     {
         btnPrepare.gameObject.SetActive(isActive);
         btnNotPrepare.gameObject.SetActive(!isActive);
-    }    
+    }
+
     public override void Show(float delay = 0.5F, Action actionComplete = null)
     {
         base.Show(delay, actionComplete);
         txtNameUser.text = Client.Instance.CharacterData.Name;
         txtTarget.text = charTarget.nameUser;
         graphicUser.SetGender(Client.Instance.CharacterData.Gender);
-        graphicUser.SetSkin(Client.Instance.CharacterData.Appearance.Skins, Client.Instance.CharacterData.Appearance.Colors);
+        graphicUser.SetSkin(Client.Instance.CharacterData.Appearance.Skins,
+            Client.Instance.CharacterData.Appearance.Colors);
         SetVisualHaveEnemyAndCharacter(graphicTarget);
-        
-
     }
+
     protected override void ActionBtnClose()
     {
         base.ActionBtnClose();
         Pool.Get<GameManager>().currentETypeCombat = ETypeCombat.None;
-
     }
+
     private void SetVisualHaveEnemyAndCharacter(CharacterVisualControl graphicTarget)
     {
         var GameManager = Pool.Get<GameManager>();
         if (GameManager.enemyCombat != null)
         {
-            graphicTarget.Init(GameManager.enemyCombat.eTypeVisual,GameManager.enemyCombat.charStats);
-
-
+            graphicTarget.Init(GameManager.enemyCombat.eTypeVisual, GameManager.enemyCombat.charStats);
         }
-
     }
-   
-
 }

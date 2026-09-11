@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(VanTuongTrienThanQuyet))]
 public class VanTuongTrienThanQuyet : CongPhap, IMemorySerializable<VanTuongTrienThanQuyet>
 {
-    [SerializeField]
-    private int[] buffValues;
-    [SerializeField]
-    private int[] requireActive;
+    [SerializeField] private int[] buffValues;
+    [SerializeField] private int[] requireActive;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int require = requireActive[CurrentLevelCongPhapInCombat(caster) - 1];
@@ -26,7 +25,8 @@ public class VanTuongTrienThanQuyet : CongPhap, IMemorySerializable<VanTuongTrie
 
     public override string GetDesc(int level)
     {
-        return $"Nếu sử dụng {GetTextTypeSkill()} hệ thần thông gây {GetColoredText($"{requireActive[level - 1]} điểm", "red")} tổn thương thì đối phương nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}";
+        return
+            $"Nếu sử dụng {GetTextTypeSkill()} hệ thần thông gây {GetColoredText($"{requireActive[level - 1]} điểm", "red")} tổn thương thì đối phương nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

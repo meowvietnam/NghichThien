@@ -7,8 +7,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(DiaSatKiemTran), menuName = "Skill/Thần Thông/" + nameof(DiaSatKiemTran))]
 public class DiaSatKiemTran : TranPhapTT, IMemorySerializable<DiaSatKiemTran>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{3, 5, 6, 8, 10};
+    [SerializeField] private int[] buffValues = new int[] { 3, 5, 6, 8, 10 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
@@ -22,7 +22,8 @@ public class DiaSatKiemTran : TranPhapTT, IMemorySerializable<DiaSatKiemTran>
 
     public override string GetDescTranPhapTT(int level)
     {
-        return $"Bắt đầu hiệp, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiemHiep)}";
+        return
+            $"Bắt đầu hiệp, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NguKiemHiep)}";
     }
 
     public override int ByteSize()

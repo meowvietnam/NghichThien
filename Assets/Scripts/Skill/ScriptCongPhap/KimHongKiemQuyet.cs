@@ -11,12 +11,10 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(KimHongKiemQuyet))]
 public class KimHongKiemQuyet : CongPhap, IMemorySerializable<KimHongKiemQuyet>
 {
-    [SerializeField]
-    private int[] sucTheBuff;
-    [SerializeField]
-    private int[] percentX2Dame;
-    [SerializeField]
-    private int requireLinhKhi = 4;
+    [SerializeField] private int[] sucTheBuff;
+    [SerializeField] private int[] percentX2Dame;
+    [SerializeField] private int requireLinhKhi = 4;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         List<LinhKhiTieuTan> linhKhiTieuTans = (List<LinhKhiTieuTan>)data[3];
@@ -37,9 +35,10 @@ public class KimHongKiemQuyet : CongPhap, IMemorySerializable<KimHongKiemQuyet>
 
     public void Execute2(CharacterCombat caster, CharacterCombat target, List<int> dame)
     {
-        if (CheckIsEqualETypeSkill(caster) && CombatStatic.IsActiveWithPercent(percentX2Dame[CurrentLevelCongPhapInCombat(caster) - 1]))
+        if (CheckIsEqualETypeSkill(caster) &&
+            CombatStatic.IsActiveWithPercent(percentX2Dame[CurrentLevelCongPhapInCombat(caster) - 1]))
         {
-            target.AddDamageData(new List<int>{dame[0] * 2});
+            target.AddDamageData(new List<int> { dame[0] * 2 });
         }
     }
 
@@ -58,7 +57,8 @@ public class KimHongKiemQuyet : CongPhap, IMemorySerializable<KimHongKiemQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi tích lũy sử dụng {GetColoredText($"{requireLinhKhi}", "red")} điểm kim hệ linh khí, thu hoạch được {GetColoredText($"+{sucTheBuff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}. Tạo thành {GetTextTypeSkill()} hệ thần thông sát thương có tỉ lệ {GetColoredText($"{percentX2Dame[level - 1]}%", "red")} khiến cho sát thương lần này gấp đôi";
+        return
+            $"Mỗi tích lũy sử dụng {GetColoredText($"{requireLinhKhi}", "red")} điểm kim hệ linh khí, thu hoạch được {GetColoredText($"+{sucTheBuff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}. Tạo thành {GetTextTypeSkill()} hệ thần thông sát thương có tỉ lệ {GetColoredText($"{percentX2Dame[level - 1]}%", "red")} khiến cho sát thương lần này gấp đôi";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

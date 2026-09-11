@@ -9,8 +9,8 @@ using CongPhap = Skill.CongPhap;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(MaDiemQuyet))]
 public class MaDiemQuyet : CongPhap, IMemorySerializable<MaDiemQuyet>
 {
-    [SerializeField]
-    private int[] thoNguyens = new int[]{5, 10, 20, 40, 80};
+    [SerializeField] private int[] thoNguyens = new int[] { 5, 10, 20, 40, 80 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         return;
@@ -35,6 +35,7 @@ public class MaDiemQuyet : CongPhap, IMemorySerializable<MaDiemQuyet>
     {
         // statsCurrent.thoNguyen += thoNguyens[daiCanhGioiCongPhap - 1];
     }
+
     public override void EquipCongPhap(CharacterData statsCurrent, int level)
     {
         // var stats = statsCurrent.Stats;
@@ -58,6 +59,7 @@ public class MaDiemQuyet : CongPhap, IMemorySerializable<MaDiemQuyet>
     {
         TieuHaoThoNguyen(statsCurrent, level, thoNguyens);
     }
+
     public override int ByteSize()
     {
         var byteSize = base.ByteSize();

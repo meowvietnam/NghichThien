@@ -26,7 +26,6 @@ public static class ItemTypeHandlerBagFactory
             ItemType.Material => new LuyenKhiBagItemTypeHandler(),
             _ => new LuyenDanBagItemTypeHandler(),
         };
-
     }
 }
 
@@ -81,7 +80,7 @@ public class LuyenDanBagItemTypeHandler : IBagItemTypeHandler
         EActionShowItemInfor eActionShowItemInfor = EActionShowItemInfor.None)
     {
         var uiManager = Pool.Get<UIManager>();
-        if(itemRef.Type == ItemType.Furnace)
+        if (itemRef.Type == ItemType.Furnace)
         {
             if (itemRef.TempId == 0)
             {
@@ -93,7 +92,8 @@ public class LuyenDanBagItemTypeHandler : IBagItemTypeHandler
                     Type = ItemType.Furnace
                 };
             }
-        }    
+        }
+
         var data = LuyenDanResources.Instance.FindItem(itemRef);
         uiManager.InitVisualItemInventory(currentItem, data, itemRef, isIconSkillBase, eActionShowItemInfor);
     }

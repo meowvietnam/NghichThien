@@ -17,7 +17,9 @@ public class UniversalRecursiveDetector : EditorWindow
         GUILayout.Label("Bộ quét tất cả các hàm gọi lại chính nó (Quên 'base')", EditorStyles.boldLabel);
         GUILayout.Space(10);
 
-        EditorGUILayout.HelpBox("Tool sẽ quét toàn bộ file .cs để tìm các hàm override hoặc hàm thông thường có hành vi gọi lại chính tên hàm đó mà không đi kèm từ khóa 'base.'.", MessageType.Info);
+        EditorGUILayout.HelpBox(
+            "Tool sẽ quét toàn bộ file .cs để tìm các hàm override hoặc hàm thông thường có hành vi gọi lại chính tên hàm đó mà không đi kèm từ khóa 'base.'.",
+            MessageType.Info);
         GUILayout.Space(10);
 
         if (GUILayout.Button("Bắt đầu quét toàn dự án", GUILayout.Height(40)))
@@ -35,7 +37,8 @@ public class UniversalRecursiveDetector : EditorWindow
 
         // Regex nhận diện khai báo hàm chuẩn (bao gồm cả override, public, private, void, các kiểu trả về...)
         // Group 1: Tên hàm
-        string methodDeclarationPattern = @"(?:public|protected|private|internal|static|\s)+[\w<>\[\]]+\s+(\w+)\s*\([^)]*\)\s*\{?";
+        string methodDeclarationPattern =
+            @"(?:public|protected|private|internal|static|\s)+[\w<>\[\]]+\s+(\w+)\s*\([^)]*\)\s*\{?";
 
         foreach (string file in allFiles)
         {
@@ -55,7 +58,8 @@ public class UniversalRecursiveDetector : EditorWindow
                     string methodName = match.Groups[1].Value;
 
                     // Bỏ qua các từ khóa hệ thống hoặc hàm khởi tạo/Property dễ bị nhận nhầm
-                    if (methodName == "if" || methodName == "get" || methodName == "set" || methodName == "switch" || methodName == "catch")
+                    if (methodName == "if" || methodName == "get" || methodName == "set" || methodName == "switch" ||
+                        methodName == "catch")
                         continue;
 
                     // Tiến hành quét thân hàm bắt đầu từ dòng này để tìm lỗi
@@ -71,7 +75,12 @@ public class UniversalRecursiveDetector : EditorWindow
                         // Đếm dấu ngoặc để xác định điểm kết thúc hàm
                         foreach (char c in currentLine)
                         {
-                            if (c == '{') { openBraces++; foundBodyStart = true; }
+                            if (c == '{')
+                            {
+                                openBraces++;
+                                foundBodyStart = true;
+                            }
+
                             if (c == '}') openBraces--;
                         }
 
@@ -115,6 +124,7 @@ public class UniversalRecursiveDetector : EditorWindow
                                     );
                                 }
                             }
+
                             break; // Thoát vòng lặp quét thân hàm này, chuyển sang tìm hàm tiếp theo
                         }
                     }
@@ -125,12 +135,14 @@ public class UniversalRecursiveDetector : EditorWindow
         // Báo cáo kết quả
         if (errorCount == 0)
         {
-            Debug.Log("<color=green>[Hoàn tất]</color> Tuyệt vời! Không phát hiện hàm nào bị lỗi tự gọi đệ quy vô hạn.");
+            Debug.Log(
+                "<color=green>[Hoàn tất]</color> Tuyệt vời! Không phát hiện hàm nào bị lỗi tự gọi đệ quy vô hạn.");
             EditorUtility.DisplayDialog("Kết quả", "Hoàn hảo! Không tìm thấy lỗi đệ quy nào thiếu base.", "OK");
         }
         else
         {
-            EditorUtility.DisplayDialog("Kết quả", $"Phát hiện {errorCount} hàm có nguy cơ Stack Overflow! Vui lòng kiểm tra tab Console.", "OK");
+            EditorUtility.DisplayDialog("Kết quả",
+                $"Phát hiện {errorCount} hàm có nguy cơ Stack Overflow! Vui lòng kiểm tra tab Console.", "OK");
         }
     }
 }

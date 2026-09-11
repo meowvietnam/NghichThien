@@ -8,6 +8,7 @@ namespace Network.Models
     {
         public PlantSeed PlantSeed { get; set; }
     }
+
     [MemoryPackable]
     public partial class PlantResult : Result
     {

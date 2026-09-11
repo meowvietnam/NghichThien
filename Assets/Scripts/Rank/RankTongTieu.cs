@@ -14,6 +14,7 @@ namespace Rank
         public List<MoneyVipSpendingRankEntry> Tops { get; private set; }
         public TimeSpan NextResetTime { get; private set; }
         public long MySpent { get; private set; }
+
         public void Init(RankPanel panel)
         {
             var container = panel.rankContainer;

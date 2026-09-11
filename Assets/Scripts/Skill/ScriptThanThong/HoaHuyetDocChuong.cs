@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(HoaHuyetDocChuong), menuName = "Skill/Thần Thông/" + nameof(HoaHuyetDocChuong))]
 public class HoaHuyetDocChuong : ThanThong, IMemorySerializable<HoaHuyetDocChuong>
 {
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         SecureInt trungDoc = 0;
@@ -18,6 +18,13 @@ public class HoaHuyetDocChuong : ThanThong, IMemorySerializable<HoaHuyetDocChuon
         HauKeVoLuc(caster);
         CombatStatic.TrungDoc(caster, target);
         caster.Healing(trungDoc);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
@@ -30,7 +37,8 @@ public class HoaHuyetDocChuong : ThanThong, IMemorySerializable<HoaHuyetDocChuon
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Kích phát hiệu ứng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)} của đối thủ. Đồng thời, hồi một lượng Hp bằng với lượng sát thương gây ra";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Kích phát hiệu ứng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)} của đối thủ. Đồng thời, hồi một lượng Hp bằng với lượng sát thương gây ra";
     }
 
     public override int ByteSize()

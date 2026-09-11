@@ -4,7 +4,7 @@ using MemoryPack;
 namespace Network.Extensions.MemoryPack
 {
     public static class SenderUtils2
-    { 
+    {
         public static void MemSend<T, V>(this ISender<T> sender, T tag, V value)
             where T : unmanaged, Enum
         {

@@ -9,7 +9,9 @@ public class TamTaiQuyNguyenKiem : AmDuongLuongNghiKiem, IMemorySerializable<Tam
     public override void ExecuteTuongSinh(CharacterCombat caster, CharacterCombat target)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KiemKhi, out SecureInt kiemKhi);
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{kiemKhi * buffValues[GetIndexLevelThanThong(caster)]}, eTypeSkill, true);
+        target.CaculateDameByThanThong(caster,
+            new System.Collections.Generic.List<int> { kiemKhi * buffValues[GetIndexLevelThanThong(caster)] },
+            eTypeSkill, true);
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
@@ -27,12 +29,14 @@ public class TamTaiQuyNguyenKiem : AmDuongLuongNghiKiem, IMemorySerializable<Tam
 
     protected override string GetDescTuongSinh(int level)
     {
-        return $"Mỗi có một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} thì tăng lên {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương";
+        return
+            $"Mỗi có một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)} thì tăng lên {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương";
     }
 
     protected override string GetDescRequire()
     {
-        return $"Sở hữu {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThienKiem)}, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DiaKiem)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NhanKiem)}";
+        return
+            $"Sở hữu {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThienKiem)}, {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.DiaKiem)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.NhanKiem)}";
     }
 
     public override int ByteSize()

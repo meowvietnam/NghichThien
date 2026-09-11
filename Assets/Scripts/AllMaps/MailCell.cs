@@ -37,6 +37,7 @@ namespace AllMaps
             var hasReward = mail?.HasReward() ?? false;
             return images.First(x => x.HasReward == hasReward).Unselected;
         }
+
         public void Init(MailPanel mailPanel, Mail mail, ToggleGroup toggleGroup)
         {
             this.mailPanel = mailPanel;

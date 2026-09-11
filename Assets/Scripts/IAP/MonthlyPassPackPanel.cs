@@ -11,6 +11,7 @@ namespace IAP
         [SerializeField] private Button payButton;
         [SerializeField] private Text moneyText;
         private Action payAction;
+
         private void Start()
         {
             SetEventButton(payButton, () => payAction?.Invoke());

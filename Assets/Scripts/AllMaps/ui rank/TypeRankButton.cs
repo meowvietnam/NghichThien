@@ -10,10 +10,12 @@ namespace AllMaps.ui_rank
         [SerializeField] public RankPanel rankPanel;
         [SerializeField] private Button rankButton;
         [field: SerializeField] public RewardInfo RewardInfo { get; private set; }
+
         private void Start()
         {
-            SetEventButton(rankButton,OnClick);
+            SetEventButton(rankButton, OnClick);
         }
+
         [Button]
         public void OnClick()
         {

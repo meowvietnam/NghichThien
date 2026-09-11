@@ -9,6 +9,7 @@ namespace AllMaps
     {
         public ItemRef Target { get; private set; }
         public int Money { get; private set; }
+
         public void Claim(CharacterData charData)
         {
             var inventory = charData.InventoryManager;

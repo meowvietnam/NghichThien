@@ -11,6 +11,7 @@ namespace LuyenKhi
         [field: SerializeField] public CultivationElement CultivationElement { get; set; }
         [field: SerializeField] public YinYangType YinYangType { get; set; }
         [field: SerializeField] public ArtifactEffect[] Effects { get; set; }
+
         public void Deserialize(IReader reader, ref LianQiEffect value)
         {
             value.CultivationElement = reader.Read<CultivationElement>();

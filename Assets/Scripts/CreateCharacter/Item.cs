@@ -9,6 +9,7 @@ namespace CreateCharacter
         [SerializeField] private Toggle toggle;
         [SerializeField] private Image image;
         public string SkinName { get; private set; }
+
         public void Init(string skinName, Sprite icon, ToggleGroup toggleGroup, Action<Item> onToggle)
         {
             SkinName = skinName;
@@ -22,6 +23,7 @@ namespace CreateCharacter
             });
             toggle.group = toggleGroup;
         }
+
         public void ToggleOnWithoutNotify()
         {
             toggle.SetIsOnWithoutNotify(true);

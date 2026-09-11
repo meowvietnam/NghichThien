@@ -8,8 +8,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(TuLanh), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(TuLanh))]
 public class TuLanh : NgoDaoCombat, IMemorySerializable<TuLanh>
 {
-    [SerializeField]
-    private int buff = 20;
+    [SerializeField] private int buff = 20;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int hpLost = (int)(caster.characterStatsTemp.hpMax - caster.characterStatsTemp.hp) * buff / 100;
@@ -18,7 +18,8 @@ public class TuLanh : NgoDaoCombat, IMemorySerializable<TuLanh>
 
     public override string GetDes()
     {
-        return $"Kết thúc hiệp, khôi phục một lương HP tương đương {BaseSkill.GetColoredText($"{buff}%", "red")} HP đã tổn thất";
+        return
+            $"Kết thúc hiệp, khôi phục một lương HP tương đương {BaseSkill.GetColoredText($"{buff}%", "red")} HP đã tổn thất";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

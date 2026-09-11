@@ -13,15 +13,17 @@ namespace LuyenDan.Inventory
         [SerializeField] private Button btn;
         private bool isOpen;
         private string noFilter = "Toàn phẩm";
+
         private Dictionary<Tier, string> map = new()
         {
-            {Tier.NhatPham, "Nhất phẩm"},
-            {Tier.NhiPham, "Nhị phẩm"},
-            {Tier.TamPham, "Tam phẩm"},
-            {Tier.TuPham, "Tứ phẩm"},
-            {Tier.NguPham, "Ngũ phẩm"},
-            {Tier.LucPham, "Lục phẩm"}
+            { Tier.NhatPham, "Nhất phẩm" },
+            { Tier.NhiPham, "Nhị phẩm" },
+            { Tier.TamPham, "Tam phẩm" },
+            { Tier.TuPham, "Tứ phẩm" },
+            { Tier.NguPham, "Ngũ phẩm" },
+            { Tier.LucPham, "Lục phẩm" }
         };
+
         private void Awake()
         {
             btn.onClick.AddListener(OnClick);
@@ -45,11 +47,13 @@ namespace LuyenDan.Inventory
             text.text = noFilter;
             Colapse();
         }
+
         public void Select(Tier tier)
         {
             text.text = map[tier];
             Colapse();
         }
+
         public void Open()
         {
             var rot = direct.localEulerAngles;

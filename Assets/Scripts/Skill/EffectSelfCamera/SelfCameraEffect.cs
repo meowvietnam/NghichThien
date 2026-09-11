@@ -7,10 +7,10 @@ public class SelfCameraEffect : MonoBehaviour
     {
         StartCoroutine(DelayFrame());
     }
+
     private IEnumerator DelayFrame()
     {
         yield return null;
         this.transform.position = Camera.main.transform.position;
-
     }
 }

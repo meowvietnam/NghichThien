@@ -14,6 +14,7 @@ namespace LuyenDan
         [SerializeField] private GameObject craftale;
         private RecipeData.Recipe data;
         private bool isCraftable;
+
         public void Init(RecipeData.Recipe data, ToggleGroup toggleGroup)
         {
             this.data = data;
@@ -36,12 +37,13 @@ namespace LuyenDan
             {
                 Debug.Log("Null phuduoc");
             }
+
             phuduoc.text = string.Join(", ", phuduocs.Select(x => $"{x.PhuDuoc.Name}x{x.Ref.Count}"));
             var thuocdanRef = data.DuocDan;
             var thuocdan = r.FindHerb(thuocdanRef.Id);
             this.thuocdan.text = $"{thuocdan.Name}x{thuocdanRef.Count}";
-            
         }
+
         public bool IsCraftable()
         {
             var chuduoc = data.ChuDuoc;
@@ -53,18 +55,22 @@ namespace LuyenDan
             {
                 return false;
             }
+
             if (!IsSatisfied(phuduoc1, items))
             {
                 return false;
             }
+
             if (!IsSatisfied(phuduoc2, items))
             {
                 return false;
             }
+
             if (!IsSatisfied(duocdan, items))
             {
                 return false;
             }
+
             return true;
         }
 
@@ -74,24 +80,29 @@ namespace LuyenDan
             {
                 return true;
             }
+
             var item = items.FirstOrDefault(x => x.Id == herbs.Id);
             if (item == null)
             {
                 return false;
             }
+
             return item.Count >= herbs.Count;
         }
+
         public void UpdateCraftale(bool isCraftable)
         {
             this.isCraftable = isCraftable;
             craftale.SetActive(isCraftable);
         }
+
         private void OnValueChanged(bool active)
         {
             if (!isCraftable)
             {
                 return;
             }
+
             if (active)
             {
                 LuyenDanPanel.Instance.Alchermy.SelectReceipe(data);

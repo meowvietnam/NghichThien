@@ -10,6 +10,7 @@ namespace IAP
     public partial class MonthlyPassVipPack : IIapReward
     {
         public int MoneyVipPerDay { get; set; }
+
         public void ShowUISuccess(IapUIContext context)
         {
             var productId = context.ProductId;
@@ -26,16 +27,17 @@ namespace IAP
             var ui = Object.Instantiate(context.MonthlyPassPackUIPrefab, context.IapProductContainer);
             ui.SetDataIndex(1, context.IapHandler.transform);
             ui.SetName(product.Name);
-            
+
             var panel = ui.GetPanel();
             panel.SetMoney(MoneyVipPerDay);
             panel.SetPurchaseEvent(() => CanBuyProduct(context));
             context.IapHandler.IapObjects[product.StoreProductId] = new List<GameObject>()
             {
-                ui.gameObject, 
+                ui.gameObject,
                 panel.gameObject
             };
         }
+
         private async void CanBuyProduct(IapUIContext context)
         {
             var product = context.OwnerIapProduct.Product;

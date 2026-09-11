@@ -18,6 +18,7 @@ namespace Tutorials
         [SerializeField] private RectTransform highlight;
         [SerializeField] private DialogText dialogText;
         [SerializeField] private Vector2 dialogOffset;
+
         [Header("Animation")] [SerializeField] private float showDuration = 0.2f;
         [SerializeField] private float moveDuration = 0.25f;
         [SerializeField] private float hideDuration = 0.2f;
@@ -42,6 +43,10 @@ namespace Tutorials
 
         private bool isMoving;
         private bool isVisible;
+
+        private DialogPosition dialogPosition =
+            DialogPosition.TopRight;
+
         public event Func<bool> OnClose;
 
         private void Awake()
@@ -57,16 +62,25 @@ namespace Tutorials
                 return;
             }
 
-            canvasRect = canvas.transform as RectTransform;
+            canvasRect =
+                canvas.transform as RectTransform;
 
             worldCamera = Camera.main;
 
             SetPanelActive(false);
-            highlight.gameObject.SetActive(false);
+
+            if (highlight != null)
+                highlight.gameObject.SetActive(false);
         }
 
+        // ============================================================
+        // Show
+        // ============================================================
+
         [Button]
-        public void Show(RectTransform target, string text)
+        public void Show(
+            RectTransform target,
+            string text)
         {
             if (target == null)
                 return;
@@ -78,7 +92,9 @@ namespace Tutorials
         }
 
         [Button]
-        public void Show(Renderer target, string text)
+        public void Show(
+            Renderer target,
+            string text)
         {
             if (target == null)
                 return;
@@ -89,40 +105,6 @@ namespace Tutorials
             ShowInternal(text);
         }
 
-        private void UpdateDialogPosition(
-            Vector2 targetPosition,
-            Vector2 targetSize)
-        {
-            if (dialogText == null)
-                return;
-
-            RectTransform dialogRect =
-                dialogText.transform as RectTransform;
-
-            if (dialogRect == null)
-                return;
-
-            float targetRight =
-                targetPosition.x + targetSize.x * 0.5f;
-
-            float targetTop =
-                targetPosition.y + targetSize.y * 0.5f;
-
-            dialogRect.pivot =
-                new Vector2(0f, 0f);
-
-            dialogRect.anchorMin =
-                new Vector2(0.5f, 0.5f);
-
-            dialogRect.anchorMax =
-                new Vector2(0.5f, 0.5f);
-
-            dialogRect.anchoredPosition =
-                new Vector2(
-                    targetRight + dialogOffset.x,
-                    targetTop + dialogOffset.y);
-        }
-
         private void ShowInternal(string text)
         {
             KillTweens();
@@ -131,28 +113,62 @@ namespace Tutorials
             isMoving = false;
 
             SetPanelActive(true);
-            highlight.gameObject.SetActive(true);
+
+            if (highlight != null)
+                highlight.gameObject.SetActive(true);
 
             SetPanelsAlpha(0f);
 
-            highlight.localScale = Vector3.zero;
+            if (highlight != null)
+                highlight.localScale = Vector3.zero;
+
+            // --------------------------------------------------------
+            // IMPORTANT:
+            // Set text trước khi tính vị trí Dialog.
+            //
+            // Dialog dùng ContentSizeFitter nên ShowText() có thể
+            // làm thay đổi size của Dialog.
+            // --------------------------------------------------------
+
+            if (dialogText != null)
+                dialogText.ShowText(text);
+
+            ForceUpdateDialogLayout();
 
             UpdateHighlightImmediate();
 
+            // --------------------------------------------------------
+            // Animation overlay
+            // --------------------------------------------------------
+
             overlayTween = DOTween.To(
-                    () => GetPanelAlpha(),
+                    GetPanelAlpha,
                     SetPanelsAlpha,
                     0.7f,
                     showDuration)
                 .SetEase(Ease.Linear);
 
-            highlightTween = highlight
-                .DOScale(Vector3.one, showDuration)
-                .SetEase(showEase);
-            dialogText.ShowText(text);
+            // --------------------------------------------------------
+            // Animation highlight
+            // --------------------------------------------------------
+
+            if (highlight != null)
+            {
+                highlightTween = highlight
+                    .DOScale(
+                        Vector3.one,
+                        showDuration)
+                    .SetEase(showEase);
+            }
         }
 
-        public void MoveTo(RectTransform target, string text)
+        // ============================================================
+        // Move To
+        // ============================================================
+
+        public void MoveTo(
+            RectTransform target,
+            string text)
         {
             if (target == null)
                 return;
@@ -163,7 +179,9 @@ namespace Tutorials
             MoveToTarget(text);
         }
 
-        public void MoveTo(Renderer target, string text)
+        public void MoveTo(
+            Renderer target,
+            string text)
         {
             if (target == null)
                 return;
@@ -183,37 +201,203 @@ namespace Tutorials
             }
 
             highlightTween?.Kill();
+
+            // --------------------------------------------------------
+            // Đóng Dialog cũ trước khi move
+            // --------------------------------------------------------
+
             dialogText?.Close();
+
             GetTargetBounds(
                 out Vector2 targetPosition,
                 out Vector2 targetSize);
+
             isMoving = true;
-            highlightTween = DOTween.Sequence()
-                .Join(
+
+            Sequence sequence = DOTween.Sequence();
+
+            if (highlight != null)
+            {
+                sequence.Join(
                     highlight
                         .DOAnchorPos(
                             targetPosition,
                             moveDuration)
-                        .SetEase(moveEase)
-                )
-                .Join(
+                        .SetEase(moveEase));
+
+                sequence.Join(
                     highlight
                         .DOSizeDelta(
                             targetSize,
                             moveDuration)
-                        .SetEase(moveEase)
-                )
+                        .SetEase(moveEase));
+            }
+
+            sequence
                 .OnUpdate(UpdateOverlayFromHighlight)
                 .OnComplete(() =>
                 {
                     isMoving = false;
 
+                    // ------------------------------------------------
+                    // Highlight đã tới target mới
+                    // ------------------------------------------------
+
                     UpdateHighlightImmediate();
 
-                    // Move xong mới hiện dialog với text mới
-                    dialogText?.ShowText(text);
+                    // ------------------------------------------------
+                    // Show text mới
+                    // ------------------------------------------------
+
+                    if (dialogText != null)
+                        dialogText.ShowText(text);
+
+                    // ------------------------------------------------
+                    // ContentSizeFitter cần rebuild trước khi
+                    // tính vị trí Dialog.
+                    // ------------------------------------------------
+
+                    ForceUpdateDialogLayout();
+
+                    UpdateDialogPositionOnly();
                 });
+
+            highlightTween = sequence;
         }
+
+        // ============================================================
+        // Dialog Position
+        // ============================================================
+
+        public void SetDialogPosition(
+            DialogPosition position)
+        {
+            dialogPosition = position;
+
+            if (!isVisible)
+                return;
+
+            ForceUpdateDialogLayout();
+
+            UpdateDialogPositionOnly();
+        }
+
+        private void UpdateDialogPositionOnly()
+        {
+            if (!isVisible)
+                return;
+
+            GetTargetBounds(
+                out Vector2 position,
+                out Vector2 size);
+
+            UpdateDialogPosition(
+                position,
+                size,
+                dialogPosition);
+        }
+
+        private void UpdateDialogPosition(
+            Vector2 targetPosition,
+            Vector2 targetSize,
+            DialogPosition position)
+        {
+            if (dialogText == null)
+                return;
+
+            RectTransform dialogRect =
+                dialogText.transform as RectTransform;
+
+            if (dialogRect == null)
+                return;
+
+            float halfWidth =
+                targetSize.x * 0.5f;
+
+            float halfHeight =
+                targetSize.y * 0.5f;
+
+            float left =
+                targetPosition.x - halfWidth;
+
+            float right =
+                targetPosition.x + halfWidth;
+
+            float bottom =
+                targetPosition.y - halfHeight;
+
+            float top =
+                targetPosition.y + halfHeight;
+
+            dialogRect.anchorMin =
+                new Vector2(0.5f, 0.5f);
+
+            dialogRect.anchorMax =
+                new Vector2(0.5f, 0.5f);
+
+            switch (position)
+            {
+                case DialogPosition.TopLeft:
+
+                    // Góc dưới-phải của Dialog
+                    // neo vào góc trên-trái Target
+                    dialogRect.pivot =
+                        new Vector2(1f, 0f);
+
+                    dialogRect.anchoredPosition =
+                        new Vector2(
+                            left - dialogOffset.x,
+                            top + dialogOffset.y);
+
+                    break;
+
+                case DialogPosition.TopRight:
+
+                    // Góc dưới-trái của Dialog
+                    // neo vào góc trên-phải Target
+                    dialogRect.pivot =
+                        new Vector2(0f, 0f);
+
+                    dialogRect.anchoredPosition =
+                        new Vector2(
+                            right + dialogOffset.x,
+                            top + dialogOffset.y);
+
+                    break;
+
+                case DialogPosition.BottomLeft:
+
+                    // Góc trên-phải của Dialog
+                    // neo vào góc dưới-trái Target
+                    dialogRect.pivot =
+                        new Vector2(1f, 1f);
+
+                    dialogRect.anchoredPosition =
+                        new Vector2(
+                            left - dialogOffset.x,
+                            bottom - dialogOffset.y);
+
+                    break;
+
+                case DialogPosition.BottomRight:
+
+                    // Góc trên-trái của Dialog
+                    // neo vào góc dưới-phải Target
+                    dialogRect.pivot =
+                        new Vector2(0f, 1f);
+
+                    dialogRect.anchoredPosition =
+                        new Vector2(
+                            right + dialogOffset.x,
+                            bottom - dialogOffset.y);
+
+                    break;
+            }
+        }
+
+        // ============================================================
+        // Target Bounds
+        // ============================================================
 
         private void GetTargetBounds(
             out Vector2 position,
@@ -243,23 +427,55 @@ namespace Tutorials
             size = Vector2.zero;
         }
 
+        // ============================================================
+        // Update
+        // ============================================================
 
         private void LateUpdate()
         {
             if (!isVisible)
                 return;
 
-            if (uiTarget == null && worldTarget == null)
+            if (uiTarget == null &&
+                worldTarget == null)
                 return;
 
             if (isMoving)
                 return;
 
+            // --------------------------------------------------------
+            // World target
+            //
+            // Target có thể thay đổi vị trí khi Camera di chuyển.
+            // --------------------------------------------------------
+
             if (worldTarget != null)
             {
                 UpdateHighlightImmediate();
+                return;
+            }
+
+            // --------------------------------------------------------
+            // UI target
+            //
+            // Dialog dùng ContentSizeFitter + typing.
+            // Size của Dialog có thể thay đổi mỗi frame.
+            //
+            // ForceUpdateCanvases() đảm bảo layout được rebuild
+            // trước khi lấy size để position Dialog.
+            // --------------------------------------------------------
+
+            if (dialogText != null)
+            {
+                Canvas.ForceUpdateCanvases();
+
+                UpdateDialogPositionOnly();
             }
         }
+
+        // ============================================================
+        // Highlight Update
+        // ============================================================
 
         private void UpdateHighlightImmediate()
         {
@@ -267,20 +483,38 @@ namespace Tutorials
                 out Vector2 position,
                 out Vector2 size);
 
-            highlight.anchoredPosition = position;
-            highlight.sizeDelta = size;
+            if (highlight != null)
+            {
+                highlight.anchoredPosition =
+                    position;
 
-            UpdateOverlay(position, size);
-            UpdateDialogPosition(position, size);
+                highlight.sizeDelta =
+                    size;
+            }
+
+            UpdateOverlay(
+                position,
+                size);
+
+            UpdateDialogPosition(
+                position,
+                size,
+                dialogPosition);
         }
 
         private void UpdateOverlayFromHighlight()
         {
+            if (highlight == null)
+                return;
+
             UpdateOverlay(
                 highlight.anchoredPosition,
                 highlight.sizeDelta);
         }
 
+        // ============================================================
+        // Overlay
+        // ============================================================
 
         private void UpdateOverlay(
             Vector2 position,
@@ -289,7 +523,8 @@ namespace Tutorials
             if (canvasRect == null)
                 return;
 
-            Rect rect = canvasRect.rect;
+            Rect rect =
+                canvasRect.rect;
 
             float leftX =
                 position.x -
@@ -311,56 +546,80 @@ namespace Tutorials
             // TOP
             // --------------------------------------------------------
 
+            float topHeight =
+                Mathf.Max(
+                    0f,
+                    rect.yMax - topY);
+
             SetPanelRect(
                 top,
                 new Vector2(
                     rect.width,
-                    Mathf.Max(0f, rect.yMax - topY)),
+                    topHeight),
                 new Vector2(
                     0f,
                     topY +
-                    Mathf.Max(0f, rect.yMax - topY) * 0.5f));
+                    topHeight * 0.5f));
 
             // --------------------------------------------------------
             // BOTTOM
             // --------------------------------------------------------
 
+            float bottomHeight =
+                Mathf.Max(
+                    0f,
+                    bottomY - rect.yMin);
+
             SetPanelRect(
                 bottom,
                 new Vector2(
                     rect.width,
-                    Mathf.Max(0f, bottomY - rect.yMin)),
+                    bottomHeight),
                 new Vector2(
                     0f,
                     rect.yMin +
-                    Mathf.Max(0f, bottomY - rect.yMin) * 0.5f));
+                    bottomHeight * 0.5f));
 
             // --------------------------------------------------------
             // LEFT
             // --------------------------------------------------------
 
+            float leftWidth =
+                Mathf.Max(
+                    0f,
+                    leftX - rect.xMin);
+
             SetPanelRect(
                 left,
                 new Vector2(
-                    Mathf.Max(0f, leftX - rect.xMin),
-                    Mathf.Max(0f, size.y)),
+                    leftWidth,
+                    Mathf.Max(
+                        0f,
+                        size.y)),
                 new Vector2(
                     rect.xMin +
-                    Mathf.Max(0f, leftX - rect.xMin) * 0.5f,
+                    leftWidth * 0.5f,
                     position.y));
 
             // --------------------------------------------------------
             // RIGHT
             // --------------------------------------------------------
 
+            float rightWidth =
+                Mathf.Max(
+                    0f,
+                    rect.xMax - rightX);
+
             SetPanelRect(
                 right,
                 new Vector2(
-                    Mathf.Max(0f, rect.xMax - rightX),
-                    Mathf.Max(0f, size.y)),
+                    rightWidth,
+                    Mathf.Max(
+                        0f,
+                        size.y)),
                 new Vector2(
                     rightX +
-                    Mathf.Max(0f, rect.xMax - rightX) * 0.5f,
+                    rightWidth * 0.5f,
                     position.y));
         }
 
@@ -406,10 +665,12 @@ namespace Tutorials
             target.GetWorldCorners(corners);
 
             Vector2 min =
-                WorldToCanvasPosition(corners[0]);
+                WorldToCanvasPosition(
+                    corners[0]);
 
             Vector2 max =
-                WorldToCanvasPosition(corners[2]);
+                WorldToCanvasPosition(
+                    corners[2]);
 
             position =
                 (min + max) * 0.5f;
@@ -436,7 +697,8 @@ namespace Tutorials
             position = Vector2.zero;
             size = Vector2.zero;
 
-            if (worldCamera == null)
+            if (worldCamera == null ||
+                target == null)
                 return;
 
             Bounds bounds =
@@ -480,9 +742,10 @@ namespace Tutorials
             foreach (Vector3 corner in corners)
             {
                 Vector3 screenPoint =
-                    worldCamera.WorldToScreenPoint(corner);
+                    worldCamera.WorldToScreenPoint(
+                        corner);
 
-                // Object phía sau camera.
+                // Object phía sau camera
                 if (screenPoint.z < 0)
                     continue;
 
@@ -490,15 +753,13 @@ namespace Tutorials
                     ScreenToCanvasPosition(
                         screenPoint);
 
-                min =
-                    Vector2.Min(
-                        min,
-                        canvasPoint);
+                min = Vector2.Min(
+                    min,
+                    canvasPoint);
 
-                max =
-                    Vector2.Max(
-                        max,
-                        canvasPoint);
+                max = Vector2.Max(
+                    max,
+                    canvasPoint);
 
                 hasValidPoint = true;
             }
@@ -553,6 +814,9 @@ namespace Tutorials
 
         private Camera GetCanvasCamera()
         {
+            if (canvas == null)
+                return null;
+
             if (canvas.renderMode ==
                 RenderMode.ScreenSpaceOverlay)
             {
@@ -560,6 +824,29 @@ namespace Tutorials
             }
 
             return canvas.worldCamera;
+        }
+
+        // ============================================================
+        // Layout
+        // ============================================================
+
+        private void ForceUpdateDialogLayout()
+        {
+            if (dialogText == null)
+                return;
+
+            RectTransform dialogRect =
+                dialogText.transform as RectTransform;
+
+            if (dialogRect == null)
+                return;
+
+            Canvas.ForceUpdateCanvases();
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(
+                dialogRect);
+
+            Canvas.ForceUpdateCanvases();
         }
 
         // ============================================================
@@ -581,32 +868,53 @@ namespace Tutorials
 
             SetPanelsAlpha(1f);
 
-            highlight.gameObject.SetActive(true);
-            highlight.localScale =
-                Vector3.one;
+            if (highlight != null)
+            {
+                highlight.gameObject.SetActive(true);
+                highlight.localScale =
+                    Vector3.one;
+            }
+
+            ForceUpdateDialogLayout();
 
             UpdateHighlightImmediate();
         }
 
-        // ============================================================
-        // Hide
-        // ============================================================
-
         public void Hide()
         {
-            if (OnClose == null || OnClose())
+            // Ignore repeated clicks while the hide tween finishes disabling the panels.
+            if (!isVisible) return;
+            if (isMoving) return;
+            if (dialogText.IsTyping) return;
+            if (OnClose == null ||
+                !OnClose())
             {
-                KillTweens();
-                isMoving = false;
-                if (!isVisible)
-                    return;
-                isVisible = false;
-                overlayTween = DOTween.To(
-                        () => GetPanelAlpha(),
-                        SetPanelsAlpha,
-                        0f,
-                        hideDuration)
-                    .SetEase(Ease.Linear);
+                return;
+            }
+
+            KillTweens();
+
+            isMoving = false;
+
+            isVisible = false;
+
+            // --------------------------------------------------------
+            // Fade overlay
+            // --------------------------------------------------------
+
+            overlayTween = DOTween.To(
+                    GetPanelAlpha,
+                    SetPanelsAlpha,
+                    0f,
+                    hideDuration)
+                .SetEase(Ease.Linear);
+
+            // --------------------------------------------------------
+            // Hide highlight
+            // --------------------------------------------------------
+
+            if (highlight != null)
+            {
                 highlightTween = highlight
                     .DOScale(
                         Vector3.zero,
@@ -622,8 +930,16 @@ namespace Tutorials
                         uiTarget = null;
                         worldTarget = null;
                     });
-                dialogText.Close();
             }
+            else
+            {
+                SetPanelActive(false);
+
+                uiTarget = null;
+                worldTarget = null;
+            }
+
+            dialogText?.Close();
         }
 
         // ============================================================

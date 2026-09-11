@@ -16,6 +16,7 @@ namespace CreateCharacter
         {
             toggle.onValueChanged.AddListener(OnToggleChanged);
         }
+
         public void ToggleOn()
         {
             toggle.isOn = true;

@@ -15,10 +15,12 @@ namespace Auction
         {
             SetEventButton(confirmBtn, OnConfirm);
         }
+
         protected void SetConfirmButtonInteractable(bool isOpen)
         {
             confirmBtn.interactable = isOpen;
         }
+
         private void OnConfirm()
         {
             Hide();
@@ -27,8 +29,8 @@ namespace Auction
 
         protected virtual void Confirm()
         {
-            
         }
+
         private void OnDestroy()
         {
             confirmBtn.onClick.RemoveAllListeners();

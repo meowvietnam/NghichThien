@@ -48,8 +48,10 @@ namespace LuyenKhi
             {
                 return Materials.First(x => x.Id == itemRef.Id);
             }
+
             return null;
         }
+
         public Material FindMaterial(ushort Id)
         {
             return Materials.FirstOrDefault(x => x.Id == Id);
@@ -66,6 +68,7 @@ namespace LuyenKhi
             value.EffectTypeConfigs = reader.ReadArray<EffectTypeConfig>();
             value.Strings = reader.Read<StringDict>();
         }
+
         public int ByteSize()
         {
             return MaterialGradeConfigs.ByteSize() + EquipmentTiers.ByteSize()
@@ -97,18 +100,19 @@ namespace LuyenKhi
             Debug.Log(path);
         }
 #if UNITY_EDITOR
-        
+
         [Button]
         public void ShowSpriteSize()
         {
             var sprites = EquipmentIcons.Select(x => x.Icon)
-                    .Concat(Materials.Select(x => x.Icon))
-                    .Concat(RewardItems.Select(x => new[] { x.Icon, x.IconFight }).SelectMany(x => x))
-                    .Where(x => x != null)
-                    .ToHashSet();
+                .Concat(Materials.Select(x => x.Icon))
+                .Concat(RewardItems.Select(x => new[] { x.Icon, x.IconFight }).SelectMany(x => x))
+                .Where(x => x != null)
+                .ToHashSet();
             var size = AssetSize.CalculateSize(sprites);
             Debug.Log(size);
         }
+
         [Button]
         public void LoadIconsFromFolder()
         {
@@ -153,15 +157,18 @@ namespace LuyenKhi
             AssetDatabase.SaveAssets();
             Debug.Log($"Đã cập nhật thành công {count} Icon Fight từ folder: {folderPath}");
         }
+
         [Button]
         public void FindMaterial(string name)
         {
-            var item = Materials.FirstOrDefault(x => x.Name.Contains(name, StringComparison.InvariantCultureIgnoreCase));
+            var item = Materials.FirstOrDefault(x =>
+                x.Name.Contains(name, StringComparison.InvariantCultureIgnoreCase));
             if (item == null)
             {
                 Debug.Log(name + " not found");
                 return;
             }
+
             Debug.Log($"{item.Name} - Id: {item.Id}");
         }
 #endif

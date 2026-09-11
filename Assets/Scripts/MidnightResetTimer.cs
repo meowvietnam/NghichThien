@@ -6,6 +6,7 @@ public class MidnightResetTimer : MonoBehaviour
 {
     public Text textTimeReloadShop;
     private double totalSecondsRemaining;
+
     private void OnEnable()
     {
         DateTime now = DateTime.Now;

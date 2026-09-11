@@ -10,10 +10,10 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(QuangViNgungNguyetCong))]
 public class QuangViNgungNguyetCong : CongPhap, IMemorySerializable<QuangViNgungNguyetCong>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{5, 10, 20, 40, 80};
-    [SerializeField]
-    private int[] percents = new int[]{9, 13, 17, 21, 25};
+    [SerializeField] private int[] buffValues = new int[] { 5, 10, 20, 40, 80 };
+
+    [SerializeField] private int[] percents = new int[] { 9, 13, 17, 21, 25 };
+
     // BEFORE_EXCUTE_SKILL lúc này là caster là ng dùng skill
     // phải check is can use công pháp của target
     // caster than thuc <=0 
@@ -38,14 +38,15 @@ public class QuangViNgungNguyetCong : CongPhap, IMemorySerializable<QuangViNgung
             if (CombatStatic.IsActiveWithPercent(percents[indexLevel]))
             {
                 caster.AddSkillVoHieuHoa(this);
-                caster.TakeDameByStatic(null, new List<int>{buffValues[indexLevel]});
+                caster.TakeDameByStatic(null, new List<int> { buffValues[indexLevel] });
             }
         }
     }
 
     public override string GetDesc(int level)
     {
-        return $"Nếu đối thủ thần thức bé hơn bằng 0, mỗi lần sử dụng thần thông có {GetColoredText($"{percents[level - 1]}%", "red")} tỉ lệ bị vô hiệu hóa. Đồng thời nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương";
+        return
+            $"Nếu đối thủ thần thức bé hơn bằng 0, mỗi lần sử dụng thần thông có {GetColoredText($"{percents[level - 1]}%", "red")} tỉ lệ bị vô hiệu hóa. Đồng thời nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

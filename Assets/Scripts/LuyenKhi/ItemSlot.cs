@@ -6,32 +6,33 @@ namespace LuyenKhi
 {
     public class ItemSlot : LuyenDan.BaseItemUI, ISelectItemBagCallback
     {
-        public ItemBag CurrentSelect { get;private set; }
-        [SerializeField]
-        private Button button;
-        [SerializeField]
-        private PutMaterials putMaterials;
-        [SerializeField,TabGroup("Has Item")]
-        private Button clearButton;
+        public ItemBag CurrentSelect { get; private set; }
+        [SerializeField] private Button button;
+        [SerializeField] private PutMaterials putMaterials;
+        [SerializeField, TabGroup("Has Item")] private Button clearButton;
 
         private void OnValidate()
         {
             clearButton = transform.Find("Clear").GetComponent<Button>();
             clearButton.gameObject.SetActive(false);
         }
+
         private void Start()
         {
-            SetEventButton(button,OnClick);
-            SetEventButton(clearButton,Clear);
+            SetEventButton(button, OnClick);
+            SetEventButton(clearButton, Clear);
         }
+
         public void Clear()
         {
             Select(null);
         }
+
         private void OnClick()
         {
             LuyenKhiPanel.Instance.Bag.OpenWithCallback(this);
         }
+
         public void Select(ItemBag item)
         {
             bool isOtherItem = CurrentSelect != item;
@@ -39,11 +40,13 @@ namespace LuyenKhi
             {
                 return;
             }
+
             if (CurrentSelect != null)
             {
                 var itemRef = CurrentSelect.ItemRef;
                 itemRef.SetCount(itemRef.Count + 1);
             }
+
             CurrentSelect = item;
             var isItemNull = item == null;
             if (!isItemNull)
@@ -57,6 +60,7 @@ namespace LuyenKhi
             {
                 SetData(null);
             }
+
             putMaterials.Recalculate();
             clearButton.gameObject.SetActive(!isItemNull);
         }

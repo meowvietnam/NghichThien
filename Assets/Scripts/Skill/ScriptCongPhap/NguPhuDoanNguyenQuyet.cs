@@ -10,13 +10,13 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(NguPhuDoanNguyenQuyet))]
 public class NguPhuDoanNguyenQuyet : CongPhap, IMemorySerializable<NguPhuDoanNguyenQuyet>
 {
-    [SerializeField]
-    private int[] percents = new int[]{10, 13, 16, 19, 22};
+    [SerializeField] private int[] percents = new int[] { 10, 13, 16, 19, 22 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (CombatStatic.IsActiveWithPercent(percents[CurrentLevelCongPhapInCombat(caster) - 1]))
         {
-            target.AddDamageData(new List<int>{target.GetDameBuffForTarget()});
+            target.AddDamageData(new List<int> { target.GetDameBuffForTarget() });
         }
     }
 

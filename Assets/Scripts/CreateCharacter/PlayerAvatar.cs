@@ -18,6 +18,7 @@ namespace CreateCharacter
             {
                 return;
             }
+
             var appearance = charData.Appearance;
             SetGender(charData.Gender);
             SetSkin(appearance.Skins, appearance.Colors);

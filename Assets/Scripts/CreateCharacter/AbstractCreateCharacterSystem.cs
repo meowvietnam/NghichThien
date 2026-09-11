@@ -34,6 +34,7 @@ namespace CreateCharacter
                 }
             });
         }
+
         protected void SendFinal(List<SelectionModel> selectionModels)
         {
             Client.Instance.MemSend(MessageTag.ApplyStats, selectionModels);

@@ -12,6 +12,7 @@ namespace Network.Models
         public Modify<CongPhap> CongPhaps { get; set; } = new();
         public Modify<ThanThong> ThanThongs { get; set; } = new();
         public Modify<Equipment> Equipments { get; set; } = new();
+
         public void Clear()
         {
             Items.Clear();
@@ -30,26 +31,32 @@ namespace Network.Models
             {
                 inventory.Remove(item);
             }
+
             foreach (var item in Items.Updates)
             {
                 inventory.Update(item);
             }
+
             foreach (var item in Items.Adds)
             {
                 inventory.Add(item);
             }
+
             foreach (var item in Equipments.Deletes)
             {
                 inventory.Remove(item);
             }
+
             foreach (var item in Equipments.Updates)
             {
                 inventory.Update(item);
             }
+
             foreach (var item in Equipments.Adds)
             {
                 inventory.Add(item);
             }
+
             Furnaces.Apply(inventory.Furnaces);
             NgoDaos.Apply(inventory.NgoDaos);
             CamNgos.Apply(inventory.CamNgos);

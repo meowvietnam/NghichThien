@@ -11,6 +11,7 @@ namespace Network.Models
         public ushort SlotIndex { get; set; }
         public TimeSpan ReduceTime { get; set; }
     }
+
     [MemoryPackable]
     public partial class WateringHelpResult : Result
     {

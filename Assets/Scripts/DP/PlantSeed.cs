@@ -17,6 +17,7 @@ namespace DP
         public DateTime EstimateHarvestAt { get; set; }
         public bool IsHavest { get; set; }
         public event Action OnHarvest;
+
         public bool Equals(PlantSeed? other)
         {
             if (other is null) return false;

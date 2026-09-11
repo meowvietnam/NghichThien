@@ -8,6 +8,7 @@ namespace Network.Models
         public string Message { get; set; } = string.Empty;
         public int Id { get; set; }
         public string Key { get; set; } = string.Empty;
+
         public void Deserialize(IReader reader, ref ConnectResult value)
         {
             value.Success = reader.Read<bool>();

@@ -17,6 +17,7 @@ namespace Network.Core
         private ILoadCharCombat loadCharCallback;
         private ILoadCharCombatArena loadCharArenaCallback;
         private IWatchAdsCombat watchAdsCombatCallback;
+
         private static MessageTag[] handler =
         {
             MessageTag.ResultCombatResult,
@@ -41,6 +42,7 @@ namespace Network.Core
                     {
                         charData.Claim(result.Reward);
                     }
+
                     charData.EquipmentManager.ClearDanCombat();
                     charData.Progression.NgoDaoDiem = result.NewNgoDaoDiem;
                     charData.ArenaManager.Points = result.NewPointRank;
@@ -50,8 +52,10 @@ namespace Network.Core
                     {
                         charData.InventoryManager.AddOrUpdate(item);
                     }
+
                     charData.EquipmentManager.DanCombatUseds.Clear();
                 }
+
                 NetworkManager.Instance.Invoke(() =>
                 {
                     if (result.Success)
@@ -196,25 +200,25 @@ namespace Network.Core
         private void ResultCombat(object[] data)
         {
             resultCombatCallback = data[0] as INetworkEvent.IResultCombat;
-            var ETypeCombat = (ETypeCombat)data[1];
-            var CurrentHpUser = (int)data[2];
-            var CurrentThanThuc = (int)data[3];
-            var CurrentThoNguyen = (int)data[4];
+            var eTypeCombat = (ETypeCombat)data[1];
+            var currentHpUser = (int)data[2];
+            var currentThanThuc = (int)data[3];
+            var currentThoNguyen = (int)data[4];
 
-            var ListThanThongUse = (List<int>)data[5];
-            var LevelEnemy = (int)data[6];
-            var TypeResultCombat = (ETypeResultCombat)data[7];
-            var ResultCombat = new ResultCombat()
+            var listThanThongUse = (List<int>)data[5];
+            var levelEnemy = (int)data[6];
+            var typeResultCombat = (ETypeResultCombat)data[7];
+            var resultCombat = new ResultCombat()
             {
-                TypeCombat = ETypeCombat,
-                CurrentHPUser = CurrentHpUser,
-                ListIdThanThong = ListThanThongUse,
-                CurrentLevelEnemy = LevelEnemy,
-                TypeResultCombat = TypeResultCombat,
-                CurrentThanThuc = CurrentThanThuc,
-                CurrentThoNguyen = CurrentThoNguyen
+                TypeCombat = eTypeCombat,
+                CurrentHPUser = currentHpUser,
+                ListIdThanThong = listThanThongUse,
+                CurrentLevelEnemy = levelEnemy,
+                TypeResultCombat = typeResultCombat,
+                CurrentThanThuc = currentThanThuc,
+                CurrentThoNguyen = currentThoNguyen
             };
-            Client.Instance.Send(MessageTag.ResultCombat, ResultCombat);
+            Client.Instance.Send(MessageTag.ResultCombat, resultCombat);
         }
 
         private void LoadCharCombat(object[] data)

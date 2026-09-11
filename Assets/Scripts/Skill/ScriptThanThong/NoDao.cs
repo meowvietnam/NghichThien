@@ -9,14 +9,11 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(NoDao), menuName = "Skill/Thần Thông/" + nameof(NoDao))]
 public class NoDao : ThanThong, BaseSkill.LienKich, IMemorySerializable<NoDao>
 {
-    [SerializeField]
-    protected int countAttack = 3;
-    [SerializeField]
-    protected int countAttackLienKich = 2;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
-    [SerializeField]
-    protected int[] damePerCountAttack;
+    [SerializeField] protected int countAttack = 3;
+    [SerializeField] protected int countAttackLienKich = 2;
+    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] protected int[] damePerCountAttack;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         List<int> dames = new List<int>();
@@ -26,12 +23,20 @@ public class NoDao : ThanThong, BaseSkill.LienKich, IMemorySerializable<NoDao>
         }
 
         target.CaculateDameByThanThong(caster, dames, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public override string GetDesc(int level)
     {
-        return $"Tạo thành {GetColoredText($"{countAttack} lần {damePerCountAttack[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} Nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Kim)} hệ thần thông thì tăng thêm {GetColoredText($"{countAttackLienKich} lần", "red")}";
+        return
+            $"Tạo thành {GetColoredText($"{countAttack} lần {damePerCountAttack[level - 1]}", "red")} điểm sát thương. {GetKeyWord(EKeyWord.LienKich)} Nếu trước đó dùng {GetTextLinhKhi(ELinhKhi.Kim)} hệ thần thông thì tăng thêm {GetColoredText($"{countAttackLienKich} lần", "red")}";
     }
 
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)

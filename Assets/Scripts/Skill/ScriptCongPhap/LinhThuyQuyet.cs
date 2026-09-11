@@ -8,8 +8,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(LinhThuyQuyet))]
 public class LinhThuyQuyet : CongPhap, IMemorySerializable<LinhThuyQuyet>
 {
-    [SerializeField]
-    private int[] healValues;
+    [SerializeField] private int[] healValues;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (CheckIsEqualETypeSkill(caster))
@@ -20,7 +20,8 @@ public class LinhThuyQuyet : CongPhap, IMemorySerializable<LinhThuyQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi sử dụng {GetTextTypeSkill()} hệ thần thông, bản thân khôi phục {GetColoredText($"+{healValues[level-1]}", "red")} điểm Hp";
+        return
+            $"Mỗi sử dụng {GetTextTypeSkill()} hệ thần thông, bản thân khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm Hp";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

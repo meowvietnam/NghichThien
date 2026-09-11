@@ -6,7 +6,7 @@ namespace CreateCharacter
 {
     [MemoryPackable]
     public partial class GachaManager
-    {   
+    {
         public int GachaThanThong { get; set; }
         public int GachaCongPhap { get; set; }
         public int GachaDanDuoc { get; set; }
@@ -15,14 +15,15 @@ namespace CreateCharacter
         public Dictionary<BaseSkill.ETypeSkill, int> GachaThanThongDict { get; set; }
         public Dictionary<BaseSkill.ETypeSkill, int> GachaCongPhapDict { get; set; }
         public int Threshold { get; set; }
-        
-        public void Set(ETypeGacha type,BaseSkill.ETypeSkill skill, int value)
+
+        public void Set(ETypeGacha type, BaseSkill.ETypeSkill skill, int value)
         {
-            var oldValue = Get(type,skill);
+            var oldValue = Get(type, skill);
             if (oldValue == value)
             {
                 return;
             }
+
             switch (type)
             {
                 case ETypeGacha.ThanThong:
@@ -42,6 +43,7 @@ namespace CreateCharacter
                     break;
             }
         }
+
         public int Get(ETypeGacha type, BaseSkill.ETypeSkill skill)
         {
             switch (type)
@@ -51,12 +53,14 @@ namespace CreateCharacter
                     {
                         return ttValue;
                     }
+
                     return 0;
                 case ETypeGacha.CongPhap:
                     if (GachaCongPhapDict.TryGetValue(skill, out var cpValue))
                     {
                         return cpValue;
                     }
+
                     return 0;
                 case ETypeGacha.DanDuoc:
                     return GachaDanDuoc;

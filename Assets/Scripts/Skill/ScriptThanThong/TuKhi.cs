@@ -7,20 +7,27 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(TuKhi), menuName = "Skill/Thần Thông/" + nameof(TuKhi))]
 public class TuKhi : ThanThong, IMemorySerializable<TuKhi>
 {
-    [SerializeField]
-    private int buffValues = 2;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int buffValues = 2;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TuKhi, buffValues);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} thu hoạch được {GetColoredText($"{buffValues}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TuKhi)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} thu hoạch được {GetColoredText($"{buffValues}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TuKhi)}";
     }
 
     public override int ByteSize()

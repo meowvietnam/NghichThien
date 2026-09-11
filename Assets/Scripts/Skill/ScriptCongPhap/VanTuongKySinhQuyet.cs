@@ -10,14 +10,11 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(VanTuongKySinhQuyet))]
 public class VanTuongKySinhQuyet : CongPhap, IMemorySerializable<VanTuongKySinhQuyet>
 {
-    [SerializeField]
-    private int[] buffValues;
-    [SerializeField]
-    private int[] percentActive;
-    [SerializeField]
-    private int require = 3;
-    [SerializeField]
-    private ThanThong thanThongActive;
+    [SerializeField] private int[] buffValues;
+    [SerializeField] private int[] percentActive;
+    [SerializeField] private int require = 3;
+    [SerializeField] private ThanThong thanThongActive;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int trienNhieu = buffValues[CurrentLevelCongPhapInCombat(caster) - 1];
@@ -53,14 +50,16 @@ public class VanTuongKySinhQuyet : CongPhap, IMemorySerializable<VanTuongKySinhQ
         {
             if (CombatStatic.IsActiveWithPercent(percent))
             {
-                Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, thanThongActive, new List<LinhKhiTieuTan>());
+                Observer.Notify(EventList.Combat.PLAY_SKILL, caster, target, thanThongActive,
+                    new List<LinhKhiTieuTan>());
             }
         }
     }
 
     public override string GetDesc(int level)
     {
-        return $"Bắt đầu chiến đấu, đối phương nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}. Mỗi tích lũy sử dụng {GetColoredText($"{require}", "red")} điểm {GetTextTypeSkill()} hệ linh khí, có {GetColoredText($"{percentActive[level - 1]}%", "red")} phóng thích thần thông [Ký Sinh Dẫn Huyết Thuật]";
+        return
+            $"Bắt đầu chiến đấu, đối phương nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrienNhieu)}. Mỗi tích lũy sử dụng {GetColoredText($"{require}", "red")} điểm {GetTextTypeSkill()} hệ linh khí, có {GetColoredText($"{percentActive[level - 1]}%", "red")} phóng thích thần thông [Ký Sinh Dẫn Huyết Thuật]";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

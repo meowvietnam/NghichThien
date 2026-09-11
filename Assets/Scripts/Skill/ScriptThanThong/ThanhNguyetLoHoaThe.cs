@@ -10,20 +10,24 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ThanhNguyetLoHoaThe), menuName = "Skill/Thần Thông/" + nameof(ThanhNguyetLoHoaThe))]
 public class ThanhNguyetLoHoaThe : ThanThong, IMemorySerializable<ThanhNguyetLoHoaThe>
 {
-    [SerializeField]
-    private int percent = 20;
-    [SerializeField]
-    private int[] buffs = new int[]{1, 1, 1, 1, 1};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
-    [SerializeField]
-    private float cameraSize = 5;
+    [SerializeField] private int percent = 20;
+    [SerializeField] private int[] buffs = new int[] { 1, 1, 1, 1, 1 };
+    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] private float cameraSize = 5;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect3);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
     }
 
@@ -57,7 +61,8 @@ public class ThanhNguyetLoHoaThe : ThanThong, IMemorySerializable<ThanhNguyetLoH
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Bản thân nhận thần thông tổn thương giảm {GetColoredText($"{percent}%", "red")}. Nhưng mỗi lần nhận sát thương thì nhận phải {GetColoredText($"+{buffs[level - 1]} * X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Bản thân nhận thần thông tổn thương giảm {GetColoredText($"{percent}%", "red")}. Nhưng mỗi lần nhận sát thương thì nhận phải {GetColoredText($"+{buffs[level - 1]} * X", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TreKhi)}";
     }
 
     public override int ByteSize()

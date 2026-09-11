@@ -8,7 +8,8 @@ namespace DP
     {
         [SerializeField] private Button button;
         [SerializeField] private VisitDongPhuPanel panel;
-        private void Start() 
+
+        private void Start()
         {
             SetEventButton(button, OpenPanel);
         }

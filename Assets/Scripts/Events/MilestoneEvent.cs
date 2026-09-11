@@ -7,6 +7,5 @@ namespace Events
     public partial class MilestoneEvent : IGameEvent
     {
         public List<EventMilestone> Milestones { get; set; }
-
     }
 }

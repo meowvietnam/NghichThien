@@ -7,10 +7,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(PhucTheAn), menuName = "Skill/Thần Thông/" + nameof(PhucTheAn))]
 public class PhucTheAn : ThanThong, IMemorySerializable<PhucTheAn>
 {
-    [SerializeField]
-    private int[] buff;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int[] buff;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int khiKim = caster.khiKim;
@@ -18,12 +17,20 @@ public class PhucTheAn : ThanThong, IMemorySerializable<PhucTheAn>
             return;
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, khiKim * buff[GetIndexLevelThanThong(caster)]);
         caster.TieuTanLinhKhi(ELinhKhi.Kim, khiKim);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Tiêu tán toàn bộ {GetTextLinhKhi(ELinhKhi.Kim)} hệ linh khí, mỗi tiêu tán một điểm thu hoạch được {GetColoredText($"{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.GiamTonThuong)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Tiêu tán toàn bộ {GetTextLinhKhi(ELinhKhi.Kim)} hệ linh khí, mỗi tiêu tán một điểm thu hoạch được {GetColoredText($"{buff[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.GiamTonThuong)}";
     }
 
     public override int ByteSize()

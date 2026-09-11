@@ -7,10 +7,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(BachQuyCauLinhTran), menuName = "Skill/Thần Thông/" + nameof(BachQuyCauLinhTran))]
 public class BachQuyCauLinhTran : TranPhapTT, IMemorySerializable<BachQuyCauLinhTran>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 1, 1, 1, 1};
-    [SerializeField]
-    private int[] requires = new int[]{8, 8, 8, 8, 8};
+    [SerializeField] private int[] buffValues = new int[] { 1, 1, 1, 1, 1 };
+    [SerializeField] private int[] requires = new int[] { 8, 8, 8, 8, 8 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
@@ -26,7 +25,8 @@ public class BachQuyCauLinhTran : TranPhapTT, IMemorySerializable<BachQuyCauLinh
 
     public override string GetDescTranPhapTT(int level)
     {
-        return $"Bắt đầu hiệp, mỗi có {GetColoredText($"{requires[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} đối thủ nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThanThuong)}";
+        return
+            $"Bắt đầu hiệp, mỗi có {GetColoredText($"{requires[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} đối thủ nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThanThuong)}";
     }
 
     public override int ByteSize()

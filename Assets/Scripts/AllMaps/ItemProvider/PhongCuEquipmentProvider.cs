@@ -13,14 +13,12 @@ namespace AllMaps.ItemProvider
     /// </summary>
     public class PhongCuEquipmentProvider : EquipmentProvider
     {
-
         public override ItemType SupportedType => ItemType.PhongCu;
 
         public override EquipmentType EquipemtType => EquipmentType.Armor;
 
         protected override string GetTextNameEquipment(ArtifactType artifactType)
         {
-
             return $"Phòng Cụ {base.GetTextNameEquipment(artifactType)}";
         }
 

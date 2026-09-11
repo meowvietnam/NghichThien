@@ -1,4 +1,3 @@
-
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
 using AllMaps.EventReward;
@@ -8,7 +7,7 @@ using MemoryPack;
 namespace Network.Models
 {
     [MemoryPackable]
-    public partial class IapResult 
+    public partial class IapResult
     {
         public bool Success { get; set; }
         public string Message { get; set; }

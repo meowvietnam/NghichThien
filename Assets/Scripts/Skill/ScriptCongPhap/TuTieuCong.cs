@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(TuTieuCong))]
 public class TuTieuCong : CongPhap, IMemorySerializable<TuTieuCong>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{6, 14, 22, 30, 38};
+    [SerializeField] private int[] buffValues = new int[] { 6, 14, 22, 30, 38 };
+
     public override void ExecuteParams(params object[] data)
     {
         // Sử dụng 'as' để ép kiểu an toàn, nếu sai kiểu sẽ trả về null
@@ -34,7 +34,8 @@ public class TuTieuCong : CongPhap, IMemorySerializable<TuTieuCong>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi lần nhận tổn thương, có {GetColoredText($"{buffValues[level - 1]}%", "red")} hấp thụ một điểm linh khí";
+        return
+            $"Mỗi lần nhận tổn thương, có {GetColoredText($"{buffValues[level - 1]}%", "red")} hấp thụ một điểm linh khí";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

@@ -10,15 +10,16 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(KiemDienNhanDiaThien))]
 public class KiemDienNhanDiaThien : CongPhap, IMemorySerializable<KiemDienNhanDiaThien>
 {
-    [SerializeField]
-    private int[] buffValues;
+    [SerializeField] private int[] buffValues;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
     }
 
     public override string GetDesc(int level)
     {
-        return $"Bắt đầu chiến đấu, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(GetTypeKiem())}";
+        return
+            $"Bắt đầu chiến đấu, thu hoạch được {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(GetTypeKiem())}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

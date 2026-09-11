@@ -8,10 +8,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(NDSucThe), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(NDSucThe))]
 public class NDSucThe : NgoDaoCombat, IMemorySerializable<NDSucThe>
 {
-    [SerializeField]
-    private int requireActiveSkil = 4;
-    [SerializeField]
-    private int buff = 12;
+    [SerializeField] private int requireActiveSkil = 4;
+    [SerializeField] private int buff = 12;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         List<LinhKhiTieuTan> linhKhiTieuTans = (List<LinhKhiTieuTan>)data[3];
@@ -32,7 +31,8 @@ public class NDSucThe : NgoDaoCombat, IMemorySerializable<NDSucThe>
 
     public override string GetDes()
     {
-        return $"Mỗi tích lũy sử dụng {BaseSkill.GetColoredText($"{requireActiveSkil}", "red")} điểm {BaseSkill.GetTextLinhKhi(ELinhKhi.Kim)} hệ linh khí, thu hoạch được {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}";
+        return
+            $"Mỗi tích lũy sử dụng {BaseSkill.GetColoredText($"{requireActiveSkil}", "red")} điểm {BaseSkill.GetTextLinhKhi(ELinhKhi.Kim)} hệ linh khí, thu hoạch được {BaseSkill.GetColoredText($"+{buff}", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

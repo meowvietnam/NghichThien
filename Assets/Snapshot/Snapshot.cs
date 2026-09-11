@@ -3,7 +3,7 @@ using System.IO;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace  Snapshot
+namespace Snapshot
 {
     public class Snapshot : MonoBehaviour
     {
@@ -11,6 +11,7 @@ namespace  Snapshot
         {
             DontDestroyOnLoad(gameObject);
         }
+
         [Button]
         public void Capture()
         {

@@ -6,6 +6,7 @@ namespace LuyenKhi
     {
         [field: SerializeField] private Equipment[] equipments;
         [SerializeField] private GameObject selfObject;
+
         public void SelectEquipment(EquipmentType type)
         {
             foreach (var equipment in equipments)
@@ -25,6 +26,7 @@ namespace LuyenKhi
         {
             selfObject.SetActive(active);
         }
+
         public void Back()
         {
             var panel = LuyenKhiPanel.Instance;

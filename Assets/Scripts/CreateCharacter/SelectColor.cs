@@ -12,6 +12,7 @@ namespace CreateCharacter
         [SerializeField] private ColorList colorList;
         [SerializeField] private GameObject thisObject;
         private ColorGroup colorGroup;
+
         public void Init(List<Color> pallete, ColorGroup colorGroup)
         {
             colorGroup.OnChanged += OnColorChange;
@@ -19,26 +20,31 @@ namespace CreateCharacter
             selectColor.onClick.AddListener(ShowColorList);
             colorList.Init(pallete, OnSelectColor);
         }
+
         private void ShowColorList()
         {
             colorList.SetActive(true);
             selectColor.gameObject.SetActive(false);
         }
+
         private void HideColorList()
         {
             colorList.SetActive(false);
             selectColor.gameObject.SetActive(true);
         }
+
         public void OnSelectColor(Color color)
         {
             HideColorList();
             colorGroup.OnChanged?.Invoke(color);
             foreach (var item in colorGroup.CategoryIds)
             {
-                SetPlayerAvatar.Instance.SetColor(item, color);   
+                SetPlayerAvatar.Instance.SetColor(item, color);
             }
+
             SetPlayerAvatar.Instance.UpdateAvatar();
         }
+
         private void OnColorChange(Color color)
         {
             var currentColor = colorImage.color;
@@ -46,17 +52,21 @@ namespace CreateCharacter
             {
                 return;
             }
+
             SetColor(color);
         }
+
         private void SetColor(Color color)
         {
             colorImage.color = color;
             colorList.SetSelect(color);
         }
+
         public void SetActive(bool active)
         {
             thisObject.SetActive(active);
         }
+
         private void OnDestroy()
         {
             selectColor.onClick.RemoveAllListeners();
@@ -65,9 +75,10 @@ namespace CreateCharacter
                 colorGroup.OnChanged -= OnColorChange;
             }
         }
+
         public void DefaultSelector()
         {
-            if(colorList.HasColorPallet())
+            if (colorList.HasColorPallet())
             {
                 var color = colorGroup.DefaultColor;
                 colorList.SelectColor(color);

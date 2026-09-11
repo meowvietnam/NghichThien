@@ -8,8 +8,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(TauHuyet), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(TauHuyet))]
 public class TauHuyet : NgoDaoCombat, IMemorySerializable<TauHuyet>
 {
-    [SerializeField]
-    private int buff = 1;
+    [SerializeField] private int buff = 1;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
     }

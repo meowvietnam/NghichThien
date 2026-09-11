@@ -12,7 +12,7 @@ namespace CreateCharacter.CharStats
             {
                 return $"{tamCanh[0]} ({value})";
             }
-            else if(val <= 49)
+            else if (val <= 49)
             {
                 return $"{tamCanh[1]} ({value})";
             }

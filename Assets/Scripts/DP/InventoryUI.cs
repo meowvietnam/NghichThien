@@ -29,17 +29,21 @@ namespace DP
             {
                 OnAddSeed(seed);
             }
+
             inventory.OnAddSeed += OnAddSeed;
         }
+
         private void OnAddSeed(Seed seed)
         {
             var seedUi = Instantiate(seedUIPrefab, container);
             seedUi.Init(seed.HerbId, seed.Count);
             seedUi.Clicked += OnClickSeed;
+
             void OnClickSeed()
             {
                 context?.OnSelect(seedUi);
             }
+
             void OnCountUpdated(int count)
             {
                 if (count > 0)
@@ -65,23 +69,22 @@ namespace DP
             moneyText.text = Utils.FormatCount(money);
             moneyVipText.text = Utils.FormatCount(moneyVip);
         }
+
         public Tween Show(IOpenInventoryContext context)
         {
             this.context = context;
             UpdateMoney();
             tween?.Kill();
             gameObject.SetActive(true);
-            tween = transform.DOScale(Vector3.one,0.25f);
+            tween = transform.DOScale(Vector3.one, 0.25f);
             return tween;
         }
+
         public void Hide()
         {
-            context?.OnClose(); 
+            context?.OnClose();
             tween?.Kill();
-            tween = transform.DOScale(Vector3.zero,0.25f).OnComplete(() =>
-            {
-                gameObject.SetActive(false);
-            });
+            tween = transform.DOScale(Vector3.zero, 0.25f).OnComplete(() => { gameObject.SetActive(false); });
         }
     }
 }

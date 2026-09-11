@@ -9,6 +9,7 @@ namespace Events
         [field: SerializeField] public ushort EventId { get; private set; }
         [SerializeField] private Button button;
         protected RectTransform containerPanel;
+
         public void Init(RectTransform containerPanel)
         {
             this.containerPanel = containerPanel;
@@ -21,7 +22,6 @@ namespace Events
 
         protected virtual void OnClick()
         {
-            
         }
     }
 }

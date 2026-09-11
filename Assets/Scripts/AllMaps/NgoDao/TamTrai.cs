@@ -10,10 +10,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(TamTrai), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(TamTrai))]
 public class TamTrai : NgoDaoCombat, IMemorySerializable<TamTrai>
 {
-    [SerializeField]
-    private int buff = 2;
-    [SerializeField]
-    private int requireSave = 3;
+    [SerializeField] private int buff = 2;
+    [SerializeField] private int requireSave = 3;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (BaseSkill.CheckIsEqualETypeSkill(caster, eTypeRequire))
@@ -40,7 +39,8 @@ public class TamTrai : NgoDaoCombat, IMemorySerializable<TamTrai>
 
     public override string GetDes()
     {
-        return $"Mỗi tích lũy sử dụng {BaseSkill.GetColoredText($"{requireSave}", "red")} lần thần thức hệ thần thông, thì lần tiếp theo [Thần Thức] đặc hiệu của thần thông sẽ phát động {BaseSkill.GetColoredText($"{buff}", "red")} lần";
+        return
+            $"Mỗi tích lũy sử dụng {BaseSkill.GetColoredText($"{requireSave}", "red")} lần thần thức hệ thần thông, thì lần tiếp theo [Thần Thức] đặc hiệu của thần thông sẽ phát động {BaseSkill.GetColoredText($"{buff}", "red")} lần";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

@@ -10,16 +10,22 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ChanLongHuyetNo), menuName = "Skill/Thần Thông/" + nameof(ChanLongHuyetNo))]
 public class ChanLongHuyetNo : ThanThong, IMemorySerializable<ChanLongHuyetNo>
 {
-    [SerializeField]
-    private int require = 1;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int require = 1;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ChanLongChiHuyet, require);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
@@ -32,7 +38,7 @@ public class ChanLongHuyetNo : ThanThong, IMemorySerializable<ChanLongHuyetNo>
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is ChanLongHuyetNo))
         {
             currentTurn.RemoveOneThanThongImpactAfterPlaySkill(this);
-            targetTurn.AddDamageData(new List<int>{targetTurn.GetDameBuffForTarget()});
+            targetTurn.AddDamageData(new List<int> { targetTurn.GetDameBuffForTarget() });
         }
     }
 
@@ -49,7 +55,8 @@ public class ChanLongHuyetNo : ThanThong, IMemorySerializable<ChanLongHuyetNo>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tiêu hao {GetColoredText($"{require}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChanLongChiHuyet)}. Lần sử dụng thần thông tiếp theo tổn thương gấp đôi";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Tiêu hao {GetColoredText($"{require}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChanLongChiHuyet)}. Lần sử dụng thần thông tiếp theo tổn thương gấp đôi";
     }
 
     public override int ByteSize()

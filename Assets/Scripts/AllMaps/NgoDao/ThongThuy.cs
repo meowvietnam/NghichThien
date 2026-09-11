@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ThongThuy), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(ThongThuy))]
 public class ThongThuy : NgoDaoCombat, IMemorySerializable<ThongThuy>
 {
-    [SerializeField]
-    private int buff = 30;
+    [SerializeField] private int buff = 30;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (target == null)
@@ -25,13 +25,14 @@ public class ThongThuy : NgoDaoCombat, IMemorySerializable<ThongThuy>
         caster.AddDataHeal(finalHpGain * buff / 100);
         if (remain > 0)
         {
-            target.TakeDameByStatic(caster, new List<int>{remain}, false, null);
+            target.TakeDameByStatic(caster, new List<int> { remain }, false, null);
         }
     }
 
     public override string GetDes()
     {
-        return $"Hiệu quả trị liệu tăng lên {BaseSkill.GetColoredText($"{buff}%", "red")}. Khi hồi phục nếu tràn ra sẽ chuyển hóa tạo thành tổn thương cho đối thủ";
+        return
+            $"Hiệu quả trị liệu tăng lên {BaseSkill.GetColoredText($"{buff}%", "red")}. Khi hồi phục nếu tràn ra sẽ chuyển hóa tạo thành tổn thương cho đối thủ";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

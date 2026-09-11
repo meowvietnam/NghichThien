@@ -5,14 +5,15 @@ using System;
 using Network;
 using Network.Extensions;
 
-[CreateAssetMenu(fileName = nameof(NguKimMocThuyHoaTho), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(NguKimMocThuyHoaTho))]
+[CreateAssetMenu(fileName = nameof(NguKimMocThuyHoaTho),
+    menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(NguKimMocThuyHoaTho))]
 public class NguKimMocThuyHoaTho : NgoDaoCombat, IMemorySerializable<NguKimMocThuyHoaTho>
 {
-    [SerializeField]
-    private ELinhKhi elinhKhi;
+    [SerializeField] private ELinhKhi elinhKhi;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.AddDamageData(new System.Collections.Generic.List<int>{-target.GetLinhKhi(elinhKhi)});
+        target.AddDamageData(new System.Collections.Generic.List<int> { -target.GetLinhKhi(elinhKhi) });
     }
 
     public override void ObserverEffect(params object[] data)
@@ -22,7 +23,8 @@ public class NguKimMocThuyHoaTho : NgoDaoCombat, IMemorySerializable<NguKimMocTh
         if (target == null)
             return;
         // kiểm tra thần thông vừa truyền vào của caster có phải mộc k  
-        if (target.ngoDaoCombats.Any(x => x.Id == this.Id) && BaseSkill.CheckIsEqualETypeSkill(caster, new BaseSkill.ETypeSkill[]{GetETypeSkillKhacWithLinhKhi(elinhKhi)}))
+        if (target.ngoDaoCombats.Any(x => x.Id == this.Id) && BaseSkill.CheckIsEqualETypeSkill(caster,
+                new BaseSkill.ETypeSkill[] { GetETypeSkillKhacWithLinhKhi(elinhKhi) }))
         {
             ExecuteNgoDao(caster, target);
         }
@@ -36,7 +38,9 @@ public class NguKimMocThuyHoaTho : NgoDaoCombat, IMemorySerializable<NguKimMocTh
         if (target == null)
             return;
         // kiểm tra dame được truyền vào có phải là mộc linh khí không
-        if (target.ngoDaoCombats.Any(x => x.Id == this.Id) && eTypeSkills != null && BaseSkill.CheckIsEqualETypeSkill(eTypeSkills, new BaseSkill.ETypeSkill[]{GetETypeSkillKhacWithLinhKhi(elinhKhi)}))
+        if (target.ngoDaoCombats.Any(x => x.Id == this.Id) && eTypeSkills != null &&
+            BaseSkill.CheckIsEqualETypeSkill(eTypeSkills,
+                new BaseSkill.ETypeSkill[] { GetETypeSkillKhacWithLinhKhi(elinhKhi) }))
         {
             ExecuteNgoDao(caster, target);
         }
@@ -50,7 +54,8 @@ public class NguKimMocThuyHoaTho : NgoDaoCombat, IMemorySerializable<NguKimMocTh
 
     public override global::System.String GetDes()
     {
-        return $"Mỗi một điểm {BaseSkill.GetTextLinhKhi(elinhKhi)} hệ linh khí, nhận {BaseSkill.GetTextTypeSkill(GetETypeSkillKhacWithLinhKhi(elinhKhi))} hệ tổn thương -1";
+        return
+            $"Mỗi một điểm {BaseSkill.GetTextLinhKhi(elinhKhi)} hệ linh khí, nhận {BaseSkill.GetTextTypeSkill(GetETypeSkillKhacWithLinhKhi(elinhKhi))} hệ tổn thương -1";
     }
 
     public BaseSkill.ETypeSkill GetETypeSkillKhacWithLinhKhi(ELinhKhi elinhKhi)

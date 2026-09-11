@@ -11,10 +11,13 @@ namespace CreateCharacter.CharStats
     {
         public int Id { get; private set; }
         public List<int> Items { get; private set; }
-        public SelectionGroup(int id) {
+
+        public SelectionGroup(int id)
+        {
             Id = id;
             Items = new List<int>();
         }
+
         [MemoryPackConstructor]
         public SelectionGroup()
         {

@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public enum ETypeGacha 
+public enum ETypeGacha
 {
-   ThanThong,
-   CongPhap,
-   DanDuoc,
-   DuocLieu,
-   VatLieu,
+    ThanThong,
+    CongPhap,
+    DanDuoc,
+    DuocLieu,
+    VatLieu,
 }

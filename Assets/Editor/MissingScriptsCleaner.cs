@@ -26,9 +26,11 @@ namespace Editor
                         Debug.Log($"<color=yellow>Đã xóa {count} script lỗi tại: {child.name}</color>");
                     }
                 }
+
                 // Đánh dấu Object đã thay đổi để Unity lưu lại (tránh bị mất sau khi Ctrl+S)
                 EditorUtility.SetDirty(go);
             }
+
             Debug.Log($"<color=green><b>Xong!</b> Tổng cộng đã dọn dẹp {totalRemoved} missing scripts.</color>");
         }
     }

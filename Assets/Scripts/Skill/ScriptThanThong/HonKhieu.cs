@@ -9,20 +9,24 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(HonKhieu), menuName = "Skill/Thần Thông/" + nameof(HonKhieu))]
 public class HonKhieu : ThanThong, IMemorySerializable<HonKhieu>
 {
-    [SerializeField]
-    private int[] dames = new int[]{20, 30, 45, 90, 180};
-    [SerializeField]
-    private int[] buffValues = new int[]{3, 3, 3, 3, 3};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
-    [SerializeField]
-    private float cameraSize = 5;
+    [SerializeField] private int[] dames = new int[] { 20, 30, 45, 90, 180 };
+    [SerializeField] private int[] buffValues = new int[] { 3, 3, 3, 3, 3 };
+    [SerializeField] private float delayTimeEffect = 1f;
+    [SerializeField] private float cameraSize = 5;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon, out SecureInt hon);
         int dame = dames[GetIndexLevelThanThong(caster)] + hon * buffValues[GetIndexLevelThanThong(caster)];
-        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int>{dame}, eTypeSkill);
-        ShowSkillEffectParticleBase(target, delayTimeEffect, cameraSize);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
+        ShowSkillEffectParticleBase(caster, delayTimeEffect, cameraSize);
     }
 
     protected override (Action<Transform, Transform>, Action<Transform, Transform>) GetActionControlEffectParticleBase()
@@ -31,17 +35,20 @@ public class HonKhieu : ThanThong, IMemorySerializable<HonKhieu>
         return ((childEffect, childPrefab) =>
         {
             base.GetActionControlEffectParticleBase().Item1?.Invoke(childEffect, childPrefab);
-            childEffect.transform.localEulerAngles = new Vector3(childPrefab.transform.localEulerAngles.x, childPrefab.transform.localEulerAngles.y, childPrefab.transform.localEulerAngles.z);
+            childEffect.transform.localEulerAngles = new Vector3(childPrefab.transform.localEulerAngles.x,
+                childPrefab.transform.localEulerAngles.y, childPrefab.transform.localEulerAngles.z);
         }, (childEffect, childPrefab) =>
         {
             base.GetActionControlEffectParticleBase().Item2?.Invoke(childEffect, childPrefab);
-            childEffect.transform.localEulerAngles = new Vector3(childPrefab.transform.localEulerAngles.x, childPrefab.transform.localEulerAngles.y * -1, childPrefab.transform.localEulerAngles.z);
+            childEffect.transform.localEulerAngles = new Vector3(childPrefab.transform.localEulerAngles.x,
+                childPrefab.transform.localEulerAngles.y * -1, childPrefab.transform.localEulerAngles.z);
         });
     }
 
     public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
     {
-        caster.buffAndDebuffCount.TryGetValue(GetEKeywordBuffSkillQuy(caster.characterStatsTemp.level), out SecureInt quy);
+        caster.buffAndDebuffCount.TryGetValue(GetEKeywordBuffSkillQuy(caster.characterStatsTemp.level),
+            out SecureInt quy);
         if (quy > 0 && base.IsCanUse(caster, target))
         {
             return true;
@@ -108,7 +115,8 @@ public class HonKhieu : ThanThong, IMemorySerializable<HonKhieu>
 
     public override string GetDesc(int level)
     {
-        return $"Bản thân có {GetKeyWordBuffOrDeBuff(GetEKeywordBuffSkillQuyWithDaiCanhGioi(level))} mới có thể sử dụng. Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Mỗi có một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thì tăng lên {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương";
+        return
+            $"Bản thân có {GetKeyWordBuffOrDeBuff(GetEKeywordBuffSkillQuyWithDaiCanhGioi(level))} mới có thể sử dụng. Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Mỗi có một tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.Hon)} thì tăng lên {GetColoredText($"+{buffValues[level - 1]}", "red")} điểm sát thương";
     }
 
     public override int ByteSize()

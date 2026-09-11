@@ -6,137 +6,161 @@ using JetBrains.Annotations;
 using LuyenDan;
 using Network.Models;
 
-public class INetworkEvent 
+public class INetworkEvent
 {
     public interface IUseDan
     {
         void SuccessUseDan(string message);
         void FailUseDan(string message);
     }
+
     public interface ILearnNgoDao // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessLearnNgoDao(NgoDaoBuff buff, NgoDao ngoDao, int newNgoDaoDiem);
         void FailLearnNgoDao(string message);
     }
+
     public interface ILearnSkill // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessLearnSkill();
         void FailLearnSkill(string message);
     }
+
     public interface IEquipThanThong // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessEquipThanThong();
         void FailEquipThanThong(string message);
     }
+
     public interface IUnEquipThanThong // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessUnEquipThanThong();
         void FailUnEquipThanThong(string message);
     }
+
     public interface IEquipCongPhap // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessEquipCongPhap();
         void FailEquipCongPhap(string message);
     }
+
     public interface IUnEquipCongPhap // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessUnEquipCongPhap();
         void FailUnEquipCongPhap(string message);
     }
+
     public interface IUpdateCongPhap // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessUpdateCongPhap();
         void FailUpdateCongPhap(string message);
     }
+
     public interface ITuLuyen // Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessTuLuyen(int valueAdd,int valueAddHp, int valueDecreaseTamCanh);
+        void SuccessTuLuyen(int valueAdd, int valueAddHp, int valueDecreaseTamCanh);
         void FailTuLuyen(string message);
     }
+
     public interface ILinhNgo // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessLinhNgo();
         void FailLinhNgo(string message);
     }
+
     public interface IDotPhaCongPhap // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessDotPhaCongPhap();
         void FailDotPhaCongPhap(string message);
     }
+
     public interface ITangQuaNPC // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessTangQuaNpc();
         void FailTangQuaNpc(string message);
     }
+
     public interface IThinhGiaoNPC // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessThinhGiaoNpc(ItemRef itemRef);
         void FailThinhGiaoNpc(string message);
     }
-    public interface ILoadShop// Check đủ ngộ đạo điểm mới learn được
+
+    public interface ILoadShop // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessLoadShop(List<ItemRef> itemRefs);
         void FailLoadShop(string message);
     }
-    public interface IReloadShop// Check đủ ngộ đạo điểm mới learn đượcaaaa
+
+    public interface IReloadShop // Check đủ ngộ đạo điểm mới learn đượcaaaa
     {
         void SuccessReloadShop(List<ItemRef> itemRefs);
         void FailReLoadShop(string message);
     }
+
     public interface IBuyAndSell // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessBuyAndSell(string message);
         void FailBuyAndSell(string message);
     }
-    public interface ILoadTask// Check đủ ngộ đạo điểm mới learn được
+
+    public interface ILoadTask // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessLoadTask(List<DailyQuest> listTask);
         void FailLoadTask(string message);
     }
-    public interface IReLoadTask// Check đủ ngộ đạo điểm mới learn được
+
+    public interface IReLoadTask // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessReLoadTask(List<DailyQuest> listTask);
         void FailReLoadTask(string message);
     }
-    public interface IDoneTask// Check đủ ngộ đạo điểm mới learn được
+
+    public interface IDoneTask // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessDoneTask();
         void FailDoneTask(string message);
     }
-    public interface IEquipEquipment// Check đủ ngộ đạo điểm mới learn được
+
+    public interface IEquipEquipment // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessEquipEquipment();
         void FailEquipEquipment(string message);
     }
-   
-    public interface ICompleteSideQuest// Check đủ ngộ đạo điểm mới learn được
+
+    public interface ICompleteSideQuest // Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessCompleteSideQuest(int moneyVip,int linhThach);
+        void SuccessCompleteSideQuest(int moneyVip, int linhThach);
         void FailCompleteSideQuest(string message);
     }
-    public interface IJoinMonPhai// Check đủ ngộ đạo điểm mới learn được
+
+    public interface IJoinMonPhai // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessJoinMonPhai();
         void FailJoinMonPhai(string message);
     }
-    public interface ICompleteMainQuest// Check đủ ngộ đạo điểm mới learn được
+
+    public interface ICompleteMainQuest // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessCompleteMainQuest();
         void FailMainQuest(string message);
     }
-    public interface IResultCombat// Check đủ ngộ đạo điểm mới learn được
+
+    public interface IResultCombat // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessResultCombatBase(RewardSnapshot rewardSnapshot, ETypeResultCombat resultCombaType);
         void FailResultCombatBase(string message);
     }
-    public interface ILoadCharCombat// Check đủ ngộ đạo điểm mới learn được
+
+    public interface ILoadCharCombat // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessLoadCharCombat(CharacterSnapshot user);
         void FailLoadCharCombat(string message);
     }
-    public interface ILoadCharCombatArena// Check đủ ngộ đạo điểm mới learn được
+
+    public interface ILoadCharCombatArena // Check đủ ngộ đạo điểm mới learn được
     {
-        void SuccessLoadCharCombatArena(CharacterSnapshot user , CharacterSnapshot enemy);
+        void SuccessLoadCharCombatArena(CharacterSnapshot user, CharacterSnapshot enemy);
         void FailLoadCharCombatArena(string message);
     }
 
@@ -145,16 +169,19 @@ public class INetworkEvent
         void SuccessWatchAdsCombat(RewardSnapshot reward);
         void FailWatchAdsCombat(string message);
     }
-    public interface IGacha// Check đủ ngộ đạo điểm mới learn được
+
+    public interface IGacha // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessGacha(RewardSnapshot rewardGacha);
         void FailGacha(string message);
     }
-    public interface ISpecialLevelUp// Check đủ ngộ đạo điểm mới learn được
+
+    public interface ISpecialLevelUp // Check đủ ngộ đạo điểm mới learn được
     {
         void SuccessSpecialLevelUp();
         void FailSpecialLevelUp(string message);
     }
+
     public interface IWatchAdsSideQuest
     {
         void SuccessWatchAdsSideQuest(WatchAdsSideQuestResult result);

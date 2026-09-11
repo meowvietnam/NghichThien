@@ -1,6 +1,7 @@
 using System;
 using Base;
 using MemoryPack;
+
 namespace DP
 {
     [MemoryPackable]

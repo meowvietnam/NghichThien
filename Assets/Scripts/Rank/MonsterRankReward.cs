@@ -16,9 +16,9 @@ namespace Rank
         public long Id { get; set; }
         public bool IsClaim { get; set; }
         public int RequirePoints { get; set; }
-        public List<IEventReward> Rewards { get; set; } = new ();
-        [MemoryPackIgnore]
-        private Button claimButton;
+        public List<IEventReward> Rewards { get; set; } = new();
+        [MemoryPackIgnore] private Button claimButton;
+
         public void ShowUI(RewardUIContext context)
         {
             context.RequirePointsText.text = $"{Utils.FormatCount(context.Points)}/{Utils.FormatCount(RequirePoints)}";
@@ -31,6 +31,7 @@ namespace Rank
                 reward.ShowUI(context);
             }
         }
+
         private async void Claim()
         {
             var client = Client.Instance;
@@ -49,6 +50,7 @@ namespace Rank
                 {
                     reward.Claim(charData);
                 }
+
                 var text = $"Bạn nhận được: {string.Join(", ", Rewards.Select(x => x.GetRichText()))}";
                 NotifyGroup.Instance.Show(text);
                 claimButton.interactable = false;

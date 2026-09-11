@@ -63,6 +63,7 @@ namespace IAP
             {
                 gameObject.SetActive(false);
             }
+
             Pool.Get<UIManager>().UpdateButtonListPos();
         }
 
@@ -89,11 +90,9 @@ namespace IAP
             startPackUI.SetMoneyVipText(MoneyVip);
             startPackUI.SetMoneyText(Money);
             startPackUI.SetCongPhap(CongPhapId);
-            startPackUI.SetPurchaseAction(() =>
-            {
-                CanBuyProduct(context);
-            });
+            startPackUI.SetPurchaseAction(() => { CanBuyProduct(context); });
         }
+
         private async void CanBuyProduct(IapUIContext context)
         {
             var product = context.OwnerIapProduct.Product;

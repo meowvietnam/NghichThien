@@ -1,24 +1,33 @@
+using System;
 using AllMaps;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Tutorials
 {
     public class Camera2DDrag : MonoBehaviour
     {
-        [Header("Camera")]
-        [SerializeField] private Camera targetCamera;
+        [Header("Camera")] [SerializeField] private Camera targetCamera;
 
-        [Header("Settings")]
-        [SerializeField] private float dragSpeed = 1f;
+        [Header("Settings")] [SerializeField] private float dragSpeed = 1f;
         [SerializeField] private bool useUnscaledTime = false;
 
-        [Header("Bounds")]
-        [SerializeField] private bool useBounds = false;
+        [Header("Bounds")] [SerializeField] private bool useBounds = false;
         [SerializeField] private Vector2 minBounds;
         [SerializeField] private Vector2 maxBounds;
 
         private Vector3 lastWorldPosition;
         private bool isDragging;
+        [SerializeField] private BoxCollider2D boundsBox;
+
+        private void OnValidate()
+        {
+            if (boundsBox != null)
+            {
+                minBounds = boundsBox.bounds.min;
+                maxBounds = boundsBox.bounds.max;
+            }
+        }
 
         private void Awake()
         {
@@ -87,7 +96,7 @@ namespace Tutorials
         {
             if (!isDragging)
                 return;
-            
+
             Vector3 currentWorldPosition = ScreenToWorld(screenPosition);
 
             Vector3 delta = lastWorldPosition - currentWorldPosition;

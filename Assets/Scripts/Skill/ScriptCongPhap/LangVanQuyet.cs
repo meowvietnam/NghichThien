@@ -10,8 +10,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(LangVanQuyet))]
 public class LangVanQuyet : CongPhap, IMemorySerializable<LangVanQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{1, 1, 2, 2, 3};
+    [SerializeField] private int[] buffValues = new int[] { 1, 1, 2, 2, 3 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
     }

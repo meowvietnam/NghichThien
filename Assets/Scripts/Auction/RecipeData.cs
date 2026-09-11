@@ -25,10 +25,12 @@ namespace Auction
             QualityBackground = quality.Background;
             QualityIconUp = quality.IconUp;
         }
+
         public IItemData GetItemData()
         {
             return LuyenDanResources.Instance.FindRecipe((ushort)Id);
         }
+
         public void ShowInfo(ToolTipItems toolTip)
         {
             var item = GetItemData();

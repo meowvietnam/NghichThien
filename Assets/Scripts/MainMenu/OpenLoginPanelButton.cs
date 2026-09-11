@@ -7,6 +7,7 @@ namespace MainMenu
     {
         [SerializeField] private Button button;
         [SerializeField] private LoginPanel loginPanel;
+
         private void Start()
         {
             SetEventButton(button, Open);

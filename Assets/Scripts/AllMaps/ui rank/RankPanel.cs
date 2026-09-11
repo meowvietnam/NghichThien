@@ -44,16 +44,19 @@ namespace AllMaps.ui_rank
             {
                 return;
             }
+
             var time = TimeSpan.FromSeconds(Time.fixedUnscaledDeltaTime);
             resetTime -= time;
             currentSelect.RewardInfo.SetEndTime(resetTime);
         }
+
         private void ShowHideRewardInfo()
         {
             if (currentSelect == null)
             {
                 return;
             }
+
             var rewardInfo = currentSelect.RewardInfo;
             rewardInfo.SetActive(!rewardInfo.GetActive());
         }
@@ -75,19 +78,22 @@ namespace AllMaps.ui_rank
         {
             var type = currentSelect.RankType;
             isLock = true;
-            Observer.Notify(EventList.Network.GET_RANK,this, type);
+            Observer.Notify(EventList.Network.GET_RANK, this, type);
         }
+
         public bool OnSelect(TypeRankButton button)
         {
-            if(isLock) return false;
+            if (isLock) return false;
             if (currentSelect != null)
             {
                 currentSelect.OnDeselect();
             }
+
             currentSelect = button;
             LoadRank();
             return true;
         }
+
         public void GetRankSuccess(IRank rank)
         {
             isLock = false;
@@ -102,12 +108,14 @@ namespace AllMaps.ui_rank
             {
                 rankElementInfor.DestroySelf();
             }
+
             tops.Clear();
             foreach (var rankElementInfor in top3)
             {
                 rankElementInfor.SetActive(false);
             }
-        } 
+        }
+
         public void GetRankFail(string message)
         {
             isLock = false;

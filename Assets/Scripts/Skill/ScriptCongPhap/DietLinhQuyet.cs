@@ -11,12 +11,10 @@ using CongPhap = Skill.CongPhap;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(DietLinhQuyet))]
 public class DietLinhQuyet : CongPhap, IMemorySerializable<DietLinhQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{5, 10, 15, 20, 25};
-    [SerializeField]
-    private int[] buffValues2 = new int[]{1, 2, 3, 4, 5};
-    [SerializeField]
-    public static int require = 3;
+    [SerializeField] private int[] buffValues = new int[] { 5, 10, 15, 20, 25 };
+    [SerializeField] private int[] buffValues2 = new int[] { 1, 2, 3, 4, 5 };
+    [SerializeField] public static int require = 3;
+
     public override void EquipCongPhap(CharacterStatsSecure statsCurrent, int daiCanhGioiCongPhap)
     {
         statsCurrent.thanThuc += buffValues[daiCanhGioiCongPhap - 1];
@@ -26,6 +24,7 @@ public class DietLinhQuyet : CongPhap, IMemorySerializable<DietLinhQuyet>
     {
         statsCurrent.thanThuc -= buffValues[daiCanhGioiCongPhap - 1];
     }
+
     public override void EquipCongPhap(CharacterData statsCurrent, int level)
     {
         var stats = statsCurrent.Stats;
@@ -39,6 +38,7 @@ public class DietLinhQuyet : CongPhap, IMemorySerializable<DietLinhQuyet>
         var thanThuc = stats.ThanThuc - buffValues[level - 1];
         stats.ThanThuc = thanThuc;
     }
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         RemoveCongPhap(caster);
@@ -63,7 +63,8 @@ public class DietLinhQuyet : CongPhap, IMemorySerializable<DietLinhQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Thần thức {GetColoredText($"-{buffValues[level - 1]}", "red")}. Mỗi hiệp hấp thụ số lượng linh khí {GetColoredText($"+{buffValues2[level - 1]}", "red")}. Nhưng một hiệp chỉ có thể sử dụng {GetColoredText($"{require}", "red")} lần thần thông";
+        return
+            $"Thần thức {GetColoredText($"-{buffValues[level - 1]}", "red")}. Mỗi hiệp hấp thụ số lượng linh khí {GetColoredText($"+{buffValues2[level - 1]}", "red")}. Nhưng một hiệp chỉ có thể sử dụng {GetColoredText($"{require}", "red")} lần thần thông";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

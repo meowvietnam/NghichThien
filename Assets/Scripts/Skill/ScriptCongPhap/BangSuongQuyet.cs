@@ -8,8 +8,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(BangSuongQuyet))]
 public class BangSuongQuyet : CongPhap, IMemorySerializable<BangSuongQuyet>
 {
-    [SerializeField]
-    private int[] percentActives = new int[]{40, 55, 70, 85, 100};
+    [SerializeField] private int[] percentActives = new int[] { 40, 55, 70, 85, 100 };
+
     public override void ExecuteParams(params object[] data)
     {
         // target là ng nhận dame 
@@ -35,7 +35,8 @@ public class BangSuongQuyet : CongPhap, IMemorySerializable<BangSuongQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi lần nhận sát thương từ thần thông, có {GetColoredText($"{percentActives[level - 1]}%", "red")} tỷ lệ làm cho đối phương nhận phải 1 tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SuongGia)}";
+        return
+            $"Mỗi lần nhận sát thương từ thần thông, có {GetColoredText($"{percentActives[level - 1]}%", "red")} tỷ lệ làm cho đối phương nhận phải 1 tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SuongGia)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

@@ -26,6 +26,7 @@ namespace CreateCharacter
             return
                 $"<color=#{ColorUtility.ToHtmlStringRGBA(core.FindQuality(item.Tier).Color)}>{item.Name} x{count}</color>";
         }
+
         public static void ShowNotification(int count)
         {
             var text =
@@ -33,6 +34,7 @@ namespace CreateCharacter
             NotifyGroup.Instance.Show(text);
         }
     }
+
     [MemoryPackable]
     public partial class MailRewardMoneyVip : IMailReward
     {
@@ -56,6 +58,7 @@ namespace CreateCharacter
             var icon = MoneyResources.Instance.MoneyVipIcon;
             return new MoneyVipItem(icon);
         }
+
         public string GetRichText()
         {
             return MoneyVipItem.GetRichText(MoneyVip);

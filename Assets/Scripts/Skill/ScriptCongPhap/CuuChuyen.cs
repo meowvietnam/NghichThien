@@ -10,13 +10,14 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(CuuChuyen))]
 public class CuuChuyen : CongPhap, IMemorySerializable<CuuChuyen>
 {
-    [SerializeField]
-    private int[] requires = new int[]{10, 9, 8, 7, 5};
+    [SerializeField] private int[] requires = new int[] { 10, 9, 8, 7, 5 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (CheckIsEqualETypeSkill(caster))
         {
-            if (caster.congPhapDynamic.Count(x => x.congPhap is CuuChuyen) >= requires[CurrentLevelCongPhapInCombat(caster) - 1] - 1)
+            if (caster.congPhapDynamic.Count(x => x.congPhap is CuuChuyen) >=
+                requires[CurrentLevelCongPhapInCombat(caster) - 1] - 1)
             {
                 RemoveCongPhap(caster);
                 CombatStatic.KiemKhi(caster, target);
@@ -42,7 +43,8 @@ public class CuuChuyen : CongPhap, IMemorySerializable<CuuChuyen>
 
     public override string GetDesc(int level)
     {
-        return $"Mỗi sử dụng {GetColoredText($"{requires[level - 1]}", "red")} lần {GetTextTypeSkill(ETypeSkill.Kiem)} hệ thần thông gây tổn thương thì kích hoạt một lần {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}";
+        return
+            $"Mỗi sử dụng {GetColoredText($"{requires[level - 1]}", "red")} lần {GetTextTypeSkill(ETypeSkill.Kiem)} hệ thần thông gây tổn thương thì kích hoạt một lần {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

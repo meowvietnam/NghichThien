@@ -12,7 +12,8 @@ namespace CreateCharacter
         [SerializeField] private Color selected;
         public string Id { get; private set; }
         private event Action<ToggleSkinGroup> onSelected;
-        public void Init(SkinGroup skinGroup,ToggleGroup toggleGroup, Action<ToggleSkinGroup> onSelected)
+
+        public void Init(SkinGroup skinGroup, ToggleGroup toggleGroup, Action<ToggleSkinGroup> onSelected)
         {
             Id = skinGroup.Id;
             label.text = skinGroup.Name;
@@ -26,14 +27,16 @@ namespace CreateCharacter
         {
             label.color = isOn ? selected : normal;
         }
+
         private void OnToggleValueChanged(bool isOn)
         {
             UpdateLabelColor(isOn);
-            if(isOn)
+            if (isOn)
             {
                 onSelected?.Invoke(this);
             }
         }
+
         private void OnDestroy()
         {
             toggle.onValueChanged.RemoveListener(OnToggleValueChanged);

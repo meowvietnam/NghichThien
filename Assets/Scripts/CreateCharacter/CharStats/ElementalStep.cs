@@ -15,6 +15,7 @@ namespace CreateCharacter.CharStats
         private List<ElementalUI> selecteds = new List<ElementalUI>();
         private SelectStats selectStats;
         private ElementalStepData elementalStepData;
+
         public void Init(SelectStats selectStats, ElementalStepData elementalStepData)
         {
             this.selectStats = selectStats;
@@ -26,6 +27,7 @@ namespace CreateCharacter.CharStats
                 elementalUIs.Add(elementalUI);
                 elementalUI.Init(elemental, OnSelect, OnUnselect);
             }
+
             CalculatePercent();
             foreach (var elementalUI in elementalUIs)
             {
@@ -43,6 +45,7 @@ namespace CreateCharacter.CharStats
                 OnUnselect(elementalUI);
                 currentSelectNum--;
             }
+
             if (currentSelectNum < num)
             {
                 var n = num - currentSelectNum;
@@ -58,15 +61,17 @@ namespace CreateCharacter.CharStats
                     selectStats.Select(elementalStepData.Id, elementalStepData.GroupId, elementalUI.Elemental.Id);
                 }
             }
+
             CalculatePercent();
             selectStats.ReUpdate();
         }
+
         private void OnSelect(ElementalUI elementalUI)
         {
             selecteds.Add(elementalUI);
             CalculatePercent();
             selectStats.ReUpdate();
-            selectStats.Select(elementalStepData.Id,elementalStepData.GroupId, elementalUI.Elemental.Id);
+            selectStats.Select(elementalStepData.Id, elementalStepData.GroupId, elementalUI.Elemental.Id);
         }
 
         private void CalculatePercent()
@@ -80,19 +85,22 @@ namespace CreateCharacter.CharStats
             {
                 elementalUI.SetPercent(unselectedPercent);
             }
+
             var selectedPercent = (100 - unselectedPercent * unselectedCount) / selecteds.Count;
             foreach (var elementalUI in selecteds)
             {
                 elementalUI.SetPercent(selectedPercent);
             }
         }
+
         private void OnUnselect(ElementalUI elementalUI)
         {
             selecteds.Remove(elementalUI);
             CalculatePercent();
             selectStats.ReUpdate();
-            selectStats.UnSelect(elementalStepData.Id,elementalStepData.GroupId, elementalUI.Elemental.Id);
+            selectStats.UnSelect(elementalStepData.Id, elementalStepData.GroupId, elementalUI.Elemental.Id);
         }
+
         public override void OnEnter()
         {
             selectStats.SetTitle(elementalStepData.Title);
@@ -103,6 +111,7 @@ namespace CreateCharacter.CharStats
             SelectNumElemental(totalSelect);
             SetActive(true);
         }
+
         public override void OnExit()
         {
             SetActive(false);
@@ -117,6 +126,7 @@ namespace CreateCharacter.CharStats
                 NotifyGroup.Instance.Show($"Hãy chọn {require} linh căn");
                 return false;
             }
+
             return true;
         }
     }

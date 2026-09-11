@@ -7,9 +7,9 @@ namespace Network.Models
     [MemoryPackable]
     public partial class UserWrapper
     {
-        [MemoryPackIgnore]
-        public UserData User { get; private set; }
+        [MemoryPackIgnore] public UserData User { get; private set; }
         public byte[] UserBytes { get; private set; }
+
         public UserWrapper(UserData user)
         {
             User = user;
@@ -17,6 +17,7 @@ namespace Network.Models
             writer.Write(User);
             UserBytes = writer.Buffer;
         }
+
         [MemoryPackConstructor]
         public UserWrapper(byte[] userBytes)
         {

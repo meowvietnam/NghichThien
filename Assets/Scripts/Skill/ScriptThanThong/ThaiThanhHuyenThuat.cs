@@ -1,22 +1,26 @@
 using LongDH.LongDHModules;
-using LongDH.Script.ObjectPool;
-using System.Linq;
 using UnityEngine;
-using System;
 using Network;
-using Network.Extensions;
 
 [CreateAssetMenu(fileName = nameof(ThaiThanhHuyenThuat), menuName = "Skill/Thần Thông/" + nameof(ThaiThanhHuyenThuat))]
 public class ThaiThanhHuyenThuat : NeTranhTT, IMemorySerializable<ThaiThanhHuyenThuat>
 {
-    [SerializeField]
-    private float cameraSize = 5;
+    [SerializeField] private float cameraSize = 5;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
         HauKeVoLuc(caster);
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ObserverEffect);
-        caster.effectSkillNoDestroy.Add(this, ShowSkillEffectParticleBase(caster, 0, cameraSize, false));
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
+        var gameObject = ShowSkillEffectParticleBase(caster, 0, cameraSize, false);
+        caster.effectSkillNoDestroy.Add(this, gameObject);
     }
 
     protected void ObserverEffect(params object[] data)
@@ -30,7 +34,8 @@ public class ThaiThanhHuyenThuat : NeTranhTT, IMemorySerializable<ThaiThanhHuyen
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Trong hiệp đối thủ lần tới, bản thân có {GetColoredText($"{percentNeTranh[level - 1]}%", "red")} né tránh sát thương";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Trong hiệp đối thủ lần tới, bản thân có {GetColoredText($"{percentNeTranh[level - 1]}%", "red")} né tránh sát thương";
     }
 
     protected override void NeTranhSuccess(CharacterCombat takeDameChar)

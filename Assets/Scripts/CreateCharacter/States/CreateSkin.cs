@@ -10,15 +10,18 @@ namespace CreateCharacter.States
     {
         private readonly CreateCharacterPanel createCharacterPanel;
         private AbstractCreateCharacterSystem system;
+
         public CreateSkin(CreateCharacterPanel createCharacterPanel, AbstractCreateCharacterSystem system)
         {
             this.createCharacterPanel = createCharacterPanel;
             this.system = system;
         }
+
         public void OnEnter()
         {
             SetPlayerAvatar.Instance.SetActive(true);
         }
+
         public void Next()
         {
             var currentSelect = SetPlayerAvatar.Instance.CurrentSelect;
@@ -35,8 +38,9 @@ namespace CreateCharacter.States
             newCharacter.Gender = gender;
             newCharacter.Appearance.Skins = skin;
             newCharacter.Appearance.Colors = color;
-            Client.Instance.Send(MessageTag.SetSkins, request);            
+            Client.Instance.Send(MessageTag.SetSkins, request);
         }
+
         public void Back()
         {
             system.ToSetPlayerNamePanel(createCharacterPanel);

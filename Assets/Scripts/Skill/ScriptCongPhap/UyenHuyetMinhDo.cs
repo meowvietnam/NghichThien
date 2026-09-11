@@ -12,8 +12,8 @@ using static UnityEngine.GraphicsBuffer;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(UyenHuyetMinhDo))]
 public class UyenHuyetMinhDo : CPTieuHaoThoNguyen, IMemorySerializable<UyenHuyetMinhDo>
 {
-    [SerializeField]
-    private int[] debuffValues = new int[]{4, 6, 8, 10, 12};
+    [SerializeField] private int[] debuffValues = new int[] { 4, 6, 8, 10, 12 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         // target là người nhận dame
@@ -26,7 +26,6 @@ public class UyenHuyetMinhDo : CPTieuHaoThoNguyen, IMemorySerializable<UyenHuyet
         {
             caster.Healing(dame);
         }
-      
     }
 
     public virtual void ExecuteParams2(params object[] data)
@@ -51,7 +50,8 @@ public class UyenHuyetMinhDo : CPTieuHaoThoNguyen, IMemorySerializable<UyenHuyet
 
     public override string GetDesc(int level)
     {
-        return $"Bắt đầu chiến đấu, đối thủ nhận phải {GetColoredText($"+{debuffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChayMau)}. Nếu đối thủ có trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChayMau)} thì khôi phục HP tương đương lượng tổn thương gây ra. {base.GetDesc(level)} (Chỉ có tác dụng 1 lần trong 1 hiệp)";
+        return
+            $"Bắt đầu chiến đấu, đối thủ nhận phải {GetColoredText($"+{debuffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChayMau)}. Nếu đối thủ có trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ChayMau)} thì khôi phục HP tương đương lượng tổn thương gây ra. {base.GetDesc(level)} (Chỉ có tác dụng 1 lần trong 1 hiệp)";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

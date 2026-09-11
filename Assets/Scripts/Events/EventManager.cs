@@ -16,15 +16,17 @@ namespace Events
         [SerializeField] private ItemEventMilestoneUI itemEventMilestoneUIPrefab;
         public ItemEventMilestoneUI ItemEventMilestoneUIPrefab => itemEventMilestoneUIPrefab;
         public static EventManager Instance;
+
         private void Awake()
         {
             Instance = this;
         }
+
         private void Start()
         {
             _ = GetActiveEvents();
         }
-        
+
         private async Task GetActiveEvents()
         {
             await Task.Delay(1000);

@@ -14,7 +14,7 @@ namespace CreateCharacter.CharStats
 {
     [Serializable]
     [MemoryPackable]
-    public partial class CharacterStats 
+    public partial class CharacterStats
     {
         [field: SerializeField] public float Kim { get; set; }
         [field: SerializeField] public float Moc { get; set; }
@@ -36,8 +36,7 @@ namespace CreateCharacter.CharStats
         [field: SerializeField] public int DanDoc { get; private set; }
         [field: ShowInInspector] public TimeSpan TuoiTac { get; set; }
 #if !SERVER
-        [MemoryPackIgnore]
-        private readonly Dictionary<StatType, Action<object>> onStatChanges = new();
+        [MemoryPackIgnore] private readonly Dictionary<StatType, Action<object>> onStatChanges = new();
 #endif
         [MemoryPackConstructor]
         public CharacterStats()
@@ -226,6 +225,7 @@ namespace CreateCharacter.CharStats
                     break;
             }
         }
+
         public void ApplyFrom(StatsSnapshot snapshot)
         {
             Kim = snapshot.Kim;
@@ -246,6 +246,7 @@ namespace CreateCharacter.CharStats
             DanDoc = snapshot.DanDoc;
             Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
         }
+
         public static int GetMinTamCanh()
         {
             return -100;

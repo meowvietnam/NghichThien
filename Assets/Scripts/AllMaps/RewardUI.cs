@@ -9,6 +9,7 @@ namespace AllMaps
     {
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private GameObject claimed;
+
         public void Init(IMailReward rewardItem, bool claim)
         {
             SetClaim(claim);

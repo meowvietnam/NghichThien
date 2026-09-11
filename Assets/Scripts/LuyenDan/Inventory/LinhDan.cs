@@ -21,6 +21,7 @@ namespace LuyenDan.Inventory
                 {
                     icon = Resources.Load<Sprite>(IconPath);
                 }
+
                 return icon;
             }
         }
@@ -41,9 +42,10 @@ namespace LuyenDan.Inventory
         [field: SerializeField] public float IncomeDanThanh { get; private set; }
         [field: SerializeField] public ETypeDan ETypeDan { get; private set; }
         [field: SerializeField] public int BuffValue { get; private set; }
-        [field: SerializeField] public EDanBuffType EBuffType{ get; private set; }
+        [field: SerializeField] public EDanBuffType EBuffType { get; private set; }
         private Sprite icon;
         [field: SerializeField] public string IconPath { get; private set; }
+
         public int ByteSize()
         {
             return Id.ByteSize() + Name.ByteSize() + Tier.ByteSize() + Description.ByteSize()
@@ -98,7 +100,7 @@ namespace LuyenDan.Inventory
             value.EBuffType = reader.Read<EDanBuffType>();
         }
 #if UNITY_EDITOR
-        
+
         public void Move()
         {
             var icon = Icon;
@@ -107,6 +109,5 @@ namespace LuyenDan.Inventory
             AssetOptimize.Move(icon.texture, path);
         }
 #endif
-        
     }
 }

@@ -19,7 +19,7 @@ using Base;
 
 public class NPCManager : ActionMapManager
 {
-    [SerializeField] public NPCData[] npcDatas; 
+    [SerializeField] public NPCData[] npcDatas;
     public override int TimeMonthRandom => 12;
     public override string fileSaveTime => "OldTimeRandomNPC";
 
@@ -28,9 +28,11 @@ public class NPCManager : ActionMapManager
         base.Init();
         RandomAction();
     }
+
     public override void RandomAction()
     {
         var mapManager = Pool.Get<MapManager>();
+
         List<int> GetIdMapNodeWithMonPhai(EMonPhai monPhai)
         {
             var mapManager = Pool.Get<MapManager>();
@@ -76,6 +78,7 @@ public class NPCManager : ActionMapManager
 
             return idMapNode;
         }
+
         var kimPhai = GetIdMapNodeWithMonPhai(EMonPhai.KimHongKiemPhai);
         var mocPhai = GetIdMapNodeWithMonPhai(EMonPhai.TrucSonTong);
         var thuyPhai = GetIdMapNodeWithMonPhai(EMonPhai.TinhHaKiemPhai);
@@ -137,7 +140,7 @@ public class NPCManager : ActionMapManager
         base.RandomAction();
     }
 #if UNITY_EDITOR
-    
+
     [Button]
     private void OnUpdateDataNPCData()
     {

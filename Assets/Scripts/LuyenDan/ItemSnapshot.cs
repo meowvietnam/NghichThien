@@ -10,9 +10,10 @@ namespace LuyenDan
 
         public ItemSnapshot(int id, int count)
         {
-            Id    = id;
+            Id = id;
             Count = count;
         }
+
         public bool IsEmpty => Count <= 0;
         public override string ToString() => $"[SelfId={Id}, Count={Count}]";
     }

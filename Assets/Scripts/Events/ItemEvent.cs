@@ -9,10 +9,12 @@ namespace Events
     {
         public ushort Id { get; set; }
         public int Count { get; set; }
+
         public override int GetHashCode()
         {
             return Id;
         }
+
         public bool Equals(ItemEvent? other)
         {
             if (other is null) return false;

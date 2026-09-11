@@ -7,14 +7,20 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(DiaSatNgungKet), menuName = "Skill/Thần Thông/" + nameof(DiaSatNgungKet))]
 public class DiaSatNgungKet : ThanThong, IMemorySerializable<DiaSatNgungKet>
 {
-    [SerializeField]
-    private int max = 10;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int max = 10;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         HapThuVoiGioiHan(caster);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
@@ -49,7 +55,8 @@ public class DiaSatNgungKet : ThanThong, IMemorySerializable<DiaSatNgungKet>
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Hấp thụ một điểm linh khí. Nếu là {GetTextLinhKhi(ELinhKhi.Tho)} hệ linh khí thì tiếp tục lặp lại quá trình. Tối đa {GetColoredText($"{max} lần", "red")}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Hấp thụ một điểm linh khí. Nếu là {GetTextLinhKhi(ELinhKhi.Tho)} hệ linh khí thì tiếp tục lặp lại quá trình. Tối đa {GetColoredText($"{max} lần", "red")}";
     }
 
     public override int ByteSize()

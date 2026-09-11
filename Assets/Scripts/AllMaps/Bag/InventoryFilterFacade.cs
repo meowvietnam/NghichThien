@@ -23,7 +23,7 @@ public class InventoryFilterFacade
         Tier tierCurrent,
         BaseSkill.ETierSkill eTierSkillCurrent,
         EquipmentTier eTierEquipmentCurrent)
-        {
+    {
         if (itemFullDatas == null)
         {
             return new List<ItemRef>();
@@ -44,7 +44,8 @@ public class InventoryFilterFacade
         var filterProvider = FilterProviderFactory.Create(typeCurrent);
         return itemFullDatas
             .Where(item => item.Type == typeCurrent &&
-                filterProvider.Matches(item, typeCurrent, tierCurrent, eTierSkillCurrent, eTierEquipmentCurrent))
+                           filterProvider.Matches(item, typeCurrent, tierCurrent, eTierSkillCurrent,
+                               eTierEquipmentCurrent))
             .ToList();
     }
 
@@ -56,6 +57,7 @@ public class InventoryFilterFacade
         {
             options.Add(filterProvider.GetOptionText(i));
         }
+
         return options;
     }
 }

@@ -13,7 +13,8 @@ public class EffectAudioAssigner : EditorWindow
         string[] selectedGuids = Selection.assetGUIDs;
         if (selectedGuids.Length == 0)
         {
-            Debug.LogWarning("Vui lòng chọn các thư mục chứa Prefab (như EffectHeHoa, EffectHeKhi...) trong cửa sổ Project trước!");
+            Debug.LogWarning(
+                "Vui lòng chọn các thư mục chứa Prefab (như EffectHeHoa, EffectHeKhi...) trong cửa sổ Project trước!");
             return;
         }
 
@@ -111,13 +112,15 @@ public class EffectAudioAssigner : EditorWindow
 
                 PrefabUtility.SavePrefabAsset(prefabRoot);
 
-                assignedPrefabs.Add($"{prefabName} -> Gán thành công clip: [{targetClip.name}] (Từ khóa tìm kiếm: '{cleanedChildName}')");
+                assignedPrefabs.Add(
+                    $"{prefabName} -> Gán thành công clip: [{targetClip.name}] (Từ khóa tìm kiếm: '{cleanedChildName}')");
                 totalUpdated++;
             }
             else
             {
                 string debugKeyword = string.IsNullOrEmpty(cleanedChildName) ? "Trống" : cleanedChildName;
-                unassignedPrefabs.Add($"{prefabName} (Không tìm thấy Audio Clip trùng với từ khóa '{debugKeyword}' hoặc tên prefab '{prefabName}')");
+                unassignedPrefabs.Add(
+                    $"{prefabName} (Không tìm thấy Audio Clip trùng với từ khóa '{debugKeyword}' hoặc tên prefab '{prefabName}')");
             }
         }
 
@@ -127,7 +130,8 @@ public class EffectAudioAssigner : EditorWindow
         AssetDatabase.Refresh();
 
         EditorUtility.DisplayDialog("Hoàn thành!",
-            $"Đã quét xong.\n- Gán thành công: {totalUpdated} prefabs.\n- Thất bại: {unassignedPrefabs.Count} prefabs.\nXem chi tiết ở bảng Console.", "OK");
+            $"Đã quét xong.\n- Gán thành công: {totalUpdated} prefabs.\n- Thất bại: {unassignedPrefabs.Count} prefabs.\nXem chi tiết ở bảng Console.",
+            "OK");
     }
 
     // Hàm tìm kiếm AudioClip theo tên chính xác trên toàn bộ Project
@@ -144,6 +148,7 @@ public class EffectAudioAssigner : EditorWindow
                 return AssetDatabase.LoadAssetAtPath<AudioClip>(path);
             }
         }
+
         return null;
     }
 
@@ -174,6 +179,7 @@ public class EffectAudioAssigner : EditorWindow
                 report.AppendLine($" * {item}");
             }
         }
+
         report.AppendLine("==================================================");
 
         Debug.Log(report.ToString());

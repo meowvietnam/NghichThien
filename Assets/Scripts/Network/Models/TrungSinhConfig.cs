@@ -12,6 +12,7 @@ namespace Network.Models
         public int TargetLevel { get; set; }
         public int DaiCanhGioi { get; set; }
         public CharacterStats Stats { get; set; }
+
         public string GetText()
         {
             var levelText = GameManager.levelWithText[TargetLevel];
@@ -19,6 +20,5 @@ namespace Network.Models
                    $"Thiên Phú: {ThienPhu}\n" +
                    $"Tiêu hao: {Utils.FormatCount(MoneyVip)} Tiên ngọc";
         }
-        
     }
 }

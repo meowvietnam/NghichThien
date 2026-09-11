@@ -7,8 +7,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ThuHuyet), menuName = "Skill/Thần Thông/" + nameof(ThuHuyet))]
 public class ThuHuyet : ThanThong, IMemorySerializable<ThuHuyet>
 {
-    [SerializeField]
-    private int[] hapThu;
+    [SerializeField] private int[] hapThu;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -18,12 +18,20 @@ public class ThuHuyet : ThanThong, IMemorySerializable<ThuHuyet>
             caster.HapThuLinhKhi(item.Key, item.Value);
         }
 
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, 1.5f);
     }
 
     public override string GetDesc(int level)
     {
-        return $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Hấp thụ {GetColoredText($"ngẫu nhiên {hapThu[level - 1]} điểm", "red")} linh khí. Bạn bị {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KietSuc)}";
+        return
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)} Hấp thụ {GetColoredText($"ngẫu nhiên {hapThu[level - 1]} điểm", "red")} linh khí. Bạn bị {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KietSuc)}";
     }
 
     public override int ByteSize()

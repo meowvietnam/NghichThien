@@ -30,6 +30,7 @@ namespace AllMaps.DauTruong
             {
                 UpdateClaim();
             }
+
             InitVisual();
         }
 
@@ -46,12 +47,10 @@ namespace AllMaps.DauTruong
                 btnReward.interactable = false;
             }
         }
+
         public void InitVisual()
         {
-            SetEventButton(btnReward, () =>
-            {
-                ArenaManager.Instance.Reward(Reward.Id); 
-            });
+            SetEventButton(btnReward, () => { ArenaManager.Instance.Reward(Reward.Id); });
             iconRank.sprite = spriteRefRank[(int)ETypeArenaRank - 1];
             iconRank.SetNativeSize();
             iconRankName.sprite = spriteRefRankName[(int)ETypeArenaRank - 1];

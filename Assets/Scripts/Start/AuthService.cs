@@ -30,6 +30,7 @@ namespace Start
         [SerializeField] private string playProgressText = "Đang vào game...";
         public const string SIGNIN_PROVIDER_KEY = "signin_provider_key";
         public const string LOCAL_ACCOUNT_KEY = "local_account_key";
+
         private async void Start()
         {
             platformResolver.Run();
@@ -60,6 +61,7 @@ namespace Start
                         button.SignIn();
                     }
                 }
+
                 return;
             }
 
@@ -67,6 +69,7 @@ namespace Start
             menu.SetActive(true);
             buttonGroups.SetActive(false);
         }
+
         //main thread
         public void OnRegisterResult(RegisterResult result)
         {
@@ -88,6 +91,7 @@ namespace Start
                 var bytes = PlayerPrefsEx.GetBytes(LOCAL_ACCOUNT_KEY);
                 return MemoryPackSerializer.Deserialize<LocalAccount>(bytes);
             }
+
             return null;
         }
 
@@ -95,6 +99,7 @@ namespace Start
         {
             PlayerPrefs.DeleteKey(LOCAL_ACCOUNT_KEY);
         }
+
         public static SignInProvider? GetSignInProvider()
         {
             if (PlayerPrefs.HasKey(SIGNIN_PROVIDER_KEY))
@@ -115,6 +120,7 @@ namespace Start
             var bytes = MemoryPackSerializer.Serialize(account);
             PlayerPrefsEx.SetBytes(LOCAL_ACCOUNT_KEY, bytes);
         }
+
         public static void DeleteSignInProvider()
         {
             PlayerPrefs.DeleteKey(SIGNIN_PROVIDER_KEY);
@@ -166,6 +172,7 @@ namespace Start
             {
                 client.SetUserData(null);
             }
+
             NetworkManager.Instance.Invoke(async () =>
             {
                 progressBar.DoKill(() => { });

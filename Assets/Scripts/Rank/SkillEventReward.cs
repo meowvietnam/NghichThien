@@ -1,11 +1,15 @@
+using System;
 using Auction;
 using Base;
 using ConvertElementalSkill;
 using CreateCharacter;
 using LongDHModules;
 using LuyenDan;
+using LuyenDan.Inventory;
+using LuyenKhi;
 using MemoryPack;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Rank
 {
@@ -13,47 +17,37 @@ namespace Rank
     public partial class SkillEventReward : IEventReward
     {
         public ItemRef Item { get; set; }
-        public BaseSkill.ETierSkill Tier { get; set; }
-        public ItemType Type { get; set; }
-        public ushort Count { get; set; }
+
         public void Claim(CharacterData charData)
         {
             charData.InventoryManager.Add(Item);
         }
+
         public void ShowUI(RewardUIContext context)
         {
-            var itemUi = Object.Instantiate(context.SkillItemPrefab, context.Container);
-            itemUi.SetText(GetDescription());
+            var itemData = GetData();
+            var itemUI = Object.Instantiate(context.SkillItemUIPrefab, context.Container);
+            itemUI.SetData(itemData);
         }
 
-        private string GetDescription()
-        {
-            var tierText = BaseSkill.GetTextTierSkill(Tier);
-            var typeItemText = Type switch
-            {
-                ItemType.ThanThong => "Thần thông",
-                ItemType.CongPhap => "Công pháp",
-            };
-            return $"x{Utils.FormatCount(Count)} {tierText} {typeItemText}";
-        }
-        private SkillData GetItemData()
+        private SkillData GetData()
         {
             var type = Item.Type;
-            var ui = Pool.Get<UIManager>();
             var gameManager = Pool.Get<GameManager>();
+            var ui = Pool.Get<UIManager>();
             ISkillItemData skillItemData = type switch
             {
                 ItemType.ThanThong => new ThanThongItemData(Item, gameManager, ui),
                 ItemType.CongPhap => new CongPhapItemData(Item, gameManager, ui)
             };
-            var skillData = new SkillData(Item, skillItemData);
-            return skillData;
+            return new SkillData(Item, skillItemData);
         }
+
         public string GetRichText()
         {
-            var skillData = GetItemData();
+            var item = GetData();
             return
-            $"<color=#{ColorUtility.ToHtmlStringRGBA(skillData.ItemData.VisualQuality.Color)}>{skillData.ItemData.Name} x{Item.Count}</color>";
+                $"<color=#{ColorUtility.ToHtmlStringRGBA(item.ItemData.VisualQuality.Color)}>{item.ItemData.Name} x{Item.Count}</color>";
         }
     }
 }

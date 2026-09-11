@@ -8,6 +8,7 @@ namespace Network.Models
     {
         public string Name { get; set; }
         public string SecretKey { get; set; }
+
         public SignInProvider GetSignInProvider()
         {
             return SignInProvider.AdminName;

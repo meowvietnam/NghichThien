@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ThaiAmHuyenDocCong))]
 public class ThaiAmHuyenDocCong : CongPhap, IMemorySerializable<ThaiAmHuyenDocCong>
 {
-    [SerializeField]
-    private int[] dameBuffs;
+    [SerializeField] private int[] dameBuffs;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         SecureInt trungDoc = 0;
@@ -18,13 +18,14 @@ public class ThaiAmHuyenDocCong : CongPhap, IMemorySerializable<ThaiAmHuyenDocCo
         if (trungDoc > 0 && CheckIsEqualETypeSkill(caster))
         {
             int dame = dameBuffs[CurrentLevelCongPhapInCombat(caster) - 1];
-            target.AddDamageData(new System.Collections.Generic.List<int>{dame});
+            target.AddDamageData(new System.Collections.Generic.List<int> { dame });
         }
     }
 
     public override string GetDesc(int level)
     {
-        return $"Sử dụng {GetTextTypeSkill()} hệ thần thông gây sát thương nếu đối phương có trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)} thì tổn thương {GetColoredText($"+{dameBuffs[level - 1]}", "red")}";
+        return
+            $"Sử dụng {GetTextTypeSkill()} hệ thần thông gây sát thương nếu đối phương có trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.TrungDoc)} thì tổn thương {GetColoredText($"+{dameBuffs[level - 1]}", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

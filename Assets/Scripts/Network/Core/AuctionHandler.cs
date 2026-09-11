@@ -39,6 +39,7 @@ namespace Network.Core
                 {
                     inventory.Add(reward.Item);
                 }
+
                 if (client.State is AuctionState state)
                 {
                     state.OnReward(reward);

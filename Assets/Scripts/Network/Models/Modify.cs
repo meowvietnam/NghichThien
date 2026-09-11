@@ -7,8 +7,8 @@ namespace Network.Models
     public partial class Modify<T> where T : class
     {
         public HashSet<T> Adds { get; set; } = new();
-        public HashSet<T> Updates { get; set; }  = new();
-        public HashSet<T> Deletes { get; set; }  = new();
+        public HashSet<T> Updates { get; set; } = new();
+        public HashSet<T> Deletes { get; set; } = new();
 
         public void Add(T value)
         {
@@ -23,8 +23,10 @@ namespace Network.Models
                 Replace(Updates, value);
                 return;
             }
+
             Adds.Add(value);
         }
+
         public void Update(T value)
         {
             if (Adds.Contains(value))
@@ -37,6 +39,7 @@ namespace Network.Models
             {
                 return;
             }
+
             Replace(Updates, value);
         }
 
@@ -48,32 +51,38 @@ namespace Network.Models
             Updates.Remove(value);
             Replace(Deletes, value);
         }
+
         public bool IsModified()
         {
             return Adds.Count > 0 || Updates.Count > 0 || Deletes.Count > 0;
         }
+
         public void Clear()
         {
             Adds.Clear();
             Updates.Clear();
             Deletes.Clear();
         }
+
         public void Apply(HashSet<T> set)
         {
-            if (Deletes.Count > 0) 
+            if (Deletes.Count > 0)
             {
                 set.ExceptWith(Deletes);
             }
+
             if (Updates.Count > 0)
             {
                 set.ExceptWith(Updates);
                 set.UnionWith(Updates);
             }
+
             if (Adds.Count > 0)
             {
                 set.UnionWith(Adds);
             }
         }
+
         private static void Replace(HashSet<T> set, T value)
         {
             set.Remove(value);

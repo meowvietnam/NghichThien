@@ -8,21 +8,25 @@ using ComboSkillResource.NPCData;
 using LongDHModules;
 using UnityEditor;
 using UnityEngine;
-[CreateAssetMenu(fileName = nameof(BaseEnemyCombatResource), menuName = "Action Map/" + nameof(BaseEnemyCombatResource))]
 
+[CreateAssetMenu(fileName = nameof(BaseEnemyCombatResource),
+    menuName = "Action Map/" + nameof(BaseEnemyCombatResource))]
 public class BaseEnemyCombatResource : ActionMapResourceSO
 {
-    [SerializeField]public EnemyData[] listEnemy;
+    [SerializeField] public EnemyData[] listEnemy;
     public Sprite[] spriteCombat;
 
     public override void ActiveEventMap(Map map)
     {
         var enemy = GetEnemyDataCombatWithPlayerLevel(listEnemy);
-        Pool.Get<GameManager>().GoToPrepareCombat(new GameManager.CharCombatInit { eTypeVisual = enemy.eTypeVisualChar, charStats = enemy.charStats }, ETypeCombat.AllMaps);
+        Pool.Get<GameManager>()
+            .GoToPrepareCombat(
+                new GameManager.CharCombatInit { eTypeVisual = enemy.eTypeVisualChar, charStats = enemy.charStats },
+                ETypeCombat.AllMaps);
         Pool.Get<GameManager>().SetBGCombat(spriteCombat[Random.Range(0, spriteCombat.Length)]);
-
     }
-    public NPCData GetEnemyDataCombatWithTargetLevel(NPCData[] listEnemy,int levelTarget)
+
+    public NPCData GetEnemyDataCombatWithTargetLevel(NPCData[] listEnemy, int levelTarget)
     {
         int playerLevel = levelTarget;
 
@@ -93,15 +97,18 @@ public class BaseEnemyCombatResource : ActionMapResourceSO
             NPCData randomEnemy = possibleEnemies[UnityEngine.Random.Range(0, possibleEnemies.Count)];
             return randomEnemy;
         }
+
         return null;
     }
+
     public NPCData GetEnemyDataCombatWithPlayerLevel(NPCData[] listEnemy)
     {
         int playerLevel = Client.Instance.CharacterData.Progression.Level;
 
-      
+
         return GetEnemyDataCombatWithTargetLevel(listEnemy, playerLevel);
     }
+
     [Button]
     private void OnUpdateDataEnemyData()
     {

@@ -15,7 +15,8 @@ public class ChichHoa : NgoDaoCombat, IMemorySerializable<ChichHoa>
 
     public override string GetDes()
     {
-        return $"Kết thúc hiệp, phát động một lần {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)} cho đối thủ";
+        return
+            $"Kết thúc hiệp, phát động một lần {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)} cho đối thủ";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

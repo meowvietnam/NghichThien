@@ -9,20 +9,24 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(ThonDiemQuyet), menuName = "Skill/Thần Thông/" + nameof(ThonDiemQuyet))]
 public class ThonDiemQuyet : ThanThong, IMemorySerializable<ThonDiemQuyet>
 {
-    [SerializeField]
-    private int require = 3;
-    [SerializeField]
-    private int[] healValues = new int[]{1, 2, 3, 4, 5};
-    [SerializeField]
-    private int[] dameBuffs = new int[]{2, 3, 4, 5, 6};
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private int require = 3;
+    [SerializeField] private int[] healValues = new int[] { 1, 2, 3, 4, 5 };
+    [SerializeField] private int[] dameBuffs = new int[] { 2, 3, 4, 5, 6 };
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, require);
         caster.Healing(healValues[GetIndexLevelThanThong(caster)]);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ObserverEffect);
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(target, delayTimeEffect);
     }
 
@@ -38,7 +42,7 @@ public class ThonDiemQuyet : ThanThong, IMemorySerializable<ThonDiemQuyet>
         {
             int count = currentTurn.specialThanThongImpactAfterPlaySkill.Count(x => x is ThonDiemQuyet);
             int dame = dameBuffs[GetIndexLevelThanThong(currentTurn)] * count;
-            targetTurn.AddDamageData(new System.Collections.Generic.List<int>{dame}, true);
+            targetTurn.AddDamageData(new System.Collections.Generic.List<int> { dame }, true);
             currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);
         }
     }
@@ -56,7 +60,8 @@ public class ThonDiemQuyet : ThanThong, IMemorySerializable<ThonDiemQuyet>
 
     public override string GetDesc(int level)
     {
-        return $"Bản thân gỡ ra {GetColoredText($"{require}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}, khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm HP. Lần tiếp theo tạo thành {GetTextTypeSkill()} hệ thần thông tổn thương {GetColoredText($"+{dameBuffs[level - 1]}", "red")} (Có thể cộng dồn)";
+        return
+            $"Bản thân gỡ ra {GetColoredText($"{require}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}, khôi phục {GetColoredText($"+{healValues[level - 1]}", "red")} điểm HP. Lần tiếp theo tạo thành {GetTextTypeSkill()} hệ thần thông tổn thương {GetColoredText($"+{dameBuffs[level - 1]}", "red")} (Có thể cộng dồn)";
     }
 
     public override int ByteSize()

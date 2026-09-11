@@ -11,6 +11,7 @@ namespace SignIn.Google
     public class GoogleSignInButton : SignInButton
     {
         [SerializeField] private GoogleSignIn googleSignIn;
+
         protected override async Task<ILogin> CreateRequest()
         {
             try
@@ -20,6 +21,7 @@ namespace SignIn.Google
                 {
                     return null;
                 }
+
                 return new LoginWithGoogle()
                 {
                     IdToken = credential.IdToken,
@@ -34,6 +36,7 @@ namespace SignIn.Google
                 return null;
             }
         }
+
         public override ISignInService GetSignInService()
         {
             return googleSignIn;

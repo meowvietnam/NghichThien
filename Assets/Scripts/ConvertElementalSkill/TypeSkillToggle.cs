@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace ConvertElementalSkill
 {
     public class TypeSkillToggle : MonoBehaviour
@@ -10,15 +11,18 @@ namespace ConvertElementalSkill
         [SerializeField] private Toggle toggle;
         [SerializeField] private GameObject active;
         [SerializeField] private GameObject inactive;
+
         public (BaseSkill.ETypeSkill, GameObject, GameObject ) Get()
         {
             return (Type, active, inactive);
         }
+
         private void Start()
         {
             toggle.onValueChanged.AddListener(OnToggle);
             OnToggle(toggle.isOn);
         }
+
         private void OnToggle(bool isOn)
         {
             active.SetActive(isOn);
@@ -28,6 +32,7 @@ namespace ConvertElementalSkill
                 ConvertElementalSkillPanel.Instance.OnSelect(this);
             }
         }
+
         private void OnDestroy()
         {
             toggle.onValueChanged.RemoveListener(OnToggle);

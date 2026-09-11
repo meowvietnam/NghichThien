@@ -10,6 +10,7 @@ namespace ConvertElementalSkill
         public SkillType SkillType => skillType;
         [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public string Name { get; private set; }
+
         private void Start()
         {
             SetEventButton(button, OnSelected);
@@ -17,8 +18,9 @@ namespace ConvertElementalSkill
 
         private void OnSelected()
         {
-            ConvertElementalSkillPanel.Instance.OnSelectSkillType(this);            
+            ConvertElementalSkillPanel.Instance.OnSelectSkillType(this);
         }
+
         private void OnDestroy()
         {
             button.onClick.RemoveAllListeners();

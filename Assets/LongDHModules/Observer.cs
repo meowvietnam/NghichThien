@@ -8,6 +8,7 @@ namespace LongDH.LongDHModules
     public static class Observer
     {
         public delegate void CallbackObserverParam(params object[] data);
+
         public delegate void CallbackObserverVoid();
 
         private class ObserverItem<T>
@@ -87,16 +88,19 @@ namespace LongDH.LongDHModules
             {
                 list.Clear();
             }
+
             if (CallbackVoid.TryGetValue(eventName, out var voidList))
             {
                 voidList.Clear();
             }
         }
+
         public static void RemoveAllObserver()
         {
             CallbackPara.Clear();
             CallbackVoid.Clear();
         }
+
         // Thêm vào trong class Observer
         public static void RemoveObserversForEvents(IEnumerable<string> eventNames)
         {
@@ -113,6 +117,7 @@ namespace LongDH.LongDHModules
                 }
             }
         }
+
         #endregion
 
         #region NOTIFY

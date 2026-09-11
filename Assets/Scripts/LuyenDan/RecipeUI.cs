@@ -24,6 +24,7 @@ namespace LuyenDan
         public Button btnInfor;
         public RecipeData Data => data;
         public bool IsCraftable { get; private set; }
+
         public void Init(RecipeData data, ToggleGroup group)
         {
             this.data = data;
@@ -41,6 +42,7 @@ namespace LuyenDan
                 instance.Init(recipeData, group);
                 recipes.Add(instance);
             }
+
             toggle.SetIsOnWithoutNotify(false);
             SetSize(false);
             var rData = data.Recipes.First();
@@ -51,14 +53,15 @@ namespace LuyenDan
                 var resources = LuyenDanPanel.Instance.Resources;
                 if (chuduoc != null)
                 {
-                    chuduocDetail.text = resources.GetHerbDetail(chuduoc.Id,HerbType.ChuDuoc);
+                    chuduocDetail.text = resources.GetHerbDetail(chuduoc.Id, HerbType.ChuDuoc);
                 }
 
                 if (phuduoc != null)
                 {
-                    phuduocDetail.text = resources.GetHerbDetail(phuduoc.Id,HerbType.ChuDuoc);
+                    phuduocDetail.text = resources.GetHerbDetail(phuduoc.Id, HerbType.ChuDuoc);
                 }
             }
+
             SetEventButton(btnInfor, () =>
             {
                 ToolTipItems.Instance.ShowInfoItem(Data, new ItemRef
@@ -74,6 +77,7 @@ namespace LuyenDan
         {
             Destroy(thisObject);
         }
+
         public void SetCraftable(bool active)
         {
             IsCraftable = active;
@@ -82,7 +86,7 @@ namespace LuyenDan
                 craftale.SetActive(active);
             }
         }
-        
+
         private void SetSize(bool active)
         {
             var size = thisTransform.sizeDelta;
@@ -94,6 +98,7 @@ namespace LuyenDan
             {
                 size.y = 52;
             }
+
             thisTransform.sizeDelta = size;
         }
 
@@ -101,12 +106,14 @@ namespace LuyenDan
         {
             thisObject.SetActive(active);
         }
+
         private void OnValueChanged(bool active)
         {
             SetSize(active);
             unselected.SetActive(!active);
             selected.SetActive(active);
         }
+
         public void Refresh()
         {
             var myCraftable = false;
@@ -117,8 +124,10 @@ namespace LuyenDan
                 {
                     myCraftable = true;
                 }
+
                 recipe.UpdateCraftale(canCraft);
             }
+
             SetCraftable(myCraftable);
         }
     }

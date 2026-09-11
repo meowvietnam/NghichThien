@@ -19,34 +19,35 @@ public abstract class ActionEnterMapManager : ActionMapManager
         currentMapRandom.Clear();
         LoadData();
     }
+
     public override void Init()
     {
         base.Init();
         Observer.AddObserver(EventList.GamePlay.USER_ENTER_MAP, RemoveMap);
         LoadAfterBackAllMaps();
     }
+
     protected override void OnDestroy()
     {
         base.OnDestroy();
         Observer.RemoveObserver(EventList.GamePlay.USER_ENTER_MAP, RemoveMap);
-
     }
 
-    public abstract override int TimeMonthRandom { get ;  }
-    public abstract override string fileSaveTime { get ;   }
+    public abstract override int TimeMonthRandom { get; }
+    public abstract override string fileSaveTime { get; }
 
     public abstract int CountRandom { get; }
+
     public override void RandomAction()
     {
         var mapManager = Pool.Get<MapManager>();
         var mapExcept = mapManager.maps.Where(x => x.IsEmptyAction && !(x is Stronghold)).ToList();
         foreach (var item in currentMapRandom)
         {
-            if(item == null) continue; 
-            if(item.actionMap == null)
+            if (item == null) continue;
+            if (item.actionMap == null)
             {
                 item.ResetDataAction();
-
             }
         }
 
@@ -58,9 +59,9 @@ public abstract class ActionEnterMapManager : ActionMapManager
             mapExcept.Remove(map);
             SetActionOnMap(randomMapId);
         }
+
         base.RandomAction();
         SaveRandom();
-
     }
 
     protected virtual void LoadData()
@@ -75,9 +76,8 @@ public abstract class ActionEnterMapManager : ActionMapManager
             foreach (var item in data)
             {
                 SetActionOnMap(item);
-
-
             }
+
             Debug.Log($"Đã load dữ liệu thành công! {data.Count}");
         }
         else
@@ -87,33 +87,35 @@ public abstract class ActionEnterMapManager : ActionMapManager
             return;
         }
     }
+
     public abstract ActionMapResourceSO GetActionMapResourceSO();
+
     private void RemoveMap(params object[] data)
     {
         Map map = (Map)data[0];
-        
+
         currentMapRandom.Remove(map);
         SaveRandom();
     }
+
     private void SetActionOnMap(int id)
     {
         var mapManager = Pool.Get<MapManager>();
         var map = mapManager.FindMap(id);
         mapManager.SetDataOnMap(GetActionMapResourceSO(), id);
         currentMapRandom.Add(map);
-
     }
+
     public virtual void SaveRandom()
-    { // Lọc trùng và chỉ lấy ra danh sách các Id (int)
+    {
+        // Lọc trùng và chỉ lấy ra danh sách các Id (int)
         if (currentMapRandom.All(x => x == null)) return;
         List<int> dataSaveNode = currentMapRandom
-            .Where(x => x != null)          // ĐIỀU KIỆN: Nếu x == null thì "continue" (bỏ qua không xử lý)
-            .GroupBy(x => x.Id)             // Gom nhóm theo Id
-            .Select(group => group.Key)     // Lấy ra cái Id đại diện của nhóm
+            .Where(x => x != null) // ĐIỀU KIỆN: Nếu x == null thì "continue" (bỏ qua không xử lý)
+            .GroupBy(x => x.Id) // Gom nhóm theo Id
+            .Select(group => group.Key) // Lấy ra cái Id đại diện của nhóm
             .ToList();
         string json = JsonConvert.SerializeObject(dataSaveNode);
         File.WriteAllText(Application.persistentDataPath + $"/{fileSaveMapNode}.json", json);
-
-    }    
-
+    }
 }

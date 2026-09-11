@@ -8,6 +8,7 @@ public class CharacterVisualControl : MonoBehaviour
     [SerializeField] public SkeletonGraphic[] characterGenders;
     [SerializeField] public SkeletonGraphic currentCharGender => characterGenders[(int)eTypeVisualChar];
     public string ANIM_DIE => "Die_0";
+
     public string ANIM_IDLE
     {
         get
@@ -19,14 +20,15 @@ public class CharacterVisualControl : MonoBehaviour
             {
                 return "Idle_0";
             }
-            else if(skeletonData.FindAnimation("idle_0") != null)
+            else if (skeletonData.FindAnimation("idle_0") != null)
             {
                 return "idle_0";
-
             }
+
             return "stand_0";
         }
     }
+
     public string ANIM_HIT
     {
         get
@@ -38,9 +40,11 @@ public class CharacterVisualControl : MonoBehaviour
             {
                 return "Hit_0";
             }
+
             return "hit_0";
         }
     }
+
     public string ANIM_PUNCH
     {
         get
@@ -52,19 +56,21 @@ public class CharacterVisualControl : MonoBehaviour
             {
                 return "Punch_0";
             }
+
             return "punch_0";
         }
     }
-    public void Init(ETypeVisualChar eTypeVisualChar , CharacterStatsSecure charStat)
+
+    public void Init(ETypeVisualChar eTypeVisualChar, CharacterStatsSecure charStat)
     {
         foreach (var item in characterGenders)
         {
-            if(item.gameObject.activeSelf)
+            if (item.gameObject.activeSelf)
             {
                 item.gameObject.SetActive(false);
-
             }
         }
+
         this.eTypeVisualChar = eTypeVisualChar;
         if (eTypeVisualChar == ETypeVisualChar.Character)
         {
@@ -72,9 +78,11 @@ public class CharacterVisualControl : MonoBehaviour
             charGraphic.SetGender(charStat.Gender);
             charGraphic.SetSkin(charStat.Skins, charStat.Colors);
         }
+
         currentCharGender.gameObject.SetActive(true);
         AnimIdle();
     }
+
     private bool HasAnimation(string animName)
     {
         if (currentCharGender == null || currentCharGender.Skeleton == null || currentCharGender.Skeleton.Data == null)

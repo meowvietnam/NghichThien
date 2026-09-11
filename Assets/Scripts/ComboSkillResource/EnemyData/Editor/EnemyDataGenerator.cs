@@ -21,7 +21,8 @@ public class EnemyDataGenerator : EditorWindow
     private void OnGUI()
     {
         GUILayout.Label("Enemy Generation & Update Settings", EditorStyles.boldLabel);
-        comboResource = (ComboSkillResource.ComboSkillResource)EditorGUILayout.ObjectField("Combo Resource", comboResource, typeof(ComboSkillResource.ComboSkillResource), false);
+        comboResource = (ComboSkillResource.ComboSkillResource)EditorGUILayout.ObjectField("Combo Resource",
+            comboResource, typeof(ComboSkillResource.ComboSkillResource), false);
         targetMaxLevel = EditorGUILayout.IntField("Target Max Level", targetMaxLevel);
 
         if (GUILayout.Button("Generate/Update Enemies"))
@@ -31,6 +32,7 @@ public class EnemyDataGenerator : EditorWindow
                 EditorUtility.DisplayDialog("Error", "Please assign ComboSkillResource!", "OK");
                 return;
             }
+
             GenerateOrUpdate();
         }
     }
@@ -88,7 +90,8 @@ public class EnemyDataGenerator : EditorWindow
         EditorUtility.DisplayDialog("Success", $"Cập nhật hoàn tất! Đã tạo thêm {createdCount} Enemy mới.", "OK");
     }
 
-    private void CreateEnemyUnit(string assetPath, ComboSkillResource.ComboSkillResource.ComboWithType comboType, int level, int newId)
+    private void CreateEnemyUnit(string assetPath, ComboSkillResource.ComboSkillResource.ComboWithType comboType,
+        int level, int newId)
     {
         EnemyData enemy = ScriptableObject.CreateInstance<EnemyData>();
 

@@ -8,6 +8,7 @@ namespace Network.Models
         public bool Success { get; set; }
         public string Message { get; set; }
         public InventoryManager InventoryManager { get; set; }
+
         public int ByteSize()
         {
             if (Success)
@@ -19,6 +20,7 @@ namespace Network.Models
                 return Success.ByteSize() + Message.ByteSize();
             }
         }
+
         public void Serialize(IWriter writer)
         {
             writer.Write(Success);
@@ -31,6 +33,7 @@ namespace Network.Models
                 writer.Write(Message);
             }
         }
+
         public void Deserialize(IReader reader, ref GetInventoryResult value)
         {
             var success = reader.Read<bool>();

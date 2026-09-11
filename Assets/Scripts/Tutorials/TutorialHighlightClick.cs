@@ -6,8 +6,7 @@ namespace Tutorials
     public class TutorialHighlightClick : MonoBehaviour,
         IPointerClickHandler
     {
-        [SerializeField]
-        private TutorialHighlight tutorial;
+        [SerializeField] private TutorialHighlight tutorial;
 
         public void OnPointerClick(
             PointerEventData eventData)

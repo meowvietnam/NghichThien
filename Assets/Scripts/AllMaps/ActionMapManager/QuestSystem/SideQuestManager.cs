@@ -17,8 +17,6 @@ using UnityEngine.UI;
 
 public class SideQuestManager : ActionEnterMapManager
 {
-   
-   
     public override string fileSaveMapNode => "SaveSideQuestMap";
 
     public override int TimeMonthRandom => 1;
@@ -26,25 +24,24 @@ public class SideQuestManager : ActionEnterMapManager
     public override string fileSaveTime => "OldTimeRandomSideQuest";
 
     public override int CountRandom => 10 - Client.Instance.CharacterData.QuestManager.CurrentCountSideQuest;
-    
 
 
-    [Header("Quiz Side Quest Visual")]
-    [SerializeField] private AnswerQuizQuest answerPrefab;
+    [Header("Quiz Side Quest Visual")] [SerializeField]
+    private AnswerQuizQuest answerPrefab;
+
     [SerializeField] private SideQuizQuestResource.Quiz currentQuiz;
-   // [Header("Combat Side Quest Visual")]
+    // [Header("Combat Side Quest Visual")]
 
     // Thay vì khai báo biến List, hãy viết thành hàm trả về List
-   
+
     [SerializeField] private Popup quizQuestParent;
-    [Header("Delivery Side Quest Visual")]
-    public CharacterStatsSecure characterStatsTakeDeliver;
+    [Header("Delivery Side Quest Visual")] public CharacterStatsSecure characterStatsTakeDeliver;
     public Map mapTakeDeliver;
+
     public override void Init()
     {
         base.Init();
         Observer.AddObserver(EventList.GamePlay.USER_ENTER_MAP, USER_ENTER_MAP);
-
     }
 
     protected override void OnDestroy()
@@ -55,10 +52,12 @@ public class SideQuestManager : ActionEnterMapManager
 
     public string nameChar;
     public CharacterStatsSecure characterProviderQuest;
+
     public void SetCharProviderQuest(CharacterStatsSecure characterStats)
     {
         this.characterProviderQuest = characterStats;
     }
+
     [SerializeField] public Dictionary<string, string> skins => characterProviderQuest.Skins;
     [SerializeField] public Dictionary<string, Color> color => characterProviderQuest.Colors;
     [SerializeField] public Gender gender => characterProviderQuest.Gender;
@@ -67,41 +66,42 @@ public class SideQuestManager : ActionEnterMapManager
     protected override void LoadData()
     {
         base.LoadData();
-        if(CountRandom<=0)
+        if (CountRandom <= 0)
         {
-            foreach (var item in currentMapRandom )
+            foreach (var item in currentMapRandom)
             {
                 item.ResetDataAction();
-
             }
+
             currentMapRandom.Clear();
-        }    
+        }
     }
+
     public void DoneQuest()
     {
         Pool.Get<QuestManager>().QuestDone();
     }
+
     public void DoneQuest(CharacterStatsSecure characterShow, Action actionDoneDialog)
     {
-        SayDialogManager.Instance.ShowDialogWithSkin(characterShow.nameUser, characterShow.Gender, characterShow.Skins, characterShow.Colors, Pool.Get<QuestManager>().currentQuest.CompleteQuest, null, null, () => {
-            Pool.Get<QuestManager>().currentQuest.QuestDoneData();
-            // Fake Reward
-            Pool.Get<QuestManager>().currentQuest = null;
-            actionDoneDialog?.Invoke();
-
-
-        });
+        SayDialogManager.Instance.ShowDialogWithSkin(characterShow.nameUser, characterShow.Gender, characterShow.Skins,
+            characterShow.Colors, Pool.Get<QuestManager>().currentQuest.CompleteQuest, null, null, () =>
+            {
+                Pool.Get<QuestManager>().currentQuest.QuestDoneData();
+                // Fake Reward
+                Pool.Get<QuestManager>().currentQuest = null;
+                actionDoneDialog?.Invoke();
+            });
     }
 
-    public void InitShowQuestHaveChar(Action actionComplete, List<string> startDialog, CharacterStatsSecure character, bool isHide = true)
+    public void InitShowQuestHaveChar(Action actionComplete, List<string> startDialog, CharacterStatsSecure character,
+        bool isHide = true)
     {
         nameChar = character.nameUser;
-        SayDialogManager.Instance.ShowDialogWithSkin(character.nameUser, character.Gender, character.Skins, character.Colors, startDialog, null, null, () =>
-        {
-            actionComplete?.Invoke();
-        }, isHide);
-
+        SayDialogManager.Instance.ShowDialogWithSkin(character.nameUser, character.Gender, character.Skins,
+            character.Colors, startDialog, null, null, () => { actionComplete?.Invoke(); }, isHide);
     }
+
     public void USER_ENTER_MAP(params object[] data)
     {
         Debug.Log("Reset");
@@ -111,14 +111,14 @@ public class SideQuestManager : ActionEnterMapManager
         {
             Pool.Get<QuestManager>().currentQuest = null;
             characterProviderQuest = null;
-           
         }
+
         if (mapTakeDeliver == null) return;
-        if(map.actionMap != null && map.actionMap is SideQuestResource)
+        if (map.actionMap != null && map.actionMap is SideQuestResource)
         {
             mapTakeDeliver.ResetDataAction();
             characterStatsTakeDeliver = null;
-        }    
+        }
 
 
         Debug.Log(" vào QuestDeliveryTrigger 2");
@@ -131,13 +131,11 @@ public class SideQuestManager : ActionEnterMapManager
             Pool.Get<UINPCJiaoHu>().OnReloadNpcThisNode();
             DoneQuest();
         }
-
-
     }
 
     public void QuizQuestInitShow(SideQuizQuestResource.Quiz quiz)
     {
-        if(Pool.Get<QuestManager>().currentQuest is SideQuizQuestResource quizQuestResource)
+        if (Pool.Get<QuestManager>().currentQuest is SideQuizQuestResource quizQuestResource)
         {
             quizQuestParent.Show();
             currentQuiz = quiz;
@@ -148,10 +146,9 @@ public class SideQuestManager : ActionEnterMapManager
                 {
                     var answerBtn = listBtnAnswer[i];
                     answerBtn.transform.DOScale(Vector3.one, 0.5f);
-
                 }
-            }, quizQuestResource.GetQuizDialogs(currentQuiz.quiz),characterProviderQuest,false);
-           
+            }, quizQuestResource.GetQuizDialogs(currentQuiz.quiz), characterProviderQuest, false);
+
             for (int i = 0; i < currentQuiz.answer.Length; i++)
             {
                 var answerBtn = answerPrefab.Spawn(answerPrefab.transform.parent);
@@ -159,17 +156,12 @@ public class SideQuestManager : ActionEnterMapManager
                 answerBtn.transform.localScale = Vector3.zero;
                 answerBtn.Init(i, currentQuiz.answer[i]);
                 listBtnAnswer.Add(answerBtn);
-
             }
+
             listBtnAnswer = listBtnAnswer.OrderBy(x => UnityEngine.Random.value).ToList();
-        }    
-
-    
-        
-
-
-
+        }
     }
+
     public void AnswerQuest(AnswerQuizQuest answer)
     {
         answerPrefab.RecycleAll();
@@ -179,20 +171,13 @@ public class SideQuestManager : ActionEnterMapManager
             if (answer.currentIndexAnswer == currentQuiz.rightAnswerIndex)
             {
                 DoneQuest();
-
-
-
             }
             else
             {
-                SayDialogManager.Instance.ShowDialogWithSkin(nameChar, gender, skins, color, quizQuestResource.wrongDialog);
-
+                SayDialogManager.Instance.ShowDialogWithSkin(nameChar, gender, skins, color,
+                    quizQuestResource.wrongDialog);
             }
         }
-
-       
-
-
     }
 
     public override ActionMapResourceSO GetActionMapResourceSO()

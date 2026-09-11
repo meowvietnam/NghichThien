@@ -38,12 +38,21 @@ using System.IO;
 using System.Reflection;
 
 
-namespace Spine {
-	public class TextureRegion {
-		public int width, height;
-		public float u, v, u2, v2;
+namespace Spine
+{
+    public class TextureRegion
+    {
+        public int width, height;
+        public float u, v, u2, v2;
 
-		virtual public int OriginalWidth { get { return width; } }
-		virtual public int OriginalHeight { get { return height; } }
-	}
+        virtual public int OriginalWidth
+        {
+            get { return width; }
+        }
+
+        virtual public int OriginalHeight
+        {
+            get { return height; }
+        }
+    }
 }

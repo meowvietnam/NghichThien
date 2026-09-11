@@ -10,20 +10,22 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(CuuVanLuanHoiQuyet))]
 public class CuuVanLuanHoiQuyet : CongPhap, IMemorySerializable<CuuVanLuanHoiQuyet>
 {
-    [SerializeField]
-    private int[] buffValues = new int[]{10, 15, 20, 25, 30};
+    [SerializeField] private int[] buffValues = new int[] { 10, 15, 20, 25, 30 };
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         // caster gây dame check iscanuse caster
         if (caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt hoTrao))
         {
             //  giảm dame gây ra 10%
-            target.AddDamageData(new List<int>{-(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100)});
+            target.AddDamageData(new List<int>
+                { -(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100) });
         }
         else
         {
             // tăng dame gây ra 10%
-            target.AddDamageData(new List<int>{+(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100)});
+            target.AddDamageData(new List<int>
+                { +(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100) });
         }
     }
 
@@ -45,18 +47,21 @@ public class CuuVanLuanHoiQuyet : CongPhap, IMemorySerializable<CuuVanLuanHoiQuy
         if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt hoTrao))
         {
             //giảm dame nhận 10%
-            target.AddDamageData(new List<int>{-(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(target) - 1] / 100)});
+            target.AddDamageData(new List<int>
+                { -(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(target) - 1] / 100) });
         }
         else
         {
             // tăng dame nhận 10% 
-            target.AddDamageData(new List<int>{+(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(target) - 1] / 100)});
+            target.AddDamageData(new List<int>
+                { +(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(target) - 1] / 100) });
         }
     }
 
     public override string GetDesc(int level)
     {
-        return $"Nếu bản thân có trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} thì sát thương từ thần thông gây ra và nhận vào giảm xuống {GetColoredText($"{buffValues[level - 1]}%", "red")}. Nếu không, sát thương từ thần thông gây ra và nhận vào tăng lên {GetColoredText($"{buffValues[level - 1]}%", "red")}";
+        return
+            $"Nếu bản thân có trạng thái {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} thì sát thương từ thần thông gây ra và nhận vào giảm xuống {GetColoredText($"{buffValues[level - 1]}%", "red")}. Nếu không, sát thương từ thần thông gây ra và nhận vào tăng lên {GetColoredText($"{buffValues[level - 1]}%", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

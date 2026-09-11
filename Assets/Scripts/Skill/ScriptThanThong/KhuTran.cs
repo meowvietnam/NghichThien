@@ -8,17 +8,21 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(KhuTran), menuName = "Skill/Thần Thông/" + nameof(KhuTran))]
 public class KhuTran : ThanThong, IMemorySerializable<KhuTran>
 {
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
         var tranPhapSkills = caster.specialThanThongImpactAfterPlaySkill.OfType<TranPhapTT>().ToList();
         // Bây giờ bạn có thể thao tác với tranPhapSkills
-        tranPhapSkills.ForEach(tp =>
-        {
-            tp.OnExecuteTranPhap(caster, target);
-        });
+        tranPhapSkills.ForEach(tp => { tp.OnExecuteTranPhap(caster, target); });
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticleBase(caster, delayTimeEffect, 2.5f);
     }
 

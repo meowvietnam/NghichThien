@@ -8,14 +8,16 @@ using UnityEngine.UI;
 public class ItemSelect : MonoBehaviour
 {
     public BaseItemData itemData;
+
     [SerializeField] private Image img;
+
     // Thay đổi Action để nhận vào RectTransform (đối tượng được thả vào)
     private Action<RectTransform> actionPointerUp;
-    [SerializeField]private List<RectTransform> overlays;
-    [SerializeField]private RectTransform rectTransform;
-    [SerializeField]private Canvas canvas;
+    [SerializeField] private List<RectTransform> overlays;
+    [SerializeField] private RectTransform rectTransform;
+    [SerializeField] private Canvas canvas;
     private bool isDragging = false; // Biến cờ kiểm soát
-   
+
     [Button]
     private void GetComponent()
     {
@@ -23,7 +25,8 @@ public class ItemSelect : MonoBehaviour
         canvas = GetComponentInParent<Canvas>();
         // Tắt Raycast Target của chính cái ảnh kéo để nó không chặn ô bên dưới
         if (img != null) img.raycastTarget = false;
-    }    
+    }
+
     private void Update()
     {
         if (!isDragging) return;
@@ -51,11 +54,11 @@ public class ItemSelect : MonoBehaviour
         {
             foreach (var rect in overlays)
             {
-                if(canvas == null)
+                if (canvas == null)
                 {
                     canvas = GetComponentInParent<Canvas>();
-
                 }
+
                 if (RectTransformUtility.RectangleContainsScreenPoint(rect, releasePosition, canvas.worldCamera))
                 {
                     hitOverlay = rect;
@@ -63,16 +66,19 @@ public class ItemSelect : MonoBehaviour
                 }
             }
         }
+
         StartCoroutine(DelayFrameHide());
         actionPointerUp?.Invoke(hitOverlay);
-        if (actionPointerUp== null)
+        if (actionPointerUp == null)
         {
             Debug.Log("action up null");
-        }    
+        }
     }
-    public void Show(ItemInventory itemInventory, List<RectTransform> targetOverlay, Action<RectTransform> actionPointerUpOverlay)
+
+    public void Show(ItemInventory itemInventory, List<RectTransform> targetOverlay,
+        Action<RectTransform> actionPointerUpOverlay)
     {
-        if (itemInventory.itemData == null) return; 
+        if (itemInventory.itemData == null) return;
         this.itemData = itemInventory.itemData;
         this.img.sprite = itemInventory.icon.sprite;
         this.img.SetNativeSize();
@@ -84,6 +90,7 @@ public class ItemSelect : MonoBehaviour
         isDragging = true; // Kích hoạt trạng thái kéo ngay lập tức
         SetAnimHighlightTarget(true);
     }
+
     private void SetAnimHighlightTarget(bool active)
     {
         foreach (var item in overlays)
@@ -105,19 +112,21 @@ public class ItemSelect : MonoBehaviour
                 Debug.LogWarning($"Không tìm thấy HighlightAnim trong {item.name}");
             }
         }
-    }    
+    }
+
     private IEnumerator DelayFrame()
     {
         yield return null;
         this.img.enabled = true;
     }
+
     private IEnumerator DelayFrameHide()
     {
         SetAnimHighlightTarget(false);
         yield return null;
 
         Hide();
-        
     }
+
     private void Hide() => gameObject.SetActive(false);
 }

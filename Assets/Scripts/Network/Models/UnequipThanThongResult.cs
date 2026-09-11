@@ -7,6 +7,7 @@ namespace Network.Models
         public bool Success { get; set; }
         public string Message { get; set; }
         public ushort Id { get; set; }
+
         public void Deserialize(IReader reader, ref UnequipThanThongResult value)
         {
             var success = reader.Read<bool>();
@@ -20,12 +21,14 @@ namespace Network.Models
                 value.Message = reader.Read();
             }
         }
+
         public int ByteSize()
         {
             var baseSize = Success.ByteSize();
             var exSize = Success ? Id.ByteSize() : Message.ByteSize();
             return baseSize + exSize;
         }
+
         public void Serialize(IWriter writer)
         {
             writer.Write(Success);
@@ -33,7 +36,7 @@ namespace Network.Models
             {
                 writer.Write(Id);
             }
-            else 
+            else
             {
                 writer.Write(Message);
             }

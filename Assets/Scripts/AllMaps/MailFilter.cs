@@ -20,6 +20,7 @@ namespace AllMaps
         {
             OnFilter?.Invoke(this);
         }
+
         private void OnDestroy()
         {
             filterButton.onClick.RemoveAllListeners();

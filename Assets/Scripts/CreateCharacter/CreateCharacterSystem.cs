@@ -23,7 +23,7 @@ namespace CreateCharacter
         [SerializeField] private string confirmText;
         [SerializeField] private int originalMoney;
         private UserData UserData => Client.Instance.UserData;
-        
+
         private void Start()
         {
             var state = new SelectCharacter(this);
@@ -45,10 +45,7 @@ namespace CreateCharacter
 
         public override void ToSetPlayerNamePanel(IPanel panel)
         {
-            panel.DoFade(1, 0, 0.5f, false, () =>
-            {
-                panel.SetActive(false);
-            });
+            panel.DoFade(1, 0, 0.5f, false, () => { panel.SetActive(false); });
             setPlayerNamePanel.SetActive(true);
             setPlayerNamePanel.DoFade(0, 1, 0.5f, true);
         }
@@ -69,7 +66,7 @@ namespace CreateCharacter
         {
             setPlayerNamePanel.DoFade(1, 0, 0.5f, false, () => { setPlayerNamePanel.SetActive(false); });
             createCharacterPanel.SetActive(true);
-            createCharacterPanel.Init(new CreateSkin(createCharacterPanel, this),skinResources, originalMoney);
+            createCharacterPanel.Init(new CreateSkin(createCharacterPanel, this), skinResources, originalMoney);
             createCharacterPanel.DoFade(0, 1, 0.5f, true);
         }
 
@@ -82,6 +79,7 @@ namespace CreateCharacter
                 selectCharacterPanel.DoFade(0, 1, 0.5f, true);
             });
         }
+
         public override void Final(List<SelectionModel> selectionModels)
         {
             var money = createCharacterPanel.SelectStats.Money;
@@ -95,6 +93,7 @@ namespace CreateCharacter
                 SendFinal(selectionModels);
             }
         }
+
         public void OnCanCreateCharacter(CanCreateChar result)
         {
             NetworkManager.Instance.Invoke(() =>
@@ -104,6 +103,7 @@ namespace CreateCharacter
                     NotifyGroup.Instance.Show(result.Message);
                     return;
                 }
+
                 Client.Instance.ChangeState(new Network.ClientState.CreateCharacter(this));
                 BeginCreateCharacter();
             });
@@ -128,7 +128,7 @@ namespace CreateCharacter
                     var op = SceneManager.LoadSceneAsync("AllMaps");
                     if (op != null)
                     {
-                        op.completed += (o) => { progressBar.DoKill(() => {}); };
+                        op.completed += (o) => { progressBar.DoKill(() => { }); };
                     }
                 }
                 else
@@ -161,6 +161,7 @@ namespace CreateCharacter
                 }
             });
         }
+
         public override void OnApplyStatsResult(ApplyStatsResult result)
         {
             NetworkManager.Instance.Invoke(() =>
@@ -168,10 +169,7 @@ namespace CreateCharacter
                 if (result.Success)
                 {
                     NotifyGroup.Instance.Show(createCharacterSuccess);
-                    progressBar.DoKill(() =>
-                    {
-                        SceneManager.LoadSceneAsync("CreateCharacter");
-                    });
+                    progressBar.DoKill(() => { SceneManager.LoadSceneAsync("CreateCharacter"); });
                 }
                 else
                 {

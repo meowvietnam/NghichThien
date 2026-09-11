@@ -9,12 +9,10 @@ using Network.Extensions;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(TrongNguyenLuanChuyenQuyet))]
 public class TrongNguyenLuanChuyenQuyet : CongPhap, IMemorySerializable<TrongNguyenLuanChuyenQuyet>
 {
-    [SerializeField]
-    private int[] sucTheAndHoTrao;
-    [SerializeField]
-    private int[] bonusBuff;
-    [SerializeField]
-    private int require = 5;
+    [SerializeField] private int[] sucTheAndHoTrao;
+    [SerializeField] private int[] bonusBuff;
+    [SerializeField] private int require = 5;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         int level = CurrentLevelCongPhapInCombat(caster);
@@ -41,7 +39,8 @@ public class TrongNguyenLuanChuyenQuyet : CongPhap, IMemorySerializable<TrongNgu
 
     public override string GetDesc(int level)
     {
-        return $"Khi kết thúc hiệp, thu hoạch được {GetColoredText($"+{sucTheAndHoTrao[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}. Mỗi lần sử dụng thần thông có tiêu hao ít nhất {GetColoredText($"{require} điểm", "red")} linh khí thì thu hoạch được thêm {GetColoredText($"+{bonusBuff[level - 1]}", "red")} tầng";
+        return
+            $"Khi kết thúc hiệp, thu hoạch được {GetColoredText($"+{sucTheAndHoTrao[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)} và {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)}. Mỗi lần sử dụng thần thông có tiêu hao ít nhất {GetColoredText($"{require} điểm", "red")} linh khí thì thu hoạch được thêm {GetColoredText($"+{bonusBuff[level - 1]}", "red")} tầng";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

@@ -8,6 +8,7 @@ namespace DP
     public partial class DongPhuRewardMoneyVip : IDongPhuReward
     {
         public int MoneyVip { get; set; }
+
         public void Claim(CharacterData charData)
         {
             var newMoneyVip = charData.MoneyVip + MoneyVip;

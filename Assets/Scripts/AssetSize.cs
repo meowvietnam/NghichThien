@@ -11,6 +11,7 @@ public class SpriteSize
 {
     public long spriteSize;
     public long textureSize;
+
     public override string ToString()
     {
         float spriteMB = spriteSize / 1024f / 1024f;
@@ -18,14 +19,14 @@ public class SpriteSize
         return $"Sprite: {spriteMB:F2} MB, Texture: {textureMB:F2} MB";
     }
 }
+
 [Serializable]
 public class TextureSize
 {
     public long textureSize;
     public string name;
     public string path;
-    [ShowInInspector]
-    public string Total => ToString();
+    [ShowInInspector] public string Total => ToString();
 
     [Button]
     public void Ping()
@@ -38,18 +39,21 @@ public class TextureSize
 
     public bool IsSingleDependencies()
     {
-        var refs = AssetDatabase.GetDependencies(path,true);
+        var refs = AssetDatabase.GetDependencies(path, true);
         return refs.Length == 1;
     }
+
     public override string ToString()
     {
         float textureMB = textureSize / 1024f / 1024f;
         return $"{textureMB:F2} MB";
     }
 }
+
 public class AssetSize : MonoBehaviour
 {
     public List<TextureSize> textures = new List<TextureSize>();
+
     public static SpriteSize CalculateSize(HashSet<Sprite> sprites)
     {
         var textures = sprites.Select(x => x.texture).ToHashSet();
@@ -61,9 +65,9 @@ public class AssetSize : MonoBehaviour
     [Button]
     public void Get()
     {
-        var guids = AssetDatabase.FindAssets("t:Texture2D", new [] { "Assets" });
+        var guids = AssetDatabase.FindAssets("t:Texture2D", new[] { "Assets" });
         textures = guids.Select(x => AssetDatabase.GUIDToAssetPath(x))
-            .Select(x => new {tex= AssetDatabase.LoadAssetAtPath<Texture2D>(x), path = x})
+            .Select(x => new { tex = AssetDatabase.LoadAssetAtPath<Texture2D>(x), path = x })
             .Where(x => x.tex != null)
             .Select(x => new TextureSize()
             {

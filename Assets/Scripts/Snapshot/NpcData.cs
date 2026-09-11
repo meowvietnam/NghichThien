@@ -9,11 +9,12 @@ namespace Snapshot
     {
         public CharacterStatsSecureSnapshot CharStats { get; set; }
         public ETypeCombo ComboType { get; set; }
+
         [MemoryPackConstructor]
         public NpcData()
         {
-            
         }
+
         public NpcData(NPCData npcData)
         {
             CharStats = new CharacterStatsSecureSnapshot(npcData.charStats);

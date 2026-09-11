@@ -8,8 +8,7 @@ using UnityEngine;
 public class SpineSkinMixer : MonoBehaviour
 {
     // Kéo thả component SkeletonAnimation vào đây trong Inspector
-    [SerializeField]
-    private SkeletonGraphic skeletonGraphic;
+    [SerializeField] private SkeletonGraphic skeletonGraphic;
 
     [Tooltip("Danh sách các tiền tố Skin (ví dụ: 'a_hair', 'suit'). Điền tự động sau khi chạy Debug.")]
     public List<string> skinPrefixes = new List<string>();
@@ -22,8 +21,7 @@ public class SpineSkinMixer : MonoBehaviour
     [Tooltip("Dùng để GHI ĐÈ tỷ lệ mặc định cho các Prefixes đặc biệt (ví dụ: a_mask = 0.5f).")]
     public List<SpecificChance> specificChances = new List<SpecificChance>();
 
-    [Header("Exclusion/Blacklist")]
-    [Tooltip("Danh sách các Skin/Prefix cần loại trừ khỏi Randomizer.")]
+    [Header("Exclusion/Blacklist")] [Tooltip("Danh sách các Skin/Prefix cần loại trừ khỏi Randomizer.")]
     public List<BlacklistEntry> blacklistedSkinIDs = new List<BlacklistEntry>();
 
 
@@ -32,8 +30,7 @@ public class SpineSkinMixer : MonoBehaviour
     {
         // [SpineSkin(dataField: "skeletonAnimation")] 
         public string prefix = "a_mask";
-        [Range(0f, 1f)]
-        public float chance = 0.5f;
+        [Range(0f, 1f)] public float chance = 0.5f;
     }
 
     [System.Serializable]
@@ -100,7 +97,6 @@ public class SpineSkinMixer : MonoBehaviour
         Debug.Log($"Đã tìm thấy và cập nhật {skinPrefixes.Count} tiền tố Skin vào danh sách 'skinPrefixes'.");
     }
 
-   
 
     private Dictionary<string, List<string>> GroupSkinsByPrefix(List<Skin> allSkins)
     {
@@ -122,6 +118,7 @@ public class SpineSkinMixer : MonoBehaviour
                 }
             }
         }
+
         return groups;
     }
 
@@ -218,7 +215,8 @@ public class SpineSkinMixer : MonoBehaviour
     private List<string> FilterBlacklistedSkins(string prefix, List<string> originalList)
     {
         // 1. Tìm BlacklistEntry cho prefix hiện tại
-        BlacklistEntry entry = blacklistedSkinIDs.FirstOrDefault(e => e.prefix.Equals(prefix, System.StringComparison.OrdinalIgnoreCase));
+        BlacklistEntry entry =
+            blacklistedSkinIDs.FirstOrDefault(e => e.prefix.Equals(prefix, System.StringComparison.OrdinalIgnoreCase));
 
         if (entry == null || string.IsNullOrEmpty(entry.IDsToExclude))
         {
@@ -240,7 +238,8 @@ public class SpineSkinMixer : MonoBehaviour
             if (trimmedPart.Contains('-'))
             {
                 string[] rangeParts = trimmedPart.Split('-');
-                if (rangeParts.Length == 2 && int.TryParse(rangeParts[0].Trim(), out int start) && int.TryParse(rangeParts[1].Trim(), out int end))
+                if (rangeParts.Length == 2 && int.TryParse(rangeParts[0].Trim(), out int start) &&
+                    int.TryParse(rangeParts[1].Trim(), out int end))
                 {
                     for (int i = start; i <= end; i++)
                     {

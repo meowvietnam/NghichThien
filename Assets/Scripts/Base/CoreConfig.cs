@@ -18,11 +18,13 @@ namespace Base
             Qualities = qualities;
         }
     }
+
     [CreateAssetMenu]
     public class CoreConfig : ScriptableObject
     {
         [field: SerializeField] public List<Quality> Qualities { get; private set; }
         private static CoreConfig instance;
+
         public static CoreConfig Instance
         {
             get
@@ -31,9 +33,11 @@ namespace Base
                 {
                     instance = Resources.Load<CoreConfig>("Core/CoreConfig");
                 }
+
                 return instance;
             }
         }
+
         public Quality FindQuality(Tier tier)
         {
             return Qualities.FirstOrDefault(x => x.Tier == tier);

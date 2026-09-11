@@ -5,15 +5,14 @@ using System;
 using Network;
 using Network.Extensions;
 
-[CreateAssetMenu(fileName = nameof(BasicTTBuffPercentLinhKhi), menuName = "Skill/Thần Thông/" + nameof(BasicTTBuffPercentLinhKhi))]
+[CreateAssetMenu(fileName = nameof(BasicTTBuffPercentLinhKhi),
+    menuName = "Skill/Thần Thông/" + nameof(BasicTTBuffPercentLinhKhi))]
 public class BasicTTBuffPercentLinhKhi : ThanThong, IMemorySerializable<BasicTTBuffPercentLinhKhi>
 {
-    [SerializeField]
-    private float[] buffPercent;
-    [SerializeField]
-    private ELinhKhi elinhKhi;
-    [SerializeField]
-    private float delayTimeEffect = 1f;
+    [SerializeField] private float[] buffPercent;
+    [SerializeField] private ELinhKhi elinhKhi;
+    [SerializeField] private float delayTimeEffect = 1f;
+
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         switch (elinhKhi)
@@ -42,12 +41,20 @@ public class BasicTTBuffPercentLinhKhi : ThanThong, IMemorySerializable<BasicTTB
                 break;
         }
 
+        PlayVisualSkill(caster, target);
+    }
+
+    //Done PlayVisualSkill
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         ShowSkillEffectWorld(caster, delayTimeEffect);
     }
 
     public override string GetDesc(int level)
     {
-        return $"Cơ sở {GetTextLinhKhi(elinhKhi)} hệ thần thông, tăng {GetColoredText($"{buffPercent[level - 1]}", "red")}% khả năng hấp thụ {GetTextLinhKhi(elinhKhi)} hệ linh khí trong trận chiến";
+        return
+            $"Cơ sở {GetTextLinhKhi(elinhKhi)} hệ thần thông, tăng {GetColoredText($"{buffPercent[level - 1]}", "red")}% khả năng hấp thụ {GetTextLinhKhi(elinhKhi)} hệ linh khí trong trận chiến";
     }
 
     public override int ByteSize()

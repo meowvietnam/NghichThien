@@ -11,12 +11,14 @@ namespace LuyenKhi
         [SerializeField] protected ItemBag prefab;
         [SerializeField] protected RectTransform content;
         private List<IItemFilter<ItemBag>> filters = new();
+
         public void Init(IEnumerable<ItemRef> datas)
         {
             foreach (var itemBag in Items)
             {
                 itemBag.Destroy();
             }
+
             Items.Clear();
             foreach (var data in datas)
             {
@@ -24,10 +26,12 @@ namespace LuyenKhi
                 instance.Init(data);
                 Items.Add(instance);
             }
+
             if (!filters.Contains(this))
             {
                 AddFilter(this);
             }
+
             Refresh();
         }
 
@@ -49,6 +53,7 @@ namespace LuyenKhi
                 itemBag.SetActive(active);
             }
         }
+
         public bool Filter(ItemBag item)
         {
             return item.ItemRef.Count > 0;

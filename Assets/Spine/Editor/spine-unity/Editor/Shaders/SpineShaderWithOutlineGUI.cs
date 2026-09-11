@@ -32,194 +32,228 @@ using UnityEditor;
 using UnityEngine;
 using SpineInspectorUtility = Spine.Unity.Editor.SpineInspectorUtility;
 
-public class SpineShaderWithOutlineGUI : ShaderGUI {
+public class SpineShaderWithOutlineGUI : ShaderGUI
+{
+    protected MaterialEditor _materialEditor;
+    bool _showAdvancedOutlineSettings = false;
+    bool _showStencilSettings = false;
 
-	protected MaterialEditor _materialEditor;
-	bool _showAdvancedOutlineSettings = false;
-	bool _showStencilSettings = false;
+    MaterialProperty _OutlineWidth = null;
+    MaterialProperty _OutlineColor = null;
+    MaterialProperty _OutlineReferenceTexWidth = null;
+    MaterialProperty _ThresholdEnd = null;
+    MaterialProperty _OutlineSmoothness = null;
+    MaterialProperty _Use8Neighbourhood = null;
+    MaterialProperty _OutlineOpaqueAlpha = null;
+    MaterialProperty _OutlineMipLevel = null;
+    MaterialProperty _StencilComp = null;
+    MaterialProperty _StencilRef = null;
 
-	MaterialProperty _OutlineWidth = null;
-	MaterialProperty _OutlineColor = null;
-	MaterialProperty _OutlineReferenceTexWidth = null;
-	MaterialProperty _ThresholdEnd = null;
-	MaterialProperty _OutlineSmoothness = null;
-	MaterialProperty _Use8Neighbourhood = null;
-	MaterialProperty _OutlineOpaqueAlpha = null;
-	MaterialProperty _OutlineMipLevel = null;
-	MaterialProperty _StencilComp = null;
-	MaterialProperty _StencilRef = null;
+    static GUIContent _EnableOutlineText = new GUIContent("Outline",
+        "Enable outline rendering. Draws an outline by sampling 4 or 8 neighbourhood pixels at a given distance specified via 'Outline Width'.");
 
-	static GUIContent _EnableOutlineText = new GUIContent("Outline", "Enable outline rendering. Draws an outline by sampling 4 or 8 neighbourhood pixels at a given distance specified via 'Outline Width'.");
-	static GUIContent _OutlineWidthText = new GUIContent("Outline Width", "");
-	static GUIContent _OutlineColorText = new GUIContent("Outline Color", "");
-	static GUIContent _OutlineReferenceTexWidthText = new GUIContent("Reference Texture Width", "");
-	static GUIContent _ThresholdEndText = new GUIContent("Outline Threshold", "");
-	static GUIContent _OutlineSmoothnessText = new GUIContent("Outline Smoothness", "");
-	static GUIContent _Use8NeighbourhoodText = new GUIContent("Sample 8 Neighbours", "");
-	static GUIContent _OutlineOpaqueAlphaText = new GUIContent("Opaque Alpha", "If a pixel's alpha value is above this threshold it will not receive any outline color overlay. Use to exclude problematic semi-transparent areas.");
-	static GUIContent _OutlineMipLevelText = new GUIContent("Outline Mip Level", "");
-	static GUIContent _StencilCompText = new GUIContent("Stencil Comparison", "");
-	static GUIContent _StencilRefText = new GUIContent("Stencil Reference", "");
+    static GUIContent _OutlineWidthText = new GUIContent("Outline Width", "");
+    static GUIContent _OutlineColorText = new GUIContent("Outline Color", "");
+    static GUIContent _OutlineReferenceTexWidthText = new GUIContent("Reference Texture Width", "");
+    static GUIContent _ThresholdEndText = new GUIContent("Outline Threshold", "");
+    static GUIContent _OutlineSmoothnessText = new GUIContent("Outline Smoothness", "");
+    static GUIContent _Use8NeighbourhoodText = new GUIContent("Sample 8 Neighbours", "");
 
-	static GUIContent _OutlineAdvancedText = new GUIContent("Advanced", "");
-	static GUIContent _ShowStencilText = new GUIContent("Stencil", "Stencil parameters for mask interaction.");
+    static GUIContent _OutlineOpaqueAlphaText = new GUIContent("Opaque Alpha",
+        "If a pixel's alpha value is above this threshold it will not receive any outline color overlay. Use to exclude problematic semi-transparent areas.");
 
-	protected const string ShaderOutlineNamePrefix = "Spine/Outline/";
-	protected const string ShaderNormalNamePrefix = "Spine/";
-	protected const string ShaderWithoutStandardVariantSuffix = "OutlineOnly";
+    static GUIContent _OutlineMipLevelText = new GUIContent("Outline Mip Level", "");
+    static GUIContent _StencilCompText = new GUIContent("Stencil Comparison", "");
+    static GUIContent _StencilRefText = new GUIContent("Stencil Reference", "");
 
-	#region ShaderGUI
+    static GUIContent _OutlineAdvancedText = new GUIContent("Advanced", "");
+    static GUIContent _ShowStencilText = new GUIContent("Stencil", "Stencil parameters for mask interaction.");
 
-	public override void OnGUI (MaterialEditor materialEditor, MaterialProperty[] properties) {
-		FindProperties(properties); // MaterialProperties can be animated so we do not cache them but fetch them every event to ensure animated values are updated correctly
-		_materialEditor = materialEditor;
+    protected const string ShaderOutlineNamePrefix = "Spine/Outline/";
+    protected const string ShaderNormalNamePrefix = "Spine/";
+    protected const string ShaderWithoutStandardVariantSuffix = "OutlineOnly";
 
-		base.OnGUI(materialEditor, properties);
-		EditorGUILayout.Space();
-		RenderStencilProperties();
-		EditorGUILayout.Space();
-		RenderOutlineProperties();
-	}
+    #region ShaderGUI
 
-	#endregion
+    public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
+    {
+        FindProperties(
+            properties); // MaterialProperties can be animated so we do not cache them but fetch them every event to ensure animated values are updated correctly
+        _materialEditor = materialEditor;
 
-	#region Virtual Interface
+        base.OnGUI(materialEditor, properties);
+        EditorGUILayout.Space();
+        RenderStencilProperties();
+        EditorGUILayout.Space();
+        RenderOutlineProperties();
+    }
 
-	protected virtual void FindProperties (MaterialProperty[] props) {
+    #endregion
 
-		_OutlineWidth = FindProperty("_OutlineWidth", props, false);
-		_OutlineReferenceTexWidth = FindProperty("_OutlineReferenceTexWidth", props, false);
-		_OutlineColor = FindProperty("_OutlineColor", props, false);
-		_ThresholdEnd = FindProperty("_ThresholdEnd", props, false);
-		_OutlineSmoothness = FindProperty("_OutlineSmoothness", props, false);
-		_Use8Neighbourhood = FindProperty("_Use8Neighbourhood", props, false);
-		_OutlineOpaqueAlpha = FindProperty("_OutlineOpaqueAlpha", props, false);
-		_OutlineMipLevel = FindProperty("_OutlineMipLevel", props, false);
+    #region Virtual Interface
 
-		_StencilComp = FindProperty("_StencilComp", props, false);
-		_StencilRef = FindProperty("_StencilRef", props, false);
-		if (_StencilRef == null)
-			_StencilRef = FindProperty("_Stencil", props, false);
-	}
+    protected virtual void FindProperties(MaterialProperty[] props)
+    {
+        _OutlineWidth = FindProperty("_OutlineWidth", props, false);
+        _OutlineReferenceTexWidth = FindProperty("_OutlineReferenceTexWidth", props, false);
+        _OutlineColor = FindProperty("_OutlineColor", props, false);
+        _ThresholdEnd = FindProperty("_ThresholdEnd", props, false);
+        _OutlineSmoothness = FindProperty("_OutlineSmoothness", props, false);
+        _Use8Neighbourhood = FindProperty("_Use8Neighbourhood", props, false);
+        _OutlineOpaqueAlpha = FindProperty("_OutlineOpaqueAlpha", props, false);
+        _OutlineMipLevel = FindProperty("_OutlineMipLevel", props, false);
 
-	protected virtual void RenderStencilProperties () {
-		if (_StencilComp == null)
-			return; // not a shader supporting custom stencil operations
+        _StencilComp = FindProperty("_StencilComp", props, false);
+        _StencilRef = FindProperty("_StencilRef", props, false);
+        if (_StencilRef == null)
+            _StencilRef = FindProperty("_Stencil", props, false);
+    }
 
-		// Use default labelWidth
-		EditorGUIUtility.labelWidth = 0f;
-		_showStencilSettings = EditorGUILayout.Foldout(_showStencilSettings, _ShowStencilText);
-		if (_showStencilSettings) {
-			using (new SpineInspectorUtility.IndentScope()) {
-				_materialEditor.ShaderProperty(_StencilComp, _StencilCompText);
-				_materialEditor.ShaderProperty(_StencilRef, _StencilRefText);
-			}
-		}
-	}
+    protected virtual void RenderStencilProperties()
+    {
+        if (_StencilComp == null)
+            return; // not a shader supporting custom stencil operations
 
-	protected virtual void RenderOutlineProperties () {
+        // Use default labelWidth
+        EditorGUIUtility.labelWidth = 0f;
+        _showStencilSettings = EditorGUILayout.Foldout(_showStencilSettings, _ShowStencilText);
+        if (_showStencilSettings)
+        {
+            using (new SpineInspectorUtility.IndentScope())
+            {
+                _materialEditor.ShaderProperty(_StencilComp, _StencilCompText);
+                _materialEditor.ShaderProperty(_StencilRef, _StencilRefText);
+            }
+        }
+    }
 
-		if (_OutlineWidth == null)
-			return; // not an outline shader
+    protected virtual void RenderOutlineProperties()
+    {
+        if (_OutlineWidth == null)
+            return; // not an outline shader
 
-		// Use default labelWidth
-		EditorGUIUtility.labelWidth = 0f;
+        // Use default labelWidth
+        EditorGUIUtility.labelWidth = 0f;
 
-		bool mixedValue;
-		bool hasOutlineVariant = !IsShaderWithoutStandardVariantShader(_materialEditor, out mixedValue);
-		bool isOutlineEnabled = true;
-		if (hasOutlineVariant) {
-			isOutlineEnabled = IsOutlineEnabled(_materialEditor, out mixedValue);
-			EditorGUI.showMixedValue = mixedValue;
-			EditorGUI.BeginChangeCheck();
+        bool mixedValue;
+        bool hasOutlineVariant = !IsShaderWithoutStandardVariantShader(_materialEditor, out mixedValue);
+        bool isOutlineEnabled = true;
+        if (hasOutlineVariant)
+        {
+            isOutlineEnabled = IsOutlineEnabled(_materialEditor, out mixedValue);
+            EditorGUI.showMixedValue = mixedValue;
+            EditorGUI.BeginChangeCheck();
 
-			FontStyle origFontStyle = EditorStyles.label.fontStyle;
-			EditorStyles.label.fontStyle = FontStyle.Bold;
-			isOutlineEnabled = EditorGUILayout.Toggle(_EnableOutlineText, isOutlineEnabled);
-			EditorStyles.label.fontStyle = origFontStyle;
-			EditorGUI.showMixedValue = false;
-			if (EditorGUI.EndChangeCheck()) {
-				foreach (Material material in _materialEditor.targets) {
-					SwitchShaderToOutlineSettings(material, isOutlineEnabled);
-				}
-			}
-		} else {
-			FontStyle origFontStyle = EditorStyles.label.fontStyle;
-			EditorStyles.label.fontStyle = FontStyle.Bold;
-			EditorGUILayout.LabelField(_EnableOutlineText);
-			EditorStyles.label.fontStyle = origFontStyle;
-		}
+            FontStyle origFontStyle = EditorStyles.label.fontStyle;
+            EditorStyles.label.fontStyle = FontStyle.Bold;
+            isOutlineEnabled = EditorGUILayout.Toggle(_EnableOutlineText, isOutlineEnabled);
+            EditorStyles.label.fontStyle = origFontStyle;
+            EditorGUI.showMixedValue = false;
+            if (EditorGUI.EndChangeCheck())
+            {
+                foreach (Material material in _materialEditor.targets)
+                {
+                    SwitchShaderToOutlineSettings(material, isOutlineEnabled);
+                }
+            }
+        }
+        else
+        {
+            FontStyle origFontStyle = EditorStyles.label.fontStyle;
+            EditorStyles.label.fontStyle = FontStyle.Bold;
+            EditorGUILayout.LabelField(_EnableOutlineText);
+            EditorStyles.label.fontStyle = origFontStyle;
+        }
 
-		if (isOutlineEnabled) {
-			_materialEditor.ShaderProperty(_OutlineWidth, _OutlineWidthText);
-			_materialEditor.ShaderProperty(_OutlineColor, _OutlineColorText);
+        if (isOutlineEnabled)
+        {
+            _materialEditor.ShaderProperty(_OutlineWidth, _OutlineWidthText);
+            _materialEditor.ShaderProperty(_OutlineColor, _OutlineColorText);
 
-			_showAdvancedOutlineSettings = EditorGUILayout.Foldout(_showAdvancedOutlineSettings, _OutlineAdvancedText);
-			if (_showAdvancedOutlineSettings) {
-				using (new SpineInspectorUtility.IndentScope()) {
-					_materialEditor.ShaderProperty(_OutlineReferenceTexWidth, _OutlineReferenceTexWidthText);
-					_materialEditor.ShaderProperty(_ThresholdEnd, _ThresholdEndText);
-					_materialEditor.ShaderProperty(_OutlineSmoothness, _OutlineSmoothnessText);
-					_materialEditor.ShaderProperty(_Use8Neighbourhood, _Use8NeighbourhoodText);
-					_materialEditor.ShaderProperty(_OutlineOpaqueAlpha, _OutlineOpaqueAlphaText);
-					_materialEditor.ShaderProperty(_OutlineMipLevel, _OutlineMipLevelText);
-				}
-			}
-		}
-	}
+            _showAdvancedOutlineSettings = EditorGUILayout.Foldout(_showAdvancedOutlineSettings, _OutlineAdvancedText);
+            if (_showAdvancedOutlineSettings)
+            {
+                using (new SpineInspectorUtility.IndentScope())
+                {
+                    _materialEditor.ShaderProperty(_OutlineReferenceTexWidth, _OutlineReferenceTexWidthText);
+                    _materialEditor.ShaderProperty(_ThresholdEnd, _ThresholdEndText);
+                    _materialEditor.ShaderProperty(_OutlineSmoothness, _OutlineSmoothnessText);
+                    _materialEditor.ShaderProperty(_Use8Neighbourhood, _Use8NeighbourhoodText);
+                    _materialEditor.ShaderProperty(_OutlineOpaqueAlpha, _OutlineOpaqueAlphaText);
+                    _materialEditor.ShaderProperty(_OutlineMipLevel, _OutlineMipLevelText);
+                }
+            }
+        }
+    }
 
-	#endregion
+    #endregion
 
-	#region Private Functions
+    #region Private Functions
 
-	void SwitchShaderToOutlineSettings (Material material, bool enableOutline) {
+    void SwitchShaderToOutlineSettings(Material material, bool enableOutline)
+    {
+        string shaderName = material.shader.name;
+        bool isSetToOutlineShader = shaderName.Contains(ShaderOutlineNamePrefix);
+        if (isSetToOutlineShader && !enableOutline)
+        {
+            shaderName = shaderName.Replace(ShaderOutlineNamePrefix, ShaderNormalNamePrefix);
+            _materialEditor.SetShader(Shader.Find(shaderName), false);
+            return;
+        }
+        else if (!isSetToOutlineShader && enableOutline)
+        {
+            shaderName = shaderName.Replace(ShaderNormalNamePrefix, ShaderOutlineNamePrefix);
+            _materialEditor.SetShader(Shader.Find(shaderName), false);
+            return;
+        }
+    }
 
-		string shaderName = material.shader.name;
-		bool isSetToOutlineShader = shaderName.Contains(ShaderOutlineNamePrefix);
-		if (isSetToOutlineShader && !enableOutline) {
-			shaderName = shaderName.Replace(ShaderOutlineNamePrefix, ShaderNormalNamePrefix);
-			_materialEditor.SetShader(Shader.Find(shaderName), false);
-			return;
-		} else if (!isSetToOutlineShader && enableOutline) {
-			shaderName = shaderName.Replace(ShaderNormalNamePrefix, ShaderOutlineNamePrefix);
-			_materialEditor.SetShader(Shader.Find(shaderName), false);
-			return;
-		}
-	}
+    static bool IsOutlineEnabled(MaterialEditor editor, out bool mixedValue)
+    {
+        mixedValue = false;
+        bool isAnyEnabled = false;
+        foreach (Material material in editor.targets)
+        {
+            if (material.shader.name.Contains(ShaderOutlineNamePrefix))
+            {
+                isAnyEnabled = true;
+            }
+            else if (isAnyEnabled)
+            {
+                mixedValue = true;
+            }
+        }
 
-	static bool IsOutlineEnabled (MaterialEditor editor, out bool mixedValue) {
-		mixedValue = false;
-		bool isAnyEnabled = false;
-		foreach (Material material in editor.targets) {
-			if (material.shader.name.Contains(ShaderOutlineNamePrefix)) {
-				isAnyEnabled = true;
-			} else if (isAnyEnabled) {
-				mixedValue = true;
-			}
-		}
-		return isAnyEnabled;
-	}
+        return isAnyEnabled;
+    }
 
-	static bool IsShaderWithoutStandardVariantShader (MaterialEditor editor, out bool mixedValue) {
-		mixedValue = false;
-		bool isAnyShaderWithoutVariant = false;
-		foreach (Material material in editor.targets) {
-			if (material.shader.name.Contains(ShaderWithoutStandardVariantSuffix)) {
-				isAnyShaderWithoutVariant = true;
-			} else if (isAnyShaderWithoutVariant) {
-				mixedValue = true;
-			}
-		}
-		return isAnyShaderWithoutVariant;
-	}
+    static bool IsShaderWithoutStandardVariantShader(MaterialEditor editor, out bool mixedValue)
+    {
+        mixedValue = false;
+        bool isAnyShaderWithoutVariant = false;
+        foreach (Material material in editor.targets)
+        {
+            if (material.shader.name.Contains(ShaderWithoutStandardVariantSuffix))
+            {
+                isAnyShaderWithoutVariant = true;
+            }
+            else if (isAnyShaderWithoutVariant)
+            {
+                mixedValue = true;
+            }
+        }
 
-	static bool BoldToggleField (GUIContent label, bool value) {
-		FontStyle origFontStyle = EditorStyles.label.fontStyle;
-		EditorStyles.label.fontStyle = FontStyle.Bold;
-		value = EditorGUILayout.Toggle(label, value, EditorStyles.toggle);
-		EditorStyles.label.fontStyle = origFontStyle;
-		return value;
-	}
+        return isAnyShaderWithoutVariant;
+    }
 
-	#endregion
+    static bool BoldToggleField(GUIContent label, bool value)
+    {
+        FontStyle origFontStyle = EditorStyles.label.fontStyle;
+        EditorStyles.label.fontStyle = FontStyle.Bold;
+        value = EditorGUILayout.Toggle(label, value, EditorStyles.toggle);
+        EditorStyles.label.fontStyle = origFontStyle;
+        return value;
+    }
+
+    #endregion
 }

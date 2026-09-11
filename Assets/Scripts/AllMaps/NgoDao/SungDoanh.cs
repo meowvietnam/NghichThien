@@ -9,10 +9,9 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(SungDoanh), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(SungDoanh))]
 public class SungDoanh : NgoDaoCombat, IMemorySerializable<SungDoanh>
 {
-    [SerializeField]
-    private int buff = 12;
-    [SerializeField]
-    private int requireSave = 3;
+    [SerializeField] private int buff = 12;
+    [SerializeField] private int requireSave = 3;
+
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (caster.ngoDaoCombatsDynamic.Count(x => x is SungDoanh) < requireSave)
@@ -45,7 +44,8 @@ public class SungDoanh : NgoDaoCombat, IMemorySerializable<SungDoanh>
 
     public override string GetDes()
     {
-        return $"Mỗi tích lũy sử dụng {BaseSkill.GetColoredText($"{requireSave}", "red")} lần thần thông, thì lần tiếp theo sử dụng thần thông tạo thành tổn thương sẽ thu hoạch được {BaseSkill.GetColoredText($"+{buff} * X", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} (X là số linh khí thần thông này tiêu hao)";
+        return
+            $"Mỗi tích lũy sử dụng {BaseSkill.GetColoredText($"{requireSave}", "red")} lần thần thông, thì lần tiếp theo sử dụng thần thông tạo thành tổn thương sẽ thu hoạch được {BaseSkill.GetColoredText($"+{buff} * X", "red")} tầng {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} (X là số linh khí thần thông này tiêu hao)";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

@@ -3,7 +3,6 @@ using DP;
 using LongDH.LongDHModules;
 using Network.Extensions.MemoryPack;
 using Network.Models;
-
 using Application = UnityEngine.Application;
 
 namespace Network.ClientState
@@ -11,10 +10,12 @@ namespace Network.ClientState
     public class DongPhuState : IClientState
     {
         private DongPhuPanel panel;
+
         public DongPhuState(DongPhuPanel panel)
         {
             this.panel = panel;
         }
+
         public void OnEnter()
         {
         }
@@ -22,11 +23,8 @@ namespace Network.ClientState
         public void Handle(Message<MessageTag> message)
         {
             var tag = message.Tag;
-            var reader =  message.Reader;
-            NetworkManager.Instance.Invoke(() =>
-            {
-                OnMessage(tag, reader);
-            });
+            var reader = message.Reader;
+            NetworkManager.Instance.Invoke(() => { OnMessage(tag, reader); });
         }
 
         private void OnMessage(MessageTag tag, IReader reader)
@@ -46,47 +44,47 @@ namespace Network.ClientState
                 var notify = reader.MemRead<PlantNotify>();
                 panel.OnPlantNotify(notify);
             }
-            else if(tag == MessageTag.HarverstSlotResult)
+            else if (tag == MessageTag.HarvestSlotResult)
             {
                 var result = reader.MemRead<HarvestSlotResult>();
                 panel.OnHarvestSlotResult(result);
             }
-            else if(tag == MessageTag.HarvertSlotNotify)
+            else if (tag == MessageTag.HarvetSlotNotify)
             {
                 var notify = reader.MemRead<HarvestSlotNotify>();
                 panel.OnHarvestSlotNotify(notify);
             }
-            else if(tag == MessageTag.WateringHelpResult)
+            else if (tag == MessageTag.WateringHelpResult)
             {
                 var result = reader.MemRead<WateringHelpResult>();
                 panel.OnWateringHelpResult(result);
             }
-            else if(tag == MessageTag.WateringHelpNotify)
+            else if (tag == MessageTag.WateringHelpNotify)
             {
                 var notify = reader.MemRead<WateringHelpNotify>();
                 panel.OnWateringHelpNotify(notify);
             }
-            else if(tag == MessageTag.LikeDongPhuResult)
+            else if (tag == MessageTag.LikeDongPhuResult)
             {
                 var result = reader.MemRead<LikeDongPhuResult>();
                 panel.OnLikeDongPhuResult(result);
             }
-            else if(tag == MessageTag.LikeDongPhuNotify)
+            else if (tag == MessageTag.LikeDongPhuNotify)
             {
                 var notify = reader.MemRead<LikeDongPhuNotify>();
                 panel.OnLikeDongPhuNotify(notify);
             }
-            else if(tag == MessageTag.UpgradeDongPhuResult)
+            else if (tag == MessageTag.UpgradeDongPhuResult)
             {
                 var result = reader.MemRead<UpgradeDongPhuResult>();
                 panel.OnUpgradeDongPhuResult(result);
             }
-            else if(tag == MessageTag.UpgradeDongPhuNotify)
+            else if (tag == MessageTag.UpgradeDongPhuNotify)
             {
                 var notify = reader.MemRead<UpgradeDongPhuNotify>();
                 panel.OnUpgradeDongPhuNotify(notify);
             }
-            else if(tag == MessageTag.ToAllMapFromDongPhu)
+            else if (tag == MessageTag.ToAllMapFromDongPhu)
             {
                 Observer.Notify(EventList.GamePlay.LOAD_SCENE, "AllMaps");
             }
@@ -102,6 +100,7 @@ namespace Network.ClientState
                 panel.OnReloadShopResult(result);
             }
         }
+
         public void OnLeave()
         {
         }

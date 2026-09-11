@@ -9,8 +9,8 @@ using Network.Extensions;
 [CreateAssetMenu(fileName = nameof(NguThe), menuName = "Ngộ Đạo/Ngộ Đạo Combat/" + nameof(NguThe))]
 public class NguThe : NgoDaoCombat, IMemorySerializable<NguThe>
 {
-    [SerializeField]
-    private int buff = 15;
+    [SerializeField] private int buff = 15;
+
     public override void ObserverEffect(params object[] data)
     {
         CharacterCombat caster = data.Length > 0 ? data[0] as CharacterCombat : null;
@@ -25,15 +25,17 @@ public class NguThe : NgoDaoCombat, IMemorySerializable<NguThe>
 
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt hoTrao) && target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.GiamTonThuong, out SecureInt giamTonThuong))
+        if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt hoTrao) &&
+            target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.GiamTonThuong, out SecureInt giamTonThuong))
         {
-            target.AddDamageData(new List<int>{-(int)(buff * target.GetDameBuffForTarget() / 100)});
+            target.AddDamageData(new List<int> { -(int)(buff * target.GetDameBuffForTarget() / 100) });
         }
     }
 
     public override string GetDes()
     {
-        return $"Nếu bạn ở trạng thái {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} và {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.GiamTonThuong)}, thì nhận tổn thương giảm xuống {BaseSkill.GetColoredText($"{buff}%", "red")}";
+        return
+            $"Nếu bạn ở trạng thái {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} và {BaseSkill.GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.GiamTonThuong)}, thì nhận tổn thương giảm xuống {BaseSkill.GetColoredText($"{buff}%", "red")}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)

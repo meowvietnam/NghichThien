@@ -14,10 +14,12 @@ namespace LuyenKhi
             toggle = GetComponent<Toggle>();
             selectTypePage = GetComponentInParent<SelectTypePage>();
         }
+
         private void Start()
         {
             toggle.onValueChanged.AddListener(OnToggle);
         }
+
         private void OnToggle(bool isOn)
         {
             if (isOn)

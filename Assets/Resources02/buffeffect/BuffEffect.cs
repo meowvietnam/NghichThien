@@ -2,6 +2,7 @@
 using LongDH.LongDHModules;
 using System.Linq;
 using UnityEngine;
+
 public class BuffEffect : MonoBehaviour
 {
     [SerializeField] public Animator anim;
@@ -9,9 +10,9 @@ public class BuffEffect : MonoBehaviour
 
     protected virtual void Awake()
     {
-        Observer.AddObserver(EventList.Combat.ADD_BUFF, CharacterAddBuff);
-
+        Observer.AddObserver(EventList.Combat.ADD_BUFF_UI, CharacterAddBuff);
     }
+
     private void CharacterAddBuff(params object[] data)
     {
         CharacterCombat currentTurn = (CharacterCombat)data[0];
@@ -20,7 +21,7 @@ public class BuffEffect : MonoBehaviour
         int oldValue = (int)data[3];
 
         if (currentTurn == null || eBuffParam != eBuff) return;
-        
+
         BuffEffect[] allEffects = currentTurn.GetComponentsInChildren<BuffEffect>(true);
         Transform child = null;
         foreach (var effect in allEffects)
@@ -34,28 +35,27 @@ public class BuffEffect : MonoBehaviour
         }
 
         if (child == null) return;
-       
-        if(newValue <= 0)
+
+        if (newValue <= 0)
         {
             child.gameObject.SetActive(false);
         }
         else
         {
-            if(!child.gameObject.activeSelf || (eBuffParam != EBuffAndDeBuff.KiemKhi && eBuffParam != EBuffAndDeBuff.HoTrao && eBuffParam != EBuffAndDeBuff.SucThe))
+            if (!child.gameObject.activeSelf || (eBuffParam != EBuffAndDeBuff.KiemKhi &&
+                                                 eBuffParam != EBuffAndDeBuff.HoTrao &&
+                                                 eBuffParam != EBuffAndDeBuff.SucThe))
             {
                 child.gameObject.SetActive(false);
                 child.gameObject.SetActive(true);
-            }    
-           
-        }    
-
+            }
+        }
     }
+
     public void ShowEffect()
     {
         var child = transform.GetChild(0);
         child.gameObject.SetActive(false);
         child.gameObject.SetActive(true);
     }
-
-
 }

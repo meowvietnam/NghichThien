@@ -24,8 +24,10 @@ namespace AllMaps.ItemProvider
                     "<color=#ffb143>【Phụ Dược】 </color>" + $"{duocLieu.PhuDuoc} " +
                     "<color=#ffb143>【Dược Dẫn】 </color>" + $"{duocLieu.ThuocDan}";
             }
+
             ctx.QualityText.text = GameManager.TextWithTier[ctx.IItemData.Tier];
-        }   
+        }
+
         public override HerbData GetDataItemByIdRef(ushort Id)
         {
             return LuyenDanResources.Instance.FindHerb(Id);
@@ -35,10 +37,11 @@ namespace AllMaps.ItemProvider
         {
             return GameManager.PriceHerbWithTier[GetDataItemByIdRef(Id).Tier];
         }
+
         public override int GetCountOwner(ushort id)
         {
             var item = Client.Instance.CharacterData.InventoryManager.Herbs.FirstOrDefault(x => x.Id == id);
-            return item != null?item.Count : base.GetCountOwner(id);
+            return item != null ? item.Count : base.GetCountOwner(id);
         }
 
 

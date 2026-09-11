@@ -11,6 +11,7 @@ namespace LuyenKhi
         [field: SerializeField] public EquipmentTier Tier { get; private set; }
         [field: SerializeField] public Color Color { get; private set; }
         [field: SerializeField] public int DayCost { get; private set; }
+
         public void Deserialize(IReader reader, ref EquipmentTierConfig value)
         {
             value.Tier = reader.Read<EquipmentTier>();

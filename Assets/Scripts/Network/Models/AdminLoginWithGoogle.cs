@@ -8,6 +8,7 @@ namespace Network.Models
     {
         public string Email { get; set; }
         public string SecretKey { get; set; }
+
         public SignInProvider GetSignInProvider()
         {
             return SignInProvider.AdminGoogle;

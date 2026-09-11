@@ -15,6 +15,7 @@ namespace Auction
         public string Name { get; }
         public Tier Tier { get; }
         public string Description { get; }
+
         public LinhDanData(int id)
         {
             Id = id;
@@ -28,6 +29,7 @@ namespace Auction
             QualityBackground = quality.Background;
             QualityIconUp = quality.IconUp;
         }
+
         public void ShowInfo(ToolTipItems toolTip)
         {
             var itemRef = new ItemRef()
