@@ -31,6 +31,9 @@ namespace Network.Core
         public event Action<ClanMemberRoleChanged> MemberRoleChanged;
         public event Action<ClanJoinRequest> JoinRequestAdded;
         public event Action<ClanJoinRequestRemoved> JoinRequestRemoved;
+        public event Action<ClanInheritanceChanged> InheritanceChanged;
+        public event Action<ClanExpChanged> ExpChanged;
+        public event Action<ClanLevelChanged> LevelChanged;
 
         public ClanHandler()
         {
@@ -71,6 +74,24 @@ namespace Network.Core
             }
 
             return ClanPermission.None;
+        }
+
+        public int GetInheritanceSlots(int clanLevel)
+        {
+            var config = CurrentConfig;
+            if (config == null || config.MaxInheritanceSlotsPerColumn <= 0) return 0;
+            var slots = (long)Math.Max(0, config.BaseInheritanceSlots) +
+                        (long)Math.Max(0, clanLevel - 1) * Math.Max(0, config.InheritanceSlotsPerLevel);
+            return (int)Math.Min(slots, config.MaxInheritanceSlotsPerColumn);
+        }
+
+        public int GetInheritanceValue(int clanLevel)
+        {
+            var config = CurrentConfig;
+            if (config == null) return 0;
+            var value = (long)config.InheritanceBaseValue +
+                        (long)Math.Max(0, clanLevel - 1) * config.InheritanceValuePerClanLevel;
+            return (int)Math.Max(int.MinValue, Math.Min(int.MaxValue, value));
         }
 
         public async Task<CreateClanResult> CreateClan(CreateClanRequest request)
@@ -259,18 +280,41 @@ namespace Network.Core
             return result;
         }
 
+        public async Task<SetClanInheritanceResult> SetInheritance(
+            ClanInheritanceTrigger trigger,
+            int slotIndex,
+            EBuffAndDeBuff buffType)
+        {
+            var result = await Request<SetClanInheritanceRequest, SetClanInheritanceResult>(
+                MessageTag.SetClanInheritanceRequest,
+                new SetClanInheritanceRequest
+                {
+                    Trigger = trigger,
+                    SlotIndex = slotIndex,
+                    BuffType = buffType
+                });
+
+            if (result.Success)
+            {
+                client.CharacterData.MoneyVip = result.NewMoneyVip;
+                ApplyInheritanceChanged(result.Change, false);
+            }
+
+            return result;
+        }
+
         public bool IsShopItemOwner(ClanShopItem shopItem)
         {
             return shopItem != null && shopItem.OwnerCharId == client.CharacterData.Id;
         }
 
-        public async Task<AddClanShopItemResult> AddShopItem(ItemRef item, long price)
+        public async Task<AddClanShopItemResult> AddShopItem(ItemRef item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
             var result = await Request<AddClanShopItemRequest, AddClanShopItemResult>(
                 MessageTag.AddClanShopItemRequest,
-                new AddClanShopItemRequest { Item = item, Price = price });
+                new AddClanShopItemRequest { Item = item });
 
             if (result.Success)
             {
@@ -342,6 +386,15 @@ namespace Network.Core
                 case MessageTag.ClanJoinRequestRemoved:
                     ApplyJoinRequestRemoved(message.Reader.MemRead<ClanJoinRequestRemoved>(), true);
                     break;
+                case MessageTag.ClanInheritanceChanged:
+                    ApplyInheritanceChanged(message.Reader.MemRead<ClanInheritanceChanged>(), true);
+                    break;
+                case MessageTag.ClanExpChanged:
+                    ApplyExpChanged(message.Reader.MemRead<ClanExpChanged>(), true);
+                    break;
+                case MessageTag.ClanLevelChanged:
+                    ApplyLevelChanged(message.Reader.MemRead<ClanLevelChanged>(), true);
+                    break;
             }
         }
 
@@ -358,6 +411,8 @@ namespace Network.Core
                 clan.Members ??= new List<ClanMember>();
                 clan.JoinRequests ??= new List<ClanJoinRequest>();
                 clan.ShopItems ??= new List<ClanShopItem>();
+                clan.StartTurnEffects ??= new List<ClanInheritanceEffect>();
+                clan.EndTurnEffects ??= new List<ClanInheritanceEffect>();
             }
 
             CurrentClan = clan;
@@ -478,6 +533,52 @@ namespace Network.Core
             if (notify) NotifyMainThread(() => JoinRequestRemoved?.Invoke(removed));
         }
 
+        private void ApplyInheritanceChanged(ClanInheritanceChanged changed, bool notify)
+        {
+            if (changed == null || CurrentClan == null || changed.ClanId != CurrentClan.Id) return;
+
+            var effects = changed.Trigger == ClanInheritanceTrigger.StartTurn
+                ? CurrentClan.StartTurnEffects
+                : CurrentClan.EndTurnEffects;
+            effects ??= new List<ClanInheritanceEffect>();
+            if (changed.Trigger == ClanInheritanceTrigger.StartTurn)
+                CurrentClan.StartTurnEffects = effects;
+            else
+                CurrentClan.EndTurnEffects = effects;
+
+            effects.RemoveAll(x => x.SlotIndex == changed.SlotIndex);
+            if (changed.Effect != null) effects.Add(changed.Effect);
+            effects.Sort((left, right) => left.SlotIndex.CompareTo(right.SlotIndex));
+
+            if (notify) NotifyMainThread(() => InheritanceChanged?.Invoke(changed));
+        }
+
+        private void ApplyExpChanged(ClanExpChanged changed, bool notify)
+        {
+            if (changed == null || CurrentClan == null || changed.ClanId != CurrentClan.Id) return;
+            CurrentClan.Exp = changed.Exp;
+            if (notify) NotifyMainThread(() => ExpChanged?.Invoke(changed));
+        }
+
+        private void ApplyLevelChanged(ClanLevelChanged changed, bool notify)
+        {
+            if (changed == null || CurrentClan == null || changed.ClanId != CurrentClan.Id) return;
+
+            CurrentClan.Level = changed.Level;
+            CurrentClan.Exp = changed.Exp;
+            var effects = changed.Effects ?? Array.Empty<ClanInheritanceEffect>();
+            CurrentClan.StartTurnEffects = effects
+                .Where(x => x.Trigger == ClanInheritanceTrigger.StartTurn)
+                .OrderBy(x => x.SlotIndex)
+                .ToList();
+            CurrentClan.EndTurnEffects = effects
+                .Where(x => x.Trigger == ClanInheritanceTrigger.EndTurn)
+                .OrderBy(x => x.SlotIndex)
+                .ToList();
+
+            if (notify) NotifyMainThread(() => LevelChanged?.Invoke(changed));
+        }
+
         private void ReplaceShop(IEnumerable<ClanShopItem> items)
         {
             if (CurrentClan == null) return;
@@ -560,6 +661,9 @@ namespace Network.Core
             MemberRoleChanged = null;
             JoinRequestAdded = null;
             JoinRequestRemoved = null;
+            InheritanceChanged = null;
+            ExpChanged = null;
+            LevelChanged = null;
         }
 
         public void OnDisconnect(IProtocol<MessageTag> protocol)
@@ -578,7 +682,10 @@ namespace Network.Core
             MessageTag.ClanShopItemChanged,
             MessageTag.ClanMemberRoleChanged,
             MessageTag.ClanJoinRequestAdded,
-            MessageTag.ClanJoinRequestRemoved
+            MessageTag.ClanJoinRequestRemoved,
+            MessageTag.ClanInheritanceChanged,
+            MessageTag.ClanExpChanged,
+            MessageTag.ClanLevelChanged
         };
 
         public MessageTag[] HandleTag => Handlers;

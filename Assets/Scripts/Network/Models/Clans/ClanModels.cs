@@ -24,6 +24,7 @@ namespace Network.Models.Clans
         AddShopItem = 1 << 2,
         RemoveShopItem = 1 << 3,
         AssignRole = 1 << 4,
+        ManageInheritance = 1 << 5,
     }
 
     public enum CreateClanBy
@@ -36,6 +37,12 @@ namespace Network.Models.Clans
     {
         Kick = 1,
         Leave = 2
+    }
+
+    public enum ClanInheritanceTrigger : byte
+    {
+        StartTurn = 1,
+        EndTurn = 2
     }
 
     [MemoryPackable]
@@ -58,6 +65,19 @@ namespace Network.Models.Clans
         public List<ClanMember> Members { get; set; } = new List<ClanMember>();
         public List<ClanJoinRequest> JoinRequests { get; set; } = new List<ClanJoinRequest>();
         public List<ClanShopItem> ShopItems { get; set; } = new List<ClanShopItem>();
+        public List<ClanInheritanceEffect> StartTurnEffects { get; set; } = new List<ClanInheritanceEffect>();
+        public List<ClanInheritanceEffect> EndTurnEffects { get; set; } = new List<ClanInheritanceEffect>();
+    }
+
+    [MemoryPackable]
+    public partial class ClanInheritanceEffect
+    {
+        public int Id { get; set; }
+        public int ClanId { get; set; }
+        public ClanInheritanceTrigger Trigger { get; set; }
+        public int SlotIndex { get; set; }
+        public EBuffAndDeBuff BuffType { get; set; }
+        public int Value { get; set; }
     }
 
     [MemoryPackable]

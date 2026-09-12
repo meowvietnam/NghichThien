@@ -58,8 +58,14 @@ namespace Auction
             if (colors == null) return;
             foreach (var (skinId, color) in colors)
             {
-                var skinName = currentSkins[skinId];
+                if (!currentSkins.TryGetValue(skinId, out var skinName))
+                {
+                    Debug.LogWarning($"Bỏ qua màu của nhóm skin không tồn tại: {skinId}");
+                    continue;
+                }
+
                 var skin = data.FindSkin(skinName);
+                if (skin == null) continue;
                 foreach (var attachment in skin.Attachments)
                 {
                     var slot = skeleton.Slots.Items[attachment.SlotIndex];

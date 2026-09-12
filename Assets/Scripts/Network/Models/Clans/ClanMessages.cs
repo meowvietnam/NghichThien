@@ -28,6 +28,14 @@ namespace Network.Models.Clans
         public int MaxShopItemsAddedPerDay { get; set; } = 100;
         public Dictionary<ClanRole, ClanPermission> RolePermissions { get; set; } =
             new Dictionary<ClanRole, ClanPermission>();
+        public int BaseInheritanceSlots { get; set; } = 1;
+        public int InheritanceSlotsPerLevel { get; set; } = 1;
+        public int MaxInheritanceSlotsPerColumn { get; set; } = 10;
+        public int ChangeInheritanceMoneyVipCost { get; set; } = 1_000;
+        public int InheritanceBaseValue { get; set; } = 1;
+        public int InheritanceValuePerClanLevel { get; set; } = 1;
+        public EBuffAndDeBuff[] InheritanceBuffWhitelist { get; set; } = new EBuffAndDeBuff[0];
+        public long[] ClanLevelRequiredTotalExp { get; set; } = new long[0];
     }
 
     [MemoryPackable]
@@ -190,7 +198,6 @@ namespace Network.Models.Clans
     public partial class AddClanShopItemRequest
     {
         public ItemRef Item { get; set; } = new ItemRef();
-        public long Price { get; set; }
     }
 
     [MemoryPackable]

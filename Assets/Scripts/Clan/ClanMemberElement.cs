@@ -17,6 +17,7 @@ namespace Clan
         [SerializeField] private Text roleText;
         [SerializeField] private Text contribText;
         [SerializeField] private CharacterGraphic avatar;
+        [SerializeField] private GameObject avatarFallback;
 
         private ClanMember member;
 
@@ -113,20 +114,43 @@ namespace Clan
                 levelImage.enabled = false;
             }
 
-            if (avatar != null) avatar.gameObject.SetActive(false);
+            SetAvatarVisible(false);
             if (button != null) button.interactable = false;
         }
 
         private void SetAvatar(ClanMember clanMember)
         {
-            if (avatar == null) return;
-
-            avatar.gameObject.SetActive(true);
-            avatar.SetGender(clanMember.Gender);
-
             var appearance = clanMember.Appearance;
-            if (appearance?.Skins == null || appearance.Skins.Count == 0) return;
-            avatar.SetSkin(appearance.Skins, appearance.Colors);
+            if (avatar == null || appearance?.Skins == null || appearance.Skins.Count == 0)
+            {
+                SetAvatarVisible(false);
+                return;
+            }
+
+            try
+            {
+                avatar.gameObject.SetActive(true);
+                avatar.SetGender(clanMember.Gender);
+                avatar.SetSkin(appearance.Skins, appearance.Colors);
+                if (avatar.graphic != null)
+                {
+                    avatar.graphic.enabled = true;
+                    avatar.graphic.SetAllDirty();
+                }
+
+                SetAvatarVisible(true);
+            }
+            catch (Exception exception)
+            {
+                SetAvatarVisible(false);
+                Debug.LogWarning($"Không thể hiển thị avatar của thành viên {clanMember.CharId}: {exception.Message}", this);
+            }
+        }
+
+        private void SetAvatarVisible(bool visible)
+        {
+            if (avatar != null) avatar.gameObject.SetActive(visible);
+            if (avatarFallback != null) avatarFallback.SetActive(!visible);
         }
 
         private static void SetText(Text target, string value)
