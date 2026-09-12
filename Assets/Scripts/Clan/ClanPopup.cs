@@ -59,7 +59,7 @@ namespace Clan
         {
             EnsureReferences();
             tween?.Kill();
-            tween = myTf.DOScale(Vector3.one, time).OnComplete(() =>
+            tween = myTf.DOScale(Vector3.zero, time).OnComplete(() =>
             {
                 SetListening(false);
                 selfObject.SetActive(false);

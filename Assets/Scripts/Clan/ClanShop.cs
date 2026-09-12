@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using CreateCharacter;
+using LongDHModules;
 using LuyenDan;
+using LuyenKhi;
 using Network;
 using Network.Core;
 using Network.Models.Clans;
@@ -106,7 +109,28 @@ namespace Clan
 
         public void BuySelected()
         {
-            if (!isSubmitting) BuySelectedAsync();
+            if (isSubmitting) return;
+            if (!CanBuy(out var quantity, out var message))
+            {
+                Notify(message);
+                return;
+            }
+
+            var shopItemId = selectedItem.Id;
+            var unitPrice = selectedItem.Price;
+            var totalPrice = unitPrice * quantity;
+            var itemName = GetItemName(selectedItem.Item);
+            var popup = Pool.Get<PopupConfirmAction>();
+            if (popup == null)
+            {
+                Notify("Không thể mở xác nhận mua vật phẩm");
+                return;
+            }
+
+            popup.ShowPopConfirmAction(
+                $"Xác nhận mua {quantity:n0} {itemName}?\n" +
+                $"Tổng cộng: {totalPrice:n0} điểm cống hiến.",
+                () => ConfirmBuy(shopItemId, quantity, unitPrice));
         }
 
         public void RemoveSelected()
@@ -136,7 +160,20 @@ namespace Clan
             }
         }
 
-        private async void BuySelectedAsync()
+        private void ConfirmBuy(int shopItemId, int quantity, long unitPrice)
+        {
+            if (isSubmitting) return;
+            if (selectedItem == null || selectedItem.Id != shopItemId || selectedItem.Price != unitPrice)
+            {
+                Notify("Vật phẩm hoặc giá đã thay đổi, vui lòng xác nhận lại");
+                return;
+            }
+
+            SetQuantity(quantity);
+            _ = BuySelectedAsync();
+        }
+
+        private async Task BuySelectedAsync()
         {
             if (!CanBuy(out var quantity, out var message))
             {
@@ -287,7 +324,7 @@ namespace Clan
         {
             var hasSelection = selectedItem?.Item != null;
             if (selectedItemText != null)
-                selectedItemText.text = hasSelection ? $"{selectedItem.Item.Type} #{selectedItem.Item.Id}" : "Chưa chọn vật phẩm";
+                selectedItemText.text = hasSelection ? GetItemName(selectedItem.Item) : "Chưa chọn vật phẩm";
             if (priceText != null) priceText.text = hasSelection ? selectedItem.Price.ToString("N0") : "0";
             UpdatePrice();
             UpdateButtons();
@@ -337,6 +374,43 @@ namespace Clan
         private int ReadQuantity() => quantityInput != null && int.TryParse(quantityInput.text, out var value) ? value : 1;
         private void SetQuantity(int quantity) { if (quantityInput != null) quantityInput.text = Math.Max(1, quantity).ToString(); }
         private void SetLoading(bool value) { if (loadingState != null) loadingState.SetActive(value); UpdateButtons(); }
+
+        internal static string GetItemName(ItemRef item)
+        {
+            if (item == null) return "Vật phẩm";
+
+            try
+            {
+                if (item.Type == ItemType.ThanThong)
+                    return Pool.Get<GameManager>()?.FindThanThongWithItemRef(item)?.nameItem ?? "Thần thông";
+                if (item.Type == ItemType.CongPhap)
+                    return Pool.Get<GameManager>()?.FindCongPhapWithItemRef(item)?.nameItem ?? "Công pháp";
+                if (item.Type == ItemType.Material)
+                    return LuyenKhiResources.Instance?.FindItem(item)?.Name ?? "Nguyên liệu";
+
+                return LuyenDanResources.Instance?.FindItem(item)?.Name ?? GetItemTypeName(item.Type);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogWarning($"Không tìm thấy tên vật phẩm kho tông môn ({item.Type}): {exception.Message}");
+                return GetItemTypeName(item.Type);
+            }
+        }
+
+        private static string GetItemTypeName(ItemType type)
+        {
+            return type switch
+            {
+                ItemType.Herb => "Dược liệu",
+                ItemType.LinhDan => "Đan dược",
+                ItemType.ThanThong => "Thần thông",
+                ItemType.CongPhap => "Công pháp",
+                ItemType.Recipe => "Đan phương",
+                ItemType.Material => "Nguyên liệu",
+                _ => "Vật phẩm"
+            };
+        }
+
         private static ItemRef Clone(ItemRef item) => new(item.Id, item.Type, item.Count, item.TempId);
         private static void Notify(string message) { if (!string.IsNullOrWhiteSpace(message)) NotifyGroup.Instance?.Show(message); }
 

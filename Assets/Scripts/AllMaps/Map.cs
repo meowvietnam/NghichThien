@@ -109,6 +109,7 @@ namespace AllMaps
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            if (mapManager.TryHandleNodeSelection(this)) return;
             mapManager.PlayerMoveTo(this);
         }
     }

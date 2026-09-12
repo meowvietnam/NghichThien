@@ -23,6 +23,7 @@ namespace Network.Models.Clans
         KickMember = 1 << 1,
         AddShopItem = 1 << 2,
         RemoveShopItem = 1 << 3,
+        AssignRole = 1 << 4,
     }
 
     public enum CreateClanBy
