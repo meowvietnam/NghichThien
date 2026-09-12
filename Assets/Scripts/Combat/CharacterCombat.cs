@@ -791,7 +791,7 @@ public class CharacterCombat : MonoBehaviour
         {
             currentVuKhiVisual.Init(characterStatsBase.vuKhi.Item.IconFight);
         }
-
+        HapThuLinhKhi(totalKhi);
         //Test
     }
 
@@ -859,11 +859,10 @@ public class CharacterCombat : MonoBehaviour
 
     public SecureInt totalKhiRandom;
 
-    public SecureInt firstBaseHapThuLinhKhi;
 
     public int CurrentLinhKhi => khiKim + khiMoc + khiThuy + khiHoa + khiTho + khiMa;
 
-    public int baseCountHapThuLinhKhi => CurrentTurn != 1 ? firstBaseHapThuLinhKhi : totalKhiRandom - CurrentLinhKhi;
+    public int baseCountHapThuLinhKhi => totalKhiRandom - totalKhi;
     public SecureInt countHapThuLinhKhiNewTurn;
 
     private void InitTotalKhi()
@@ -886,7 +885,6 @@ public class CharacterCombat : MonoBehaviour
 
         // 3) Tổng khí theo yêu cầu: bạn đang return chỉ số khí/lv
         totalKhiRandom = khiPerLevelRandom;
-        firstBaseHapThuLinhKhi = totalKhiRandom - totalKhi;
     }
 
     [Button]
@@ -1383,37 +1381,38 @@ public class CharacterCombat : MonoBehaviour
     {
         if (isCongDon)
         {
-            int sum = 0;
+            // 1. Dùng long để tính tổng, tránh tràn số ngay từ bước cộng danh sách
+            long sum = 0;
             foreach (var d in dame)
             {
                 sum += d;
             }
 
+            // Chặn giá trị sum trong khoảng từ 0 đến int.MaxValue (2.14 tỷ)
+            sum = Math.Clamp(sum, 0, int.MaxValue);
+
             if (allDamages.Count > 0)
             {
                 for (int i = 0; i < allDamages.Count; i++)
                 {
-                    allDamages[i] += sum;
-                    if (allDamages[i] < 0)
-                    {
-                        allDamages[i] = 0;
-                    }
+                    // 2. Dùng long để cộng dồn với giá trị cũ, tránh tràn số tại allDamages[i]
+                    long currentVal = (long)allDamages[i] + sum;
+
+                    // Ép ngược lại kiểu int nhưng đã được an toàn ở giới hạn int.MaxValue
+                    allDamages[i] = (int)Math.Clamp(currentVal, 0, int.MaxValue);
                 }
             }
             else
             {
-                if (sum < 0)
-                {
-                    return;
-                }
-
-                allDamages.Add(sum);
+                allDamages.Add((int)sum);
             }
         }
         else
         {
             foreach (var d in dame) Debug.Log("PHÁT HIỆN ADD RANGE GIÁ TRỊ: " + d);
 
+            // Lưu ý: Nếu list dame truyền vào ở nhánh này có số quá lớn, 
+            // bạn có thể cần xử lý thêm nếu các phần tử đơn lẻ vượt 2 tỷ.
             allDamages.AddRange(dame);
         }
     }

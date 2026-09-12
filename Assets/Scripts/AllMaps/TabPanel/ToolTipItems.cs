@@ -17,6 +17,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
+using Coffee.UIExtensions;
 
 public enum EActionShowItemInfor
 {
@@ -69,7 +70,21 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
     [SerializeField] private EActionShowItemInfor eActionShowItem;
     public static ToolTipItems Instance { get; private set; }
     private CharacterData CharData => Client.Instance.CharacterData;
+    [SerializeField] private UIParticle uIParticleEffectDemoSkill;
 
+    public void ShowDemoEffectSkill(GameObject prefab,float scale = 70)
+    {
+        if(uIParticleEffectDemoSkill.transform.childCount>0)
+        {
+            Destroy(uIParticleEffectDemoSkill.transform.GetChild(0).gameObject);
+        }    
+        var effect =Instantiate(prefab, uIParticleEffectDemoSkill.transform);
+        effect.transform.localPosition = Vector3.zero;
+        uIParticleEffectDemoSkill.scale = scale;
+        uIParticleEffectDemoSkill.RefreshParticles();
+        uIParticleEffectDemoSkill.Play();
+
+    }    
 
     public void ShowInfoSkill(ISkillItemData skillItemData,
         EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)

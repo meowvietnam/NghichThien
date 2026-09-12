@@ -22,7 +22,7 @@ namespace Skill
 
         [SerializeField] protected List<RequireActive> requireActives;
         public List<RequireActive> BaseRequireActive => requireActives;
-
+        protected override string addressEffectString => "PrefabEffectSkill";
         public override void SetBaseTimeLearn()
         {
             baseTimeLearn = 165 * (int)eTierSkill;
@@ -52,31 +52,8 @@ namespace Skill
             caster.AddThanThongCoolDown(this, 1);
         }
 
-        [SerializeField] protected GameObject prefabEffectSkill => LoadFirstDataPrefab();
 
-        public GameObject LoadFirstDataPrefab()
-        {
-            string addressKey = $"PrefabEffectSkill_{Id}";
-            GameObject handle = null;
-            // Kiểm tra xem Key này có tồn tại trong Addressables Catalog hay không
-            bool hasKey = false;
-            foreach (var locator in Addressables.ResourceLocators)
-            {
-                if (locator.Locate(addressKey, typeof(GameObject), out _))
-                {
-                    hasKey = true;
-                    break;
-                }
-            }
-
-            // Nếu có key thì mới load, không có thì im lặng bỏ qua
-            if (hasKey)
-            {
-                handle = Addressables.LoadAssetAsync<GameObject>(addressKey).WaitForCompletion();
-            }
-
-            return handle;
-        }
+       
 
         public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
         {

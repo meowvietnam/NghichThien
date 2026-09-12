@@ -306,6 +306,25 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
 
     private void InitBagNPC(List<ItemRef> itemDatas)
     {
+        List<ItemType> itemTypeCanSellForShop = new();
+        if (eShopType == EShopType.ShopDuocLieu)
+        {
+            itemTypeCanSellForShop = new List<ItemType>
+                { ItemType.Herb, ItemType.Furnace, ItemType.LinhDan, ItemType.Recipe };
+          
+        }
+        else if (eShopType == EShopType.ShopVatLieu)
+        {
+            itemTypeCanSellForShop = new List<ItemType>
+                { ItemType.Material, ItemType.VuKhi, ItemType.PhongCu, ItemType.TrangSuc };
+           
+        }
+        else if (eShopType == EShopType.Skill)
+        {
+            itemTypeCanSellForShop = new List<ItemType> { ItemType.ThanThong, ItemType.CongPhap };
+        
+        }
+        bagNpcList.filterControl.InitFilterType(itemTypeCanSellForShop);
         InitBagLogic(bagNpcList, listItemUserBuy, itemDatas, EActionShowItemInfor.Buy);
     }
 

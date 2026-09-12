@@ -424,26 +424,45 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
         currentECombatResult = ETypeResultCombat.None;
         if (Client.Instance.CharacterData.Stats.Hp <= 0 && currentETypeCombat == ETypeCombat.AllMaps)
         {
-            NotifyGroup.Instance.Show("Khí huyết đã cạn. Hãy bế quan tại khách sạn hoặc sử dụng đan dược để hồi phục");
+            NotifyGroup.Instance.Show("Khí huyết đã cạn.");
+            NotifyGroup.Instance.Show("Hãy bế quan tại khách sạn (Bên trong các thành trì)");
+            NotifyGroup.Instance.Show("Hoặc sử dụng đan dược để hồi phục");
             return;
         }
 
-        Pool.Get<UIManager>().panelGroup.SetActive(false);
-        Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
-        Pool.Get<UIManager>().SetActiveListIcon(false);
-        Pool.Get<PrepareCombatPanel>().Hide();
-        Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
-        if (currentETypeCombat == ETypeCombat.LuanBan)
+        CheckNotifyDebuff(() =>
         {
-            GoToLuanBan(new CharacterSnapshot(Client.Instance.CharacterData));
+            Pool.Get<UIManager>().panelGroup.SetActive(false);
+            Pool.Get<UIManager>().commonMask.gameObject.SetActive(false);
+            Pool.Get<UIManager>().SetActiveListIcon(false);
+            Pool.Get<PrepareCombatPanel>().Hide();
+            Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
+            if (currentETypeCombat == ETypeCombat.LuanBan)
+            {
+                GoToLuanBan(new CharacterSnapshot(Client.Instance.CharacterData));
+            }
+            else
+            {
+                Observer.Notify(EventList.Network.LOAD_CHAR_COMBAT, this);
+                Client.Instance.CharacterData.EquipmentManager.DanCombatUseds.Clear();
+            }
+        });
+        
+    }
+    public void CheckNotifyDebuff(System.Action action)
+    {
+        if (GetIntTuoiTac(Client.Instance.CharacterData.Stats.TuoiTac) > Client.Instance.CharacterData.Stats.ThoNguyen)
+        {
+            Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Tuổi của bạn đang bị quá thọ thì mỗi hiệp lần đầu số lượng hấp thụ linh khí -2. Mỗi lần sử dụng thần thông mất đi 5% sinh mệnh và có 50% tỉ lệ thất bại. Bạn muốn tiếp tục chứ?", () =>
+            {
+                action?.Invoke();
+            });
         }
         else
         {
-            Observer.Notify(EventList.Network.LOAD_CHAR_COMBAT, this);
-            Client.Instance.CharacterData.EquipmentManager.DanCombatUseds.Clear();
+            action?.Invoke();
         }
-    }
-
+    }    
     public void GoToLuanBan(CharacterSnapshot user)
     {
         this.user = new CharCombatInit

@@ -19,7 +19,7 @@ namespace Skill
     {
         [SerializeField] private int tocDoTuLuyenBase;
         [SerializeField] public bool isDonThuat = false;
-
+        protected override string addressEffectString => "PrefabEffectSkillCongPhap";
         public override void SetBaseTimeLearn()
         {
             baseTimeLearn = 1702 * (int)eTierSkill;
