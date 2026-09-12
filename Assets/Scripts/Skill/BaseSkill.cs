@@ -8,6 +8,7 @@ using Base;
 using Network;
 using Network.Extensions;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public enum EBuffAndDeBuff
 {
@@ -94,6 +95,32 @@ public enum EBuffAndDeBuff
 public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
 {
     [SerializeField] public int baseTimeLearn;
+    [SerializeField] protected GameObject prefabEffectSkill => LoadFirstDataPrefab();
+    [SerializeField] protected virtual string addressEffectString => "";
+    public bool isShowDemoEffectSkillOnUI;
+    public virtual GameObject LoadFirstDataPrefab()
+    {
+        string addressKey = $"{addressEffectString}_{Id}";
+        GameObject handle = null;
+        // Kiểm tra xem Key này có tồn tại trong Addressables Catalog hay không
+        bool hasKey = false;
+        foreach (var locator in Addressables.ResourceLocators)
+        {
+            if (locator.Locate(addressKey, typeof(GameObject), out _))
+            {
+                hasKey = true;
+                break;
+            }
+        }
+
+        // Nếu có key thì mới load, không có thì im lặng bỏ qua
+        if (hasKey)
+        {
+            handle = Addressables.LoadAssetAsync<GameObject>(addressKey).WaitForCompletion();
+        }
+
+        return handle;
+    }
 
     [Button]
     public virtual void SetBaseTimeLearn()

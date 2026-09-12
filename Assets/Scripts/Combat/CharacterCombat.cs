@@ -791,7 +791,7 @@ public class CharacterCombat : MonoBehaviour
         {
             currentVuKhiVisual.Init(characterStatsBase.vuKhi.Item.IconFight);
         }
-
+        HapThuLinhKhi(totalKhi);
         //Test
     }
 
@@ -859,11 +859,10 @@ public class CharacterCombat : MonoBehaviour
 
     public SecureInt totalKhiRandom;
 
-    public SecureInt firstBaseHapThuLinhKhi;
 
     public int CurrentLinhKhi => khiKim + khiMoc + khiThuy + khiHoa + khiTho + khiMa;
 
-    public int baseCountHapThuLinhKhi => CurrentTurn != 1 ? firstBaseHapThuLinhKhi : totalKhiRandom - CurrentLinhKhi;
+    public int baseCountHapThuLinhKhi => totalKhiRandom - totalKhi;
     public SecureInt countHapThuLinhKhiNewTurn;
 
     private void InitTotalKhi()
@@ -886,7 +885,6 @@ public class CharacterCombat : MonoBehaviour
 
         // 3) Tổng khí theo yêu cầu: bạn đang return chỉ số khí/lv
         totalKhiRandom = khiPerLevelRandom;
-        firstBaseHapThuLinhKhi = totalKhiRandom - totalKhi;
     }
 
     [Button]

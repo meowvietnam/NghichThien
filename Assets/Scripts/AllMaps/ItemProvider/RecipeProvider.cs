@@ -3,6 +3,7 @@ using LuyenDan.Inventory;
 using Network;
 using System.Linq;
 using CreateCharacter;
+using LongDHModules;
 
 namespace AllMaps.ItemProvider
 {
@@ -39,6 +40,7 @@ namespace AllMaps.ItemProvider
                     // Xóa ký tự xuống dòng thừa ở cuối nếu có (nếu GetHerbString có trả về)
                     ctx.DescriptionText.text += herbLines.TrimEnd('\n');
                 }
+                ctx.DescriptionText.text += "\n [Dược liệu nhị phẩm trở xuống có thể mua tại Vân Tịch Thành, còn dược liệu tam phẩm trở lên đánh quái có tỉ lệ rớt ra, làm sự kiện hoặc quay thưởng]";
             }
 
             ctx.QualityText.text = GameManager.TextWithTier[ctx.IItemData.Tier];
@@ -52,7 +54,7 @@ namespace AllMaps.ItemProvider
             var herbData = LuyenDanResources.Instance.FindHerb(herb.Id);
             string name = herbData != null ? herbData.Name : "Unknown";
 
-            return $"{label}: {name} x{herb.Count}\n";
+            return $"{label}: {name} x{herb.Count} ({GameManager.TextWithTier[herbData.Tier]})\n";
         }
 
         string GetColoredText(string text, string color)

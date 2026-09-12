@@ -451,12 +451,16 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
     }
     public void CheckNotifyDebuff(System.Action action)
     {
-        if (user != null && user.charStats.tuoiTac > user.charStats.thoNguyen)
+        if (GetIntTuoiTac(Client.Instance.CharacterData.Stats.TuoiTac) > Client.Instance.CharacterData.Stats.ThoNguyen)
         {
             Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Tuổi của bạn đang bị quá thọ thì mỗi hiệp lần đầu số lượng hấp thụ linh khí -2. Mỗi lần sử dụng thần thông mất đi 5% sinh mệnh và có 50% tỉ lệ thất bại. Bạn muốn tiếp tục chứ?", () =>
             {
                 action?.Invoke();
             });
+        }
+        else
+        {
+            action?.Invoke();
         }
     }    
     public void GoToLuanBan(CharacterSnapshot user)
