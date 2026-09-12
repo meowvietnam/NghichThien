@@ -136,6 +136,10 @@ namespace Network
             module.RemoveHandler<NotifyHandler>();
             module.AddHandler(notifyHandler);
 
+            var clanHandler = new ClanHandler();
+            module.RemoveHandler<ClanHandler>();
+            module.AddHandler(clanHandler);
+
             AdminPanel.Instance.StartListen();
         }
 

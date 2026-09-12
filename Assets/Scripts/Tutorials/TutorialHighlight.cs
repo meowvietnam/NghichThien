@@ -882,6 +882,8 @@ namespace Tutorials
 
         public void Hide()
         {
+            // Ignore repeated clicks while the hide tween finishes disabling the panels.
+            if (!isVisible) return;
             if (isMoving) return;
             if (dialogText.IsTyping) return;
             if (OnClose == null ||
@@ -893,9 +895,6 @@ namespace Tutorials
             KillTweens();
 
             isMoving = false;
-
-            if (!isVisible)
-                return;
 
             isVisible = false;
 
