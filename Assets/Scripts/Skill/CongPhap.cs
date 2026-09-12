@@ -97,7 +97,7 @@ namespace Skill
             return equip;
         }
 
-        protected bool IsCanUse(CharacterCombat caster)
+        protected virtual bool IsCanUse(CharacterCombat caster)
         {
             return GetCongPhapMono(caster.congPhapEquip) != null && GetCongPhapMono(caster.congPhapDynamic) != null;
         }

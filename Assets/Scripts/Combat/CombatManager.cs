@@ -247,6 +247,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             {
                 Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
             });
+        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_CP_DYNAMIC, ReceiveSyncCPDynamic);
+        Observer.AddObserver(EventList.Combat.ADD_CP_DYNAMIC,SendSyncCPDynamic);
+        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_USE_EFFECTSKILL, ReceiSyncEffectSkill);
+
+
 
         if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
         if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
@@ -569,6 +574,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                     parentUIFight.gameObject.SetActive(true);
                 });
             }
+            Observer.Notify(EventList.Combat.PLAY_SKILL_COMPLETE, caster, target);
         }
     }
 
@@ -1492,11 +1498,30 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             ? char2
             : char1;
         var thanThong = Pool.Get<GameManager>().GetThanThongWithId(syncPlaySkill.SkillId);
-        thanThong.PlayVisualSkill(charCombat, charTarget);
         charCombat.VisualPlaySkill(thanThong);
         //charTarget.allDamages.Clear();
     }
+    public void ReceiSyncEffectSkill(params object[] data)
+    {
+        SyncEffectSkill SyncEffectSkill = data[0] as SyncEffectSkill;
+        var charCombat = SyncEffectSkill.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
+        var charTarget = charCombat.characterStatsBase.idChar.Value == char1.characterStatsBase.idChar.Value
+            ? char2
+            : char1;
+       
+        BaseSkill baseSkill = null;
+        if(SyncEffectSkill.IsThanThong)
+        {
+            baseSkill = Pool.Get<GameManager>().GetThanThongWithId(SyncEffectSkill.IdSkill);
 
+        }
+        else
+        {
+            baseSkill = Pool.Get<GameManager>().GetCongPhapWithId(SyncEffectSkill.IdSkill);
+        }    
+        baseSkill.PlayVisualSkill(charCombat, charTarget);
+        //charTarget.allDamages.Clear();
+    }
     public void SendAjustLinhKhi(params object[] data)
     {
         CharacterCombat charCombat = data[0] as CharacterCombat;
@@ -1625,5 +1650,48 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         var charCombat = SyncUsePhapBao.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
 
         charCombat.currentVuKhiVisual.ActiveAttack();
+    }
+
+    public void SendSyncCPDynamic(params object[] data)
+    {
+        CharacterCombat charCombatSend = data[0] as CharacterCombat;
+        CongPhap cp = data[1] as CongPhap;
+        int newValue = (int)data[2];
+        //int healValue = data[2] as int;
+
+
+        if (IsSync)
+        {
+          
+
+            Observer.Notify(EventList.Combat.SEND_SYNC_CP_DYNAMIC, new SyncCPDynamic
+            {
+                CharId = charCombatSend.characterStatsBase.idChar.Value,
+                IdCpDynamic = cp.Id,
+                NewCpDynamic = newValue,
+            });
+          
+        }
+    }
+
+    public void ReceiveSyncCPDynamic(params object[] data)
+    {
+        SyncCPDynamic SyncCPDynamic = data[0] as SyncCPDynamic;
+        var charCB = SyncCPDynamic.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
+        var congPhap = Pool.Get<GameManager>().GetCongPhapWithId(SyncCPDynamic.IdCpDynamic);
+        var cpMono = charCB.congPhapEquip.FirstOrDefault(x => x.congPhap.Id == SyncCPDynamic.IdCpDynamic);
+        if (SyncCPDynamic.NewCpDynamic <= 0)
+        {
+            charCB.RemoveCPDynamic(congPhap);
+        }    
+        else
+        {
+            if(cpMono != null)
+            {
+                charCB.SetCPDynamic(cpMono, SyncCPDynamic.NewCpDynamic);
+
+            }
+
+        }
     }
 }

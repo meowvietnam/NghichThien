@@ -197,15 +197,26 @@ public class CharacterCombat : MonoBehaviour
 
     public void AddCPDynamic(CongPhapMono cp, int count = 1)
     {
+        int currentValue = congPhapDynamic.Count(x => x.congPhap == cp.congPhap);
         for (int i = 0; i < count; i++)
         {
-            int currentValue = congPhapDynamic.Count(x => x.congPhap == cp.congPhap);
             congPhapDynamic.Add(cp);
-            int newValue = currentValue + 1;
-            Observer.Notify(EventList.Combat.ADD_SKILL, this, cp.congPhap, newValue, currentValue, cp.level.Value);
-        }
-    }
 
+
+        }
+        int newValue = currentValue + count;
+
+        
+        Observer.Notify(EventList.Combat.ADD_SKILL, this, cp.congPhap, newValue, currentValue, cp.level.Value);
+        Observer.Notify(EventList.Combat.ADD_CP_DYNAMIC, this, cp.congPhap, newValue, currentValue, cp.level.Value);
+    }
+    public void SetCPDynamic(CongPhapMono cp, int count)
+    {
+        RemoveCPDynamic(cp.congPhap);
+        AddCPDynamic(cp,count);
+
+
+    }
     public void RemoveCPDynamic(CongPhap cp)
     {
         int currentValue = congPhapDynamic.Count(x => x.congPhap == cp);
@@ -214,6 +225,8 @@ public class CharacterCombat : MonoBehaviour
             x.congPhap == cp
         );
         Observer.Notify(EventList.Combat.ADD_SKILL, this, cp, 0, currentValue, 1);
+        Observer.Notify(EventList.Combat.ADD_CP_DYNAMIC, this, cp, 0, currentValue, 1);
+
     }
 
     public void RemoveDanDuocDynamic(BaseDanDuocCombat dd)
@@ -255,7 +268,18 @@ public class CharacterCombat : MonoBehaviour
         VisualPlaySkill(thanThong);
 
         var thanThongCurrentUse = new PlaySkillData { thanThong = thanThong, linhKhiTieuTan = linhKhiTieuTans };
-        thanThongUseThisComBat[^1].Add(thanThongCurrentUse);
+        // 1. Kiểm tra danh sách chính có ít nhất 1 phần tử hay không
+        if (thanThongUseThisComBat != null && thanThongUseThisComBat.Count > 0)
+        {
+            // 2. Lấy danh sách con cuối cùng ra
+            var lastList = thanThongUseThisComBat[^1];
+
+            // 3. Đảm bảo danh sách con không bị null trước khi Add
+            if (lastList != null)
+            {
+                lastList.Add(thanThongCurrentUse);
+            }
+        }
         if (!BaseSkill.CheckIsEqualETypeSkill(this, new BaseSkill.ETypeSkill[] { BaseSkill.ETypeSkill.Hoa }))
         {
             if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoaDiem, out SecureInt hoaDiem))
@@ -299,8 +323,8 @@ public class CharacterCombat : MonoBehaviour
         }
 
         // StartCoroutine(DelayFrame());
-        Debug.Log(this.thanThongCurrentUse.thanThong.name);
-        Debug.Log(this.thanThongOldUse?.thanThong.name);
+        Debug.Log(this.thanThongCurrentUse?.thanThong?.name);
+        Debug.Log(this.thanThongOldUse?.thanThong?.name);
     }
 
     private IEnumerator DelayFrame()

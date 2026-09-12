@@ -9,6 +9,8 @@ public static partial class EventList
         public const string END_TURN_COMBAT = "Combat.END_TURN_COMBAT";
         public const string NEW_TURN_COMBAT = "Combat.NEW_TURN_COMBAT";
         public const string PLAY_SKILL = "Combat.PLAY_SKILL";
+        public const string PLAY_SKILL_COMPLETE = "Combat.PLAY_SKILL_COMPLETE";
+
         public const string ADJUST_LINHKHI = "Combat.HAPTHU_LINHKHI";
         public const string ADD_BUFF = "Combat.ADD_BUFF";
         public const string REMOVE_BUFF = "Combat.REMOVE_BUFF";
@@ -30,6 +32,8 @@ public static partial class EventList
         public const string KIEM_KHI = "Combat.KIEM_KHI";
 
         public const string ADD_SKILL = "Combat.ADD_SKILL";
+        public const string ADD_CP_DYNAMIC = "Combat.ADD_CP_DYNAMIC";
+
         public const string UPDATE_AMKINH_THANTHONG = "Combat.UPDATE_AMKINH_THANTHONG";
         public const string CHARACTER_HEALING = "Combat.CHARACTER_HEALING";
         public const string CHARACTER_HEALING_AFTER_CALC = "Combat.CHARACTER_HEALING_AFTER_CALC";
@@ -75,6 +79,13 @@ public static partial class EventList
 
         public const string RECEIVE_SYNC_USE_PHAPBAO = "Combat.RECEIVE_SYNC_USE_PHAPBAO"; //  nhận idCharDung 
 
+
+        public const string SEND_SYNC_USE_EFFECTSKILL = "Combat.SEND_SYNC_USE_EFFECTSKILL"; // gửi idCharDung
+
+        public const string RECEIVE_SYNC_USE_EFFECTSKILL = "Combat.RECEIVE_SYNC_USE_EFFECTSKILL"; //  nhận idCharDung 
+        public const string SEND_SYNC_CP_DYNAMIC = "Combat.SEND_SYNC_CP_DYNAMIC"; // gửi idCharDung
+
+        public const string RECEIVE_SYNC_CP_DYNAMIC = "Combat.RECEIVE_SYNC_CP_DYNAMIC"; //  nhận idCharDung 
         // khi play skill đồng bộ cho máy kia chỉ play visual không gửi sync
         public static void RemoveAllCombatObservers()
         {
