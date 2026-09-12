@@ -1,3 +1,4 @@
+using System;
 using Auction;
 using Base;
 using Network.Models.Clans;
@@ -8,6 +9,7 @@ namespace Clan
 {
     public class ClanMemberElement : BaseBehaviour
     {
+        [SerializeField] private Button button;
         [SerializeField] private Text nameText;
         [SerializeField] private Text levelText;
         [SerializeField] private Sprite[] spriteLevels;
@@ -20,6 +22,14 @@ namespace Clan
 
         public ClanMember Member => member;
         public int CharId => member?.CharId ?? 0;
+
+        public event Action<ClanMemberElement> Clicked;
+
+        private void Awake()
+        {
+            if (button == null) button = GetComponent<Button>();
+            SetEventButton(button, () => Clicked?.Invoke(this));
+        }
 
         public void Init(ClanMember member)
         {
@@ -35,6 +45,7 @@ namespace Clan
             SetRole(member.Role);
             SetContribution(member.ContribPoints);
             SetAvatar(member);
+            if (button != null) button.interactable = true;
         }
 
         public void SetContribution(long contribPoints)
@@ -103,6 +114,7 @@ namespace Clan
             }
 
             if (avatar != null) avatar.gameObject.SetActive(false);
+            if (button != null) button.interactable = false;
         }
 
         private void SetAvatar(ClanMember clanMember)
@@ -120,6 +132,11 @@ namespace Clan
         private static void SetText(Text target, string value)
         {
             if (target != null) target.text = value ?? string.Empty;
+        }
+
+        public void SetActive(bool active)
+        {
+            gameObject.SetActive(active);
         }
     }
 }

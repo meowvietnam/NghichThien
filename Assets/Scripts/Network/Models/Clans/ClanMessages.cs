@@ -124,6 +124,8 @@ namespace Network.Models.Clans
         public long Amount { get; set; }
         public long ClanFunds { get; set; }
         public long MemberContribPoints { get; set; }
+        public System.DateTime LastFreeContributionAt { get; set; }
+        public int FreeContributionTimesRemaining { get; set; }
     }
 
     [MemoryPackable]
@@ -238,5 +240,79 @@ namespace Network.Models.Clans
         public int ClanId { get; set; }
         public int CharId { get; set; }
         public long ContribPoints { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class SetClanMemberRoleRequest
+    {
+        public int CharId { get; set; }
+        public ClanRole Role { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class SetClanMemberRoleResult : Result
+    {
+        public ClanMemberRoleChanged Change { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class ClanMemberRoleChanged
+    {
+        public int ClanId { get; set; }
+        public int CharId { get; set; }
+        public ClanRole Role { get; set; }
+    }
+
+    // --- Xin gia nhập tông môn: gửi yêu cầu (mọi người chơi chưa có tông môn) và duyệt/từ chối
+    // (thành viên có quyền ClanPermission.AddMember trong tông môn được xin gia nhập). ---
+
+    [MemoryPackable]
+    public partial class RequestJoinClanRequest
+    {
+        public int ClanId { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class RequestJoinClanResult : Result
+    {
+    }
+
+    // Đẩy tới các thành viên có quyền duyệt khi có người mới xin gia nhập.
+    [MemoryPackable]
+    public partial class ClanJoinRequestAdded
+    {
+        public Clans.ClanJoinRequest Request { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class ApproveClanJoinRequestRequest
+    {
+        public int CharId { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class ApproveClanJoinRequestResult : Result
+    {
+        public Clans.ClanMember Member { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class RejectClanJoinRequestRequest
+    {
+        public int CharId { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class RejectClanJoinRequestResult : Result
+    {
+        public int CharId { get; set; }
+    }
+
+    // Đẩy tới các thành viên có quyền duyệt khi một đơn xin gia nhập biến mất (đã duyệt/từ chối/rút lại).
+    [MemoryPackable]
+    public partial class ClanJoinRequestRemoved
+    {
+        public int ClanId { get; set; }
+        public int CharId { get; set; }
     }
 }

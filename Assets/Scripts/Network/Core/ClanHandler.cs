@@ -19,6 +19,8 @@ namespace Network.Core
         public int MaxShopQuantityPerRequest { get; private set; }
         public int MaxShopItemsAddedPerDay { get; private set; }
         public int ShopItemsAddedToday { get; private set; }
+        public int FreeContributionTimesRemaining { get; private set; }
+        private DateTime freeContributionStateDateUtc;
 
         public event Action<ClanModel> ClanChanged;
         public event Action<ClanMember> MemberAdded;
@@ -26,6 +28,9 @@ namespace Network.Core
         public event Action<ClanContribution> ContributionChanged;
         public event Action<IReadOnlyList<ClanShopItem>> ShopChanged;
         public event Action<ClanMemberPointsChanged> MemberPointsChanged;
+        public event Action<ClanMemberRoleChanged> MemberRoleChanged;
+        public event Action<ClanJoinRequest> JoinRequestAdded;
+        public event Action<ClanJoinRequestRemoved> JoinRequestRemoved;
 
         public ClanHandler()
         {
@@ -123,6 +128,15 @@ namespace Network.Core
             return result;
         }
 
+        public async Task<SetClanMemberRoleResult> SetMemberRole(int charId, ClanRole role)
+        {
+            var result = await Request<SetClanMemberRoleRequest, SetClanMemberRoleResult>(
+                MessageTag.SetClanMemberRoleRequest,
+                new SetClanMemberRoleRequest { CharId = charId, Role = role });
+            if (result.Success) ApplyMemberRoleChanged(result.Change, false);
+            return result;
+        }
+
         public async Task<LeaveClanResult> LeaveClan()
         {
             var result = await Request<LeaveClanRequest, LeaveClanResult>(
@@ -161,6 +175,51 @@ namespace Network.Core
             return Request<SearchClanRequest, SearchClanResult>(
                 MessageTag.SearchClanRequest,
                 new SearchClanRequest { Name = name ?? string.Empty, Limit = limit });
+        }
+
+        // Xin gia nhập một tông môn (dùng khi đang xem tông môn của người khác, vd. từ ClanListPanel).
+        public Task<RequestJoinClanResult> RequestJoinClan(int clanId)
+        {
+            return Request<RequestJoinClanRequest, RequestJoinClanResult>(
+                MessageTag.RequestJoinClanRequest,
+                new RequestJoinClanRequest { ClanId = clanId });
+        }
+
+        // Duyệt đơn xin gia nhập — chỉ thành viên có quyền ClanPermission.AddMember mới nên gọi
+        // (server tự kiểm tra lại quyền, client chỉ ẩn UI cho gọn).
+        public async Task<ApproveClanJoinRequestResult> ApproveJoinRequest(int charId)
+        {
+            var result = await Request<ApproveClanJoinRequestRequest, ApproveClanJoinRequestResult>(
+                MessageTag.ApproveClanJoinRequestRequest,
+                new ApproveClanJoinRequestRequest { CharId = charId });
+            if (result.Success)
+            {
+                ApplyJoinRequestRemoved(new ClanJoinRequestRemoved
+                {
+                    ClanId = CurrentClan?.Id ?? 0,
+                    CharId = charId
+                }, false);
+                if (result.Member != null) ApplyMemberAdded(result.Member, false);
+            }
+
+            return result;
+        }
+
+        public async Task<RejectClanJoinRequestResult> RejectJoinRequest(int charId)
+        {
+            var result = await Request<RejectClanJoinRequestRequest, RejectClanJoinRequestResult>(
+                MessageTag.RejectClanJoinRequestRequest,
+                new RejectClanJoinRequestRequest { CharId = charId });
+            if (result.Success)
+            {
+                ApplyJoinRequestRemoved(new ClanJoinRequestRemoved
+                {
+                    ClanId = CurrentClan?.Id ?? 0,
+                    CharId = result.CharId
+                }, false);
+            }
+
+            return result;
         }
 
         public async Task<GetClanShopResult> GetShop()
@@ -274,6 +333,15 @@ namespace Network.Core
                 case MessageTag.ClanShopItemChanged:
                     ApplyShopItemChanged(message.Reader.MemRead<ClanShopItemChanged>().ShopItem);
                     break;
+                case MessageTag.ClanMemberRoleChanged:
+                    ApplyMemberRoleChanged(message.Reader.MemRead<ClanMemberRoleChanged>(), true);
+                    break;
+                case MessageTag.ClanJoinRequestAdded:
+                    ApplyJoinRequestAdded(message.Reader.MemRead<ClanJoinRequestAdded>().Request, true);
+                    break;
+                case MessageTag.ClanJoinRequestRemoved:
+                    ApplyJoinRequestRemoved(message.Reader.MemRead<ClanJoinRequestRemoved>(), true);
+                    break;
             }
         }
 
@@ -293,7 +361,30 @@ namespace Network.Core
             }
 
             CurrentClan = clan;
+            RefreshFreeContributionStateFromClan();
             NotifyMainThread(() => ClanChanged?.Invoke(clan));
+        }
+
+        public bool HasFreeContributionTurn()
+        {
+            var todayUtc = DateTime.UtcNow.Date;
+            if (freeContributionStateDateUtc != todayUtc)
+            {
+                RefreshFreeContributionStateFromClan();
+            }
+
+            return FreeContributionTimesRemaining > 0;
+        }
+
+        private void RefreshFreeContributionStateFromClan()
+        {
+            freeContributionStateDateUtc = DateTime.UtcNow.Date;
+            var charId = client.CharacterData?.Id ?? 0;
+            var member = CurrentClan?.Members?.FirstOrDefault(x => x.CharId == charId);
+            FreeContributionTimesRemaining = member != null &&
+                                             member.LastFreeContributionAt.Date != freeContributionStateDateUtc
+                ? 1
+                : 0;
         }
 
         private void ApplyMemberAdded(ClanMember member, bool notify)
@@ -330,7 +421,22 @@ namespace Network.Core
 
             CurrentClan.Funds = contribution.ClanFunds;
             var member = CurrentClan.Members?.FirstOrDefault(x => x.CharId == contribution.CharId);
-            if (member != null) member.ContribPoints = contribution.MemberContribPoints;
+            if (member != null)
+            {
+                member.ContribPoints = contribution.MemberContribPoints;
+                // FreeTimesRemaining là trạng thái authoritative của response/event.
+                // Fallback UtcNow giúp tương thích với server cũ chưa gửi timestamp mới.
+                member.LastFreeContributionAt = contribution.LastFreeContributionAt == default &&
+                                                contribution.FreeContributionTimesRemaining == 0
+                    ? DateTime.UtcNow
+                    : contribution.LastFreeContributionAt;
+            }
+
+            if (contribution.CharId == client.CharacterData.Id)
+            {
+                freeContributionStateDateUtc = DateTime.UtcNow.Date;
+                FreeContributionTimesRemaining = Math.Max(0, contribution.FreeContributionTimesRemaining);
+            }
             if (notify) NotifyMainThread(() => ContributionChanged?.Invoke(contribution));
         }
 
@@ -341,6 +447,35 @@ namespace Network.Core
             var member = CurrentClan.Members?.FirstOrDefault(x => x.CharId == changed.CharId);
             if (member != null) member.ContribPoints = changed.ContribPoints;
             if (notify) NotifyMainThread(() => MemberPointsChanged?.Invoke(changed));
+        }
+
+        private void ApplyMemberRoleChanged(ClanMemberRoleChanged changed, bool notify)
+        {
+            if (changed == null || CurrentClan == null || changed.ClanId != CurrentClan.Id) return;
+
+            var member = CurrentClan.Members?.FirstOrDefault(x => x.CharId == changed.CharId);
+            if (member == null) return;
+            member.Role = changed.Role;
+            if (notify) NotifyMainThread(() => MemberRoleChanged?.Invoke(changed));
+        }
+
+        private void ApplyJoinRequestAdded(ClanJoinRequest request, bool notify)
+        {
+            if (request == null || CurrentClan == null || request.ClanId != CurrentClan.Id) return;
+
+            CurrentClan.JoinRequests ??= new List<ClanJoinRequest>();
+            var index = CurrentClan.JoinRequests.FindIndex(x => x.CharId == request.CharId);
+            if (index >= 0) CurrentClan.JoinRequests[index] = request;
+            else CurrentClan.JoinRequests.Add(request);
+
+            if (notify) NotifyMainThread(() => JoinRequestAdded?.Invoke(request));
+        }
+
+        private void ApplyJoinRequestRemoved(ClanJoinRequestRemoved removed, bool notify)
+        {
+            if (removed == null || CurrentClan == null || removed.ClanId != CurrentClan.Id) return;
+            CurrentClan.JoinRequests?.RemoveAll(x => x.CharId == removed.CharId);
+            if (notify) NotifyMainThread(() => JoinRequestRemoved?.Invoke(removed));
         }
 
         private void ReplaceShop(IEnumerable<ClanShopItem> items)
@@ -407,6 +542,11 @@ namespace Network.Core
             else action();
         }
 
+        public async Awaitable<ClanModel> ViewClan(int id)
+        {
+            var reader = await client.MemRequestWait(MessageTag.ViewClanRequest, body: id);
+            return reader.MemRead<ClanModel>();
+        }
         public void OnLeave()
         {
             CurrentClan = null;
@@ -417,6 +557,9 @@ namespace Network.Core
             ContributionChanged = null;
             ShopChanged = null;
             MemberPointsChanged = null;
+            MemberRoleChanged = null;
+            JoinRequestAdded = null;
+            JoinRequestRemoved = null;
         }
 
         public void OnDisconnect(IProtocol<MessageTag> protocol)
@@ -432,9 +575,13 @@ namespace Network.Core
             MessageTag.ClanMemberPointsChanged,
             MessageTag.ClanShopItemAdded,
             MessageTag.ClanShopItemRemoved,
-            MessageTag.ClanShopItemChanged
+            MessageTag.ClanShopItemChanged,
+            MessageTag.ClanMemberRoleChanged,
+            MessageTag.ClanJoinRequestAdded,
+            MessageTag.ClanJoinRequestRemoved
         };
 
         public MessageTag[] HandleTag => Handlers;
+
     }
 }

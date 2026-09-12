@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using CreateCharacter;
 using LuyenDan;
 using Network;
@@ -27,6 +28,7 @@ namespace Clan
 
         private readonly List<ItemRef> items = new();
         private ItemRef selectedItem;
+        private CharacterData observedCharacter;
         private bool isSubmitting;
 
         public IReadOnlyList<ItemRef> Items => items;
@@ -54,16 +56,16 @@ namespace Clan
         {
             handler.ClanChanged += OnClanChanged;
             handler.ShopChanged += OnShopChanged;
-            var character = Client.Instance?.CharacterData;
-            if (character != null) character.OnInventoryUpdated += OnInventoryUpdated;
+            observedCharacter = Client.Instance?.CharacterData;
+            if (observedCharacter != null) observedCharacter.OnInventoryUpdated += OnInventoryUpdated;
         }
 
         protected override void UnbindClanEvents(ClanHandler handler)
         {
             handler.ClanChanged -= OnClanChanged;
             handler.ShopChanged -= OnShopChanged;
-            var character = Client.Instance?.CharacterData;
-            if (character != null) character.OnInventoryUpdated -= OnInventoryUpdated;
+            if (observedCharacter != null) observedCharacter.OnInventoryUpdated -= OnInventoryUpdated;
+            observedCharacter = null;
         }
 
         protected override void OnShown()
@@ -73,15 +75,15 @@ namespace Clan
 
         public void Select(ItemRef item)
         {
-            selectedItem = item;
-            if (quantityInput != null) quantityInput.text = "1";
-            UpdateView();
-            SelectionChanged?.Invoke(selectedItem);
+            var selection = item == null
+                ? null
+                : items.FirstOrDefault(value => SameItem(value, item));
+            SetSelection(selection, true);
         }
 
         public void AddSelectedItem()
         {
-            if (!isSubmitting) AddSelectedItemAsync();
+            if (!isSubmitting) _ = AddSelectedItemAsync();
         }
 
         public void RefreshInventory()
@@ -98,11 +100,19 @@ namespace Clan
                 AddRange(inventory.Materials);
             }
 
-            if (selectedItem != null) selectedItem = items.FirstOrDefault(value => value.Equals(selectedItem));
+            if (selectedItem != null)
+            {
+                var refreshedSelection = items.FirstOrDefault(value => SameItem(value, selectedItem));
+                if (!ReferenceEquals(refreshedSelection, selectedItem))
+                {
+                    selectedItem = refreshedSelection;
+                    SelectionChanged?.Invoke(selectedItem);
+                }
+            }
             Render();
         }
 
-        private async void AddSelectedItemAsync()
+        private async Task AddSelectedItemAsync()
         {
             if (!Validate(out var quantity, out var price, out var message))
             {
@@ -111,17 +121,17 @@ namespace Clan
             }
 
             var requestItem = new ItemRef(selectedItem.Id, selectedItem.Type, quantity, selectedItem.TempId);
-            isSubmitting = true;
-            UpdateButton();
+            SetSubmitting(true);
             try
             {
                 var result = await Handler.AddShopItem(requestItem, price);
-                Notify(result.Message);
+                Notify(string.IsNullOrWhiteSpace(result.Message)
+                    ? result.Success ? "Đã thêm vật phẩm vào kho tông môn" : "Không thể thêm vật phẩm vào kho tông môn"
+                    : result.Message);
                 if (result.Success)
                 {
-                    selectedItem = null;
+                    SetSelection(null, false);
                     RefreshInventory();
-                    SelectionChanged?.Invoke(null);
                 }
             }
             catch (Exception exception)
@@ -131,8 +141,7 @@ namespace Clan
             }
             finally
             {
-                isSubmitting = false;
-                UpdateView();
+                SetSubmitting(false);
             }
         }
 
@@ -163,8 +172,8 @@ namespace Clan
                 var renderItems = items.Select(Clone).ToList();
                 itemList.InitDataItem(renderItems, itemView =>
                 {
-                    var item = items.FirstOrDefault(value => value.Equals(itemView.itemRef));
-                    itemView.InitAction(null, null, () => Select(item));
+                    var item = items.FirstOrDefault(value => SameItem(value, itemView.itemRef));
+                    if (item != null) itemView.InitAction(null, null, () => Select(item));
                 }, false, true);
                 itemList.InitBag();
             }
@@ -193,7 +202,7 @@ namespace Clan
             if (selectedItemText != null)
                 selectedItemText.text = selectedItem == null
                     ? "Chưa chọn vật phẩm"
-                    : $"{selectedItem.Type} #{selectedItem.Id} (có {selectedItem.Count})";
+                    : $"{ClanShop.GetItemName(selectedItem)} (có {selectedItem.Count:n0})";
             UpdateDailyLimit();
             UpdateButton();
         }
@@ -203,16 +212,46 @@ namespace Clan
             if (dailyLimitText == null) return;
             var maximum = Handler?.MaxShopItemsAddedPerDay ?? 0;
             var used = Handler?.ShopItemsAddedToday ?? 0;
-            dailyLimitText.text = maximum > 0 ? $"Hôm nay: {used}/{maximum}" : "Kho đang tạm khóa";
+            var remaining = Math.Max(0, maximum - used);
+            dailyLimitText.text = maximum > 0
+                ? $"Hôm nay: {used}/{maximum} · Còn {remaining}"
+                : "Kho đang tạm khóa";
         }
 
         private void UpdateButton()
         {
             if (addButton == null) return;
-            var maximum = Handler?.MaxShopItemsAddedPerDay ?? 0;
-            var used = Handler?.ShopItemsAddedToday ?? 0;
-            addButton.interactable = !isSubmitting && selectedItem != null && maximum > 0 && used < maximum &&
-                                     HasPermission(ClanPermission.AddShopItem);
+            addButton.interactable = !isSubmitting && CanSubmitCurrentInput();
+        }
+
+        private bool CanSubmitCurrentInput()
+        {
+            if (Handler?.CurrentClan == null || selectedItem == null ||
+                !HasPermission(ClanPermission.AddShopItem)) return false;
+
+            var maximum = Handler.MaxShopItemsAddedPerDay;
+            var used = Handler.ShopItemsAddedToday;
+            if (maximum <= 0 || used >= maximum) return false;
+            if (quantityInput == null || !int.TryParse(quantityInput.text, out var quantity) ||
+                quantity < 1 || quantity > selectedItem.Count || (long)used + quantity > maximum) return false;
+            return priceInput != null && long.TryParse(priceInput.text, out var price) && price > 0;
+        }
+
+        private void SetSelection(ItemRef item, bool resetQuantity)
+        {
+            if (ReferenceEquals(selectedItem, item) && !resetQuantity) return;
+            selectedItem = item;
+            if (resetQuantity && quantityInput != null) quantityInput.text = "1";
+            UpdateView();
+            SelectionChanged?.Invoke(selectedItem);
+        }
+
+        private void SetSubmitting(bool value)
+        {
+            isSubmitting = value;
+            if (quantityInput != null) quantityInput.interactable = !value;
+            if (priceInput != null) priceInput.interactable = !value;
+            UpdateView();
         }
 
         private bool HasPermission(ClanPermission permission)
@@ -222,6 +261,9 @@ namespace Clan
             var member = Handler.CurrentClan.Members.FirstOrDefault(value => value.CharId == characterId);
             return member != null && (Handler.GetPermissions(member.Role) & permission) == permission;
         }
+
+        private static bool SameItem(ItemRef left, ItemRef right) =>
+            left != null && right != null && left.Id == right.Id && left.Type == right.Type && left.TempId == right.TempId;
 
         private static ItemRef Clone(ItemRef item) => new(item.Id, item.Type, item.Count, item.TempId);
         private static void Notify(string message) { if (!string.IsNullOrWhiteSpace(message)) NotifyGroup.Instance?.Show(message); }

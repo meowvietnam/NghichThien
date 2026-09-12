@@ -7,6 +7,7 @@ using Network.ClientState;
 using Network.Extensions;
 using Network.Models;
 using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,12 @@ namespace AllMaps
         [SerializeField] private CombatVisual combatVisual;
         private Map current;
         private Dictionary<Map, List<Map>> graph;
+        private object nodeSelectionOwner;
+        private Action<Map> nodeSelected;
+        private Action<Map> nodeRejected;
+        private Action nodeSelectionCancelled;
+
+        public bool IsSelectingNode => nodeSelectionOwner != null;
 
         public bool isDelayAfterLoadScene = true;
         private static bool isInitPoolPlayer;
@@ -85,6 +92,67 @@ namespace AllMaps
             return maps.FirstOrDefault(map => map.Id == id);
         }
 
+        /// <summary>
+        /// Tạm chuyển click trên bản đồ sang chế độ chọn node. Chỉ node thường mới hợp lệ;
+        /// Stronghold là thành trì có sẵn nên không thể dùng làm vị trí tông môn.
+        /// </summary>
+        public bool BeginNodeSelection(
+            object owner,
+            Action<Map> onSelected,
+            Action<Map> onRejected = null,
+            Action onCancelled = null)
+        {
+            if (owner == null) throw new ArgumentNullException(nameof(owner));
+            if (onSelected == null) throw new ArgumentNullException(nameof(onSelected));
+            if (nodeSelectionOwner != null && !ReferenceEquals(nodeSelectionOwner, owner)) return false;
+
+            nodeSelectionOwner = owner;
+            nodeSelected = onSelected;
+            nodeRejected = onRejected;
+            nodeSelectionCancelled = onCancelled;
+            return true;
+        }
+
+        public bool TryHandleNodeSelection(Map map)
+        {
+            if (nodeSelectionOwner == null) return false;
+
+            if (map == null || map.MapType == MapType.Stronghold || map is Stronghold)
+            {
+                nodeRejected?.Invoke(map);
+                return true;
+            }
+
+            var callback = nodeSelected;
+            ClearNodeSelection();
+            callback?.Invoke(map);
+            return true;
+        }
+
+        public void CancelNodeSelection(object owner)
+        {
+            if (nodeSelectionOwner == null || !ReferenceEquals(nodeSelectionOwner, owner)) return;
+
+            CancelCurrentNodeSelection();
+        }
+
+        private void CancelCurrentNodeSelection()
+        {
+            if (nodeSelectionOwner == null) return;
+
+            var callback = nodeSelectionCancelled;
+            ClearNodeSelection();
+            callback?.Invoke();
+        }
+
+        private void ClearNodeSelection()
+        {
+            nodeSelectionOwner = null;
+            nodeSelected = null;
+            nodeRejected = null;
+            nodeSelectionCancelled = null;
+        }
+
         private void SetUpGraph()
         {
             graph = new Dictionary<Map, List<Map>>();
@@ -127,6 +195,16 @@ namespace AllMaps
             Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
             isDelayAfterLoadScene = true;
             StartCoroutine(DelayTime(0.01f));
+        }
+
+        private void Update()
+        {
+            if (IsSelectingNode && Input.GetKeyDown(KeyCode.Escape)) CancelCurrentNodeSelection();
+        }
+
+        private void OnDestroy()
+        {
+            CancelCurrentNodeSelection();
         }
 
         private IEnumerator DelayTime(float time)
