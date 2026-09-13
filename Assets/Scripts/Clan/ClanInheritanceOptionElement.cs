@@ -21,11 +21,13 @@ namespace Clan
             selectButton?.onClick.AddListener(OnClicked);
         }
 
-        public void Init(EffectType effectType, int value, bool selected)
+        public void Init(EffectType effectType, int minValue, int maxValue, bool selected)
         {
             EffectType = effectType;
             if (nameText != null) nameText.text = ClanInheritancePanel.GetEffectName(effectType);
-            if (valueText != null) valueText.text = $"+{value:n0}";
+            if (valueText != null) valueText.text = minValue == maxValue
+                ? $"+{minValue:n0}"
+                : $"+{minValue:n0}-{maxValue:n0}";
             if (selectedRoot != null) selectedRoot.SetActive(selected);
             if (selectButton != null) selectButton.interactable = !selected;
         }

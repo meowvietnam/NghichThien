@@ -86,13 +86,18 @@ namespace Network.Core
             return (int)Math.Min(slots, config.MaxInheritanceSlotsPerColumn);
         }
 
-        public int GetInheritanceValue(int clanLevel)
+        public (int Min, int Max) GetInheritanceValueRange(EffectType? effectType)
         {
             var config = CurrentConfig;
-            if (config == null) return 0;
-            var value = (long)config.InheritanceBaseValue +
-                        (long)Math.Max(0, clanLevel - 1) * config.InheritanceValuePerClanLevel;
-            return (int)Math.Max(int.MinValue, Math.Min(int.MaxValue, value));
+            if (config == null) return (0, 0);
+            var clanBuffResources = global::Clan.ClanBuffResources.Instance;
+            var baseValue = effectType.HasValue && clanBuffResources != null
+                ? clanBuffResources.GetBaseValueOf(effectType.Value)
+                : config.InheritanceBaseValue;
+            var maxValue = (long)baseValue * 3;
+            return (
+                (int)Math.Max(int.MinValue, Math.Min(int.MaxValue, baseValue)),
+                (int)Math.Max(int.MinValue, Math.Min(int.MaxValue, maxValue)));
         }
 
         public async Task<CreateClanResult> CreateClan(CreateClanRequest request)

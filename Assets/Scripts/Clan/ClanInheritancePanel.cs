@@ -190,12 +190,16 @@ namespace Clan
                 options.Add(option);
             }
 
-            var value = Handler.GetInheritanceValue(Handler.CurrentClan?.Level ?? 1);
             for (var index = 0; index < options.Count; index++)
             {
                 var visible = index < whitelist.Length;
                 options[index].gameObject.SetActive(visible);
-                if (visible) options[index].Init(whitelist[index], value, whitelist[index] == selected);
+                if (visible)
+                {
+                    var effectType = whitelist[index];
+                    var range = Handler.GetInheritanceValueRange(effectType);
+                    options[index].Init(effectType, range.Min, range.Max, effectType == selected);
+                }
             }
         }
 
