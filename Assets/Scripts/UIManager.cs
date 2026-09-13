@@ -41,7 +41,7 @@ public class UIManager : BaseBehaviour
     [SerializeField] private bool isShowListIcon = true;
     [SerializeField] private RectTransform[] listIcons;
     private Sequence listIconTween;
-
+   
     public void SetActiveListIcon(bool active)
     {
         foreach (var listIcon in listIcons)
@@ -310,6 +310,10 @@ public class UIManager : BaseBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if (scene.name != "AllMaps" && isShowListIcon)
+        {
+            btnListIconShow?.onClick.Invoke();
+        }
         loadScene.gameObject.SetActive(false);
     }
 

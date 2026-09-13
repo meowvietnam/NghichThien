@@ -55,6 +55,14 @@ public class PrepareCombatPanel : Popup, IUISingleton
         graphicUser.SetSkin(Client.Instance.CharacterData.Appearance.Skins,
             Client.Instance.CharacterData.Appearance.Colors);
         SetVisualHaveEnemyAndCharacter(graphicTarget);
+        if (Pool.Get<MainQuestManager>().currentMainQuest == 0)
+        {
+            btnClose.enabled = false;
+        }
+        else
+        {
+            btnClose.enabled = true;
+        }    
     }
 
     protected override void ActionBtnClose()
