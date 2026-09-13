@@ -628,7 +628,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN,
                 new SyncEndTurn { CharId = oldCurrentTurn.characterStatsBase.idChar.Value });
         }
-
+        
         SwapTurn();
         isSync = false;
         CombatStatic.AnhDich(oldCurrentTurn, oldTargetTurn);
@@ -636,14 +636,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         CombatStatic.TrungDoc(oldTargetTurn, oldCurrentTurn);
         CombatStatic.ThienKiem(oldCurrentTurn, oldTargetTurn);
         CombatStatic.ChayMau(oldTargetTurn, oldCurrentTurn);
-        foreach (var item in currentTurn.characterStatsBase.clanInheritanceEffectSecure)
-        {
-            if (item.Trigger == Network.Models.Clans.ClanInheritanceTrigger.EndTurn)
-            {
-                ConvertEffectToBuffAction(item.EffectType.Value, item.Value)?.Invoke(currentTurn, targetTurn);
-
-            }
-        }
+      
 
         if (oldCurrentTurn == char1)
         {
@@ -664,6 +657,17 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
         isSync = true;
         oldCurrentTurn.EndTurn();
+        foreach (var item in currentTurn.characterStatsBase.clanInheritanceEffectSecure)
+        {
+            if (item.Trigger == Network.Models.Clans.ClanInheritanceTrigger.EndTurn)
+            {
+
+                if (item.EffectType != null)
+                {
+                    ConvertEffectToBuffAction(item.EffectType.Value, item.Value * currentTurn.characterStatsBase.ClanLevel.Value)?.Invoke(oldCurrentTurn, oldTargetTurn);
+                }
+            }
+        }
         ExcuteEquipment(oldCurrentTurn, oldTargetTurn, EquipmentType.Jewelry);
     }
 
@@ -913,16 +917,19 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             CombatStatic.QuyTon(currentTurn, targetTurn);
             CombatStatic.SucThe(currentTurn, targetTurn);
             CombatStatic.ThieuDot(targetTurn, currentTurn);
-            foreach (var item in currentTurn.characterStatsBase.clanInheritanceEffectSecure)
-            {
-                if(item.Trigger == Network.Models.Clans.ClanInheritanceTrigger.StartTurn)
-                {
-                    ConvertEffectToBuffAction(item.EffectType.Value, item.Value)?.Invoke(currentTurn, targetTurn);
-
-                }
-            }
+            
 
             currentTurn.NewTurn();
+            foreach (var item in currentTurn.characterStatsBase.clanInheritanceEffectSecure)
+            {
+                if (item.Trigger == Network.Models.Clans.ClanInheritanceTrigger.StartTurn)
+                {
+                    if (item.EffectType != null)
+                    {
+                        ConvertEffectToBuffAction(item.EffectType.Value, item.Value*currentTurn.characterStatsBase.ClanLevel.Value)?.Invoke(currentTurn, targetTurn);
+                    }
+                }
+            }
             CombatStatic.AmKinhTTNewTurn(currentTurn, targetTurn);
             isSync = true;
             ExcuteEquipment(currentTurn, targetTurn, EquipmentType.Armor);

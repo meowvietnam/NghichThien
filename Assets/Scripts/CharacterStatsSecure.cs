@@ -17,11 +17,11 @@ public class CharacterStatsSecure
     public class ClanInheritanceEffectSecure
     {
         public SecureInt Id  = new SecureInt(-1);
-        public int ClanId = new SecureInt(-1);
+        public SecureInt ClanId = new SecureInt(-1);
         public ClanInheritanceTrigger Trigger = ClanInheritanceTrigger.StartTurn;
-        public int SlotIndex = new SecureInt(-1);
-        public EffectType? EffectType = new EffectType?(0);
-        public int Value = new SecureInt(0);
+        public SecureInt SlotIndex = new SecureInt(-1);
+        public EffectType? EffectType = null;
+        public SecureInt Value = new SecureInt(0);
     }
 
     [System.Serializable]
