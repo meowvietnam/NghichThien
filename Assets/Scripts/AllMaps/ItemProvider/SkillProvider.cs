@@ -45,6 +45,12 @@ namespace AllMaps.ItemProvider
                 {
                     SetTextKeyword(ctx.PrefabRightInfor, i, BaseSkill.GetDescBuffOrDeBuff(listEBuffKeyword[i]));
                 }
+                if(skill.isShowDemoEffectSkillOnUI)
+                {
+                    ctx.ShowDemoEffect?.Invoke(skill.LoadFirstDataPrefab(),70);
+
+
+                }    
             }
         }
 

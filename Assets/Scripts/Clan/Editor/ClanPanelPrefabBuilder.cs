@@ -79,7 +79,7 @@ namespace Clan.Editor
             var fundsText = Text("FundsText", headerRow, "Quỹ: --", 26, Gold, TextAnchor.MiddleLeft, true);
             SetLeft(fundsText.rectTransform, 148, -48, 400, 44);
 
-            // --- Hàng lãnh đạo: Tông Chủ / Phó Tông Chủ / Trưởng Lão ---
+            // --- Hàng lãnh đạo: Tộc Chủ / Phó Tộc Chủ / Trưởng Lão ---
             var leadersRow = Rect("LeadersRow", window.transform);
             SetTop(leadersRow, 0, -330, 768, 320);
             var leadersLayout = leadersRow.gameObject.AddComponent<HorizontalLayoutGroup>();
@@ -90,7 +90,7 @@ namespace Clan.Editor
             leadersLayout.childControlWidth = true;
             leadersLayout.childControlHeight = true;
 
-            // Thứ tự khớp với Base.BaseClanInfo.Init (OrderByDescending theo Role): Tông Chủ, Phó Tông Chủ, Trưởng Lão.
+            // Thứ tự khớp với Base.BaseClanInfo.Init (OrderByDescending theo Role): Tộc Chủ, Phó Tộc Chủ, Trưởng Lão.
             var leaderElement0 = InstantiateMemberElement(leadershipCardPrefab, leadersRow, "LeaderSlot_TongChu");
             var leaderElement1 = InstantiateMemberElement(leadershipCardPrefab, leadersRow, "LeaderSlot_PhoTongChu");
             var leaderElement2 = InstantiateMemberElement(leadershipCardPrefab, leadersRow, "LeaderSlot_TruongLao");

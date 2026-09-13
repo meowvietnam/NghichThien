@@ -81,7 +81,7 @@ namespace Clan.Editor
 
             var slotRuleText = Text("SlotRuleText", info.transform, "Đã mở 1 ô mỗi cột", 19, Jade, TextAnchor.MiddleRight, true);
             SetRight(slotRuleText.rectTransform, 28, 23, 420, 34);
-            var permissionText = Text("PermissionText", info.transform, "Chỉ Tông Chủ có thể thay đổi", 17, MutedInk, TextAnchor.MiddleRight);
+            var permissionText = Text("PermissionText", info.transform, "Chỉ Tộc Chủ có thể thay đổi", 17, MutedInk, TextAnchor.MiddleRight);
             SetRight(permissionText.rectTransform, 28, -20, 420, 28);
 
             var startCard = BuildColumn(window.transform, "StartTurnColumn", "BẮT ĐẦU HIỆP", "Khai trận lập thế", Jade,

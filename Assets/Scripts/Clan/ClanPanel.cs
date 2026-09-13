@@ -179,7 +179,7 @@ namespace Clan
                 return Task.FromResult(new SetClanInheritanceResult
                 {
                     Success = false,
-                    Message = "Chỉ Tông Chủ được quản lý truyền thừa"
+                    Message = "Chỉ Tộc Chủ được quản lý truyền thừa"
                 });
             }
 

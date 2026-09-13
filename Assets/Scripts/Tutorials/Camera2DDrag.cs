@@ -13,8 +13,13 @@ namespace Tutorials
         [SerializeField] private bool useUnscaledTime = false;
 
         [Header("Bounds")] [SerializeField] private bool useBounds = false;
-        [SerializeField] private Vector2 minBounds;
-        [SerializeField] private Vector2 maxBounds;
+        [SerializeField] private Vector2 minBounds => minBoundsCollider + minBoundsAdd;
+        [SerializeField] private Vector2 maxBounds => maxBoundsCollider + maxBoundAdd;
+
+        [SerializeField] private Vector2 minBoundsAdd;
+        [SerializeField] private Vector2 maxBoundAdd;
+        [SerializeField] private Vector2 minBoundsCollider;
+        [SerializeField] private Vector2 maxBoundsCollider;
 
         private Vector3 lastWorldPosition;
         private bool isDragging;
@@ -24,8 +29,8 @@ namespace Tutorials
         {
             if (boundsBox != null)
             {
-                minBounds = boundsBox.bounds.min;
-                maxBounds = boundsBox.bounds.max;
+                minBoundsCollider = boundsBox.bounds.min;
+                maxBoundsCollider = boundsBox.bounds.max;
             }
         }
 

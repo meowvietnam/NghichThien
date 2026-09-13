@@ -1,20 +1,22 @@
 ﻿using AllMaps;
 using Base;
+using Combat;
 using CreateCharacter;
 using DG.Tweening;
 using LongDH.LongDHModules;
 using LongDH.Script.ObjectPool;
+using LongDHModules;
+using Network;
+using Network.Models;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
+using Skill;
 using Spine.Unity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Combat;
-using LongDHModules;
-using Skill;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -22,8 +24,6 @@ using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.Networking.UnityWebRequest;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
-using Network;
-using Network.Models;
 
 public enum ETypeVisualChar
 {
@@ -103,7 +103,20 @@ public class CharacterCombat : MonoBehaviour
         {
             effect.Recycle();
         }
-
+        if(Pool.Get<CombatManager>().IsSync)
+        {
+            bool isThanThong = false;
+            if (skill is ThanThong)
+            {
+                isThanThong = true;
+            }
+            Observer.Notify(EventList.Combat.SEND_SYNC_REMOVE_EFFECTSKILLNODESTROY, new SyncEffectSkill
+            {
+                CharId = this.characterStatsBase.idChar.Value,
+                IdSkill = skill.Id,
+                IsThanThong = isThanThong // Tự động trả về true nếu là ThanThong, ngược lại là false
+            });
+        }    
         effectSkillNoDestroy.Remove(skill);
     }
 
@@ -209,6 +222,25 @@ public class CharacterCombat : MonoBehaviour
         
         Observer.Notify(EventList.Combat.ADD_SKILL, this, cp.congPhap, newValue, currentValue, cp.level.Value);
         Observer.Notify(EventList.Combat.ADD_CP_DYNAMIC, this, cp.congPhap, newValue, currentValue, cp.level.Value);
+    }
+    public void RemoveOneCPDynamic(CongPhap cp)
+    {
+        // Tìm phần tử đầu tiên trùng với cp
+        var itemToRemove = congPhapDynamic.FirstOrDefault(x => x.congPhap == cp);
+
+        if (itemToRemove != null)
+        {
+            // Đếm số lượng TRƯỚC KHI XÓA (giữ nguyên logic của bạn để gửi cho Observer)
+            int currentValue = congPhapDynamic.Count(x => x.congPhap == cp);
+
+            // Chỉ xóa duy nhất 1 phần tử này
+            congPhapDynamic.Remove(itemToRemove);
+            int newValue = currentValue -1;
+
+            // Thông báo cho Observer
+            Observer.Notify(EventList.Combat.ADD_SKILL, this, cp, newValue, currentValue, 1);
+            Observer.Notify(EventList.Combat.ADD_CP_DYNAMIC, this, cp, newValue, currentValue, 1);
+        }
     }
     public void SetCPDynamic(CongPhapMono cp, int count)
     {
