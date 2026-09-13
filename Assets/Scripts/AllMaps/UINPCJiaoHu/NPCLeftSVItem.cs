@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Clan;
 using CreateCharacter;
 using LongDH.LongDHModules;
 using LongDHModules;
@@ -29,7 +30,15 @@ public class NPCLeftSVItem : BaseBehaviour
         textName.text = charStats.nameUser;
         characterGraphic.SetGender(charStats.Gender);
         characterGraphic.SetSkin(charStats.Skins, charStats.Colors);
-        textMonPhai.text = GameManager.GetChucVuText(charStats.monPhai, charStats.level);
+        if (charStats.HasClan)
+        {
+            textMonPhai.text = $"{characterStats.ClanName} {ClanMemberElement.GetRole(characterStats.ClanRole)}";
+
+        }
+        else
+        {
+            textMonPhai.text = GameManager.GetChucVuText(charStats.monPhai, charStats.level);
+        }
         SetEventButton(btn, () => { Pool.Get<UINPCJiaoHu>().ShowNpcPop(charStats); });
     }
 }
