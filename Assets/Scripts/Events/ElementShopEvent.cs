@@ -19,6 +19,9 @@ namespace Events
 
         [SerializeField] private Text moneyVipText;
         [SerializeField] private Text amountText;
+        [SerializeField] private GameObject rechargeBonusRoot;
+        [SerializeField] private Text rechargeBonusMoneyVipText;
+        [SerializeField] private Image rechargeBonusMoneyVipIcon;
         private ItemEventShop itemEvent;
         private ushort eventId;
 
@@ -95,6 +98,14 @@ namespace Events
         {
             moneyVipText.text = Utils.FormatCount(itemEvent.MoneyVip);
             amountText.text = $"{Utils.FormatCount(itemEvent.Amount)} VNĐ";
+            var showRechargeBonus = itemEvent.BonusMoneyVip > 0;
+            if (rechargeBonusRoot != null) rechargeBonusRoot.SetActive(showRechargeBonus);
+            if (rechargeBonusMoneyVipText != null)
+                rechargeBonusMoneyVipText.text = showRechargeBonus
+                    ? $"+{Utils.FormatCount(itemEvent.BonusMoneyVip)}"
+                    : string.Empty;
+            if (rechargeBonusMoneyVipIcon != null && MoneyResources.Instance != null)
+                rechargeBonusMoneyVipIcon.sprite = MoneyResources.Instance.MoneyVipIcon;
         }
 
         public void Init(ushort eventId, ItemEventShop item)

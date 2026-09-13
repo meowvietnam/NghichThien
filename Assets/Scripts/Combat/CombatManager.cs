@@ -640,7 +640,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             if (item.Trigger == Network.Models.Clans.ClanInheritanceTrigger.EndTurn)
             {
-                ConvertEffectToBuffAction(item.EffectType, item.Value.Value)?.Invoke(currentTurn, targetTurn);
+                ConvertEffectToBuffAction(item.EffectType.Value, item.Value)?.Invoke(currentTurn, targetTurn);
 
             }
         }
@@ -917,7 +917,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             {
                 if(item.Trigger == Network.Models.Clans.ClanInheritanceTrigger.StartTurn)
                 {
-                    ConvertEffectToBuffAction(item.EffectType, item.Value.Value)?.Invoke(currentTurn, targetTurn);
+                    ConvertEffectToBuffAction(item.EffectType.Value, item.Value)?.Invoke(currentTurn, targetTurn);
 
                 }
             }
