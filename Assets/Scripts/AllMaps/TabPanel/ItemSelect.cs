@@ -18,6 +18,9 @@ public class ItemSelect : MonoBehaviour
     [SerializeField] private Canvas canvas;
     private bool isDragging = false; // Biến cờ kiểm soát
 
+    /// <summary>Đang trong thao tác kéo vật phẩm. Hand-tut dùng để đổi khung sáng sang ô đích.</summary>
+    public bool IsDragging => isDragging;
+
     [Button]
     private void GetComponent()
     {
