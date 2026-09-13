@@ -15,9 +15,12 @@ using ComboSkillResource.NPCData;
 using DG.Tweening;
 using LongDHModules;
 using Network.Extensions.MemoryPack;
+using Network.Core;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using ClanStrongholdNode = Clan.ClanStronghold;
+using ClanModel = Network.Models.Clans.Clan;
 
 namespace AllMaps
 {
@@ -32,14 +35,19 @@ namespace AllMaps
         [SerializeField] private Player player;
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private CombatVisual combatVisual;
+        [SerializeField] private ClanStrongholdNode clanStrongholdPrefab;
         private Map current;
         private Dictionary<Map, List<Map>> graph;
+        private ClanHandler clanHandler;
+        private Map originalClanMap;
+        private ClanStrongholdNode activeClanStronghold;
         private object nodeSelectionOwner;
         private Action<Map> nodeSelected;
         private Action<Map> nodeRejected;
         private Action nodeSelectionCancelled;
 
         public bool IsSelectingNode => nodeSelectionOwner != null;
+        public Map CurrentMap => current;
 
         public bool isDelayAfterLoadScene = true;
         private static bool isInitPoolPlayer;
@@ -61,7 +69,7 @@ namespace AllMaps
         {
             GameObject iconAction = null;
 
-            if (map is Stronghold)
+            if (map.MapType == MapType.Stronghold)
             {
                 iconAction = prefabIcon.Spawn(map.transform.GetChild(1).transform);
             }
@@ -90,6 +98,11 @@ namespace AllMaps
         public Map FindMap(int id)
         {
             return maps.FirstOrDefault(map => map.Id == id);
+        }
+
+        public bool CanSpawnRandomContent(Map map)
+        {
+            return map != null && map != activeClanStronghold;
         }
 
         /// <summary>
@@ -175,6 +188,8 @@ namespace AllMaps
         {
             var state = new Network.ClientState.AllMaps(this);
             Client.Instance.ChangeState(state);
+            BindClanEvents();
+            ApplyClanStronghold(clanHandler?.CurrentClan);
             SetUpGraph();
             var characterData = Client.Instance.CharacterData;
             var entryMapId = characterData.Progression.IdCurrentNode;
@@ -205,6 +220,112 @@ namespace AllMaps
         private void OnDestroy()
         {
             CancelCurrentNodeSelection();
+            if (clanHandler != null) clanHandler.ClanChanged -= ApplyClanStronghold;
+        }
+
+        private void BindClanEvents()
+        {
+            clanHandler = Client.Instance?.CoreModule?.GetHandler<ClanHandler>();
+            if (clanHandler != null) clanHandler.ClanChanged += ApplyClanStronghold;
+        }
+
+        private void ApplyClanStronghold(ClanModel clan)
+        {
+            if (activeClanStronghold != null && clan != null && activeClanStronghold.Id == clan.NodeId)
+            {
+                activeClanStronghold.SetClan(clan);
+                return;
+            }
+
+            RestoreClanMap();
+            if (clan == null || clan.NodeId <= 0) return;
+            if (clanStrongholdPrefab == null)
+            {
+                Debug.LogWarning("MapManager chưa được gán ClanStronghold prefab", this);
+                return;
+            }
+
+            var source = FindMap(clan.NodeId);
+            if (source == null || source.MapType == MapType.Stronghold)
+            {
+                Debug.LogWarning($"Không thể tạo thành tông môn tại node {clan.NodeId}", this);
+                return;
+            }
+
+            originalClanMap = source;
+            activeClanStronghold = Instantiate(clanStrongholdPrefab, source.transform.parent);
+            var targetTransform = activeClanStronghold.transform;
+            targetTransform.SetSiblingIndex(source.transform.GetSiblingIndex());
+            targetTransform.localPosition = source.transform.localPosition;
+            targetTransform.localRotation = source.transform.localRotation;
+
+            source.CopyTo(activeClanStronghold);
+            activeClanStronghold.MapType = MapType.Stronghold;
+            activeClanStronghold.SetClan(clan);
+            TransferActionIcon(source, activeClanStronghold);
+            ReplaceMapReferences(source, activeClanStronghold);
+            source.gameObject.SetActive(false);
+            SetUpGraph();
+        }
+
+        private void RestoreClanMap()
+        {
+            if (activeClanStronghold == null || originalClanMap == null)
+            {
+                activeClanStronghold = null;
+                originalClanMap = null;
+                return;
+            }
+
+            activeClanStronghold.CopyTo(originalClanMap);
+            TransferActionIcon(activeClanStronghold, originalClanMap);
+            ReplaceMapReferences(activeClanStronghold, originalClanMap);
+            originalClanMap.gameObject.SetActive(true);
+            Destroy(activeClanStronghold.gameObject);
+            activeClanStronghold = null;
+            originalClanMap = null;
+            SetUpGraph();
+        }
+
+        private static void TransferActionIcon(Map source, Map target)
+        {
+            var icon = source.iconVisualAction;
+            if (icon == null) return;
+
+            var childIndex = target.MapType == MapType.Stronghold ? 1 : 0;
+            if (target.transform.childCount > childIndex)
+                icon.transform.SetParent(target.transform.GetChild(childIndex), false);
+        }
+
+        private void ReplaceMapReferences(Map source, Map target)
+        {
+            for (var i = 0; i < maps.Length; i++)
+            {
+                var map = maps[i];
+                if (map == source) maps[i] = target;
+                if (map?.Nodes == null) continue;
+                foreach (var node in map.Nodes) node?.ReplaceNextMap(source, target);
+            }
+
+            if (current == source) current = target;
+
+            foreach (var manager in FindObjectsByType<ActionEnterMapManager>(
+                         FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                ReplaceInList(manager.currentMapRandom, source, target);
+                if (!CanSpawnRandomContent(target)) manager.RemoveSpawnFrom(target);
+            }
+
+            foreach (var manager in FindObjectsByType<MainQuestManager>(
+                         FindObjectsInactive.Include, FindObjectsSortMode.None))
+                ReplaceInList(manager.currentMapMainQuests, source, target);
+        }
+
+        private static void ReplaceInList(List<Map> values, Map source, Map target)
+        {
+            if (values == null) return;
+            for (var i = 0; i < values.Count; i++)
+                if (values[i] == source) values[i] = target;
         }
 
         private IEnumerator DelayTime(float time)

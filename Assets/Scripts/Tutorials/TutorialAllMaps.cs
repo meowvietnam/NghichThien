@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AllMaps;
 using LongDH.LongDHModules;
+using LongDHModules;
 using Network;
 using UnityEngine;
 
@@ -43,8 +44,15 @@ namespace Tutorials
         {
             var isFirstTutorial = PlayerPrefs.GetInt(tutorialAllMapKey, 0) == 0 &&
                                   Client.Instance.CharacterData.QuestManager.CurrentMainQuest != 0;
-            Debug.Log(isFirstTutorial);
             if (!isFirstTutorial) return;
+
+            var currentMap = Pool.Get<MapManager>()?.CurrentMap;
+            if (currentMap?.actionMap is BaseEnemyCombatResource ||
+                currentMap?.actionMap is QuestResource)
+            {
+                return;
+            }
+
             ShowTutorial();
         }
 
