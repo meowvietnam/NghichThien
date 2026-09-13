@@ -37,7 +37,7 @@ public class HuVoKiem : CPActiveAfterUseSkill, IMemorySerializable<HuVoKiem>
     }
     protected override string DescEqual()
     {
-        return base.DescEqual() + "gây tổn thương";
+        return base.DescEqual() + " gây tổn thương";
     }
     public override string GetDesc(int level)
     {

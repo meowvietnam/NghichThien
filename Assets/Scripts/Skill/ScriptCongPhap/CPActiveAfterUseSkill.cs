@@ -51,7 +51,7 @@ public class CPActiveAfterUseSkill : CongPhap
             joinedText = $"{subString} hoặc {skillTexts[^1]}"; // Sử dụng ^1 để lấy phần tử cuối (C# 8+)
         }
 
-        return $"Sử dụng {joinedText} hệ thần thông ";
+        return $"Sử dụng {joinedText} hệ thần thông";
     }
 
     public override string GetDesc(int level)

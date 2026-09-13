@@ -86,6 +86,9 @@ public static partial class EventList
         public const string SEND_SYNC_CP_DYNAMIC = "Combat.SEND_SYNC_CP_DYNAMIC"; // gửi idCharDung
 
         public const string RECEIVE_SYNC_CP_DYNAMIC = "Combat.RECEIVE_SYNC_CP_DYNAMIC"; //  nhận idCharDung 
+        public const string SEND_SYNC_REMOVE_EFFECTSKILLNODESTROY = "Combat.SEND_SYNC_REMOVE_EFFECTSKILLNODESTROY"; // gửi idCharDung
+
+        public const string RECEIVE_SYNC_REMOVE_EFFECTSKILLNODESTROY = "Combat.RECEIVE_SYNC_REMOVE_EFFECTSKILLNODESTROY"; //  nhận idCharDung 
         // khi play skill đồng bộ cho máy kia chỉ play visual không gửi sync
         public static void RemoveAllCombatObservers()
         {

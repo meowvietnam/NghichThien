@@ -250,6 +250,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_CP_DYNAMIC, ReceiveSyncCPDynamic);
         Observer.AddObserver(EventList.Combat.ADD_CP_DYNAMIC,SendSyncCPDynamic);
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_USE_EFFECTSKILL, ReceiSyncEffectSkill);
+        Observer.AddObserver(EventList.Combat.SEND_SYNC_REMOVE_EFFECTSKILLNODESTROY, ReceiSyncEffectRemoveSkillNoDestroy);
 
 
 
@@ -265,10 +266,17 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             item.LoadFirstDataPrefab();
         }
-
+        foreach (var item in char1.congPhapEquip)
+        {
+            item.congPhap.LoadFirstDataPrefab();
+        }
         foreach (var item in char2.thanThongEquip)
         {
             item.LoadFirstDataPrefab();
+        }
+        foreach (var item in char2.congPhapEquip)
+        {
+            item.congPhap.LoadFirstDataPrefab();
         }
 
         if (!IsRealTimeCombat)
@@ -1520,6 +1528,25 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             baseSkill = Pool.Get<GameManager>().GetCongPhapWithId(SyncEffectSkill.IdSkill);
         }    
         baseSkill.PlayVisualSkill(charCombat, charTarget);
+        //charTarget.allDamages.Clear();
+    }
+    public void ReceiSyncEffectRemoveSkillNoDestroy(params object[] data)
+    {
+        SyncEffectSkill SyncEffectSkill = data[0] as SyncEffectSkill;
+        var charCombat = SyncEffectSkill.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
+
+
+        BaseSkill baseSkill = null;
+        if (SyncEffectSkill.IsThanThong)
+        {
+            baseSkill = Pool.Get<GameManager>().GetThanThongWithId(SyncEffectSkill.IdSkill);
+
+        }
+        else
+        {
+            baseSkill = Pool.Get<GameManager>().GetCongPhapWithId(SyncEffectSkill.IdSkill);
+        }
+        charCombat.RemoveEffectSkillNoDestroy(baseSkill);
         //charTarget.allDamages.Clear();
     }
     public void SendAjustLinhKhi(params object[] data)
