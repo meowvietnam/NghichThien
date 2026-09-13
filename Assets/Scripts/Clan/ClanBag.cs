@@ -167,6 +167,7 @@ namespace Clan
                     if (item != null) itemView.InitAction(null, null, () => Select(item));
                 }, false, true);
                 itemList.InitBag();
+                itemList.filterControl.InitAllFilterType();
             }
             UpdateView();
         }
