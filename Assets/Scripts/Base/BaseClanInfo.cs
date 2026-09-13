@@ -16,6 +16,7 @@ namespace Base
         [SerializeField] protected Image clanImage;
         [SerializeField] protected Sprite defaultClanImage;
         [SerializeField] protected Text memberCountText;
+        [SerializeField] protected Text nameClan;
 
         [Header("Danh sách thành viên")]
         [SerializeField] protected ClanMemberElement[] leaderElements;
@@ -145,9 +146,12 @@ namespace Base
                 var loadedMemberCount = clan?.Members?.Count ?? 0;
                 var currentMemberCount = clan == null ? 0 : Math.Max(clan.MemberCount, loadedMemberCount);
                 var maxMemberCount = Math.Max(0, clan?.MaxMembers ?? 0);
-                memberCountText.text = $"{currentMemberCount}/{maxMemberCount}";
+                memberCountText.text = $"Thành viên: {currentMemberCount}/{maxMemberCount}";
             }
-
+            if(nameClan != null)
+            {
+                nameClan.text = clan?.Name ?? "Gia Tộc";
+            }
             SetClanImage(clan?.ImageUrl);
         }
 
