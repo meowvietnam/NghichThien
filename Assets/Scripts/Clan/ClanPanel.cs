@@ -102,6 +102,7 @@ namespace Clan
             handler.ShopChanged += OnShopChanged;
             handler.JoinRequestAdded += OnJoinRequestAdded;
             handler.JoinRequestRemoved += OnJoinRequestRemoved;
+            handler.FundsChanged += OnClanFundsChanged;
             handler.ExpChanged += OnClanExpChanged;
             handler.LevelChanged += OnClanLevelChanged;
         }
@@ -110,6 +111,7 @@ namespace Clan
         {
             handler.LevelChanged -= OnClanLevelChanged;
             handler.ExpChanged -= OnClanExpChanged;
+            handler.FundsChanged -= OnClanFundsChanged;
             handler.JoinRequestRemoved -= OnJoinRequestRemoved;
             handler.JoinRequestAdded -= OnJoinRequestAdded;
             handler.ShopChanged -= OnShopChanged;
@@ -452,6 +454,11 @@ namespace Clan
         }
 
         private void OnClanExpChanged(ClanExpChanged changed)
+        {
+            if (changed != null && changed.ClanId == clan?.Id) RefreshClanSummary();
+        }
+
+        private void OnClanFundsChanged(ClanFundsChanged changed)
         {
             if (changed != null && changed.ClanId == clan?.Id) RefreshClanSummary();
         }

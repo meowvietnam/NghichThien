@@ -30,6 +30,7 @@ namespace Clan
             ClanInheritanceTrigger trigger,
             int slotIndex,
             ClanInheritanceEffect effect,
+            int displayValue,
             bool unlocked,
             int unlockLevel)
         {
@@ -43,7 +44,7 @@ namespace Clan
                 effectText.text = effect == null ? "Chưa chọn truyền thừa" : ClanInheritancePanel.GetEffectName(effect.EffectType);
             if (valueText != null)
             {
-                valueText.text = effect == null ? "+—" : $"+{effect.Value:n0}";
+                valueText.text = effect == null ? "+—" : $"+{displayValue:n0}";
                 valueText.gameObject.SetActive(unlocked);
             }
             if (lockedRoot != null) lockedRoot.SetActive(!unlocked);

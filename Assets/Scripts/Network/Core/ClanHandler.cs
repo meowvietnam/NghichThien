@@ -33,6 +33,7 @@ namespace Network.Core
         public event Action<ClanJoinRequest> JoinRequestAdded;
         public event Action<ClanJoinRequestRemoved> JoinRequestRemoved;
         public event Action<ClanInheritanceChanged> InheritanceChanged;
+        public event Action<ClanFundsChanged> FundsChanged;
         public event Action<ClanExpChanged> ExpChanged;
         public event Action<ClanLevelChanged> LevelChanged;
 
@@ -94,10 +95,25 @@ namespace Network.Core
             var baseValue = effectType.HasValue && clanBuffResources != null
                 ? clanBuffResources.GetBaseValueOf(effectType.Value)
                 : config.InheritanceBaseValue;
-            var maxValue = (long)baseValue * 3;
+            var multiplier = Math.Max(1, CurrentClan?.Level ?? 1);
+            var minValue = (long)baseValue * multiplier;
+            var maxValue = (long)baseValue * 3 * multiplier;
             return (
-                (int)Math.Max(int.MinValue, Math.Min(int.MaxValue, baseValue)),
+                (int)Math.Max(int.MinValue, Math.Min(int.MaxValue, minValue)),
                 (int)Math.Max(int.MinValue, Math.Min(int.MaxValue, maxValue)));
+        }
+
+        public int GetInheritanceDisplayValue(ClanInheritanceEffect effect)
+        {
+            if (effect == null) return 0;
+            var multiplier = Math.Max(1, CurrentClan?.Level ?? 1);
+            var value = (long)effect.Value * multiplier;
+            return (int)Math.Max(int.MinValue, Math.Min(int.MaxValue, value));
+        }
+
+        public long GetClanUpgradeExpFromFunds(long funds)
+        {
+            return funds;
         }
 
         public async Task<CreateClanResult> CreateClan(CreateClanRequest request)
@@ -309,6 +325,20 @@ namespace Network.Core
             return result;
         }
 
+        public async Task<UpgradeClanWithFundsResult> UpgradeWithFunds(long funds)
+        {
+            var result = await Request<UpgradeClanWithFundsRequest, UpgradeClanWithFundsResult>(
+                MessageTag.UpgradeClanWithFundsRequest,
+                new UpgradeClanWithFundsRequest { Funds = funds });
+
+            if (result.Success)
+            {
+                ApplyUpgradeWithFunds(result, false);
+            }
+
+            return result;
+        }
+
         public bool IsShopItemOwner(ClanShopItem shopItem)
         {
             return shopItem != null && shopItem.OwnerCharId == client.CharacterData.Id;
@@ -394,6 +424,9 @@ namespace Network.Core
                     break;
                 case MessageTag.ClanInheritanceChanged:
                     ApplyInheritanceChanged(message.Reader.MemRead<ClanInheritanceChanged>(), true);
+                    break;
+                case MessageTag.ClanFundsChanged:
+                    ApplyFundsChanged(message.Reader.MemRead<ClanFundsChanged>(), true);
                     break;
                 case MessageTag.ClanExpChanged:
                     ApplyExpChanged(message.Reader.MemRead<ClanExpChanged>(), true);
@@ -559,6 +592,48 @@ namespace Network.Core
             if (notify) NotifyMainThread(() => InheritanceChanged?.Invoke(changed));
         }
 
+        private void ApplyFundsChanged(ClanFundsChanged changed, bool notify)
+        {
+            if (changed == null || CurrentClan == null || changed.ClanId != CurrentClan.Id) return;
+            CurrentClan.Funds = changed.Funds;
+            if (notify) NotifyMainThread(() => FundsChanged?.Invoke(changed));
+        }
+
+        private void ApplyUpgradeWithFunds(UpgradeClanWithFundsResult result, bool notify)
+        {
+            if (result == null || CurrentClan == null) return;
+
+            CurrentClan.Funds = result.ClanFunds;
+            CurrentClan.Level = result.Level;
+            CurrentClan.Exp = result.Exp;
+            var effects = result.Effects ?? Array.Empty<ClanInheritanceEffect>();
+            CurrentClan.StartTurnEffects = effects
+                .Where(x => x.Trigger == ClanInheritanceTrigger.StartTurn)
+                .OrderBy(x => x.SlotIndex)
+                .ToList();
+            CurrentClan.EndTurnEffects = effects
+                .Where(x => x.Trigger == ClanInheritanceTrigger.EndTurn)
+                .OrderBy(x => x.SlotIndex)
+                .ToList();
+
+            if (notify)
+            {
+                NotifyMainThread(() =>
+                {
+                    FundsChanged?.Invoke(new ClanFundsChanged { ClanId = CurrentClan.Id, Funds = result.ClanFunds });
+                    ExpChanged?.Invoke(new ClanExpChanged { ClanId = CurrentClan.Id, Exp = result.Exp });
+                    LevelChanged?.Invoke(new ClanLevelChanged
+                    {
+                        ClanId = CurrentClan.Id,
+                        Level = result.Level,
+                        Exp = result.Exp,
+                        InheritanceSlotsPerColumn = result.InheritanceSlotsPerColumn,
+                        Effects = effects
+                    });
+                });
+            }
+        }
+
         private void ApplyExpChanged(ClanExpChanged changed, bool notify)
         {
             if (changed == null || CurrentClan == null || changed.ClanId != CurrentClan.Id) return;
@@ -668,6 +743,7 @@ namespace Network.Core
             JoinRequestAdded = null;
             JoinRequestRemoved = null;
             InheritanceChanged = null;
+            FundsChanged = null;
             ExpChanged = null;
             LevelChanged = null;
         }
@@ -690,6 +766,7 @@ namespace Network.Core
             MessageTag.ClanJoinRequestAdded,
             MessageTag.ClanJoinRequestRemoved,
             MessageTag.ClanInheritanceChanged,
+            MessageTag.ClanFundsChanged,
             MessageTag.ClanExpChanged,
             MessageTag.ClanLevelChanged
         };
