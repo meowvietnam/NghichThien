@@ -36,6 +36,7 @@ namespace Network.Core
         public event Action<ClanFundsChanged> FundsChanged;
         public event Action<ClanExpChanged> ExpChanged;
         public event Action<ClanLevelChanged> LevelChanged;
+        public event Action<ClanMapNode> MapNodeChanged;
 
         public ClanHandler()
         {
@@ -218,6 +219,13 @@ namespace Network.Core
             return Request<SearchClanRequest, SearchClanResult>(
                 MessageTag.SearchClanRequest,
                 new SearchClanRequest { Name = name ?? string.Empty, Limit = limit });
+        }
+
+        public Task<GetClanMapNodesResult> GetClanMapNodes()
+        {
+            return Request<GetClanMapNodesRequest, GetClanMapNodesResult>(
+                MessageTag.GetClanMapNodesRequest,
+                new GetClanMapNodesRequest());
         }
 
         // Xin gia nhập một tông môn (dùng khi đang xem tông môn của người khác, vd. từ ClanListPanel).
@@ -433,6 +441,10 @@ namespace Network.Core
                     break;
                 case MessageTag.ClanLevelChanged:
                     ApplyLevelChanged(message.Reader.MemRead<ClanLevelChanged>(), true);
+                    break;
+                case MessageTag.ClanMapNodeChanged:
+                    var changed = message.Reader.MemRead<ClanMapNodeChanged>();
+                    NotifyMainThread(() => MapNodeChanged?.Invoke(changed.Node));
                     break;
             }
         }
@@ -746,6 +758,7 @@ namespace Network.Core
             FundsChanged = null;
             ExpChanged = null;
             LevelChanged = null;
+            MapNodeChanged = null;
         }
 
         public void OnDisconnect(IProtocol<MessageTag> protocol)
@@ -768,7 +781,8 @@ namespace Network.Core
             MessageTag.ClanInheritanceChanged,
             MessageTag.ClanFundsChanged,
             MessageTag.ClanExpChanged,
-            MessageTag.ClanLevelChanged
+            MessageTag.ClanLevelChanged,
+            MessageTag.ClanMapNodeChanged
         };
 
         public MessageTag[] HandleTag => Handlers;

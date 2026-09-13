@@ -18,6 +18,32 @@ namespace Network.Models.Clans
     }
 
     [MemoryPackable]
+    public partial class GetClanMapNodesRequest
+    {
+    }
+
+    [MemoryPackable]
+    public partial class GetClanMapNodesResult : Result
+    {
+        public ClanMapNode[] Nodes { get; set; } = new ClanMapNode[0];
+    }
+
+    [MemoryPackable]
+    public partial class ClanMapNode
+    {
+        public int ClanId { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public int NodeId { get; set; }
+        public string ImageUrl { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class ClanMapNodeChanged
+    {
+        public ClanMapNode Node { get; set; } = new ClanMapNode();
+    }
+
+    [MemoryPackable]
     public partial class ClanConfig
     {
         public int CreateClanMoneyVipPrice { get; set; }
