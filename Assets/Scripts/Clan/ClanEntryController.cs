@@ -1,3 +1,5 @@
+using System;
+using CreateCharacter;
 using Network;
 using Network.Core;
 using UnityEngine;
@@ -10,6 +12,8 @@ namespace Clan
         [SerializeField] private ClanIntroPanel clanIntroPanel;
         [SerializeField] private ClanPanel clanPanel;
 
+        private bool isOpening;
+
         private void Start()
         {
             SetEventButton(button, Open);
@@ -17,22 +21,49 @@ namespace Clan
 
         private ClanHandler Handler() => Client.Instance.CoreModule.GetHandler<ClanHandler>();
 
-        public void Open()
+        public async void Open()
         {
+            if (isOpening) return;
+
             var clanHandler = Handler();
             if (clanHandler == null)
             {
                 Debug.LogWarning("ClanHandler chưa được khởi tạo", this);
+                NotifyGroup.Instance?.Show("Kết nối tông môn chưa sẵn sàng");
                 return;
             }
 
-            if (clanHandler.CurrentClan != null)
+            isOpening = true;
+            if (button != null) button.interactable = false;
+            try
             {
-                if (clanPanel != null) clanPanel.Show();
+                var result = await clanHandler.RefreshClan();
+                if (!result.Success)
+                {
+                    NotifyGroup.Instance?.Show(string.IsNullOrWhiteSpace(result.Message)
+                        ? "Không thể tải thông tin tông môn"
+                        : result.Message);
+                    return;
+                }
+
+                if (clanHandler.CurrentClan != null)
+                {
+                    if (clanPanel != null) clanPanel.Show();
+                }
+                else
+                {
+                    if (clanIntroPanel != null) clanIntroPanel.Show();
+                }
             }
-            else
+            catch (Exception exception)
             {
-                if (clanIntroPanel != null) clanIntroPanel.Show();
+                Debug.LogException(exception, this);
+                NotifyGroup.Instance?.Show("Không thể tải thông tin tông môn, vui lòng thử lại");
+            }
+            finally
+            {
+                isOpening = false;
+                if (button != null) button.interactable = true;
             }
         }
     }

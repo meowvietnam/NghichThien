@@ -328,7 +328,6 @@ GameObject:
   - component: {fileID: 6236668196499516446}
   - component: {fileID: 1138574998060928327}
   - component: {fileID: 1974328381252276957}
-  - component: {fileID: 3248808437169638623}
   - component: {fileID: 2471582655205845178}
   m_Layer: 0
   m_Name: SearchButton
@@ -354,8 +353,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 70}
+  m_AnchoredPosition: {x: 31, y: 0}
+  m_SizeDelta: {x: 188.48482, y: 63.333332}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &1138574998060928327
 CanvasRenderer:
@@ -378,14 +377,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.18039216, g: 0.41960785, b: 0.38431373, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 5443746717510509390, guid: bf975259ed619f94bae85040fe6e9f96,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -395,21 +395,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3248808437169638623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1724105942180725935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.25, g: 0.18, b: 0.12, a: 0.95}
-  m_EffectDistance: {x: 1, y: -1}
-  m_UseGraphicAlpha: 1
 --- !u!114 &2471582655205845178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,10 +416,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.18039216, g: 0.41960785, b: 0.38431373, a: 1}
-    m_HighlightedColor: {r: 0.27874509, g: 0.48205492, b: 0.4293961, a: 1}
-    m_PressedColor: {r: 0.15152942, g: 0.3524706, b: 0.32282352, a: 1}
-    m_SelectedColor: {r: 0.27874509, g: 0.48205492, b: 0.4293961, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1566,7 +1551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
   m_Material: {fileID: 0}
-  m_Color: {r: 0.98, g: 0.91, b: 0.75, a: 1}
+  m_Color: {r: 0.2830189, g: 0.19691172, b: 0.11080456, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1637,7 +1622,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bad55b77e2e4aa19061bc5487dd472b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Clan.ClanListPanel
-  myTf: {fileID: 2083500850835727248}
+  myTf: {fileID: 3080127639125734443}
   selfObject: {fileID: 7633577661780472138}
   closeButton: {fileID: 2287773159827976224}
   clanPanel: {fileID: 0}
