@@ -250,7 +250,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_CP_DYNAMIC, ReceiveSyncCPDynamic);
         Observer.AddObserver(EventList.Combat.ADD_CP_DYNAMIC,SendSyncCPDynamic);
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_USE_EFFECTSKILL, ReceiSyncEffectSkill);
-        Observer.AddObserver(EventList.Combat.SEND_SYNC_REMOVE_EFFECTSKILLNODESTROY, ReceiSyncEffectRemoveSkillNoDestroy);
+        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_REMOVE_EFFECTSKILLNODESTROY, ReceiSyncEffectRemoveSkillNoDestroy);
 
 
 
@@ -1549,7 +1549,16 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             baseSkill = Pool.Get<GameManager>().GetCongPhapWithId(SyncEffectSkill.IdSkill);
         }    
-        baseSkill.PlayVisualSkill(charCombat, charTarget);
+        var oldSync = isSync;
+        try
+        {
+            isSync = false;
+            baseSkill.PlayVisualSkill(charCombat, charTarget);
+        }
+        finally
+        {
+            isSync = oldSync;
+        }
         //charTarget.allDamages.Clear();
     }
     public void ReceiSyncEffectRemoveSkillNoDestroy(params object[] data)
@@ -1568,7 +1577,16 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             baseSkill = Pool.Get<GameManager>().GetCongPhapWithId(SyncEffectSkill.IdSkill);
         }
-        charCombat.RemoveEffectSkillNoDestroy(baseSkill);
+        var oldSync = isSync;
+        try
+        {
+            isSync = false;
+            charCombat.RemoveEffectSkillNoDestroy(baseSkill);
+        }
+        finally
+        {
+            isSync = oldSync;
+        }
         //charTarget.allDamages.Clear();
     }
     public void SendAjustLinhKhi(params object[] data)
@@ -1729,18 +1747,22 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         var charCB = SyncCPDynamic.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
         var congPhap = Pool.Get<GameManager>().GetCongPhapWithId(SyncCPDynamic.IdCpDynamic);
         var cpMono = charCB.congPhapEquip.FirstOrDefault(x => x.congPhap.Id == SyncCPDynamic.IdCpDynamic);
-        if (SyncCPDynamic.NewCpDynamic <= 0)
+        var oldSync = isSync;
+        try
         {
-            charCB.RemoveCPDynamic(congPhap);
-        }    
-        else
-        {
-            if(cpMono != null)
+            isSync = false;
+            if (SyncCPDynamic.NewCpDynamic <= 0)
+            {
+                charCB.RemoveCPDynamic(congPhap);
+            }
+            else if(cpMono != null)
             {
                 charCB.SetCPDynamic(cpMono, SyncCPDynamic.NewCpDynamic);
-
             }
-
+        }
+        finally
+        {
+            isSync = oldSync;
         }
     }
 }

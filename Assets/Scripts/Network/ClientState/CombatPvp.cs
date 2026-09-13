@@ -27,6 +27,9 @@ namespace Network.ClientState
             Observer.AddObserver(EventList.Combat.SEND_SYNC_HEALING, SyncHealing);
             Observer.AddObserver(EventList.Combat.SEND_SYNC_PLAYSKILL, SyncPlaySkill);
             Observer.AddObserver(EventList.Combat.SEND_SYNC_USE_PHAPBAO, SyncUsePhapBao);
+            Observer.AddObserver(EventList.Combat.SEND_SYNC_USE_EFFECTSKILL, SyncUseEffectSkill);
+            Observer.AddObserver(EventList.Combat.SEND_SYNC_CP_DYNAMIC, SyncCPDynamic);
+            Observer.AddObserver(EventList.Combat.SEND_SYNC_REMOVE_EFFECTSKILLNODESTROY, SyncRemoveEffectSkillNoDestroy);
             Observer.AddObserver(EventList.Network.RESULT_COMBAT_REALTIME, ResultCombat);
             client.Send(MessageTag.ReadyCombatPvp);
         }
@@ -98,6 +101,24 @@ namespace Network.ClientState
             client.MemSend(MessageTag.SyncUsePhapBao, model);
         }
 
+        private void SyncUseEffectSkill(object[] data)
+        {
+            var model = data[0] as SyncEffectSkill;
+            client.MemSend(MessageTag.SyncUseEffectSkill, model);
+        }
+
+        private void SyncCPDynamic(object[] data)
+        {
+            var model = data[0] as SyncCPDynamic;
+            client.MemSend(MessageTag.SyncCPDynamic, model);
+        }
+
+        private void SyncRemoveEffectSkillNoDestroy(object[] data)
+        {
+            var model = data[0] as SyncEffectSkill;
+            client.MemSend(MessageTag.SyncRemoveEffectSkillNoDestroy, model);
+        }
+
         public void Handle(Message<MessageTag> message)
         {
             var tag = message.Tag;
@@ -147,6 +168,21 @@ namespace Network.ClientState
                 var model = reader.MemRead<SyncUsePhapBao>();
                 Observer.Notify(EventList.Combat.RECEIVE_SYNC_USE_PHAPBAO, model);
             }
+            else if (tag == MessageTag.SyncUseEffectSkill)
+            {
+                var model = reader.MemRead<SyncEffectSkill>();
+                Observer.Notify(EventList.Combat.RECEIVE_SYNC_USE_EFFECTSKILL, model);
+            }
+            else if (tag == MessageTag.SyncCPDynamic)
+            {
+                var model = reader.MemRead<SyncCPDynamic>();
+                Observer.Notify(EventList.Combat.RECEIVE_SYNC_CP_DYNAMIC, model);
+            }
+            else if (tag == MessageTag.SyncRemoveEffectSkillNoDestroy)
+            {
+                var model = reader.MemRead<SyncEffectSkill>();
+                Observer.Notify(EventList.Combat.RECEIVE_SYNC_REMOVE_EFFECTSKILLNODESTROY, model);
+            }
             else if (tag == MessageTag.ResultCombatPvp)
             {
                 var result = reader.MemRead<ResultCombatResult>();
@@ -192,6 +228,9 @@ namespace Network.ClientState
             Observer.RemoveObserver(EventList.Combat.SEND_SYNC_HEALING, SyncHealing);
             Observer.RemoveObserver(EventList.Combat.SEND_SYNC_PLAYSKILL, SyncPlaySkill);
             Observer.RemoveObserver(EventList.Combat.SEND_SYNC_USE_PHAPBAO, SyncUsePhapBao);
+            Observer.RemoveObserver(EventList.Combat.SEND_SYNC_USE_EFFECTSKILL, SyncUseEffectSkill);
+            Observer.RemoveObserver(EventList.Combat.SEND_SYNC_CP_DYNAMIC, SyncCPDynamic);
+            Observer.RemoveObserver(EventList.Combat.SEND_SYNC_REMOVE_EFFECTSKILLNODESTROY, SyncRemoveEffectSkillNoDestroy);
             Observer.RemoveObserver(EventList.Network.RESULT_COMBAT_REALTIME, ResultCombat);
         }
 
