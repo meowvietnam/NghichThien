@@ -5,7 +5,9 @@ using Base;
 using CreateCharacter;
 using CreateCharacter.CharStats;
 using MemoryPack;
+using Network.Core;
 using Network.Extensions;
+using Network.Models.Clans;
 using UnityEngine;
 
 namespace Network.Models
@@ -49,6 +51,13 @@ namespace Network.Models
         public int ChuTu2Used { get; set; }
         public int ChuTu1Used { get; set; }
         public int PointArena { get; set; }
+        public bool HasClan { get; set; }
+        public int ClanId { get; set; }
+        public string ClanName { get; set; } = string.Empty;
+        public string ClanImageUrl { get; set; }
+        public int ClanLevel { get; set; }
+        public ClanRole ClanRole { get; set; }
+        public ClanInheritanceEffect[] ClanInheritanceEffects { get; set; } = new ClanInheritanceEffect[0];
 
         [MemoryPackConstructor]
         public CharacterSnapshot()
@@ -57,7 +66,7 @@ namespace Network.Models
 
         public CharacterSnapshot(CharacterData c)
         {
-            this.Id = Id;
+            this.Id = c.Id;
             var equipment = c.EquipmentManager;
             this.Name = c.Name;
             this.Gender = c.Gender;
@@ -97,6 +106,20 @@ namespace Network.Models
             this.DanDoc = c.Stats.DanDoc;
             this.Hp = c.Stats.Hp;
             this.PointArena = c.ArenaManager.Points;
+            var clan = Client.Instance?.CoreModule?.GetHandler<ClanHandler>()?.CurrentClan;
+            var member = clan?.Members?.FirstOrDefault(x => x.CharId == c.Id);
+            if (clan != null && member != null)
+            {
+                this.HasClan = true;
+                this.ClanId = clan.Id;
+                this.ClanName = clan.Name;
+                this.ClanImageUrl = clan.ImageUrl;
+                this.ClanLevel = clan.Level;
+                this.ClanRole = member.Role;
+                this.ClanInheritanceEffects = (clan.StartTurnEffects ?? new List<ClanInheritanceEffect>())
+                    .Concat(clan.EndTurnEffects ?? new List<ClanInheritanceEffect>())
+                    .ToArray();
+            }
         }
     }
 }

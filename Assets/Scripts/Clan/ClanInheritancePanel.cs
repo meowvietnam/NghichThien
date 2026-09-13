@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CreateCharacter;
 using LongDH.LongDHModules;
 using LongDHModules;
+using LuyenDan;
 using LuyenKhi;
 using Network;
 using Network.Core;
@@ -19,10 +20,18 @@ namespace Clan
         [Header("Thông tin cấp")]
         [SerializeField] private UnityEngine.UI.Text levelText;
         [SerializeField] private UnityEngine.UI.Text expText;
+        [SerializeField] private UnityEngine.UI.Text fundsText;
         [SerializeField] private UnityEngine.UI.Slider expSlider;
         [SerializeField] private UnityEngine.UI.Text slotRuleText;
         [SerializeField] private UnityEngine.UI.Text permissionText;
         [SerializeField] private UnityEngine.UI.Text costHintText;
+
+        [Header("Nâng cấp bằng quỹ")]
+        [SerializeField] private GameObject upgradeRoot;
+        [SerializeField] private UnityEngine.UI.Button upgradeButton;
+        [SerializeField] private SelectNum upgradeFundSelectNum;
+        [SerializeField] private UnityEngine.UI.Text upgradeHintText;
+        [SerializeField] private UnityEngine.UI.Text upgradePreviewText;
 
         [Header("Hai cột truyền thừa")]
         [SerializeField] private RectTransform startTurnContainer;
@@ -59,12 +68,18 @@ namespace Clan
             base.Start();
             SetEventButton(clearButton, ClearSelected);
             SetEventButton(cancelSelectionButton, CloseSelection);
+            SetEventButton(upgradeButton, OpenUpgradeFundsSelection);
+            if (upgradeFundSelectNum != null)
+            {
+                upgradeFundSelectNum.confirmAction.AddListener(ConfirmUpgradeWithFunds);
+            }
         }
 
         protected override void BindClanEvents(ClanHandler handler)
         {
             handler.ClanChanged += OnClanChanged;
             handler.InheritanceChanged += OnInheritanceChanged;
+            handler.FundsChanged += OnFundsChanged;
             handler.ExpChanged += OnExpChanged;
             handler.LevelChanged += OnLevelChanged;
         }
@@ -73,6 +88,7 @@ namespace Clan
         {
             handler.LevelChanged -= OnLevelChanged;
             handler.ExpChanged -= OnExpChanged;
+            handler.FundsChanged -= OnFundsChanged;
             handler.InheritanceChanged -= OnInheritanceChanged;
             handler.ClanChanged -= OnClanChanged;
         }
@@ -98,10 +114,12 @@ namespace Clan
                 clan.EndTurnEffects, shownSlots, unlockedSlots);
 
             if (levelText != null) levelText.text = $"Cấp {clan.Level}";
+            if (fundsText != null) fundsText.text = $"Quỹ: {clan.Funds:n0}";
             RenderExp(clan.Level, clan.Exp, config.ClanLevelRequiredTotalExp);
             if (slotRuleText != null) slotRuleText.text = $"Đã mở {unlockedSlots} ô mỗi cột";
 
             var canManage = CanManage();
+            var canUpgrade = CanUpgradeClan();
             if (permissionText != null)
             {
                 permissionText.text = canManage
@@ -110,6 +128,24 @@ namespace Clan
             }
             if (costHintText != null)
                 costHintText.text = $"Điền ô trống miễn phí · Đổi hoặc xóa: {config.ChangeInheritanceMoneyVipCost:n0} Tiên Ngọc";
+            RenderUpgrade(canUpgrade, clan.Funds);
+        }
+
+        private void RenderUpgrade(bool canUpgrade, long funds)
+        {
+            if (upgradeRoot != null) upgradeRoot.SetActive(canUpgrade);
+            if (upgradeButton != null)
+            {
+                upgradeButton.gameObject.SetActive(canUpgrade);
+                upgradeButton.interactable = canUpgrade && funds > 0 && !isSubmitting;
+            }
+            if (upgradeHintText != null)
+            {
+                upgradeHintText.text = canUpgrade
+                    ? $"Dùng quỹ tông môn để tăng EXP · Quỹ hiện có: {funds:n0}"
+                    : "Chỉ Tộc Chủ có thể dùng quỹ nâng cấp";
+            }
+            if (upgradePreviewText != null) upgradePreviewText.text = string.Empty;
         }
 
         private void RenderColumn(
@@ -128,7 +164,8 @@ namespace Clan
                 cache[index].gameObject.SetActive(visible);
                 if (!visible) continue;
                 var effect = effects?.FirstOrDefault(x => x.SlotIndex == index);
-                cache[index].Init(trigger, index, effect, index < unlockedSlots, GetUnlockLevel(index));
+                cache[index].Init(trigger, index, effect, Handler.GetInheritanceDisplayValue(effect), index < unlockedSlots,
+                    GetUnlockLevel(index));
             }
         }
 
@@ -259,12 +296,90 @@ namespace Clan
             }
         }
 
+        private void OpenUpgradeFundsSelection()
+        {
+            if (isSubmitting || upgradeFundSelectNum == null) return;
+            if (!CanUpgradeClan())
+            {
+                Notify("Chỉ Tộc Chủ được nâng cấp tông môn");
+                return;
+            }
+
+            var funds = Handler?.CurrentClan?.Funds ?? 0;
+            var max = (int)Math.Min(int.MaxValue, Math.Max(0, funds));
+            if (max <= 0)
+            {
+                Notify("Quỹ tông môn không đủ");
+                return;
+            }
+
+            upgradeFundSelectNum.ValueChanged -= OnUpgradeFundsChanged;
+            upgradeFundSelectNum.ValueChanged += OnUpgradeFundsChanged;
+            upgradeFundSelectNum.SetMin(1);
+            upgradeFundSelectNum.SetMax(max);
+            upgradeFundSelectNum.SetText(GetUpgradePreviewText(1));
+            upgradeFundSelectNum.Show(0.15f);
+            upgradeFundSelectNum.SetValue(1);
+        }
+
+        private void OnUpgradeFundsChanged(int value)
+        {
+            var funds = Math.Max(1, value);
+            var text = GetUpgradePreviewText(funds);
+            upgradeFundSelectNum?.SetText(text);
+            if (upgradePreviewText != null) upgradePreviewText.text = text;
+        }
+
+        private string GetUpgradePreviewText(long funds)
+        {
+            var exp = Handler?.GetClanUpgradeExpFromFunds(funds) ?? funds;
+            return $"Dùng {funds:n0} Quỹ → +{exp:n0} EXP";
+        }
+
+        private async void ConfirmUpgradeWithFunds()
+        {
+            if (isSubmitting || upgradeFundSelectNum == null) return;
+
+            var funds = upgradeFundSelectNum.GetValue();
+            if (funds <= 0) return;
+
+            isSubmitting = true;
+            if (upgradeButton != null) upgradeButton.interactable = false;
+            try
+            {
+                var result = await Handler.UpgradeWithFunds(funds);
+                Notify(result.Success
+                    ? $"Đã dùng {result.FundsSpent:n0} Quỹ, tăng {result.AddedExp:n0} EXP tông môn"
+                    : result.Message);
+                if (result.Success) Render();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception, this);
+                Notify("Không thể nâng cấp tông môn");
+            }
+            finally
+            {
+                isSubmitting = false;
+                Render();
+            }
+        }
+
         private bool CanManage()
         {
             var charId = Client.Instance?.CharacterData?.Id ?? 0;
             var member = Handler?.CurrentClan?.Members?.FirstOrDefault(x => x.CharId == charId);
             return member != null &&
                    (Handler.GetPermissions(member.Role) & ClanPermission.ManageInheritance) != 0;
+        }
+
+        private bool CanUpgradeClan()
+        {
+            var charId = Client.Instance?.CharacterData?.Id ?? 0;
+            var clan = Handler?.CurrentClan;
+            var member = clan?.Members?.FirstOrDefault(x => x.CharId == charId);
+            return clan != null && member != null &&
+                   (member.Role == ClanRole.Leader || clan.LeaderCharId == charId);
         }
 
         private int GetUnlockLevel(int slotIndex)
@@ -322,6 +437,11 @@ namespace Clan
             if (value?.ClanId == Handler?.CurrentClan?.Id) Render();
         }
 
+        private void OnFundsChanged(ClanFundsChanged value)
+        {
+            if (value?.ClanId == Handler?.CurrentClan?.Id) Render();
+        }
+
         private void OnExpChanged(ClanExpChanged value)
         {
             if (value?.ClanId == Handler?.CurrentClan?.Id) Render();
@@ -352,6 +472,11 @@ namespace Clan
                 if (slot != null) slot.Clicked -= OpenSelection;
             foreach (var option in options)
                 if (option != null) option.Clicked -= OnOptionClicked;
+            if (upgradeFundSelectNum != null)
+            {
+                upgradeFundSelectNum.ValueChanged -= OnUpgradeFundsChanged;
+                upgradeFundSelectNum.confirmAction.RemoveListener(ConfirmUpgradeWithFunds);
+            }
             base.OnDestroy();
         }
     }

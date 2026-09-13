@@ -231,7 +231,7 @@ namespace Clan.Editor
                 var slot = Object.Instantiate(template, parent);
                 slot.name = $"InheritanceSlot_{index + 1}";
                 slot.gameObject.SetActive(true);
-                slot.Init(trigger, index, null, index == 0, index + 1);
+                // slot.Init(trigger, index, null, index == 0, index + 1);
             }
         }
 
