@@ -49,6 +49,7 @@ namespace Clan.Editor
             var avatarSlot = Image("AvatarSlot", root, AvatarBg);
             SetLeft(avatarSlot.rectTransform, 16, 0, 72, 72);
             avatarSlot.gameObject.AddComponent<Outline>().effectColor = new Color(Gold.r, Gold.g, Gold.b, 0.7f);
+            avatarSlot.gameObject.AddComponent<RectMask2D>();
             var avatarGlyph = Text("Glyph", avatarSlot.transform, "人", 28, MutedInk, TextAnchor.MiddleCenter, true);
             Stretch(avatarGlyph.rectTransform);
             var avatarGraphic = BuildAvatarDisplay(avatarSlot.rectTransform);
@@ -76,6 +77,7 @@ namespace Clan.Editor
             SetObject(element, "roleText", roleText);
             SetObject(element, "contribText", contribText);
             SetObject(element, "avatar", avatarGraphic);
+            SetObject(element, "avatarFallback", avatarGlyph.gameObject);
             // Lưu ý: "spriteLevels" cố tình để trống — cần các sprite icon cấp bậc thực tế.
 
             Save(root.gameObject, MemberPrefabPath);
@@ -109,6 +111,7 @@ namespace Clan.Editor
             var avatarSlot = Image("AvatarSlot", root, AvatarBg);
             SetTop(avatarSlot.rectTransform, 0, -56, 160, 160);
             avatarSlot.gameObject.AddComponent<Outline>().effectColor = new Color(Gold.r, Gold.g, Gold.b, 0.8f);
+            avatarSlot.gameObject.AddComponent<RectMask2D>();
             var avatarGlyph = Text("Glyph", avatarSlot.transform, "人", 44, MutedInk, TextAnchor.MiddleCenter, true);
             Stretch(avatarGlyph.rectTransform);
             var avatarGraphic = BuildAvatarDisplay(avatarSlot.rectTransform);
@@ -133,6 +136,7 @@ namespace Clan.Editor
             SetObject(element, "roleText", roleText);
             SetObject(element, "contribText", contribText);
             SetObject(element, "avatar", avatarGraphic);
+            SetObject(element, "avatarFallback", avatarGlyph.gameObject);
             // Lưu ý: "spriteLevels" cố tình để trống, tương tự bản Member.
 
             Save(root.gameObject, LeadershipPrefabPath);

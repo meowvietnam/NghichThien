@@ -414,17 +414,8 @@ namespace Clan.Editor
             SetRight(quantityInput.GetComponent<RectTransform>(), 0, 0, 300, 48);
             SetObject(clanBag, "quantityInput", quantityInput);
 
-            var priceRow = Rect("PriceRow", window.transform);
-            SetTop(priceRow, 0, -642, 800, 56);
-            var priceLabel = Text("Label", priceRow, "Giá mỗi vật phẩm", 20, MutedInk, TextAnchor.MiddleLeft);
-            SetLeft(priceLabel.rectTransform, 0, 0, 220, 48);
-            var priceInput = CreateInputField("PriceInput", priceRow, "1", 20,
-                UnityEngine.UI.InputField.ContentType.IntegerNumber, "1");
-            SetRight(priceInput.GetComponent<RectTransform>(), 0, 0, 300, 48);
-            SetObject(clanBag, "priceInput", priceInput);
-
             var addButton = Button("AddButton", window.transform, "ĐƯA VÀO KHO", Jade, new Vector2(400, 70), 24);
-            SetTop(addButton.GetComponent<RectTransform>(), 0, -716, 400, 70);
+            SetTop(addButton.GetComponent<RectTransform>(), 0, -650, 400, 70);
             SetDisabledTint(addButton, Jade);
             SetObject(clanBag, "addButton", addButton);
 

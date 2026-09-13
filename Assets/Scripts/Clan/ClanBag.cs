@@ -23,7 +23,6 @@ namespace Clan
         [SerializeField] private Text selectedItemText;
         [SerializeField] private Text dailyLimitText;
         [SerializeField] private InputField quantityInput;
-        [SerializeField] private InputField priceInput;
         [SerializeField] private Button addButton;
 
         private readonly List<ItemRef> items = new();
@@ -43,11 +42,6 @@ namespace Clan
             {
                 quantityInput.onValueChanged.RemoveListener(OnInputChanged);
                 quantityInput.onValueChanged.AddListener(OnInputChanged);
-            }
-            if (priceInput != null)
-            {
-                priceInput.onValueChanged.RemoveListener(OnInputChanged);
-                priceInput.onValueChanged.AddListener(OnInputChanged);
             }
             UpdateView();
         }
@@ -114,7 +108,7 @@ namespace Clan
 
         private async Task AddSelectedItemAsync()
         {
-            if (!Validate(out var quantity, out var price, out var message))
+            if (!Validate(out var quantity, out var message))
             {
                 Notify(message);
                 return;
@@ -124,7 +118,7 @@ namespace Clan
             SetSubmitting(true);
             try
             {
-                var result = await Handler.AddShopItem(requestItem, price);
+                var result = await Handler.AddShopItem(requestItem);
                 Notify(string.IsNullOrWhiteSpace(result.Message)
                     ? result.Success ? "Đã thêm vật phẩm vào kho tông môn" : "Không thể thêm vật phẩm vào kho tông môn"
                     : result.Message);
@@ -145,10 +139,9 @@ namespace Clan
             }
         }
 
-        private bool Validate(out int quantity, out long price, out string message)
+        private bool Validate(out int quantity, out string message)
         {
             quantity = 0;
-            price = 0;
             message = string.Empty;
             if (Handler == null || Handler.CurrentClan == null) message = "Bạn chưa thuộc tông môn";
             else if (!HasPermission(ClanPermission.AddShopItem)) message = "Bạn không có quyền thêm vật phẩm vào kho";
@@ -159,8 +152,6 @@ namespace Clan
             else if (quantity > selectedItem.Count) message = "Túi đồ không đủ số lượng";
             else if ((long)Handler.ShopItemsAddedToday + quantity > Handler.MaxShopItemsAddedPerDay)
                 message = "Số lượng đã vượt giới hạn thêm vật phẩm hôm nay";
-            else if (priceInput == null || !long.TryParse(priceInput.text, out price) || price < 1)
-                message = "Giá phải lớn hơn 0";
             return string.IsNullOrEmpty(message);
         }
 
@@ -234,7 +225,7 @@ namespace Clan
             if (maximum <= 0 || used >= maximum) return false;
             if (quantityInput == null || !int.TryParse(quantityInput.text, out var quantity) ||
                 quantity < 1 || quantity > selectedItem.Count || (long)used + quantity > maximum) return false;
-            return priceInput != null && long.TryParse(priceInput.text, out var price) && price > 0;
+            return true;
         }
 
         private void SetSelection(ItemRef item, bool resetQuantity)
@@ -250,7 +241,6 @@ namespace Clan
         {
             isSubmitting = value;
             if (quantityInput != null) quantityInput.interactable = !value;
-            if (priceInput != null) priceInput.interactable = !value;
             UpdateView();
         }
 
@@ -271,7 +261,6 @@ namespace Clan
         protected override void OnDestroy()
         {
             if (quantityInput != null) quantityInput.onValueChanged.RemoveListener(OnInputChanged);
-            if (priceInput != null) priceInput.onValueChanged.RemoveListener(OnInputChanged);
             SelectionChanged = null;
             base.OnDestroy();
         }

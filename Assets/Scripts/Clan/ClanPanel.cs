@@ -39,6 +39,10 @@ namespace Clan
         [SerializeField] private Button openShopButton;
         [SerializeField] private ClanShop clanShop;
 
+        [Header("Truyền thừa tông môn")]
+        [SerializeField] private Button openInheritanceButton;
+        [SerializeField] private ClanInheritancePanel inheritancePanel;
+
         [Header("Thao tác thành viên")]
         [SerializeField] private ClanMemberActionPopup memberActionPopup;
 
@@ -77,6 +81,7 @@ namespace Clan
             contributeTenText ??= FindContributionButtonText(contributeTenButton, null);
             SetEventButton(leaveClanButton, ConfirmLeaveClan);
             SetEventButton(openShopButton, OpenShop);
+            SetEventButton(openInheritanceButton, OpenInheritance);
             SetEventButton(requestJoinButton, () => _ = RequestJoin());
             SetEventButton(joinRequestsButton, OpenJoinRequests);
             SetEventButton(joinRequestsCloseButton, () => joinRequestsRoot?.SetActive(false));
@@ -96,10 +101,14 @@ namespace Clan
             handler.ShopChanged += OnShopChanged;
             handler.JoinRequestAdded += OnJoinRequestAdded;
             handler.JoinRequestRemoved += OnJoinRequestRemoved;
+            handler.ExpChanged += OnClanExpChanged;
+            handler.LevelChanged += OnClanLevelChanged;
         }
 
         protected override void UnbindClanEvents(ClanHandler handler)
         {
+            handler.LevelChanged -= OnClanLevelChanged;
+            handler.ExpChanged -= OnClanExpChanged;
             handler.JoinRequestRemoved -= OnJoinRequestRemoved;
             handler.JoinRequestAdded -= OnJoinRequestAdded;
             handler.ShopChanged -= OnShopChanged;
@@ -158,6 +167,28 @@ namespace Clan
             }
 
             return Handler.SetMemberRole(target.CharId, role);
+        }
+
+        public Task<SetClanInheritanceResult> SetInheritance(
+            ClanInheritanceTrigger trigger,
+            int slotIndex,
+            EBuffAndDeBuff buffType)
+        {
+            if (!HasPermission(ClanPermission.ManageInheritance))
+            {
+                return Task.FromResult(new SetClanInheritanceResult
+                {
+                    Success = false,
+                    Message = "Chỉ Tông Chủ được quản lý truyền thừa"
+                });
+            }
+
+            return Handler.SetInheritance(trigger, slotIndex, buffType);
+        }
+
+        public int GetInheritanceSlots()
+        {
+            return clan == null || Handler == null ? 0 : Handler.GetInheritanceSlots(clan.Level);
         }
 
         public void RefreshPermissions()
@@ -356,6 +387,12 @@ namespace Clan
             else NotifyGroup.Instance?.Show("Chưa cấu hình Kho Tông Môn");
         }
 
+        private void OpenInheritance()
+        {
+            if (inheritancePanel != null) inheritancePanel.Show();
+            else NotifyGroup.Instance?.Show("Chưa cấu hình Truyền Thừa Tông Môn");
+        }
+
         public Task<KickClanMemberResult> KickMember(int charId)
         {
             if (!HasPermission(ClanPermission.KickMember))
@@ -411,6 +448,18 @@ namespace Clan
         private void OnJoinRequestRemoved(ClanJoinRequestRemoved removed)
         {
             if (removed != null && removed.ClanId == clan?.Id) RenderJoinRequests();
+        }
+
+        private void OnClanExpChanged(ClanExpChanged changed)
+        {
+            if (changed != null && changed.ClanId == clan?.Id) RefreshClanSummary();
+        }
+
+        private void OnClanLevelChanged(ClanLevelChanged changed)
+        {
+            if (changed == null || changed.ClanId != clan?.Id) return;
+            RefreshClanSummary();
+            RefreshPermissions();
         }
 
         private async void OnApproveJoinRequest(ClanJoinRequestElement element)

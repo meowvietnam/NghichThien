@@ -11,6 +11,7 @@ namespace Clan.Editor
         private const string PrefabPath = "Assets/Scripts/Clan/Prefabs/ClanPanel.prefab";
         private const string MemberRowPrefabPath = "Assets/Scripts/Clan/Prefabs/ClanMemberElement_Member.prefab";
         private const string LeadershipCardPrefabPath = "Assets/Scripts/Clan/Prefabs/ClanMemberElement_Leadership.prefab";
+        private const string InheritancePanelPrefabPath = "Assets/Scripts/Clan/Prefabs/ClanInheritancePanel.prefab";
         private const string AvatarPrefabPath = "Assets/Scripts/Auction/Prefabs/Player.prefab";
         private const string BodyFontPath = "Assets/Font/CLOUDLIBIAN-GB-NORMAL.ttf";
         private const string TitleFontPath = "Assets/Font/CLOUDSHUIZHU-GB-NORMAL.ttf";
@@ -34,11 +35,11 @@ namespace Clan.Editor
 
             var memberRowPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(MemberRowPrefabPath);
             var leadershipCardPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(LeadershipCardPrefabPath);
-            if (memberRowPrefab == null || leadershipCardPrefab == null)
+            var inheritancePanelPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(InheritancePanelPrefabPath);
+            if (memberRowPrefab == null || leadershipCardPrefab == null || inheritancePanelPrefab == null)
             {
                 throw new System.InvalidOperationException(
-                    "Chưa có ClanMemberElement_Member.prefab / ClanMemberElement_Leadership.prefab. " +
-                    "Hãy chạy Tools/Clan/Build Clan Member Element (...) trước khi build ClanPanel.");
+                    "Thiếu prefab thành viên hoặc ClanInheritancePanel. Hãy build các prefab phụ trước ClanPanel.");
             }
 
             var root = Rect("ClanPanel", null);
@@ -95,19 +96,19 @@ namespace Clan.Editor
             var leaderElement2 = InstantiateMemberElement(leadershipCardPrefab, leadersRow, "LeaderSlot_TruongLao");
 
             // --- Hàng thao tác: đóng góp (1 lần / 10 lần) + kho tông môn + rời tông môn ---
-            // 4 nút x 220 rộng + 3 khoảng cách x 24 = 952.
+            // Năm nút thao tác chính, vừa chiều rộng nội dung trên màn hình ngang.
             var actionsRow = Rect("ActionsRow", window.transform);
-            SetTop(actionsRow, 0, -670, 952, 80);
+            SetTop(actionsRow, 0, -670, 1060, 80);
             var actionsLayout = actionsRow.gameObject.AddComponent<HorizontalLayoutGroup>();
             actionsLayout.childAlignment = TextAnchor.MiddleCenter;
-            actionsLayout.spacing = 24;
+            actionsLayout.spacing = 15;
             actionsLayout.childForceExpandWidth = false;
             actionsLayout.childForceExpandHeight = false;
             actionsLayout.childControlWidth = true;
             actionsLayout.childControlHeight = true;
 
-            var contributeOnceButton = Button("ContributeOnceButton", actionsRow, "Đóng Góp x1", Jade, new Vector2(220, 74), 22);
-            AddLayoutElement(contributeOnceButton.gameObject, 220, 74);
+            var contributeOnceButton = Button("ContributeOnceButton", actionsRow, "Đóng Góp x1", Jade, new Vector2(200, 74), 21);
+            AddLayoutElement(contributeOnceButton.gameObject, 200, 74);
 
             var freeContributionBadge = Image("FreeContributionBadge", contributeOnceButton.transform, Gold);
             SetRect(freeContributionBadge.rectTransform, new Vector2(1, 1), new Vector2(1, 1), new Vector2(-6, -6), new Vector2(96, 30));
@@ -117,14 +118,17 @@ namespace Clan.Editor
             Stretch(freeContributionLabel.rectTransform);
             freeContributionBadge.gameObject.SetActive(false);
 
-            var contributeTenButton = Button("ContributeTenButton", actionsRow, "Đóng Góp x10", Jade, new Vector2(220, 74), 22);
-            AddLayoutElement(contributeTenButton.gameObject, 220, 74);
+            var contributeTenButton = Button("ContributeTenButton", actionsRow, "Đóng Góp x10", Jade, new Vector2(200, 74), 21);
+            AddLayoutElement(contributeTenButton.gameObject, 200, 74);
 
-            var openShopButton = Button("OpenShopButton", actionsRow, "Kho Tông Môn", Gold, new Vector2(220, 74), 22);
-            AddLayoutElement(openShopButton.gameObject, 220, 74);
+            var openShopButton = Button("OpenShopButton", actionsRow, "Kho Tông Môn", Gold, new Vector2(200, 74), 21);
+            AddLayoutElement(openShopButton.gameObject, 200, 74);
 
-            var leaveClanButton = Button("LeaveClanButton", actionsRow, "Rời Tông Môn", Hex("#8C3B33"), new Vector2(220, 74), 22);
-            AddLayoutElement(leaveClanButton.gameObject, 220, 74);
+            var openInheritanceButton = Button("OpenInheritanceButton", actionsRow, "Truyền Thừa", Hex("#765B8F"), new Vector2(200, 74), 21);
+            AddLayoutElement(openInheritanceButton.gameObject, 200, 74);
+
+            var leaveClanButton = Button("LeaveClanButton", actionsRow, "Rời Tông Môn", Hex("#8C3B33"), new Vector2(200, 74), 21);
+            AddLayoutElement(leaveClanButton.gameObject, 200, 74);
 
             // --- Danh sách Đệ Tử (ScrollRect) ---
             var scrollRoot = Rect("MemberScrollView", window.transform);
@@ -189,6 +193,11 @@ namespace Clan.Editor
             // --- Popup danh sách đơn xin gia nhập (duyệt / từ chối) ---
             var joinRequestsPopup = BuildJoinRequestsPopup(root);
 
+            var inheritanceObject = (GameObject)PrefabUtility.InstantiatePrefab(inheritancePanelPrefab, root);
+            inheritanceObject.name = "ClanInheritancePanel";
+            var inheritancePanel = inheritanceObject.GetComponent<ClanInheritancePanel>();
+            inheritanceObject.SetActive(false);
+
             SetObject(panel, "clanImage", clanImage);
             SetObject(panel, "memberCountText", memberCountText);
             SetObject(panel, "levelText", levelText);
@@ -200,6 +209,8 @@ namespace Clan.Editor
             SetObject(panel, "contributeTenButton", contributeTenButton);
             SetObject(panel, "freeContributionBadge", freeContributionBadge.gameObject);
             SetObject(panel, "openShopButton", openShopButton);
+            SetObject(panel, "openInheritanceButton", openInheritanceButton);
+            SetObject(panel, "inheritancePanel", inheritancePanel);
             SetObject(panel, "leaveClanButton", leaveClanButton);
             SetObject(panel, "memberActionPopup", memberActionPopup);
             // Lưu ý: "clanShop" cố tình để trống — đây là tham chiếu tới instance ClanShop

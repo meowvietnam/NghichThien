@@ -305,5 +305,9 @@ namespace Network
         ApproveClanJoinRequestRequest = 3694,
         RejectClanJoinRequestRequest = 3695,
         ClanJoinRequestRemoved = 3696,
+        SetClanInheritanceRequest = 3697,
+        ClanInheritanceChanged = 3698,
+        ClanExpChanged = 3699,
+        ClanLevelChanged = 3700,
     }
 }

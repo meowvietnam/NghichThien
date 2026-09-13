@@ -82,10 +82,15 @@ namespace AllMaps
 
         public void CopyTo(Map target)
         {
+            if (target == null) throw new ArgumentNullException(nameof(target));
+
             target.Id = this.Id;
             target.PlayerPosition = this.PlayerPosition;
             target.mapManager = this.mapManager;
             target.nextIndex = this.nextIndex;
+            target.nodes = this.nodes;
+            target.actionMap = this.actionMap;
+            target.iconVisualAction = this.iconVisualAction;
         }
 
         public void Deserialize(IReader reader, ref Map value)
