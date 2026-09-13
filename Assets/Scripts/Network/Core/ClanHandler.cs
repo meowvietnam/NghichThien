@@ -76,7 +76,7 @@ namespace Network.Core
             return ClanPermission.None;
         }
 
-        public int GetInheritanceSlots(int clanLevel)
+        public int GetInheritanceSlots(int clanLevel, EBuffAndDeBuff buffType)
         {
             var config = CurrentConfig;
             if (config == null || config.MaxInheritanceSlotsPerColumn <= 0) return 0;

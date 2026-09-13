@@ -186,9 +186,9 @@ namespace Clan
             return Handler.SetInheritance(trigger, slotIndex, buffType);
         }
 
-        public int GetInheritanceSlots()
+        public int GetInheritanceSlots(EBuffAndDeBuff buffType)
         {
-            return clan == null || Handler == null ? 0 : Handler.GetInheritanceSlots(clan.Level);
+            return clan == null || Handler == null ? 0 : Handler.GetInheritanceSlots(clan.Level, buffType);
         }
 
         public void RefreshPermissions()

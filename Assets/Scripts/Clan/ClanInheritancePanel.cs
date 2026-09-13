@@ -89,7 +89,7 @@ namespace Clan
             var config = Handler.CurrentConfig;
             if (clan == null || config == null) return;
 
-            var unlockedSlots = Handler.GetInheritanceSlots(clan.Level);
+            var unlockedSlots = Handler.GetInheritanceSlots(clan.Level, EBuffAndDeBuff.None);
             var shownSlots = Math.Max(unlockedSlots, Math.Max(0, config.MaxInheritanceSlotsPerColumn));
             RenderColumn(ClanInheritanceTrigger.StartTurn, startTurnContainer, startSlots,
                 clan.StartTurnEffects, shownSlots, unlockedSlots);
