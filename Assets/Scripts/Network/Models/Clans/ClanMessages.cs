@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using LuyenDan;
+using LuyenKhi;
 using MemoryPack;
 
 namespace Network.Models.Clans
@@ -12,7 +13,7 @@ namespace Network.Models.Clans
     [MemoryPackable]
     public partial class GetClanResult : Result
     {
-        public Clans.Clan Clan { get; set; }
+        public Clan Clan { get; set; }
         public ClanConfig Config { get; set; } = new ClanConfig();
     }
 
@@ -34,7 +35,7 @@ namespace Network.Models.Clans
         public int ChangeInheritanceMoneyVipCost { get; set; } = 1_000;
         public int InheritanceBaseValue { get; set; } = 1;
         public int InheritanceValuePerClanLevel { get; set; } = 1;
-        public EBuffAndDeBuff[] InheritanceBuffWhitelist { get; set; } = new EBuffAndDeBuff[0];
+        public EffectType[] InheritanceBuffWhitelist { get; set; } = new EffectType[0];
         public long[] ClanLevelRequiredTotalExp { get; set; } = new long[0];
     }
 

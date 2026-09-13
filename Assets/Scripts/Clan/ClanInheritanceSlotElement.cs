@@ -40,7 +40,7 @@ namespace Clan
 
             if (slotText != null) slotText.text = $"Ô {slotIndex + 1}";
             if (effectText != null)
-                effectText.text = effect == null ? "Chưa chọn truyền thừa" : ClanInheritancePanel.GetEffectName(effect.BuffType);
+                effectText.text = effect == null ? "Chưa chọn truyền thừa" : ClanInheritancePanel.GetEffectName(effect.EffectType);
             if (valueText != null)
             {
                 valueText.text = effect == null ? "+—" : $"+{effect.Value:n0}";

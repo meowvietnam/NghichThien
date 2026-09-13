@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LuyenDan;
+using LuyenKhi;
 using Network.Extensions.MemoryPack;
 using Network.Models;
 using Network.Models.Clans;
@@ -76,7 +77,7 @@ namespace Network.Core
             return ClanPermission.None;
         }
 
-        public int GetInheritanceSlots(int clanLevel, EBuffAndDeBuff buffType)
+        public int GetInheritanceSlots(int clanLevel)
         {
             var config = CurrentConfig;
             if (config == null || config.MaxInheritanceSlotsPerColumn <= 0) return 0;
@@ -283,7 +284,7 @@ namespace Network.Core
         public async Task<SetClanInheritanceResult> SetInheritance(
             ClanInheritanceTrigger trigger,
             int slotIndex,
-            EBuffAndDeBuff buffType)
+            EffectType? effectType)
         {
             var result = await Request<SetClanInheritanceRequest, SetClanInheritanceResult>(
                 MessageTag.SetClanInheritanceRequest,
@@ -291,7 +292,7 @@ namespace Network.Core
                 {
                     Trigger = trigger,
                     SlotIndex = slotIndex,
-                    BuffType = buffType
+                    EffectType = effectType
                 });
 
             if (result.Success)

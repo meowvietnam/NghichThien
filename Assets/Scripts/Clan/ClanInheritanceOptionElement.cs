@@ -1,4 +1,5 @@
 using System;
+using LuyenKhi;
 using Network.Models.Clans;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Clan
         [SerializeField] private UnityEngine.UI.Text valueText;
         [SerializeField] private GameObject selectedRoot;
 
-        public EBuffAndDeBuff BuffType { get; private set; }
+        public EffectType EffectType { get; private set; }
         public event Action<ClanInheritanceOptionElement> Clicked;
 
         private void Awake()
@@ -20,10 +21,10 @@ namespace Clan
             selectButton?.onClick.AddListener(OnClicked);
         }
 
-        public void Init(EBuffAndDeBuff buffType, int value, bool selected)
+        public void Init(EffectType effectType, int value, bool selected)
         {
-            BuffType = buffType;
-            if (nameText != null) nameText.text = ClanInheritancePanel.GetEffectName(buffType);
+            EffectType = effectType;
+            if (nameText != null) nameText.text = ClanInheritancePanel.GetEffectName(effectType);
             if (valueText != null) valueText.text = $"+{value:n0}";
             if (selectedRoot != null) selectedRoot.SetActive(selected);
             if (selectButton != null) selectButton.interactable = !selected;
