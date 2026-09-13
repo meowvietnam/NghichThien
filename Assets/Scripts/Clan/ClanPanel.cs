@@ -155,7 +155,15 @@ namespace Clan
                    target.Role < CurrentRole &&
                    role < CurrentRole &&
                    Enum.IsDefined(typeof(ClanRole), role) &&
-                   target.Role != role;
+                   target.Role != role &&
+                   !IsUniqueRoleOccupied(role, target.CharId);
+        }
+
+        private bool IsUniqueRoleOccupied(ClanRole role, int targetCharId)
+        {
+            if (role != ClanRole.ViceLeader && role != ClanRole.Elder) return false;
+            return clan?.Members != null &&
+                   clan.Members.Any(member => member.Role == role && member.CharId != targetCharId);
         }
 
         public Task<SetClanMemberRoleResult> AssignRole(ClanMember target, ClanRole role)
