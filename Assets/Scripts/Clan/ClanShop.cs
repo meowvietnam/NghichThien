@@ -274,7 +274,7 @@ namespace Clan
             if (itemList != null)
             {
                 renderedItemRefs.Clear();
-                renderedItemRefs.AddRange(renderedItems.Select(item => Clone(item.Item)));
+                renderedItemRefs.AddRange(renderedItems.Select(CreateRenderedItemRef));
                 itemList.InitDataItem(renderedItemRefs, BindRenderedItem, false, true);
                 itemList.itemDataShows = renderedItemRefs;
                 itemList.InitBag();
@@ -387,6 +387,8 @@ namespace Clan
                     return Pool.Get<GameManager>()?.FindCongPhapWithItemRef(item)?.nameItem ?? "Công pháp";
                 if (item.Type == ItemType.Material)
                     return LuyenKhiResources.Instance?.FindItem(item)?.Name ?? "Nguyên liệu";
+                if (item.Type == ItemType.Furnace)
+                    return LuyenDanResources.Instance?.FindFurnace(item.TempId != 0 ? item.TempId : item.Id)?.Name ?? "Đan lô";
 
                 return LuyenDanResources.Instance?.FindItem(item)?.Name ?? GetItemTypeName(item.Type);
             }
@@ -407,8 +409,16 @@ namespace Clan
                 ItemType.CongPhap => "Công pháp",
                 ItemType.Recipe => "Đan phương",
                 ItemType.Material => "Nguyên liệu",
+                ItemType.Furnace => "Đan lô",
                 _ => "Vật phẩm"
             };
+        }
+
+        private static ItemRef CreateRenderedItemRef(ClanShopItem shopItem)
+        {
+            var item = Clone(shopItem.Item);
+            if (item.Type == ItemType.Furnace && item.TempId == 0) item.TempId = item.Id;
+            return item;
         }
 
         private static ItemRef Clone(ItemRef item) => new(item.Id, item.Type, item.Count, item.TempId);

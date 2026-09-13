@@ -30,6 +30,10 @@ namespace Tutorials
 
         public const string tutorialPointThienTinhKey = "isFirstTutorialPointThienTinhThanh";
 
+        [Tooltip("Thời gian tối đa (giây) chờ các manager sinh quái / nhiệm vụ / kỳ ngộ nạp xong " +
+                 "danh sách trước khi dựng các bước giới thiệu tương ứng.")]
+        [SerializeField] private float spawnWaitTimeout = 5f;
+
         private void Start()
         {
             tutorial.OnSetTarget += OnSetTarget;
@@ -97,6 +101,13 @@ namespace Tutorials
             if (PlayerPrefs.GetInt(tutorialPointThienTinhKey, 0) != 0) return;
             if (thienTinhThanhStronghold == null || thienTinhThanh == null) return;
 
+            StartCoroutine(IEShowPointThienTinhThanh());
+        }
+
+        private IEnumerator IEShowPointThienTinhThanh()
+        {
+            yield return TutorialLevelUpGuard.Guide(tutorial);
+
             camera2DDrag.enabled = false;
 
             var steps = new[]
@@ -148,7 +159,7 @@ namespace Tutorials
             if (thienTinhThanhStronghold.IsEnterPanelActive)
             {
                 // Trường hợp hiếm: nhân vật đã đứng sẵn ở đó từ trước (panel đã hiện rồi).
-                ShowPointBtnTienVao();
+                StartCoroutine(IEShowPointBtnTienVao());
             }
             else
             {
@@ -159,6 +170,14 @@ namespace Tutorials
         private void OnArrivedThienTinhThanh()
         {
             thienTinhThanhStronghold.OnEnteredRange -= OnArrivedThienTinhThanh;
+            StartCoroutine(IEShowPointBtnTienVao());
+        }
+
+        private IEnumerator IEShowPointBtnTienVao()
+        {
+            // Đi bộ tới thành cũng làm thời gian trôi -> có thể thăng cấp ngay khi vừa tới nơi.
+            yield return TutorialLevelUpGuard.Guide(tutorial);
+
             ShowPointBtnTienVao();
         }
 
@@ -212,6 +231,25 @@ namespace Tutorials
 
             yield return new WaitUntil(() => cam.target == finishedTarget);
 
+            // Di chuyển làm thời gian trong game trôi nên server có thể trả LEVEL_UP ngay lúc này,
+            // popup thăng cấp bật lên che mất tutorial. Xử lý nó trước khi hiện bước đầu tiên.
+            yield return TutorialLevelUpGuard.Guide(tutorial);
+
+            // MOVE_MAP_SUCCESS bắn ra ngay khi server chấp nhận lệnh di chuyển, trong khi các
+            // manager sinh nội dung trên bản đồ (chính tuyến / quái / kỳ ngộ) nạp danh sách của
+            // chúng ở nhịp khác. Nếu dựng danh sách bước ngay lúc này thì mấy list đó còn rỗng,
+            // FirstOrDefault() trả null và các bước giới thiệu quái / quest / kỳ ngộ bị bỏ mất
+            // lặng lẽ. Chờ có hạn cho tới khi cả ba đều có dữ liệu.
+            float waitSpawn = spawnWaitTimeout;
+            while (waitSpawn > 0f &&
+                   (mainQuestManager.currentMapMainQuests.FirstOrDefault() == null ||
+                    enemyManager.currentMapRandom.FirstOrDefault() == null ||
+                    sideQuestManager.currentMapRandom.FirstOrDefault() == null))
+            {
+                waitSpawn -= Time.deltaTime;
+                yield return null;
+            }
+
             List<TutorialStep> steps = new List<TutorialStep>
             {
                 new TutorialStep()
@@ -262,10 +300,14 @@ namespace Tutorials
 
 
             var firstMainQuest = mainQuestManager.currentMapMainQuests.FirstOrDefault();
+            var renderMainQuest = GetRendererInMap(firstMainQuest);
 
-            if (firstMainQuest != null)
+            if (firstMainQuest != null && renderMainQuest == null)
+                Debug.LogWarning("[TutorialAllMaps] Không lấy được renderer của nhiệm vụ chính tuyến.");
+
+            if (renderMainQuest != null)
             {
-                var render = GetRendererInMap(firstMainQuest);
+                var render = renderMainQuest;
 
                 steps.Add(new TutorialStep()
                 {
@@ -287,10 +329,14 @@ namespace Tutorials
             }
 
             var firstEnemy = enemyManager.currentMapRandom.FirstOrDefault();
+            var renderEnemy = GetRendererInMap(firstEnemy);
 
-            if (firstEnemy != null)
+            if (firstEnemy != null && renderEnemy == null)
+                Debug.LogWarning("[TutorialAllMaps] Không lấy được renderer của điểm quái.");
+
+            if (renderEnemy != null)
             {
-                var render = GetRendererInMap(firstEnemy);
+                var render = renderEnemy;
 
                 steps.Add(new TutorialStep()
                 {
@@ -306,10 +352,14 @@ namespace Tutorials
             }
 
             var firstSideQuest = sideQuestManager.currentMapRandom.FirstOrDefault();
+            var renderSideQuest = GetRendererInMap(firstSideQuest);
 
-            if (firstSideQuest != null)
+            if (firstSideQuest != null && renderSideQuest == null)
+                Debug.LogWarning("[TutorialAllMaps] Không lấy được renderer của kỳ ngộ.");
+
+            if (renderSideQuest != null)
             {
-                var render = GetRendererInMap(firstSideQuest);
+                var render = renderSideQuest;
 
                 steps.Add(new TutorialStep()
                 {
@@ -342,7 +392,12 @@ namespace Tutorials
 
         private Renderer GetRendererInMap(Map map)
         {
-            return map.transform.Find("Level1Move").GetChild(0).GetComponent<SpriteRenderer>();
+            if (map == null) return null;
+
+            var level1Move = map.transform.Find("Level1Move");
+            if (level1Move == null || level1Move.childCount == 0) return null;
+
+            return level1Move.GetChild(0).GetComponent<SpriteRenderer>();
         }
     }
 }

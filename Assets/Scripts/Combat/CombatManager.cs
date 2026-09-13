@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Combat;
 using ExcelDataReader.Log;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,7 +46,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         public Sprite sprite;
     }
 
-    [SerializeField] public List<BuffOrDebuffIcon> buffOrDebuffIcons;
+    [SerializeField] private BuffAndDeBuffIconResources iconBuffResources;
+    public List<BuffOrDebuffIcon> buffOrDebuffIcons => iconBuffResources.BuffOrDebuffIcons;
 
     private Dictionary<CharacterCombat.AmKinhEntry, ItemUI> dictAmKinhItemUI =
         new();

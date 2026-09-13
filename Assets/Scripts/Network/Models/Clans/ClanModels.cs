@@ -116,6 +116,7 @@ namespace Network.Models.Clans
         public int Id { get; set; }
         public int ClanId { get; set; }
         public int OwnerCharId { get; set; }
+        public sbyte ItemDurability { get; set; }
         public long Price { get; set; }
         public DateTime CreatedAt { get; set; }
         public ItemRef Item { get; set; } = new ItemRef();

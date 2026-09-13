@@ -35,7 +35,7 @@ namespace Tutorials
 
         private const int CongPhapDuongDaoThuatId = 2;
         private const int ThanThongSucTheId = 14;
-        private const int RequiredCongPhapCount = 3;
+        private const int RequiredCongPhapCount = 15;
 
         private ShopUI shopUI;
         private UnityEngine.UI.Button btnLeaveScene;

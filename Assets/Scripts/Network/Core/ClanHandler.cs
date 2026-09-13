@@ -299,6 +299,7 @@ namespace Network.Core
             if (result.Success)
             {
                 ApplyInventoryItem(result.InventoryItem);
+                ApplyInventoryFurnace(result.InventoryFurnace);
                 ApplyMemberPoints(new ClanMemberPointsChanged
                 {
                     ClanId = CurrentClan != null ? CurrentClan.Id : 0,
@@ -365,6 +366,7 @@ namespace Network.Core
                 MaxShopItemsAddedPerDay = result.MaxItemsAddedPerDay;
                 ShopItemsAddedToday = result.ShopItemsAddedToday;
                 ApplyInventoryItem(result.InventoryItem, item);
+                ApplyInventoryFurnace(result.InventoryFurnace);
                 ApplyShopItemAdded(result.ShopItem, false);
             }
 
@@ -380,6 +382,7 @@ namespace Network.Core
             if (result.Success)
             {
                 ApplyInventoryItem(result.InventoryItem);
+                ApplyInventoryFurnace(result.InventoryFurnace);
                 if (CurrentClan != null)
                 {
                     ApplyShopItemRemoved(new ClanShopItemRemoved
@@ -713,13 +716,25 @@ namespace Network.Core
             var inventory = client.CharacterData.InventoryManager;
             if (inventoryItem == null)
             {
-                if (removedItem != null) inventory.Remove(removedItem);
+                if (removedItem != null)
+                {
+                    if (removedItem.Type == ItemType.Furnace) inventory.RemoveFurnace(removedItem.Id);
+                    else inventory.Remove(removedItem);
+                }
             }
             else if (!inventory.Update(inventoryItem))
             {
                 inventory.Add(inventoryItem);
             }
 
+            client.CharacterData.InventoryChanged();
+        }
+
+        private void ApplyInventoryFurnace(FurnaceData furnace)
+        {
+            if (furnace == null) return;
+
+            client.CharacterData.InventoryManager.Furnaces.Add(furnace);
             client.CharacterData.InventoryChanged();
         }
 

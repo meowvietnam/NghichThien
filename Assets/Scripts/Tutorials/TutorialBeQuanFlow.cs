@@ -126,6 +126,10 @@ namespace Tutorials
             yield return WaitUntilOrTimeout(() => success, 60f);
             beQuan.OnTuLuyenSuccess -= onSuccess;
 
+            // Tu luyện đủ tu vi có thể làm nhân vật thăng cấp -> LevelUpPopup bật lên đè lên
+            // tutorial. Chờ nó hiện xong rồi hướng dẫn đóng, không thì tut bị che.
+            yield return TutorialLevelUpGuard.Guide(tutorial);
+
             // UIBeQuan tự đóng popup Bế Quan sau khi tu luyện -> phải mở lại mới đi tiếp được.
             if (!IsBeQuanOpened() && beQuan.BtnShowPopBeQuan != null)
             {
@@ -184,6 +188,8 @@ namespace Tutorials
             yield return WaitUntilOrTimeout(() => success || IsLearned(type, id), 60f);
 
             beQuan.OnLinhNgoSuccess -= onSuccess;
+
+            yield return TutorialLevelUpGuard.Guide(tutorial);
         }
 
         private bool IsLearned(ItemType type, int id)
@@ -255,6 +261,8 @@ namespace Tutorials
                     () => success || GetCongPhapLevel(CongPhapDuongDaoThuatId) > levelBefore, 20f);
 
                 beQuan.OnDotPhaCongPhapSuccess -= onSuccess;
+
+                yield return TutorialLevelUpGuard.Guide(tutorial);
 
                 if (!success && GetCongPhapLevel(CongPhapDuongDaoThuatId) <= levelBefore) break;
 

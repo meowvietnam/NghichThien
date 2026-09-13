@@ -19,6 +19,10 @@ public class LevelUpPopup : BaseBehaviour
     [SerializeField] private Text txtLevel;
     [SerializeField] private Popup mainPopup;
 
+    /// <summary>Popup thăng cấp. Public để hand-tut biết nó có đang che màn hình hay không
+    /// và khoanh sáng nút đóng của nó.</summary>
+    public Popup MainPopup => mainPopup;
+
     private void Awake()
     {
         Observer.AddObserver(EventList.Network.LEVEL_UP, OnLevelUp);

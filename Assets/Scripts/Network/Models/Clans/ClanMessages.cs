@@ -219,6 +219,7 @@ namespace Network.Models.Clans
         public long Cost { get; set; }
         public long ContribPoints { get; set; }
         public ItemRef InventoryItem { get; set; }
+        public FurnaceData InventoryFurnace { get; set; }
     }
 
     [MemoryPackable]
@@ -232,6 +233,7 @@ namespace Network.Models.Clans
     {
         public Clans.ClanShopItem ShopItem { get; set; }
         public ItemRef InventoryItem { get; set; }
+        public FurnaceData InventoryFurnace { get; set; }
         public int MaxItemsAddedPerDay { get; set; }
         public int ShopItemsAddedToday { get; set; }
     }
@@ -247,6 +249,7 @@ namespace Network.Models.Clans
     {
         public int ShopItemId { get; set; }
         public ItemRef InventoryItem { get; set; }
+        public FurnaceData InventoryFurnace { get; set; }
     }
 
     [MemoryPackable]
