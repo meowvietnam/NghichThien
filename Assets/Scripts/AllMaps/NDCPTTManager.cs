@@ -519,7 +519,9 @@ namespace AllMaps
             typeof(XuanThaoQuyet),
             typeof(XuanTiAn),
             typeof(CuuUHuyetMaCong),
-            typeof(UMinhDang)
+            typeof(UMinhDang),
+            typeof(UHonQuyet),
+            typeof(HuVoKiem)
         };
 
         private object Read(Type type, IReader reader)
