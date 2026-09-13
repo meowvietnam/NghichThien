@@ -97,8 +97,8 @@ namespace Network.Core
                 ? clanBuffResources.GetBaseValueOf(effectType.Value)
                 : config.InheritanceBaseValue;
             var multiplier = Math.Max(1, CurrentClan?.Level ?? 1);
-            var minValue = (long)baseValue * multiplier;
-            var maxValue = (long)baseValue * 3 * multiplier;
+            var minValue = (long)(baseValue / 2) * multiplier;
+            var maxValue = (long)baseValue * 2 * multiplier;
             return (
                 (int)Math.Max(int.MinValue, Math.Min(int.MaxValue, minValue)),
                 (int)Math.Max(int.MinValue, Math.Min(int.MaxValue, maxValue)));

@@ -1,4 +1,5 @@
-﻿using Base;
+﻿using System;
+using Base;
 using CreateCharacter;
 using LongDH.LongDHModules;
 using LuyenDan;
@@ -36,10 +37,47 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         Pool.Get<GameManager>().Cleanup();
     }
 
+    /// <summary>Bắn ra ngay sau khi popup Shop được Show() với loại shop tương ứng.
+    /// Dùng cho hand-tut (Tutorials) để biết lúc nào màn hình Thiên Tinh Các đã mở.</summary>
+    public event Action<EShopType> OnShopShown;
+
+    /// <summary>Bắn ra sau khi danh sách vật phẩm NPC bán đã được render xong (InitBagNPC).
+    /// Dùng cho hand-tut để tìm và khoanh sáng đúng vật phẩm cần mua.</summary>
+    public event Action OnShopLoaded;
+
+    /// <summary>Bắn ra mỗi khi giỏ mua/bán (listItemUserBuy/listItemUserSell) thay đổi số lượng.
+    /// Dùng cho hand-tut để biết người chơi đã thêm đủ số lượng vật phẩm cần mua chưa.</summary>
+    public event Action OnBasketChanged;
+
+    /// <summary>Bắn ra khi giao dịch mua/bán thành công. Dùng cho hand-tut.</summary>
+    public event Action OnBuySuccess;
+
+    /// <summary>Nút Xác Nhận giao dịch. Public để hand-tut khoanh sáng/gắn thêm listener.</summary>
+    public Button BtnConfirm => btnConfirm;
+
+    /// <summary>Tìm ItemInventory (slot UI) của vật phẩm NPC đang bán theo loại + id, dùng để
+    /// hand-tut khoanh sáng đúng vật phẩm cần hướng dẫn mua. Trả về null nếu chưa load/không có.</summary>
+    public ItemInventory FindNpcItem(ItemType type, int id)
+    {
+        return bagNpcList == null
+            ? null
+            : bagNpcList.InventoryUIFacade.listItemUI.FirstOrDefault(x =>
+                x.itemRef != null && x.itemRef.Type == type && x.itemRef.Id == id);
+    }
+
+    /// <summary>Số lượng vật phẩm (loại + id) hiện đang nằm trong giỏ MUA (listItemUserBuy).</summary>
+    public int GetBuyCount(ItemType type, int id)
+    {
+        var slot = listItemUserBuy.FirstOrDefault(x =>
+            IsActiveTradeItem(x) && x.itemRef.Type == type && x.itemRef.Id == id);
+        return slot?.count ?? 0;
+    }
+
     public void ShowInitShop(EShopType eShopType)
     {
         this.eShopType = eShopType;
         Show();
+        OnShopShown?.Invoke(eShopType);
         foreach (var item in listItemUserSell)
         {
             item.gameObject.SetActive(false);
@@ -152,6 +190,8 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         {
             textMoneyCurrent.text = $"{totalMoney}";
         }
+
+        OnBasketChanged?.Invoke();
     }
 
     private void InitBagUser()
@@ -326,6 +366,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
         }
         bagNpcList.filterControl.InitFilterType(itemTypeCanSellForShop);
         InitBagLogic(bagNpcList, listItemUserBuy, itemDatas, EActionShowItemInfor.Buy);
+        OnShopLoaded?.Invoke();
     }
 
     private void ReturnItemsToBag(List<ItemInventory> tradeItems, Bag1ItemPrefabInventory bag)
@@ -379,6 +420,7 @@ public class ShopUI : Popup, IUISingleton, INetworkEvent.IBuyAndSell, INetworkEv
 
     public void SuccessBuyAndSell(string message)
     {
+        OnBuySuccess?.Invoke();
         Pool.Get<GameManager>().Cleanup();
         HideTradeItems();
         InitBagUser();

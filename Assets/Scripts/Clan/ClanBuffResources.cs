@@ -1,5 +1,6 @@
 using System;
 using System.Buffers;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using LuyenKhi;
@@ -9,7 +10,6 @@ using Network.Extensions;
 using Network.Extensions.MemoryPack;
 using Newtonsoft.Json;
 using Sirenix.OdinInspector;
-using UnityEditor;
 using UnityEngine;
 
 namespace Clan
@@ -47,7 +47,6 @@ namespace Clan
             if (rule == null) return 0;
             return effect.Value / rule.Divisor;
         }
-
         [Button]
         private void Export()
         {

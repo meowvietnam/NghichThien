@@ -112,8 +112,17 @@ namespace AllMaps
             writer.WriteArray(nextIndex);
         }
 
+        /// <summary>
+        /// Bắn ra mỗi khi node bản đồ này được người chơi tap/click, TRƯỚC khi xử lý logic
+        /// chọn node / di chuyển. Dùng cho hand-tut (Tutorials) để biết chính xác lúc nào
+        /// người chơi đã chạm đúng vào node đang được khoanh sáng, không ảnh hưởng logic gốc.
+        /// </summary>
+        public event Action OnMapClicked;
+
         public void OnPointerClick(PointerEventData eventData)
         {
+            OnMapClicked?.Invoke();
+
             if (mapManager.TryHandleNodeSelection(this)) return;
             mapManager.PlayerMoveTo(this);
         }

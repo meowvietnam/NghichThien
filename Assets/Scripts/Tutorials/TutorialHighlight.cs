@@ -31,6 +31,29 @@ namespace Tutorials
 
         [Header("Input")] [SerializeField] private bool clickDarkAreaToHide = true;
 
+        [Header("Hand Tut (interactive step)")]
+        [Tooltip("RectTransform chứa hình bàn tay (Image dùng sprite HandPointer.png). " +
+                 "Đặt làm con của Canvas này, pivot ở gần đầu ngón trỏ. Có thể để trống nếu " +
+                 "chưa cần dùng hand-tut.")]
+        [SerializeField] private RectTransform handPointer;
+
+        [SerializeField] private Vector2 handPointerOffset = new Vector2(24f, -24f);
+        [SerializeField] private float handTapDistance = 18f;
+        [SerializeField] private float handTapDuration = 0.45f;
+
+        private Tween handTween;
+        private bool ignoreDarkAreaClick;
+        private Graphic[] highlightGraphics;
+
+        // Camera dùng để chiếu 4 góc của uiTarget ra toạ độ màn hình. Phụ thuộc vào CANVAS CỦA
+        // TARGET chứ không phải canvas của tutorial (xem GetCameraForRect).
+        private Camera uiTargetCamera;
+
+        // True khi uiTarget nằm trên canvas World Space / Screen Space - Camera: target loại này
+        // trôi trên màn hình mỗi khi camera game di chuyển, nên phải cập nhật khung sáng mỗi frame
+        // y như target dạng Renderer.
+        private bool uiTargetFollowsWorld;
+
         private Canvas canvas;
         private RectTransform canvasRect;
         private Camera worldCamera;
@@ -70,7 +93,23 @@ namespace Tutorials
             SetPanelActive(false);
 
             if (highlight != null)
+            {
                 highlight.gameObject.SetActive(false);
+                highlightGraphics = highlight.GetComponentsInChildren<Graphic>(true);
+
+                // Cho phép chạm vào CHÍNH vùng đang được khoanh sáng để next, chứ không bắt người
+                // chơi phải chạm ra vùng tối xung quanh. Prefab chỉ gắn TutorialHighlightClick lên
+                // 4 tấm che, nên tự gắn thêm cho khung sáng ở đây (khỏi phải sửa prefab).
+                // Ở bước hand-tut thì raycastTarget của khung sáng bị tắt (xem
+                // SetIgnoreDarkAreaClick) nên cú chạm vẫn rơi xuống nút thật bên dưới như cũ.
+                var click = highlight.GetComponent<TutorialHighlightClick>();
+                if (click == null)
+                    click = highlight.gameObject.AddComponent<TutorialHighlightClick>();
+                click.Init(this);
+            }
+
+            if (handPointer != null)
+                handPointer.gameObject.SetActive(false);
         }
 
         // ============================================================
@@ -87,6 +126,7 @@ namespace Tutorials
 
             uiTarget = target;
             worldTarget = null;
+            CacheUiTargetCamera(target);
 
             ShowInternal(text);
         }
@@ -175,6 +215,7 @@ namespace Tutorials
 
             uiTarget = target;
             worldTarget = null;
+            CacheUiTargetCamera(target);
 
             MoveToTarget(text);
         }
@@ -456,6 +497,18 @@ namespace Tutorials
             }
 
             // --------------------------------------------------------
+            // UI target nằm trên canvas World Space / Screen Space - Camera:
+            // nó cũng trôi trên màn hình khi camera game di chuyển (VD nút "Tiến vào" gắn theo
+            // toà thành, trong lúc camera đang bám nhân vật), nên phải bám lại mỗi frame.
+            // --------------------------------------------------------
+
+            if (uiTargetFollowsWorld)
+            {
+                UpdateHighlightImmediate();
+                return;
+            }
+
+            // --------------------------------------------------------
             // UI target
             //
             // Dialog dùng ContentSizeFitter + typing.
@@ -465,12 +518,16 @@ namespace Tutorials
             // trước khi lấy size để position Dialog.
             // --------------------------------------------------------
 
+            // Bám lại target UI mỗi frame. Popup mở bằng Popup.Show() chạy DOScale từ 0 -> 1
+            // (0.5s), trong lúc đó RectTransform của nút bên trong vẫn đang phình ra; nếu chỉ tính
+            // một lần lúc hiện thì khung sáng sẽ lệch. Tính lại mỗi frame thì khung sáng bám theo
+            // suốt quá trình popup phóng to, và cũng tự đúng khi layout đổi.
             if (dialogText != null)
             {
                 Canvas.ForceUpdateCanvases();
-
-                UpdateDialogPositionOnly();
             }
+
+            UpdateHighlightImmediate();
         }
 
         // ============================================================
@@ -500,6 +557,10 @@ namespace Tutorials
                 position,
                 size,
                 dialogPosition);
+
+            UpdateHandPointerPosition(
+                position,
+                size);
         }
 
         private void UpdateOverlayFromHighlight()
@@ -508,6 +569,10 @@ namespace Tutorials
                 return;
 
             UpdateOverlay(
+                highlight.anchoredPosition,
+                highlight.sizeDelta);
+
+            UpdateHandPointerPosition(
                 highlight.anchoredPosition,
                 highlight.sizeDelta);
         }
@@ -664,13 +729,43 @@ namespace Tutorials
 
             target.GetWorldCorners(corners);
 
-            Vector2 min =
-                WorldToCanvasPosition(
-                    corners[0]);
+            // --------------------------------------------------------
+            // QUAN TRỌNG: camera để chiếu góc của target ra màn hình phải lấy theo CANVAS CỦA
+            // TARGET, không phải canvas của tutorial.
+            //
+            // - Target trên canvas Screen Space - Overlay: GetWorldCorners() vốn đã là toạ độ
+            //   màn hình => camera phải là null.
+            // - Target trên canvas World Space (VD nút "Tiến vào" gắn kèm toà thành ngoài bản đồ,
+            //   renderMode = WorldSpace): GetWorldCorners() là toạ độ WORLD (kiểu x=15.28,
+            //   y=-17.04) => bắt buộc phải chiếu qua camera. Nếu truyền null như trước, mấy con số
+            //   world đó bị hiểu nhầm thành pixel màn hình nên khung sáng nhảy về sát góc dưới-trái
+            //   màn hình, tức là "chỉ sai nút".
+            // --------------------------------------------------------
 
-            Vector2 max =
-                WorldToCanvasPosition(
-                    corners[2]);
+            Camera camera =
+                target == uiTarget
+                    ? uiTargetCamera
+                    : GetCameraForRect(target);
+
+            Vector2 min = new Vector2(
+                float.MaxValue,
+                float.MaxValue);
+
+            Vector2 max = new Vector2(
+                float.MinValue,
+                float.MinValue);
+
+            foreach (Vector3 corner in corners)
+            {
+                Vector2 canvasPoint =
+                    ScreenToCanvasPosition(
+                        RectTransformUtility.WorldToScreenPoint(
+                            camera,
+                            corner));
+
+                min = Vector2.Min(min, canvasPoint);
+                max = Vector2.Max(max, canvasPoint);
+            }
 
             position =
                 (min + max) * 0.5f;
@@ -680,6 +775,44 @@ namespace Tutorials
 
             size +=
                 padding * 2f;
+        }
+
+        /// <summary>
+        /// Camera phù hợp để chiếu toạ độ của một RectTransform ra màn hình, dựa theo render mode
+        /// canvas gốc của chính nó: Overlay => null (đã là toạ độ màn hình), còn World Space /
+        /// Screen Space - Camera => camera của canvas đó (không có thì lấy Camera.main).
+        /// </summary>
+        private Camera GetCameraForRect(RectTransform target)
+        {
+            if (target == null)
+                return null;
+
+            Canvas targetCanvas =
+                target.GetComponentInParent<Canvas>();
+
+            if (targetCanvas == null)
+                return worldCamera != null
+                    ? worldCamera
+                    : Camera.main;
+
+            targetCanvas = targetCanvas.rootCanvas;
+
+            if (targetCanvas.renderMode ==
+                RenderMode.ScreenSpaceOverlay)
+                return null;
+
+            if (targetCanvas.worldCamera != null)
+                return targetCanvas.worldCamera;
+
+            return worldCamera != null
+                ? worldCamera
+                : Camera.main;
+        }
+
+        private void CacheUiTargetCamera(RectTransform target)
+        {
+            uiTargetCamera = GetCameraForRect(target);
+            uiTargetFollowsWorld = uiTargetCamera != null;
         }
 
         // ============================================================
@@ -886,6 +1019,37 @@ namespace Tutorials
             if (!isVisible) return;
             if (isMoving) return;
             if (dialogText.IsTyping) return;
+
+            // Hand-tut: bỏ qua tap vào vùng tối / hoặc vào chính highlight. Bước chỉ được
+            // tiến tiếp khi CompleteFromRealAction() được gọi (từ hành động thật của người chơi).
+            if (ignoreDarkAreaClick) return;
+
+            HideOrAdvance();
+        }
+
+        /// <summary>
+        /// Dùng cho hand-tut: gọi khi người chơi vừa thực hiện ĐÚNG hành động thật đang được
+        /// yêu cầu (bấm đúng nút thật, thả đúng vật phẩm vào đúng ô...). Bỏ qua cờ
+        /// ignoreDarkAreaClick và tiến/đóng tutorial giống hệt một cú tap hợp lệ vào vùng tối.
+        /// </summary>
+        public void CompleteFromRealAction()
+        {
+            if (!isVisible) return;
+            if (isMoving) return;
+
+            // KHÔNG được return khi dialog còn đang chạy hiệu ứng đánh máy như Hide() làm.
+            // Người chơi đã thực hiện ĐÚNG hành động thật rồi (bấm đúng nút, mua đủ số lượng...)
+            // nên bước hand-tut bắt buộc phải chạy tiếp; nếu bỏ qua ở đây thì bước đó kẹt vĩnh
+            // viễn (bên gọi thường đã huỷ đăng ký sự kiện nên sẽ không có lần thử lại nào nữa).
+            // Thay vì bỏ qua thì cho chữ hiện hết ngay lập tức rồi đi tiếp.
+            if (dialogText != null && dialogText.IsTyping)
+                dialogText.Complete();
+
+            HideOrAdvance();
+        }
+
+        private void HideOrAdvance()
+        {
             if (OnClose == null ||
                 !OnClose())
             {
@@ -897,6 +1061,10 @@ namespace Tutorials
             isMoving = false;
 
             isVisible = false;
+
+            ignoreDarkAreaClick = false;
+            SetHighlightRaycastTarget(true);
+            SetHandPointerVisible(false);
 
             // --------------------------------------------------------
             // Fade overlay
@@ -940,6 +1108,104 @@ namespace Tutorials
             }
 
             dialogText?.Close();
+        }
+
+        // ============================================================
+        // Hand Tut (interactive step)
+        // ============================================================
+
+        /// <summary>
+        /// True trong lúc bước hiện tại là hand-tut: tap vào vùng tối / highlight sẽ không
+        /// tự đóng hay tiến bước nữa, chỉ CompleteFromRealAction() mới có tác dụng.
+        /// </summary>
+        public void SetIgnoreDarkAreaClick(bool ignore)
+        {
+            ignoreDarkAreaClick = ignore;
+            SetHighlightRaycastTarget(!ignore);
+        }
+
+        /// <summary>
+        /// Khung sáng (highlight) chỉ để trang trí. Ở bước hand-tut phải tắt raycastTarget của
+        /// chính nó để cú tap lọt xuống được nút/vật phẩm THẬT nằm ngay dưới, giống cách
+        /// ItemSelect tắt raycastTarget của ảnh đang kéo để không chặn ô bên dưới.
+        /// </summary>
+        private void SetHighlightRaycastTarget(bool raycastTarget)
+        {
+            if (highlightGraphics == null)
+                return;
+
+            foreach (var graphic in highlightGraphics)
+            {
+                if (graphic != null)
+                    graphic.raycastTarget = raycastTarget;
+            }
+        }
+
+        public void SetHandPointerVisible(bool visible)
+        {
+            if (handPointer == null)
+                return;
+
+            if (visible)
+            {
+                handPointer.gameObject.SetActive(true);
+
+                if (isVisible)
+                {
+                    GetTargetBounds(
+                        out Vector2 position,
+                        out Vector2 size);
+
+                    UpdateHandPointerPosition(
+                        position,
+                        size);
+                }
+
+                StartHandTapAnimation();
+            }
+            else
+            {
+                StopHandTapAnimation();
+                handPointer.gameObject.SetActive(false);
+            }
+        }
+
+        private void UpdateHandPointerPosition(
+            Vector2 position,
+            Vector2 size)
+        {
+            if (handPointer == null || !handPointer.gameObject.activeSelf)
+                return;
+
+            Vector2 basePos = new Vector2(
+                position.x + size.x * 0.5f,
+                position.y - size.y * 0.5f);
+
+            handPointer.anchoredPosition =
+                basePos + handPointerOffset;
+        }
+
+        private void StartHandTapAnimation()
+        {
+            if (handPointer == null)
+                return;
+
+            handTween?.Kill();
+
+            Vector2 basePos = handPointer.anchoredPosition;
+            Vector2 tapOffset = new Vector2(-handTapDistance, handTapDistance);
+
+            handTween = handPointer
+                .DOAnchorPos(basePos + tapOffset, handTapDuration)
+                .SetEase(Ease.InOutSine)
+                .SetLoops(-1, LoopType.Yoyo)
+                .SetUpdate(true);
+        }
+
+        private void StopHandTapAnimation()
+        {
+            handTween?.Kill();
+            handTween = null;
         }
 
         // ============================================================
@@ -1007,9 +1273,11 @@ namespace Tutorials
         {
             highlightTween?.Kill();
             overlayTween?.Kill();
+            handTween?.Kill();
 
             highlightTween = null;
             overlayTween = null;
+            handTween = null;
         }
 
         private void OnDestroy()

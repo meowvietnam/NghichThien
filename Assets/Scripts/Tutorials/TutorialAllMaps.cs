@@ -23,6 +23,13 @@ namespace Tutorials
         [SerializeField] private Transform finishedTarget;
         [SerializeField] private Camera2DDrag camera2DDrag;
 
+        [Header("Hand tut: chỉ vào Thiên Tinh Thành (Id = 23) rồi tới nút Tiến vào")]
+        [Tooltip("Component Stronghold của node Thiên Tinh Thành trên bản đồ (Map.Id = 23). " +
+                 "Kéo GameObject node Thiên Tinh Thành (cùng object chứa thienTinhThanh ở trên) vào đây.")]
+        [SerializeField] private Stronghold thienTinhThanhStronghold;
+
+        public const string tutorialPointThienTinhKey = "isFirstTutorialPointThienTinhThanh";
+
         private void Start()
         {
             tutorial.OnSetTarget += OnSetTarget;
@@ -38,6 +45,9 @@ namespace Tutorials
         private void OnDestroy()
         {
             Observer.RemoveObserver(EventList.GamePlay.MOVE_MAP_SUCCESS, OnMoveMap);
+
+            if (thienTinhThanhStronghold != null)
+                thienTinhThanhStronghold.OnEnteredRange -= OnArrivedThienTinhThanh;
         }
 
         private void CheckTutorial()
@@ -58,9 +68,129 @@ namespace Tutorials
 
         private void OnCompleted()
         {
+            // "tutorial" (component dùng chung) bắn OnCompleted sau MỖI lần ShowTutorial() kết
+            // thúc - không chỉ riêng phần giới thiệu bản đồ dài ở IEShowTutorial(), mà cả 2 bước
+            // hand-tut phía dưới (chỉ vào thành, chỉ vào nút Tiến vào) cũng dùng chung component
+            // này nên cũng sẽ làm OnCompleted bắn thêm 2 lần nữa. Nếu không chặn lại, mỗi lần người
+            // chơi hoàn thành 1 bước hand-tut thì y hệt đoạn code "kết thúc intro" này sẽ chạy lại:
+            // camera bị kéo về finishedTarget, camera2DDrag bị bật lại giữa chừng, và
+            // TryShowPointThienTinhThanh() bị gọi lại làm hiện lại tutorial chỉ-vào-thành - đúng
+            // hiện tượng "tut tắt, cam lia 1 lúc, tut hiện lại". Nên chỉ cho phần này chạy đúng 1
+            // lần duy nhất (lúc intro thật sự vừa xong).
+            if (PlayerPrefs.GetInt(tutorialAllMapKey, 0) != 0) return;
+
             var cam = CameraFollow.Instance;
             cam.target = finishedTarget;
             PlayerPrefs.SetInt(tutorialAllMapKey, 1);
+            camera2DDrag.enabled = true;
+
+            TryShowPointThienTinhThanh();
+        }
+
+        // ============================================================
+        // Hand tut: sau khi xong tutorial giới thiệu bản đồ, chỉ người chơi
+        // đi vào Thiên Tinh Thành (Id = 23) rồi bấm "Tiến vào".
+        // ============================================================
+
+        private void TryShowPointThienTinhThanh()
+        {
+            if (PlayerPrefs.GetInt(tutorialPointThienTinhKey, 0) != 0) return;
+            if (thienTinhThanhStronghold == null || thienTinhThanh == null) return;
+
+            camera2DDrag.enabled = false;
+
+            var steps = new[]
+            {
+                new TutorialStep
+                {
+                    TargetRenderer = thienTinhThanh,
+                    Text = "Hãy chạm vào Thiên Tinh Thành để tiến đến nơi này.",
+                    RequireRealAction = true
+                }
+            };
+
+            thienTinhThanhStronghold.OnMapClicked += OnClickThienTinhThanh;
+            tutorial.ShowTutorial(steps);
+        }
+
+        private void OnClickThienTinhThanh()
+        {
+            thienTinhThanhStronghold.OnMapClicked -= OnClickThienTinhThanh;
+
+            // BẮT BUỘC phải trả camera về nhân vật NGAY TẠI ĐÂY, trước khi thoát hàm này.
+            // Lý do: MapManager.PlayerMoveTo() mở đầu bằng
+            //     if (CameraFollow.Instance.target != player.transform) return;
+            // (guard để khoá di chuyển trong lúc tutorial đang lia camera đi giới thiệu bản đồ).
+            // Bước hand-tut này dùng TargetRenderer nên Tutorial.OnSetTarget đã đẩy
+            // CameraFollow.target sang bám vào chính toà thành => cú chạm vào thành sẽ bị guard
+            // trên chặn, nhân vật đứng yên, không bao giờ tới nơi, và tut kẹt mãi ở bước chờ.
+            // Map.OnPointerClick() bắn OnMapClicked?.Invoke() TRƯỚC khi gọi PlayerMoveTo(), nên chỉ
+            // cần trả camera về nhân vật ở đây là CHÍNH cú chạm vừa rồi sẽ di chuyển được ngay.
+            // (finishedTarget chính là transform của Player - cùng GameObject "Visual" trong
+            // Player.prefab với component AllMaps.Player mà MapManager đang giữ.)
+            var cam = CameraFollow.Instance;
+            if (cam != null && finishedTarget != null)
+            {
+                cam.target = finishedTarget;
+                cam.IsFollow = true;
+            }
+
+            // Trả lại quyền kéo camera bình thường trong lúc nhân vật đi tới thành.
+            if (camera2DDrag != null) camera2DDrag.enabled = true;
+
+            tutorial.CompleteInteractiveStep();
+
+            // QUAN TRỌNG: KHÔNG dùng EventList.GamePlay.MOVE_MAP_SUCCESS để biết "đã tới nơi" -
+            // sự kiện đó bắn ra ngay khi server chấp nhận lệnh di chuyển, TRƯỚC KHI nhân vật chạy
+            // tới (xem MapManager.Move()/OnMoveToMapResult()). Panel "Tiến vào" (btnEnter) chỉ thật
+            // sự xuất hiện sau khi animation đi bộ chạy xong, qua Stronghold.OnPlayerEnter() - nên
+            // phải chờ đúng sự kiện OnEnteredRange (bắn ra trong OnPlayerEnter()) mới đúng.
+            if (thienTinhThanhStronghold.IsEnterPanelActive)
+            {
+                // Trường hợp hiếm: nhân vật đã đứng sẵn ở đó từ trước (panel đã hiện rồi).
+                ShowPointBtnTienVao();
+            }
+            else
+            {
+                thienTinhThanhStronghold.OnEnteredRange += OnArrivedThienTinhThanh;
+            }
+        }
+
+        private void OnArrivedThienTinhThanh()
+        {
+            thienTinhThanhStronghold.OnEnteredRange -= OnArrivedThienTinhThanh;
+            ShowPointBtnTienVao();
+        }
+
+        private void ShowPointBtnTienVao()
+        {
+            var btnEnter = thienTinhThanhStronghold.BtnEnter;
+            if (btnEnter == null)
+            {
+                PlayerPrefs.SetInt(tutorialPointThienTinhKey, 1);
+                camera2DDrag.enabled = true;
+                return;
+            }
+
+            var steps = new[]
+            {
+                new TutorialStep
+                {
+                    TargetRect = btnEnter.GetComponent<RectTransform>(),
+                    Text = "Chạm vào nút \"Tiến vào\" để bước vào Thiên Tinh Thành.",
+                    RequireRealAction = true
+                }
+            };
+
+            btnEnter.onClick.AddListener(OnClickTienVao);
+            tutorial.ShowTutorial(steps);
+        }
+
+        private void OnClickTienVao()
+        {
+            thienTinhThanhStronghold.BtnEnter.onClick.RemoveListener(OnClickTienVao);
+            tutorial.CompleteInteractiveStep();
+            PlayerPrefs.SetInt(tutorialPointThienTinhKey, 1);
             camera2DDrag.enabled = true;
         }
 

@@ -35,6 +35,24 @@ namespace AllMaps
         [SerializeField] public EMapType eCurrentMapType;
         [SerializeField] public string nameSceneLoad => GameManager.dictMapTypeWithSceneName[eCurrentMapType];
 
+        /// <summary>Nút "Tiến vào" hiện lên khi người chơi đã đi tới thành trì này (xem <see cref="enter"/>).
+        /// Public để hand-tut (Tutorials) có thể gắn thêm listener mà không đụng vào logic gốc.</summary>
+        public Button BtnEnter => btnEnter;
+
+        /// <summary>True khi panel "Tiến vào" đang hiện (đã tới nơi), dùng để hand-tut biết lúc nào
+        /// nên khoanh sáng nút Tiến vào.</summary>
+        public bool IsEnterPanelActive => enter != null && enter.activeSelf;
+
+        /// <summary>
+        /// Bắn ra khi người chơi THẬT SỰ đã đi tới thành trì này (panel "Tiến vào" vừa được bật lên
+        /// trong OnPlayerEnter()). LƯU Ý: KHÔNG dùng EventList.GamePlay.MOVE_MAP_SUCCESS cho việc
+        /// này - sự kiện đó bắn ra ngay khi server chấp nhận lệnh di chuyển (trước cả khi nhân vật
+        /// bắt đầu chạy tới, xem MapManager.Move()/OnMoveToMapResult()), còn OnPlayerEnter() chỉ
+        /// được gọi sau khi animation di chuyển hoàn tất (MapManager.OnMoveToMapCompleted()) - tức
+        /// đúng lúc nút "Tiến vào" mới thật sự xuất hiện.
+        /// </summary>
+        public event Action OnEnteredRange;
+
         private void Awake()
         {
         }
@@ -83,6 +101,7 @@ namespace AllMaps
         {
             SetEventBtnEnterStrongHold(() => { base.OnPlayerEnter(); });
             enter.SetActive(true);
+            OnEnteredRange?.Invoke();
         }
 
         public override void OnPlayerExit()

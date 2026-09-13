@@ -328,16 +328,21 @@ namespace Network
             }
         }
 
+        /// <summary>
+        /// Xoá toàn bộ cờ đã-xem của mọi tutorial để chạy lại từ đầu.
+        /// Danh sách khoá nằm tập trung ở <see cref="TutorialKeys.All"/> - thêm tutorial mới thì
+        /// đăng ký khoá ở đó, không phải sửa lại hàm này nữa.
+        /// </summary>
         [Button]
         public void RenewTutorial()
         {
-            PlayerPrefs.DeleteKey(TutorialAllMaps.tutorialAllMapKey);
-            PlayerPrefs.DeleteKey(TutorialBeQuan.tutorialBeQuan);
-            PlayerPrefs.DeleteKey(TutorialHome.tutorialHome);
-            PlayerPrefs.DeleteKey(TutorialBoCao.tutorialBoCao);
-            PlayerPrefs.DeleteKey(TutorialLuyenDan.tutorialLuyenDan);
+            foreach (var key in TutorialKeys.All)
+            {
+                PlayerPrefs.DeleteKey(key);
+            }
+
             PlayerPrefs.Save();
-            Debug.Log("Renew all tutorial");
+            Debug.Log($"Renew all tutorial ({TutorialKeys.All.Length} keys)");
         }
 
         public void OnLeave()

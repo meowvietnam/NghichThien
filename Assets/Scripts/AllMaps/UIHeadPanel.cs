@@ -11,6 +11,11 @@ using UnityEngine.UI;
 public class UIHeadPanel : PanelGroup
 {
     [SerializeField] private Button headBtn;
+
+    /// <summary>Nút hình nhân vật (góc trái) mở bảng nhân vật (TabPanel).
+    /// Public để hand-tut khoanh sáng được; UIHeadPanel là PanelGroup nên lấy qua
+    /// Pool.Get&lt;UIHeadPanel&gt;() từ bất kỳ scene nào.</summary>
+    public Button HeadBtn => headBtn;
     [SerializeField] private Button tutorialBtn;
     [SerializeField] private Image iconLevel;
     [SerializeField] private Text hpText;
