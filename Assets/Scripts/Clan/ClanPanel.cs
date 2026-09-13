@@ -6,6 +6,7 @@ using Base;
 using CreateCharacter;
 using LongDH.LongDHModules;
 using LongDHModules;
+using LuyenKhi;
 using Network;
 using Network.Core;
 using Network.Models.Clans;
@@ -172,7 +173,7 @@ namespace Clan
         public Task<SetClanInheritanceResult> SetInheritance(
             ClanInheritanceTrigger trigger,
             int slotIndex,
-            EBuffAndDeBuff buffType)
+            EffectType? effectType)
         {
             if (!HasPermission(ClanPermission.ManageInheritance))
             {
@@ -183,12 +184,12 @@ namespace Clan
                 });
             }
 
-            return Handler.SetInheritance(trigger, slotIndex, buffType);
+            return Handler.SetInheritance(trigger, slotIndex, effectType);
         }
 
-        public int GetInheritanceSlots(EBuffAndDeBuff buffType)
+        public int GetInheritanceSlots()
         {
-            return clan == null || Handler == null ? 0 : Handler.GetInheritanceSlots(clan.Level, buffType);
+            return clan == null || Handler == null ? 0 : Handler.GetInheritanceSlots(clan.Level);
         }
 
         public void RefreshPermissions()

@@ -1,4 +1,5 @@
 using LuyenDan;
+using LuyenKhi;
 using MemoryPack;
 
 namespace Network.Models.Clans
@@ -8,7 +9,7 @@ namespace Network.Models.Clans
     {
         public ClanInheritanceTrigger Trigger { get; set; }
         public int SlotIndex { get; set; }
-        public EBuffAndDeBuff BuffType { get; set; }
+        public EffectType? EffectType { get; set; }
     }
 
     [MemoryPackable]

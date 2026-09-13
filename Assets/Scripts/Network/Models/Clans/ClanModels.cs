@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Base;
 using CreateCharacter;
 using LuyenDan;
+using LuyenKhi;
 using MemoryPack;
 
 namespace Network.Models.Clans
@@ -76,7 +77,7 @@ namespace Network.Models.Clans
         public int ClanId { get; set; }
         public ClanInheritanceTrigger Trigger { get; set; }
         public int SlotIndex { get; set; }
-        public EBuffAndDeBuff BuffType { get; set; }
+        public EffectType? EffectType { get; set; }
         public int Value { get; set; }
     }
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CreateCharacter;
 using LongDH.LongDHModules;
 using LongDHModules;
+using LuyenKhi;
 using Network;
 using Network.Core;
 using Network.Models.Clans;
@@ -89,7 +90,7 @@ namespace Clan
             var config = Handler.CurrentConfig;
             if (clan == null || config == null) return;
 
-            var unlockedSlots = Handler.GetInheritanceSlots(clan.Level, EBuffAndDeBuff.None);
+            var unlockedSlots = Handler.GetInheritanceSlots(clan.Level);
             var shownSlots = Math.Max(unlockedSlots, Math.Max(0, config.MaxInheritanceSlotsPerColumn));
             RenderColumn(ClanInheritanceTrigger.StartTurn, startTurnContainer, startSlots,
                 clan.StartTurnEffects, shownSlots, unlockedSlots);
@@ -174,13 +175,13 @@ namespace Clan
                     : $"Đổi lựa chọn sẽ tốn {Handler.CurrentConfig.ChangeInheritanceMoneyVipCost:n0} Tiên Ngọc";
             }
             if (clearButton != null) clearButton.gameObject.SetActive(slot.Effect != null);
-            RenderOptions(slot.Effect?.BuffType ?? EBuffAndDeBuff.None);
+            RenderOptions(slot.Effect?.EffectType);
             if (selectionRoot != null) selectionRoot.SetActive(true);
         }
 
-        private void RenderOptions(EBuffAndDeBuff selected)
+        private void RenderOptions(EffectType? selected)
         {
-            var whitelist = Handler.CurrentConfig?.InheritanceBuffWhitelist ?? Array.Empty<EBuffAndDeBuff>();
+            var whitelist = Handler.CurrentConfig?.InheritanceBuffWhitelist ?? Array.Empty<EffectType>();
             while (options.Count < whitelist.Length)
             {
                 var option = Instantiate(optionTemplate, optionContainer);
@@ -200,20 +201,20 @@ namespace Clan
 
         private void OnOptionClicked(ClanInheritanceOptionElement option)
         {
-            if (option != null) ConfirmChange(option.BuffType);
+            if (option != null) ConfirmChange(option.EffectType);
         }
 
         private void ClearSelected()
         {
-            if (selectedSlot?.Effect != null) ConfirmChange(EBuffAndDeBuff.None);
+            if (selectedSlot?.Effect != null) ConfirmChange(null);
         }
 
-        private void ConfirmChange(EBuffAndDeBuff buffType)
+        private void ConfirmChange(EffectType? effectType)
         {
             if (selectedSlot == null || isSubmitting) return;
-            if (selectedSlot.Effect?.BuffType == buffType) return;
+            if (selectedSlot.Effect?.EffectType == effectType) return;
 
-            var name = buffType == EBuffAndDeBuff.None ? "xóa truyền thừa" : $"chọn {GetEffectName(buffType)}";
+            var name = effectType == null ? "xóa truyền thừa" : $"chọn {GetEffectName(effectType)}";
             var cost = selectedSlot.Effect == null ? 0 : Handler.CurrentConfig.ChangeInheritanceMoneyVipCost;
             var content = cost > 0
                 ? $"Xác nhận {name}?\nChi phí: {cost:n0} Tiên Ngọc cá nhân."
@@ -224,17 +225,17 @@ namespace Clan
                 Notify("Không thể mở xác nhận truyền thừa");
                 return;
             }
-            popup.ShowPopConfirmAction(content, () => _ = Submit(selectedSlot.Trigger, selectedSlot.SlotIndex, buffType));
+            popup.ShowPopConfirmAction(content, () => _ = Submit(selectedSlot.Trigger, selectedSlot.SlotIndex, effectType));
         }
 
-        private async Task Submit(ClanInheritanceTrigger trigger, int slotIndex, EBuffAndDeBuff buffType)
+        private async Task Submit(ClanInheritanceTrigger trigger, int slotIndex, EffectType? effectType)
         {
             if (isSubmitting) return;
             isSubmitting = true;
             SetSelectionInteractable(false);
             try
             {
-                var result = await Handler.SetInheritance(trigger, slotIndex, buffType);
+                var result = await Handler.SetInheritance(trigger, slotIndex, effectType);
                 Notify(result.Message);
                 if (result.Success)
                 {
@@ -332,25 +333,13 @@ namespace Clan
             if (!string.IsNullOrWhiteSpace(message)) NotifyGroup.Instance?.Show(message);
         }
 
-        public static string GetEffectName(EBuffAndDeBuff buffType)
+        public static string GetEffectName(EffectType? effectType)
         {
-            return buffType switch
-            {
-                EBuffAndDeBuff.HoTrao => "Hộ Tráo",
-                EBuffAndDeBuff.KiemKhi => "Kiếm Khí",
-                EBuffAndDeBuff.SucThe => "Sức Thế",
-                EBuffAndDeBuff.GiamTonThuong => "Giảm Tổn Thương",
-                EBuffAndDeBuff.TriLieu => "Trị Liệu",
-                EBuffAndDeBuff.TuKhi => "Tụ Khí",
-                EBuffAndDeBuff.SucLuc => "Sức Lực",
-                EBuffAndDeBuff.TangToc => "Tăng Tốc",
-                EBuffAndDeBuff.TichHoa => "Tích Hỏa",
-                EBuffAndDeBuff.TichKim => "Tích Kim",
-                EBuffAndDeBuff.TichMoc => "Tích Mộc",
-                EBuffAndDeBuff.TichThuy => "Tích Thủy",
-                EBuffAndDeBuff.None => "Không chọn",
-                _ => Regex.Replace(buffType.ToString(), "(?<!^)([A-Z])", " $1")
-            };
+            if (effectType == null) return "Không chọn";
+            var config = ClanBuffResources.Instance?.EffectTypeConfigs?
+                .FirstOrDefault(x => x.Type == effectType.Value);
+            if (config != null && !string.IsNullOrWhiteSpace(config.Name)) return config.Name;
+            return Regex.Replace(effectType.Value.ToString(), "(?<!^)([A-Z])", " $1");
         }
 
         protected override void OnDestroy()
