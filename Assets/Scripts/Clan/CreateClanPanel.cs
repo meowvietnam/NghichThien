@@ -373,7 +373,7 @@ namespace Clan
         private void OnNodeRejected(Map map)
         {
             selectingMapManager?.CancelNodeSelection(this);
-            ShowMessage("Không thể đặt tông môn tại thành trì, hãy chọn một node thường");
+            ShowMessage("Không thể đặt tông môn tại thành trì hoặc vị trí đã có tông môn");
         }
 
         private void HideUiForNodeSelection()
