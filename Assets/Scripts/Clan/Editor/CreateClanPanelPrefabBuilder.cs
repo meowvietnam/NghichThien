@@ -106,6 +106,8 @@ namespace Clan.Editor
             SetRect(moneyVipPriceText.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(-220, 150), new Vector2(420, 32));
             var vndPriceText = Text("VndPriceText", window.transform, "--", 20, Gold, TextAnchor.MiddleCenter, true);
             SetRect(vndPriceText.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(220, 150), new Vector2(420, 32));
+            var vndBonusMoneyVipText = Text("VndBonusMoneyVipText", window.transform, "--", 18, Gold, TextAnchor.MiddleCenter, true);
+            SetRect(vndBonusMoneyVipText.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(220, 184), new Vector2(420, 30));
 
             SetObject(popup, "nameInput", nameInput);
             SetObject(popup, "descriptionInput", descInput);
@@ -119,6 +121,7 @@ namespace Clan.Editor
             SetObject(popup, "createByVndButton", createByVndButton);
             SetObject(popup, "moneyVipPriceText", moneyVipPriceText);
             SetObject(popup, "vndPriceText", vndPriceText);
+            SetObject(popup, "vndBonusMoneyVipText", vndBonusMoneyVipText);
             // Lưu ý: "clanPanel" cố tình để trống — hãy gán tham chiếu tới ClanPanel đang dùng
             // trong scene/prefab cha (ví dụ trong ClanIntroPanelPrefabBuilder) sau khi build xong.
 

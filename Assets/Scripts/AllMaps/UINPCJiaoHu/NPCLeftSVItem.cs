@@ -32,8 +32,8 @@ public class NPCLeftSVItem : BaseBehaviour
         characterGraphic.SetSkin(charStats.Skins, charStats.Colors);
         if (charStats.HasClan)
         {
-            textMonPhai.text = $"{characterStats.ClanName} {ClanMemberElement.GetRole(characterStats.ClanRole)}";
-
+            var role = ClanMemberElement.GetRole(characterStats.ClanRole);
+            textMonPhai.text = $"{characterStats.ClanName} {role.text}";
         }
         else
         {
