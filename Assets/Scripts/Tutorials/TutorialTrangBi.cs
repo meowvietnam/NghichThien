@@ -152,9 +152,9 @@ namespace Tutorials
 
             var btnTab = tabPanel.GetTabButton(type);
             if (btnTab == null) yield break;
-
+            var target = btnTab.transform.GetChild(1).GetChild(0);
             yield return ShowStepUntil(
-                btnTab,
+                target,
                 text,
                 () => tabPanel.currentBtnWithPanel != null && tabPanel.currentBtnWithPanel.typePanel == type);
 

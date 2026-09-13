@@ -92,6 +92,7 @@ namespace Clan
                 AddRange(inventory.CongPhaps);
                 AddRange(inventory.LinhDans);
                 AddRange(inventory.Materials);
+                AddRange(inventory.Furnaces.Select(x => x.CreateRefSelfID()));
             }
 
             if (selectedItem != null)

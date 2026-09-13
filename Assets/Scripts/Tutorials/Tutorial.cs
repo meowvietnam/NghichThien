@@ -115,8 +115,11 @@ namespace Tutorials
                 }
                 else
                 {
+                    // Không throw: một bước lỗi target (VD renderer của quái/quest chưa dựng xong)
+                    // mà ném exception sẽ giết luôn coroutine, khiến TẤT CẢ các bước còn lại và
+                    // cả OnCompleted không bao giờ chạy. Bỏ qua bước đó và đi tiếp.
+                    Debug.LogWarning($"[Tutorial] Bỏ qua bước {stepIndex}: không có target.");
                     isShowing = false;
-                    throw new Exception("Null target");
                 }
 
                 highlight.SetIgnoreDarkAreaClick(step.RequireRealAction);
@@ -143,8 +146,11 @@ namespace Tutorials
                 }
                 else
                 {
+                    // Không throw: một bước lỗi target (VD renderer của quái/quest chưa dựng xong)
+                    // mà ném exception sẽ giết luôn coroutine, khiến TẤT CẢ các bước còn lại và
+                    // cả OnCompleted không bao giờ chạy. Bỏ qua bước đó và đi tiếp.
+                    Debug.LogWarning($"[Tutorial] Bỏ qua bước {stepIndex}: không có target.");
                     isShowing = false;
-                    throw new Exception("Null target");
                 }
 
                 highlight.SetIgnoreDarkAreaClick(step.RequireRealAction);
