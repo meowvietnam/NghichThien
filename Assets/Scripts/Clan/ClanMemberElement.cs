@@ -92,9 +92,9 @@ namespace Clan
                 case ClanRole.Elder:
                     return ("Trưởng Lão", new Color32(50, 112, 96, 255));
                 case ClanRole.ViceLeader:
-                    return ("Phó Tông Chủ", new Color32(174, 115, 48, 255));
+                    return ("Phó Tộc Chủ", new Color32(174, 115, 48, 255));
                 case ClanRole.Leader:
-                    return ("Tông Chủ", new Color32(145, 58, 50, 255));
+                    return ("Tộc Chủ", new Color32(145, 58, 50, 255));
                 default:
                     return ("Không xác định", Color.gray);
             }

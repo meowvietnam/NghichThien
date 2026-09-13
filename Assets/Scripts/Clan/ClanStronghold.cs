@@ -1,4 +1,5 @@
 using AllMaps;
+using Base;
 using Network.Models.Clans;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +12,7 @@ namespace Clan
         [SerializeField] private Text clanNameText;
         [SerializeField] private GameObject enter;
         [SerializeField] private Button enterButton;
-
+        [SerializeField] private SpriteRenderer iconClan;
         private ClanModel clan;
 
         private void Awake()
@@ -20,7 +21,7 @@ namespace Clan
             SetEventButton(enterButton, OpenClan);
         }
 
-        public void SetClan(ClanModel value)
+        public async void SetClan(ClanModel value)
         {
             clan = value;
             if (clanNameText == null) return;
@@ -28,6 +29,10 @@ namespace Clan
             clanNameText.text = value?.Name ?? string.Empty;
             if (clanNameText.transform.parent != null)
                 clanNameText.transform.parent.gameObject.SetActive(true);
+            if (!string.IsNullOrEmpty(value?.ImageUrl))
+            {
+                iconClan.sprite = await ImageLoader.GetSpriteFromUrl(value.ImageUrl);
+            }
         }
 
         public override void OnPlayerEnter()

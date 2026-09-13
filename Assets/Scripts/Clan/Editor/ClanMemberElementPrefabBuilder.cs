@@ -88,7 +88,7 @@ namespace Clan.Editor
         {
             LoadFonts();
 
-            // Thẻ dọc dùng chung cho Trưởng Lão / Phó Tông Chủ / Tông Chủ.
+            // Thẻ dọc dùng chung cho Trưởng Lão / Phó Tộc Chủ / Tộc Chủ.
             var root = Rect("ClanMemberElement_Leadership", null);
             SetRect(root, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(240, 320));
             var rootLayout = root.gameObject.AddComponent<LayoutElement>();

@@ -89,7 +89,7 @@ namespace Clan
             var config = Handler.CurrentConfig;
             if (clan == null || config == null) return;
 
-            var unlockedSlots = Handler.GetInheritanceSlots(clan.Level);
+            var unlockedSlots = Handler.GetInheritanceSlots(clan.Level, EBuffAndDeBuff.None);
             var shownSlots = Math.Max(unlockedSlots, Math.Max(0, config.MaxInheritanceSlotsPerColumn));
             RenderColumn(ClanInheritanceTrigger.StartTurn, startTurnContainer, startSlots,
                 clan.StartTurnEffects, shownSlots, unlockedSlots);
@@ -104,8 +104,8 @@ namespace Clan
             if (permissionText != null)
             {
                 permissionText.text = canManage
-                    ? "Tông Chủ có thể thay đổi truyền thừa"
-                    : "Chỉ Tông Chủ có thể thay đổi";
+                    ? "Tộc Chủ có thể thay đổi truyền thừa"
+                    : "Chỉ Tộc Chủ có thể thay đổi";
             }
             if (costHintText != null)
                 costHintText.text = $"Điền ô trống miễn phí · Đổi hoặc xóa: {config.ChangeInheritanceMoneyVipCost:n0} Tiên Ngọc";
@@ -160,7 +160,7 @@ namespace Clan
             if (isSubmitting || slot == null) return;
             if (!CanManage())
             {
-                Notify("Chỉ Tông Chủ được quản lý truyền thừa");
+                Notify("Chỉ Tộc Chủ được quản lý truyền thừa");
                 return;
             }
 

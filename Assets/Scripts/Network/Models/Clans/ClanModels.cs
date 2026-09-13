@@ -11,8 +11,8 @@ namespace Network.Models.Clans
     {
         Member,      // Đệ tử
         Elder,       // Trưởng lão
-        ViceLeader,  // Phó Tông Chủ
-        Leader       // Tông Chủ
+        ViceLeader,  // Phó Tộc Chủ
+        Leader       // Tộc Chủ
     }
 
     [Flags]
