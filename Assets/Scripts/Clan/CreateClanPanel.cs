@@ -32,6 +32,7 @@ namespace Clan
         [Header("Giá tạo tông môn (lấy từ ClanConfig)")]
         [SerializeField] private Text moneyVipPriceText;
         [SerializeField] private Text vndPriceText;
+        [SerializeField] private Text vndBonusMoneyVipText;
 
         [Header("Chọn vị trí trên AllMaps")]
         [Tooltip("Các UI cần ẩn khi chọn node. Để trống sẽ dùng UIManager.panelGroup.")]
@@ -96,6 +97,15 @@ namespace Clan
                 vndPriceText.text = config != null
                     ? $"{config.CreateClanVndPrice:n0} VNĐ"
                     : "--";
+            }
+
+            if (vndBonusMoneyVipText != null)
+            {
+                var showBonus = config != null && config.CreateClanVndBonusMoneyVip > 0;
+                vndBonusMoneyVipText.gameObject.SetActive(showBonus);
+                vndBonusMoneyVipText.text = showBonus
+                    ? $"Nhận {config.CreateClanVndBonusMoneyVip:n0}"
+                    : string.Empty;
             }
         }
 

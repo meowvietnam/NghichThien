@@ -17,6 +17,8 @@ namespace Clan
 {
     public class ClanPanel : BaseClanInfo
     {
+        private const int MinContributionMaxLevel = 4;
+
         [Header("Ẩn khi xem tông môn của người khác")]
         [Tooltip("Toàn bộ khối tính năng chỉ dành cho thành viên (đóng góp, rời tông môn...). " +
                  "Tự ẩn khi đang xem tông môn của người khác (IsViewingExternalClan).")]
@@ -225,13 +227,16 @@ namespace Clan
 
         private void RefreshFreeContribution()
         {
+            var canContributeByLevel = CanContributeByLevel();
             var hasFreeTurn = HasFreeContributionTurn();
-            if (freeContributionBadge != null) freeContributionBadge.SetActive(hasFreeTurn);
+            if (freeContributionBadge != null) freeContributionBadge.SetActive(canContributeByLevel && hasFreeTurn);
 
             var price = Handler?.CurrentConfig?.ContributionMoneyVipPerTime ?? 0;
             if (contributeOnceText != null)
             {
-                contributeOnceText.text = hasFreeTurn
+                contributeOnceText.text = !canContributeByLevel
+                    ? "Đóng Góp x1\nTrúc Cơ trở lên"
+                    : hasFreeTurn
                     ? "Đóng Góp x1\nMiễn Phí"
                     : $"Đóng Góp x1\n{price:n0} Tiên Ngọc";
             }
@@ -239,14 +244,23 @@ namespace Clan
             if (contributeTenText != null)
             {
                 var paidTimes = hasFreeTurn ? 9 : 10;
-                contributeTenText.text = $"Đóng Góp x10\n{(long)paidTimes * price:n0} Tiên Ngọc";
+                contributeTenText.text = !canContributeByLevel
+                    ? "Đóng Góp x10\nTrúc Cơ trở lên"
+                    : $"Đóng Góp x10\n{(long)paidTimes * price:n0} Tiên Ngọc";
             }
+
+            UpdateContributionButtons();
         }
 
         // Server dùng UTC để xác định ngày cống hiến, client phải dùng cùng mốc ngày.
         private bool HasFreeContributionTurn()
         {
             return CurrentMember != null && Handler?.HasFreeContributionTurn() == true;
+        }
+
+        private static bool CanContributeByLevel()
+        {
+            return (Client.Instance?.CharacterData?.Progression?.MaxLevel ?? 0) >= MinContributionMaxLevel;
         }
 
         private static Text FindContributionButtonText(Button button, GameObject excludedRoot)
@@ -262,6 +276,12 @@ namespace Clan
         private void ConfirmContribute(int times)
         {
             if (isContributing) return;
+            if (!CanContributeByLevel())
+            {
+                NotifyGroup.Instance?.Show("Từ Trúc Cơ trở lên mới được cống hiến");
+                return;
+            }
+
             if (Handler == null)
             {
                 NotifyGroup.Instance?.Show("Kết nối tông môn chưa sẵn sàng");
@@ -318,6 +338,12 @@ namespace Clan
         public async Task Contribute(int times)
         {
             if (isContributing) return;
+            if (!CanContributeByLevel())
+            {
+                NotifyGroup.Instance?.Show("Từ Trúc Cơ trở lên mới được cống hiến");
+                return;
+            }
+
             if (Handler == null)
             {
                 NotifyGroup.Instance?.Show("Kết nối tông môn chưa sẵn sàng");
@@ -353,8 +379,14 @@ namespace Clan
         private void SetContributing(bool value)
         {
             isContributing = value;
-            if (contributeOnceButton != null) contributeOnceButton.interactable = !value;
-            if (contributeTenButton != null) contributeTenButton.interactable = !value;
+            UpdateContributionButtons();
+        }
+
+        private void UpdateContributionButtons()
+        {
+            var interactable = !isContributing && CanContributeByLevel();
+            if (contributeOnceButton != null) contributeOnceButton.interactable = interactable;
+            if (contributeTenButton != null) contributeTenButton.interactable = interactable;
         }
 
         private void ConfirmLeaveClan()
