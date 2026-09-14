@@ -239,12 +239,12 @@ namespace Tutorials
             // manager sinh nội dung trên bản đồ (chính tuyến / quái / kỳ ngộ) nạp danh sách của
             // chúng ở nhịp khác. Nếu dựng danh sách bước ngay lúc này thì mấy list đó còn rỗng,
             // FirstOrDefault() trả null và các bước giới thiệu quái / quest / kỳ ngộ bị bỏ mất
-            // lặng lẽ. Chờ có hạn cho tới khi cả ba đều có dữ liệu.
+            // lặng lẽ. Chờ có hạn cho tới khi các node có renderer thật sự để tutorial bám vào.
             float waitSpawn = spawnWaitTimeout;
             while (waitSpawn > 0f &&
-                   (mainQuestManager.currentMapMainQuests.FirstOrDefault() == null ||
-                    enemyManager.currentMapRandom.FirstOrDefault() == null ||
-                    sideQuestManager.currentMapRandom.FirstOrDefault() == null))
+                   (!HasRenderableMap(mainQuestManager.currentMapMainQuests) ||
+                    !HasRenderableMap(enemyManager.currentMapRandom) ||
+                    !HasRenderableMap(sideQuestManager.currentMapRandom)))
             {
                 waitSpawn -= Time.deltaTime;
                 yield return null;
@@ -299,10 +299,9 @@ namespace Tutorials
             };
 
 
-            var firstMainQuest = mainQuestManager.currentMapMainQuests.FirstOrDefault();
-            var renderMainQuest = GetRendererInMap(firstMainQuest);
+            var renderMainQuest = GetFirstRendererInMap(mainQuestManager.currentMapMainQuests);
 
-            if (firstMainQuest != null && renderMainQuest == null)
+            if (HasAnyMap(mainQuestManager.currentMapMainQuests) && renderMainQuest == null)
                 Debug.LogWarning("[TutorialAllMaps] Không lấy được renderer của nhiệm vụ chính tuyến.");
 
             if (renderMainQuest != null)
@@ -328,10 +327,9 @@ namespace Tutorials
                 });
             }
 
-            var firstEnemy = enemyManager.currentMapRandom.FirstOrDefault();
-            var renderEnemy = GetRendererInMap(firstEnemy);
+            var renderEnemy = GetFirstRendererInMap(enemyManager.currentMapRandom);
 
-            if (firstEnemy != null && renderEnemy == null)
+            if (HasAnyMap(enemyManager.currentMapRandom) && renderEnemy == null)
                 Debug.LogWarning("[TutorialAllMaps] Không lấy được renderer của điểm quái.");
 
             if (renderEnemy != null)
@@ -351,10 +349,9 @@ namespace Tutorials
                 });
             }
 
-            var firstSideQuest = sideQuestManager.currentMapRandom.FirstOrDefault();
-            var renderSideQuest = GetRendererInMap(firstSideQuest);
+            var renderSideQuest = GetFirstRendererInMap(sideQuestManager.currentMapRandom);
 
-            if (firstSideQuest != null && renderSideQuest == null)
+            if (HasAnyMap(sideQuestManager.currentMapRandom) && renderSideQuest == null)
                 Debug.LogWarning("[TutorialAllMaps] Không lấy được renderer của kỳ ngộ.");
 
             if (renderSideQuest != null)
@@ -398,6 +395,29 @@ namespace Tutorials
             if (level1Move == null || level1Move.childCount == 0) return null;
 
             return level1Move.GetChild(0).GetComponent<SpriteRenderer>();
+        }
+
+        private bool HasRenderableMap(IEnumerable<Map> maps)
+        {
+            return GetFirstRendererInMap(maps) != null;
+        }
+
+        private bool HasAnyMap(IEnumerable<Map> maps)
+        {
+            return maps != null && maps.Any(map => map != null);
+        }
+
+        private Renderer GetFirstRendererInMap(IEnumerable<Map> maps)
+        {
+            if (maps == null) return null;
+
+            foreach (var map in maps)
+            {
+                var renderer = GetRendererInMap(map);
+                if (renderer != null) return renderer;
+            }
+
+            return null;
         }
     }
 }
