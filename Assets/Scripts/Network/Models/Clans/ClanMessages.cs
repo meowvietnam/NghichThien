@@ -64,6 +64,7 @@ namespace Network.Models.Clans
         public int InheritanceValuePerClanLevel { get; set; } = 1;
         public EffectType[] InheritanceBuffWhitelist { get; set; } = new EffectType[0];
         public long[] ClanLevelRequiredTotalExp { get; set; } = new long[0];
+        public bool EnableCreateClanByVnd { get; set; } = true;
     }
 
     [MemoryPackable]

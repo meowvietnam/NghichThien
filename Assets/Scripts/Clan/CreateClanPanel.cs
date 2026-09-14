@@ -85,6 +85,7 @@ namespace Clan
         private void RefreshPriceTexts()
         {
             var config = Handler?.CurrentConfig;
+            var enableCreateByVnd = IsCreateByVndEnabled();
             if (moneyVipPriceText != null)
             {
                 moneyVipPriceText.text = config != null
@@ -92,8 +93,14 @@ namespace Clan
                     : "--";
             }
 
+            if (createByVndButton != null)
+            {
+                createByVndButton.gameObject.SetActive(enableCreateByVnd);
+            }
+
             if (vndPriceText != null)
             {
+                vndPriceText.gameObject.SetActive(enableCreateByVnd);
                 vndPriceText.text = config != null
                     ? $"{config.CreateClanVndPrice:n0} VNĐ"
                     : "--";
@@ -101,7 +108,7 @@ namespace Clan
 
             if (vndBonusMoneyVipText != null)
             {
-                var showBonus = config != null && config.CreateClanVndBonusMoneyVip > 0;
+                var showBonus = enableCreateByVnd && config != null && config.CreateClanVndBonusMoneyVip > 0;
                 vndBonusMoneyVipText.gameObject.SetActive(showBonus);
                 vndBonusMoneyVipText.text = showBonus
                     ? $"Nhận {config.CreateClanVndBonusMoneyVip:n0}"
@@ -293,6 +300,12 @@ namespace Clan
 
         public void CreateWithVnd()
         {
+            if (!IsCreateByVndEnabled())
+            {
+                ShowMessage("Tạo tông môn bằng VND đang tạm đóng");
+                return;
+            }
+
             CreateClan(CreateClanBy.Vnd);
         }
 
@@ -356,6 +369,12 @@ namespace Clan
             if (selectedNodeId < 0)
             {
                 message = "Hãy chọn vị trí tông môn trên bản đồ";
+                return false;
+            }
+
+            if (createBy == CreateClanBy.Vnd && !IsCreateByVndEnabled())
+            {
+                message = "Tạo tông môn bằng VND đang tạm đóng";
                 return false;
             }
 
@@ -431,7 +450,12 @@ namespace Clan
         {
             isCreating = value;
             if (createByMoneyVipButton != null) createByMoneyVipButton.interactable = !value;
-            if (createByVndButton != null) createByVndButton.interactable = !value;
+            if (createByVndButton != null) createByVndButton.interactable = !value && IsCreateByVndEnabled();
+        }
+
+        private bool IsCreateByVndEnabled()
+        {
+            return Handler?.CurrentConfig == null || Handler.CurrentConfig.EnableCreateClanByVnd;
         }
 
         private static void ShowMessage(string message)
