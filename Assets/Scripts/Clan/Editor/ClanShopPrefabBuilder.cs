@@ -401,7 +401,7 @@ namespace Clan.Editor
             SetTop(selectedItemText.rectTransform, 0, -496, 800, 36);
             SetObject(clanBag, "selectedItemText", selectedItemText);
 
-            var dailyLimitText = Text("DailyLimitText", window.transform, "Hôm nay: 0/0", 18, MutedInk, TextAnchor.MiddleCenter);
+            var dailyLimitText = Text("DailyLimitText", window.transform, "Slot treo: 0/0", 18, MutedInk, TextAnchor.MiddleCenter);
             SetTop(dailyLimitText.rectTransform, 0, -534, 800, 28);
             SetObject(clanBag, "dailyLimitText", dailyLimitText);
 

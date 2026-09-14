@@ -151,8 +151,8 @@ namespace Clan
             else if (quantityInput == null || !int.TryParse(quantityInput.text, out quantity) || quantity < 1)
                 message = "Số lượng phải lớn hơn 0";
             else if (quantity > selectedItem.Count) message = "Túi đồ không đủ số lượng";
-            else if ((long)Handler.ShopItemsAddedToday + quantity > Handler.MaxShopItemsAddedPerDay)
-                message = "Số lượng đã vượt giới hạn thêm vật phẩm hôm nay";
+            else if (Handler.ShopSlotsUsed >= Handler.MaxShopItemsAddedPerDay)
+                message = "Kho tông môn đã hết slot treo vật phẩm";
             return string.IsNullOrEmpty(message);
         }
 
@@ -204,10 +204,10 @@ namespace Clan
         {
             if (dailyLimitText == null) return;
             var maximum = Handler?.MaxShopItemsAddedPerDay ?? 0;
-            var used = Handler?.ShopItemsAddedToday ?? 0;
+            var used = Handler?.ShopSlotsUsed ?? 0;
             var remaining = Math.Max(0, maximum - used);
             dailyLimitText.text = maximum > 0
-                ? $"Hôm nay: {used}/{maximum} · Còn {remaining}"
+                ? $"Slot treo: {used}/{maximum} · Còn {remaining}"
                 : "Kho đang tạm khóa";
         }
 
@@ -223,10 +223,10 @@ namespace Clan
                 !HasPermission(ClanPermission.AddShopItem)) return false;
 
             var maximum = Handler.MaxShopItemsAddedPerDay;
-            var used = Handler.ShopItemsAddedToday;
+            var used = Handler.ShopSlotsUsed;
             if (maximum <= 0 || used >= maximum) return false;
             if (quantityInput == null || !int.TryParse(quantityInput.text, out var quantity) ||
-                quantity < 1 || quantity > selectedItem.Count || (long)used + quantity > maximum) return false;
+                quantity < 1 || quantity > selectedItem.Count) return false;
             return true;
         }
 

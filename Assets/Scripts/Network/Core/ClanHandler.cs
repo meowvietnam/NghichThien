@@ -20,6 +20,7 @@ namespace Network.Core
         public int MaxShopQuantityPerRequest { get; private set; }
         public int MaxShopItemsAddedPerDay { get; private set; }
         public int ShopItemsAddedToday { get; private set; }
+        public int ShopSlotsUsed => CurrentClan?.ShopItems?.Count ?? ShopItemsAddedToday;
         public int FreeContributionTimesRemaining { get; private set; }
         private DateTime freeContributionStateDateUtc;
 
@@ -86,6 +87,11 @@ namespace Network.Core
             var slots = (long)Math.Max(0, config.BaseInheritanceSlots) +
                         (long)Math.Max(0, clanLevel - 1) * Math.Max(0, config.InheritanceSlotsPerLevel);
             return (int)Math.Min(slots, config.MaxInheritanceSlotsPerColumn);
+        }
+
+        public int GetMaxShopSlots(int clanLevel)
+        {
+            return Math.Max(1, clanLevel) * 3;
         }
 
         public (int Min, int Max) GetInheritanceValueRange(EffectType? effectType)
@@ -470,6 +476,11 @@ namespace Network.Core
             }
 
             CurrentClan = clan;
+            if (clan != null)
+            {
+                MaxShopItemsAddedPerDay = GetMaxShopSlots(clan.Level);
+                ShopItemsAddedToday = clan.ShopItems.Count;
+            }
             RefreshFreeContributionStateFromClan();
             NotifyMainThread(() => ClanChanged?.Invoke(clan));
         }
@@ -662,6 +673,7 @@ namespace Network.Core
 
             CurrentClan.Level = changed.Level;
             CurrentClan.Exp = changed.Exp;
+            MaxShopItemsAddedPerDay = GetMaxShopSlots(changed.Level);
             var effects = changed.Effects ?? Array.Empty<ClanInheritanceEffect>();
             CurrentClan.StartTurnEffects = effects
                 .Where(x => x.Trigger == ClanInheritanceTrigger.StartTurn)
@@ -679,6 +691,7 @@ namespace Network.Core
         {
             if (CurrentClan == null) return;
             CurrentClan.ShopItems = items?.ToList() ?? new List<ClanShopItem>();
+            ShopItemsAddedToday = CurrentClan.ShopItems.Count;
             NotifyShopChanged();
         }
 
@@ -690,6 +703,7 @@ namespace Network.Core
             var index = CurrentClan.ShopItems.FindIndex(x => x.Id == shopItem.Id);
             if (index >= 0) CurrentClan.ShopItems[index] = shopItem;
             else CurrentClan.ShopItems.Add(shopItem);
+            ShopItemsAddedToday = CurrentClan.ShopItems.Count;
             if (notify) NotifyShopChanged();
         }
 
@@ -697,6 +711,7 @@ namespace Network.Core
         {
             if (removed == null || CurrentClan == null || removed.ClanId != CurrentClan.Id) return;
             CurrentClan.ShopItems?.RemoveAll(x => x.Id == removed.ShopItemId);
+            ShopItemsAddedToday = CurrentClan.ShopItems?.Count ?? 0;
             if (notify) NotifyShopChanged();
         }
 
@@ -708,6 +723,7 @@ namespace Network.Core
             var index = CurrentClan.ShopItems.FindIndex(x => x.Id == shopItem.Id);
             if (index >= 0) CurrentClan.ShopItems[index] = shopItem;
             else CurrentClan.ShopItems.Add(shopItem);
+            ShopItemsAddedToday = CurrentClan.ShopItems.Count;
             NotifyShopChanged();
         }
 
