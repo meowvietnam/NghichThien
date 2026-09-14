@@ -49,7 +49,7 @@ public abstract class ActionEnterMapManager : ActionMapManager
     {
         var mapManager = Pool.Get<MapManager>();
         var mapExcept = mapManager.maps
-            .Where(x => mapManager.CanSpawnRandomContent(x) && x.IsEmptyAction && x.MapType != MapType.Stronghold)
+            .Where(x => mapManager.CanSpawnRandomContent(x) && x.IsEmptyAction)
             .ToList();
         foreach (var item in currentMapRandom)
         {
@@ -113,7 +113,7 @@ public abstract class ActionEnterMapManager : ActionMapManager
     {
         var mapManager = Pool.Get<MapManager>();
         var map = mapManager.FindMap(id);
-        if (!mapManager.CanSpawnRandomContent(map) || map.MapType == MapType.Stronghold) return;
+        if (!mapManager.CanSpawnRandomContent(map)) return;
 
         mapManager.SetDataOnMap(GetActionMapResourceSO(), id);
         currentMapRandom.Add(map);

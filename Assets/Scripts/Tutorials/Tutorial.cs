@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using AllMaps;
+using Network;
 using UnityEngine;
 
 namespace Tutorials
@@ -33,6 +34,8 @@ namespace Tutorials
 
     public class Tutorial : BaseBehaviour
     {
+        private const int MaxLevelToShow = 2;
+
         [SerializeField] private TutorialHighlight highlight;
         [SerializeField] private float startDelay = 0.5f;
         private TutorialStep[] steps;
@@ -55,6 +58,12 @@ namespace Tutorials
         /// </param>
         public void ShowTutorial(TutorialStep[] steps, float startDelayOverride = -1f)
         {
+            if (!CanShowForCurrentCharacter())
+            {
+                StopCurrentTutorial();
+                return;
+            }
+
             // BẮT BUỘC dừng hẳn lượt tutorial trước đó (nếu còn) trước khi bắt đầu lượt mới.
             //
             // Các chuỗi hand-tut thường gọi ShowTutorial() ngay trong cùng frame với
@@ -63,11 +72,7 @@ namespace Tutorials
             // WaitWhile(() => isShowing); frame kế tiếp nó tỉnh dậy và chạy stepIndex++ - đè lên
             // đúng cái stepIndex = 0 mà lượt mới vừa đặt. Coroutine mới sau startDelay thấy
             // stepIndex đã là 1 nên bỏ qua cả khối đầu lẫn vòng while và không hiện bước nào cả.
-            if (routine != null)
-            {
-                StopCoroutine(routine);
-                routine = null;
-            }
+            StopCurrentTutorial();
 
             this.steps = steps;
             stepIndex = 0;
@@ -174,6 +179,23 @@ namespace Tutorials
             }
 
             return false;
+        }
+
+        private static bool CanShowForCurrentCharacter()
+        {
+            var progression = Client.Instance?.CharacterData?.Progression;
+            return progression == null || progression.MaxLevel <= MaxLevelToShow;
+        }
+
+        private void StopCurrentTutorial()
+        {
+            if (routine != null)
+            {
+                StopCoroutine(routine);
+                routine = null;
+            }
+
+            isShowing = false;
         }
     }
 }
