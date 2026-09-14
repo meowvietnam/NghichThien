@@ -171,6 +171,7 @@ namespace Network.ClientState
             else if (tag == MessageTag.SyncUseEffectSkill)
             {
                 var model = reader.MemRead<SyncEffectSkill>();
+                Debug.Log($"Receive: {model.IdSkill}");
                 Observer.Notify(EventList.Combat.RECEIVE_SYNC_USE_EFFECTSKILL, model);
             }
             else if (tag == MessageTag.SyncCPDynamic)

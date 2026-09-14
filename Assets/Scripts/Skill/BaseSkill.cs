@@ -131,11 +131,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
            
         if(Pool.Get<CombatManager>().IsSync)
         {
-            bool isThanThong = false;
-            if (this is ThanThong)
-            {
-                isThanThong = true;
-            }
+            bool isThanThong = this is Skill.ThanThong;
             Debug.Log($"SEND_SYNC_USE_EFFECTSKIL: {Id}");
             Observer.Notify(EventList.Combat.SEND_SYNC_USE_EFFECTSKILL, new SyncEffectSkill
             {
