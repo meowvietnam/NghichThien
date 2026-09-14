@@ -182,6 +182,7 @@ namespace Network.ClientState
             else if (tag == MessageTag.SyncRemoveEffectSkillNoDestroy)
             {
                 var model = reader.MemRead<SyncEffectSkill>();
+                Debug.Log($"RECEIVE_SYNC_REMOVE_EFFECTSKILLNODESTROY: {model.IdSkill}");
                 Observer.Notify(EventList.Combat.RECEIVE_SYNC_REMOVE_EFFECTSKILLNODESTROY, model);
             }
             else if (tag == MessageTag.ResultCombatPvp)

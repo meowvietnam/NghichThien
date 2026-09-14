@@ -1129,7 +1129,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             CheckDie();
             die = Pool.Get<EventRewardPanel>().gameObject.activeSelf;
-            Debug.Log($"Is die: {die}");
+            //Debug.Log($"Is die: {die}");
             yield return wait;
         }
     }

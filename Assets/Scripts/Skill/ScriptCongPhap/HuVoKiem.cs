@@ -33,7 +33,6 @@ public class HuVoKiem : CPActiveAfterUseSkill, IMemorySerializable<HuVoKiem>
     {   
         base.PlayVisualSkill(caster, target);
         ShowSkillEffectParticle(target, delayTimeEffect,5);
-
     }
     protected override string DescEqual()
     {

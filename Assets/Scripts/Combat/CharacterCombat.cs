@@ -105,11 +105,8 @@ public class CharacterCombat : MonoBehaviour
         }
         if(Pool.Get<CombatManager>().IsSync)
         {
-            bool isThanThong = false;
-            if (skill is ThanThong)
-            {
-                isThanThong = true;
-            }
+            bool isThanThong = this is Skill.ThanThong;
+
             Observer.Notify(EventList.Combat.SEND_SYNC_REMOVE_EFFECTSKILLNODESTROY, new SyncEffectSkill
             {
                 CharId = this.characterStatsBase.idChar.Value,
