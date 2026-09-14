@@ -25,7 +25,7 @@ public class UHonQuyet : CPActiveAfterUseSkill, IMemorySerializable<UHonQuyet>
         if (effect == null)
         {
             base.PlayVisualSkill(caster, target);
-            caster.effectSkillNoDestroy.Add(this, ShowSkillEffectParticle(caster, 0, 5,false));
+            caster.effectSkillNoDestroy.Add(this, ShowSkillEffectParticleBase(caster, 0, 5,false));
 
         }
 

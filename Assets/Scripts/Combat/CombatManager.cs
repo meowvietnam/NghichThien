@@ -102,7 +102,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     [SerializeField] private Image bgCombat;
     [SerializeField] private Text txtTurn;
     public int TurnLinhKhiBaoLoan => 15;
-
+    [Button]
+    private void TestShowVisulSkill(BaseSkill baseSkill)
+    {
+        baseSkill.PlayVisualSkill(currentTurn, targetTurn);
+    }    
     public void SetUITextTurn()
     {
         // Giả sử turnMgr là bộ quản lý lượt, và turnMgr.CurrentChar là nhân vật đang đi
