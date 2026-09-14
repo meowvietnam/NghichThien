@@ -17,6 +17,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
+using Coffee.UIExtensions;
 
 public enum EActionShowItemInfor
 {
@@ -64,12 +65,46 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
             return furnaceData;
         }
     }
-
+    
     [SerializeField] private Text descTextItem;
     [SerializeField] private EActionShowItemInfor eActionShowItem;
     public static ToolTipItems Instance { get; private set; }
     private CharacterData CharData => Client.Instance.CharacterData;
+    [SerializeField] private UIParticle uIParticleEffectDemoSkill;
+    private void OnEnable()
+    {
+        for (int i = 0; i < uIParticleEffectDemoSkill.transform.childCount; i++)
+        {
+            Destroy(uIParticleEffectDemoSkill.transform.GetChild(i).gameObject);
+        }
+       
+    }
+    public void ShowDemoEffectSkill(GameObject prefab,float scale = 70)
+    {
+        for (int i = 0; i < uIParticleEffectDemoSkill.transform.childCount; i++)
+        {
+            Destroy(uIParticleEffectDemoSkill.transform.GetChild(i).gameObject);
+        }
+        var effect =Instantiate(prefab, uIParticleEffectDemoSkill.transform);
+        effect.transform.localPosition = Vector3.zero;
+        effect.transform.GetChild(0).transform.localPosition  = Vector3.zero;
+        uIParticleEffectDemoSkill.scale = scale;
 
+
+        uIParticleEffectDemoSkill.RefreshParticles();
+
+        // Lấy tất cả ParticleSystem nằm trong uIParticleEffectDemoSkill (bao gồm cả GameObject con)
+        var particleSystems = uIParticleEffectDemoSkill.GetComponentsInChildren<ParticleSystem>(true);
+
+        foreach (var ps in particleSystems)
+        {
+            var main = ps.main;
+            main.loop = false;
+        }
+
+        uIParticleEffectDemoSkill.Play();
+
+    }    
 
     public void ShowInfoSkill(ISkillItemData skillItemData,
         EActionShowItemInfor eTypeActionShow = EActionShowItemInfor.None)
@@ -315,6 +350,7 @@ public class ToolTipItems : BaseBehaviour, IUISingleton
             ActionShowItem = eActionShowItem,
             SetPriceText = SetPriceText,
             PriceText = priceText,
+            ShowDemoEffect = ShowDemoEffectSkill,
         };
     }
 

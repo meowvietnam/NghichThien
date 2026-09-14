@@ -4,6 +4,7 @@ using LuyenDan.Inventory;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
 
 namespace AllMaps.ItemProvider
 {
@@ -28,6 +29,9 @@ namespace AllMaps.ItemProvider
         public System.Action<int> SetPriceText;
         public BaseItemData BaseItemData { get; set; }
         public Text PriceText { get; set; }
+        public Action<GameObject, float> ShowDemoEffect;
+
+
     }
 
     public interface IItemProvider

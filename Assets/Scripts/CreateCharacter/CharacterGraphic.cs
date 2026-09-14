@@ -32,6 +32,10 @@ namespace CreateCharacter
 
         public void SetGender(Gender gender)
         {
+            // Nhiều nơi (ví dụ ClanMemberElement, ClanMemberActionPopup) chỉ gọi thẳng
+            // SetGender/SetSkin mà không qua Init(...) nên không có ai gán skinResources —
+            // fallback về SkinResources.Instance (Resources/Skins/SkinResources) để tránh NRE.
+            if (skinResources == null) skinResources = SkinResources.Instance;
             var skeletonDataAsset = skinResources.GenderSkinGroups
                 .FirstOrDefault(skinResource => skinResource.Gender == gender)?.SkeletonDataAsset;
             graphic.skeletonDataAsset = skeletonDataAsset;

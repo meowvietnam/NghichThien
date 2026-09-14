@@ -60,7 +60,7 @@ public class NPCManager : ActionMapManager
 
                 // Đánh dấu map đã duyệt và thêm vào danh sách kết quả
                 visitedMaps.Add(map.Id);
-                idMapNode.Add(map.Id);
+                if (mapManager.CanSpawnRandomContent(map)) idMapNode.Add(map.Id);
 
                 // Duyệt các map liên kết xung quanh
                 if (map.Nodes != null)
@@ -88,12 +88,14 @@ public class NPCManager : ActionMapManager
 
         int bachDeLauIndex = 0;
         int kimHongKiemPhaiIndex = 0;
+        var spawnableMaps = mapManager.maps.Where(mapManager.CanSpawnRandomContent).ToArray();
 
         foreach (var npc in npcDatas)
         {
             if (npc.charStats.monPhai == Base.EMonPhai.None)
             {
-                int randomMapId = mapManager.maps[UnityEngine.Random.Range(0, mapManager.maps.Length)].Id;
+                if (spawnableMaps.Length == 0) continue;
+                int randomMapId = spawnableMaps[UnityEngine.Random.Range(0, spawnableMaps.Length)].Id;
                 npc.charStats.idNode = randomMapId;
             }
             else

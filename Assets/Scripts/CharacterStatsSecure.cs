@@ -6,11 +6,24 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Network.Models.Clans;
+using LuyenKhi;
 
 
 [System.Serializable]
 public class CharacterStatsSecure
 {
+    [System.Serializable]
+    public class ClanInheritanceEffectSecure
+    {
+        public SecureInt Id  = new SecureInt(-1);
+        public SecureInt ClanId = new SecureInt(-1);
+        public ClanInheritanceTrigger Trigger = ClanInheritanceTrigger.StartTurn;
+        public SecureInt SlotIndex = new SecureInt(-1);
+        public EffectType? EffectType = null;
+        public SecureInt Value = new SecureInt(0);
+    }
+
     [System.Serializable]
     public class SkinData
     {
@@ -63,6 +76,12 @@ public class CharacterStatsSecure
     public EquipmentClient vuKhi = new EquipmentClient();
     public EquipmentClient phongCu = new EquipmentClient();
     public EquipmentClient trangSuc = new EquipmentClient();
+    public SecureBool HasClan = new SecureBool(false);
+    public SecureInt ClanId = new SecureInt(-1);
+    public ClanInheritanceEffectSecure[] clanInheritanceEffectSecure = new ClanInheritanceEffectSecure[0];
+    public string ClanName { get; set; } = string.Empty;
+    public SecureInt ClanLevel = new SecureInt(1);
+    public ClanRole ClanRole = ClanRole.Member;
 
     [Serializable]
     public class DataSave

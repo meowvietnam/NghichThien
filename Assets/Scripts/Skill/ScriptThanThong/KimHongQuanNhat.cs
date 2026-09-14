@@ -34,7 +34,7 @@ public class KimHongQuanNhat : ThanThong, IMemorySerializable<KimHongQuanNhat>
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
         base.PlayVisualSkill(caster, target);
-        ShowSkillEffectParticle(target, 1f);
+        ShowSkillEffectParticleBase(target, 1f);
     }
 
     public override string GetDesc(int level)

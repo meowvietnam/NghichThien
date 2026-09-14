@@ -41,12 +41,20 @@ namespace ConvertElementalSkill
 
         public void SetItem(ItemRef item)
         {
+            if (item == null)
+            {
+                itemUI.SetData(null);
+                return;
+            }
+
+            var displayItem = item.DeepClone();
             var ui = Pool.Get<UIManager>();
             var gameManager = Pool.Get<GameManager>();
-            ISkillItemData itemData = item.Type == ItemType.ThanThong
-                ? new ThanThongItemData(item, gameManager, ui)
-                : new CongPhapItemData(item, gameManager, ui);
-            var skillData = new SkillData(item, itemData);
+            ISkillItemData itemData = displayItem.Type == ItemType.ThanThong
+                ? new ThanThongItemData(displayItem, gameManager, ui)
+                : new CongPhapItemData(displayItem, gameManager, ui);
+            var skillData = new SkillData(displayItem, itemData);
+            itemUI.SetActive(true);
             itemUI.SetData(skillData);
         }
 

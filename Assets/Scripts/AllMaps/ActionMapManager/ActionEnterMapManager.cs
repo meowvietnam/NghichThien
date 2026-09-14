@@ -40,8 +40,17 @@ public abstract class ActionEnterMapManager : ActionMapManager
 
     public override void RandomAction()
     {
+        FillMissingSpawns();
+        base.RandomAction();
+        SaveRandom();
+    }
+
+    private void FillMissingSpawns()
+    {
         var mapManager = Pool.Get<MapManager>();
-        var mapExcept = mapManager.maps.Where(x => x.IsEmptyAction && !(x is Stronghold)).ToList();
+        var mapExcept = mapManager.maps
+            .Where(x => mapManager.CanSpawnRandomContent(x) && x.IsEmptyAction && x.MapType != MapType.Stronghold)
+            .ToList();
         foreach (var item in currentMapRandom)
         {
             if (item == null) continue;
@@ -52,16 +61,15 @@ public abstract class ActionEnterMapManager : ActionMapManager
         }
 
         currentMapRandom.RemoveAll(item => item == null || (item != null && item.IsEmptyAction));
-        for (int i = 0; i < CountRandom - currentMapRandom.Count; i++)
+        var missingCount = System.Math.Max(0, CountRandom - currentMapRandom.Count);
+        for (int i = 0; i < missingCount; i++)
         {
+            if (mapExcept.Count == 0) break;
             int randomMapId = mapExcept[UnityEngine.Random.Range(0, mapExcept.Count)].Id;
             var map = mapManager.FindMap(randomMapId);
             mapExcept.Remove(map);
             SetActionOnMap(randomMapId);
         }
-
-        base.RandomAction();
-        SaveRandom();
     }
 
     protected virtual void LoadData()
@@ -77,6 +85,9 @@ public abstract class ActionEnterMapManager : ActionMapManager
             {
                 SetActionOnMap(item);
             }
+
+            FillMissingSpawns();
+            SaveRandom();
 
             Debug.Log($"Đã load dữ liệu thành công! {data.Count}");
         }
@@ -102,8 +113,20 @@ public abstract class ActionEnterMapManager : ActionMapManager
     {
         var mapManager = Pool.Get<MapManager>();
         var map = mapManager.FindMap(id);
+        if (!mapManager.CanSpawnRandomContent(map) || map.MapType == MapType.Stronghold) return;
+
         mapManager.SetDataOnMap(GetActionMapResourceSO(), id);
         currentMapRandom.Add(map);
+    }
+
+    public void RemoveSpawnFrom(Map map)
+    {
+        if (map == null || currentMapRandom == null || !currentMapRandom.Contains(map)) return;
+
+        map.ResetDataAction();
+        currentMapRandom.RemoveAll(value => value == map);
+        FillMissingSpawns();
+        SaveRandom();
     }
 
     public virtual void SaveRandom()

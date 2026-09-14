@@ -14,6 +14,10 @@ public class Popup : BaseBehaviour
     [SerializeField] protected Action actionClose;
     public bool isIgnoreOtherPopup = false;
 
+    /// <summary>Nút đóng/quay lại của popup này. Public để hand-tut (Tutorials) có thể khoanh
+    /// sáng và gắn thêm listener mà không cần sửa từng popup con.</summary>
+    public Button BtnClose => btnClose;
+
     public virtual void Show(float delay = 0.5f, Action actionComplete = null)
     {
         gameObject.SetActive(true);

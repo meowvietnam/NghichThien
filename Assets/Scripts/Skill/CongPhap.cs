@@ -19,7 +19,7 @@ namespace Skill
     {
         [SerializeField] private int tocDoTuLuyenBase;
         [SerializeField] public bool isDonThuat = false;
-
+        protected override string addressEffectString => "PrefabEffectSkillCongPhap";
         public override void SetBaseTimeLearn()
         {
             baseTimeLearn = 1702 * (int)eTierSkill;
@@ -97,7 +97,7 @@ namespace Skill
             return equip;
         }
 
-        protected bool IsCanUse(CharacterCombat caster)
+        protected virtual bool IsCanUse(CharacterCombat caster)
         {
             return GetCongPhapMono(caster.congPhapEquip) != null && GetCongPhapMono(caster.congPhapDynamic) != null;
         }

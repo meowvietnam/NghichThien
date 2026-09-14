@@ -16,6 +16,7 @@ using Tutorials;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Analytics.IAnalytic;
+using Action = System.Action;
 using CongPhap = Skill.CongPhap;
 using ThanThong = Skill.ThanThong;
 
@@ -51,6 +52,50 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
     [SerializeField] private Button btnConfirmDotPha;
     [SerializeField] private Button btnShowPopDotPha;
     [SerializeField] private TutorialBeQuan tutorial;
+
+    // ================================================================
+    // Hooks cho hệ thống Tutorial (chỉ đọc / chỉ bắn sự kiện, không đổi logic gốc)
+    // ================================================================
+
+    public Button BtnShowPopBeQuan => btnShowPopBeQuan;
+    public Slider SliderTuLuyen => sliderTuLuyen;
+    public Button BtnAddSlider => btnAddSlider;
+    public Button BtnTuLuyen => btnTuLuyen;
+    public Button BtnLinhHoi => btnLinhHoi;
+    public Button BtnUpdateCongPhap => btnUpdateCongPhap;
+
+    /// <summary>Bắn ra khi tu luyện / lĩnh ngộ / đột phá công pháp thành công.</summary>
+    public event Action OnTuLuyenSuccess;
+
+    public event Action OnLinhNgoSuccess;
+    public event Action OnDotPhaCongPhapSuccess;
+
+    /// <summary>Bắn ra khi người chơi chọn một vật phẩm trong trang Lĩnh Ngộ / Đột Phá.</summary>
+    public event Action<ItemRef> OnLinhNgoItemSelected;
+
+    public event Action<ItemRef> OnDotPhaItemSelected;
+
+    public Button GetPageButton(ETypePage page)
+    {
+        var found = btns?.FirstOrDefault(x => x.typePage == page);
+        return found?.btn;
+    }
+
+    public ItemInventory FindLinhNgoItem(ItemType type, int id)
+    {
+        return bagLinhHoi == null
+            ? null
+            : bagLinhHoi.InventoryUIFacade.listItemUI.FirstOrDefault(x =>
+                x.itemRef != null && x.itemRef.Type == type && x.itemRef.Id == id);
+    }
+
+    public ItemInventory FindDotPhaItem(int id)
+    {
+        return bagCongPhap == null
+            ? null
+            : bagCongPhap.InventoryUIFacade.listItemUI.FirstOrDefault(x =>
+                x.itemRef != null && x.itemRef.Type == ItemType.CongPhap && x.itemRef.Id == id);
+    }
 
     private void SetupPopupDotPha(List<ItemRef> itemRefs, ItemInventory prefab)
     {
@@ -185,6 +230,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
     public float m = 5f; // Hệ số nhảy vọt mỗi 3 cấp
     private CharacterData CharData => Client.Instance.CharacterData;
     public double CostPriceTieuHao1Month => CalculateCost(CharData.Progression.Level);
+    private const int MaxTuLuyenMonthsPerAttempt = 10;
 
     public static int GetTotalTuLuyen(float percentTuChat, float percentTamCanh, float tocDoTuLuyenCP, int tongSoThang)
     {
@@ -297,7 +343,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         sliderTuLuyen.minValue = 0;
         sliderTuLuyen.value = 0;
         var value = Math.Max(0, charData.Stats.LinhThach / 100);
-        value = Math.Min(value, 120);
+        value = Math.Min(value, MaxTuLuyenMonthsPerAttempt);
         sliderTuLuyen.maxValue = value;
         sliderTuLuyen.onValueChanged.RemoveAllListeners();
         sliderTuLuyen.onValueChanged.AddListener((value) =>
@@ -488,6 +534,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
                 Debug.Log("co event linh hoi");
                 var data = item.itemData;
                 var itemRef = item.itemRef;
+                OnLinhNgoItemSelected?.Invoke(itemRef);
                 textNameLinhHoi.text = data.nameItem;
                 textNameLinhHoi.transform.parent.gameObject.SetActive(true);
                 Debug.Log("co event linh hoi2");
@@ -602,6 +649,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
             {
                 var data = item.itemData;
                 var itemRef = item.itemRef;
+                OnDotPhaItemSelected?.Invoke(itemRef);
 
                 textNameDotPha.transform.parent.gameObject.SetActive(true);
 
@@ -712,6 +760,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         notifyGroup.Show($"Khôi phục +{valueAddHp} khí huyết");
         notifyGroup.Show($"Giảm {valueDecreaseTamCanh} tâm cảnh");
         Observer.Notify(EventList.GamePlay.UPDATE_PLAYER_STATS);
+        OnTuLuyenSuccess?.Invoke();
     }
 
 
@@ -724,6 +773,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
     {
         NotifyGroup.Instance.Show("Lĩnh ngộ thành công");
         Observer.Notify(EventList.GamePlay.TIME_ADJUST);
+        OnLinhNgoSuccess?.Invoke();
     }
 
     public void FailLinhNgo(string message)
@@ -741,6 +791,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         }
 
         Observer.Notify(EventList.GamePlay.TIME_ADJUST);
+        OnDotPhaCongPhapSuccess?.Invoke();
     }
 
     public void FailDotPhaCongPhap(string message)

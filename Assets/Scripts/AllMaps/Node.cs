@@ -14,5 +14,10 @@ namespace AllMaps
             NextMap = nextMap;
             MoveNode = moveNode;
         }
+
+        public void ReplaceNextMap(Map current, Map replacement)
+        {
+            if (NextMap == current) NextMap = replacement;
+        }
     }
 }

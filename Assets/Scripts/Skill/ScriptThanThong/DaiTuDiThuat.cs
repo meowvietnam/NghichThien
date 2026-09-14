@@ -11,7 +11,11 @@ using Network.Extensions;
 public class DaiTuDiThuat : ThanThong, IMemorySerializable<DaiTuDiThuat>
 {
     [SerializeField] private float delayTimeEffect = 1f;
-
+    [SerializeField] private int maxTichLuy = 2;
+    public override bool IsCanUse(CharacterCombat caster, CharacterCombat target)
+    {
+        return base.IsCanUse(caster, target) && caster.specialThanThongImpactAfterPlaySkill.Count(x => x is DaiTuDiThuat)< maxTichLuy;
+    }
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
@@ -37,6 +41,7 @@ public class DaiTuDiThuat : ThanThong, IMemorySerializable<DaiTuDiThuat>
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is DaiTuDiThuat))
         {
             int count = currentTurn.specialThanThongImpactAfterPlaySkill.Count(x => x is DaiTuDiThuat);
+            count = Math.Min(count, maxTichLuy);
             for (int i = 0; i < count; i++)
             {
                 target.AddDamageData(dames);
@@ -49,7 +54,7 @@ public class DaiTuDiThuat : ThanThong, IMemorySerializable<DaiTuDiThuat>
     public override string GetDesc(int level)
     {
         return
-            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Lần tiếp theo sử dụng thần thông tổn thương gấp đôi (Có thể cộng dồn)";
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Lần tiếp theo sử dụng thần thông tổn thương gấp đôi (Có thể cộng dồn tối đa {maxTichLuy} lần)";
     }
 
     public override int ByteSize()

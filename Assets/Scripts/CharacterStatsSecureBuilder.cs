@@ -1,6 +1,7 @@
 using Base;
 using CreateCharacter.CharStats;
 using Network.Models;
+using Network.Models.Clans;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine; // Thêm nếu class Color yêu cầu UnityEngine, hoặc dùng namespace chứa Color của bạn
@@ -224,7 +225,51 @@ public class CharacterStatsSecureBuilder
         _stats.idChar = new SecureInt(id);
         return this;
     }
+    public CharacterStatsSecureBuilder WithHasClan(bool hasClan)
+    {
+        _stats.HasClan = new SecureBool(hasClan);
+        return this;
+    }
+    public CharacterStatsSecureBuilder WithClanId(int id)
+    {
+        _stats.ClanId = new SecureInt(id);
+        return this;
+    }
+    public CharacterStatsSecureBuilder WithClanName(string nameC)
+    {
+        _stats.ClanName = nameC;
+        return this;
+    }
+    public CharacterStatsSecureBuilder WithClanLevel(int level)
+    {
+        _stats.ClanLevel = new SecureInt(level);
+        return this;
+    }
+    public CharacterStatsSecureBuilder WithClanRole(ClanRole role)
+    {
+        _stats.ClanRole = role;
+        return this;
+    }
+    public CharacterStatsSecureBuilder WithClanEffectBuff(ClanInheritanceEffect[] clanInheritanceEffects)
+    {
+        if (clanInheritanceEffects == null || clanInheritanceEffects.Length == 0)
+        {
+            _stats.clanInheritanceEffectSecure = new CharacterStatsSecure.ClanInheritanceEffectSecure[0];
+            return this;
+        }
 
+        _stats.clanInheritanceEffectSecure = clanInheritanceEffects.Select(effect => new CharacterStatsSecure.ClanInheritanceEffectSecure
+        {
+            Id = new SecureInt(effect.Id),
+            ClanId = new SecureInt(effect.ClanId),
+            Trigger = effect.Trigger,
+            SlotIndex = new SecureInt(effect.SlotIndex),
+            EffectType = effect.EffectType,
+            Value = new SecureInt(effect.Value)
+        }).ToArray();
+
+        return this;
+    }
     public CharacterStatsSecure Build()
     {
         return _stats;
@@ -279,9 +324,9 @@ public class CharacterStatsSecureBuilder
             .WithDanDoc(character.DanDoc)
             .WithNgoDaoSaves(character.NgoDaos?.Select(x => new SecureInt(x.Id)).ToList())
             .WithSkinList(character.Skins?.Select(kvp => new CharacterStatsSecure.SkinData
-                { key = kvp.Key, value = kvp.Value }).ToList())
+            { key = kvp.Key, value = kvp.Value }).ToList())
             .WithColorList(character.Colors?.Select(kvp => new CharacterStatsSecure.ColorData
-                { key = kvp.Key, value = kvp.Value }).ToList())
+            { key = kvp.Key, value = kvp.Value }).ToList())
             // Giả định class EquipmentClientBuilder của bạn xử lý nhận Id ushort gốc từ snapshot
             .WithVuKhi(character.VuKhi != null
                 ? new EquipmentClient
@@ -320,7 +365,13 @@ public class CharacterStatsSecureBuilder
                 }
                 : new EquipmentClient())
             .WithDanDuocCombat(character.DanCombatUseds?.Select(x => new CharacterStatsSecure.DataSave
-                { id = new SecureInt(x.Id), value = new SecureInt(x.Count) }).ToList())
+            { id = new SecureInt(x.Id), value = new SecureInt(x.Count) }).ToList())
+            .WithClanId(character.ClanId)
+            .WithClanLevel(character.ClanLevel)
+            .WithClanName(character.ClanName)
+            .WithClanRole(character.ClanRole)
+            .WithHasClan(character.HasClan)
+            .WithClanEffectBuff(character.ClanInheritanceEffects)
             .Build();
     }
 }

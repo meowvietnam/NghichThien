@@ -7,6 +7,7 @@ using Network.Extensions;
 using Sirenix.OdinInspector;
 using System.IO;
 using System.Linq;
+using Network.Extensions.MemoryPack;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif

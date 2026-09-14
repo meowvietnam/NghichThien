@@ -45,6 +45,42 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
 
     [SerializeField] private ButtonWithPanel[] btns;
     [SerializeField] private Button btnClose;
+
+    // ================================================================
+    // Hooks cho hệ thống Tutorial
+    // ================================================================
+
+    public Button BtnClosePanel => btnClose;
+
+    /// <summary>Thành phần xử lý kéo-thả vật phẩm (dùng để biết người chơi có đang kéo hay không).</summary>
+    public ItemSelect ItemSelectControl => itemSelect;
+
+    public Button GetTabButton(ETypePanel type)
+    {
+        var found = btns?.FirstOrDefault(x => x.typePanel == type);
+        return found?.btn;
+    }
+
+    /// <summary>Ô công pháp Chủ Tu (ChuTu1).</summary>
+    public ItemInventory ChuTuSlot => chuTu;
+
+    /// <summary>Ô công pháp Phụ Tu 1.</summary>
+    public ItemInventory PhuTu1Slot => phuTu1;
+
+    /// <summary>Ô thần thông còn trống đầu tiên (null nếu đã đầy).</summary>
+    public ItemInventory FindEmptyThanThongSlot()
+    {
+        return listItemSlotThanThongs?.FirstOrDefault(x => x != null && x.itemData == null);
+    }
+
+    /// <summary>Tìm vật phẩm trong túi của tab đang mở (để hand-tut khoanh sáng chỗ bắt đầu kéo).</summary>
+    public ItemInventory FindBagItem(ItemType type, int id)
+    {
+        return bag == null
+            ? null
+            : bag.InventoryUIFacade.listItemUI.FirstOrDefault(x =>
+                x.itemRef != null && x.itemRef.Type == type && x.itemRef.Id == id);
+    }
     [SerializeField] public ButtonWithPanel currentBtnWithPanel;
     [SerializeField] public ToolTipItems toolTipItems => ToolTipItems.Instance;
 #if UNITY_EDITOR

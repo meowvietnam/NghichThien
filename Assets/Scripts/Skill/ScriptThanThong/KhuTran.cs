@@ -13,8 +13,13 @@ public class KhuTran : ThanThong, IMemorySerializable<KhuTran>
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         HauKeVoLuc(caster);
-        var tranPhapSkills = caster.specialThanThongImpactAfterPlaySkill.OfType<TranPhapTT>().ToList();
-        // Bây giờ bạn có thể thao tác với tranPhapSkills
+        var tranPhapSkills = caster.specialThanThongImpactAfterPlaySkill
+            .OfType<TranPhapTT>()
+            .GroupBy(tp => tp.Id)       // Gom nhóm các phần tử có chung Id lại với nhau
+            .Select(g => g.First())     // Chỉ lấy phần tử đầu tiên trong mỗi nhóm
+            .ToList();
+
+        // Bây giờ mỗi Id duy nhất chỉ xuất hiện 1 lần duy nhất
         tranPhapSkills.ForEach(tp => { tp.OnExecuteTranPhap(caster, target); });
         PlayVisualSkill(caster, target);
     }

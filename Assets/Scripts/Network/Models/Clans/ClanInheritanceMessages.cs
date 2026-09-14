@@ -1,0 +1,73 @@
+using LuyenDan;
+using LuyenKhi;
+using MemoryPack;
+
+namespace Network.Models.Clans
+{
+    [MemoryPackable]
+    public partial class SetClanInheritanceRequest
+    {
+        public ClanInheritanceTrigger Trigger { get; set; }
+        public int SlotIndex { get; set; }
+        public EffectType? EffectType { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class SetClanInheritanceResult : Result
+    {
+        public ClanInheritanceChanged Change { get; set; } = new ClanInheritanceChanged();
+        public int NewMoneyVip { get; set; }
+        public int Cost { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class ClanInheritanceChanged
+    {
+        public int ClanId { get; set; }
+        public ClanInheritanceTrigger Trigger { get; set; }
+        public int SlotIndex { get; set; }
+        public ClanInheritanceEffect Effect { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class ClanExpChanged
+    {
+        public int ClanId { get; set; }
+        public long Exp { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class ClanFundsChanged
+    {
+        public int ClanId { get; set; }
+        public long Funds { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class ClanLevelChanged
+    {
+        public int ClanId { get; set; }
+        public int Level { get; set; }
+        public long Exp { get; set; }
+        public int InheritanceSlotsPerColumn { get; set; }
+        public ClanInheritanceEffect[] Effects { get; set; } = new ClanInheritanceEffect[0];
+    }
+
+    [MemoryPackable]
+    public partial class UpgradeClanWithFundsRequest
+    {
+        public long Funds { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class UpgradeClanWithFundsResult : Result
+    {
+        public long FundsSpent { get; set; }
+        public long AddedExp { get; set; }
+        public long ClanFunds { get; set; }
+        public long Exp { get; set; }
+        public int Level { get; set; }
+        public int InheritanceSlotsPerColumn { get; set; }
+        public ClanInheritanceEffect[] Effects { get; set; } = new ClanInheritanceEffect[0];
+    }
+}

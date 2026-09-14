@@ -17,6 +17,11 @@ public class BasicTTDealDame : ThanThong, BaseSkill.LienKich, IMemorySerializabl
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         target.CaculateDameByThanThong(caster, new List<int> { dame[GetIndexLevelThanThong(caster)] }, eTypeSkill);
+        PlayVisualSkill(caster, target);
+    }
+    public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
+    {
+        base.PlayVisualSkill(caster, target);
         if (elinhKhi == ELinhKhi.Hoa || elinhKhi == ELinhKhi.Thuy)
         {
             ShowSkillEffectWorld(caster, delayTimeEffect);
@@ -26,7 +31,6 @@ public class BasicTTDealDame : ThanThong, BaseSkill.LienKich, IMemorySerializabl
             ShowSkillEffectWorld(target, delayTimeEffect);
         }
     }
-
     public void ExecuteLienKich(CharacterCombat caster, CharacterCombat target)
     {
         target.CaculateDameByThanThong(caster, new List<int> { dameLienKich[GetIndexLevelThanThong(caster)] },
