@@ -10,6 +10,5 @@ namespace Network.Models
         public int CharId { get; set; } // charcast effect
         public int IdSkill { get; set; }
         public bool IsThanThong { get; set; }
-
     }
 }

@@ -136,6 +136,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
             {
                 isThanThong = true;
             }
+            Debug.Log($"SEND_SYNC_USE_EFFECTSKIL: {Id}");
             Observer.Notify(EventList.Combat.SEND_SYNC_USE_EFFECTSKILL, new SyncEffectSkill
             {
                 CharId = caster.characterStatsBase.idChar.Value,
