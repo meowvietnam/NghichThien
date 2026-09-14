@@ -47,8 +47,9 @@ public class NPCManager : ActionMapManager
             // Độ sâu ngẫu nhiên từ 1 đến 3 bước di chuyển xung quanh môn phái
             int maxDepth = UnityEngine.Random.Range(1, 4);
 
-            // Truyền thêm tham số currentDepth để kiểm soát độ sâu chính xác của từng nhánh
-            FindMapInMap(MapWithMonPhai, 1);
+            // Bắt đầu từ depth 0 để depth 1 là các node xung quanh môn phái.
+            // Bản thân môn phái là Stronghold nên không được add vào list spawn NPC.
+            FindMapInMap(MapWithMonPhai, 0);
 
             void FindMapInMap(Map map, int currentDepth)
             {
@@ -89,6 +90,29 @@ public class NPCManager : ActionMapManager
         int bachDeLauIndex = 0;
         int kimHongKiemPhaiIndex = 0;
         var spawnableMaps = mapManager.maps.Where(mapManager.CanSpawnRandomContent).ToArray();
+        if (spawnableMaps.Length == 0)
+        {
+            base.RandomAction();
+            return;
+        }
+
+        int GetRandomNodeId(List<int> nodeIds)
+        {
+            if (nodeIds != null && nodeIds.Count > 0)
+                return nodeIds[UnityEngine.Random.Range(0, nodeIds.Count)];
+
+            return spawnableMaps[UnityEngine.Random.Range(0, spawnableMaps.Length)].Id;
+        }
+
+        int GetNextNodeId(List<int> nodeIds, ref int index)
+        {
+            if (nodeIds == null || nodeIds.Count <= 0)
+                return GetRandomNodeId(nodeIds);
+
+            var nodeId = nodeIds[index];
+            index = (index + 1) % nodeIds.Count;
+            return nodeId;
+        }
 
         foreach (var npc in npcDatas)
         {
@@ -107,30 +131,28 @@ public class NPCManager : ActionMapManager
 
                     case EMonPhai.BachDeLau:
                         // Distribute evenly across kiemPhai
-                        npc.charStats.idNode = kiemPhai[bachDeLauIndex];
-                        bachDeLauIndex = (bachDeLauIndex + 1) % kiemPhai.Count;
+                        npc.charStats.idNode = GetNextNodeId(kiemPhai, ref bachDeLauIndex);
                         break;
 
                     case EMonPhai.KimHongKiemPhai:
                         // Distribute evenly across kimPhai
-                        npc.charStats.idNode = kimPhai[kimHongKiemPhaiIndex];
-                        kimHongKiemPhaiIndex = (kimHongKiemPhaiIndex + 1) % kimPhai.Count;
+                        npc.charStats.idNode = GetNextNodeId(kimPhai, ref kimHongKiemPhaiIndex);
                         break;
 
                     case EMonPhai.TrucSonTong:
-                        npc.charStats.idNode = mocPhai[UnityEngine.Random.Range(0, mocPhai.Count)];
+                        npc.charStats.idNode = GetRandomNodeId(mocPhai);
                         break;
 
                     case EMonPhai.TinhHaKiemPhai:
-                        npc.charStats.idNode = thuyPhai[UnityEngine.Random.Range(0, thuyPhai.Count)];
+                        npc.charStats.idNode = GetRandomNodeId(thuyPhai);
                         break;
 
                     case EMonPhai.LyHoaMon:
-                        npc.charStats.idNode = hoaPhai[UnityEngine.Random.Range(0, hoaPhai.Count)];
+                        npc.charStats.idNode = GetRandomNodeId(hoaPhai);
                         break;
 
                     case EMonPhai.HoaTranGiao:
-                        npc.charStats.idNode = thoPhai[UnityEngine.Random.Range(0, thoPhai.Count)];
+                        npc.charStats.idNode = GetRandomNodeId(thoPhai);
                         break;
 
                     default:
