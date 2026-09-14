@@ -96,7 +96,7 @@ namespace AllMaps
 
         public bool CanSpawnRandomContent(Map map)
         {
-            return map != null;
+            return map != null && map is not Stronghold;
         }
 
         /// <summary>
@@ -385,7 +385,7 @@ namespace AllMaps
 
         private Vector3 GetActionIconOffset(Map map)
         {
-            return map.MapType == MapType.Stronghold ? clanActionIconOffset : Vector3.zero;
+            return map is ClanStrongholdNode ? clanActionIconOffset : Vector3.zero;
         }
 
         private void ReplaceMapReferences(Map source, Map target)
