@@ -230,6 +230,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
     public float m = 5f; // Hệ số nhảy vọt mỗi 3 cấp
     private CharacterData CharData => Client.Instance.CharacterData;
     public double CostPriceTieuHao1Month => CalculateCost(CharData.Progression.Level);
+    private const int MaxTuLuyenMonthsPerAttempt = 10;
 
     public static int GetTotalTuLuyen(float percentTuChat, float percentTamCanh, float tocDoTuLuyenCP, int tongSoThang)
     {
@@ -342,7 +343,7 @@ public class UIBeQuan : BaseBehaviour, INetworkEvent.ITuLuyen, INetworkEvent.ILi
         sliderTuLuyen.minValue = 0;
         sliderTuLuyen.value = 0;
         var value = Math.Max(0, charData.Stats.LinhThach / 100);
-        value = Math.Min(value, 120);
+        value = Math.Min(value, MaxTuLuyenMonthsPerAttempt);
         sliderTuLuyen.maxValue = value;
         sliderTuLuyen.onValueChanged.RemoveAllListeners();
         sliderTuLuyen.onValueChanged.AddListener((value) =>
