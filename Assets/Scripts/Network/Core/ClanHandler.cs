@@ -632,6 +632,7 @@ namespace Network.Core
             CurrentClan.Funds = result.ClanFunds;
             CurrentClan.Level = result.Level;
             CurrentClan.Exp = result.Exp;
+            CurrentClan.MaxMembers = result.MaxMembers;
             var effects = result.Effects ?? Array.Empty<ClanInheritanceEffect>();
             CurrentClan.StartTurnEffects = effects
                 .Where(x => x.Trigger == ClanInheritanceTrigger.StartTurn)
@@ -653,6 +654,7 @@ namespace Network.Core
                         ClanId = CurrentClan.Id,
                         Level = result.Level,
                         Exp = result.Exp,
+                        MaxMembers = result.MaxMembers,
                         InheritanceSlotsPerColumn = result.InheritanceSlotsPerColumn,
                         Effects = effects
                     });
@@ -673,6 +675,7 @@ namespace Network.Core
 
             CurrentClan.Level = changed.Level;
             CurrentClan.Exp = changed.Exp;
+            CurrentClan.MaxMembers = changed.MaxMembers;
             MaxShopItemsAddedPerDay = GetMaxShopSlots(changed.Level);
             var effects = changed.Effects ?? Array.Empty<ClanInheritanceEffect>();
             CurrentClan.StartTurnEffects = effects

@@ -49,6 +49,7 @@ namespace Network.Models.Clans
         public int ClanId { get; set; }
         public int Level { get; set; }
         public long Exp { get; set; }
+        public int MaxMembers { get; set; }
         public int InheritanceSlotsPerColumn { get; set; }
         public ClanInheritanceEffect[] Effects { get; set; } = new ClanInheritanceEffect[0];
     }
@@ -67,6 +68,7 @@ namespace Network.Models.Clans
         public long ClanFunds { get; set; }
         public long Exp { get; set; }
         public int Level { get; set; }
+        public int MaxMembers { get; set; }
         public int InheritanceSlotsPerColumn { get; set; }
         public ClanInheritanceEffect[] Effects { get; set; } = new ClanInheritanceEffect[0];
     }

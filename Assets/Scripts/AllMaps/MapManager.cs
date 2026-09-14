@@ -37,6 +37,7 @@ namespace AllMaps
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private CombatVisual combatVisual;
         [SerializeField] private ClanStrongholdNode clanStrongholdPrefab;
+        [SerializeField] private Vector3 clanActionIconOffset = new Vector3(0f, 0.55f, 0f);
         private Map current;
         private Dictionary<Map, List<Map>> graph;
         private ClanHandler clanHandler;
@@ -69,17 +70,8 @@ namespace AllMaps
 
         private GameObject SetIconEvent(Map map, GameObject prefabIcon)
         {
-            GameObject iconAction = null;
-
-            if (map.MapType == MapType.Stronghold)
-            {
-                iconAction = prefabIcon.Spawn(map.transform.GetChild(1).transform);
-            }
-            else
-            {
-                iconAction = prefabIcon.Spawn(map.transform.GetChild(0).transform);
-            }
-
+            var iconAction = prefabIcon.Spawn(GetActionIconParent(map));
+            iconAction.transform.localPosition = prefabIcon.transform.localPosition + GetActionIconOffset(map);
             return iconAction;
         }
 
@@ -104,7 +96,7 @@ namespace AllMaps
 
         public bool CanSpawnRandomContent(Map map)
         {
-            return map != null && !activeClanStrongholds.Values.Contains(map);
+            return map != null;
         }
 
         /// <summary>
@@ -375,14 +367,25 @@ namespace AllMaps
             SetUpGraph();
         }
 
-        private static void TransferActionIcon(Map source, Map target)
+        private void TransferActionIcon(Map source, Map target)
         {
             var icon = source.iconVisualAction;
             if (icon == null) return;
 
-            var childIndex = target.MapType == MapType.Stronghold ? 1 : 0;
-            if (target.transform.childCount > childIndex)
-                icon.transform.SetParent(target.transform.GetChild(childIndex), false);
+            var baseLocalPosition = icon.transform.localPosition - GetActionIconOffset(source);
+            icon.transform.SetParent(GetActionIconParent(target), false);
+            icon.transform.localPosition = baseLocalPosition + GetActionIconOffset(target);
+        }
+
+        private Transform GetActionIconParent(Map map)
+        {
+            var childIndex = map.MapType == MapType.Stronghold ? 1 : 0;
+            return map.transform.GetChild(childIndex);
+        }
+
+        private Vector3 GetActionIconOffset(Map map)
+        {
+            return map.MapType == MapType.Stronghold ? clanActionIconOffset : Vector3.zero;
         }
 
         private void ReplaceMapReferences(Map source, Map target)
@@ -401,7 +404,6 @@ namespace AllMaps
                          FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
                 ReplaceInList(manager.currentMapRandom, source, target);
-                if (!CanSpawnRandomContent(target)) manager.RemoveSpawnFrom(target);
             }
 
             foreach (var manager in FindObjectsByType<MainQuestManager>(

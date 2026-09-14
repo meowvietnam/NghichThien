@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CreateCharacter;
 using Network;
 using Network.Extensions.MemoryPack;
@@ -11,13 +12,23 @@ namespace Events
         [SerializeField] private ShopEventPanel panelPrefab;
         private ShopEventPanel currentPanel;
 
-        protected async override void OnClick()
+        protected override void OnClick()
+        {
+            _ = ShowEvent();
+        }
+
+        public async Task<bool> ShowEvent(bool notifyOnFailure = true)
         {
             var reader = await Client.Instance.MemRequestWait(MessageTag.GetEventRequest, EventId);
             var result = reader.MemRead<GetEventResult>();
             if (result.Success)
             {
                 var @event = result.Event;
+                if (@event?.GameEvent is not EventShop)
+                {
+                    return false;
+                }
+
                 if (currentPanel == null)
                 {
                     currentPanel = Instantiate(panelPrefab, containerPanel);
@@ -25,11 +36,15 @@ namespace Events
 
                 currentPanel.Init(@event);
                 currentPanel.Show();
+                return true;
             }
-            else
+
+            if (notifyOnFailure)
             {
                 NotifyGroup.Instance.Show(result.Message);
             }
+
+            return false;
         }
     }
 }

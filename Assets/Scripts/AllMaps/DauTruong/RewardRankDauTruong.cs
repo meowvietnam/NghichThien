@@ -13,8 +13,8 @@ namespace AllMaps.DauTruong
         [SerializeField] private Image iconRank;
         [SerializeField] private Image iconRankName;
         [SerializeField] private Text rewardTienNgocText;
-        [SerializeField] private Sprite[] spriteRefRank => ArenaManager.Instance.spriteRefRank;
-        [SerializeField] private Sprite[] spriteRefRankName => ArenaManager.Instance.spriteRefRankName;
+        [SerializeField] private Sprite[] spriteRefRank => ArenaResources.Instance.spriteRefRank;
+        [SerializeField] private Sprite[] spriteRefRankName => ArenaResources.Instance.spriteRefRankName;
         public ETypeArenaRank ETypeArenaRank => Reward.Type;
         public RankReward Reward { get; private set; }
 

@@ -41,6 +41,10 @@ namespace Events
                 var eventButton = Instantiate(eventPrefab, transform);
                 eventButton.Init(panelContainer);
                 uiManager.InsertIcon(eventButton.gameObject);
+                if (eventButton is ShopEventButton shopEventButton)
+                {
+                    _ = shopEventButton.ShowEvent(false);
+                }
             }
         }
     }

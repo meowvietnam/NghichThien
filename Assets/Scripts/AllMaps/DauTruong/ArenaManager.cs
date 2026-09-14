@@ -21,8 +21,8 @@ namespace AllMaps.DauTruong
         [SerializeField] private Image iconRank;
         [SerializeField] private Image iconRankName;
         [SerializeField] private Button btnStart;
-        [SerializeField] public Sprite[] spriteRefRank;
-        [SerializeField] public Sprite[] spriteRefRankName;
+        public Sprite[] spriteRefRank => ArenaResources.Instance.spriteRefRank;
+        public Sprite[] spriteRefRankName => ArenaResources.Instance.spriteRefRankName;
         [SerializeField] private GameObject parent;
         [SerializeField] private Transform group;
         [SerializeField] private RewardRankDauTruong rewardRankDauTruongPrefab;

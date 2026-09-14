@@ -3,6 +3,7 @@ using Network;
 using Network.Models;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using AllMaps.DauTruong;
 using UnityEngine;
 using UnityEngine.UI;
 using ArenaManager = AllMaps.DauTruong.ArenaManager;
@@ -15,8 +16,8 @@ public class PrepareElementArenaCombat : MonoBehaviour
 
     [SerializeField] private Image iconRank;
     [SerializeField] private Image iconRankName;
-    [SerializeField] private Sprite[] spriteRefRank => ArenaManager.Instance.spriteRefRank;
-    [SerializeField] private Sprite[] spriteRefRankName => ArenaManager.Instance.spriteRefRankName;
+    private Sprite[] spriteRefRank => ArenaResources.Instance.spriteRefRank;
+    private Sprite[] spriteRefRankName => ArenaResources.Instance.spriteRefRankName;
     [SerializeField] private Sprite[] spriteRefLevel;
     [SerializeField] private CharacterGraphic graphicChar; // tuổi
 
