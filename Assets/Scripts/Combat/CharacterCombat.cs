@@ -1681,9 +1681,37 @@ public class CharacterCombat : MonoBehaviour
     public void TakeDameForThanThong(CharacterCombat sender, bool isDef)
     {
         NotifyEventCaculateDameForCongPhapFromThanThong(sender);
+        CheckNeTranh(sender);
         TakeDame(sender, isDef);
-    }
 
+    }
+    void CheckNeTranh(CharacterCombat sender)
+    {
+        if (sender != null)
+        {
+            for (int i = 0; i < allDamages.Count; i++)
+            {
+
+                if (allDamages[i] != 0)
+                {
+                    bool isActiveHuyenVu = CombatStatic.IsActiveHuyenVu(null, this);
+                    bool isActiveAnNac = CombatStatic.IsActiveAnNac(null, this);
+                    bool isActiveAnhNac = CombatStatic.IsActiveAnhNac(null, this);
+
+                    if (isActiveHuyenVu || isActiveAnNac)
+                    {
+                        allDamages[i] = -1;
+                    }
+                    if (sender != null)
+                    {
+                        Observer.Notify(EventList.Combat.CHECK_NE_TRANH, sender, this, i);
+                    }
+
+                }
+            }
+        }
+       
+    }    
     [Button]
     private void TakeDame(CharacterCombat sender, bool isDef)
     {
@@ -1730,22 +1758,6 @@ public class CharacterCombat : MonoBehaviour
                 continue;
             }
 
-            if (allDamages[i] != 0)
-            {
-                bool isActiveHuyenVu = CombatStatic.IsActiveHuyenVu(null, this);
-                bool isActiveAnNac = CombatStatic.IsActiveAnNac(null, this);
-                bool isActiveAnhNac = CombatStatic.IsActiveAnhNac(null, this);
-
-                if (isActiveHuyenVu || isActiveAnNac)
-                {
-                    allDamages[i] = -1;
-                }
-
-                if (sender != null)
-                {
-                    Observer.Notify(EventList.Combat.CHECK_NE_TRANH, sender, this, i);
-                }
-            }
 
             var dame = allDamages[i];
             bool isNeTranh = dame == -1;

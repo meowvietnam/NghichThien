@@ -663,14 +663,14 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
         isSync = true;
         oldCurrentTurn.EndTurn();
-        foreach (var item in currentTurn.characterStatsBase.clanInheritanceEffectSecure)
+        foreach (var item in oldCurrentTurn.characterStatsBase.clanInheritanceEffectSecure)
         {
             if (item.Trigger == Network.Models.Clans.ClanInheritanceTrigger.EndTurn)
             {
 
                 if (item.EffectType != null)
                 {
-                    ConvertEffectToBuffAction(item.EffectType.Value, item.Value * currentTurn.characterStatsBase.ClanLevel.Value)?.Invoke(oldCurrentTurn, oldTargetTurn);
+                    ConvertEffectToBuffAction(item.EffectType.Value, item.Value)?.Invoke(oldCurrentTurn, oldTargetTurn);
                 }
             }
         }
@@ -932,7 +932,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                 {
                     if (item.EffectType != null)
                     {
-                        ConvertEffectToBuffAction(item.EffectType.Value, item.Value*currentTurn.characterStatsBase.ClanLevel.Value)?.Invoke(currentTurn, targetTurn);
+                        ConvertEffectToBuffAction(item.EffectType.Value, item.Value)?.Invoke(currentTurn, targetTurn);
                     }
                 }
             }
