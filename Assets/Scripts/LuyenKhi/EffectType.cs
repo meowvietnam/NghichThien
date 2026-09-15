@@ -63,6 +63,7 @@
         TichThuy,
         TriLieuLieu,
         TroiDu,
-        TrungDoc
+        TrungDoc,
+        Hon
     }
 }
