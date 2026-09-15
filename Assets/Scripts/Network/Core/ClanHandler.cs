@@ -20,7 +20,8 @@ namespace Network.Core
         public int MaxShopQuantityPerRequest { get; private set; }
         public int MaxShopItemsAddedPerDay { get; private set; }
         public int ShopItemsAddedToday { get; private set; }
-        public int ShopSlotsUsed => CurrentClan?.ShopItems?.Count ?? ShopItemsAddedToday;
+        public int ShopSlotsUsed => CurrentClan?.ShopItems?.Count ?? 0;
+        public int MaxShopSlots => CurrentClan == null ? 0 : GetMaxShopSlots(CurrentClan.Level);
         public int FreeContributionTimesRemaining { get; private set; }
         private DateTime freeContributionStateDateUtc;
 
@@ -478,8 +479,13 @@ namespace Network.Core
             CurrentClan = clan;
             if (clan != null)
             {
-                MaxShopItemsAddedPerDay = GetMaxShopSlots(clan.Level);
-                ShopItemsAddedToday = clan.ShopItems.Count;
+                MaxShopItemsAddedPerDay = CurrentConfig?.MaxShopItemsAddedPerDay ?? MaxShopItemsAddedPerDay;
+                RefreshShopQuotaStateFromClan();
+            }
+            else
+            {
+                MaxShopItemsAddedPerDay = 0;
+                ShopItemsAddedToday = 0;
             }
             RefreshFreeContributionStateFromClan();
             NotifyMainThread(() => ClanChanged?.Invoke(clan));
@@ -504,6 +510,16 @@ namespace Network.Core
             FreeContributionTimesRemaining = member != null &&
                                              member.LastFreeContributionAt.Date != freeContributionStateDateUtc
                 ? 1
+                : 0;
+        }
+
+        private void RefreshShopQuotaStateFromClan()
+        {
+            var todayUtc = DateTime.UtcNow.Date;
+            var charId = client.CharacterData?.Id ?? 0;
+            var member = CurrentClan?.Members?.FirstOrDefault(x => x.CharId == charId);
+            ShopItemsAddedToday = member != null && member.LastShopItemAddedAt.Date == todayUtc
+                ? member.ShopItemsAddedToday
                 : 0;
         }
 
@@ -676,7 +692,6 @@ namespace Network.Core
             CurrentClan.Level = changed.Level;
             CurrentClan.Exp = changed.Exp;
             CurrentClan.MaxMembers = changed.MaxMembers;
-            MaxShopItemsAddedPerDay = GetMaxShopSlots(changed.Level);
             var effects = changed.Effects ?? Array.Empty<ClanInheritanceEffect>();
             CurrentClan.StartTurnEffects = effects
                 .Where(x => x.Trigger == ClanInheritanceTrigger.StartTurn)
@@ -694,7 +709,6 @@ namespace Network.Core
         {
             if (CurrentClan == null) return;
             CurrentClan.ShopItems = items?.ToList() ?? new List<ClanShopItem>();
-            ShopItemsAddedToday = CurrentClan.ShopItems.Count;
             NotifyShopChanged();
         }
 
@@ -706,7 +720,6 @@ namespace Network.Core
             var index = CurrentClan.ShopItems.FindIndex(x => x.Id == shopItem.Id);
             if (index >= 0) CurrentClan.ShopItems[index] = shopItem;
             else CurrentClan.ShopItems.Add(shopItem);
-            ShopItemsAddedToday = CurrentClan.ShopItems.Count;
             if (notify) NotifyShopChanged();
         }
 
@@ -714,7 +727,6 @@ namespace Network.Core
         {
             if (removed == null || CurrentClan == null || removed.ClanId != CurrentClan.Id) return;
             CurrentClan.ShopItems?.RemoveAll(x => x.Id == removed.ShopItemId);
-            ShopItemsAddedToday = CurrentClan.ShopItems?.Count ?? 0;
             if (notify) NotifyShopChanged();
         }
 
@@ -726,7 +738,6 @@ namespace Network.Core
             var index = CurrentClan.ShopItems.FindIndex(x => x.Id == shopItem.Id);
             if (index >= 0) CurrentClan.ShopItems[index] = shopItem;
             else CurrentClan.ShopItems.Add(shopItem);
-            ShopItemsAddedToday = CurrentClan.ShopItems.Count;
             NotifyShopChanged();
         }
 
