@@ -96,7 +96,7 @@ namespace AllMaps
 
         public bool CanSpawnRandomContent(Map map)
         {
-            return map != null && map is not Stronghold;
+            return map != null && map.IsEmptyAction && map is not Stronghold;
         }
 
         /// <summary>
