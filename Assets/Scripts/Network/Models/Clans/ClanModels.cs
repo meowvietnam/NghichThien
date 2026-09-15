@@ -26,6 +26,7 @@ namespace Network.Models.Clans
         RemoveShopItem = 1 << 3,
         AssignRole = 1 << 4,
         ManageInheritance = 1 << 5,
+        ManageHon = 1 << 6,
     }
 
     public enum CreateClanBy
@@ -55,6 +56,8 @@ namespace Network.Models.Clans
         public int NodeId { get; set; }
         public string ImageUrl { get; set; }
         public long Funds { get; set; }
+        public long Hon { get; set; }
+        public long MaxHon { get; set; }
         public string Description { get; set; } = string.Empty;
         public string Announcement { get; set; } = string.Empty;
         public int MemberCount { get; set; }

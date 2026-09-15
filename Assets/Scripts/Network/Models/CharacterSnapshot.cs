@@ -56,6 +56,7 @@ namespace Network.Models
         public string ClanName { get; set; } = string.Empty;
         public string ClanImageUrl { get; set; }
         public int ClanLevel { get; set; }
+        public long Hon { get; set; }
         public ClanRole ClanRole { get; set; }
         public ClanInheritanceEffect[] ClanInheritanceEffects { get; set; } = new ClanInheritanceEffect[0];
 
@@ -115,6 +116,7 @@ namespace Network.Models
                 this.ClanName = clan.Name;
                 this.ClanImageUrl = clan.ImageUrl;
                 this.ClanLevel = clan.Level;
+                this.Hon = clan.Hon;
                 this.ClanRole = member.Role;
                 this.ClanInheritanceEffects = (clan.StartTurnEffects ?? new List<ClanInheritanceEffect>())
                     .Concat(clan.EndTurnEffects ?? new List<ClanInheritanceEffect>())

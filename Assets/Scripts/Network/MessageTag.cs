@@ -316,5 +316,8 @@ namespace Network
         ClanFundsChanged = 3702,
         GetClanMapNodesRequest = 3703,
         ClanMapNodeChanged = 3704,
+        LuyenHonRequest = 3705,
+        UpgradeClanMaxHonRequest = 3706,
+        ClanHonChanged = 3707,
     }
 }

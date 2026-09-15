@@ -36,6 +36,7 @@ namespace Network.Core
         public event Action<ClanJoinRequestRemoved> JoinRequestRemoved;
         public event Action<ClanInheritanceChanged> InheritanceChanged;
         public event Action<ClanFundsChanged> FundsChanged;
+        public event Action<ClanHonChanged> HonChanged;
         public event Action<ClanExpChanged> ExpChanged;
         public event Action<ClanLevelChanged> LevelChanged;
         public event Action<ClanMapNode> MapNodeChanged;
@@ -353,6 +354,45 @@ namespace Network.Core
             return result;
         }
 
+        public async Task<LuyenHonResult> LuyenHon(long amount)
+        {
+            var result = await Request<LuyenHonRequest, LuyenHonResult>(
+                MessageTag.LuyenHonRequest,
+                new LuyenHonRequest { Amount = amount });
+
+            if (result.Success && CurrentClan != null)
+            {
+                ApplyHonChanged(new ClanHonChanged
+                {
+                    ClanId = CurrentClan.Id,
+                    Hon = result.Hon,
+                    MaxHon = result.MaxHon
+                }, false);
+            }
+
+            return result;
+        }
+
+        public async Task<UpgradeClanMaxHonResult> UpgradeMaxHon(long funds)
+        {
+            var result = await Request<UpgradeClanMaxHonRequest, UpgradeClanMaxHonResult>(
+                MessageTag.UpgradeClanMaxHonRequest,
+                new UpgradeClanMaxHonRequest { Funds = funds });
+
+            if (result.Success && CurrentClan != null)
+            {
+                CurrentClan.Funds = result.ClanFunds;
+                ApplyHonChanged(new ClanHonChanged
+                {
+                    ClanId = CurrentClan.Id,
+                    Hon = result.Hon,
+                    MaxHon = result.MaxHon
+                }, false);
+            }
+
+            return result;
+        }
+
         public bool IsShopItemOwner(ClanShopItem shopItem)
         {
             return shopItem != null && shopItem.OwnerCharId == client.CharacterData.Id;
@@ -443,6 +483,9 @@ namespace Network.Core
                     break;
                 case MessageTag.ClanFundsChanged:
                     ApplyFundsChanged(message.Reader.MemRead<ClanFundsChanged>(), true);
+                    break;
+                case MessageTag.ClanHonChanged:
+                    ApplyHonChanged(message.Reader.MemRead<ClanHonChanged>(), true);
                     break;
                 case MessageTag.ClanExpChanged:
                     ApplyExpChanged(message.Reader.MemRead<ClanExpChanged>(), true);
@@ -639,6 +682,14 @@ namespace Network.Core
             if (notify) NotifyMainThread(() => FundsChanged?.Invoke(changed));
         }
 
+        private void ApplyHonChanged(ClanHonChanged changed, bool notify)
+        {
+            if (changed == null || CurrentClan == null || changed.ClanId != CurrentClan.Id) return;
+            CurrentClan.Hon = changed.Hon;
+            CurrentClan.MaxHon = changed.MaxHon;
+            if (notify) NotifyMainThread(() => HonChanged?.Invoke(changed));
+        }
+
         private void ApplyUpgradeWithFunds(UpgradeClanWithFundsResult result, bool notify)
         {
             if (result == null || CurrentClan == null) return;
@@ -799,6 +850,7 @@ namespace Network.Core
             JoinRequestRemoved = null;
             InheritanceChanged = null;
             FundsChanged = null;
+            HonChanged = null;
             ExpChanged = null;
             LevelChanged = null;
             MapNodeChanged = null;
@@ -823,6 +875,7 @@ namespace Network.Core
             MessageTag.ClanJoinRequestRemoved,
             MessageTag.ClanInheritanceChanged,
             MessageTag.ClanFundsChanged,
+            MessageTag.ClanHonChanged,
             MessageTag.ClanExpChanged,
             MessageTag.ClanLevelChanged,
             MessageTag.ClanMapNodeChanged
