@@ -114,9 +114,7 @@ namespace Network.Core
         public int GetInheritanceDisplayValue(ClanInheritanceEffect effect)
         {
             if (effect == null) return 0;
-            var multiplier = Math.Max(1, CurrentClan?.Level ?? 1);
-            var value = (long)effect.Value * multiplier;
-            return (int)Math.Max(int.MinValue, Math.Min(int.MaxValue, value));
+            return effect.Value;
         }
 
         public long GetClanUpgradeExpFromFunds(long funds)
@@ -334,7 +332,7 @@ namespace Network.Core
 
             if (result.Success)
             {
-                client.CharacterData.MoneyVip = result.NewMoneyVip;
+                if (CurrentClan != null) CurrentClan.Funds = result.ClanFunds;
                 ApplyInheritanceChanged(result.Change, false);
             }
 

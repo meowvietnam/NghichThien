@@ -670,7 +670,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
                 if (item.EffectType != null)
                 {
-                    ConvertEffectToBuffAction(item.EffectType.Value, item.Value * currentTurn.characterStatsBase.ClanLevel.Value)?.Invoke(oldCurrentTurn, oldTargetTurn);
+                    ConvertEffectToBuffAction(item.EffectType.Value, item.Value)?.Invoke(oldCurrentTurn, oldTargetTurn);
                 }
             }
         }
@@ -932,7 +932,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                 {
                     if (item.EffectType != null)
                     {
-                        ConvertEffectToBuffAction(item.EffectType.Value, item.Value*currentTurn.characterStatsBase.ClanLevel.Value)?.Invoke(currentTurn, targetTurn);
+                        ConvertEffectToBuffAction(item.EffectType.Value, item.Value)?.Invoke(currentTurn, targetTurn);
                     }
                 }
             }

@@ -17,6 +17,7 @@ namespace Network.Models.Clans
     {
         public ClanInheritanceChanged Change { get; set; } = new ClanInheritanceChanged();
         public int NewMoneyVip { get; set; }
+        public long ClanFunds { get; set; }
         public int Cost { get; set; }
     }
 
