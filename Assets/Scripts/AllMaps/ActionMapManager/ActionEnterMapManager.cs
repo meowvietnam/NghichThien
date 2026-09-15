@@ -109,7 +109,7 @@ public abstract class ActionEnterMapManager : ActionMapManager
         SaveRandom();
     }
 
-    private void SetActionOnMap(int id)
+    protected void SetActionOnMap(int id)
     {
         var mapManager = Pool.Get<MapManager>();
         var map = mapManager.FindMap(id);

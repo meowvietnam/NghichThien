@@ -96,7 +96,7 @@ namespace AllMaps
 
         public bool CanSpawnRandomContent(Map map)
         {
-            return map != null;
+            return map != null && map.IsEmptyAction;
         }
 
         /// <summary>
