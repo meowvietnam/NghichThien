@@ -663,7 +663,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
         isSync = true;
         oldCurrentTurn.EndTurn();
-        foreach (var item in currentTurn.characterStatsBase.clanInheritanceEffectSecure)
+        foreach (var item in oldCurrentTurn.characterStatsBase.clanInheritanceEffectSecure)
         {
             if (item.Trigger == Network.Models.Clans.ClanInheritanceTrigger.EndTurn)
             {
