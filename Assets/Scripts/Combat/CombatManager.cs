@@ -1255,9 +1255,6 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             case EffectType.Bui:
 
                 return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, Value); };
-            case EffectType.Hon:
-
-                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, Value); };
             case EffectType.Cat:
                 return (caster, target) => { target.AddBuffAndDebuffCount(EBuffAndDeBuff.Cat, Value); };
             case EffectType.ChanHoa:

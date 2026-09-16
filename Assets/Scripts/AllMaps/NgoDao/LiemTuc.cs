@@ -40,7 +40,7 @@ public class LiemTuc : NgoDaoCombat, IMemorySerializable<LiemTuc>
     public void ExecuteNgoDao2(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.RemoveNgoDaoCombatDynamic(this);
-        target.AddDamageData(new List<long> { target.GetDameBuffForTarget() * buff / 100 });
+        target.AddDamageData(new List<int> { target.GetDameBuffForTarget() * buff / 100 });
     }
 
     public override string GetDes()

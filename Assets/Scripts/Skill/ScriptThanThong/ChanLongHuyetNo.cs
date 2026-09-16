@@ -38,7 +38,7 @@ public class ChanLongHuyetNo : ThanThong, IMemorySerializable<ChanLongHuyetNo>
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is ChanLongHuyetNo))
         {
             currentTurn.RemoveOneThanThongImpactAfterPlaySkill(this);
-            targetTurn.AddDamageData(new List<long> { targetTurn.GetDameBuffForTarget() });
+            targetTurn.AddDamageData(new List<int> { targetTurn.GetDameBuffForTarget() });
         }
     }
 

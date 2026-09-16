@@ -25,7 +25,7 @@ public class BaThe : NgoDaoCombat, IMemorySerializable<BaThe>
 
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.AddDamageData(new List<long> { -target.GetDameBuffForTarget() * buff / 100 });
+        target.AddDamageData(new List<int> { -target.GetDameBuffForTarget() * buff / 100 });
     }
 
     public override string GetDes()
