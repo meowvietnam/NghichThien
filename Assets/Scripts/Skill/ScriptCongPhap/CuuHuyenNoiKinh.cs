@@ -17,7 +17,7 @@ public class CuuHuyenNoiKinh : CongPhap, IMemorySerializable<CuuHuyenNoiKinh>
         int count = target.listAmKinhTT.Where(x => x.ThanThong is AmKinhTT).Select(x => x.ThanThong.name).Distinct()
             .Count();
         float multiplier = count * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100f;
-        target.AddDamageData(new List<int> { (int)(target.GetDameBuffForTarget() * multiplier) });
+        target.AddDamageData(new List<long> { (long)(target.GetDameBuffForTarget() * multiplier) });
     }
 
     public override string GetDesc(int level)

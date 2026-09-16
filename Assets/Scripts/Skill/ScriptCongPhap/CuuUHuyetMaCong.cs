@@ -37,7 +37,7 @@ public class CuuUHuyetMaCong : CongPhap, IMemorySerializable<CuuUHuyetMaCong>
 
         // target là ng nhận dame mục đích giảm dame cp cho target
         float multiplier = buffValues[indexCP] / 100f;
-        target.AddDamageData(new List<int> { -(int)(target.GetDameBuffForTarget() * multiplier) });
+        target.AddDamageData(new List<long> { -(long)(target.GetDameBuffForTarget() * multiplier) });
         target.characterStatsBase.thoNguyen -= tieuHao[indexCP];
     }
 

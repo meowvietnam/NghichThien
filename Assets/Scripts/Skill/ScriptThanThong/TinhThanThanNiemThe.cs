@@ -52,8 +52,8 @@ public class TinhThanThanNiemThe : ThanThong, IMemorySerializable<TinhThanThanNi
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is TinhThanThanNiemThe) &&
             CheckIsEqualETypeSkill(currentTurn))
         {
-            targetTurn.AddDamageData(new System.Collections.Generic.List<int>
-                { (int)(targetTurn.GetDameBuffForTarget() * dameBuffPercent / 100f) });
+            targetTurn.AddDamageData(new System.Collections.Generic.List<long>
+                { (long)(targetTurn.GetDameBuffForTarget() * dameBuffPercent / 100f) });
         }
     }
 
@@ -64,8 +64,8 @@ public class TinhThanThanNiemThe : ThanThong, IMemorySerializable<TinhThanThanNi
             return;
         if (targetTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is TinhThanThanNiemThe))
         {
-            targetTurn.AddDamageData(new System.Collections.Generic.List<int>
-                { (int)(targetTurn.GetDameBuffForTarget() * takeDameBuffPercent / 100f) });
+            targetTurn.AddDamageData(new System.Collections.Generic.List<long>
+                { (long)(targetTurn.GetDameBuffForTarget() * takeDameBuffPercent / 100f) });
         }
     }
 

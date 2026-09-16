@@ -28,7 +28,7 @@ public class NguThe : NgoDaoCombat, IMemorySerializable<NguThe>
         if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt hoTrao) &&
             target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.GiamTonThuong, out SecureInt giamTonThuong))
         {
-            target.AddDamageData(new List<int> { -(int)(buff * target.GetDameBuffForTarget() / 100) });
+            target.AddDamageData(new List<long> { -(buff * target.GetDameBuffForTarget() / 100) });
         }
     }
 
