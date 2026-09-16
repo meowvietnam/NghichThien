@@ -45,6 +45,8 @@ namespace Tutorials
             if (tutorial == null) return;
             if (PlayerPrefs.GetInt(tutorialTrangBiKey, 0) != 0) return;
 
+            // Lưu trạng thái ngay khi tutorial được kích hoạt để không bị kích hoạt lại lần 2.
+            PlayerPrefs.SetInt(tutorialTrangBiKey, 1);
             StartCoroutine(IEFlow());
         }
 

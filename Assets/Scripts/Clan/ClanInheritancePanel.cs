@@ -127,7 +127,7 @@ namespace Clan
                     : "Chỉ Tộc Chủ có thể thay đổi";
             }
             if (costHintText != null)
-                costHintText.text = $"Điền ô trống miễn phí · Đổi hoặc xóa: {config.ChangeInheritanceMoneyVipCost:n0} Tiên Ngọc";
+                costHintText.text = $"Điền ô trống miễn phí · Đổi hoặc xóa: {config.ChangeInheritanceMoneyVipCost:n0} quỹ tông môn";
             RenderUpgrade(canUpgrade, clan.Funds);
         }
 
@@ -209,7 +209,7 @@ namespace Clan
             {
                 selectionHintText.text = slot.Effect == null
                     ? "Lần chọn đầu tiên cho ô này được miễn phí"
-                    : $"Đổi lựa chọn sẽ tốn {Handler.CurrentConfig.ChangeInheritanceMoneyVipCost:n0} Tiên Ngọc";
+                    : $"Đổi lựa chọn sẽ tốn {Handler.CurrentConfig.ChangeInheritanceMoneyVipCost:n0} quỹ tông môn";
             }
             if (clearButton != null) clearButton.gameObject.SetActive(slot.Effect != null);
             RenderOptions(slot.Effect?.EffectType);
@@ -258,7 +258,7 @@ namespace Clan
             var name = effectType == null ? "xóa truyền thừa" : $"chọn {GetEffectName(effectType)}";
             var cost = selectedSlot.Effect == null ? 0 : Handler.CurrentConfig.ChangeInheritanceMoneyVipCost;
             var content = cost > 0
-                ? $"Xác nhận {name}?\nChi phí: {cost:n0} Tiên Ngọc cá nhân."
+                ? $"Xác nhận {name}?\nChi phí: {cost:n0} quỹ tông môn."
                 : $"Xác nhận {name}?\nLần chọn đầu tiên của ô này được miễn phí.";
             var popup = Pool.Get<PopupConfirmAction>();
             if (popup == null)

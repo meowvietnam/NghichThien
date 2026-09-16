@@ -18,9 +18,8 @@ namespace Network.Core
         public ClanModel CurrentClan { get; private set; }
         public ClanConfig CurrentConfig { get; private set; }
         public int MaxShopQuantityPerRequest { get; private set; }
-        public int MaxShopItemsAddedPerDay { get; private set; }
         public int ShopItemsAddedToday { get; private set; }
-        public int ShopSlotsUsed => CurrentClan?.ShopItems?.Count ?? ShopItemsAddedToday;
+        public int MaxShopSlots => CurrentClan == null ? 0 : GetMaxShopSlots(CurrentClan.Level);
         public int FreeContributionTimesRemaining { get; private set; }
         private DateTime freeContributionStateDateUtc;
 
@@ -35,6 +34,7 @@ namespace Network.Core
         public event Action<ClanJoinRequestRemoved> JoinRequestRemoved;
         public event Action<ClanInheritanceChanged> InheritanceChanged;
         public event Action<ClanFundsChanged> FundsChanged;
+        public event Action<ClanHonChanged> HonChanged;
         public event Action<ClanExpChanged> ExpChanged;
         public event Action<ClanLevelChanged> LevelChanged;
         public event Action<ClanMapNode> MapNodeChanged;
@@ -113,9 +113,7 @@ namespace Network.Core
         public int GetInheritanceDisplayValue(ClanInheritanceEffect effect)
         {
             if (effect == null) return 0;
-            var multiplier = Math.Max(1, CurrentClan?.Level ?? 1);
-            var value = (long)effect.Value * multiplier;
-            return (int)Math.Max(int.MinValue, Math.Min(int.MaxValue, value));
+            return effect.Value;
         }
 
         public long GetClanUpgradeExpFromFunds(long funds)
@@ -288,8 +286,8 @@ namespace Network.Core
             if (result.Success)
             {
                 MaxShopQuantityPerRequest = result.MaxQuantityPerRequest;
-                MaxShopItemsAddedPerDay = result.MaxItemsAddedPerDay;
                 ShopItemsAddedToday = result.ShopItemsAddedToday;
+                Debug.Log($"GetShop: {ShopItemsAddedToday}");
                 ReplaceShop(result.Items);
             }
 
@@ -333,7 +331,7 @@ namespace Network.Core
 
             if (result.Success)
             {
-                client.CharacterData.MoneyVip = result.NewMoneyVip;
+                if (CurrentClan != null) CurrentClan.Funds = result.ClanFunds;
                 ApplyInheritanceChanged(result.Change, false);
             }
 
@@ -354,6 +352,51 @@ namespace Network.Core
             return result;
         }
 
+        public async Task<LuyenHonResult> LuyenHon(long amount)
+        {
+            var result = await Request<LuyenHonRequest, LuyenHonResult>(
+                MessageTag.LuyenHonRequest,
+                new LuyenHonRequest { Amount = amount });
+
+            if (result.Success && CurrentClan != null)
+            {
+                ApplyHonChanged(new ClanHonChanged
+                {
+                    ClanId = CurrentClan.Id,
+                    Hon = result.Hon,
+                    MaxHon = result.MaxHon,
+                    HonLimitLevel = result.HonLimitLevel,
+                    SoulEssence = result.SoulEssence,
+                    MaxSoulEssence = result.MaxSoulEssence
+                }, false);
+            }
+
+            return result;
+        }
+
+        public async Task<UpgradeClanMaxHonResult> UpgradeMaxHon(int limitLevel)
+        {
+            var result = await Request<UpgradeClanMaxHonRequest, UpgradeClanMaxHonResult>(
+                MessageTag.UpgradeClanMaxHonRequest,
+                new UpgradeClanMaxHonRequest { LimitLevel = limitLevel });
+
+            if (result.Success && CurrentClan != null)
+            {
+                CurrentClan.Funds = result.ClanFunds;
+                ApplyHonChanged(new ClanHonChanged
+                {
+                    ClanId = CurrentClan.Id,
+                    Hon = result.Hon,
+                    MaxHon = result.MaxHon,
+                    HonLimitLevel = result.HonLimitLevel,
+                    SoulEssence = result.SoulEssence,
+                    MaxSoulEssence = result.MaxSoulEssence
+                }, false);
+            }
+
+            return result;
+        }
+
         public bool IsShopItemOwner(ClanShopItem shopItem)
         {
             return shopItem != null && shopItem.OwnerCharId == client.CharacterData.Id;
@@ -369,7 +412,6 @@ namespace Network.Core
 
             if (result.Success)
             {
-                MaxShopItemsAddedPerDay = result.MaxItemsAddedPerDay;
                 ShopItemsAddedToday = result.ShopItemsAddedToday;
                 ApplyInventoryItem(result.InventoryItem, item);
                 ApplyInventoryFurnace(result.InventoryFurnace);
@@ -445,6 +487,9 @@ namespace Network.Core
                 case MessageTag.ClanFundsChanged:
                     ApplyFundsChanged(message.Reader.MemRead<ClanFundsChanged>(), true);
                     break;
+                case MessageTag.ClanHonChanged:
+                    ApplyHonChanged(message.Reader.MemRead<ClanHonChanged>(), true);
+                    break;
                 case MessageTag.ClanExpChanged:
                     ApplyExpChanged(message.Reader.MemRead<ClanExpChanged>(), true);
                     break;
@@ -478,8 +523,11 @@ namespace Network.Core
             CurrentClan = clan;
             if (clan != null)
             {
-                MaxShopItemsAddedPerDay = GetMaxShopSlots(clan.Level);
-                ShopItemsAddedToday = clan.ShopItems.Count;
+                RefreshShopQuotaStateFromClan();
+            }
+            else
+            {
+                ShopItemsAddedToday = 0;
             }
             RefreshFreeContributionStateFromClan();
             NotifyMainThread(() => ClanChanged?.Invoke(clan));
@@ -504,6 +552,16 @@ namespace Network.Core
             FreeContributionTimesRemaining = member != null &&
                                              member.LastFreeContributionAt.Date != freeContributionStateDateUtc
                 ? 1
+                : 0;
+        }
+
+        private void RefreshShopQuotaStateFromClan()
+        {
+            var todayUtc = DateTime.UtcNow.Date;
+            var charId = client.CharacterData?.Id ?? 0;
+            var member = CurrentClan?.Members?.FirstOrDefault(x => x.CharId == charId);
+            ShopItemsAddedToday = member != null && member.LastShopItemAddedAt.Date == todayUtc
+                ? member.ShopItemsAddedToday
                 : 0;
         }
 
@@ -625,6 +683,16 @@ namespace Network.Core
             if (notify) NotifyMainThread(() => FundsChanged?.Invoke(changed));
         }
 
+        private void ApplyHonChanged(ClanHonChanged changed, bool notify)
+        {
+            if (changed == null || CurrentClan == null || changed.ClanId != CurrentClan.Id) return;
+            CurrentClan.Hon = changed.Hon;
+            CurrentClan.MaxHon = changed.MaxHon;
+            CurrentClan.HonLimitLevel = changed.HonLimitLevel;
+            CurrentClan.SoulEssence = changed.SoulEssence;
+            if (notify) NotifyMainThread(() => HonChanged?.Invoke(changed));
+        }
+
         private void ApplyUpgradeWithFunds(UpgradeClanWithFundsResult result, bool notify)
         {
             if (result == null || CurrentClan == null) return;
@@ -676,7 +744,6 @@ namespace Network.Core
             CurrentClan.Level = changed.Level;
             CurrentClan.Exp = changed.Exp;
             CurrentClan.MaxMembers = changed.MaxMembers;
-            MaxShopItemsAddedPerDay = GetMaxShopSlots(changed.Level);
             var effects = changed.Effects ?? Array.Empty<ClanInheritanceEffect>();
             CurrentClan.StartTurnEffects = effects
                 .Where(x => x.Trigger == ClanInheritanceTrigger.StartTurn)
@@ -694,7 +761,6 @@ namespace Network.Core
         {
             if (CurrentClan == null) return;
             CurrentClan.ShopItems = items?.ToList() ?? new List<ClanShopItem>();
-            ShopItemsAddedToday = CurrentClan.ShopItems.Count;
             NotifyShopChanged();
         }
 
@@ -706,7 +772,6 @@ namespace Network.Core
             var index = CurrentClan.ShopItems.FindIndex(x => x.Id == shopItem.Id);
             if (index >= 0) CurrentClan.ShopItems[index] = shopItem;
             else CurrentClan.ShopItems.Add(shopItem);
-            ShopItemsAddedToday = CurrentClan.ShopItems.Count;
             if (notify) NotifyShopChanged();
         }
 
@@ -714,7 +779,6 @@ namespace Network.Core
         {
             if (removed == null || CurrentClan == null || removed.ClanId != CurrentClan.Id) return;
             CurrentClan.ShopItems?.RemoveAll(x => x.Id == removed.ShopItemId);
-            ShopItemsAddedToday = CurrentClan.ShopItems?.Count ?? 0;
             if (notify) NotifyShopChanged();
         }
 
@@ -726,7 +790,6 @@ namespace Network.Core
             var index = CurrentClan.ShopItems.FindIndex(x => x.Id == shopItem.Id);
             if (index >= 0) CurrentClan.ShopItems[index] = shopItem;
             else CurrentClan.ShopItems.Add(shopItem);
-            ShopItemsAddedToday = CurrentClan.ShopItems.Count;
             NotifyShopChanged();
         }
 
@@ -790,6 +853,7 @@ namespace Network.Core
             JoinRequestRemoved = null;
             InheritanceChanged = null;
             FundsChanged = null;
+            HonChanged = null;
             ExpChanged = null;
             LevelChanged = null;
             MapNodeChanged = null;
@@ -814,6 +878,7 @@ namespace Network.Core
             MessageTag.ClanJoinRequestRemoved,
             MessageTag.ClanInheritanceChanged,
             MessageTag.ClanFundsChanged,
+            MessageTag.ClanHonChanged,
             MessageTag.ClanExpChanged,
             MessageTag.ClanLevelChanged,
             MessageTag.ClanMapNodeChanged

@@ -17,6 +17,7 @@ namespace Network.Models.Clans
     {
         public ClanInheritanceChanged Change { get; set; } = new ClanInheritanceChanged();
         public int NewMoneyVip { get; set; }
+        public long ClanFunds { get; set; }
         public int Cost { get; set; }
     }
 
@@ -71,5 +72,54 @@ namespace Network.Models.Clans
         public int MaxMembers { get; set; }
         public int InheritanceSlotsPerColumn { get; set; }
         public ClanInheritanceEffect[] Effects { get; set; } = new ClanInheritanceEffect[0];
+    }
+
+    [MemoryPackable]
+    public partial class ClanHonChanged
+    {
+        public int ClanId { get; set; }
+        public long Hon { get; set; }
+        public long MaxHon { get; set; }
+        public int HonLimitLevel { get; set; }
+        public long SoulEssence { get; set; }
+        public long MaxSoulEssence { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class LuyenHonRequest
+    {
+        public long Amount { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class LuyenHonResult : Result
+    {
+        public long AddedHon { get; set; }
+        public long SoulEssenceSpent { get; set; }
+        public long Hon { get; set; }
+        public long MaxHon { get; set; }
+        public int HonLimitLevel { get; set; }
+        public long SoulEssence { get; set; }
+        public long MaxSoulEssence { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class UpgradeClanMaxHonRequest
+    {
+        public int LimitLevel { get; set; }
+        public long Funds { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class UpgradeClanMaxHonResult : Result
+    {
+        public long FundsSpent { get; set; }
+        public long AddedMaxHon { get; set; }
+        public long ClanFunds { get; set; }
+        public long Hon { get; set; }
+        public long MaxHon { get; set; }
+        public int HonLimitLevel { get; set; }
+        public long SoulEssence { get; set; }
+        public long MaxSoulEssence { get; set; }
     }
 }

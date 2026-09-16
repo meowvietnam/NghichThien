@@ -27,6 +27,7 @@ namespace Clan
         [Header("Cấp độ & Quỹ tông môn")]
         [SerializeField] private Text levelText;
         [SerializeField] private Text fundsText;
+        [SerializeField] private Text honText;
 
         [Header("Đóng góp tông môn")]
         [SerializeField] private Button contributeOnceButton;
@@ -45,6 +46,12 @@ namespace Clan
         [Header("Truyền thừa tông môn")]
         [SerializeField] private Button openInheritanceButton;
         [SerializeField] private ClanInheritancePanel inheritancePanel;
+
+        [Header("Hồn tông môn")]
+        [Tooltip("Nút mở popup Luyện Hồn. Toàn bộ thao tác luyện hồn / nâng giới hạn hồn đã tách " +
+                 "sang ClanLuyenHonPopup; ở đây chỉ còn dòng hiển thị Hồn và nút mở popup.")]
+        [SerializeField] private Button openLuyenHonButton;
+        [SerializeField] private ClanLuyenHonPopup luyenHonPopup;
 
         [Header("Thao tác thành viên")]
         [SerializeField] private ClanMemberActionPopup memberActionPopup;
@@ -78,6 +85,7 @@ namespace Clan
         protected override void Start()
         {
             base.Start();
+            EnsureHonControls();
             SetEventButton(contributeOnceButton, () => ConfirmContribute(1));
             SetEventButton(contributeTenButton, () => ConfirmContribute(10));
             contributeOnceText ??= FindContributionButtonText(contributeOnceButton, freeContributionBadge);
@@ -85,6 +93,7 @@ namespace Clan
             SetEventButton(leaveClanButton, ConfirmLeaveClan);
             SetEventButton(openShopButton, OpenShop);
             SetEventButton(openInheritanceButton, OpenInheritance);
+            SetEventButton(openLuyenHonButton, OpenLuyenHon);
             SetEventButton(requestJoinButton, () => _ = RequestJoin());
             SetEventButton(joinRequestsButton, OpenJoinRequests);
             SetEventButton(joinRequestsCloseButton, () => joinRequestsRoot?.SetActive(false));
@@ -105,6 +114,7 @@ namespace Clan
             handler.JoinRequestAdded += OnJoinRequestAdded;
             handler.JoinRequestRemoved += OnJoinRequestRemoved;
             handler.FundsChanged += OnClanFundsChanged;
+            handler.HonChanged += OnClanHonChanged;
             handler.ExpChanged += OnClanExpChanged;
             handler.LevelChanged += OnClanLevelChanged;
         }
@@ -113,6 +123,7 @@ namespace Clan
         {
             handler.LevelChanged -= OnClanLevelChanged;
             handler.ExpChanged -= OnClanExpChanged;
+            handler.HonChanged -= OnClanHonChanged;
             handler.FundsChanged -= OnClanFundsChanged;
             handler.JoinRequestRemoved -= OnJoinRequestRemoved;
             handler.JoinRequestAdded -= OnJoinRequestAdded;
@@ -131,6 +142,8 @@ namespace Clan
             base.RefreshClanSummary();
             if (levelText != null) levelText.text = clan != null ? $"Cấp {clan.Level}" : "—";
             if (fundsText != null) fundsText.text = clan != null ? $"Quỹ: {clan.Funds:n0}" : "—";
+            if (honText != null) honText.text = clan != null ? $"Hồn: {clan.Hon:n0}/{clan.MaxHon:n0}" : "—";
+            UpdateLuyenHonButton();
         }
 
         public bool HasPermission(ClanPermission permission)
@@ -222,6 +235,7 @@ namespace Clan
             else if (joinRequestsRoot != null) joinRequestsRoot.SetActive(false);
 
             RefreshFreeContribution();
+            UpdateLuyenHonButton();
             PermissionsChanged?.Invoke(CurrentPermissions);
         }
 
@@ -389,6 +403,108 @@ namespace Clan
             if (contributeTenButton != null) contributeTenButton.interactable = interactable;
         }
 
+        private void OpenLuyenHon()
+        {
+            if (luyenHonPopup != null) luyenHonPopup.Open(this);
+            else NotifyGroup.Instance?.Show("Chưa cấu hình Luyện Hồn Tông Môn");
+        }
+
+        private void UpdateLuyenHonButton()
+        {
+            // var canManage = !isViewingExternalClan && HasPermission(ClanPermission.ManageHon);
+            // if (openLuyenHonButton == null) return;
+            //
+            // openLuyenHonButton.gameObject.SetActive(canManage);
+            // openLuyenHonButton.interactable = canManage;
+        }
+
+        private void EnsureHonControls()
+        {
+            if (honText != null && openLuyenHonButton != null) return;
+
+            var parent = fundsText != null ? fundsText.transform.parent : levelText?.transform.parent;
+            if (parent == null) return;
+
+            var font = fundsText != null ? fundsText.font : levelText != null ? levelText.font : null;
+            if (honText == null)
+            {
+                honText = CreateHeaderText(parent, "HonText_Runtime", "Hồn: --/--", font, new Vector2(560, 20),
+                    new Vector2(320, 42), new Color(0.46f, 0.36f, 0.56f));
+            }
+
+            if (openLuyenHonButton == null)
+            {
+                openLuyenHonButton = CreateHeaderButton(parent, "OpenLuyenHonButton_Runtime", "Luyện Hồn", font,
+                    new Vector2(560, -42), new Vector2(170, 58), new Color(0.46f, 0.36f, 0.56f));
+            }
+        }
+
+        private static Text CreateHeaderText(
+            Transform parent,
+            string name,
+            string value,
+            Font font,
+            Vector2 anchoredPosition,
+            Vector2 size,
+            Color color)
+        {
+            var rect = new GameObject(name, typeof(RectTransform)).GetComponent<RectTransform>();
+            rect.SetParent(parent, false);
+            rect.anchorMin = new Vector2(0, 0.5f);
+            rect.anchorMax = new Vector2(0, 0.5f);
+            rect.pivot = new Vector2(0, 0.5f);
+            rect.anchoredPosition = anchoredPosition;
+            rect.sizeDelta = size;
+
+            var text = rect.gameObject.AddComponent<Text>();
+            text.text = value;
+            text.font = font;
+            text.fontSize = 24;
+            text.color = color;
+            text.alignment = TextAnchor.MiddleLeft;
+            text.raycastTarget = false;
+            text.horizontalOverflow = HorizontalWrapMode.Overflow;
+            text.verticalOverflow = VerticalWrapMode.Overflow;
+            return text;
+        }
+
+        private static Button CreateHeaderButton(
+            Transform parent,
+            string name,
+            string label,
+            Font font,
+            Vector2 anchoredPosition,
+            Vector2 size,
+            Color color)
+        {
+            var rect = new GameObject(name, typeof(RectTransform)).GetComponent<RectTransform>();
+            rect.SetParent(parent, false);
+            rect.anchorMin = new Vector2(0, 0.5f);
+            rect.anchorMax = new Vector2(0, 0.5f);
+            rect.pivot = new Vector2(0, 0.5f);
+            rect.anchoredPosition = anchoredPosition;
+            rect.sizeDelta = size;
+
+            var image = rect.gameObject.AddComponent<Image>();
+            image.color = color;
+
+            var button = rect.gameObject.AddComponent<Button>();
+            button.targetGraphic = image;
+
+            var labelText = CreateHeaderText(rect, "Text", label, font, Vector2.zero, size, Color.white);
+            var labelRect = labelText.rectTransform;
+            labelRect.anchorMin = Vector2.zero;
+            labelRect.anchorMax = Vector2.one;
+            labelRect.pivot = new Vector2(0.5f, 0.5f);
+            labelRect.offsetMin = Vector2.zero;
+            labelRect.offsetMax = Vector2.zero;
+            labelRect.anchoredPosition = Vector2.zero;
+            labelText.fontSize = 20;
+            labelText.alignment = TextAnchor.MiddleCenter;
+            labelText.horizontalOverflow = HorizontalWrapMode.Wrap;
+            return button;
+        }
+
         private void ConfirmLeaveClan()
         {
             if (isLeaving) return;
@@ -499,6 +615,11 @@ namespace Clan
         }
 
         private void OnClanFundsChanged(ClanFundsChanged changed)
+        {
+            if (changed != null && changed.ClanId == clan?.Id) RefreshClanSummary();
+        }
+
+        private void OnClanHonChanged(ClanHonChanged changed)
         {
             if (changed != null && changed.ClanId == clan?.Id) RefreshClanSummary();
         }

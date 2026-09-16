@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Combat;
 using ExcelDataReader.Log;
+using Network;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
@@ -330,6 +331,10 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         SetEventButton(backCombat,
             () =>
             {
+                if (Client.Instance.CharacterData.QuestManager.CurrentMainQuest == 0)
+                {
+                    return;
+                }
                 Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Xác nhận bỏ chạy khỏi trận chiến này?",
                     () => { EndCombat(ETypeResultCombat.LoseByRun); });
             });
@@ -663,14 +668,14 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
         isSync = true;
         oldCurrentTurn.EndTurn();
-        foreach (var item in currentTurn.characterStatsBase.clanInheritanceEffectSecure)
+        foreach (var item in oldCurrentTurn.characterStatsBase.clanInheritanceEffectSecure)
         {
             if (item.Trigger == Network.Models.Clans.ClanInheritanceTrigger.EndTurn)
             {
 
                 if (item.EffectType != null)
                 {
-                    ConvertEffectToBuffAction(item.EffectType.Value, item.Value * currentTurn.characterStatsBase.ClanLevel.Value)?.Invoke(oldCurrentTurn, oldTargetTurn);
+                    ConvertEffectToBuffAction(item.EffectType.Value, item.Value)?.Invoke(oldCurrentTurn, oldTargetTurn);
                 }
             }
         }
@@ -932,7 +937,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                 {
                     if (item.EffectType != null)
                     {
-                        ConvertEffectToBuffAction(item.EffectType.Value, item.Value*currentTurn.characterStatsBase.ClanLevel.Value)?.Invoke(currentTurn, targetTurn);
+                        ConvertEffectToBuffAction(item.EffectType.Value, item.Value)?.Invoke(currentTurn, targetTurn);
                     }
                 }
             }
@@ -1095,11 +1100,27 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             }
         }
     }
+    private void AddBuffLuyenHon(CharacterCombat charCb)
+    {
+        if(charCb.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon,out SecureInt hon))
+        {
 
+            charCb.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, charCb.characterStatsBase.pointHon.Value);
+
+
+        }
+        else
+        {
+            charCb.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, charCb.characterStatsBase.pointHon.Value * 2);
+        }
+    }
     private void StartTurn(CharacterCombat charCombat)
     {
         char1.InitStaticCombatEffect();
         char2.InitStaticCombatEffect();
+        AddBuffLuyenHon(char1);
+        AddBuffLuyenHon(char2);
+
         currentTurn = charCombat;
 
         StartEquipment(currentTurn);
@@ -1236,6 +1257,9 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             case EffectType.Bui:
 
                 return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, Value); };
+            case EffectType.Hon:
+
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, Value); };
             case EffectType.Cat:
                 return (caster, target) => { target.AddBuffAndDebuffCount(EBuffAndDeBuff.Cat, Value); };
             case EffectType.ChanHoa:

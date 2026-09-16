@@ -21,7 +21,7 @@ public class ThongTho : NgoDaoCombat, IMemorySerializable<ThongTho>
                 count += item.count;
             }
 
-            target.AddDamageData(new List<int> { target.GetDameBuffForTarget() * buff * count / 100 });
+            target.AddDamageData(new List<long> { target.GetDameBuffForTarget() * buff * count / 100 });
         }
     }
 

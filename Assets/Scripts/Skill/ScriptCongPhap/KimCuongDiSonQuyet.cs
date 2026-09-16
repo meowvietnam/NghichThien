@@ -17,10 +17,10 @@ public class KimCuongDiSonQuyet : CongPhap, IMemorySerializable<KimCuongDiSonQuy
     {
         if (caster.characterStatsTemp.hp >= caster.characterStatsTemp.hpMax * (require / 100f))
         {
-            int dame = target.GetDameBuffForTarget();
+            long dame = target.GetDameBuffForTarget();
             Debug.Log("Kim cuong di son quỷt + " + dame);
-            target.AddDamageData(new List<int>
-                { (int)(dame * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100) });
+            target.AddDamageData(new List<long>
+                { (long)(dame * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100) });
         }
     }
 

@@ -78,6 +78,12 @@ namespace Clan.Editor
             SetLeft(levelText.rectTransform, 148, 0, 400, 44);
             var fundsText = Text("FundsText", headerRow, "Quỹ: --", 26, Gold, TextAnchor.MiddleLeft, true);
             SetLeft(fundsText.rectTransform, 148, -48, 400, 44);
+            var honText = Text("HonText", headerRow, "Hồn: --/--", 24, Hex("#765B8F"), TextAnchor.MiddleLeft, true);
+            SetLeft(honText.rectTransform, 560, 20, 320, 42);
+            var luyenHonButton = Button("LuyenHonButton", headerRow, "Luyện Hồn", Hex("#765B8F"), new Vector2(170, 58), 20);
+            SetLeft(luyenHonButton.GetComponent<RectTransform>(), 560, -42, 170, 58);
+            var upgradeMaxHonButton = Button("UpgradeMaxHonButton", headerRow, "Nâng Giới Hạn", Gold, new Vector2(190, 58), 20);
+            SetLeft(upgradeMaxHonButton.GetComponent<RectTransform>(), 744, -42, 190, 58);
 
             // --- Hàng lãnh đạo: Tộc Chủ / Phó Tộc Chủ / Trưởng Lão ---
             var leadersRow = Rect("LeadersRow", window.transform);
@@ -202,6 +208,7 @@ namespace Clan.Editor
             SetObject(panel, "memberCountText", memberCountText);
             SetObject(panel, "levelText", levelText);
             SetObject(panel, "fundsText", fundsText);
+            SetObject(panel, "honText", honText);
             SetObjectArray(panel, "leaderElements", new Object[] { leaderElement0, leaderElement1, leaderElement2 });
             SetObject(panel, "memberElementPrefab", memberElementTemplate);
             SetObject(panel, "memberContainer", content);
@@ -211,6 +218,8 @@ namespace Clan.Editor
             SetObject(panel, "openShopButton", openShopButton);
             SetObject(panel, "openInheritanceButton", openInheritanceButton);
             SetObject(panel, "inheritancePanel", inheritancePanel);
+            SetObject(panel, "luyenHonButton", luyenHonButton);
+            SetObject(panel, "upgradeMaxHonButton", upgradeMaxHonButton);
             SetObject(panel, "leaveClanButton", leaveClanButton);
             SetObject(panel, "memberActionPopup", memberActionPopup);
             // Lưu ý: "clanShop" cố tình để trống — đây là tham chiếu tới instance ClanShop

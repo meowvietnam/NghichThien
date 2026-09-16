@@ -12,13 +12,10 @@ namespace Tutorials
         {
             var isFirstTutorial = PlayerPrefs.GetInt(tutorialBoCao, 0) == 0;
             if (!isFirstTutorial) return;
-            tutorial.OnCompleted += OnCompleted;
-            ShowTutorial();
-        }
 
-        private void OnCompleted()
-        {
+            // Lưu trạng thái ngay khi tutorial được kích hoạt để không bị kích hoạt lại lần 2.
             PlayerPrefs.SetInt(tutorialBoCao, 1);
+            ShowTutorial();
         }
 
         private void ShowTutorial()

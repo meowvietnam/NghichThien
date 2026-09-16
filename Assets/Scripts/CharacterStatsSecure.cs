@@ -82,6 +82,7 @@ public class CharacterStatsSecure
     public string ClanName { get; set; } = string.Empty;
     public SecureInt ClanLevel = new SecureInt(1);
     public ClanRole ClanRole = ClanRole.Member;
+    public SecureInt pointHon = new SecureInt(0);
 
     [Serializable]
     public class DataSave

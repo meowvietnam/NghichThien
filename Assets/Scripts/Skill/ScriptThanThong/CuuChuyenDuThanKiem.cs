@@ -20,26 +20,37 @@ public class CuuChuyenDuThanKiem : ThanThong, IMemorySerializable<CuuChuyenDuTha
         // Kiểm tra xem caster có đủ linh khí để dùng chiêu thức ít nhất 1 lần không
         if (caster.CurrentLinhKhi >= require)
         {
-            // Tính toán số lần có thể kích hoạt dựa trên lượng linh khí hiện tại (tránh lặp vô hạn)
+            // Tính toán số lần có thể kích hoạt dựa trên lượng linh khí hiện tại
             int availableActivations = caster.CurrentLinhKhi / require;
             List<int> dames = new List<int>();
-            // Dùng vòng lặp thay cho đệ quy để xử lý từng lần đánh và trừ linh khí tương ứng
+
+            // Lấy Base Dame hiện tại 1 lần outside vòng lặp để tránh gọi hàm trùng lặp
+            int baseDame = this.dames[GetIndexLevelThanThong(caster)];
+
             for (int step = 0; step < availableActivations; step++)
             {
-                // Tiêu tốn linh khí cho mỗi lần kích hoạt
+                // 1. Tiêu tốn linh khí cho mỗi lần kích hoạt
                 for (int i = 0; i < require; i++)
                 {
                     var linhKhiNguatNhien = caster.GetRandomLinhKhiConLai();
                     caster.TieuTanLinhKhi(linhKhiNguatNhien, 1);
                 }
 
-                // Thực hiện hành động của skill (gây dame, hiệu ứng, v.v.)
+                // 2. Thực hiện hành động của skill (hiệu ứng, animation...)
                 Action(caster, target, data);
-                dames.Add(this.dames[GetIndexLevelThanThong(caster)]);
+
+                // 3. Tính % giảm sát thương theo từng lần chém (Max 80%)
+                // Lần 1 (step = 0): Giảm 0%   => Dame = 100% Base
+                // Lần 2 (step = 1): Giảm 10%  => Dame = 90% Base
+                // Lần 3 (step = 2): Giảm 20%  => Dame = 80% Base ... tối đa giảm 80% (giữ lại 20% dame)
+                int reducePercent = Math.Min(step * 10, 80);
+                int currentDame = Mathf.RoundToInt(baseDame * (100 - reducePercent) / 100f);
+
+                dames.Add(currentDame);
             }
 
+            // Gửi danh sách sát thương đã được giảm dần để tính toán
             target.CaculateDameByThanThong(caster, dames, eTypeSkill);
-          
         }
     }
 
@@ -66,7 +77,7 @@ public class CuuChuyenDuThanKiem : ThanThong, IMemorySerializable<CuuChuyenDuTha
     public override string GetDesc(int level)
     {
         return
-            $"{GetKeyWord(EKeyWord.KiemY)} Tạo thành {GetColoredText($"+{dames[level - 1]}", "red")} điểm sát thương. Ngẫu nhiên tiêu tán {GetColoredText($"{require}", "red")} điểm linh khí tiếp tục kích hoạt thần thông này (Dừng lại khi linh khí không đủ)";
+            $"{GetKeyWord(EKeyWord.KiemY)} Gây {GetColoredText($"{dames[level - 1]}", "red")} sát thương. Tự động tiêu tán {GetColoredText($"{require}", "red")} linh khí để tái kích hoạt (Sát thương giảm dần {GetColoredText("10%", "red")} mỗi lần, tối đa {GetColoredText("80%", "red")}) cho đến khi hết linh khí.";
     }
 
     public override int ByteSize()

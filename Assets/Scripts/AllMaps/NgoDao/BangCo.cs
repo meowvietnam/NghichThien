@@ -23,7 +23,7 @@ public class BangCo : NgoDaoCombat, IMemorySerializable<BangCo>
 
     public void ExecuteNgoDao2(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        target.AddDamageData(new List<int> { -target.GetDameBuffForTarget() / 2 });
+        target.AddDamageData(new List<long> { -target.GetDameBuffForTarget() / 2 });
         target.RemoveNgoDaoCombatDynamic(this);
     }
 

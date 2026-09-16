@@ -39,11 +39,11 @@ public class ThuongVanAmNguyet : ThanThong, IMemorySerializable<ThuongVanAmNguye
         if (targetTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is ThuongVanAmNguyet))
         {
             int dameBuffPercent = dameBuffPercents[GetIndexLevelThanThong(targetTurn)];
-            List<int> dames = new List<int>();
+            List<long> dames = new List<long>();
             for (int i = 0; i < targetTurn.allDamages.Count; i++)
             {
-                int item = targetTurn.allDamages[i];
-                int dame = (int)(item * dameBuffPercent / 100f);
+                long item = targetTurn.allDamages[i];
+                long dame = (long)(item * dameBuffPercent / 100f);
                 targetTurn.allDamages[i] -= dame;
                 dames.Add(dame);
             }

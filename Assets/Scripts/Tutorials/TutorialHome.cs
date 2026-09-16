@@ -18,6 +18,8 @@ namespace Tutorials
         /// <summary>Bật lên khi người chơi đã bấm vào Bế Quan theo hướng dẫn.</summary>
         public const string tutorialClickBeQuanKey = "isFirstTutorialClickBeQuan";
 
+        private bool introHandled;
+
         private void Start()
         {
             if (tutorial == null) return;
@@ -25,6 +27,8 @@ namespace Tutorials
             var isFirstTutorial = PlayerPrefs.GetInt(tutorialHome, 0) == 0;
             if (isFirstTutorial)
             {
+                // Lưu trạng thái ngay khi tutorial được kích hoạt để không bị kích hoạt lại lần 2.
+                PlayerPrefs.SetInt(tutorialHome, 1);
                 tutorial.OnCompleted += OnCompleted;
                 ShowTutorial();
                 return;
@@ -38,9 +42,11 @@ namespace Tutorials
         {
             // OnCompleted bắn ra sau MỖI lần ShowTutorial() kết thúc, kể cả bước hand-tut bên dưới
             // (dùng chung component tutorial này), nên phải chặn để chỉ chạy đúng một lần.
-            if (PlayerPrefs.GetInt(tutorialHome, 0) != 0) return;
+            // tutorialHome nay đã được lưu ngay lúc kích hoạt ở Start() nên dùng cờ introHandled
+            // riêng để chặn ở đây thay vì đọc lại PlayerPrefs.
+            if (introHandled) return;
+            introHandled = true;
 
-            PlayerPrefs.SetInt(tutorialHome, 1);
             TryShowClickBeQuan();
         }
 
@@ -68,6 +74,8 @@ namespace Tutorials
             if (PlayerPrefs.GetInt(tutorialClickBeQuanKey, 0) != 0) return;
             if (beQuan == null) return;
 
+            // Lưu trạng thái ngay khi kích hoạt để không bị kích hoạt lại lần 2.
+            PlayerPrefs.SetInt(tutorialClickBeQuanKey, 1);
             StartCoroutine(IEClickBeQuan());
         }
 
