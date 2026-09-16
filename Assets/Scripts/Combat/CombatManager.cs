@@ -1104,14 +1104,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     {
         if(charCb.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon,out SecureInt hon))
         {
-
             charCb.AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, charCb.characterStatsBase.pointHon.Value);
-
-
         }
         else
         {
-            charCb.AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, charCb.characterStatsBase.pointHon.Value * 2);
+            charCb.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, charCb.characterStatsBase.pointHon.Value * 2);
         }
     }
     private void StartTurn(CharacterCombat charCombat)
