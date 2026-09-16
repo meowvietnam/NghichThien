@@ -16,7 +16,7 @@ public class NguPhuDoanNguyenQuyet : CongPhap, IMemorySerializable<NguPhuDoanNgu
     {
         if (CombatStatic.IsActiveWithPercent(percents[CurrentLevelCongPhapInCombat(caster) - 1]))
         {
-            target.AddDamageData(new List<int> { target.GetDameBuffForTarget() });
+            target.AddDamageData(new List<long> { target.GetDameBuffForTarget() });
         }
     }
 
