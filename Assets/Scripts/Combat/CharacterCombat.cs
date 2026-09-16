@@ -1497,7 +1497,25 @@ public class CharacterCombat : MonoBehaviour
         }
 
         Observer.Notify(EventList.Combat.CACULATE_DAME_BY_THANTHONG, sender, this, allDamages);
-        listDameTaked[listDameTaked.Count - 1] += allDamages.Sum();
+
+        // 1. Tính tổng allDamages bằng kiểu long để không tràn khi Sum
+        long sumDamage = 0;
+        for (int i = 0; i < allDamages.Count; i++)
+        {
+            sumDamage += allDamages[i];
+        }
+
+        // 2. Lấy giá trị hiện tại của SecureInt ra kiểu long
+        long currentDamage = listDameTaked[listDameTaked.Count - 1];
+        long finalDamage = currentDamage + sumDamage;
+
+        // 3. Giới hạn tối đa bằng int.MaxValue trước khi gán lại vào SecureInt
+        if (finalDamage > int.MaxValue)
+        {
+            finalDamage = int.MaxValue;
+        }
+
+        listDameTaked[listDameTaked.Count - 1] = (int)finalDamage;
     }
 
     private List<int> CaculateDameForStatic(CharacterCombat sender, List<int> dames, bool isCongDon = false,
