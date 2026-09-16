@@ -1118,7 +1118,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     {
         char1.InitStaticCombatEffect();
         char2.InitStaticCombatEffect();
-
+        AddBuffLuyenHon(char1);
+        AddBuffLuyenHon(char2);
 
         currentTurn = charCombat;
 
@@ -1126,8 +1127,6 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         StartEquipment(targetTurn);
         NewTurn();
         StartCoroutine(CheckDieCoroutine());
-        AddBuffLuyenHon(currentTurn);
-        AddBuffLuyenHon(targetTurn);
     }
 
     private void StartTurnPVP(params object[] data)
