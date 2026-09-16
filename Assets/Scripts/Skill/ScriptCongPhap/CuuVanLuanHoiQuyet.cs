@@ -18,14 +18,14 @@ public class CuuVanLuanHoiQuyet : CongPhap, IMemorySerializable<CuuVanLuanHoiQuy
         if (caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt hoTrao))
         {
             //  giảm dame gây ra 10%
-            target.AddDamageData(new List<int>
-                { -(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100) });
+            target.AddDamageData(new List<long>
+                { -(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100) });
         }
         else
         {
             // tăng dame gây ra 10%
-            target.AddDamageData(new List<int>
-                { +(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100) });
+            target.AddDamageData(new List<long>
+                { +(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100) });
         }
     }
 
@@ -47,14 +47,14 @@ public class CuuVanLuanHoiQuyet : CongPhap, IMemorySerializable<CuuVanLuanHoiQuy
         if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HoTrao, out SecureInt hoTrao))
         {
             //giảm dame nhận 10%
-            target.AddDamageData(new List<int>
-                { -(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(target) - 1] / 100) });
+            target.AddDamageData(new List<long>
+                { -(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(target) - 1] / 100) });
         }
         else
         {
             // tăng dame nhận 10% 
-            target.AddDamageData(new List<int>
-                { +(int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(target) - 1] / 100) });
+            target.AddDamageData(new List<long>
+                { +(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(target) - 1] / 100) });
         }
     }
 

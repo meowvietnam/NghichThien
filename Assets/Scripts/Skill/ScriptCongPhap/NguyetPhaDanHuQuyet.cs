@@ -18,8 +18,8 @@ public class NguyetPhaDanHuQuyet : CongPhap, IMemorySerializable<NguyetPhaDanHuQ
     {
         if (CheckIsEqualETypeSkill(caster))
         {
-            target.AddDamageData(new List<int>
-                { (int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100f) });
+            target.AddDamageData(new List<long>
+                { (long)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100f) });
         }
     }
 

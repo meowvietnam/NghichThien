@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -244,10 +245,9 @@ namespace LuyenDan
             UpdateMax(sub2);
             UpdateMax(primer);
 
-            if (SelectedFurnace != null)
+            if (SelectedFurnace == null)
             {
-                int durability = SelectedFurnace.FData.Durability;
-                if (durability < max) max = durability;
+                return;
             }
 
             if (max == int.MaxValue || max < 1) max = 1;
@@ -276,7 +276,11 @@ namespace LuyenDan
             var currentDurability = SelectedFurnace.FData.Durability;
             var tierDiff = linhdanTier - selectedDanluTier;
             var baseLossDurability = tierDiff > 0 ? tierDiff * 50 : 2;
-
+            var maxByDur = currentDurability / baseLossDurability;
+            if (max > maxByDur)
+            {
+                max = maxByDur;
+            }
             void UpdateText()
             {
                 var value = SelectLinhDanNum.GetValue();
@@ -347,8 +351,10 @@ namespace LuyenDan
                 SelectLinhDanNum.SetText(builder.ToString());
             }
 
+            var min = Math.Min(1, max);
+            SelectLinhDanNum.SetMin(min);
             SelectLinhDanNum.SetMax(max);
-            SelectLinhDanNum.SetValue(1);
+            SelectLinhDanNum.SetValue(min);
             UpdateText();
             SelectLinhDanNum.ValueChanged += (value) => UpdateText();
             SelectLinhDanNum.Show(0.15f);
