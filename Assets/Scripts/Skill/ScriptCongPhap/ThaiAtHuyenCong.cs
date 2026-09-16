@@ -17,8 +17,8 @@ public class ThaiAtHuyenCong : CongPhap, IMemorySerializable<ThaiAtHuyenCong>
         if (trienNhieu > 0 && CheckIsEqualETypeSkill(caster))
         {
             float percent = (float)percentDameBuffs[CurrentLevelCongPhapInCombat(caster) - 1] / 100f;
-            long dame = (long)(target.GetDameBuffForTarget() * percent);
-            target.AddDamageData(new System.Collections.Generic.List<long> { dame });
+            int dame = (int)(target.GetDameBuffForTarget() * percent);
+            target.AddDamageData(new System.Collections.Generic.List<int> { dame });
         }
     }
 

@@ -27,7 +27,7 @@ public class KienNghi : NgoDaoCombat, IMemorySerializable<KienNghi>
     {
         if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out SecureInt sucThe))
         {
-            target.AddDamageData(new List<long> { -(buff * target.GetDameBuffForTarget() / 100) });
+            target.AddDamageData(new List<int> { -(int)(buff * target.GetDameBuffForTarget() / 100) });
         }
     }
 

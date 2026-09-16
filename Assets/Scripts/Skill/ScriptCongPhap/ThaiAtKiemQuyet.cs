@@ -16,8 +16,8 @@ public class ThaiAtKiemQuyet : CongPhap, IMemorySerializable<ThaiAtKiemQuyet>
     {
         if (CheckIsEqualETypeSkill(caster))
         {
-            target.AddDamageData(new List<long>
-                { target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100 });
+            target.AddDamageData(new List<int>
+                { (int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100) });
         }
     }
 

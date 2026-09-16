@@ -18,8 +18,8 @@ public class ThonNhatThanVienBien : CongPhap, IMemorySerializable<ThonNhatThanVi
         Debug.Log(
             $"[ThonNhatThanVienBien] Execute: caster={caster.name}, target={target.name}, buffValue={buffValues[CurrentLevelCongPhapInCombat(caster) - 1]}");
         target.AddDamageData(
-            new List<long>
-                { target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100 },
+            new List<int>
+                { (int)(target.GetDameBuffForTarget() * buffValues[CurrentLevelCongPhapInCombat(caster) - 1] / 100) },
             true);
         RemoveCongPhap(caster);
     }
