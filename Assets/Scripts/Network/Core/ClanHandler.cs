@@ -366,18 +366,21 @@ namespace Network.Core
                 {
                     ClanId = CurrentClan.Id,
                     Hon = result.Hon,
-                    MaxHon = result.MaxHon
+                    MaxHon = result.MaxHon,
+                    HonLimitLevel = result.HonLimitLevel,
+                    SoulEssence = result.SoulEssence,
+                    MaxSoulEssence = result.MaxSoulEssence
                 }, false);
             }
 
             return result;
         }
 
-        public async Task<UpgradeClanMaxHonResult> UpgradeMaxHon(long funds)
+        public async Task<UpgradeClanMaxHonResult> UpgradeMaxHon(int limitLevel)
         {
             var result = await Request<UpgradeClanMaxHonRequest, UpgradeClanMaxHonResult>(
                 MessageTag.UpgradeClanMaxHonRequest,
-                new UpgradeClanMaxHonRequest { Funds = funds });
+                new UpgradeClanMaxHonRequest { LimitLevel = limitLevel });
 
             if (result.Success && CurrentClan != null)
             {
@@ -386,7 +389,10 @@ namespace Network.Core
                 {
                     ClanId = CurrentClan.Id,
                     Hon = result.Hon,
-                    MaxHon = result.MaxHon
+                    MaxHon = result.MaxHon,
+                    HonLimitLevel = result.HonLimitLevel,
+                    SoulEssence = result.SoulEssence,
+                    MaxSoulEssence = result.MaxSoulEssence
                 }, false);
             }
 
@@ -687,6 +693,8 @@ namespace Network.Core
             if (changed == null || CurrentClan == null || changed.ClanId != CurrentClan.Id) return;
             CurrentClan.Hon = changed.Hon;
             CurrentClan.MaxHon = changed.MaxHon;
+            CurrentClan.HonLimitLevel = changed.HonLimitLevel;
+            CurrentClan.SoulEssence = changed.SoulEssence;
             if (notify) NotifyMainThread(() => HonChanged?.Invoke(changed));
         }
 

@@ -52,8 +52,12 @@ namespace Network.Models.Clans
         public int CreateMaxMember { get; set; }
         public int MemberSlotLevelInterval { get; set; } = 1;
         public int MemberSlotsPerInterval { get; set; } = 5;
-        public long CreateClanMaxHon { get; set; } = 100;
-        public long MaxHonPerFund { get; set; } = 1;
+        public int CreateClanHonLimitLevel { get; set; } = 1;
+        public long SoulEssencePerHon { get; set; } = 1;
+        public long MonsterKillSoulEssenceReward { get; set; } = 1;
+        public long[] MaxHonByLimitLevel { get; set; } = new long[] { 100 };
+        public long[] MaxSoulEssenceByLimitLevel { get; set; } = new long[] { 1_000 };
+        public long[] UpgradeHonLimitFundCostByLevel { get; set; } = new long[] { 0 };
         public int ContributionMoneyVipPerTime { get; set; }
         public int MaxContributionTimesPerRequest { get; set; }
         public int MaxShopQuantityPerRequest { get; set; } = 100;

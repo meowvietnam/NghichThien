@@ -58,6 +58,8 @@ namespace Network.Models.Clans
         public long Funds { get; set; }
         public long Hon { get; set; }
         public long MaxHon { get; set; }
+        public int HonLimitLevel { get; set; } = 1;
+        public long SoulEssence { get; set; }
         public string Description { get; set; } = string.Empty;
         public string Announcement { get; set; } = string.Empty;
         public int MemberCount { get; set; }

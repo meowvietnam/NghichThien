@@ -48,10 +48,10 @@ namespace Clan
         [SerializeField] private ClanInheritancePanel inheritancePanel;
 
         [Header("Hồn tông môn")]
-        [SerializeField] private Button luyenHonButton;
-        [SerializeField] private Button upgradeMaxHonButton;
-        [SerializeField] private long luyenHonAmount = 1;
-        [SerializeField] private long upgradeMaxHonFunds = 1;
+        [Tooltip("Nút mở popup Luyện Hồn. Toàn bộ thao tác luyện hồn / nâng giới hạn hồn đã tách " +
+                 "sang ClanLuyenHonPopup; ở đây chỉ còn dòng hiển thị Hồn và nút mở popup.")]
+        [SerializeField] private Button openLuyenHonButton;
+        [SerializeField] private ClanLuyenHonPopup luyenHonPopup;
 
         [Header("Thao tác thành viên")]
         [SerializeField] private ClanMemberActionPopup memberActionPopup;
@@ -75,7 +75,6 @@ namespace Clan
         private bool isContributing;
         private bool isLeaving;
         private bool isRequestingJoin;
-        private bool isProcessingHon;
 
         public ClanMember CurrentMember { get; private set; }
         public ClanRole CurrentRole => CurrentMember?.Role ?? ClanRole.Member;
@@ -94,8 +93,7 @@ namespace Clan
             SetEventButton(leaveClanButton, ConfirmLeaveClan);
             SetEventButton(openShopButton, OpenShop);
             SetEventButton(openInheritanceButton, OpenInheritance);
-            SetEventButton(luyenHonButton, ConfirmLuyenHon);
-            SetEventButton(upgradeMaxHonButton, ConfirmUpgradeMaxHon);
+            SetEventButton(openLuyenHonButton, OpenLuyenHon);
             SetEventButton(requestJoinButton, () => _ = RequestJoin());
             SetEventButton(joinRequestsButton, OpenJoinRequests);
             SetEventButton(joinRequestsCloseButton, () => joinRequestsRoot?.SetActive(false));
@@ -145,7 +143,7 @@ namespace Clan
             if (levelText != null) levelText.text = clan != null ? $"Cấp {clan.Level}" : "—";
             if (fundsText != null) fundsText.text = clan != null ? $"Quỹ: {clan.Funds:n0}" : "—";
             if (honText != null) honText.text = clan != null ? $"Hồn: {clan.Hon:n0}/{clan.MaxHon:n0}" : "—";
-            UpdateHonButtons();
+            UpdateLuyenHonButton();
         }
 
         public bool HasPermission(ClanPermission permission)
@@ -237,7 +235,7 @@ namespace Clan
             else if (joinRequestsRoot != null) joinRequestsRoot.SetActive(false);
 
             RefreshFreeContribution();
-            UpdateHonButtons();
+            UpdateLuyenHonButton();
             PermissionsChanged?.Invoke(CurrentPermissions);
         }
 
@@ -405,149 +403,24 @@ namespace Clan
             if (contributeTenButton != null) contributeTenButton.interactable = interactable;
         }
 
-        private void ConfirmLuyenHon()
+        private void OpenLuyenHon()
         {
-            if (isProcessingHon || Handler == null || clan == null) return;
-            if (!HasPermission(ClanPermission.ManageHon))
-            {
-                NotifyGroup.Instance?.Show("Bạn không có quyền luyện hồn tông môn");
-                return;
-            }
-
-            var amount = Math.Max(1, luyenHonAmount);
-            var remaining = Math.Max(0, clan.MaxHon - clan.Hon);
-            if (remaining <= 0)
-            {
-                NotifyGroup.Instance?.Show("Hồn tông môn đã đạt giới hạn");
-                return;
-            }
-
-            var added = Math.Min(amount, remaining);
-            Pool.Get<PopupConfirmAction>()?.ShowPopConfirmAction(
-                $"Luyện hồn cho tông môn.\nDự kiến tăng {added:n0} Hồn.",
-                () => _ = LuyenHon(amount));
+            if (luyenHonPopup != null) luyenHonPopup.Open(this);
+            else NotifyGroup.Instance?.Show("Chưa cấu hình Luyện Hồn Tông Môn");
         }
 
-        private async Task LuyenHon(long amount)
-        {
-            if (isProcessingHon || Handler == null) return;
-            SetHonProcessing(true);
-            try
-            {
-                var result = await Handler.LuyenHon(amount);
-                if (!result.Success)
-                {
-                    NotifyGroup.Instance?.Show(string.IsNullOrWhiteSpace(result.Message)
-                        ? "Không thể luyện hồn"
-                        : result.Message);
-                }
-                else
-                {
-                    RefreshClanSummary();
-                }
-            }
-            catch (Exception exception)
-            {
-                Debug.LogException(exception, this);
-                NotifyGroup.Instance?.Show("Không thể luyện hồn, vui lòng thử lại");
-            }
-            finally
-            {
-                SetHonProcessing(false);
-            }
-        }
-
-        private void ConfirmUpgradeMaxHon()
-        {
-            if (isProcessingHon || Handler == null || clan == null) return;
-            if (!HasPermission(ClanPermission.ManageHon))
-            {
-                NotifyGroup.Instance?.Show("Bạn không có quyền nâng giới hạn hồn tông môn");
-                return;
-            }
-
-            var funds = Math.Max(1, upgradeMaxHonFunds);
-            if (clan.Funds < funds)
-            {
-                NotifyGroup.Instance?.Show($"Quỹ tông môn không đủ, cần {funds:n0}");
-                return;
-            }
-
-            var maxHonPerFund = Math.Max(1, Handler.CurrentConfig?.MaxHonPerFund ?? 1);
-            long addedMaxHon;
-            try
-            {
-                addedMaxHon = checked(funds * maxHonPerFund);
-            }
-            catch (OverflowException)
-            {
-                NotifyGroup.Instance?.Show("Giới hạn hồn vượt quá mức cho phép");
-                return;
-            }
-
-            Pool.Get<PopupConfirmAction>()?.ShowPopConfirmAction(
-                $"Tiêu {funds:n0} quỹ tông môn.\nTăng giới hạn hồn thêm {addedMaxHon:n0}.",
-                () => _ = UpgradeMaxHon(funds));
-        }
-
-        private async Task UpgradeMaxHon(long funds)
-        {
-            if (isProcessingHon || Handler == null) return;
-            SetHonProcessing(true);
-            try
-            {
-                var result = await Handler.UpgradeMaxHon(funds);
-                if (!result.Success)
-                {
-                    NotifyGroup.Instance?.Show(string.IsNullOrWhiteSpace(result.Message)
-                        ? "Không thể nâng giới hạn hồn"
-                        : result.Message);
-                }
-                else
-                {
-                    RefreshClanSummary();
-                }
-            }
-            catch (Exception exception)
-            {
-                Debug.LogException(exception, this);
-                NotifyGroup.Instance?.Show("Không thể nâng giới hạn hồn, vui lòng thử lại");
-            }
-            finally
-            {
-                SetHonProcessing(false);
-            }
-        }
-
-        private void SetHonProcessing(bool value)
-        {
-            isProcessingHon = value;
-            UpdateHonButtons();
-        }
-
-        private void UpdateHonButtons()
+        private void UpdateLuyenHonButton()
         {
             var canManage = !isViewingExternalClan && HasPermission(ClanPermission.ManageHon);
-            var canLuyenHon = canManage && !isProcessingHon && clan != null && clan.Hon < clan.MaxHon;
-            var funds = Math.Max(1, upgradeMaxHonFunds);
-            var canUpgradeMaxHon = canManage && !isProcessingHon && clan != null && clan.Funds >= funds;
+            if (openLuyenHonButton == null) return;
 
-            if (luyenHonButton != null)
-            {
-                luyenHonButton.gameObject.SetActive(canManage);
-                luyenHonButton.interactable = canLuyenHon;
-            }
-
-            if (upgradeMaxHonButton != null)
-            {
-                upgradeMaxHonButton.gameObject.SetActive(canManage);
-                upgradeMaxHonButton.interactable = canUpgradeMaxHon;
-            }
+            openLuyenHonButton.gameObject.SetActive(canManage);
+            openLuyenHonButton.interactable = canManage;
         }
 
         private void EnsureHonControls()
         {
-            if (honText != null && luyenHonButton != null && upgradeMaxHonButton != null) return;
+            if (honText != null && openLuyenHonButton != null) return;
 
             var parent = fundsText != null ? fundsText.transform.parent : levelText?.transform.parent;
             if (parent == null) return;
@@ -559,16 +432,10 @@ namespace Clan
                     new Vector2(320, 42), new Color(0.46f, 0.36f, 0.56f));
             }
 
-            if (luyenHonButton == null)
+            if (openLuyenHonButton == null)
             {
-                luyenHonButton = CreateHeaderButton(parent, "LuyenHonButton_Runtime", "Luyện Hồn", font,
+                openLuyenHonButton = CreateHeaderButton(parent, "OpenLuyenHonButton_Runtime", "Luyện Hồn", font,
                     new Vector2(560, -42), new Vector2(170, 58), new Color(0.46f, 0.36f, 0.56f));
-            }
-
-            if (upgradeMaxHonButton == null)
-            {
-                upgradeMaxHonButton = CreateHeaderButton(parent, "UpgradeMaxHonButton_Runtime", "Nâng Giới Hạn", font,
-                    new Vector2(744, -42), new Vector2(190, 58), new Color(0.78f, 0.64f, 0.35f));
             }
         }
 
