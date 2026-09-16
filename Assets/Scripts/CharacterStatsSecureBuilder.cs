@@ -250,6 +250,11 @@ public class CharacterStatsSecureBuilder
         _stats.ClanRole = role;
         return this;
     }
+    public CharacterStatsSecureBuilder WithPointHon(long hon)
+    {
+        _stats.pointHon = (int)hon;
+        return this;
+    }
     public CharacterStatsSecureBuilder WithClanEffectBuff(ClanInheritanceEffect[] clanInheritanceEffects)
     {
         if (clanInheritanceEffects == null || clanInheritanceEffects.Length == 0)
@@ -372,6 +377,8 @@ public class CharacterStatsSecureBuilder
             .WithClanRole(character.ClanRole)
             .WithHasClan(character.HasClan)
             .WithClanEffectBuff(character.ClanInheritanceEffects)
+            .WithPointHon(character.Hon)
+
             .Build();
     }
 }

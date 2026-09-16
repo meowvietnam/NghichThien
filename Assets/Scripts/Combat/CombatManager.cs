@@ -1095,11 +1095,27 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             }
         }
     }
+    private void AddBuffLuyenHon(CharacterCombat charCb)
+    {
+        if(charCb.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon,out SecureInt hon))
+        {
 
+            charCb.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, charCb.characterStatsBase.pointHon.Value);
+
+
+        }
+        else
+        {
+            charCb.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, charCb.characterStatsBase.pointHon.Value * 2);
+        }
+    }
     private void StartTurn(CharacterCombat charCombat)
     {
         char1.InitStaticCombatEffect();
         char2.InitStaticCombatEffect();
+        AddBuffLuyenHon(char1);
+        AddBuffLuyenHon(char2);
+
         currentTurn = charCombat;
 
         StartEquipment(currentTurn);
