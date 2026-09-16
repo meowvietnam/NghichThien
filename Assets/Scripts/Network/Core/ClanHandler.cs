@@ -18,9 +18,7 @@ namespace Network.Core
         public ClanModel CurrentClan { get; private set; }
         public ClanConfig CurrentConfig { get; private set; }
         public int MaxShopQuantityPerRequest { get; private set; }
-        public int MaxShopItemsAddedPerDay { get; private set; }
         public int ShopItemsAddedToday { get; private set; }
-        public int ShopSlotsUsed => CurrentClan?.ShopItems?.Count ?? 0;
         public int MaxShopSlots => CurrentClan == null ? 0 : GetMaxShopSlots(CurrentClan.Level);
         public int FreeContributionTimesRemaining { get; private set; }
         private DateTime freeContributionStateDateUtc;
@@ -288,8 +286,8 @@ namespace Network.Core
             if (result.Success)
             {
                 MaxShopQuantityPerRequest = result.MaxQuantityPerRequest;
-                MaxShopItemsAddedPerDay = result.MaxItemsAddedPerDay;
                 ShopItemsAddedToday = result.ShopItemsAddedToday;
+                Debug.Log($"GetShop: {ShopItemsAddedToday}");
                 ReplaceShop(result.Items);
             }
 
@@ -414,7 +412,6 @@ namespace Network.Core
 
             if (result.Success)
             {
-                MaxShopItemsAddedPerDay = result.MaxItemsAddedPerDay;
                 ShopItemsAddedToday = result.ShopItemsAddedToday;
                 ApplyInventoryItem(result.InventoryItem, item);
                 ApplyInventoryFurnace(result.InventoryFurnace);
@@ -526,12 +523,10 @@ namespace Network.Core
             CurrentClan = clan;
             if (clan != null)
             {
-                MaxShopItemsAddedPerDay = CurrentConfig?.MaxShopItemsAddedPerDay ?? MaxShopItemsAddedPerDay;
                 RefreshShopQuotaStateFromClan();
             }
             else
             {
-                MaxShopItemsAddedPerDay = 0;
                 ShopItemsAddedToday = 0;
             }
             RefreshFreeContributionStateFromClan();

@@ -146,15 +146,12 @@ namespace Clan
             message = string.Empty;
             if (Handler == null || Handler.CurrentClan == null) message = "Bạn chưa thuộc tông môn";
             else if (!HasPermission(ClanPermission.AddShopItem)) message = "Bạn không có quyền thêm vật phẩm vào kho";
-            else if (Handler.MaxShopItemsAddedPerDay <= 0) message = "Kho tông môn đang tạm khóa thêm vật phẩm";
             else if (selectedItem == null) message = "Hãy chọn vật phẩm muốn thêm";
             else if (quantityInput == null || !int.TryParse(quantityInput.text, out quantity) || quantity < 1)
                 message = "Số lượng phải lớn hơn 0";
             else if (quantity > selectedItem.Count) message = "Túi đồ không đủ số lượng";
-            else if (Handler.ShopSlotsUsed >= Handler.MaxShopSlots)
-                message = "Kho tông môn đã hết slot treo vật phẩm";
-            else if (Handler.ShopItemsAddedToday + quantity > Handler.MaxShopItemsAddedPerDay)
-                message = "Đã vượt giới hạn số lượng vật phẩm thêm vào kho hôm nay";
+            else if (Handler.ShopItemsAddedToday + quantity > Handler.MaxShopSlots)
+                message = "Số lượng vật phẩm thêm vào kho hôm nay vượt giới hạn";
             return string.IsNullOrEmpty(message);
         }
 
@@ -205,16 +202,10 @@ namespace Clan
         private void UpdateDailyLimit()
         {
             if (dailyLimitText == null) return;
-            var dailyMaximum = Handler?.MaxShopItemsAddedPerDay ?? 0;
-            var dailyUsed = Handler?.ShopItemsAddedToday ?? 0;
-            var dailyRemaining = Math.Max(0, dailyMaximum - dailyUsed);
             var slotMaximum = Handler?.MaxShopSlots ?? 0;
-            var slotUsed = Handler?.ShopSlotsUsed ?? 0;
+            var slotUsed = Handler?.ShopItemsAddedToday ?? 0;
             var slotRemaining = Math.Max(0, slotMaximum - slotUsed);
-            dailyLimitText.text = dailyMaximum > 0
-                ? $"Slot treo: {slotUsed}/{slotMaximum} · Còn {slotRemaining}\n" +
-                  $"Thêm hôm nay: {dailyUsed}/{dailyMaximum} · Còn {dailyRemaining}"
-                : "Kho đang tạm khóa";
+            dailyLimitText.text = $"Slot treo: {slotUsed}/{slotMaximum} · Còn {slotRemaining}";
         }
 
         private void UpdateButton()
@@ -228,11 +219,8 @@ namespace Clan
             if (Handler?.CurrentClan == null || selectedItem == null ||
                 !HasPermission(ClanPermission.AddShopItem)) return false;
 
-            var dailyMaximum = Handler.MaxShopItemsAddedPerDay;
-            if (dailyMaximum <= 0 || Handler.ShopSlotsUsed >= Handler.MaxShopSlots) return false;
             if (quantityInput == null || !int.TryParse(quantityInput.text, out var quantity) ||
                 quantity < 1 || quantity > selectedItem.Count) return false;
-            if (Handler.ShopItemsAddedToday + quantity > dailyMaximum) return false;
             return true;
         }
 

@@ -411,11 +411,11 @@ namespace Clan
 
         private void UpdateLuyenHonButton()
         {
-            var canManage = !isViewingExternalClan && HasPermission(ClanPermission.ManageHon);
-            if (openLuyenHonButton == null) return;
-
-            openLuyenHonButton.gameObject.SetActive(canManage);
-            openLuyenHonButton.interactable = canManage;
+            // var canManage = !isViewingExternalClan && HasPermission(ClanPermission.ManageHon);
+            // if (openLuyenHonButton == null) return;
+            //
+            // openLuyenHonButton.gameObject.SetActive(canManage);
+            // openLuyenHonButton.interactable = canManage;
         }
 
         private void EnsureHonControls()
