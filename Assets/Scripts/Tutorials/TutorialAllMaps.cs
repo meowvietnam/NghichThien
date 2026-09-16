@@ -67,8 +67,14 @@ namespace Tutorials
                 return;
             }
 
+            // Lưu trạng thái ngay khi tutorial được kích hoạt (không chờ tới lúc hoàn tất) để
+            // tránh bị kích hoạt lại lần 2 nếu coroutine/OnCompleted bị ngắt giữa chừng (đổi
+            // scene, thoát game...).
+            PlayerPrefs.SetInt(tutorialAllMapKey, 1);
             ShowTutorial();
         }
+
+        private bool introHandled;
 
         private void OnCompleted()
         {
@@ -80,12 +86,14 @@ namespace Tutorials
             // camera bị kéo về finishedTarget, camera2DDrag bị bật lại giữa chừng, và
             // TryShowPointThienTinhThanh() bị gọi lại làm hiện lại tutorial chỉ-vào-thành - đúng
             // hiện tượng "tut tắt, cam lia 1 lúc, tut hiện lại". Nên chỉ cho phần này chạy đúng 1
-            // lần duy nhất (lúc intro thật sự vừa xong).
-            if (PlayerPrefs.GetInt(tutorialAllMapKey, 0) != 0) return;
+            // lần duy nhất (lúc intro thật sự vừa xong). tutorialAllMapKey nay đã được lưu ngay
+            // lúc kích hoạt ở CheckTutorial() nên không còn dùng lại được để chặn ở đây -> dùng
+            // cờ introHandled riêng.
+            if (introHandled) return;
+            introHandled = true;
 
             var cam = CameraFollow.Instance;
             cam.target = finishedTarget;
-            PlayerPrefs.SetInt(tutorialAllMapKey, 1);
             camera2DDrag.enabled = true;
 
             TryShowPointThienTinhThanh();
@@ -101,6 +109,8 @@ namespace Tutorials
             if (PlayerPrefs.GetInt(tutorialPointThienTinhKey, 0) != 0) return;
             if (thienTinhThanhStronghold == null || thienTinhThanh == null) return;
 
+            // Lưu trạng thái ngay khi kích hoạt để không bị kích hoạt lại lần 2.
+            PlayerPrefs.SetInt(tutorialPointThienTinhKey, 1);
             StartCoroutine(IEShowPointThienTinhThanh());
         }
 

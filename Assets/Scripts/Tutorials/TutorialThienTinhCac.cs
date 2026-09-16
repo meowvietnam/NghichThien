@@ -102,6 +102,9 @@ namespace Tutorials
             btnVaoKhachSan = loadBtn != null ? loadBtn.GetComponent<Button>() : null;
             if (btnVaoKhachSan == null) return;
 
+            // Lưu trạng thái ngay khi kích hoạt để không bị kích hoạt lại lần 2.
+            PlayerPrefs.SetInt(tutorialKhachSanKey, 1);
+
             var steps = new[]
             {
                 new TutorialStep

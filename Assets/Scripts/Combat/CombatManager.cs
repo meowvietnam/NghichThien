@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Combat;
 using ExcelDataReader.Log;
+using Network;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
@@ -330,6 +331,10 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         SetEventButton(backCombat,
             () =>
             {
+                if (Client.Instance.CharacterData.QuestManager.CurrentMainQuest == 0)
+                {
+                    return;
+                }
                 Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Xác nhận bỏ chạy khỏi trận chiến này?",
                     () => { EndCombat(ETypeResultCombat.LoseByRun); });
             });

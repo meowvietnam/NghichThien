@@ -17,11 +17,11 @@ namespace Clan
     /// <see cref="ClanPermission.ManageHon"/>.
     ///
     /// Bám theo ClanMessages/ClanHandler hiện tại:
-    /// - Luyện hồn: tiêu Hồn Tinh (SoulEssence) để tăng Hồn, chặn trên bởi Clan.MaxHon. Giá theo BẬC
+    /// - Luyện hồn: tiêu Tinh Hồn (SoulEssence) để tăng Hồn, chặn trên bởi Clan.MaxHon. Giá theo BẬC
     ///   THANG dựa trên điểm Hồn đang luyện (xem GetHonPointCost), nên một lượt đi qua nhiều mốc
     ///   phải cộng dồn từng điểm chứ không nhân đơn giá chung. Số lượng do người chơi chọn bằng SelectNum.
     /// - Nâng giới hạn: tiêu Quỹ theo ClanConfig.UpgradeHonLimitFundCostByLevel để lên
-    ///   Clan.HonLimitLevel kế tiếp, kéo theo MaxHon (MaxHonByLimitLevel) và giới hạn Hồn Tinh
+    ///   Clan.HonLimitLevel kế tiếp, kéo theo MaxHon (MaxHonByLimitLevel) và giới hạn Tinh Hồn
     ///   (MaxSoulEssenceByLimitLevel). Handler.UpgradeMaxHon nhận CẤP giới hạn, không phải số quỹ.
     /// </summary>
     public class ClanLuyenHonPopup : ClanPopup
@@ -31,7 +31,7 @@ namespace Clan
         [SerializeField] private Text soulEssenceText;
         [SerializeField] private Text fundsText;
         [SerializeField] private Text honLimitLevelText;
-        [Tooltip("Hiển thị đơn giá Hồn Tinh của mốc hiện tại (giá tăng dần theo mốc), " +
+        [Tooltip("Hiển thị đơn giá Tinh Hồn của mốc hiện tại (giá tăng dần theo mốc), " +
                  "thay cho tỉ lệ quy đổi cố định cũ.")]
         [SerializeField] private Text honCostRateText;
         [SerializeField] private Text nextHonLimitText;
@@ -54,12 +54,33 @@ namespace Clan
 
         private Network.Models.Clans.Clan Clan => Handler?.CurrentClan;
 
+        // ============================================================
+        // Bảng màu rich text. Nhãn 【...】 dùng #ffb143 theo đúng quy ước sẵn có
+        // của dự án (SkillProvider, HerbProvider, NgoDaoToolTip...).
+        // ============================================================
+
+        private const string ColorLabel = "#ffb143";  // nhãn 【...】
+        private const string ColorHon = "#C084FC";    // Hồn
+        private const string ColorSoul = "#22D3EE";   // Tinh Hồn
+        private const string ColorFunds = "#FFD166";  // Quỹ
+        private const string ColorLevel = "#5BE37D";  // cấp giới hạn
+        private const string ColorGood = "#22C55E";   // thành công / đủ điều kiện
+        private const string ColorWarn = "#EF4444";   // thiếu tài nguyên / lỗi
+        private const string ColorMuted = "#AAAAAA";  // phần phụ, ít quan trọng
+
+        private static string Label(string value) => $"<color={ColorLabel}>【{value}】</color>";
+        private static string Tint(string value, string color) => $"<color={color}>{value}</color>";
+        private static string Num(long value, string color) => $"<b><color={color}>{value:n0}</color></b>";
+        private static string Muted(string value) => $"<color={ColorMuted}>{value}</color>";
+        private static readonly string NoData = Muted("—");
+
         protected override void Start()
         {
             base.Start();
             SetEventButton(luyenHonButton, OpenLuyenHonSelection);
             SetEventButton(upgradeHonLimitButton, ConfirmUpgradeHonLimit);
             if (luyenHonSelectNum != null) luyenHonSelectNum.confirmAction.AddListener(ConfirmLuyenHon);
+            EnableRichText();
             Refresh();
         }
 
@@ -105,11 +126,23 @@ namespace Clan
         {
             var clan = Clan;
 
-            SetText(honText, clan != null ? $"Hồn: {clan.Hon:n0}/{clan.MaxHon:n0}" : "—");
-            SetText(soulEssenceText,
-                clan != null ? $"Hồn Tinh: {clan.SoulEssence:n0}/{GetMaxSoulEssence(clan):n0}" : "—");
-            SetText(fundsText, clan != null ? $"Quỹ: {clan.Funds:n0}" : "—");
-            SetText(honLimitLevelText, clan != null ? $"Giới hạn cấp {GetHonLimitLevel(clan):n0}" : "—");
+            SetText(honText, clan != null
+                ? $"{Label("Hồn")} {Num(clan.Hon, ColorHon)}{Muted($"/{clan.MaxHon:n0}")}" +
+                  (clan.Hon >= clan.MaxHon ? $" {Tint("(đã đạt giới hạn)", ColorWarn)}" : string.Empty)
+                : NoData);
+
+            SetText(soulEssenceText, clan != null
+                ? $"{Label("Tinh Hồn")} {Num(clan.SoulEssence, ColorSoul)}{Muted($"/{GetMaxSoulEssence(clan):n0}")}"
+                : NoData);
+
+            SetText(fundsText, clan != null
+                ? $"{Label("Quỹ")} {Num(clan.Funds, ColorFunds)}"
+                : NoData);
+
+            SetText(honLimitLevelText, clan != null
+                ? $"{Label("Giới hạn")} cấp {Num(GetHonLimitLevel(clan), ColorLevel)}"
+                : NoData);
+
             SetText(honCostRateText, GetHonCostRateText(clan));
 
             if (nextHonLimitText != null)
@@ -117,13 +150,18 @@ namespace Clan
                 if (clan != null && TryGetNextHonLimitInfo(clan, out var nextLevel, out var cost, out var nextMaxHon,
                         out var nextMaxSoulEssence))
                 {
+                    // Quỹ đang đủ thì tô xanh, thiếu thì tô đỏ để thấy ngay có nâng được hay không.
+                    var costColor = clan.Funds >= cost ? ColorGood : ColorWarn;
                     nextHonLimitText.text =
-                        $"Mở cấp {nextLevel:n0}: cần {cost:n0} Quỹ\n" +
-                        $"Giới hạn Hồn {nextMaxHon:n0} · Hồn Tinh {nextMaxSoulEssence:n0}";
+                        $"Mở cấp {Num(nextLevel, ColorLevel)}: cần {Num(cost, costColor)} {Tint("Quỹ", ColorFunds)}\n" +
+                        $"{Muted("Giới hạn")} {Tint("Hồn", ColorHon)} {Num(nextMaxHon, ColorHon)} " +
+                        $"{Muted("·")} {Tint("Tinh Hồn", ColorSoul)} {Num(nextMaxSoulEssence, ColorSoul)}";
                 }
                 else
                 {
-                    nextHonLimitText.text = clan != null ? "Giới hạn hồn đã đạt cấp tối đa" : "—";
+                    nextHonLimitText.text = clan != null
+                        ? Tint("Giới hạn hồn đã đạt cấp tối đa", ColorGood)
+                        : NoData;
                 }
             }
 
@@ -172,7 +210,7 @@ namespace Clan
         // Luyện hồn (chọn số lượng bằng SelectNum)
         // ============================================================
 
-        /// <summary>Số Hồn tối đa có thể luyện lúc này: chặn bởi cả MaxHon lẫn số Hồn Tinh đang có.</summary>
+        /// <summary>Số Hồn tối đa có thể luyện lúc này: chặn bởi cả MaxHon lẫn số Tinh Hồn đang có.</summary>
         private int GetMaxLuyenHonAmount(Network.Models.Clans.Clan clan)
         {
             if (clan == null) return 0;
@@ -190,13 +228,13 @@ namespace Clan
             if (isProcessing || Handler == null || clan == null || luyenHonSelectNum == null) return;
             if (!CanManage())
             {
-                NotifyGroup.Instance?.Show("Bạn không có quyền luyện hồn tông môn");
+                NotifyGroup.Instance?.Show(Tint("Bạn không có quyền luyện hồn tông môn", ColorWarn));
                 return;
             }
 
             if (clan.Hon >= clan.MaxHon)
             {
-                NotifyGroup.Instance?.Show("Hồn tông môn đã đạt giới hạn");
+                NotifyGroup.Instance?.Show($"{Tint("Hồn", ColorHon)} tông môn đã đạt giới hạn");
                 return;
             }
 
@@ -204,7 +242,8 @@ namespace Clan
             if (max <= 0)
             {
                 NotifyGroup.Instance?.Show(
-                    $"Hồn Tinh không đủ, cần {GetHonPointCost(clan.Hon + 1):n0} Hồn Tinh cho điểm Hồn tiếp theo");
+                    $"{Tint("Tinh Hồn", ColorSoul)} không đủ, cần {Num(GetHonPointCost(clan.Hon + 1), ColorWarn)} " +
+                    $"{Tint("Tinh Hồn", ColorSoul)} cho điểm {Tint("Hồn", ColorHon)} tiếp theo");
                 return;
             }
 
@@ -226,7 +265,10 @@ namespace Clan
         {
             var fromHon = Clan?.Hon ?? 0;
             var cost = GetLuyenHonCost(fromHon, amount);
-            return $"Luyện {amount:n0} Hồn (điểm {fromHon + 1:n0}-{fromHon + amount:n0}), tiêu {cost:n0} Hồn Tinh";
+            var enough = (Clan?.SoulEssence ?? 0) >= cost;
+            return $"Luyện {Num(amount, ColorHon)} {Tint("Hồn", ColorHon)} " +
+                   $"{Muted($"(điểm {fromHon + 1:n0}-{fromHon + amount:n0})")}, " +
+                   $"tiêu {Num(cost, enough ? ColorSoul : ColorWarn)} {Tint("Tinh Hồn", ColorSoul)}";
         }
 
         /// <summary>Nút Xác Nhận của SelectNum. SelectNum tự ẩn nên không cần hỏi lại lần nữa.</summary>
@@ -251,15 +293,19 @@ namespace Clan
                 if (!result.Success)
                 {
                     NotifyGroup.Instance?.Show(string.IsNullOrWhiteSpace(result.Message)
-                        ? "Không thể luyện hồn"
+                        ? Tint("Không thể luyện hồn", ColorWarn)
                         : result.Message);
                 }
                 else
                 {
                     // Server mua tối đa trong khả năng rồi dừng, nên AddedHon có thể nhỏ hơn số đã yêu cầu.
                     var message = result.AddedHon < requestedHon
-                        ? $"Chỉ luyện được {result.AddedHon:n0}/{requestedHon:n0} Hồn (không đủ Hồn Tinh), tiêu {result.SoulEssenceSpent:n0} Hồn Tinh"
-                        : $"Luyện hồn thành công: +{result.AddedHon:n0} Hồn, tiêu {result.SoulEssenceSpent:n0} Hồn Tinh";
+                        ? $"Chỉ luyện được {Num(result.AddedHon, ColorWarn)}{Muted($"/{requestedHon:n0}")} " +
+                          $"{Tint("Hồn", ColorHon)} {Muted("(không đủ Tinh Hồn)")}, " +
+                          $"tiêu {Num(result.SoulEssenceSpent, ColorSoul)} {Tint("Tinh Hồn", ColorSoul)}"
+                        : $"Luyện hồn thành công: {Tint("+", ColorGood)}{Num(result.AddedHon, ColorGood)} " +
+                          $"{Tint("Hồn", ColorHon)}, tiêu {Num(result.SoulEssenceSpent, ColorSoul)} " +
+                          $"{Tint("Tinh Hồn", ColorSoul)}";
                     NotifyGroup.Instance?.Show(message);
                     Refresh();
                     panel?.RefreshClanSummary();
@@ -268,7 +314,7 @@ namespace Clan
             catch (Exception exception)
             {
                 Debug.LogException(exception, this);
-                NotifyGroup.Instance?.Show("Không thể luyện hồn, vui lòng thử lại");
+                NotifyGroup.Instance?.Show(Tint("Không thể luyện hồn, vui lòng thử lại", ColorWarn));
             }
             finally
             {
@@ -286,26 +332,29 @@ namespace Clan
             if (isProcessing || Handler == null || clan == null) return;
             if (!CanManage())
             {
-                NotifyGroup.Instance?.Show("Bạn không có quyền nâng giới hạn hồn tông môn");
+                NotifyGroup.Instance?.Show(Tint("Bạn không có quyền nâng giới hạn hồn tông môn", ColorWarn));
                 return;
             }
 
             if (!TryGetNextHonLimitInfo(clan, out var nextLevel, out var cost, out var nextMaxHon,
                     out var nextMaxSoulEssence))
             {
-                NotifyGroup.Instance?.Show("Giới hạn hồn đã đạt cấp tối đa");
+                NotifyGroup.Instance?.Show(Tint("Giới hạn hồn đã đạt cấp tối đa", ColorGood));
                 return;
             }
 
             if (clan.Funds < cost)
             {
-                NotifyGroup.Instance?.Show($"Quỹ tông môn không đủ, cần {cost:n0}");
+                NotifyGroup.Instance?.Show(
+                    $"{Tint("Quỹ", ColorFunds)} tông môn không đủ, cần {Num(cost, ColorWarn)}");
                 return;
             }
 
             Pool.Get<PopupConfirmAction>()?.ShowPopConfirmAction(
-                $"Tiêu {cost:n0} Quỹ tông môn để mở giới hạn hồn cấp {nextLevel:n0}.\n" +
-                $"Giới hạn Hồn: {nextMaxHon:n0}\nGiới hạn Hồn Tinh: {nextMaxSoulEssence:n0}",
+                $"Tiêu {Num(cost, ColorFunds)} {Tint("Quỹ", ColorFunds)} tông môn để mở giới hạn hồn " +
+                $"cấp {Num(nextLevel, ColorLevel)}.\n" +
+                $"{Muted("Giới hạn Hồn:")} {Num(nextMaxHon, ColorHon)}\n" +
+                $"{Muted("Giới hạn Tinh Hồn:")} {Num(nextMaxSoulEssence, ColorSoul)}",
                 () => _ = UpgradeHonLimit(nextLevel));
         }
 
@@ -319,13 +368,15 @@ namespace Clan
                 if (!result.Success)
                 {
                     NotifyGroup.Instance?.Show(string.IsNullOrWhiteSpace(result.Message)
-                        ? "Không thể nâng giới hạn hồn"
+                        ? Tint("Không thể nâng giới hạn hồn", ColorWarn)
                         : result.Message);
                 }
                 else
                 {
                     NotifyGroup.Instance?.Show(
-                        $"Nâng giới hạn hồn thành công: +{result.AddedMaxHon:n0} giới hạn Hồn, tiêu {result.FundsSpent:n0} Quỹ");
+                        $"Nâng giới hạn hồn thành công: {Tint("+", ColorGood)}{Num(result.AddedMaxHon, ColorGood)} " +
+                        $"giới hạn {Tint("Hồn", ColorHon)}, tiêu {Num(result.FundsSpent, ColorFunds)} " +
+                        $"{Tint("Quỹ", ColorFunds)}");
                     Refresh();
                     panel?.RefreshClanSummary();
                 }
@@ -333,7 +384,7 @@ namespace Clan
             catch (Exception exception)
             {
                 Debug.LogException(exception, this);
-                NotifyGroup.Instance?.Show("Không thể nâng giới hạn hồn, vui lòng thử lại");
+                NotifyGroup.Instance?.Show(Tint("Không thể nâng giới hạn hồn, vui lòng thử lại", ColorWarn));
             }
             finally
             {
@@ -357,7 +408,7 @@ namespace Clan
         }
 
         // ============================================================
-        // Chi phí Hồn Tinh theo bậc thang (mô phỏng đúng công thức server)
+        // Chi phí Tinh Hồn theo bậc thang (mô phỏng đúng công thức server)
         //
         //     tier    = (N - 1) / SoulEssenceHonCostTierSize
         //     cost(N) = SoulEssenceHonCostBase + tier * SoulEssenceHonCostGrowthPerTier
@@ -380,7 +431,7 @@ namespace Clan
             return Math.Max(0, Handler?.CurrentConfig?.SoulEssenceHonCostGrowthPerTier ?? 0);
         }
 
-        /// <summary>Chi phí Hồn Tinh của riêng điểm Hồn thứ <paramref name="honPoint"/> (đếm từ 1).</summary>
+        /// <summary>Chi phí Tinh Hồn của riêng điểm Hồn thứ <paramref name="honPoint"/> (đếm từ 1).</summary>
         private long GetHonPointCost(long honPoint)
         {
             if (honPoint < 1) honPoint = 1;
@@ -418,7 +469,7 @@ namespace Clan
         }
 
         /// <summary>
-        /// Số điểm Hồn nhiều nhất có thể luyện với <paramref name="budget"/> Hồn Tinh,
+        /// Số điểm Hồn nhiều nhất có thể luyện với <paramref name="budget"/> Tinh Hồn,
         /// không vượt quá <paramref name="cap"/> (phần còn trống tới MaxHon).
         /// </summary>
         private long GetAffordableHonAmount(long fromHon, long budget, long cap)
@@ -459,16 +510,22 @@ namespace Clan
         /// <summary>Dòng mô tả đơn giá: giá mốc hiện tại + mốc kế tiếp giá bao nhiêu.</summary>
         private string GetHonCostRateText(Network.Models.Clans.Clan clan)
         {
-            var hon = clan?.Hon ?? 0;
+            if (clan == null) return NoData;
+
+            var hon = clan.Hon;
             var tierSize = GetHonCostTierSize();
             var costNow = GetHonPointCost(hon + 1);
+            var tierStart = hon / tierSize * tierSize + 1;
             var tierEnd = (hon / tierSize + 1) * tierSize;
             var growth = GetHonCostGrowthPerTier();
 
-            var text = $"Mốc hiện tại (điểm {hon / tierSize * tierSize + 1:n0}-{tierEnd:n0}): {costNow:n0} Hồn Tinh/điểm";
+            var text = $"{Label("Mốc hiện tại")} {Muted($"điểm {tierStart:n0}-{tierEnd:n0}")} " +
+                       $"{Num(costNow, ColorSoul)} {Tint("Tinh Hồn", ColorSoul)}{Muted("/điểm")}";
             if (growth > 0)
             {
-                text += $"\nTừ điểm {tierEnd + 1:n0}: {costNow + growth:n0} Hồn Tinh/điểm";
+                // Mốc kế tiếp tô đỏ cho thấy giá sẽ đắt lên, nhắc người chơi luyện sớm.
+                text += $"\n{Muted($"Từ điểm {tierEnd + 1:n0}:")} {Num(costNow + growth, ColorWarn)} " +
+                        $"{Tint("Tinh Hồn", ColorSoul)}{Muted("/điểm")}";
             }
 
             return text;
@@ -527,6 +584,25 @@ namespace Clan
         private static void SetText(Text target, string value)
         {
             if (target != null) target.text = value ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Bật Rich Text cho toàn bộ Text của popup. Prefab được gán tay nên nếu quên tick
+        /// Rich Text trong Inspector thì các thẻ màu sẽ hiện ra dạng chữ thô; bật ở đây cho chắc.
+        /// </summary>
+        private void EnableRichText()
+        {
+            EnableRichText(honText);
+            EnableRichText(soulEssenceText);
+            EnableRichText(fundsText);
+            EnableRichText(honLimitLevelText);
+            EnableRichText(honCostRateText);
+            EnableRichText(nextHonLimitText);
+        }
+
+        private static void EnableRichText(Text target)
+        {
+            if (target != null) target.supportRichText = true;
         }
 
         protected override void OnDestroy()
