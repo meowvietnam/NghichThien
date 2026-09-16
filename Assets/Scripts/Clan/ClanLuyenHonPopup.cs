@@ -17,8 +17,9 @@ namespace Clan
     /// <see cref="ClanPermission.ManageHon"/>.
     ///
     /// Bám theo ClanMessages/ClanHandler hiện tại:
-    /// - Luyện hồn: tiêu Hồn Tinh (SoulEssence) theo tỉ lệ ClanConfig.SoulEssencePerHon để tăng Hồn,
-    ///   chặn trên bởi Clan.MaxHon. Số lượng do người chơi chọn bằng SelectNum.
+    /// - Luyện hồn: tiêu Hồn Tinh (SoulEssence) để tăng Hồn, chặn trên bởi Clan.MaxHon. Giá theo BẬC
+    ///   THANG dựa trên điểm Hồn đang luyện (xem GetHonPointCost), nên một lượt đi qua nhiều mốc
+    ///   phải cộng dồn từng điểm chứ không nhân đơn giá chung. Số lượng do người chơi chọn bằng SelectNum.
     /// - Nâng giới hạn: tiêu Quỹ theo ClanConfig.UpgradeHonLimitFundCostByLevel để lên
     ///   Clan.HonLimitLevel kế tiếp, kéo theo MaxHon (MaxHonByLimitLevel) và giới hạn Hồn Tinh
     ///   (MaxSoulEssenceByLimitLevel). Handler.UpgradeMaxHon nhận CẤP giới hạn, không phải số quỹ.
@@ -30,7 +31,9 @@ namespace Clan
         [SerializeField] private Text soulEssenceText;
         [SerializeField] private Text fundsText;
         [SerializeField] private Text honLimitLevelText;
-        [SerializeField] private Text soulEssencePerHonText;
+        [Tooltip("Hiển thị đơn giá Hồn Tinh của mốc hiện tại (giá tăng dần theo mốc), " +
+                 "thay cho tỉ lệ quy đổi cố định cũ.")]
+        [SerializeField] private Text honCostRateText;
         [SerializeField] private Text nextHonLimitText;
 
         [Header("Thao tác")]
@@ -47,6 +50,7 @@ namespace Clan
 
         private ClanPanel panel;
         private bool isProcessing;
+        private long requestedHon;
 
         private Network.Models.Clans.Clan Clan => Handler?.CurrentClan;
 
@@ -106,7 +110,7 @@ namespace Clan
                 clan != null ? $"Hồn Tinh: {clan.SoulEssence:n0}/{GetMaxSoulEssence(clan):n0}" : "—");
             SetText(fundsText, clan != null ? $"Quỹ: {clan.Funds:n0}" : "—");
             SetText(honLimitLevelText, clan != null ? $"Giới hạn cấp {GetHonLimitLevel(clan):n0}" : "—");
-            SetText(soulEssencePerHonText, $"1 Hồn = {GetSoulEssencePerHon():n0} Hồn Tinh");
+            SetText(honCostRateText, GetHonCostRateText(clan));
 
             if (nextHonLimitText != null)
             {
@@ -174,8 +178,10 @@ namespace Clan
             if (clan == null) return 0;
 
             var remaining = Math.Max(0, clan.MaxHon - clan.Hon);
-            var affordable = Math.Max(0, clan.SoulEssence / GetSoulEssencePerHon());
-            return (int)Math.Min(int.MaxValue, Math.Min(remaining, affordable));
+            if (remaining <= 0) return 0;
+
+            var affordable = GetAffordableHonAmount(clan.Hon, clan.SoulEssence, remaining);
+            return (int)Math.Min(int.MaxValue, affordable);
         }
 
         private void OpenLuyenHonSelection()
@@ -197,7 +203,8 @@ namespace Clan
             var max = GetMaxLuyenHonAmount(clan);
             if (max <= 0)
             {
-                NotifyGroup.Instance?.Show($"Hồn Tinh không đủ, cần {GetSoulEssencePerHon():n0} Hồn Tinh cho 1 Hồn");
+                NotifyGroup.Instance?.Show(
+                    $"Hồn Tinh không đủ, cần {GetHonPointCost(clan.Hon + 1):n0} Hồn Tinh cho điểm Hồn tiếp theo");
                 return;
             }
 
@@ -217,7 +224,9 @@ namespace Clan
 
         private string GetLuyenHonPreviewText(long amount)
         {
-            return $"Luyện {amount:n0} Hồn, tiêu {amount * GetSoulEssencePerHon():n0} Hồn Tinh";
+            var fromHon = Clan?.Hon ?? 0;
+            var cost = GetLuyenHonCost(fromHon, amount);
+            return $"Luyện {amount:n0} Hồn (điểm {fromHon + 1:n0}-{fromHon + amount:n0}), tiêu {cost:n0} Hồn Tinh";
         }
 
         /// <summary>Nút Xác Nhận của SelectNum. SelectNum tự ẩn nên không cần hỏi lại lần nữa.</summary>
@@ -228,6 +237,7 @@ namespace Clan
             var amount = luyenHonSelectNum.GetValue();
             if (amount <= 0) return;
 
+            requestedHon = amount;
             _ = LuyenHon(amount);
         }
 
@@ -246,8 +256,11 @@ namespace Clan
                 }
                 else
                 {
-                    NotifyGroup.Instance?.Show(
-                        $"Luyện hồn thành công: +{result.AddedHon:n0} Hồn, tiêu {result.SoulEssenceSpent:n0} Hồn Tinh");
+                    // Server mua tối đa trong khả năng rồi dừng, nên AddedHon có thể nhỏ hơn số đã yêu cầu.
+                    var message = result.AddedHon < requestedHon
+                        ? $"Chỉ luyện được {result.AddedHon:n0}/{requestedHon:n0} Hồn (không đủ Hồn Tinh), tiêu {result.SoulEssenceSpent:n0} Hồn Tinh"
+                        : $"Luyện hồn thành công: +{result.AddedHon:n0} Hồn, tiêu {result.SoulEssenceSpent:n0} Hồn Tinh";
+                    NotifyGroup.Instance?.Show(message);
                     Refresh();
                     panel?.RefreshClanSummary();
                 }
@@ -343,9 +356,122 @@ namespace Clan
             return Math.Max(1, clan?.HonLimitLevel ?? Handler?.CurrentConfig?.CreateClanHonLimitLevel ?? 1);
         }
 
-        private long GetSoulEssencePerHon()
+        // ============================================================
+        // Chi phí Hồn Tinh theo bậc thang (mô phỏng đúng công thức server)
+        //
+        //     tier    = (N - 1) / SoulEssenceHonCostTierSize
+        //     cost(N) = SoulEssenceHonCostBase + tier * SoulEssenceHonCostGrowthPerTier
+        //
+        // với N là điểm Hồn thứ mấy đang được luyện (N = Hồn hiện tại + 1).
+        // ============================================================
+
+        private long GetHonCostBase()
         {
-            return Math.Max(1, Handler?.CurrentConfig?.SoulEssencePerHon ?? 1);
+            return Math.Max(0, Handler?.CurrentConfig?.SoulEssenceHonCostBase ?? 0);
+        }
+
+        private long GetHonCostTierSize()
+        {
+            return Math.Max(1, Handler?.CurrentConfig?.SoulEssenceHonCostTierSize ?? 1);
+        }
+
+        private long GetHonCostGrowthPerTier()
+        {
+            return Math.Max(0, Handler?.CurrentConfig?.SoulEssenceHonCostGrowthPerTier ?? 0);
+        }
+
+        /// <summary>Chi phí Hồn Tinh của riêng điểm Hồn thứ <paramref name="honPoint"/> (đếm từ 1).</summary>
+        private long GetHonPointCost(long honPoint)
+        {
+            if (honPoint < 1) honPoint = 1;
+            var tier = (honPoint - 1) / GetHonCostTierSize();
+            return GetHonCostBase() + tier * GetHonCostGrowthPerTier();
+        }
+
+        /// <summary>
+        /// Tổng chi phí để luyện <paramref name="amount"/> điểm Hồn kế tiếp khi đang có
+        /// <paramref name="fromHon"/> điểm. Cộng dồn theo từng điểm, chỉ gom các điểm CÙNG một mốc
+        /// lại để tính một lần cho nhanh - kết quả giống hệt vòng lặp từng điểm.
+        /// </summary>
+        private long GetLuyenHonCost(long fromHon, long amount)
+        {
+            if (amount <= 0) return 0;
+            if (fromHon < 0) fromHon = 0;
+
+            var tierSize = GetHonCostTierSize();
+            long total = 0;
+            var current = fromHon;
+            var left = amount;
+
+            while (left > 0)
+            {
+                var costPerPoint = GetHonPointCost(current + 1);
+                var pointsLeftInTier = tierSize - current % tierSize;
+                var take = Math.Min(left, pointsLeftInTier);
+
+                total += take * costPerPoint;
+                current += take;
+                left -= take;
+            }
+
+            return total;
+        }
+
+        /// <summary>
+        /// Số điểm Hồn nhiều nhất có thể luyện với <paramref name="budget"/> Hồn Tinh,
+        /// không vượt quá <paramref name="cap"/> (phần còn trống tới MaxHon).
+        /// </summary>
+        private long GetAffordableHonAmount(long fromHon, long budget, long cap)
+        {
+            if (cap <= 0 || budget <= 0) return 0;
+            if (fromHon < 0) fromHon = 0;
+
+            var tierSize = GetHonCostTierSize();
+            long count = 0;
+            var current = fromHon;
+            var remaining = budget;
+
+            while (count < cap)
+            {
+                var costPerPoint = GetHonPointCost(current + 1);
+                if (costPerPoint <= 0)
+                {
+                    // Cấu hình giá 0 -> mua được hết phần còn trống, thoát luôn kẻo lặp vô hạn.
+                    count = cap;
+                    break;
+                }
+
+                var affordableHere = remaining / costPerPoint;
+                if (affordableHere <= 0) break;
+
+                var pointsLeftInTier = tierSize - current % tierSize;
+                var take = Math.Min(Math.Min(cap - count, pointsLeftInTier), affordableHere);
+                if (take <= 0) break;
+
+                remaining -= take * costPerPoint;
+                count += take;
+                current += take;
+            }
+
+            return count;
+        }
+
+        /// <summary>Dòng mô tả đơn giá: giá mốc hiện tại + mốc kế tiếp giá bao nhiêu.</summary>
+        private string GetHonCostRateText(Network.Models.Clans.Clan clan)
+        {
+            var hon = clan?.Hon ?? 0;
+            var tierSize = GetHonCostTierSize();
+            var costNow = GetHonPointCost(hon + 1);
+            var tierEnd = (hon / tierSize + 1) * tierSize;
+            var growth = GetHonCostGrowthPerTier();
+
+            var text = $"Mốc hiện tại (điểm {hon / tierSize * tierSize + 1:n0}-{tierEnd:n0}): {costNow:n0} Hồn Tinh/điểm";
+            if (growth > 0)
+            {
+                text += $"\nTừ điểm {tierEnd + 1:n0}: {costNow + growth:n0} Hồn Tinh/điểm";
+            }
+
+            return text;
         }
 
         private long GetMaxSoulEssence(Network.Models.Clans.Clan clan)

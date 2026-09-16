@@ -53,7 +53,14 @@ namespace Network.Models.Clans
         public int MemberSlotLevelInterval { get; set; } = 1;
         public int MemberSlotsPerInterval { get; set; } = 5;
         public int CreateClanHonLimitLevel { get; set; } = 1;
-        public long SoulEssencePerHon { get; set; } = 1;
+        // Chi phí Hồn Tinh để luyện điểm Hồn thứ N (N đếm từ 1) tính theo bậc thang:
+        //     tier    = (N - 1) / SoulEssenceHonCostTierSize
+        //     cost(N) = SoulEssenceHonCostBase + tier * SoulEssenceHonCostGrowthPerTier
+        // VD base=1000, tierSize=50, growth=1000: điểm 1-50 giá 1000, 51-100 giá 2000, 101-150 giá 3000...
+        // THỨ TỰ 3 field này phải khớp đúng thứ tự bên server (MemoryPack ghi/đọc theo thứ tự khai báo).
+        public long SoulEssenceHonCostBase { get; set; } = 1_000;
+        public int SoulEssenceHonCostTierSize { get; set; } = 50;
+        public long SoulEssenceHonCostGrowthPerTier { get; set; } = 1_000;
         public long MonsterKillSoulEssenceReward { get; set; } = 1;
         public long[] MaxHonByLimitLevel { get; set; } = new long[] { 100 };
         public long[] MaxSoulEssenceByLimitLevel { get; set; } = new long[] { 1_000 };
