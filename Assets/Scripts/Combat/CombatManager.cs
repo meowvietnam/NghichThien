@@ -1104,10 +1104,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     {
         if(charCb.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon,out SecureInt hon))
         {
-
-            charCb.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, charCb.characterStatsBase.pointHon.Value);
-
-
+            charCb.AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, charCb.characterStatsBase.pointHon.Value);
         }
         else
         {
@@ -1118,8 +1115,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     {
         char1.InitStaticCombatEffect();
         char2.InitStaticCombatEffect();
-        AddBuffLuyenHon(char1);
-        AddBuffLuyenHon(char2);
+
 
         currentTurn = charCombat;
 
@@ -1127,6 +1123,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         StartEquipment(targetTurn);
         NewTurn();
         StartCoroutine(CheckDieCoroutine());
+        AddBuffLuyenHon(currentTurn);
+        AddBuffLuyenHon(targetTurn);
     }
 
     private void StartTurnPVP(params object[] data)
@@ -1257,11 +1255,10 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             case EffectType.Bui:
 
                 return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Tran, Value); };
-            case EffectType.Hon:
-
-                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, Value); };
             case EffectType.Cat:
                 return (caster, target) => { target.AddBuffAndDebuffCount(EBuffAndDeBuff.Cat, Value); };
+            case EffectType.Hon:
+                return (caster, target) => { target.AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, Value); };
             case EffectType.ChanHoa:
                 return (caster, target) =>
                 {

@@ -15,11 +15,11 @@ public class DaiLaThienHuyenQuyet : CongPhap, IMemorySerializable<DaiLaThienHuye
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         if (caster.congPhapDynamic.Count(x => x.congPhap is DaiLaThienHuyenQuyet) >=
-               requires[CurrentLevelCongPhapInCombat(caster) - 1])
-           {
-               RemoveCongPhap(caster);
-               target.AddDamageData(new List<long> { target.GetDameBuffForTarget() });
-           }
+            requires[CurrentLevelCongPhapInCombat(caster) - 1])
+        {
+            RemoveCongPhap(caster);
+            target.AddDamageData(new List<int> { target.GetDameBuffForTarget() });
+        }
         else
         {
             caster.AddCPDynamic(GetCongPhapMono(caster.congPhapEquip));

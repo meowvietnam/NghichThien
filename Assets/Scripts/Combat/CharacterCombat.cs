@@ -1413,9 +1413,9 @@ public class CharacterCombat : MonoBehaviour
         isSkipTieuTanLinhKhi = false;
     }
 
-    public long GetDameBuffForTarget()
+    public int GetDameBuffForTarget()
     {
-        long dameBuff = 0;
+        int dameBuff = 0;
         foreach (var item in allDamages)
         {
             if (item > 0)
@@ -1428,9 +1428,9 @@ public class CharacterCombat : MonoBehaviour
         return dameBuff;
     }
 
-    public List<long> allDamages = new List<long>();
+    public List<int> allDamages = new List<int>();
 
-    public void AddDamageData(List<long> dame, bool isCongDon = true)
+    public void AddDamageData(List<int> dame, bool isCongDon = true)
     {
         if (isCongDon)
         {
@@ -1442,7 +1442,7 @@ public class CharacterCombat : MonoBehaviour
             }
 
             // Chặn giá trị sum trong khoảng từ 0 đến int.MaxValue (2.14 tỷ)
-            sum = Math.Clamp(sum, 0, long.MaxValue);
+            sum = Math.Clamp(sum, 0, int.MaxValue);
 
             if (allDamages.Count > 0)
             {
@@ -1452,12 +1452,12 @@ public class CharacterCombat : MonoBehaviour
                     long currentVal = (long)allDamages[i] + sum;
 
                     // Ép ngược lại kiểu int nhưng đã được an toàn ở giới hạn int.MaxValue
-                    allDamages[i] = Math.Clamp(currentVal, 0, long.MaxValue);
+                    allDamages[i] = (int)Math.Clamp(currentVal, 0, int.MaxValue);
                 }
             }
             else
             {
-                allDamages.Add(sum);
+                allDamages.Add((int)sum);
             }
         }
         else
@@ -1470,13 +1470,8 @@ public class CharacterCombat : MonoBehaviour
         }
     }
 
-    public void AddDamageData(List<int> dame, bool isCongDon = true)
-    {
-        AddDamageData(dame.Select(x => (long)x).ToList(), isCongDon);
-    }
-
     [Button]
-    public void CaculateDameByThanThong(CharacterCombat sender, List<long> dames, BaseSkill.ETypeSkill[] eTypeSkils,
+    public void CaculateDameByThanThong(CharacterCombat sender, List<int> dames, BaseSkill.ETypeSkill[] eTypeSkils,
         bool isCongDon = false)
     {
         var listNewDames = CaculateDame(sender, dames, isCongDon, eTypeSkils);
@@ -1487,17 +1482,11 @@ public class CharacterCombat : MonoBehaviour
             Debug.Log("sender có TuyetAmDocThe");
             if (sender.characterStatsTemp.danDoc > 50)
             {
-                long dameBuff = (long)(GetDameBuffForTarget() * 0.2f);
+                int dameBuff = (int)(GetDameBuffForTarget() * 0.2f);
                 Debug.Log(GetDameBuffForTarget() + " co vao buff dame " + dameBuff);
-                AddDamageData(new List<long> { dameBuff });
+                AddDamageData(new List<int> { dameBuff });
             }
         }
-    }
-
-    public void CaculateDameByThanThong(CharacterCombat sender, List<int> dames, BaseSkill.ETypeSkill[] eTypeSkils,
-        bool isCongDon = false)
-    {
-        CaculateDameByThanThong(sender, dames.Select(x => (long)x).ToList(), eTypeSkils, isCongDon);
     }
 
     public void NotifyEventCaculateDameForCongPhapFromThanThong(CharacterCombat sender)
@@ -1508,16 +1497,28 @@ public class CharacterCombat : MonoBehaviour
         }
 
         Observer.Notify(EventList.Combat.CACULATE_DAME_BY_THANTHONG, sender, this, allDamages);
-        listDameTaked[listDameTaked.Count - 1] += (int)Math.Clamp(allDamages.Sum(), 0, int.MaxValue);
+
+        // 1. Tính tổng allDamages bằng kiểu long để không tràn khi Sum
+        long sumDamage = 0;
+        for (int i = 0; i < allDamages.Count; i++)
+        {
+            sumDamage += allDamages[i];
+        }
+
+        // 2. Lấy giá trị hiện tại của SecureInt ra kiểu long
+        long currentDamage = listDameTaked[listDameTaked.Count - 1];
+        long finalDamage = currentDamage + sumDamage;
+
+        // 3. Giới hạn tối đa bằng int.MaxValue trước khi gán lại vào SecureInt
+        if (finalDamage > int.MaxValue)
+        {
+            finalDamage = int.MaxValue;
+        }
+
+        listDameTaked[listDameTaked.Count - 1] = (int)finalDamage;
     }
 
-    public void TakeDameByStatic(CharacterCombat sender, List<int> dames, bool isCongDon = false,
-        BaseSkill.ETypeSkill[] eTypeSkils = null, bool isDef = true)
-    {
-        TakeDameByStatic(sender, dames.Select(x => (long)x).ToList(), isCongDon, eTypeSkils, isDef);
-    }
-
-    private List<long> CaculateDameForStatic(CharacterCombat sender, List<long> dames, bool isCongDon = false,
+    private List<int> CaculateDameForStatic(CharacterCombat sender, List<int> dames, bool isCongDon = false,
         BaseSkill.ETypeSkill[] eTypeSkils = null)
     {
         if (dames.All(x => x <= 0))
@@ -1580,7 +1581,7 @@ public class CharacterCombat : MonoBehaviour
             // Apply SuongGia (sender's damage reduction)
             damageModifier = new SuongGiaDecorator(damageModifier, dames[0], sender);
             // Calculate final damage
-            long finalDame = damageModifier.Calculate();
+            int finalDame = damageModifier.Calculate();
             for (int i = 0; i < dames.Count; i++)
             {
                 dames[i] = finalDame;
@@ -1591,7 +1592,7 @@ public class CharacterCombat : MonoBehaviour
         return dames;
     }
 
-    private List<long> CaculateDame(CharacterCombat sender, List<long> dames, bool isCongDon = false,
+    private List<int> CaculateDame(CharacterCombat sender, List<int> dames, bool isCongDon = false,
         BaseSkill.ETypeSkill[] eTypeSkils = null)
     {
         if (dames.All(x => x <= 0))
@@ -1662,7 +1663,7 @@ public class CharacterCombat : MonoBehaviour
             // Apply SuongGia (sender's damage reduction)
             damageModifier = new SuongGiaDecorator(damageModifier, dames[0], sender);
             // Calculate final damage
-            long finalDame = damageModifier.Calculate();
+            int finalDame = damageModifier.Calculate();
             for (int i = 0; i < dames.Count; i++)
             {
                 dames[i] = finalDame;
@@ -1673,7 +1674,7 @@ public class CharacterCombat : MonoBehaviour
         return dames;
     }
 
-    public void TakeDameByStatic(CharacterCombat sender, List<long> dames, bool isCongDon = false,
+    public void TakeDameByStatic(CharacterCombat sender, List<int> dames, bool isCongDon = false,
         BaseSkill.ETypeSkill[] eTypeSkils = null, bool isDef = true)
     {
         if (dames.All(x => x <= 0))
@@ -1759,8 +1760,8 @@ public class CharacterCombat : MonoBehaviour
         List<DameData> listDameData = new List<DameData>();
         for (int i = 0; i < allDamages.Count; i++)
         {
-            long finalDame = 0;
-            long finalDameHoTrao = 0;
+            int finalDame = 0;
+            int finalDameHoTrao = 0;
 
             if (!isDef)
             {
@@ -1794,7 +1795,7 @@ public class CharacterCombat : MonoBehaviour
         allDamages.Clear();
     }
 
-    private void TakeVisualDameHoTrao(long dameHoTrao)
+    private void TakeVisualDameHoTrao(int dameHoTrao)
     {
         if (dameHoTrao > 0)
         {
@@ -1802,14 +1803,14 @@ public class CharacterCombat : MonoBehaviour
         }
     }
 
-    private void TakeVisualDame(long dame, bool isDef)
+    private void TakeVisualDame(int dame, bool isDef)
     {
         if (dame <= 0)
         {
             return;
         }
 
-        characterStatsTemp.hp -= (int)Math.Clamp(dame, 0, int.MaxValue);
+        characterStatsTemp.hp -= dame;
         characterStatsTemp.hp = Mathf.Clamp(characterStatsTemp.hp, 0, characterStatsTemp.hpMax);
         StartAnimHit();
         SetTextDameAnim($"-{dame}", isDef ? Color.red : Color.purple);
@@ -1847,8 +1848,8 @@ public class CharacterCombat : MonoBehaviour
         }
     }
 
-    private void TakeDame(CharacterCombat sender, long dame, bool isDef, bool isNeTranh, ref long finalDame,
-        ref long finalDameHoTrao)
+    private void TakeDame(CharacterCombat sender, int dame, bool isDef, bool isNeTranh, ref int finalDame,
+        ref int finalDameHoTrao)
     {
         var combatManager = Pool.Get<CombatManager>();
         if (!combatManager.IsSync && combatManager.IsRealTimeCombat)
@@ -1864,9 +1865,10 @@ public class CharacterCombat : MonoBehaviour
 
         if (isDef)
         {
-            long hotraoMax = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.HoTrao, 0);
-            RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, (int)Math.Clamp(dame, 0, int.MaxValue));
-            long textDameHoTrao = hotraoMax > dame ? dame : hotraoMax;
+            int hotraoMax = buffAndDebuffCount.GetValueOrDefault(EBuffAndDeBuff.HoTrao, 0);
+            hotraoMax = Mathf.Clamp(hotraoMax, 0, int.MaxValue);
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, dame);
+            int textDameHoTrao = hotraoMax > dame ? dame : hotraoMax;
             if (hotraoMax > 0)
             {
                 TakeVisualDameHoTrao(textDameHoTrao);
@@ -1876,15 +1878,15 @@ public class CharacterCombat : MonoBehaviour
             dame -= hotraoMax;
         }
 
-        dame = Math.Clamp(dame, 0, long.MaxValue);
+        dame = Mathf.Clamp(dame, 0, int.MaxValue);
 
-        RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, (int)Math.Clamp(dame, 0, int.MaxValue));
+        RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, dame);
         if (dame > 0)
         {
             finalDame = dame;
             if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.HonLuc, out SecureInt honLuc))
             {
-                    RemoveBuffAndDebuffCount(EBuffAndDeBuff.HonLuc, (int)Math.Clamp(dame, 0, int.MaxValue), () =>
+                RemoveBuffAndDebuffCount(EBuffAndDeBuff.HonLuc, dame, () =>
                 {
                     if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.QuyLinh, out SecureInt QuyLinh))
                     {

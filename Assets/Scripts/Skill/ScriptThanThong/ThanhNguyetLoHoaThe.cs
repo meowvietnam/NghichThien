@@ -42,8 +42,8 @@ public class ThanhNguyetLoHoaThe : ThanThong, IMemorySerializable<ThanhNguyetLoH
         {
             for (int i = 0; i < targetTurn.allDamages.Count; i++)
             {
-                long item = targetTurn.allDamages[i];
-                long dame = (long)(item * percent / 100f);
+                int item = targetTurn.allDamages[i];
+                int dame = (int)(item * percent / 100f);
                 targetTurn.allDamages[i] -= dame;
                 targetTurn.AddBuffAndDebuffCount(EBuffAndDeBuff.TreKhi, buffs[GetIndexLevelThanThong(targetTurn)]);
             }

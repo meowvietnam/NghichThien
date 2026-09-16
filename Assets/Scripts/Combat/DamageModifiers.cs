@@ -3,21 +3,21 @@ using UnityEngine;
 
 public interface IDamageModifier
 {
-    long Calculate();
+    int Calculate();
 }
 
 public abstract class BaseDamageModifier : IDamageModifier
 {
     protected readonly IDamageModifier _innerModifier;
-    protected long _baseDamage;
+    protected int _baseDamage;
 
-    protected BaseDamageModifier(IDamageModifier innerModifier, long baseDamage)
+    protected BaseDamageModifier(IDamageModifier innerModifier, int baseDamage)
     {
         _innerModifier = innerModifier;
         _baseDamage = baseDamage;
     }
 
-    public virtual long Calculate()
+    public virtual int Calculate()
     {
         return _innerModifier?.Calculate() ?? _baseDamage;
     }
@@ -25,14 +25,14 @@ public abstract class BaseDamageModifier : IDamageModifier
 
 public class PlainDamageModifier : IDamageModifier
 {
-    private readonly long _damage;
+    private readonly int _damage;
 
-    public PlainDamageModifier(long damage)
+    public PlainDamageModifier(int damage)
     {
         _damage = damage;
     }
 
-    public long Calculate() => _damage;
+    public int Calculate() => _damage;
 }
 
 /// <summary>
@@ -46,7 +46,7 @@ public class OffensiveBuffDecorator : BaseDamageModifier
 
     public OffensiveBuffDecorator(
         IDamageModifier innerModifier,
-        long baseDamage,
+        int baseDamage,
         CharacterCombat sender,
         EBuffAndDeBuff buffType,
         BaseSkill.ETypeSkill[] eTypeSkils)
@@ -57,9 +57,9 @@ public class OffensiveBuffDecorator : BaseDamageModifier
         _eTypeSkils = eTypeSkils;
     }
 
-    public override long Calculate()
+    public override int Calculate()
     {
-        long damage = base.Calculate();
+        int damage = base.Calculate();
 
         if (_sender != null && _eTypeSkils != null &&
             _sender.buffAndDebuffCount.TryGetValue(_buffType, out SecureInt buffValue))
@@ -135,7 +135,7 @@ public class DefenseDebuffDecorator : BaseDamageModifier
 
     public DefenseDebuffDecorator(
         IDamageModifier innerModifier,
-        long baseDamage,
+        int baseDamage,
         CharacterCombat defender,
         EBuffAndDeBuff debuffType,
         BaseSkill.ETypeSkill[] eTypeSkils)
@@ -146,9 +146,9 @@ public class DefenseDebuffDecorator : BaseDamageModifier
         _eTypeSkils = eTypeSkils;
     }
 
-    public override long Calculate()
+    public override int Calculate()
     {
-        long damage = base.Calculate();
+        int damage = base.Calculate();
 
         if (_defender != null && _defender.buffAndDebuffCount.TryGetValue(_debuffType, out SecureInt debuffValue))
         {
@@ -158,7 +158,7 @@ public class DefenseDebuffDecorator : BaseDamageModifier
             }
         }
 
-        return Math.Clamp(damage, 0, long.MaxValue);
+        return Mathf.Clamp(damage, 0, int.MaxValue);
     }
 
     private bool MatchesDebuffType(EBuffAndDeBuff debuffType)
@@ -183,15 +183,15 @@ public class SuongGiaDecorator : BaseDamageModifier
 {
     private readonly CharacterCombat _sender;
 
-    public SuongGiaDecorator(IDamageModifier innerModifier, long baseDamage, CharacterCombat sender)
+    public SuongGiaDecorator(IDamageModifier innerModifier, int baseDamage, CharacterCombat sender)
         : base(innerModifier, baseDamage)
     {
         _sender = sender;
     }
 
-    public override long Calculate()
+    public override int Calculate()
     {
-        long damage = base.Calculate();
+        int damage = base.Calculate();
 
         if (_sender != null && _sender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SuongGia, out SecureInt suongGia))
         {
@@ -203,7 +203,7 @@ public class SuongGiaDecorator : BaseDamageModifier
             _sender.RemoveBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, 1);
         }
 
-        return Math.Clamp(damage, 0, long.MaxValue);
+        return Mathf.Clamp(damage, 0, int.MaxValue);
     }
 }
 
@@ -211,23 +211,23 @@ public class GiamTonThuongDecorator : BaseDamageModifier
 {
     private readonly CharacterCombat _defender;
 
-    public GiamTonThuongDecorator(IDamageModifier innerModifier, long baseDamage, CharacterCombat defender)
+    public GiamTonThuongDecorator(IDamageModifier innerModifier, int baseDamage, CharacterCombat defender)
         : base(innerModifier, baseDamage)
     {
         _defender = defender;
     }
 
-    public override long Calculate()
+    public override int Calculate()
     {
-        long damage = base.Calculate();
+        int damage = base.Calculate();
 
         if (_defender != null &&
             _defender.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.GiamTonThuong, out SecureInt giamTonThuong))
         {
-            damage -= damage * giamTonThuong / 100;
+            damage -= (int)(damage * giamTonThuong / 100f);
         }
 
-        return Math.Clamp(damage, 0, long.MaxValue);
+        return Mathf.Clamp(damage, 0, int.MaxValue);
     }
 }
 
@@ -236,7 +236,7 @@ public class BuffDameDecorator : BaseDamageModifier
     private readonly CharacterCombat _character;
     private readonly EBuffAndDeBuff _type;
 
-    public BuffDameDecorator(IDamageModifier innerModifier, long baseDamage, CharacterCombat character,
+    public BuffDameDecorator(IDamageModifier innerModifier, int baseDamage, CharacterCombat character,
         EBuffAndDeBuff typeBuff)
         : base(innerModifier, baseDamage)
     {
@@ -244,15 +244,15 @@ public class BuffDameDecorator : BaseDamageModifier
         _type = typeBuff;
     }
 
-    public override long Calculate()
+    public override int Calculate()
     {
-        long damage = base.Calculate();
+        int damage = base.Calculate();
 
         if (_character != null && _character.buffAndDebuffCount.TryGetValue(_type, out SecureInt value))
         {
-            damage += damage * value / 100;
+            damage += (int)(damage * value / 100f);
         }
 
-        return Math.Clamp(damage, 0, long.MaxValue);
+        return Mathf.Clamp(damage, 0, int.MaxValue);
     }
 }

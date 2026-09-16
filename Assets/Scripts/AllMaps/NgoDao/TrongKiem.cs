@@ -18,7 +18,7 @@ public class TrongKiem : NgoDaoCombat, IMemorySerializable<TrongKiem>
 
     public void Action(CharacterCombat caster, CharacterCombat target)
     {
-        target.AddDamageData(new List<long> { target.GetDameBuffForTarget() * buff / 100 });
+        target.AddDamageData(new List<int> { target.GetDameBuffForTarget() * buff / 100 });
         caster.RemoveNgoDaoCombatDynamic(this);
     }
 
