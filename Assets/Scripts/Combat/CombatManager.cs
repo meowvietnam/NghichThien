@@ -781,7 +781,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             }, entry.ThanThong.spriteItem, desc, entry.RemainingTurns);
             if (remove != -1)
             {
-                if (!result.isHave)
+                if (remove != -2)
                 {
                     dictAmKinhItemUI.Add(entry, result.buffIcon);
                 }
