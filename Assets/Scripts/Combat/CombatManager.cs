@@ -650,7 +650,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         }
 
         SwapTurn();
-        isSync = false;
+        // isSync = false;
         CombatStatic.AnhDich(oldCurrentTurn, oldTargetTurn);
         CombatStatic.KiemKhi(oldCurrentTurn, oldTargetTurn);
         CombatStatic.TrungDoc(oldTargetTurn, oldCurrentTurn);
@@ -941,7 +941,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();
         if (!currentTurn.IsKietSuc())
         {
-            isSync = false;
+            // isSync = false;
             CombatStatic.QuyTon(currentTurn, targetTurn);
             CombatStatic.SucThe(currentTurn, targetTurn);
             CombatStatic.ThieuDot(targetTurn, currentTurn);
@@ -1496,7 +1496,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         var oldSync = isSync;
         try
         {
-            isSync = false;
+            // isSync = false;
             baseSkill.PlayVisualSkill(charCombat, charTarget);
         }
         finally
@@ -1526,7 +1526,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         var oldSync = isSync;
         try
         {
-            isSync = false;
+            // isSync = false;
             charCombat.RemoveEffectSkillNoDestroy(baseSkill);
         }
         finally
@@ -1694,7 +1694,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         var oldSync = isSync;
         try
         {
-            isSync = false;
+            // isSync = false;
             if (SyncCPDynamic.NewCpDynamic <= 0)
             {
                 charCB.RemoveCPDynamic(congPhap);
