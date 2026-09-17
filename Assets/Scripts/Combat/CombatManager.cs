@@ -765,22 +765,16 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             CharacterCombat.AmKinhEntry entry = (CharacterCombat.AmKinhEntry)data[1];
 
             int remove = data.Length > 2 ? (int)data[2] : 0;
-            if (remove == -2)
-            {
-                foreach (var kvp in dictAmKinhItemUI)
-                {
-                    kvp.Value.Recycle();
-                }
-                dictAmKinhItemUI.Clear();
-            }
 
             string desc =
                 $"{BaseSkill.GetColoredText($"[{entry.ThanThong.nameItem}]", "#ffb143")}: {entry.ThanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level))}";
             var result = SetUIEffectStatic(characterCombat, remove == -1, (ScrollRect) =>
             {
-                if (dictAmKinhItemUI.TryGetValue(entry, out ItemUI item))
+                var item = dictAmKinhItemUI.Keys.FirstOrDefault(x =>
+                    entry.ThanThong.Id == x.ThanThong.Id && entry.RemainingTurns == x.RemainingTurns - 1);
+                if (item != null)
                 {
-                    return (true, item);
+                    return (true, dictAmKinhItemUI[item]);
                 }
 
                 return (false, null);
