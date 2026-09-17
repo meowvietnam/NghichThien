@@ -153,9 +153,6 @@ public class CharacterCombat : MonoBehaviour
 
     public void AddAmKinhTT(AmKinhTT thanThong, SecureInt countHiep)
     {
-        if (thanThong != null && thanThong != null)
-        {
-        }
 
         AmKinhEntry amKinh = new AmKinhEntry(thanThong, countHiep);
         listAmKinhTT.Add(amKinh);

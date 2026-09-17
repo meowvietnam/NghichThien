@@ -783,6 +783,10 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                     dictAmKinhItemUI.Add(entry, result.buffIcon);
                 }
             }
+            else
+            {
+                dictAmKinhItemUI.Remove(entry);
+            }
         }
     }
 
