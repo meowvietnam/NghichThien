@@ -771,7 +771,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             var result = SetUIEffectStatic(characterCombat, remove == -1, (ScrollRect) =>
             {
                 var item = dictAmKinhItemUI.Keys.FirstOrDefault(x =>
-                    entry.ThanThong.Id == x.ThanThong.Id && entry.RemainingTurns == x.RemainingTurns - 1);
+                    entry.ThanThong.Id == x.ThanThong.Id && entry.RemainingTurns == x.RemainingTurns);
                 if (item != null)
                 {
                     return (true, dictAmKinhItemUI[item]);
