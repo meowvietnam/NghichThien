@@ -1457,8 +1457,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             ? char2
             : char1;
         var thanThong = Pool.Get<GameManager>().GetThanThongWithId(syncPlaySkill.SkillId);
-        thanThong.Execute(charCombat, charTarget);
-        charCombat.VisualPlaySkill(thanThong);
+        Observer.Notify(EventList.Combat.PLAY_SKILL, charCombat, charTarget,
+            thanThong, new List<LinhKhiTieuTan>());
         charTarget.allDamages.Clear();
     }
 
