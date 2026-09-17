@@ -1555,8 +1555,9 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             ? char2
             : char1;
         var thanThong = Pool.Get<GameManager>().GetThanThongWithId(syncPlaySkill.SkillId);
+        thanThong.Execute(charCombat,charTarget);
         charCombat.VisualPlaySkill(thanThong);
-        //charTarget.allDamages.Clear();
+        charTarget.allDamages.Clear();
     }
     public void ReceiSyncEffectSkill(params object[] data)
     {
@@ -1565,12 +1566,12 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         var charTarget = charCombat.characterStatsBase.idChar.Value == char1.characterStatsBase.idChar.Value
             ? char2
             : char1;
-       
+        
         BaseSkill baseSkill = null;
         if(SyncEffectSkill.IsThanThong)
         {
-            baseSkill = Pool.Get<GameManager>().GetThanThongWithId(SyncEffectSkill.IdSkill);
-
+            // baseSkill = Pool.Get<GameManager>().GetThanThongWithId(SyncEffectSkill.IdSkill);
+            return;
         }
         else
         {
@@ -1597,8 +1598,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         BaseSkill baseSkill = null;
         if (SyncEffectSkill.IsThanThong)
         {
-            baseSkill = Pool.Get<GameManager>().GetThanThongWithId(SyncEffectSkill.IdSkill);
-
+            // baseSkill = Pool.Get<GameManager>().GetThanThongWithId(SyncEffectSkill.IdSkill);
+            return;
         }
         else
         {

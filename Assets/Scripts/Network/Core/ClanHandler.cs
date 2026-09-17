@@ -91,7 +91,7 @@ namespace Network.Core
 
         public int GetMaxShopSlots(int clanLevel)
         {
-            return Math.Max(1, clanLevel) * 3;
+            return Math.Max(1, clanLevel) * 1;
         }
 
         public (int Min, int Max) GetInheritanceValueRange(EffectType? effectType)

@@ -205,7 +205,7 @@ namespace Clan
             var slotMaximum = Handler?.MaxShopSlots ?? 0;
             var slotUsed = Handler?.ShopItemsAddedToday ?? 0;
             var slotRemaining = Math.Max(0, slotMaximum - slotUsed);
-            dailyLimitText.text = $"Slot treo: {slotUsed}/{slotMaximum} · Còn {slotRemaining}";
+            dailyLimitText.text = $"Số lượng treo: {slotUsed}/{slotMaximum} · Còn {slotRemaining}";
         }
 
         private void UpdateButton()

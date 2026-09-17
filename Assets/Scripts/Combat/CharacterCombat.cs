@@ -1430,6 +1430,11 @@ public class CharacterCombat : MonoBehaviour
 
     public void AddDamageData(List<int> dame, bool isCongDon = true)
     {
+        var combatManager = Pool.Get<CombatManager>();
+        if (!combatManager.IsSync && combatManager.IsRealTimeCombat)
+        {
+            return;
+        }
         if (isCongDon)
         {
             // 1. Dùng long để tính tổng, tránh tràn số ngay từ bước cộng danh sách
