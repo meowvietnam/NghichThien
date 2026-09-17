@@ -765,6 +765,15 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             CharacterCombat.AmKinhEntry entry = (CharacterCombat.AmKinhEntry)data[1];
 
             int remove = data.Length > 2 ? (int)data[2] : 0;
+            if (remove == -2)
+            {
+                foreach (var kvp in dictAmKinhItemUI)
+                {
+                    kvp.Value.Recycle();
+                }
+                dictAmKinhItemUI.Clear();
+            }
+
             string desc =
                 $"{BaseSkill.GetColoredText($"[{entry.ThanThong.nameItem}]", "#ffb143")}: {entry.ThanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level))}";
             var result = SetUIEffectStatic(characterCombat, remove == -1, (ScrollRect) =>
