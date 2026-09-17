@@ -19,9 +19,23 @@ namespace Network
 {
     public class NetworkManager : MonoBehaviour
     {
-        [ShowInInspector, ReadOnly] private string host => serverConfig?.Host ?? string.Empty;
-        [ShowInInspector, ReadOnly] private int port => serverConfig?.Port ?? 0;
-        [SerializeField] private ServerConfig serverConfig;
+        [ShowInInspector, ReadOnly] private string host => ServerConfig?.Host ?? string.Empty;
+        [ShowInInspector, ReadOnly] private int port => ServerConfig?.Port ?? 0;
+
+        [SerializeField] private ServerConfig developmentServerConfig;
+        [SerializeField] private ServerConfig releaseServerConfig;
+
+        private ServerConfig ServerConfig
+        {
+            get
+            {
+#if  UNITY_EDITOR
+                return developmentServerConfig;
+#else
+                return releaseServerConfig;
+#endif
+            }
+        }
         [SerializeField] private string connectFailMessage;
         [SerializeField] private float connectTimeoutSeconds = 10f;
 #if UNITY_IPHONE
