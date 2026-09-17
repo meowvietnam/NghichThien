@@ -1474,17 +1474,10 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         if (SyncEffectSkill.IsThanThong)
         {
             baseSkill = Pool.Get<GameManager>().GetThanThongWithId(SyncEffectSkill.IdSkill);
-            if (baseSkill is TranPhapTT)
-            {
-                if (!charCombat.thanThongUseThisComBat.Any(x => x.Any(i => i.thanThong.Id == baseSkill.Id)))
-                {
-                    return;
-                }
-            }
-            else
+            if (baseSkill is not TranPhapTT)
             {
                 return;
-            }            
+            }
         }
         else
         {
