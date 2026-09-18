@@ -219,7 +219,7 @@ public class CombatStatic : MonoBehaviour
             {
                 // Giảm số hiệp chờ
                 entry.RemainingTurns -= 1;
-                Observer.Notify(EventList.Combat.UPDATE_AMKINH_THANTHONG, currentTurn, entry);
+                Observer.Notify(EventList.Combat.UPDATE_AMKINH_THANTHONG, currentTurn, entry, -2);
             }
         }
 

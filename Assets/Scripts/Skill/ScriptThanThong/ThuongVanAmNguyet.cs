@@ -25,9 +25,12 @@ public class ThuongVanAmNguyet : ThanThong, IMemorySerializable<ThuongVanAmNguye
     //Done PlayVisualSkill
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
-        base.PlayVisualSkill(caster, target);
-        var gameObject = ShowSkillEffectParticleBase(caster, 0, cameraSize, false);
-        caster.effectSkillNoDestroy.Add(this, gameObject);
+        if (!caster.effectSkillNoDestroy.ContainsKey(this))
+        {
+            base.PlayVisualSkill(caster, target);
+            var gameObject = ShowSkillEffectParticleBase(caster, 0, cameraSize, false);
+            caster.effectSkillNoDestroy.Add(this,gameObject);
+        }
     }
 
     private void ObserverEffect(params object[] data)

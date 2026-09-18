@@ -34,13 +34,19 @@ namespace AllMaps
             camPosition = Vector3.SmoothDamp(camPosition, targetPosition, ref velocity, 1f / followSpeed);
             var minBound = bounds.min;
             var maxBound = bounds.max;
-            float camZ = Mathf.Abs(camPosition.z);
-            float halfHeight = Mathf.Tan(cam.fieldOfView * 0.5f * Mathf.Deg2Rad) * camZ;
+            // Dùng cùng công thức giới hạn tầm nhìn với Camera2DDrag (camera đang là orthographic) —
+            // nếu không, lúc chuyển từ follow sang kéo tay (hoặc ngược lại) camera sẽ bị giật do 2 script
+            // tính vùng hợp lệ khác nhau.
+            float halfHeight = cam.orthographic
+                ? cam.orthographicSize
+                : Mathf.Tan(cam.fieldOfView * 0.5f * Mathf.Deg2Rad) * Mathf.Abs(camPosition.z);
             float halfWidth = halfHeight * cam.aspect;
-            float clampX = Mathf.Clamp(camPosition.x, minBound.x + halfWidth, maxBound.x - halfWidth);
-            float clampY = Mathf.Clamp(camPosition.y, minBound.y + halfHeight, maxBound.y - halfHeight);
-            camPosition.x = clampX;
-            camPosition.y = clampY;
+            float minX = minBound.x + halfWidth;
+            float maxX = maxBound.x - halfWidth;
+            float minY = minBound.y + halfHeight;
+            float maxY = maxBound.y - halfHeight;
+            camPosition.x = minX <= maxX ? Mathf.Clamp(camPosition.x, minX, maxX) : (minBound.x + maxBound.x) * 0.5f;
+            camPosition.y = minY <= maxY ? Mathf.Clamp(camPosition.y, minY, maxY) : (minBound.y + maxBound.y) * 0.5f;
             camTransform.position = camPosition;
         }
     }

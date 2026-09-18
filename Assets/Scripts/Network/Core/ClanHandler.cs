@@ -18,6 +18,7 @@ namespace Network.Core
         public ClanModel CurrentClan { get; private set; }
         public ClanConfig CurrentConfig { get; private set; }
         public int MaxShopQuantityPerRequest { get; private set; }
+        // Số lượt đã treo hôm nay của CẢ tông môn (dùng chung cho mọi thành viên kể từ khi server gộp quota theo clan).
         public int ShopItemsAddedToday { get; private set; }
         public int MaxShopSlots => CurrentClan == null ? 0 : GetMaxShopSlots(CurrentClan.Level);
         public int FreeContributionTimesRemaining { get; private set; }
@@ -92,6 +93,17 @@ namespace Network.Core
         public int GetMaxShopSlots(int clanLevel)
         {
             return Math.Max(1, clanLevel) * 3;
+        }
+
+        // Quota treo đồ kho tông môn reset theo giờ Việt Nam (UTC+7) lúc 00:00, không phải theo UTC.
+        private static readonly TimeSpan VnOffset = TimeSpan.FromHours(7);
+
+        private static DateTime ToVnDate(DateTime value)
+        {
+            var utcInstant = value.Kind == DateTimeKind.Local
+                ? value.ToUniversalTime()
+                : DateTime.SpecifyKind(value, DateTimeKind.Utc);
+            return (utcInstant + VnOffset).Date;
         }
 
         public (int Min, int Max) GetInheritanceValueRange(EffectType? effectType)
@@ -286,12 +298,28 @@ namespace Network.Core
             if (result.Success)
             {
                 MaxShopQuantityPerRequest = result.MaxQuantityPerRequest;
+                // Server trả về tổng lượt treo hôm nay của CẢ tông môn (không còn theo riêng người chơi hiện tại).
                 ShopItemsAddedToday = result.ShopItemsAddedToday;
                 Debug.Log($"GetShop: {ShopItemsAddedToday}");
                 ReplaceShop(result.Items);
             }
 
             return result;
+        }
+
+        // Server không bắn broadcast riêng cho số đếm ShopItemsAddedToday khi có ClanShopItemAdded/
+        // ClanShopItemChanged/ClanShopItemRemoved (chỉ cập nhật danh sách item) — nên chủ động gọi lại
+        // GetShop() để làm mới số đếm dùng chung, tránh hiển thị số liệu cũ cho các thành viên khác.
+        private async void RefreshShopQuotaFromServer()
+        {
+            try
+            {
+                await GetShop();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+            }
         }
 
         public async Task<BuyClanShopResult> BuyShopItem(int shopItemId, int quantity)
@@ -465,12 +493,15 @@ namespace Network.Core
                     break;
                 case MessageTag.ClanShopItemAdded:
                     ApplyShopItemAdded(message.Reader.MemRead<ClanShopItemAdded>().ShopItem);
+                    RefreshShopQuotaFromServer();
                     break;
                 case MessageTag.ClanShopItemRemoved:
                     ApplyShopItemRemoved(message.Reader.MemRead<ClanShopItemRemoved>());
+                    RefreshShopQuotaFromServer();
                     break;
                 case MessageTag.ClanShopItemChanged:
                     ApplyShopItemChanged(message.Reader.MemRead<ClanShopItemChanged>().ShopItem);
+                    RefreshShopQuotaFromServer();
                     break;
                 case MessageTag.ClanMemberRoleChanged:
                     ApplyMemberRoleChanged(message.Reader.MemRead<ClanMemberRoleChanged>(), true);
@@ -557,11 +588,11 @@ namespace Network.Core
 
         private void RefreshShopQuotaStateFromClan()
         {
-            var todayUtc = DateTime.UtcNow.Date;
-            var charId = client.CharacterData?.Id ?? 0;
-            var member = CurrentClan?.Members?.FirstOrDefault(x => x.CharId == charId);
-            ShopItemsAddedToday = member != null && member.LastShopItemAddedAt.Date == todayUtc
-                ? member.ShopItemsAddedToday
+            // ShopItemsAddedToday/LastShopItemAddedAt giờ nằm trên Clan (dùng chung cho cả tông môn),
+            // không còn tách riêng theo từng ClanMember nữa.
+            var todayVn = ToVnDate(DateTime.UtcNow);
+            ShopItemsAddedToday = CurrentClan != null && ToVnDate(CurrentClan.LastShopItemAddedAt) == todayVn
+                ? CurrentClan.ShopItemsAddedToday
                 : 0;
         }
 

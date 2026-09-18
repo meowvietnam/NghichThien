@@ -103,11 +103,13 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     [SerializeField] private Image bgCombat;
     [SerializeField] private Text txtTurn;
     public int TurnLinhKhiBaoLoan => 15;
+
     [Button]
     private void TestShowVisulSkill(BaseSkill baseSkill)
     {
         baseSkill.PlayVisualSkill(currentTurn, targetTurn);
-    }    
+    }
+
     public void SetUITextTurn()
     {
         // Giả sử turnMgr là bộ quản lý lượt, và turnMgr.CurrentChar là nhân vật đang đi
@@ -255,10 +257,10 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                 Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
             });
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_CP_DYNAMIC, ReceiveSyncCPDynamic);
-        Observer.AddObserver(EventList.Combat.ADD_CP_DYNAMIC,SendSyncCPDynamic);
+        Observer.AddObserver(EventList.Combat.ADD_CP_DYNAMIC, SendSyncCPDynamic);
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_USE_EFFECTSKILL, ReceiSyncEffectSkill);
-        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_REMOVE_EFFECTSKILLNODESTROY, ReceiSyncEffectRemoveSkillNoDestroy);
-
+        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_REMOVE_EFFECTSKILLNODESTROY,
+            ReceiSyncEffectRemoveSkillNoDestroy);
 
 
         if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
@@ -273,14 +275,17 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             item.LoadFirstDataPrefab();
         }
+
         foreach (var item in char1.congPhapEquip)
         {
             item.congPhap.LoadFirstDataPrefab();
         }
+
         foreach (var item in char2.thanThongEquip)
         {
             item.LoadFirstDataPrefab();
         }
+
         foreach (var item in char2.congPhapEquip)
         {
             item.congPhap.LoadFirstDataPrefab();
@@ -335,6 +340,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                 {
                     return;
                 }
+
                 Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Xác nhận bỏ chạy khỏi trận chiến này?",
                     () => { EndCombat(ETypeResultCombat.LoseByRun); });
             });
@@ -496,8 +502,6 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
         if (thanThong != null)
         {
-            
-
             caster.PlaySkill(thanThong, linhKhiTieuTan);
             CombatStatic.TrienNhieu(target, caster);
             Observer.Notify(EventList.Combat.BEFORE_EXCUTE_SKILL, caster, target);
@@ -534,15 +538,19 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                 caster.skillVoHieuHoa.Clear();
                 return;
             }
+
             if (IsSync)
             {
-                Debug.Log($"Toi vua gui sync play skill: Id-{caster.characterStatsBase.idChar.Value}");
-                Observer.Notify(EventList.Combat.SEND_SYNC_PLAYSKILL, new SyncPlaySkill
+                if (!(thanThong is KhuTran && linhKhiTieuTan.Count == 0))
                 {
-                    CharId = caster.characterStatsBase.idChar.Value,
-                    SkillId = thanThong.Id,
-                });
+                    Observer.Notify(EventList.Combat.SEND_SYNC_PLAYSKILL, new SyncPlaySkill
+                    {
+                        CharId = caster.characterStatsBase.idChar.Value,
+                        SkillId = thanThong.Id,
+                    });
+                }
             }
+
             ThanThong thanThongOldUse = caster.thanThongOldUse != null ? caster.thanThongOldUse.thanThong : null;
             thanThong.Execute(caster, target, data);
             if (thanThong is BaseSkill.LienKich thanThongLienKich && thanThongOldUse != null)
@@ -593,6 +601,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                     parentUIFight.gameObject.SetActive(true);
                 });
             }
+
             Observer.Notify(EventList.Combat.PLAY_SKILL_COMPLETE, caster, target);
         }
     }
@@ -639,15 +648,15 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN,
                 new SyncEndTurn { CharId = oldCurrentTurn.characterStatsBase.idChar.Value });
         }
-        
+
         SwapTurn();
-        isSync = false;
+        // isSync = false;
         CombatStatic.AnhDich(oldCurrentTurn, oldTargetTurn);
         CombatStatic.KiemKhi(oldCurrentTurn, oldTargetTurn);
         CombatStatic.TrungDoc(oldTargetTurn, oldCurrentTurn);
         CombatStatic.ThienKiem(oldCurrentTurn, oldTargetTurn);
         CombatStatic.ChayMau(oldTargetTurn, oldCurrentTurn);
-      
+
 
         if (oldCurrentTurn == char1)
         {
@@ -672,13 +681,13 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             if (item.Trigger == Network.Models.Clans.ClanInheritanceTrigger.EndTurn)
             {
-
                 if (item.EffectType != null)
                 {
                     ConvertEffectToBuffAction(item.EffectType.Value, item.Value)?.Invoke(oldCurrentTurn, oldTargetTurn);
                 }
             }
         }
+
         ExcuteEquipment(oldCurrentTurn, oldTargetTurn, EquipmentType.Jewelry);
     }
 
@@ -756,23 +765,30 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             CharacterCombat.AmKinhEntry entry = (CharacterCombat.AmKinhEntry)data[1];
 
             int remove = data.Length > 2 ? (int)data[2] : 0;
+
             string desc =
                 $"{BaseSkill.GetColoredText($"[{entry.ThanThong.nameItem}]", "#ffb143")}: {entry.ThanThong.GetDesc(ThanThong.GetDaiCanhGioi(characterCombat.characterStatsTemp.level))}";
             var result = SetUIEffectStatic(characterCombat, remove == -1, (ScrollRect) =>
             {
-                if (dictAmKinhItemUI.TryGetValue(entry, out ItemUI item))
+                var item = dictAmKinhItemUI.Keys.FirstOrDefault(x =>
+                    entry.ThanThong.Id == x.ThanThong.Id && entry.RemainingTurns == x.RemainingTurns);
+                if (item != null)
                 {
-                    return (true, item);
+                    return (true, dictAmKinhItemUI[item]);
                 }
 
                 return (false, null);
             }, entry.ThanThong.spriteItem, desc, entry.RemainingTurns);
             if (remove != -1)
             {
-                if (!result.isHave)
+                if (remove != -2)
                 {
                     dictAmKinhItemUI.Add(entry, result.buffIcon);
                 }
+            }
+            else
+            {
+                dictAmKinhItemUI.Remove(entry);
             }
         }
     }
@@ -907,6 +923,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             }
         }
     }
+
     public void NewTurn()
     {
         ResetCounterTime();
@@ -924,11 +941,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();
         if (!currentTurn.IsKietSuc())
         {
-            isSync = false;
+            // isSync = false;
             CombatStatic.QuyTon(currentTurn, targetTurn);
             CombatStatic.SucThe(currentTurn, targetTurn);
             CombatStatic.ThieuDot(targetTurn, currentTurn);
-            
+
 
             currentTurn.NewTurn();
             foreach (var item in currentTurn.characterStatsBase.clanInheritanceEffectSecure)
@@ -941,6 +958,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                     }
                 }
             }
+
             CombatStatic.AmKinhTTNewTurn(currentTurn, targetTurn);
             isSync = true;
             ExcuteEquipment(currentTurn, targetTurn, EquipmentType.Armor);
@@ -954,18 +972,19 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                     currentTurn.RemoveBuffAndDebuffCount(type, count);
             }
 
-            if(IsRealTimeCombat)
+            if (IsRealTimeCombat)
             {
                 if (IsSync)
                 {
-                    Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
+                    Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn,
+                        new List<LinhKhiTieuTan>());
                 }
             }
             else
             {
                 Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
-
             }
+
             return;
         }
 
@@ -973,8 +992,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         Observer.Notify(EventList.Combat.NEW_TURN_COMBAT, currentTurn, targetTurn, currentTurn == char1 ? true : false,
             dictHapThuKhi);
         AutoPlaySkill();
-    }    
-   
+    }
+
 
     public void AutoPlaySkill()
     {
@@ -1100,9 +1119,10 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             }
         }
     }
+
     private void AddBuffLuyenHon(CharacterCombat charCb)
     {
-        if(charCb.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon,out SecureInt hon))
+        if (charCb.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon, out SecureInt hon))
         {
             charCb.AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, charCb.characterStatsBase.pointHon.Value);
         }
@@ -1111,6 +1131,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             charCb.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, charCb.characterStatsBase.pointHon.Value * 2);
         }
     }
+
     private void StartTurn(CharacterCombat charCombat)
     {
         char1.InitStaticCombatEffect();
@@ -1244,11 +1265,12 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             Debug.Log("ExcuteEquipment va" + item.Value.Value);
             Debug.Log("ExcuteEquipment type" + item.Type);
 
-            ConvertEffectToBuffAction(item.Type,item.Value.Value)?.Invoke(caster, target);
+            ConvertEffectToBuffAction(item.Type, item.Value.Value)?.Invoke(caster, target);
         }
     }
+
     public static Action<CharacterCombat, CharacterCombat> ConvertEffectToBuffAction(
-        EffectType Type,int Value)
+        EffectType Type, int Value)
     {
         switch (Type)
         {
@@ -1258,64 +1280,31 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             case EffectType.Cat:
                 return (caster, target) => { target.AddBuffAndDebuffCount(EBuffAndDeBuff.Cat, Value); };
             case EffectType.Hon:
-                return (caster, target) => { target.AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, Value); };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, Value); };
             case EffectType.ChanHoa:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanHoa, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanHoa, Value); };
             case EffectType.ChanKhi:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKhi, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKhi, Value); };
             case EffectType.ChanKiem:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKiem,Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKiem, Value); };
             case EffectType.ChanKim:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKim, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanKim, Value); };
             case EffectType.ChanMoc:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanMoc, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanMoc, Value); };
             case EffectType.ChanThan:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanThan, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanThan, Value); };
             case EffectType.ChanTho:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanTho, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanTho, Value); };
             case EffectType.ChanThuy:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanThuy, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.ChanThuy, Value); };
             case EffectType.ChayMau:
-                return (caster, target) =>
-                {
-                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.ChayMau, Value);
-                };
+                return (caster, target) => { target.AddBuffAndDebuffCount(EBuffAndDeBuff.ChayMau, Value); };
             case EffectType.DeTonThuong:
-                return (caster, target) =>
-                {
-                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, Value);
-                };
+                return (caster, target) => { target.AddBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, Value); };
             case EffectType.Diem:
                 return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.Diem, Value); };
             case EffectType.GiamTonThuong:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, Value); };
             case EffectType.HapThuHoaLinhKhi:
                 return (caster, target) => { caster.HapThuLinhKhi(ELinhKhi.Hoa, Value); };
             case EffectType.HapThuKimLinhKhi:
@@ -1329,10 +1318,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             case EffectType.HapThuThuyLinhKhi:
                 return (caster, target) => { caster.HapThuLinhKhi(ELinhKhi.Thuy, Value); };
             case EffectType.HoaDiem:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoaDiem, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoaDiem, Value); };
             case EffectType.HoaTrong:
                 break;
             case EffectType.HoTrao:
@@ -1342,10 +1328,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             case EffectType.KhoiPhucGiaTriSinhMenhDauLuot:
                 return (caster, target) => { caster.Healing(Value); };
             case EffectType.KiemKhi:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, Value); };
             case EffectType.KimTrong:
                 break;
             case EffectType.MocTrong:
@@ -1353,39 +1336,21 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             case EffectType.NguHoa:
                 return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguHoa, Value); };
             case EffectType.NguHoaHiep:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguHoaHiep, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguHoaHiep, Value); };
             case EffectType.NguKhiHiep:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKhiHiep, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKhiHiep, Value); };
             case EffectType.NguKiemHiep:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKiemHiep, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKiemHiep, Value); };
             case EffectType.NguKim:
                 return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKim, Value); };
             case EffectType.NguKimHiep:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKimHiep, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguKimHiep, Value); };
             case EffectType.NguMoc:
                 return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguMoc, Value); };
             case EffectType.NguMocHiep:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguMocHiep, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguMocHiep, Value); };
             case EffectType.NgungThan:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NgungThan, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NgungThan, Value); };
             case EffectType.NguThanHiep:
                 return (caster, target) =>
                 {
@@ -1396,49 +1361,25 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             case EffectType.NguTho:
                 return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguTho, Value); };
             case EffectType.NguThoHiep:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguThoHiep, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguThoHiep, Value); };
             case EffectType.NguThuy:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguThuy, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguThuy, Value); };
             case EffectType.NguThuyHiep:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguThuyHiep, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.NguThuyHiep, Value); };
             case EffectType.Nhanh:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TangToc, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TangToc, Value); };
             case EffectType.PhanTonThuong:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.PhanTonThuong, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.PhanTonThuong, Value); };
             case EffectType.PhaThe:
                 return (caster, target) => { target.AddBuffAndDebuffCount(EBuffAndDeBuff.PhaThe, Value); };
             case EffectType.QuanQuanh:
-                return (caster, target) =>
-                {
-                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, Value);
-                };
+                return (caster, target) => { target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, Value); };
             case EffectType.SucThe:
                 return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.SucThe, Value); };
             case EffectType.SuongGia:
-                return (caster, target) =>
-                {
-                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, Value);
-                };
+                return (caster, target) => { target.AddBuffAndDebuffCount(EBuffAndDeBuff.SuongGia, Value); };
             case EffectType.TaoThanhTonThuong:
-                return (caster, target) =>
-                {
-                    target.TakeDameByStatic(caster, new List<int> { Value }, false);
-                };
+                return (caster, target) => { target.TakeDameByStatic(caster, new List<int> { Value }, false); };
             case EffectType.TaoThanhXLanXDiemThuongTon:
                 return (caster, target) =>
                 {
@@ -1449,67 +1390,37 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                 };
             case EffectType.ThanThuong:
 
-                return (caster, target) =>
-                {
-                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThanThuong, Value);
-                };
+                return (caster, target) => { target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThanThuong, Value); };
             case EffectType.ThieuDot:
-                return (caster, target) =>
-                {
-                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, Value);
-                };
+                return (caster, target) => { target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, Value); };
             case EffectType.ThoTrong:
                 break;
             case EffectType.ThuyTrong:
                 break;
             case EffectType.TichDoc:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TichDoc, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TichDoc, Value); };
             case EffectType.TichHoa:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TichHoa, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TichHoa, Value); };
             case EffectType.TichKim:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TichKim, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TichKim, Value); };
             case EffectType.TichMoc:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TichMoc, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TichMoc, Value); };
             case EffectType.TichThuy:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TichThuy, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TichThuy, Value); };
             case EffectType.TriLieuLieu:
-                return (caster, target) =>
-                {
-                    caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TriLieu, Value);
-                };
+                return (caster, target) => { caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TriLieu, Value); };
             case EffectType.TroiDu:
-                return (caster, target) =>
-                {
-                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.TroiChan, Value);
-                };
+                return (caster, target) => { target.AddBuffAndDebuffCount(EBuffAndDeBuff.TroiChan, Value); };
             case EffectType.TrungDoc:
-                return (caster, target) =>
-                {
-                    target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, Value);
-                };
+                return (caster, target) => { target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, Value); };
             default:
                 break;
         }
 
         return null;
-    }    
+    }
     // Update is called once per frame
-  
+
     private void OnDestroy()
     {
         EventList.Combat.RemoveAllCombatObservers();
@@ -1555,9 +1466,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             ? char2
             : char1;
         var thanThong = Pool.Get<GameManager>().GetThanThongWithId(syncPlaySkill.SkillId);
-        charCombat.VisualPlaySkill(thanThong);
-        //charTarget.allDamages.Clear();
+        Observer.Notify(EventList.Combat.PLAY_SKILL, charCombat, charTarget,
+            thanThong, new List<LinhKhiTieuTan>());
+        charTarget.allDamages.Clear();
     }
+
     public void ReceiSyncEffectSkill(params object[] data)
     {
         SyncEffectSkill SyncEffectSkill = data[0] as SyncEffectSkill;
@@ -1565,21 +1478,25 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         var charTarget = charCombat.characterStatsBase.idChar.Value == char1.characterStatsBase.idChar.Value
             ? char2
             : char1;
-       
+
         BaseSkill baseSkill = null;
-        if(SyncEffectSkill.IsThanThong)
+        if (SyncEffectSkill.IsThanThong)
         {
             baseSkill = Pool.Get<GameManager>().GetThanThongWithId(SyncEffectSkill.IdSkill);
-
+            if (baseSkill is not TranPhapTT)
+            {
+                return;
+            }
         }
         else
         {
             baseSkill = Pool.Get<GameManager>().GetCongPhapWithId(SyncEffectSkill.IdSkill);
-        }    
+        }
+
         var oldSync = isSync;
         try
         {
-            isSync = false;
+            // isSync = false;
             baseSkill.PlayVisualSkill(charCombat, charTarget);
         }
         finally
@@ -1588,6 +1505,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         }
         //charTarget.allDamages.Clear();
     }
+
     public void ReceiSyncEffectRemoveSkillNoDestroy(params object[] data)
     {
         SyncEffectSkill SyncEffectSkill = data[0] as SyncEffectSkill;
@@ -1597,17 +1515,18 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         BaseSkill baseSkill = null;
         if (SyncEffectSkill.IsThanThong)
         {
-            baseSkill = Pool.Get<GameManager>().GetThanThongWithId(SyncEffectSkill.IdSkill);
-
+            // baseSkill = Pool.Get<GameManager>().GetThanThongWithId(SyncEffectSkill.IdSkill);
+            return;
         }
         else
         {
             baseSkill = Pool.Get<GameManager>().GetCongPhapWithId(SyncEffectSkill.IdSkill);
         }
+
         var oldSync = isSync;
         try
         {
-            isSync = false;
+            // isSync = false;
             charCombat.RemoveEffectSkillNoDestroy(baseSkill);
         }
         finally
@@ -1616,6 +1535,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         }
         //charTarget.allDamages.Clear();
     }
+
     public void SendAjustLinhKhi(params object[] data)
     {
         CharacterCombat charCombat = data[0] as CharacterCombat;
@@ -1756,15 +1676,12 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
         if (IsSync)
         {
-          
-
             Observer.Notify(EventList.Combat.SEND_SYNC_CP_DYNAMIC, new SyncCPDynamic
             {
                 CharId = charCombatSend.characterStatsBase.idChar.Value,
                 IdCpDynamic = cp.Id,
                 NewCpDynamic = newValue,
             });
-          
         }
     }
 
@@ -1777,12 +1694,12 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         var oldSync = isSync;
         try
         {
-            isSync = false;
+            // isSync = false;
             if (SyncCPDynamic.NewCpDynamic <= 0)
             {
                 charCB.RemoveCPDynamic(congPhap);
             }
-            else if(cpMono != null)
+            else if (cpMono != null)
             {
                 charCB.SetCPDynamic(cpMono, SyncCPDynamic.NewCpDynamic);
             }

@@ -60,6 +60,8 @@ namespace Network.Models.Clans
         public long MaxHon { get; set; }
         public int HonLimitLevel { get; set; } = 1;
         public long SoulEssence { get; set; }
+        public int ShopItemsAddedToday { get; set; }
+        public DateTime LastShopItemAddedAt { get; set; }
         public string Description { get; set; } = string.Empty;
         public string Announcement { get; set; } = string.Empty;
         public int MemberCount { get; set; }
@@ -93,8 +95,6 @@ namespace Network.Models.Clans
         public int CharId { get; set; }
         public long ContribPoints { get; set; }
         public DateTime LastFreeContributionAt { get; set; }
-        public int ShopItemsAddedToday { get; set; }
-        public DateTime LastShopItemAddedAt { get; set; }
         public ClanRole Role { get; set; }
         public DateTime JoinAt { get; set; }
         public string Name { get; set; } = string.Empty;

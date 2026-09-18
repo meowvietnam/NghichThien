@@ -48,7 +48,10 @@ public class CuuChuyenDuThanKiem : ThanThong, IMemorySerializable<CuuChuyenDuTha
 
                 dames.Add(currentDame);
             }
-
+            foreach (var item in dames)
+            {
+                Debug.Log("Base dame 9 chuyen "+ item);
+            }
             // Gửi danh sách sát thương đã được giảm dần để tính toán
             target.CaculateDameByThanThong(caster, dames, eTypeSkill);
         }
