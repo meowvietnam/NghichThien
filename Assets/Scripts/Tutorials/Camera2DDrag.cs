@@ -1,11 +1,15 @@
-using System;
 using AllMaps;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Tutorials
 {
-    public class Camera2DDrag : MonoBehaviour
+    // Gắn script này lên GameObject có Collider2D dùng làm vùng nhận input (boundsBox) — không phải
+    // lên GameObject của Camera. EventSystem sẽ raycast qua Physics2DRaycaster (cần có trên Camera)
+    // và gọi OnPointerDown/OnDrag/OnPointerUp thẳng vào GameObject này khi trúng boundsBox.
+    // Nhờ đi qua EventSystem nên UI (panel, nút...) phía trên tự động chặn input này, không cần
+    // tự kiểm tra IsPointerOverGameObject thủ công nữa.
+    public class Camera2DDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
     {
         [Header("Camera")] [SerializeField] private Camera targetCamera;
 
@@ -40,69 +44,22 @@ namespace Tutorials
                 targetCamera = Camera.main;
         }
 
-        private void Update()
+        public void OnPointerDown(PointerEventData eventData)
         {
-#if UNITY_EDITOR || UNITY_STANDALONE
-            HandleMouse();
-#else
-        HandleTouch();
-#endif
-        }
-
-        private void HandleMouse()
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                BeginDrag(Input.mousePosition);
-            }
-            else if (Input.GetMouseButton(0))
-            {
-                Drag(Input.mousePosition);
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                EndDrag();
-            }
-        }
-
-        private void HandleTouch()
-        {
-            if (Input.touchCount == 0)
+            if (eventData.button != PointerEventData.InputButton.Left)
                 return;
 
-            Touch touch = Input.GetTouch(0);
-
-            switch (touch.phase)
-            {
-                case TouchPhase.Began:
-                    BeginDrag(touch.position);
-                    break;
-
-                case TouchPhase.Moved:
-                case TouchPhase.Stationary:
-                    Drag(touch.position);
-                    break;
-
-                case TouchPhase.Ended:
-                case TouchPhase.Canceled:
-                    EndDrag();
-                    break;
-            }
-        }
-
-        private void BeginDrag(Vector2 screenPosition)
-        {
             isDragging = true;
             CameraFollow.Instance.IsFollow = false;
-            lastWorldPosition = ScreenToWorld(screenPosition);
+            lastWorldPosition = ScreenToWorld(eventData.position);
         }
 
-        private void Drag(Vector2 screenPosition)
+        public void OnDrag(PointerEventData eventData)
         {
             if (!isDragging)
                 return;
 
-            Vector3 currentWorldPosition = ScreenToWorld(screenPosition);
+            Vector3 currentWorldPosition = ScreenToWorld(eventData.position);
 
             Vector3 delta = lastWorldPosition - currentWorldPosition;
             delta *= dragSpeed;
@@ -115,11 +72,14 @@ namespace Tutorials
             targetCamera.transform.position = newPosition;
 
             // Cập nhật lại sau khi camera đã di chuyển
-            lastWorldPosition = ScreenToWorld(screenPosition);
+            lastWorldPosition = ScreenToWorld(eventData.position);
         }
 
-        private void EndDrag()
+        public void OnPointerUp(PointerEventData eventData)
         {
+            if (!isDragging)
+                return;
+
             isDragging = false;
             CameraFollow.Instance.IsFollow = true;
         }
@@ -139,17 +99,21 @@ namespace Tutorials
 
         private Vector3 ClampPosition(Vector3 position)
         {
-            position.x = Mathf.Clamp(
-                position.x,
-                minBounds.x,
-                maxBounds.x
-            );
+            // Giới hạn TẦM NHÌN (viewport) trong boundsBox, không chỉ điểm neo của camera —
+            // trừ đi nửa chiều rộng/cao khung hình để camera không lộ ra ngoài boundsBox ở sát biên.
+            float halfHeight = targetCamera.orthographic
+                ? targetCamera.orthographicSize
+                : Mathf.Tan(targetCamera.fieldOfView * 0.5f * Mathf.Deg2Rad) * Mathf.Abs(position.z);
+            float halfWidth = halfHeight * targetCamera.aspect;
 
-            position.y = Mathf.Clamp(
-                position.y,
-                minBounds.y,
-                maxBounds.y
-            );
+            float minX = minBounds.x + halfWidth;
+            float maxX = maxBounds.x - halfWidth;
+            float minY = minBounds.y + halfHeight;
+            float maxY = maxBounds.y - halfHeight;
+
+            // boundsBox nhỏ hơn tầm nhìn camera theo 1 trục thì canh giữa trục đó thay vì kẹp lung tung.
+            position.x = minX <= maxX ? Mathf.Clamp(position.x, minX, maxX) : (minBounds.x + maxBounds.x) * 0.5f;
+            position.y = minY <= maxY ? Mathf.Clamp(position.y, minY, maxY) : (minBounds.y + maxBounds.y) * 0.5f;
 
             return position;
         }

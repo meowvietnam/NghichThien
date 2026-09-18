@@ -202,10 +202,11 @@ namespace Clan
         private void UpdateDailyLimit()
         {
             if (dailyLimitText == null) return;
+            // ShopItemsAddedToday giờ là số lượt CỦA CẢ TÔNG MÔN (dùng chung), không còn riêng theo từng thành viên.
             var slotMaximum = Handler?.MaxShopSlots ?? 0;
             var slotUsed = Handler?.ShopItemsAddedToday ?? 0;
             var slotRemaining = Math.Max(0, slotMaximum - slotUsed);
-            dailyLimitText.text = $"Số lượng treo: {slotUsed}/{slotMaximum} · Còn {slotRemaining}";
+            dailyLimitText.text = $"Tông môn đã treo: {slotUsed}/{slotMaximum} · Còn {slotRemaining}";
         }
 
         private void UpdateButton()
