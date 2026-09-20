@@ -15,26 +15,32 @@ public class NhienDiemQuyet : CongPhap, IMemorySerializable<NhienDiemQuyet>
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        List<int> dames = (List<int>)data[2];
-        foreach (int dame in dames)
+        int dame = (int)data[2];
+        int indexLevel = CurrentLevelCongPhapInCombat(caster) - 1;
+        if (caster.IsSkillTichLuyCanUse(this, dame, requires[indexLevel]))
         {
-            if (dame >= requires[CurrentLevelCongPhapInCombat(caster) - 1])
+            // 1. Tìm chính xác cái Key đang nằm trong Dictionary dựa trên điều kiện của bạn
+            // gọi hàm IsSkillTichLuyCanUse là nó đã trừ 1 lần nên + 1 lần đầu
+            int count = 1;
+            while (caster.IsSkillTichLuyCanUse(this, 0, requires[indexLevel]) == true)
             {
-                target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot,
-                    buffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
+                count += 1;
             }
+
+            int buff = buffValues[indexLevel];
+            target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, count * buff);
         }
     }
 
     public override string GetDesc(int level)
     {
         return
-            $"Mỗi tạo thành ít nhất {GetColoredText($"{requires[level - 1]}", "red")} điểm sát thương thì đối thủ nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}";
+            $"Mỗi khi tích lũy gây ra đủ {GetColoredText($"{requires[level - 1]}", "red")} điểm tổn thương thì đối thủ nhận phải {GetColoredText($"+{buffValues[level - 1]}", "red")} tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.ThieuDot)}";
     }
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        Observer.AddObserver(EventList.Combat.CACULATE_DAME_BY_THANTHONG, ExecuteParams);
+        Observer.AddObserver(EventList.Combat.CHARACTER_TAKE_DAME, ExecuteParams);
     }
 
     public override int ByteSize()

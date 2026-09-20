@@ -20,7 +20,7 @@ public class CuuTrungDoTap : CongPhap, IMemorySerializable<CuuTrungDoTap>
             int count = countDebuff[CurrentLevelCongPhapInCombat(caster) - 1];
             for (int i = 0; i < count; i++)
             {
-                var debuff = eDebuffs[CombatStatic.IndexRandom(0, eDebuffs.Count)];
+                var debuff = GetDebuffWithPercent();
                 target.AddBuffAndDebuffCount(debuff, 1);
             }
 

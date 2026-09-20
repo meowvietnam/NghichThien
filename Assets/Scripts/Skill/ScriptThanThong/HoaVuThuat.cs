@@ -29,7 +29,7 @@ public class HoaVuThuat : ThanThong, BaseSkill.LienKich, IMemorySerializable<Hoa
     {
         for (int i = 0; i < debuffCount; i++)
         {
-            target.AddBuffAndDebuffCount(BaseSkill.eDebuffs[UnityEngine.Random.Range(0, BaseSkill.eDebuffs.Count)], 1);
+            target.AddBuffAndDebuffCount(BaseSkill.GetDebuffWithPercent(), 1);
         }
     }
 

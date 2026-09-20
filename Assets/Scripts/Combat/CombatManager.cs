@@ -1120,17 +1120,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         }
     }
 
-    private void AddBuffLuyenHon(CharacterCombat charCb)
-    {
-        if (charCb.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon, out SecureInt hon))
-        {
-            charCb.AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, charCb.characterStatsBase.pointHon.Value);
-        }
-        else
-        {
-            charCb.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, charCb.characterStatsBase.pointHon.Value * 2);
-        }
-    }
+   
 
     private void StartTurn(CharacterCombat charCombat)
     {
@@ -1144,8 +1134,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         StartEquipment(targetTurn);
         NewTurn();
         StartCoroutine(CheckDieCoroutine());
-        AddBuffLuyenHon(currentTurn);
-        AddBuffLuyenHon(targetTurn);
+     
     }
 
     private void StartTurnPVP(params object[] data)

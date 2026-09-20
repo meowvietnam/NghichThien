@@ -645,7 +645,10 @@ public class CharacterCombat : MonoBehaviour
         if (count == 0) return;
 
         buffAndDebuffCount.TryGetValue(type, out var current);
-
+        if(type == EBuffAndDeBuff.GiamTonThuong && current >= 90)
+        {
+            return;
+        }
         SecureInt newValue = current + count;
         buffAndDebuffCount[type] = newValue;
 
@@ -869,6 +872,10 @@ public class CharacterCombat : MonoBehaviour
 
     public void HapThuLinhKhi(ELinhKhi elinhKhi, int count)
     {
+        if(IsFullLinhKhi)
+        {
+            return;
+        }    
         switch (elinhKhi)
         {
             case ELinhKhi.None:
@@ -912,6 +919,7 @@ public class CharacterCombat : MonoBehaviour
 
     public int CurrentLinhKhi => khiKim + khiMoc + khiThuy + khiHoa + khiTho + khiMa;
 
+    public bool IsFullLinhKhi => CurrentLinhKhi >= totalKhi * 10;
     public int baseCountHapThuLinhKhi => totalKhiRandom - totalKhi;
     public SecureInt countHapThuLinhKhiNewTurn;
 
@@ -1208,7 +1216,7 @@ public class CharacterCombat : MonoBehaviour
             for (int i = 0; i < 10; i++)
             {
                 var debuffKeys = buffAndDebuffCount.Keys
-                    .Where(key => BaseSkill.eDebuffs.Contains(key))
+                    .Where(key => BaseSkill.debuffWeights.Keys.Contains(key))
                     .ToList();
                 // 2. Kiểm tra xem có debuff nào để xóa không
                 if (debuffKeys.Count > 0)
@@ -1237,8 +1245,20 @@ public class CharacterCombat : MonoBehaviour
         {
             isCooldownWeapon = false;
         }
+        AddBuffLuyenHon();
     }
+    private void AddBuffLuyenHon()
+    {
+        AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguKimHiep, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguMocHiep, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguThuyHiep, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguHoaHiep, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguThoHiep, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguKhiHiep, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguThanThucHiep, characterStatsBase.pointHon.Value);
 
+    }
     public bool IsKietSuc()
     {
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KietSuc, out SecureInt kietSuc);

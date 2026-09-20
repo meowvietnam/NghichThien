@@ -42,7 +42,7 @@ public class ThongMoc : NgoDaoCombat, IMemorySerializable<ThongMoc>
 
     private void Action(CharacterCombat caster, CharacterCombat target)
     {
-        var debuffKeys = target.buffAndDebuffCount.Keys.Where(key => BaseSkill.eDebuffs.Contains(key)).ToList();
+        var debuffKeys = target.buffAndDebuffCount.Keys.Where(key => BaseSkill.debuffWeights.Keys.Contains(key)).ToList();
         // 2. Kiểm tra xem có debuff nào để xóa không
         if (debuffKeys.Count > 0)
         {

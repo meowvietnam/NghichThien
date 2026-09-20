@@ -157,7 +157,7 @@ public class CombatStatic : MonoBehaviour
         {
             for (int i = 0; i < countDebuff; i++)
             {
-                var debuff = BaseSkill.eDebuffs[CombatStatic.IndexRandom(0, BaseSkill.eDebuffs.Count)];
+                var debuff = BaseSkill.GetDebuffWithPercent();
                 charTakeDame.AddBuffAndDebuffCount(debuff, 1);
             }
 
