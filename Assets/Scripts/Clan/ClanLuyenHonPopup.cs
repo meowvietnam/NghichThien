@@ -5,6 +5,7 @@ using CreateCharacter;
 using LongDH.LongDHModules;
 using LongDHModules;
 using LuyenDan;
+using Network;
 using Network.Core;
 using Network.Models.Clans;
 using UnityEngine;
@@ -20,7 +21,7 @@ namespace Clan
     /// - Luyện hồn: tiêu Tinh Hồn (SoulEssence) để tăng Hồn, chặn trên bởi Clan.MaxHon. Giá theo BẬC
     ///   THANG dựa trên điểm Hồn đang luyện (xem GetHonPointCost), nên một lượt đi qua nhiều mốc
     ///   phải cộng dồn từng điểm chứ không nhân đơn giá chung. Số lượng do người chơi chọn bằng SelectNum.
-    /// - Nâng giới hạn: tiêu Quỹ theo ClanConfig.UpgradeHonLimitFundCostByLevel để lên
+    /// - Nâng giới hạn: tiêu cống hiến cá nhân, bù phần thiếu bằng Tiên Ngọc theo bảng phí để lên
     ///   Clan.HonLimitLevel kế tiếp, kéo theo MaxHon (MaxHonByLimitLevel) và giới hạn Tinh Hồn
     ///   (MaxSoulEssenceByLimitLevel). Handler.UpgradeMaxHon nhận CẤP giới hạn, không phải số quỹ.
     /// </summary>
@@ -94,13 +95,13 @@ namespace Clan
         protected override void BindClanEvents(ClanHandler handler)
         {
             handler.HonChanged += OnHonChanged;
-            handler.FundsChanged += OnFundsChanged;
+            handler.MemberPointsChanged += OnMemberPointsChanged;
         }
 
         protected override void UnbindClanEvents(ClanHandler handler)
         {
             handler.HonChanged -= OnHonChanged;
-            handler.FundsChanged -= OnFundsChanged;
+            handler.MemberPointsChanged -= OnMemberPointsChanged;
         }
 
         protected override void OnShown()
@@ -113,7 +114,7 @@ namespace Clan
             if (changed != null && changed.ClanId == Clan?.Id) Refresh();
         }
 
-        private void OnFundsChanged(ClanFundsChanged changed)
+        private void OnMemberPointsChanged(ClanMemberPointsChanged changed)
         {
             if (changed != null && changed.ClanId == Clan?.Id) Refresh();
         }
@@ -136,7 +137,7 @@ namespace Clan
                 : NoData);
 
             SetText(fundsText, clan != null
-                ? $"{Label("Quỹ")} {Num(clan.Funds, ColorFunds)}"
+                ? $"{Label("Cống hiến cá nhân")} {Num(GetCurrentContribPoints(), ColorFunds)}"
                 : NoData);
 
             SetText(honLimitLevelText, clan != null
@@ -150,10 +151,9 @@ namespace Clan
                 if (clan != null && TryGetNextHonLimitInfo(clan, out var nextLevel, out var cost, out var nextMaxHon,
                         out var nextMaxSoulEssence))
                 {
-                    // Quỹ đang đủ thì tô xanh, thiếu thì tô đỏ để thấy ngay có nâng được hay không.
-                    var costColor = clan.Funds >= cost ? ColorGood : ColorWarn;
+                    var costColor = GetCurrentContribPoints() >= cost ? ColorGood : ColorFunds;
                     nextHonLimitText.text =
-                        $"Mở cấp {Num(nextLevel, ColorLevel)}: cần {Num(cost, costColor)} {Tint("Quỹ", ColorFunds)}\n" +
+                        $"Mở cấp {Num(nextLevel, ColorLevel)}: {Num(cost, costColor)} {Tint("điểm cống hiến", ColorFunds)}; thiếu điểm bù Tiên Ngọc\n" +
                         $"{Muted("Giới hạn")} {Tint("Hồn", ColorHon)} {Num(nextMaxHon, ColorHon)} " +
                         $"{Muted("·")} {Tint("Tinh Hồn", ColorSoul)} {Num(nextMaxSoulEssence, ColorSoul)}";
                 }
@@ -175,8 +175,7 @@ namespace Clan
 
             var canLuyenHon = canManage && !isProcessing && GetMaxLuyenHonAmount(clan) > 0;
             var canUpgrade = canManage && !isProcessing && clan != null &&
-                             TryGetNextHonLimitInfo(clan, out _, out var cost, out _, out _) &&
-                             clan.Funds >= cost;
+                             TryGetNextHonLimitInfo(clan, out _, out _, out _, out _);
 
             if (luyenHonButton != null)
             {
@@ -343,40 +342,58 @@ namespace Clan
                 return;
             }
 
-            if (clan.Funds < cost)
-            {
-                NotifyGroup.Instance?.Show(
-                    $"{Tint("Quỹ", ColorFunds)} tông môn không đủ, cần {Num(cost, ColorWarn)}");
-                return;
-            }
-
-            Pool.Get<PopupConfirmAction>()?.ShowPopConfirmAction(
-                $"Tiêu {Num(cost, ColorFunds)} {Tint("Quỹ", ColorFunds)} tông môn để mở giới hạn hồn " +
-                $"cấp {Num(nextLevel, ColorLevel)}.\n" +
-                $"{Muted("Giới hạn Hồn:")} {Num(nextMaxHon, ColorHon)}\n" +
-                $"{Muted("Giới hạn Tinh Hồn:")} {Num(nextMaxSoulEssence, ColorSoul)}",
-                () => _ = UpgradeHonLimit(nextLevel));
+            var pointsCost = Math.Min(Math.Max(0, GetCurrentContribPoints()), cost);
+            var shortfall = cost - pointsCost;
+            ShowUpgradeConfirmation(nextLevel, pointsCost, shortfall / 2 + shortfall % 2,
+                nextMaxHon, nextMaxSoulEssence);
         }
 
-        private async Task UpgradeHonLimit(int limitLevel)
+        private long GetCurrentContribPoints()
+        {
+            var charId = Client.Instance?.CharacterData?.Id ?? 0;
+            return Clan?.Members?.FirstOrDefault(x => x.CharId == charId)?.ContribPoints ?? 0;
+        }
+
+        private void ShowUpgradeConfirmation(int nextLevel, long pointsCost, long moneyVipCost,
+            long nextMaxHon, long nextMaxSoulEssence, bool priceChanged = false)
+        {
+            var clanId = Clan?.Id;
+            Pool.Get<PopupConfirmAction>()?.ShowPopConfirmAction(
+                (priceChanged ? "<b>Chi phí đã thay đổi. Xác nhận lại?</b>\n" : "") +
+                $"Mở giới hạn hồn " +
+                $"cấp {Num(nextLevel, ColorLevel)}.\n" +
+                $"Cống hiến cá nhân: {Num(pointsCost, ColorFunds)} điểm\n" +
+                $"Tiên Ngọc cá nhân: {Num(moneyVipCost, ColorSoul)}\n" +
+                (moneyVipCost > 0 ? "1 Tiên Ngọc bù 2 điểm thiếu, làm tròn lên.\n" : "") +
+                $"{Muted("Giới hạn Hồn:")} {Num(nextMaxHon, ColorHon)}\n" +
+                $"{Muted("Giới hạn Tinh Hồn:")} {Num(nextMaxSoulEssence, ColorSoul)}",
+                () =>
+                {
+                    if (Clan?.Id == clanId)
+                        _ = UpgradeHonLimit(nextLevel, pointsCost, moneyVipCost);
+                });
+        }
+
+        private async Task UpgradeHonLimit(int limitLevel, long pointsCost, long moneyVipCost)
         {
             if (isProcessing || Handler == null) return;
             SetProcessing(true);
+            UpgradeClanMaxHonResult result = null;
             try
             {
-                var result = await Handler.UpgradeMaxHon(limitLevel);
-                if (!result.Success)
+                result = await Handler.UpgradeMaxHon(limitLevel, pointsCost, moneyVipCost);
+                if (!result.Success && !result.RequiresConfirmation)
                 {
                     NotifyGroup.Instance?.Show(string.IsNullOrWhiteSpace(result.Message)
                         ? Tint("Không thể nâng giới hạn hồn", ColorWarn)
                         : result.Message);
                 }
-                else
+                else if (result.Success)
                 {
                     NotifyGroup.Instance?.Show(
                         $"Nâng giới hạn hồn thành công: {Tint("+", ColorGood)}{Num(result.AddedMaxHon, ColorGood)} " +
-                        $"giới hạn {Tint("Hồn", ColorHon)}, tiêu {Num(result.FundsSpent, ColorFunds)} " +
-                        $"{Tint("Quỹ", ColorFunds)}");
+                        $"giới hạn {Tint("Hồn", ColorHon)}, tiêu {Num(result.ContribPointsCost, ColorFunds)} điểm cống hiến " +
+                        $"và {Num(result.MoneyVipCost, ColorSoul)} Tiên Ngọc");
                     Refresh();
                     panel?.RefreshClanSummary();
                 }
@@ -390,6 +407,11 @@ namespace Clan
             {
                 SetProcessing(false);
             }
+            if (result?.RequiresConfirmation == true && gameObject.activeInHierarchy &&
+                TryGetNextHonLimitInfo(Clan, out var nextLevel, out _, out var nextMaxHon, out var nextMaxSoulEssence) &&
+                nextLevel == limitLevel)
+                ShowUpgradeConfirmation(limitLevel, result.ContribPointsCost, result.MoneyVipCost,
+                    nextMaxHon, nextMaxSoulEssence, true);
         }
 
         private void SetProcessing(bool value)
