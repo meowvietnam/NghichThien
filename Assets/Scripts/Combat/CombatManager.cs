@@ -378,6 +378,13 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                 char1.characterStatsBase.thoNguyen.Value, allThanThongIds, char2.characterStatsBase.level.Value,
                 gameManager.currentECombatResult); // thằng 1 luoon la user thằng 2 là thằng enemy
         }
+        else if(IsBossCombat)
+        {
+            Observer.Notify(EventList.Network.RESULT_COMBAT_BOSS, this, gameManager.currentETypeCombat,
+                char1.characterStatsTemp.hp.Value, char1.characterStatsBase.thanThuc.Value,
+                char1.characterStatsBase.thoNguyen.Value, allThanThongIds, char2.characterStatsBase.level.Value,
+                gameManager.currentECombatResult); // thằng 1 luoon la user thằng 2 là thằng enemy
+        }
         else
         {
             Observer.Notify(EventList.Network.RESULT_COMBAT, this, gameManager.currentETypeCombat,
@@ -665,7 +672,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         if (IsBossCombat)
         {
             Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN_BOSS,
-                new SyncSendEndTurnBoss { CharId = oldCurrentTurn.characterStatsBase.idChar.Value,IsKietSuc = oldTargetTurn.IsKietSuc() });
+                new SyncEndTurnBoss { CharId = oldCurrentTurn.characterStatsBase.idChar.Value,IsKietSuc = oldTargetTurn.IsKietSuc() });
         }
 
         SwapTurn();
@@ -1719,7 +1726,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     }
     public void ReceiveSyncEndTurnBoss(params object[] data)
     {
-        SyncSendEndTurnBoss SyncSendEndTurnBoss = data[0] as SyncSendEndTurnBoss;
+        SyncEndTurnBoss SyncSendEndTurnBoss = data[0] as SyncEndTurnBoss;
         if (SyncSendEndTurnBoss.IsKietSuc)
         {
             Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
