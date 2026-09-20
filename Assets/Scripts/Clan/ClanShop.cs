@@ -346,7 +346,9 @@ namespace Clan
 
         private void UpdateContributionPoints()
         {
-            if (contributionPointsText != null) contributionPointsText.text = ContributionPoints.ToString("N0");
+            var characterId = Client.Instance?.CharacterData?.Id ?? 0;
+            var member = Handler?.CurrentClan?.Members?.FirstOrDefault(value => value.CharId == characterId);
+            ClanContributionText.Set(contributionPointsText, member);
             UpdateButtons();
         }
 

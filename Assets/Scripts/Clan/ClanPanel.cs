@@ -135,6 +135,7 @@ namespace Clan
         {
             base.Init(clan);
             RefreshPermissions();
+            memberActionPopup?.RefreshContribution();
         }
 
         public override void RefreshClanSummary()
@@ -199,7 +200,7 @@ namespace Clan
             ClanInheritanceTrigger trigger,
             int slotIndex,
             EffectType? effectType,
-            int expectedClanFundsCost = -1,
+            int expectedContribPointsCost = -1,
             int expectedMoneyVipCost = -1)
         {
             if (!HasPermission(ClanPermission.ManageInheritance))
@@ -211,7 +212,7 @@ namespace Clan
                 });
             }
 
-            return Handler.SetInheritance(trigger, slotIndex, effectType, expectedClanFundsCost, expectedMoneyVipCost);
+            return Handler.SetInheritance(trigger, slotIndex, effectType, expectedContribPointsCost, expectedMoneyVipCost);
         }
 
         public int GetInheritanceSlots()
