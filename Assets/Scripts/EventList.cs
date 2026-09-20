@@ -89,7 +89,13 @@ public static partial class EventList
         public const string SEND_SYNC_REMOVE_EFFECTSKILLNODESTROY = "Combat.SEND_SYNC_REMOVE_EFFECTSKILLNODESTROY"; // gửi idCharDung
 
         public const string RECEIVE_SYNC_REMOVE_EFFECTSKILLNODESTROY = "Combat.RECEIVE_SYNC_REMOVE_EFFECTSKILLNODESTROY"; //  nhận idCharDung 
-        // khi play skill đồng bộ cho máy kia chỉ play visual không gửi sync
+
+
+        public const string SEND_SYNC_ENDTURN_BOSS = "Combat.SEND_SYNC_ENDTURN_BOSS"; // gửi name char cưỡng chế end turn ở client
+
+        public const string
+            RECEIVE_SYNC_ENDTURN_BOSS = "Combat.RECEIVE_SYNC_ENDTURN_BOSS"; // nhận name char cưỡng chế end turn ở client
+
         public static void RemoveAllCombatObservers()
         {
             // Lấy tất cả các trường const string trong class Combat

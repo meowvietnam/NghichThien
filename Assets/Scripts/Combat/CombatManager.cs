@@ -224,6 +224,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     public bool IsRealTimeCombat => Pool.Get<GameManager>().currentETypeCombat == ETypeCombat.LuanBanRealTime ||
                                     Pool.Get<GameManager>().currentETypeCombat == ETypeCombat.TongMonChienRealTime;
+    public bool IsBossCombat => Pool.Get<GameManager>().currentETypeCombat == ETypeCombat.Boss;
 
     public bool IsSync => IsRealTimeCombat && currentTurn == char1 && isSync == true;
     public bool isSync = true;
@@ -249,7 +250,9 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_HEALING, ReceiveSyncHealing);
         Observer.AddObserver(EventList.Combat.CHARACTER_HEALING_AFTER_CALC, SendSyncHealing);
         Observer.AddObserver(EventList.Combat.CHARACTER_AFTER_TAKE_DAME_ALL, SendSyncDame);
+
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_DAME, ReceiveSyncDame);
+
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_USE_PHAPBAO, ReceiveSyncPhapBao);
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_ENDTURN,
             () =>
@@ -356,8 +359,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             SuccessResultCombatBase(new(), gameManager.currentECombatResult);
         }
-        else if (gameManager.currentETypeCombat == ETypeCombat.LuanBanRealTime ||
-                 gameManager.currentETypeCombat == ETypeCombat.TongMonChienRealTime)
+        else if (IsRealTimeCombat)
         {
             Observer.Notify(EventList.Network.RESULT_COMBAT_REALTIME, this, gameManager.currentETypeCombat,
                 char1.characterStatsTemp.hp.Value, char1.characterStatsBase.thanThuc.Value,
@@ -644,6 +646,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         var oldCurrentTurn = currentTurn;
         var oldTargetTurn = targetTurn;
         if (IsSync)
+        {
+            Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN,
+                new SyncEndTurn { CharId = oldCurrentTurn.characterStatsBase.idChar.Value });
+        }
+        if (IsBossCombat)
         {
             Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN,
                 new SyncEndTurn { CharId = oldCurrentTurn.characterStatsBase.idChar.Value });
@@ -1612,7 +1619,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         //int healValue = data[2] as int;
 
 
-        if (IsSync)
+        if (IsSync || IsBossCombat)
         {
             Debug.Log("SendSyncDame" + listDameData.Count);
             int idCharSend = -1;
@@ -1698,4 +1705,5 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             isSync = oldSync;
         }
     }
+
 }
