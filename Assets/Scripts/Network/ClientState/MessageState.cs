@@ -13,6 +13,7 @@ namespace Network.ClientState
         Auction,
         TrungSinh,
         DongPhuState,
-        CombatPvp
+        CombatPvp,
+        BossState
     }
 }
