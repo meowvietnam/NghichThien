@@ -293,25 +293,43 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
         ThienGiaiTrung,
         ThienGiaiThuong,
     }
-
-    public static List<EBuffAndDeBuff> eDebuffs = new List<EBuffAndDeBuff>
+    public static Dictionary<EBuffAndDeBuff, int> debuffWeights = new Dictionary<EBuffAndDeBuff, int>
     {
-        EBuffAndDeBuff.DeTonThuong,
-        EBuffAndDeBuff.KietSuc,
-        EBuffAndDeBuff.TreKhi,
-        EBuffAndDeBuff.NoiThuong,
-        EBuffAndDeBuff.TrienNhieu,
-        EBuffAndDeBuff.TrungDoc,
-        EBuffAndDeBuff.ChayMau,
-        EBuffAndDeBuff.SuongGia,
-        EBuffAndDeBuff.DongKet,
-        EBuffAndDeBuff.ThieuDot,
-        EBuffAndDeBuff.DanLuc,
-        EBuffAndDeBuff.PhaThe,
-        EBuffAndDeBuff.ThanThuong,
-        EBuffAndDeBuff.NhieuHon
+        { EBuffAndDeBuff.DeTonThuong, 10 },
+        { EBuffAndDeBuff.KietSuc,     5 },
+        { EBuffAndDeBuff.TreKhi,      10 },
+        { EBuffAndDeBuff.NoiThuong,   10 },
+        { EBuffAndDeBuff.TrienNhieu,  30 },
+        { EBuffAndDeBuff.TrungDoc,    30 },
+        { EBuffAndDeBuff.ChayMau,     10 },
+        { EBuffAndDeBuff.SuongGia,    30 },
+        { EBuffAndDeBuff.DongKet,     5 },
+        { EBuffAndDeBuff.ThieuDot,    30 },
+        { EBuffAndDeBuff.DanLuc,      10 },
+        { EBuffAndDeBuff.PhaThe,      10 },
+        { EBuffAndDeBuff.ThanThuong,  10 },
+        { EBuffAndDeBuff.NhieuHon,    10 },
+        { EBuffAndDeBuff.TroiChan,    10 }
     };
 
+    // Tính sẵn tổng trọng số ngay khi load script (đạt 220)
+    private static readonly int totalWeight = debuffWeights.Values.Sum();
+
+    public static EBuffAndDeBuff GetDebuffWithPercent()
+    {
+        int randomValue = UnityEngine.Random.Range(0, totalWeight);
+
+        foreach (var pair in debuffWeights)
+        {
+            if (randomValue < pair.Value)
+            {
+                return pair.Key;
+            }
+            randomValue -= pair.Value;
+        }
+
+        return EBuffAndDeBuff.ThieuDot;
+    }
     public static List<EBuffAndDeBuff> eNoneBuff = new List<EBuffAndDeBuff>
     {
         EBuffAndDeBuff.QuyCuu,
@@ -332,7 +350,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
     public static List<EBuffAndDeBuff> eBuffs = Enum.GetValues(typeof(EBuffAndDeBuff))
         .Cast<EBuffAndDeBuff>()
         .Where(e => e != EBuffAndDeBuff.None)
-        .Where(e => !eDebuffs.Contains(e) && !eNoneBuff.Contains(e))
+        .Where(e => !debuffWeights.Keys.Contains(e) && !eNoneBuff.Contains(e))
         .ToList();
 
     public enum ETypeSkill

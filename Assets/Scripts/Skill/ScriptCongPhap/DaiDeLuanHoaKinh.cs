@@ -19,7 +19,7 @@ public class DaiDeLuanHoaKinh : CongPhap, IMemorySerializable<DaiDeLuanHoaKinh>
         {
             for (int i = 0; i < Mathf.Abs(count); i++)
             {
-                var debuffKeys = caster.buffAndDebuffCount.Keys.Where(key => BaseSkill.eDebuffs.Contains(key)).ToList();
+                var debuffKeys = caster.buffAndDebuffCount.Keys.Where(key => BaseSkill.debuffWeights.Keys.Contains(key)).ToList();
                 // 2. Kiểm tra xem có debuff nào để xóa không
                 if (debuffKeys.Count > 0)
                 {

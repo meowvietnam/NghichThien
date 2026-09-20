@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using Network;
 using Network.Extensions;
+using System.Linq;
 
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(ChanNguyenHuyenDien))]
 public class ChanNguyenHuyenDien : CongPhap, IMemorySerializable<ChanNguyenHuyenDien>
@@ -15,7 +16,7 @@ public class ChanNguyenHuyenDien : CongPhap, IMemorySerializable<ChanNguyenHuyen
         int countDebuff = 0;
         foreach (var item in target.buffAndDebuffCount)
         {
-            if (eDebuffs.Contains(item.Key))
+            if (debuffWeights.Keys.Contains(item.Key))
             {
                 countDebuff++;
             }
@@ -23,7 +24,7 @@ public class ChanNguyenHuyenDien : CongPhap, IMemorySerializable<ChanNguyenHuyen
 
         for (int i = 0; i < countDebuff; i++)
         {
-            var buff = eBuffs[CombatStatic.IndexRandom(0, eDebuffs.Count)];
+            var buff = eBuffs[CombatStatic.IndexRandom(0, eBuffs.Count)];
             caster.AddBuffAndDebuffCount(buff, 1);
         }
 

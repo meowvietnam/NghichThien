@@ -1216,7 +1216,7 @@ public class CharacterCombat : MonoBehaviour
             for (int i = 0; i < 10; i++)
             {
                 var debuffKeys = buffAndDebuffCount.Keys
-                    .Where(key => BaseSkill.eDebuffs.Contains(key))
+                    .Where(key => BaseSkill.debuffWeights.Keys.Contains(key))
                     .ToList();
                 // 2. Kiểm tra xem có debuff nào để xóa không
                 if (debuffKeys.Count > 0)

@@ -19,7 +19,7 @@ public class UMinhDang : CongPhap, IMemorySerializable<UMinhDang>
         int indexLevel = CurrentLevelCongPhapInCombat(caster) - 1;
         for (int i = 0; i < debuffValues2[indexLevel]; i++)
         {
-            target.AddBuffAndDebuffCount(BaseSkill.eDebuffs[UnityEngine.Random.Range(0, BaseSkill.eDebuffs.Count)], 1);
+            target.AddBuffAndDebuffCount(BaseSkill.GetDebuffWithPercent(), 1);
         }
     }
 
@@ -33,7 +33,7 @@ public class UMinhDang : CongPhap, IMemorySerializable<UMinhDang>
         int indexLevel = CurrentLevelCongPhapInCombat(caster) - 1;
         for (int i = 0; i < debuffValues[indexLevel]; i++)
         {
-            target.AddBuffAndDebuffCount(BaseSkill.eDebuffs[UnityEngine.Random.Range(0, BaseSkill.eDebuffs.Count)], 1);
+            target.AddBuffAndDebuffCount(BaseSkill.GetDebuffWithPercent(), 1);
         }
     }
 

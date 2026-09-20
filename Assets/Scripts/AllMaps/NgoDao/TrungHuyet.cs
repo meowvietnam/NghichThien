@@ -10,7 +10,7 @@ public class TrungHuyet : NgoDaoCombat, IMemorySerializable<TrungHuyet>
 {
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        var debuffKeys = caster.buffAndDebuffCount.Keys.Where(key => BaseSkill.eDebuffs.Contains(key)).ToList();
+        var debuffKeys = caster.buffAndDebuffCount.Keys.Where(key => BaseSkill.debuffWeights.Keys.Contains(key)).ToList();
         // 2. Kiểm tra xem có debuff nào để xóa không
         if (debuffKeys.Count > 0)
         {
