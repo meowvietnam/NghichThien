@@ -12,6 +12,7 @@ public class ThanHoangAn : ThanThong, IMemorySerializable<ThanHoangAn>
 {
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
+        HauKeVoLuc(caster);
         List<LinhKhiTieuTan> linhKhiTieuTan = data[3] as List<LinhKhiTieuTan>;
         bool isTuongDong = CombatManager.IsTuongDong(linhKhiTieuTan);
         if (isTuongDong)
@@ -48,7 +49,7 @@ public class ThanHoangAn : ThanThong, IMemorySerializable<ThanHoangAn>
     public override string GetDesc(int level)
     {
         return
-            $"Nếu {GetKeyWord(EKeyWord.TuongDong)} thì số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)} tăng gấp đôi. Nếu không thì, chuyển toàn bộ tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} đang có thành {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}*2";
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Nếu {GetKeyWord(EKeyWord.TuongDong)} thì số tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)} tăng gấp đôi. Nếu không thì, chuyển toàn bộ tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.HoTrao)} đang có thành {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.SucThe)}*2";
     }
 
     public override int ByteSize()

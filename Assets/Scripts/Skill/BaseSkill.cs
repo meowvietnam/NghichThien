@@ -716,7 +716,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
 
                 break;
             case EBuffAndDeBuff.GiamTonThuong:
-                text = "Trong hiệp này, mỗi tầng ngăn cản 1% sát thương. Bắt đầu hiệp sau, giải trừ toàn bộ";
+                text = "Trong hiệp này, mỗi tầng ngăn cản 1% sát thương. Bắt đầu hiệp sau, giải trừ toàn bộ (Tối đa 90 tầng)";
                 break;
             case EBuffAndDeBuff.NoiThuong:
                 text =

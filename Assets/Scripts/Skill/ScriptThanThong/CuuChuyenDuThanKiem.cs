@@ -11,48 +11,59 @@ using Network.Extensions;
 public class CuuChuyenDuThanKiem : ThanThong, IMemorySerializable<CuuChuyenDuThanKiem>
 {
     [SerializeField] private int[] dames = new int[] { 2, 5, 10, 32, 64 };
-    [SerializeField] private int require = 2;
+    [SerializeField] private int require = 3;
+    [SerializeField] private int maxCountDame = 10;
+    [SerializeField] private int requireKiemKhi = 1;
     [SerializeField] private ThanThong thanThongActive;
     [SerializeField] private float delayTimeEffect = 1f;
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         // Kiểm tra xem caster có đủ linh khí để dùng chiêu thức ít nhất 1 lần không
-        if (caster.CurrentLinhKhi >= require)
+        if (caster.CurrentLinhKhi >= requireKiemKhi)
         {
-            // Tính toán số lần có thể kích hoạt dựa trên lượng linh khí hiện tại
-            int availableActivations = caster.CurrentLinhKhi / require;
+            int tempLinhKhi = caster.CurrentLinhKhi;
+            int availableActivations = 0;
+            int maxLimit = Math.Min(10, maxCountDame); // Giới hạn tối đa 10 đòn
+
+            // Tính toán số lần kích hoạt dựa trên chi phí lũy tiến
+            while (availableActivations < maxLimit)
+            {
+                int hitIndex = availableActivations + 1;
+
+                // 5 đòn đầu dùng `require`, từ đòn thứ 6 trở đi tốn 10 linh khí
+                int currentCost = (hitIndex <= 5) ? require : require;
+
+                if (tempLinhKhi >= currentCost)
+                {
+                    tempLinhKhi -= currentCost;
+                    availableActivations++;
+                }
+                else
+                {
+                    break; // Không đủ linh khí để lên đòn tiếp theo
+                }
+            }
+
+            int availableActivationsKiemKhi = caster.CurrentLinhKhi / requireKiemKhi;
             List<int> dames = new List<int>();
 
             // Lấy Base Dame hiện tại 1 lần outside vòng lặp để tránh gọi hàm trùng lặp
             int baseDame = this.dames[GetIndexLevelThanThong(caster)];
 
+            caster.TieuTanAllLinhKhi();
+
             for (int step = 0; step < availableActivations; step++)
             {
-                // 1. Tiêu tốn linh khí cho mỗi lần kích hoạt
-                for (int i = 0; i < require; i++)
-                {
-                    var linhKhiNguatNhien = caster.GetRandomLinhKhiConLai();
-                    caster.TieuTanLinhKhi(linhKhiNguatNhien, 1);
-                }
-
-                // 2. Thực hiện hành động của skill (hiệu ứng, animation...)
-                Action(caster, target, data);
-
-                // 3. Tính % giảm sát thương theo từng lần chém (Max 80%)
-                // Lần 1 (step = 0): Giảm 0%   => Dame = 100% Base
-                // Lần 2 (step = 1): Giảm 10%  => Dame = 90% Base
-                // Lần 3 (step = 2): Giảm 20%  => Dame = 80% Base ... tối đa giảm 80% (giữ lại 20% dame)
-                int reducePercent = Math.Min(step * 10, 80);
-                int currentDame = Mathf.RoundToInt(baseDame * (100 - reducePercent) / 100f);
-
-                dames.Add(currentDame);
+                dames.Add(baseDame);
             }
-            foreach (var item in dames)
+
+            for (int step = 0; step < availableActivationsKiemKhi; step++)
             {
-                Debug.Log("Base dame 9 chuyen "+ item);
+                Action(caster, target, data);
             }
-            // Gửi danh sách sát thương đã được giảm dần để tính toán
+
+            // Gửi danh sách sát thương đã được tính toán
             target.CaculateDameByThanThong(caster, dames, eTypeSkill);
         }
     }
@@ -80,7 +91,7 @@ public class CuuChuyenDuThanKiem : ThanThong, IMemorySerializable<CuuChuyenDuTha
     public override string GetDesc(int level)
     {
         return
-            $"{GetKeyWord(EKeyWord.KiemY)} Gây {GetColoredText($"{dames[level - 1]}", "red")} sát thương. Tự động tiêu tán {GetColoredText($"{require}", "red")} linh khí để tái kích hoạt (Sát thương giảm dần {GetColoredText("10%", "red")} mỗi lần, tối đa {GetColoredText("80%", "red")}) cho đến khi hết linh khí.";
+            $"{GetKeyWord(EKeyWord.KiemY)}. Tiêu tán toàn bộ linh khí. Mỗi {GetColoredText($"{require}", "red")} điểm linh khí sẽ gây thêm 1 lần {GetColoredText($"{dames[level - 1]}", "red")} sát thương (Tối đa 10 lần).  Mỗi {GetColoredText($"{requireKiemKhi}", "red")} điểm linh khí thì thu hoạch được 1 tầng {GetKeyWordBuffOrDeBuff(EBuffAndDeBuff.KiemKhi)}.";
     }
 
     public override int ByteSize()

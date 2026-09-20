@@ -30,8 +30,7 @@ public class LietBangQuyet : CongPhap, IMemorySerializable<LietBangQuyet>
     {
         int count = caster.congPhapDynamic.Count(x => x.congPhap is LietBangQuyet);
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SuongGia, out SecureInt suongGia);
-        List<int> dames = (List<int>)data[2];
-        int dame = dames[0];
+        int dame = target.GetDameBuffForTarget();
         if (count >= require)
         {
             float percent = (float)buffValues[CurrentLevelCongPhapInCombat(caster) - 1] * suongGia / 100f;

@@ -15,7 +15,6 @@ public class CPBuffDameOrHoTrao : CongPhap, IMemorySerializable<CPBuffDameOrHoTr
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         // Kiểm tra hệ của Skill đang dùng có khớp với Công Pháp (SO) này không
-        List<int> dames = (List<int>)data[2];
         int percent = dameBuffPercent[CurrentLevelCongPhapInCombat(caster) - 1];
         int xHoTrao = xHoTraos[CurrentLevelCongPhapInCombat(caster) - 1];
         if (CheckIsEqualETypeSkill(caster))
@@ -23,7 +22,7 @@ public class CPBuffDameOrHoTrao : CongPhap, IMemorySerializable<CPBuffDameOrHoTr
             if (CombatManager.IsTuongDong(caster.thanThongCurrentUse.linhKhiTieuTan))
             {
                 Debug.Log("tuong dong KimLinhThacThienCong");
-                target.AddDamageData(new List<int> { (int)((percent / 100f) * dames[0]) });
+                target.AddDamageData(new List<int> { (int)((percent / 100f) * target.GetDameBuffForTarget()) });
             }
             else if (CombatManager.GetETuongQuan(caster.thanThongCurrentUse.linhKhiTieuTan) == ETuongQuan.TuongSinh)
             {

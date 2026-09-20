@@ -17,7 +17,6 @@ public class TangLyQuyet : CongPhap, IMemorySerializable<TangLyQuyet>
         int level = CurrentLevelCongPhapInCombat(caster);
         if (level == 0)
             return;
-        List<int> dames = (List<int>)data[2];
         Debug.Log($"dcmmm + lv " + CurrentLevelCongPhapInCombat(caster) + " length là " + dameBuffPercent.Length);
         int percentDame = dameBuffPercent[level - 1];
         SecureInt noiThuong = 0;
@@ -25,7 +24,7 @@ public class TangLyQuyet : CongPhap, IMemorySerializable<TangLyQuyet>
         if (noiThuong > 0)
         {
             Debug.Log("tuong dong KimLinhThacThienCong");
-            target.AddDamageData(new List<int> { (int)((percentDame / 100f) * dames[0]) });
+            target.AddDamageData(new List<int> { (int)((percentDame / 100f) * target.GetDameBuffForTarget()) });
         }
     }
 
@@ -50,14 +49,13 @@ public class TangLyQuyet : CongPhap, IMemorySerializable<TangLyQuyet>
             return;
         }
 
-        List<int> dames = (List<int>)data[2];
         int percentDame = dameDebuffPercent[level - 1];
         SecureInt noiThuong = 0;
         target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.NoiThuong, out noiThuong);
         if (noiThuong > 0)
         {
             Debug.Log("excute 2 tanglyQuyet");
-            target.AddDamageData(new List<int> { (int)((percentDame / 100f) * dames[0]) });
+            target.AddDamageData(new List<int> { (int)((percentDame / 100f) * target.GetDameBuffForTarget()) });
         }
     }
 

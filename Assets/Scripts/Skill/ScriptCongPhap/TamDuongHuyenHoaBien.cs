@@ -14,8 +14,7 @@ public class TamDuongHuyenHoaBien : CongPhap, IMemorySerializable<TamDuongHuyenH
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
-        List<int> dames = (List<int>)data[2];
-        int dame = dames[0];
+        int dame = target.GetDameBuffForTarget();
         if (CheckIsEqualETypeSkill(caster))
         {
             // 1. Lấy danh sách các Thần Thông hệ DiHoa duy nhất (không trùng Object)

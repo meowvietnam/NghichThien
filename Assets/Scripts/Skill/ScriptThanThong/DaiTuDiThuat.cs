@@ -35,7 +35,6 @@ public class DaiTuDiThuat : ThanThong, IMemorySerializable<DaiTuDiThuat>
     {
         CharacterCombat currentTurn = (CharacterCombat)data[0];
         CharacterCombat target = (CharacterCombat)data[1];
-        List<int> dames = (List<int>)data[2];
         if (currentTurn == null)
             return;
         if (currentTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is DaiTuDiThuat))
@@ -44,7 +43,7 @@ public class DaiTuDiThuat : ThanThong, IMemorySerializable<DaiTuDiThuat>
             count = Math.Min(count, maxTichLuy);
             for (int i = 0; i < count; i++)
             {
-                target.AddDamageData(dames);
+                target.AddDamageData(new List<int> { target.GetDameBuffForTarget()});
             }
 
             currentTurn.RemoveAllThanThongImpactAfterPlaySkill(this);

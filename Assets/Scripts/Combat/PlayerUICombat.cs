@@ -179,13 +179,26 @@ public class PlayerUICombat : BaseBehaviour
 
         SetEventButton(btnEndRound, () =>
         {
+            ButtonEndRoundAction();
+               
+           
+        });
+        void ButtonEndRoundAction()
+        {
             if (CombatManager.IsDelayGame) return;
             if (player.isAutoCastSkill) return;
 
             SetStateControl(EStateControl.DeleteLinhKhi);
             if (CurrentLinhKhi <= maxLinhKhi || player.isSkipTieuTanLinhKhi == true)
             {
-                btnConfirm.onClick.Invoke();
+                if (player.IsFullLinhKhi)
+                {
+
+                    Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Đã đạt tối đa số lượng linh khí (linh khí tối đa * 10). Không thể hấp thụ thêm linh khí", () =>
+                    {
+                        btnConfirm.onClick.Invoke();
+                    });
+                }
             }
             else
             {
@@ -196,8 +209,7 @@ public class PlayerUICombat : BaseBehaviour
             }
 
             CheckFightSkillCanUse();
-        });
-
+        }
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, NewTurn);
         Observer.AddObserver(EventList.Combat.ADJUST_LINHKHI, AdjustLinhKhi);
         Observer.AddObserver(EventList.Combat.PLAY_SKILL, CheckFightSkillCanUseObserver);
@@ -605,7 +617,13 @@ public class PlayerUICombat : BaseBehaviour
         }
 
         this.gameObject.SetActive(true);
+        if (player.IsFullLinhKhi)
+        {
 
+            Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Đã đạt tối đa số lượng linh khí (linh khí tối đa * 10). Không thể hấp thụ thêm linh khí", () =>
+            {
+            });
+        }
 
         if (currentTurn == null)
         {
