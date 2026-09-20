@@ -346,7 +346,9 @@ namespace Network.Core
         public async Task<SetClanInheritanceResult> SetInheritance(
             ClanInheritanceTrigger trigger,
             int slotIndex,
-            EffectType? effectType)
+            EffectType? effectType,
+            int expectedClanFundsCost,
+            int expectedMoneyVipCost)
         {
             var result = await Request<SetClanInheritanceRequest, SetClanInheritanceResult>(
                 MessageTag.SetClanInheritanceRequest,
@@ -354,12 +356,18 @@ namespace Network.Core
                 {
                     Trigger = trigger,
                     SlotIndex = slotIndex,
-                    EffectType = effectType
+                    EffectType = effectType,
+                    ExpectedClanFundsCost = expectedClanFundsCost,
+                    ExpectedMoneyVipCost = expectedMoneyVipCost
                 });
 
-            if (result.Success)
+            if (result.Success || result.RequiresConfirmation)
             {
                 if (CurrentClan != null) CurrentClan.Funds = result.ClanFunds;
+            }
+            if (result.Success)
+            {
+                client.CharacterData.MoneyVip = result.NewMoneyVip;
                 ApplyInheritanceChanged(result.Change, false);
             }
 

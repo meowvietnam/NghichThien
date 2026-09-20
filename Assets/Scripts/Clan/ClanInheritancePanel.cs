@@ -127,7 +127,7 @@ namespace Clan
                     : "Chỉ Tộc Chủ có thể thay đổi";
             }
             if (costHintText != null)
-                costHintText.text = $"Điền ô trống miễn phí · Đổi hoặc xóa: {config.ChangeInheritanceMoneyVipCost:n0} quỹ tông môn";
+                costHintText.text = $"Điền ô trống miễn phí · Đổi/xóa: {config.ChangeInheritanceClanFundsCost:n0} quỹ; thiếu quỹ bù Tiên Ngọc (1 = 2 quỹ)";
             RenderUpgrade(canUpgrade, clan.Funds);
         }
 
@@ -209,7 +209,7 @@ namespace Clan
             {
                 selectionHintText.text = slot.Effect == null
                     ? "Lần chọn đầu tiên cho ô này được miễn phí"
-                    : $"Đổi lựa chọn sẽ tốn {Handler.CurrentConfig.ChangeInheritanceMoneyVipCost:n0} quỹ tông môn";
+                    : $"Đổi/xóa: {Handler.CurrentConfig.ChangeInheritanceClanFundsCost:n0} quỹ; thiếu quỹ bù bằng Tiên Ngọc cá nhân";
             }
             if (clearButton != null) clearButton.gameObject.SetActive(slot.Effect != null);
             RenderOptions(slot.Effect?.EffectType);
@@ -255,29 +255,59 @@ namespace Clan
             if (selectedSlot == null || isSubmitting) return;
             if (selectedSlot.Effect?.EffectType == effectType) return;
 
+            var totalCost = selectedSlot.Effect == null ? 0 : Handler.CurrentConfig.ChangeInheritanceClanFundsCost;
+            if (totalCost < 0)
+            {
+                Notify("Cấu hình phí thay đổi truyền thừa không hợp lệ");
+                return;
+            }
+            var fundsCost = (int)Math.Min(Math.Max(0, Handler.CurrentClan.Funds), totalCost);
+            var shortfall = totalCost - fundsCost;
+            ShowInheritanceConfirmation(selectedSlot.Trigger, selectedSlot.SlotIndex, effectType,
+                fundsCost, shortfall / 2 + shortfall % 2);
+        }
+
+        private void ShowInheritanceConfirmation(ClanInheritanceTrigger trigger, int slotIndex,
+            EffectType? effectType, int fundsCost, int moneyVipCost, bool priceChanged = false)
+        {
             var name = effectType == null ? "xóa truyền thừa" : $"chọn {GetEffectName(effectType)}";
-            var cost = selectedSlot.Effect == null ? 0 : Handler.CurrentConfig.ChangeInheritanceMoneyVipCost;
-            var content = cost > 0
-                ? $"Xác nhận {name}?\nChi phí: {cost:n0} quỹ tông môn."
-                : $"Xác nhận {name}?\nLần chọn đầu tiên của ô này được miễn phí.";
+            var column = trigger == ClanInheritanceTrigger.StartTurn ? "Bắt đầu hiệp" : "Kết thúc hiệp";
+            var content = (priceChanged ? "<b>Chi phí đã thay đổi. Vui lòng xác nhận lại.</b>\n" : "")
+                + $"Xác nhận <b>{name}</b>?\n{column} · Ô {slotIndex + 1}\n";
+            if (fundsCost == 0 && moneyVipCost == 0)
+                content += "<color=#67DCA2><b>Miễn phí</b></color>";
+            else
+            {
+                content += $"Quỹ tông môn: <color=#FFD166><b>{fundsCost:n0}</b></color>";
+                if (moneyVipCost > 0)
+                    content += $"\nTiên Ngọc cá nhân: <color=#69D9EF><b>{moneyVipCost:n0}</b></color>"
+                        + "\nBù phần thiếu: 1 Tiên Ngọc = 2 quỹ, làm tròn lên.";
+            }
             var popup = Pool.Get<PopupConfirmAction>();
             if (popup == null)
             {
                 Notify("Không thể mở xác nhận truyền thừa");
                 return;
             }
-            popup.ShowPopConfirmAction(content, () => _ = Submit(selectedSlot.Trigger, selectedSlot.SlotIndex, effectType));
+            var clanId = Handler.CurrentClan.Id;
+            popup.ShowPopConfirmAction(content, () =>
+            {
+                if (Handler?.CurrentClan?.Id != clanId) return;
+                _ = Submit(trigger, slotIndex, effectType, fundsCost, moneyVipCost);
+            });
         }
 
-        private async Task Submit(ClanInheritanceTrigger trigger, int slotIndex, EffectType? effectType)
+        private async Task Submit(ClanInheritanceTrigger trigger, int slotIndex, EffectType? effectType,
+            int fundsCost, int moneyVipCost)
         {
             if (isSubmitting) return;
             isSubmitting = true;
             SetSelectionInteractable(false);
+            SetClanInheritanceResult result = null;
             try
             {
-                var result = await Handler.SetInheritance(trigger, slotIndex, effectType);
-                Notify(result.Message);
+                result = await Handler.SetInheritance(trigger, slotIndex, effectType, fundsCost, moneyVipCost);
+                if (!result.RequiresConfirmation) Notify(result.Message);
                 if (result.Success)
                 {
                     CloseSelection();
@@ -293,6 +323,11 @@ namespace Clan
             {
                 isSubmitting = false;
                 SetSelectionInteractable(true);
+            }
+            if (result != null && result.RequiresConfirmation && gameObject.activeInHierarchy)
+            {
+                Render();
+                ShowInheritanceConfirmation(trigger, slotIndex, effectType, result.Cost, result.MoneyVipCost, true);
             }
         }
 

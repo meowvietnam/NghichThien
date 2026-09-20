@@ -198,7 +198,9 @@ namespace Clan
         public Task<SetClanInheritanceResult> SetInheritance(
             ClanInheritanceTrigger trigger,
             int slotIndex,
-            EffectType? effectType)
+            EffectType? effectType,
+            int expectedClanFundsCost = -1,
+            int expectedMoneyVipCost = -1)
         {
             if (!HasPermission(ClanPermission.ManageInheritance))
             {
@@ -209,7 +211,7 @@ namespace Clan
                 });
             }
 
-            return Handler.SetInheritance(trigger, slotIndex, effectType);
+            return Handler.SetInheritance(trigger, slotIndex, effectType, expectedClanFundsCost, expectedMoneyVipCost);
         }
 
         public int GetInheritanceSlots()

@@ -68,7 +68,7 @@ namespace Network.Models.Clans
         public int BaseInheritanceSlots { get; set; } = 1;
         public int InheritanceSlotsPerLevel { get; set; } = 1;
         public int MaxInheritanceSlotsPerColumn { get; set; } = 10;
-        public int ChangeInheritanceMoneyVipCost { get; set; } = 1_000;
+        public int ChangeInheritanceClanFundsCost { get; set; } = 4_000;
         public int InheritanceBaseValue { get; set; } = 1;
         public int InheritanceValuePerClanLevel { get; set; } = 1;
         public EffectType[] InheritanceBuffWhitelist { get; set; } = new EffectType[0];

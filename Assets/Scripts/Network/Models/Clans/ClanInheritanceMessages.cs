@@ -10,6 +10,8 @@ namespace Network.Models.Clans
         public ClanInheritanceTrigger Trigger { get; set; }
         public int SlotIndex { get; set; }
         public EffectType? EffectType { get; set; }
+        public int ExpectedClanFundsCost { get; set; } = -1;
+        public int ExpectedMoneyVipCost { get; set; } = -1;
     }
 
     [MemoryPackable]
@@ -19,6 +21,8 @@ namespace Network.Models.Clans
         public int NewMoneyVip { get; set; }
         public long ClanFunds { get; set; }
         public int Cost { get; set; }
+        public int MoneyVipCost { get; set; }
+        public bool RequiresConfirmation { get; set; }
     }
 
     [MemoryPackable]

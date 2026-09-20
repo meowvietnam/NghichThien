@@ -25,6 +25,7 @@ public class PopupConfirmAction : Popup, IUISingleton
     public void ShowPopConfirmAction(string content, Action actionConfirm)
     {
         Show();
+        contentText.supportRichText = true;
         contentText.text = content;
         SetEventButton(btnConfirm, () => { OnClickEvent(actionConfirm); });
         var fitter = contentText.GetComponent<ContentSizeFitter>();
