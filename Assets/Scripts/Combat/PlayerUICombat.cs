@@ -617,14 +617,7 @@ public class PlayerUICombat : BaseBehaviour
         }
 
         this.gameObject.SetActive(true);
-        if (player.IsFullLinhKhi)
-        {
-
-            Pool.Get<PopupConfirmAction>().ShowPopConfirmAction("Đã đạt tối đa số lượng linh khí (linh khí tối đa * 10). Không thể hấp thụ thêm linh khí", () =>
-            {
-            });
-        }
-
+      
         if (currentTurn == null)
         {
             Debug.Log("NewTurn2");

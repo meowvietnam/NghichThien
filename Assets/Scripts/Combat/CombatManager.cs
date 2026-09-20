@@ -280,7 +280,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             char2 = characters[0];
         }
         if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
-           
+        char1.gameObject.SetActive(true);
+        char2.gameObject.SetActive(true);
         char1.Init(gameConfig.user);
         char2.Init(gameConfig.enemyCombat);
         // test 
@@ -1173,7 +1174,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     void Start()
     {
-        if (!IsRealTimeCombat)
+        if (!IsRealTimeCombat && !IsBossCombat)
         {
             var charCb = char1.GetToDoBay() >= char2.GetToDoBay() ? char1 : char2;
             StartTurn(charCb);
