@@ -55,6 +55,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     [SerializeField] public CharacterCombat char1;
     [SerializeField] public CharacterCombat char2;
+    [SerializeField] public CharacterCombat[] characters;
+
     [SerializeField] private ItemUI prefabBuffIcon;
     public CharacterCombat currentTurn;
     public CharacterCombat targetTurn => currentTurn == char1 ? char2 : char1;
@@ -125,7 +127,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         }
 
         // Từ lượt 15 trở đi kích hoạt trạng thái bạo loạn
-        if (currentTurn.CurrentTurn >= 15)
+        if (currentTurn.CurrentTurn >= TurnLinhKhiBaoLoan)
         {
             textTurn =
                 "<size=25%>(Kết thúc hiệp, tổn hao 10% Khí Huyết tối đa)</size>\n<color=red><b>Linh Khí Bạo Loạn!</b></color>";
@@ -259,16 +261,26 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             {
                 Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
             });
+        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_ENDTURN_BOSS,ReceiveSyncEndTurnBoss);
+          
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_CP_DYNAMIC, ReceiveSyncCPDynamic);
         Observer.AddObserver(EventList.Combat.ADD_CP_DYNAMIC, SendSyncCPDynamic);
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_USE_EFFECTSKILL, ReceiSyncEffectSkill);
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_REMOVE_EFFECTSKILLNODESTROY,
             ReceiSyncEffectRemoveSkillNoDestroy);
 
-
-        if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
-        if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
         var gameConfig = Pool.Get<GameManager>();
+        if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
+        if(IsBossCombat)
+        {
+            char2 = characters.OfType<BossCombat>().FirstOrDefault();
+        }
+        else
+        {
+            char2 = characters[0];
+        }
+        if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
+           
         char1.Init(gameConfig.user);
         char2.Init(gameConfig.enemyCombat);
         // test 
@@ -476,7 +488,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     private void ResetCounterTime()
     {
-        counterTime = 30f;
+        counterTime = 15f;
         counterTimeText.gameObject.SetActive(false);
         var tf = counterTimeText.transform;
         tf.DOKill();
@@ -652,8 +664,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         }
         if (IsBossCombat)
         {
-            Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN,
-                new SyncEndTurn { CharId = oldCurrentTurn.characterStatsBase.idChar.Value });
+            Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN_BOSS,
+                new SyncSendEndTurnBoss { CharId = oldCurrentTurn.characterStatsBase.idChar.Value,IsKietSuc = oldTargetTurn.IsKietSuc() });
         }
 
         SwapTurn();
@@ -934,7 +946,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     public void NewTurn()
     {
         ResetCounterTime();
-        if (IsRealTimeCombat)
+        if (IsRealTimeCombat || IsBossCombat)
         {
             if (currentTurn == char1)
             {
@@ -1704,6 +1716,36 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             isSync = oldSync;
         }
+    }
+    public void ReceiveSyncEndTurnBoss(params object[] data)
+    {
+        SyncSendEndTurnBoss SyncSendEndTurnBoss = data[0] as SyncSendEndTurnBoss;
+        if (SyncSendEndTurnBoss.IsKietSuc)
+        {
+            Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
+
+        }
+        else if (char2 is BossCombat boss)
+        {
+            boss.BossPlayDame();
+            BossPlayDame();
+
+        }
+
+
+    }
+    public void BossPlayDame()
+    {
+        if(char1.CurrentTurn >= TurnLinhKhiBaoLoan)
+        {
+            char1.TakeDameByStatic(char2, new List<int> { int.MaxValue }, false, null, false);
+
+        }
+        else
+        {
+            char1.TakeDameByStatic(char2, new List<int> { int.MaxValue }, false, null, true);
+        }
+
     }
 
 }

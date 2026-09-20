@@ -281,10 +281,15 @@ public class CharacterCombat : MonoBehaviour
     {
         playerCombat?.PlaySkill(thanThong);
         DOTween.Kill("HideSkillName");
-
+        string nameSkill = thanThong.nameItem;
+        float delayEffect = thanThong.timeDelayTakeDame <= 1 ? 1 : thanThong.timeDelayTakeDame / 2;
+        VisualPlaySkill(nameSkill,delayEffect);
+    }
+    public void VisualPlaySkill(string nameSkill , float delayEffect = 1)
+    {
         textSkillNameCall.transform.parent.gameObject.SetActive(true);
-        textSkillNameCall.text = thanThong.nameItem;
-        DOVirtual.DelayedCall(thanThong.timeDelayTakeDame <= 1 ? 1 : thanThong.timeDelayTakeDame / 2,
+        textSkillNameCall.text = nameSkill;
+        DOVirtual.DelayedCall(delayEffect,
             () => { textSkillNameCall.transform.parent.gameObject.SetActive(false); }).SetId("HideSkillName");
         StartAnimPunch();
     }
@@ -795,7 +800,7 @@ public class CharacterCombat : MonoBehaviour
         }
     }
 
-    public void Init(GameManager.CharCombatInit charCombatInit)
+    public virtual void Init(GameManager.CharCombatInit charCombatInit)
     {
         var characterStat = charCombatInit.charStats;
         characterVisualControl.Init(charCombatInit.eTypeVisual, characterStat);
@@ -1754,7 +1759,7 @@ public class CharacterCombat : MonoBehaviour
        
     }    
     [Button]
-    private void TakeDame(CharacterCombat sender, bool isDef)
+    protected virtual void TakeDame(CharacterCombat sender, bool isDef)
     {
         if (sender != null)
         {
