@@ -1,16 +1,21 @@
+using System;
 using CreateCharacter;
 using MemoryPack;
 using Network;
 using Network.Extensions;
+using UnityEngine;
 
 namespace Rank
 {
     [MemoryPackable]
+    [Serializable]
     public partial class CharacterWrapper
     {
-        [MemoryPackIgnore] public CharacterData Character { get; private set; }
+        [MemoryPackIgnore]
+        [field: SerializeField]
+        public CharacterData Character { get; private set; }
+        [field: SerializeField]
         public byte[] CharacterBytes { get; private set; }
-
         public CharacterWrapper(CharacterData character)
         {
             Character = character;
