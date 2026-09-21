@@ -14,7 +14,7 @@ public class BossCombat : CharacterCombat
     {
         var thanThong = Pool.Get<GameManager>().GetThanThongWithId(IdSkill);
         VisualPlaySkill(thanThong);
-        thanThong.PlayVisualSkill(this, Pool.Get<CombatManager>().char1);
+        thanThong.PlayVisualSkill(Pool.Get<CombatManager>().char1, this);
 
 
     }
