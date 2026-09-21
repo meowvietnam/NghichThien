@@ -6,6 +6,7 @@ namespace Network.Models
 public partial class BossStatus
 {
     public bool Success { get; set; }
+    public int RequestNodeId { get; set; }
     public long SpawnId { get; set; }
     public int NodeId { get; set; }
     public ETypeVisualChar SkinId { get; set; }

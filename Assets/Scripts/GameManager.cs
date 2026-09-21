@@ -417,7 +417,7 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
         user.charStats.isPlayer = true;
         enemyCombat = new CharCombatInit
         {
-            eTypeVisual = ETypeVisualChar.Character,
+            eTypeVisual = result.Status.SkinId,
             charStats = CharacterStatsSecureBuilder.FromCharacterSnapshot(result.Status.Boss)
         };
         Client.Instance.CharacterData.EquipmentManager.DanCombatUseds.Clear();

@@ -39,6 +39,8 @@ namespace AllMaps
         [SerializeField] private ClanStrongholdNode clanStrongholdPrefab;
         [SerializeField] private Vector3 clanActionIconOffset = new Vector3(0f, 0.55f, 0f);
         private Map current;
+        private Boss.BossMapMarker bossMarker;
+        private float nextBossStatusRefresh;
         private Dictionary<Map, List<Map>> graph;
         private ClanHandler clanHandler;
         private readonly Dictionary<int, Map> originalClanMaps = new Dictionary<int, Map>();
@@ -210,10 +212,15 @@ namespace AllMaps
         private void Update()
         {
             if (IsSelectingNode && Input.GetKeyDown(KeyCode.Escape)) CancelCurrentNodeSelection();
+            if (Time.unscaledTime < nextBossStatusRefresh ||
+                Client.Instance.State is not Network.ClientState.AllMaps) return;
+            nextBossStatusRefresh = Time.unscaledTime + 5f;
+            Client.Instance.CoreModule.GetHandler<BossHandler>().GetActiveStatus(UpdateBossMarker);
         }
 
         private void OnDestroy()
         {
+            if (bossMarker != null) Destroy(bossMarker.gameObject);
             CancelCurrentNodeSelection();
             RestoreClanMaps();
             if (clanHandler != null)
@@ -491,9 +498,26 @@ namespace AllMaps
             {
                 if (this == null || current != arrived || player.IsMoving ||
                     Client.Instance.State is not Network.ClientState.AllMaps) return;
-                if (status.Success && status.IsAlive) Boss.BossInfoPopup.Open(status);
+                if (status.Success && status.IsAlive)
+                {
+                    UpdateBossMarker(status);
+                    Boss.BossInfoPopup.Open(status);
+                }
                 else arrived.OnPlayerEnter();
             });
+        }
+
+        private void UpdateBossMarker(BossStatus status)
+        {
+            if (this == null) return;
+            var node = status.Success && status.IsAlive ? FindMap(status.NodeId) : null;
+            if (bossMarker != null && (node == null || bossMarker.SpawnId != status.SpawnId))
+            {
+                Destroy(bossMarker.gameObject);
+                bossMarker = null;
+            }
+            if (node == null || bossMarker != null) return;
+            bossMarker = Boss.BossMapMarker.Create(node.transform, status);
         }
 
         [Button]

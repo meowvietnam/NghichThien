@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Network.Extensions.MemoryPack;
 using Network.Models;
 
@@ -6,16 +7,16 @@ namespace Network.Core
 {
     public class BossHandler : IClientHandler
     {
-        private int requestedNode;
-        private Action<BossStatus> statusCallback;
+        private readonly Dictionary<int, Action<BossStatus>> statusCallbacks = new();
         private Action<JoinBossResult> joinCallback;
 
         public void GetStatus(int nodeId, Action<BossStatus> callback)
         {
-            requestedNode = nodeId;
-            statusCallback = callback;
+            statusCallbacks[nodeId] = callback;
             Client.Instance.MemSend(MessageTag.GetBossStatus, nodeId);
         }
+
+        public void GetActiveStatus(Action<BossStatus> callback) => GetStatus(0, callback);
 
         public void Join(BossStatus status, Action<JoinBossResult> callback)
         {
@@ -34,9 +35,7 @@ namespace Network.Core
                 var result = message.Reader.MemRead<BossStatus>();
                 NetworkManager.Instance.Invoke(() =>
                 {
-                    if (result.NodeId != requestedNode) return;
-                    var callback = statusCallback;
-                    statusCallback = null;
+                    if (!statusCallbacks.Remove(result.RequestNodeId, out var callback)) return;
                     callback?.Invoke(result);
                 });
             }
@@ -53,14 +52,14 @@ namespace Network.Core
         }
 
         public void OnEnter() { }
-        public void OnLeave() { statusCallback = null; joinCallback = null; }
+        public void OnLeave() { statusCallbacks.Clear(); joinCallback = null; }
         public void OnDisconnect(IProtocol<MessageTag> protocol)
         {
             NetworkManager.Instance.Invoke(() =>
             {
                 var callback = joinCallback;
                 joinCallback = null;
-                statusCallback = null;
+                statusCallbacks.Clear();
                 callback?.Invoke(new JoinBossResult { Message = "Mất kết nối tới máy chủ." });
             });
         }
