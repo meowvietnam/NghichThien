@@ -819,20 +819,22 @@ public class CharacterCombat : MonoBehaviour
 
         if (CurrentIndexDanDoc == 2)
         {
-            totalKhiRandom -= 1;
+            UpdateTotalKhiRandom(-1);
         }
         else if (CurrentIndexDanDoc == 3)
         {
-            totalKhiRandom -= 2;
+            UpdateTotalKhiRandom(-2);
+
         }
         else if (CurrentIndexDanDoc == 4)
         {
-            totalKhiRandom -= 2;
+            UpdateTotalKhiRandom(-2);
+
         }
 
         if (IsDebuffTuoiTac)
         {
-            totalKhiRandom -= 2;
+            UpdateTotalKhiRandom(-2);
         }
 
         congPhapDynamic.Clear();
@@ -928,6 +930,15 @@ public class CharacterCombat : MonoBehaviour
     public int baseCountHapThuLinhKhi => totalKhiRandom - totalKhi;
     public SecureInt countHapThuLinhKhiNewTurn;
 
+    public void UpdateTotalKhiRandom(int count)
+    {
+        totalKhiRandom += count;
+    }
+    public void UpdateTotalKhi(int count)
+    {
+        UpdateTotalKhiRandom(count);
+        totalKhi += count;
+    }    
     private void InitTotalKhi()
     {
         int level = characterStatsTemp.level;
@@ -996,57 +1007,81 @@ public class CharacterCombat : MonoBehaviour
         TieuTanLinhKhi(ELinhKhi.Tho, khiTho);
         TieuTanLinhKhi(ELinhKhi.Ma, khiMa);
     }
-
-    public List<LinhKhiTieuTan> GetLinhKhiTieuTanForTotalLinhKhi()
+    public void TieuTanLinhKhiRandom(int count)
     {
+        var linhKhiTieuTan = GetLinhKhiTieuTanWithCount(count);
+        foreach (var item in linhKhiTieuTan)
+        {
+            TieuTanLinhKhi(item.eLinhKhi,item.count);
+        }
+    }    
+    public List<LinhKhiTieuTan> GetLinhKhiTieuTanWithCount(int countNeedToReduce)
+    {
+        // Nếu số lượng yêu cầu <= 0 thì không cần tiêu tán
+        if (countNeedToReduce <= 0) return new List<LinhKhiTieuTan>();
+
         System.Random rand = new System.Random();
         Dictionary<ELinhKhi, int> dictLinhKhiTemp = new Dictionary<ELinhKhi, int>
-        {
-            { ELinhKhi.Kim, khiKim },
-            { ELinhKhi.Moc, khiMoc },
-            { ELinhKhi.Thuy, khiThuy },
-            { ELinhKhi.Hoa, khiHoa },
-            { ELinhKhi.Tho, khiTho },
-            { ELinhKhi.Ma, khiMa }
-        };
+    {
+        { ELinhKhi.Kim, khiKim },
+        { ELinhKhi.Moc, khiMoc },
+        { ELinhKhi.Thuy, khiThuy },
+        { ELinhKhi.Hoa, khiHoa },
+        { ELinhKhi.Tho, khiTho },
+        { ELinhKhi.Ma, khiMa }
+    };
 
         List<LinhKhiTieuTan> linhKhiTieuTan = new();
+        int remainingToReduce = countNeedToReduce;
 
-        while (true)
+        while (remainingToReduce > 0)
         {
-            int currentLinhKhi = dictLinhKhiTemp.Sum(x => x.Value);
+            // 1. Lấy danh sách các hệ hiện có linh khí > 0
+            var availableKeys = dictLinhKhiTemp.Where(x => x.Value > 0).Select(x => x.Key).ToList();
 
-            if (currentLinhKhi <= totalKhi)
+            // Nếu kho đã cạn sạch linh khí thì dừng lại
+            if (availableKeys.Count == 0) break;
+
+            // 2. Chọn ngẫu nhiên 1 hệ
+            ELinhKhi randomKey = availableKeys[rand.Next(availableKeys.Count)];
+
+            // 3. Giới hạn số lượng tiêu tán: 
+            // Không vượt quá số hiện có của hệ đó VÀ không vượt quá số lượng còn thiếu (remainingToReduce)
+            int maxDecrement = Math.Min(dictLinhKhiTemp[randomKey], remainingToReduce);
+
+            // 4. Random số lượng trừ ngẫu nhiên trong khoảng [1, maxDecrement]
+            int decrementCount = rand.Next(1, maxDecrement + 1);
+
+            // 5. Cập nhật số lượng còn lại trong kho tạm và số lượng cần giảm
+            dictLinhKhiTemp[randomKey] -= decrementCount;
+            remainingToReduce -= decrementCount;
+
+            // 6. Cộng dồn vào danh sách kết quả
+            var existingItem = linhKhiTieuTan.FirstOrDefault(x => x.eLinhKhi == randomKey);
+            if (existingItem != null)
             {
-                break;
+                existingItem.count += decrementCount;
             }
             else
             {
-                // 1. Lấy danh sách các hệ hiện đang có số lượng > 0
-                var availableKeys = dictLinhKhiTemp.Where(x => x.Value > 0).Select(x => x.Key).ToList();
-
-                if (availableKeys.Count > 0)
-                {
-                    // 2. Chọn ngẫu nhiên 1 hệ trong danh sách có sẵn
-                    ELinhKhi randomKey = availableKeys[rand.Next(availableKeys.Count)];
-
-                    // 3. Trừ 1 đơn vị trong Dictionary
-                    dictLinhKhiTemp[randomKey] -= 1;
-
-                    // 4. Lưu vào danh sách tiêu tán (Bạn có thể gộp các Count giống nhau sau hoặc add mới)
-                    linhKhiTieuTan.Add(new LinhKhiTieuTan { eLinhKhi = randomKey, count = 1 });
-                }
-                else
-                {
-                    // Trường hợp kho đã sạch bách linh khí nhưng vẫn chưa thỏa điều kiện totalKhi
-                    break;
-                }
+                linhKhiTieuTan.Add(new LinhKhiTieuTan { eLinhKhi = randomKey, count = decrementCount });
             }
         }
 
         return linhKhiTieuTan;
     }
+    public List<LinhKhiTieuTan> GetLinhKhiTieuTanForTotalLinhKhi()
+    {
+        int countNeedToReduce = CurrentLinhKhi - totalKhi;
 
+        // Nếu linh khí hiện tại đã nhỏ hơn hoặc bằng totalKhi thì không cần tiêu tán
+        if (countNeedToReduce <= 0)
+        {
+            return new List<LinhKhiTieuTan>();
+        }
+
+        return GetLinhKhiTieuTanWithCount(countNeedToReduce);
+    }
     public int GetLinhKhi(ELinhKhi e)
     {
         switch (e)

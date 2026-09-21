@@ -71,7 +71,7 @@ public class DietLinhQuyet : CongPhap, IMemorySerializable<DietLinhQuyet>
     {
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ExecuteParams);
         Observer.AddObserver(EventList.Combat.PLAY_SKILL, ExecuteParams2);
-        caster.totalKhiRandom += buffValues2[CurrentLevelCongPhapInCombat(caster) - 1];
+        caster.UpdateTotalKhiRandom(buffValues2[CurrentLevelCongPhapInCombat(caster) - 1]);
     }
 
     public override int ByteSize()

@@ -33,7 +33,7 @@ public class DoatLinhQuyet : CongPhap, IMemorySerializable<DoatLinhQuyet>
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.Combat.NEW_TURN_COMBAT, ExecuteParams);
-        caster.totalKhiRandom -= buffValues[CurrentLevelCongPhapInCombat(caster) - 1];
+        caster.UpdateTotalKhiRandom(-buffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
     }
 
     public override int ByteSize()

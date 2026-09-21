@@ -24,8 +24,8 @@ public class NhatKhiPhanThanCong : CongPhap, IMemorySerializable<NhatKhiPhanThan
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         int khi = hapThuLinhKhi[CurrentLevelCongPhapInCombat(caster) - 1];
-        caster.totalKhi = 0;
-        caster.totalKhiRandom += khi;
+        caster.UpdateTotalKhi(-caster.totalKhi);
+        caster.UpdateTotalKhiRandom(khi);
     }
 
     public override int ByteSize()

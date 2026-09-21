@@ -19,11 +19,12 @@ public class BeKhi : NgoDaoCombat, IMemorySerializable<BeKhi>
         {
             if (oldValue == 0 && newValue > 0)
             {
-                caster.totalKhi += buff;
+                caster.UpdateTotalKhi(buff);
             }
             else if (newValue == 0 && oldValue > 0)
             {
-                caster.totalKhi -= buff;
+                caster.UpdateTotalKhi(-buff);
+
             }
         }
     }

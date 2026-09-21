@@ -27,7 +27,6 @@ public class ThienPhong : NgoDaoCombat, IMemorySerializable<ThienPhong>
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.RemoveNgoDaoCombatDynamic(this);
-        caster.totalKhiRandom += requireLinhKhi;
     }
 
     public override string GetDes()
@@ -40,8 +39,7 @@ public class ThienPhong : NgoDaoCombat, IMemorySerializable<ThienPhong>
     {
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect);
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, buff);
-        caster.totalKhiRandom -= requireLinhKhi;
-        caster.AddNgoDaoCombatDynamic(this);
+        caster.TieuTanLinhKhiRandom(requireLinhKhi);
     }
 
     public override int ByteSize()

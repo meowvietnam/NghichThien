@@ -12,7 +12,7 @@ public class TuLinhTran : TranPhapTT, IMemorySerializable<TuLinhTran>
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         base.Execute(caster, target, data);
-        caster.totalKhiRandom += hapThus[GetIndexLevelThanThong(caster)];
+        caster.UpdateTotalKhiRandom(hapThus[GetIndexLevelThanThong(caster)]);
     }
 
     public override void ObserverEffect(params object[] data)
