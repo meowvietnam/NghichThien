@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using CreateCharacter;
+using DG.Tweening;
 using LongDH.LongDHModules;
 using LongDHModules;
 using Network.Extensions;
@@ -86,6 +88,19 @@ namespace Network.ClientState
             {
                 var model = reader.MemRead<SyncDame>();
                 Observer.Notify(EventList.Combat.RECEIVE_SYNC_DAME, model);
+            }
+            else if (tag == MessageTag.FirstDailyBossReward)
+            {
+                var model = reader.MemRead<FirstDailyBossReward>();
+                foreach (var r in model.Rewards)
+                {
+                    r.ClaimReward(client.CharacterData);
+                }
+                DOVirtual.DelayedCall(3, () =>
+                {
+                    var notify = Pool.Get<CombatManager>()?.notifyGroup ?? null;
+                    notify?.Show($"Bạn nhận được {string.Join(", ", model.Rewards.Select(x => x.GetRichText()))}");
+                });
             }
             else if (tag == MessageTag.SyncStartTurn)
             {

@@ -13,17 +13,19 @@ using LuyenKhi;
 using Network.Models;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
-using Skill;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Combat;
+using CreateCharacter;
 using ExcelDataReader.Log;
 using Network;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
+using CongPhap = Skill.CongPhap;
+using ThanThong = Skill.ThanThong;
 
 public class LinhKhiTieuTan
 {
@@ -47,6 +49,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         public Sprite sprite;
     }
 
+    public NotifyGroup notifyGroup;
     [SerializeField] private BuffAndDeBuffIconResources iconBuffResources;
     public List<BuffOrDebuffIcon> buffOrDebuffIcons => iconBuffResources.BuffOrDebuffIcons;
 
