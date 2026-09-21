@@ -24,7 +24,7 @@ namespace CreateCharacter
             var item = new MoneyVipItem(icon);
             var core = CoreConfig.Instance;
             return
-                $"<color=#{ColorUtility.ToHtmlStringRGBA(core.FindQuality(item.Tier).Color)}>{item.Name} x{count}</color>";
+                $"<color=#{ColorUtility.ToHtmlStringRGBA(core.FindQuality(item.Tier).Color)}>{item.Name} x{Utils.FormatCount(count)}</color>";
         }
 
         public static void ShowNotification(int count)

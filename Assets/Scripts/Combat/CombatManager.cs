@@ -1178,6 +1178,10 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     void Start()
     {
+        if (IsBossCombat)
+        {
+            Client.Instance.ChangeState(new Network.ClientState.BossState());
+        }
         if (!IsRealTimeCombat && !IsBossCombat)
         {
             var charCb = char1.GetToDoBay() >= char2.GetToDoBay() ? char1 : char2;

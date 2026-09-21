@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using MemoryPack;
 using Network.Models;
@@ -6,10 +7,17 @@ using UnityEngine;
 
 namespace Boss
 {
+    [Serializable]
+    public class BossVisual
+    {
+        [field: SerializeField] public int Id { get; private set; }
+        [field: SerializeField] public GameObject Visual { get; private set; }
+    }
     [CreateAssetMenu(fileName = "BossResources")]
     public class BossResources : ScriptableObject
     {
-        [field: SerializeField] public BossData[] BossDatas { get; set; }
+        [field: SerializeField] public BossData[] BossDatas { get; private set; }
+        [field: SerializeField] public BossVisual[] BossVisuals { get; private set; }
         private static BossResources instance;
 
         public static BossResources Instance
@@ -20,21 +28,17 @@ namespace Boss
                 {
                     instance = Resources.Load<BossResources>("BossResources");
                 }
+
                 return instance;
             }
         }
 
         [Button]
-        public void Sync()
-        {
-            foreach (var bossData in BossDatas)
-            {
-                bossData.Sync();
-            }
-        }
-        [Button]
         public void Export()
         {
+            if (BossDatas == null || BossDatas.Length == 0 ||
+                Array.Exists(BossDatas, boss => boss?.Character == null || boss.Character.SinhMenh <= 0))
+                throw new InvalidOperationException("BossDatas cần ít nhất một boss có Character và SinhMenh hợp lệ.");
             var bytes = MemoryPackSerializer.Serialize(BossDatas);
             var path = Path.Combine(Application.dataPath, "Exports", "BossResources.bin");
             File.WriteAllBytes(path, bytes);

@@ -9,6 +9,7 @@ namespace Network.Core
     public class SceneManager : IClientHandler
     {
         private Action<ChangeSceneResult> onChangeSceneResult;
+        public BossData CurrentBoss { get; private set; }
 
         public void OnEnter()
         {
@@ -18,7 +19,11 @@ namespace Network.Core
         {
             var tag = message.Tag;
             var reader = message.Reader;
-            if (tag == MessageTag.ChangeSceneResult)
+            if (tag == MessageTag.BossInfo)
+            {
+                CurrentBoss = reader.MemRead<BossData>();
+            }
+            else if (tag == MessageTag.ChangeSceneResult)
             {
                 var result = reader.MemRead<ChangeSceneResult>();
                 Debug.Log($"SceneName: {result.SceneName}, Success: {result.Success}");
@@ -44,7 +49,7 @@ namespace Network.Core
             Client.Instance.Send(MessageTag.ChangeScene, sceneName);
         }
 
-        private static readonly MessageTag[] handlers = { MessageTag.ChangeSceneResult };
+        private static readonly MessageTag[] handlers = { MessageTag.ChangeSceneResult, MessageTag.BossInfo };
         public MessageTag[] HandleTag => handlers;
     }
 }

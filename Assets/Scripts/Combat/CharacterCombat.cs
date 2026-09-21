@@ -803,7 +803,10 @@ public class CharacterCombat : MonoBehaviour
     public virtual void Init(GameManager.CharCombatInit charCombatInit)
     {
         var characterStat = charCombatInit.charStats;
-        characterVisualControl.Init(charCombatInit.eTypeVisual, characterStat);
+        if (charCombatInit.bossSkinId >= 0)
+            characterVisualControl.InitBoss(charCombatInit.bossSkinId, characterStat);
+        else
+            characterVisualControl.Init(charCombatInit.eTypeVisual, characterStat);
         characterStatsBase = characterStat;
         characterStatsTemp = characterStat.Clone();
         LoadData();
