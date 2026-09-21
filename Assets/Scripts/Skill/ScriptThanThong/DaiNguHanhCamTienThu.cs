@@ -16,7 +16,6 @@ public class DaiNguHanhCamTienThu : ThanThong, IMemorySerializable<DaiNguHanhCam
         target.CaculateDameByThanThong(caster,
             new System.Collections.Generic.List<int> { (int)target.allDameTaked / 2 }, eTypeSkill);
         PlayVisualSkill(caster, target);
-        target.listDameTaked.Clear();
     }
 
     //Done PlayVisualSkill
