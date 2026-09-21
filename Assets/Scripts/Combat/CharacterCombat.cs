@@ -1262,6 +1262,7 @@ public class CharacterCombat : MonoBehaviour
         AddBuffAndDebuffCount(EBuffAndDeBuff.NguThoHiep, characterStatsBase.pointHon.Value);
         AddBuffAndDebuffCount(EBuffAndDeBuff.NguKhiHiep, characterStatsBase.pointHon.Value);
         AddBuffAndDebuffCount(EBuffAndDeBuff.NguThanThucHiep, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguKiemHiep, characterStatsBase.pointHon.Value);
 
     }
     public bool IsKietSuc()
