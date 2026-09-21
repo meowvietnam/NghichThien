@@ -613,6 +613,10 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
             target.TakeDameForThanThong(caster,
                 !thanThong.GetEKeywordSkillHave().Contains(BaseSkill.EKeyWord.ChanThucTonThuong));
+            if(thanThong is DaiNguHanhCamTienThu)
+            {
+                target.listDameTaked.Clear();
+            }    
             if (thanThong.timeDelayTakeDame > 0)
             {
                 isDelayEffectSkill = true;

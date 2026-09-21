@@ -28,7 +28,7 @@ public class DaiNguHanhCamTienThu : ThanThong, IMemorySerializable<DaiNguHanhCam
     public override string GetDesc(int level)
     {
         return
-            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Tạo thành {GetColoredText($"một nửa", "red")} của tổng lượng sát thương từ thần thông mà đối thủ đã phải chịu trong trận chiến này";
+            $"{GetKeyWord(EKeyWord.HauKeVoLuc)}. Tạo thành {GetColoredText($"một nửa", "red")} của tổng lượng sát thương từ thần thông mà đối thủ đã phải chịu trong trận chiến này. Sau đó làm mới lại lượng sát thương.";
     }
 
     public override int ByteSize()
