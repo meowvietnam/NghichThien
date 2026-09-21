@@ -63,24 +63,6 @@ public class CharacterVisualControl : MonoBehaviour
             return "punch_0";
         }
     }
-
-    public void InitBoss(int skinId, CharacterStatsSecure stats)
-    {
-        Init(ETypeVisualChar.Character, stats);
-        var visual = Boss.BossResources.Instance?.BossVisuals?.FirstOrDefault(x => x.Id == skinId)?.Visual;
-        if (visual == null) return;
-        var instance = visual.Spawn(transform);
-        bossGraphic = instance.GetComponentInChildren<SkeletonGraphic>(true);
-        if (bossGraphic == null)
-        {
-            instance.Recycle();
-            return;
-        }
-        foreach (var graphic in characterGenders) graphic.gameObject.SetActive(false);
-        instance.transform.localPosition = Vector3.zero;
-        AnimIdle();
-    }
-
     public void Init(ETypeVisualChar eTypeVisualChar, CharacterStatsSecure charStat)
     {
         if (bossGraphic != null)

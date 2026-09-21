@@ -28,23 +28,18 @@ using ThanThong = Skill.ThanThong;
 public enum ETypeVisualChar
 {
     Character,
-
     EnemyLuyenKhiSoKi,
     EnemyLuyenKhiTrungKi,
     EnemyLuyenKhiHauKi,
-
     EnemyTrucCoSoKi,
     EnemyTrucCoTrungKi,
     EnemyTrucCoHauKi,
-
     EnemyKetDanSoKi,
     EnemyKetDanTrungKi,
     EnemyKetDanHauKi,
-
     EnemyNguyenAnhSoKi,
     EnemyNguyenAnhTrungKi,
     EnemyNguyenAnhHauKi,
-
     EnemyStory0_1,
     EnemyStory0_2,
     EnemyStory0_3,
@@ -803,10 +798,7 @@ public class CharacterCombat : MonoBehaviour
     public virtual void Init(GameManager.CharCombatInit charCombatInit)
     {
         var characterStat = charCombatInit.charStats;
-        if (charCombatInit.bossSkinId >= 0)
-            characterVisualControl.InitBoss(charCombatInit.bossSkinId, characterStat);
-        else
-            characterVisualControl.Init(charCombatInit.eTypeVisual, characterStat);
+        characterVisualControl.Init(charCombatInit.eTypeVisual, characterStat);
         characterStatsBase = characterStat;
         characterStatsTemp = characterStat.Clone();
         LoadData();

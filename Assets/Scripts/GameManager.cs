@@ -391,7 +391,6 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
     public class CharCombatInit
     {
         public ETypeVisualChar eTypeVisual;
-        public int bossSkinId = -1;
         public CharacterStatsSecure charStats;
     }
 
@@ -419,7 +418,6 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
         enemyCombat = new CharCombatInit
         {
             eTypeVisual = ETypeVisualChar.Character,
-            bossSkinId = result.Status.SkinId,
             charStats = CharacterStatsSecureBuilder.FromCharacterSnapshot(result.Status.Boss)
         };
         Client.Instance.CharacterData.EquipmentManager.DanCombatUseds.Clear();

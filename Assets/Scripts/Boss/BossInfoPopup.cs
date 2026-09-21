@@ -53,7 +53,7 @@ namespace Boss
             btnClose.interactable = true;
             SetEventButton(joinButton, Join);
             var stats = CharacterStatsSecureBuilder.FromCharacterSnapshot(value.Boss);
-            bossVisual.InitBoss(value.SkinId, stats);
+            bossVisual.Init(value.SkinId, stats);
             RefreshContent(value);
         }
 

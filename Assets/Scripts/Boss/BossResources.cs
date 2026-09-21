@@ -7,17 +7,10 @@ using UnityEngine;
 
 namespace Boss
 {
-    [Serializable]
-    public class BossVisual
-    {
-        [field: SerializeField] public int Id { get; private set; }
-        [field: SerializeField] public GameObject Visual { get; private set; }
-    }
     [CreateAssetMenu(fileName = "BossResources")]
     public class BossResources : ScriptableObject
     {
         [field: SerializeField] public BossData[] BossDatas { get; private set; }
-        [field: SerializeField] public BossVisual[] BossVisuals { get; private set; }
         private static BossResources instance;
 
         public static BossResources Instance
