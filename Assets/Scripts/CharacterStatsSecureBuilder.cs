@@ -310,7 +310,7 @@ public class CharacterStatsSecureBuilder
             .WithThanThuc(character.ThanThuc)
             .WithNameUser(character.Name)
             .WithMonPhai(character.MonPhai)
-            .WithThanThongEquip(character.ThanThongEquip.ConvertAll(id => new SecureInt(id)))
+            .WithThanThongEquip(character.ThanThongEquip?.ConvertAll(id => new SecureInt(id)) ?? new List<SecureInt>())
             .WithChuTu1Used(character.ChuTu1Used)
             .WithChuTu2Used(character.ChuTu2Used)
             .WithPhuTu1Used(character.PhuTu1Used)

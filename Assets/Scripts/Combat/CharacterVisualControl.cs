@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using Spine.Unity;
 using CreateCharacter;
+using System.Linq;
+using LongDH.Script.ObjectPool;
 
 public class CharacterVisualControl : MonoBehaviour
 {
     [SerializeField] public ETypeVisualChar eTypeVisualChar;
     [SerializeField] public SkeletonGraphic[] characterGenders;
-    [SerializeField] public SkeletonGraphic currentCharGender => characterGenders[(int)eTypeVisualChar];
+    [SerializeField] public SkeletonGraphic currentCharGender => bossGraphic != null ? bossGraphic : characterGenders[(int)eTypeVisualChar];
+    private SkeletonGraphic bossGraphic;
     public string ANIM_DIE => "Die_0";
 
     public string ANIM_IDLE
@@ -61,8 +64,33 @@ public class CharacterVisualControl : MonoBehaviour
         }
     }
 
+    public void InitBoss(int skinId, CharacterStatsSecure stats)
+    {
+        Init(ETypeVisualChar.Character, stats);
+        var visual = Boss.BossResources.Instance?.BossVisuals?.FirstOrDefault(x => x.Id == skinId)?.Visual;
+        if (visual == null) return;
+        var instance = visual.Spawn(transform);
+        bossGraphic = instance.GetComponentInChildren<SkeletonGraphic>(true);
+        if (bossGraphic == null)
+        {
+            instance.Recycle();
+            return;
+        }
+        foreach (var graphic in characterGenders) graphic.gameObject.SetActive(false);
+        instance.transform.localPosition = Vector3.zero;
+        AnimIdle();
+    }
+
     public void Init(ETypeVisualChar eTypeVisualChar, CharacterStatsSecure charStat)
     {
+        if (bossGraphic != null)
+        {
+            // Custom visuals are spawned directly below this view.
+            var root = bossGraphic.transform;
+            while (root.parent != transform) root = root.parent;
+            bossGraphic = null;
+            root.gameObject.Recycle();
+        }
         foreach (var item in characterGenders)
         {
             if (item.gameObject.activeSelf)

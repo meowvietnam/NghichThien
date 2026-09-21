@@ -194,7 +194,6 @@ namespace AllMaps
             player.Init(characterData.Gender, characterData.CanFly, appearance);
             player.SetName(characterData.Name, new Color32(255, 213, 79, 255));
             player.SetInstance();
-            current.OnPlayerEnter();
             Pool.Set(this);
             InitPoolPlayer();
         }
@@ -205,6 +204,7 @@ namespace AllMaps
             isDelayAfterLoadScene = true;
             StartCoroutine(DelayTime(0.01f));
             LoadClanStrongholds();
+            OnMoveToMapCompleted();
         }
 
         private void Update()
@@ -428,7 +428,7 @@ namespace AllMaps
         {
             if (CameraFollow.Instance.target != player.transform) return;
             if (isDelayAfterLoadScene) return;
-            if (map == current) return;
+            if (map == current) { OnMoveToMapCompleted(); return; }
             if (player.IsMoving) return;
             Client.Instance.Send(MessageTag.MoveToMap, map.Id);
         }
@@ -481,7 +481,19 @@ namespace AllMaps
 
         private void OnMoveToMapCompleted()
         {
-            current.OnPlayerEnter();
+            var arrived = current;
+            if (arrived is Stronghold || arrived.MapType == MapType.Stronghold)
+            {
+                arrived.OnPlayerEnter();
+                return;
+            }
+            Client.Instance.CoreModule.GetHandler<BossHandler>().GetStatus(arrived.Id, status =>
+            {
+                if (this == null || current != arrived || player.IsMoving ||
+                    Client.Instance.State is not Network.ClientState.AllMaps) return;
+                if (status.Success && status.IsAlive) Boss.BossInfoPopup.Open(status);
+                else arrived.OnPlayerEnter();
+            });
         }
 
         [Button]
