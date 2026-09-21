@@ -38,9 +38,10 @@ public class ChichViemTamTaiTran : TranPhapTT, IMemorySerializable<ChichViemTamT
     {
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.KiemKhi, buffValues[GetIndexLevelThanThong(caster)]);
         target.AddBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, buffValues[GetIndexLevelThanThong(caster)]);
-        target.TakeDameByStatic(caster,
-            new System.Collections.Generic.List<int> { dames[GetIndexLevelThanThong(caster)] }, false,
+        target.CaculateDameByThanThong(caster,
+            new System.Collections.Generic.List<int> { dames[GetIndexLevelThanThong(caster)] },
             new ETypeSkill[] { ETypeSkill.Hoa });
+        target.TakeDameForThanThong(caster, true);
     }
 
     public override string GetDescTranPhapTT(int level)

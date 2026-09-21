@@ -21,7 +21,8 @@ public class CuuCungSatTran : TranPhapTT, IMemorySerializable<CuuCungSatTran>
     {
         int count = caster.specialThanThongImpactAfterPlaySkill.Count(x => x is CuuCungSatTran);
         int dame = dames[GetIndexLevelThanThong(caster)] + (count - 1) * (buffValues[GetIndexLevelThanThong(caster)]);
-        target.TakeDameByStatic(caster, new System.Collections.Generic.List<int> { dame }, false, eTypeSkill);
+        target.CaculateDameByThanThong(caster, new System.Collections.Generic.List<int> { dame }, eTypeSkill);
+        target.TakeDameForThanThong(caster,true);
         caster.AddThanThongImpactAfterPlaySkill(this);
     }
 
