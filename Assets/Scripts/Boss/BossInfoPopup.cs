@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using AllMaps;
 using Base;
+using CreateCharacter;
 using LuyenDan;
 using LongDH.Script.ObjectPool;
 using LongDHModules;
@@ -233,6 +234,7 @@ namespace Boss
                 {
                     SetJoinLabel();
                     SetFooter(result.Message);
+                    NotifyGroup.Instance.Show(result.Message);
                     nextRefresh = 0;
                     return;
                 }
