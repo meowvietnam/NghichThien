@@ -64,6 +64,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     public CharacterCombat currentTurn;
     public CharacterCombat targetTurn => currentTurn == char1 ? char2 : char1;
     private float counterTime = 30f;
+    private Coroutine counterTimeCoroutine;
 
     [SerializeField] private Text counterTimeText;
 
@@ -665,6 +666,12 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     public void EndTurn(params object[] data)
     {
+        if (counterTimeCoroutine != null)
+        {
+            StopCoroutine(counterTimeCoroutine);
+            counterTimeCoroutine = null;
+        }
+
         if (data[2] is List<LinhKhiTieuTan> linhKhiTieuTan)
         {
             TieuTanLinhKhi(linhKhiTieuTan);
@@ -968,7 +975,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             if (currentTurn == char1)
             {
-                StartCoroutine(StartCounterTime());
+                if (counterTimeCoroutine != null)
+                {
+                    StopCoroutine(counterTimeCoroutine);
+                }
+                counterTimeCoroutine = StartCoroutine(StartCounterTime());
             }
         }
 
