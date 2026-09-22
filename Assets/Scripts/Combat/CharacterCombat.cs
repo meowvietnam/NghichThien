@@ -1472,12 +1472,17 @@ public class CharacterCombat : MonoBehaviour
 
         return GetDameBuffForTarget(allDamages);
     }
-    public int GetDameBuffForTarget(List<int>dames)
+    public int GetDameBuffForTarget(List<int> dames)
     {
-        int dameBuff = dames.Sum()/dames.Count;
-      
+        if (dames == null || dames.Count == 0)
+            return 0;
 
-        return dameBuff;
+        // Sử dụng Sum(x => (long)x) để tránh tràn số int, 
+        // sau đó tính trung bình và ép ngược lại về int (nếu kết quả nằm trong giới hạn int)
+        long sum = dames.Sum(x => (long)x);
+        long average = sum / dames.Count;
+
+        return (int)average;
     }
     public List<int> allDamages = new List<int>();
 
@@ -1862,7 +1867,7 @@ public class CharacterCombat : MonoBehaviour
         }
     }
 
-    private void TakeVisualDame(int dame, bool isDef)
+    private void TakeVisualDame(CharacterCombat sender,int dame, bool isDef)
     {
         if (dame <= 0)
         {
@@ -1873,10 +1878,15 @@ public class CharacterCombat : MonoBehaviour
         characterStatsTemp.hp = Mathf.Clamp(characterStatsTemp.hp, 0, characterStatsTemp.hpMax);
         StartAnimHit();
         SetTextDameAnim($"-{dame}", isDef ? Color.red : Color.purple);
+        if(sender != null)
+        {
+            Observer.Notify(EventList.Combat.CHARACTER_TAKE_DAME, sender, this, dame);
+
+        }
         Observer.Notify(EventList.Combat.CHARACTER_ADJUST_HP);
     }
 
-    public void TakeDameVisualPvP(DameData dameDataServer)
+    public void TakeDameVisualPvP(CharacterCombat sender,DameData dameDataServer)
     {
         if (dameDataServer != null)
         {
@@ -1888,12 +1898,12 @@ public class CharacterCombat : MonoBehaviour
 
             if (dameDataServer.IsDef)
             {
-                TakeVisualDame(dameDataServer.Dame, true);
+                TakeVisualDame(sender,dameDataServer.Dame, true);
                 TakeVisualDameHoTrao(dameDataServer.DameHoTrao);
             }
             else
             {
-                TakeVisualDame(dameDataServer.Dame, false);
+                TakeVisualDame(sender,dameDataServer.Dame, false);
             }
         }
     }
@@ -1974,13 +1984,10 @@ public class CharacterCombat : MonoBehaviour
                 });
             }
 
-            TakeVisualDame(dame, isDef);
+            TakeVisualDame(sender, dame, isDef);
         }
 
-        if (sender != null)
-        {
-            Observer.Notify(EventList.Combat.CHARACTER_TAKE_DAME, sender, this, dame);
-        }
+     
     }
 
     public void SetHp(int hp)
