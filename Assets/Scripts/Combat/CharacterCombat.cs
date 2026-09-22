@@ -1566,6 +1566,12 @@ public class CharacterCombat : MonoBehaviour
             sumDamage += allDamages[i];
         }
 
+        // Kiểm tra và đảm bảo listDameTaked không bị rỗng
+        if (listDameTaked.Count == 0)
+        {
+            listDameTaked.Add(0);
+        }
+
         // 2. Lấy giá trị hiện tại của SecureInt ra kiểu long
         long currentDamage = listDameTaked[listDameTaked.Count - 1];
         long finalDamage = currentDamage + sumDamage;
