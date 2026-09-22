@@ -310,13 +310,13 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             item.congPhap.LoadFirstDataPrefab();
         }
 
-        if (!IsRealTimeCombat)
+        if (IsRealTimeCombat || IsBossCombat)
         {
-            char2.isAutoCastSkill = true;
+            char2.isAutoCastSkill = false;
         }
         else
         {
-            char2.isAutoCastSkill = false;
+            char2.isAutoCastSkill = true;
         }
 
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
