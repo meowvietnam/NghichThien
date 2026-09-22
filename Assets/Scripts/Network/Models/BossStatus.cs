@@ -14,5 +14,11 @@ public partial class BossStatus
     public bool IsAlive { get; set; }
     public int FightingCount { get; set; }
     public int RemainingAttempts { get; set; }
+    public long DamageDone { get; set; }
+    public float TamPhamChance { get; set; }
+    public float TuPhamChance { get; set; }
+    public float NguPhamChance { get; set; }
+    public float LucPhamChance { get; set; }
+    public string ScheduleText { get; set; }
 }
 }

@@ -37,11 +37,14 @@ namespace Boss
             visualRect.anchoredPosition = Vector2.zero;
             visualRect.sizeDelta = Vector2.zero;
             visualRect.localScale = Vector3.one;
+            foreach (var child in visual.GetComponentsInChildren<Transform>(true))
+                child.gameObject.layer = node.gameObject.layer;
             foreach (var graphic in visual.GetComponentsInChildren<Graphic>(true))
                 graphic.raycastTarget = false;
 
-            root.GetComponent<BossMapMarker>().Show(status, visual);
-            return root.GetComponent<BossMapMarker>();
+            var marker = root.GetComponent<BossMapMarker>();
+            marker.Show(status, visual);
+            return marker;
         }
 
         private void Show(BossStatus status, CharacterVisualControl visual)
