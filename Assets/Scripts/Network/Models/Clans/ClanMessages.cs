@@ -68,7 +68,7 @@ namespace Network.Models.Clans
         public int BaseInheritanceSlots { get; set; } = 1;
         public int InheritanceSlotsPerLevel { get; set; } = 1;
         public int MaxInheritanceSlotsPerColumn { get; set; } = 10;
-        public int ChangeInheritanceMoneyVipCost { get; set; } = 1_000;
+        public int ChangeInheritanceContribPointsCost { get; set; } = 4_000;
         public int InheritanceBaseValue { get; set; } = 1;
         public int InheritanceValuePerClanLevel { get; set; } = 1;
         public EffectType[] InheritanceBuffWhitelist { get; set; } = new EffectType[0];
@@ -172,6 +172,7 @@ namespace Network.Models.Clans
         public long MemberContribPoints { get; set; }
         public System.DateTime LastFreeContributionAt { get; set; }
         public int FreeContributionTimesRemaining { get; set; }
+        public long MemberTotalContribPoints { get; set; }
     }
 
     [MemoryPackable]

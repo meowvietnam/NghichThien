@@ -22,7 +22,7 @@ public class LongTuongThonHaiQuyet : CongPhap, IMemorySerializable<LongTuongThon
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         RemoveCongPhap(caster);
-        caster.totalKhi += buffValues[CurrentLevelCongPhapInCombat(caster) - 1];
+        caster.UpdateTotalKhi(buffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
     }
 
     public override int ByteSize()

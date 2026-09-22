@@ -81,6 +81,11 @@ namespace Network
                 }
 
                 storeController = UnityIAPServices.StoreController();
+#if UNITY_IOS
+#pragma warning disable CS0618
+                storeController.AppleStoreExtendedPurchaseService?.SetRefreshAppReceipt(true);
+#pragma warning restore CS0618
+#endif
                 storeController.OnStoreConnected += OnStoreConnected;
                 storeController.OnStoreDisconnected += OnStoreDisconnected;
                 storeController.OnPurchasePending += OnPurchasePending;

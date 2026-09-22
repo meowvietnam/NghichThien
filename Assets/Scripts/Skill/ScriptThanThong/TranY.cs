@@ -15,7 +15,7 @@ public class TranY : ThanThong, IMemorySerializable<TranY>
         int giamTonThuong = buffValues[GetIndexLevelThanThong(caster)];
         caster.AddBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, giamTonThuong);
         caster.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Tran, out SecureInt tran);
-        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, tran);
+        caster.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, tran);
         caster.RemoveBuffAndDebuffCount(EBuffAndDeBuff.Tran, tran);
         PlayVisualSkill(caster, target);
     }

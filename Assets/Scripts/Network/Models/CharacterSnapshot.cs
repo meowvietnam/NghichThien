@@ -13,37 +13,38 @@ using UnityEngine;
 namespace Network.Models
 {
     [MemoryPackable]
+    [Serializable]
     public partial class CharacterSnapshot
     {
-        public int Id { get; set; }
-        public int ThanThuc { get; set; }
-        public int TocDoBay { get; set; }
-        public int NgoTinh { get; set; }
-        public int TuChat { get; set; }
-        public int ThoNguyen { get; set; }
-        public int SinhMenh { get; set; }
-        public int Hp { get; set; }
-        public int DanDoc { get; set; }
-        public Ability Ability { get; set; }
-        public float Kim { get; set; }
-        public float Moc { get; set; }
-        public float Thuy { get; set; }
-        public float Hoa { get; set; }
-        public float Tho { get; set; }
-        public float Ma { get; set; }
+        [field: SerializeField] public int Id { get; set; }
+        [field: SerializeField] public int ThanThuc { get; set; }
+        [field: SerializeField] public int TocDoBay { get; set; }
+        [field: SerializeField] public int NgoTinh { get; set; }
+        [field: SerializeField] public int TuChat { get; set; }
+        [field: SerializeField] public int ThoNguyen { get; set; }
+        [field: SerializeField] public int SinhMenh { get; set; }
+        [field: SerializeField] public int Hp { get; set; }
+        [field: SerializeField] public int DanDoc { get; set; }
+        [field: SerializeField] public Ability Ability { get; set; }
+        [field: SerializeField] public float Kim { get; set; }
+        [field: SerializeField] public float Moc { get; set; }
+        [field: SerializeField] public float Thuy { get; set; }
+        [field: SerializeField] public float Hoa { get; set; }
+        [field: SerializeField] public float Tho { get; set; }
+        [field: SerializeField] public float Ma { get; set; }
         public HashSet<NgoDao> NgoDaos { get; set; }
         public HashSet<DanCombatUsed> DanCombatUseds { get; set; }
         public Equipment VuKhi { get; set; }
         public Equipment PhongCu { get; set; }
         public Equipment TrangSuc { get; set; }
         public TimeSpan TuoiTac { get; set; }
-        public EMonPhai MonPhai { get; set; }
-        public int Level { get; set; }
+        [field: SerializeField] public EMonPhai MonPhai { get; set; }
+        [field: SerializeField] public int Level { get; set; }
         public Dictionary<string, Color> Colors { get; set; }
         public Dictionary<string, string> Skins { get; set; }
-        public Gender Gender { get; set; }
-        public string Name { get; set; }
-        public List<int> ThanThongEquip { get; set; }
+        [field: SerializeField] public Gender Gender { get; set; }
+        [field: SerializeField] public string Name { get; set; }
+        [field: SerializeField] public List<int> ThanThongEquip { get; set; }
         public int PhuTu4Used { get; set; }
         public int PhuTu3Used { get; set; }
         public int PhuTu2Used { get; set; }

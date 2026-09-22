@@ -19,7 +19,7 @@ public class ThienMaGiaiThe : ThanThong, IMemorySerializable<ThienMaGiaiThe>
     {
         int tieuHao = tieuHaos[GetIndexLevelThanThong(caster)];
         caster.characterStatsBase.thoNguyen -= tieuHao;
-        caster.totalKhiRandom += buffValues[GetIndexLevelThanThong(caster)];
+        caster.UpdateTotalKhiRandom(buffValues[GetIndexLevelThanThong(caster)]);
         caster.AddThanThongImpactAfterPlaySkill(this);
         Observer.AddObserver(EventList.Combat.CHARACTER_BEFORE_TAKE_DAME, ObserverEffect, -99);
     }

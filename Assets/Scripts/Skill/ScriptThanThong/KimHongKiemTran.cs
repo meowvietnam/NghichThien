@@ -26,15 +26,15 @@ public class KimHongKiemTran : TranPhapTT, IMemorySerializable<KimHongKiemTran>
         {
             dames.Add(damePerCountAttack[GetIndexLevelThanThong(caster)]);
         }
-
-        target.TakeDameByStatic(caster, dames, false, new[] { BaseSkill.ETypeSkill.Kiem });
+        target.CaculateDameByThanThong(caster, dames, new[] { BaseSkill.ETypeSkill.Kiem });
+        target.TakeDameForThanThong(caster, true);
         PlayVisualSkill(caster, target);
     }
 
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
     {
         base.PlayVisualSkill(caster, target);
-        ShowSkillEffectWorld(caster, prefabEffect2, delayTimeEffect2);
+        ShowSkillEffectWorld(target, prefabEffect2, delayTimeEffect2);
     }
 
     public override string GetDescTranPhapTT(int level)

@@ -13,17 +13,19 @@ using LuyenKhi;
 using Network.Models;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
-using Skill;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Combat;
+using CreateCharacter;
 using ExcelDataReader.Log;
 using Network;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
+using CongPhap = Skill.CongPhap;
+using ThanThong = Skill.ThanThong;
 
 public class LinhKhiTieuTan
 {
@@ -47,6 +49,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         public Sprite sprite;
     }
 
+    public NotifyGroup notifyGroup;
     [SerializeField] private BuffAndDeBuffIconResources iconBuffResources;
     public List<BuffOrDebuffIcon> buffOrDebuffIcons => iconBuffResources.BuffOrDebuffIcons;
 
@@ -55,6 +58,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     [SerializeField] public CharacterCombat char1;
     [SerializeField] public CharacterCombat char2;
+    [SerializeField] public CharacterCombat[] characters;
+
     [SerializeField] private ItemUI prefabBuffIcon;
     public CharacterCombat currentTurn;
     public CharacterCombat targetTurn => currentTurn == char1 ? char2 : char1;
@@ -125,7 +130,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         }
 
         // Từ lượt 15 trở đi kích hoạt trạng thái bạo loạn
-        if (currentTurn.CurrentTurn >= 15)
+        if (currentTurn.CurrentTurn >= TurnLinhKhiBaoLoan)
         {
             textTurn =
                 "<size=25%>(Kết thúc hiệp, tổn hao 10% Khí Huyết tối đa)</size>\n<color=red><b>Linh Khí Bạo Loạn!</b></color>";
@@ -224,6 +229,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     public bool IsRealTimeCombat => Pool.Get<GameManager>().currentETypeCombat == ETypeCombat.LuanBanRealTime ||
                                     Pool.Get<GameManager>().currentETypeCombat == ETypeCombat.TongMonChienRealTime;
+    public bool IsBossCombat => Pool.Get<GameManager>().currentETypeCombat == ETypeCombat.Boss;
 
     public bool IsSync => IsRealTimeCombat && currentTurn == char1 && isSync == true;
     public bool isSync = true;
@@ -249,23 +255,36 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_HEALING, ReceiveSyncHealing);
         Observer.AddObserver(EventList.Combat.CHARACTER_HEALING_AFTER_CALC, SendSyncHealing);
         Observer.AddObserver(EventList.Combat.CHARACTER_AFTER_TAKE_DAME_ALL, SendSyncDame);
+
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_DAME, ReceiveSyncDame);
+
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_USE_PHAPBAO, ReceiveSyncPhapBao);
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_ENDTURN,
             () =>
             {
                 Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
             });
+        Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_ENDTURN_BOSS,ReceiveSyncEndTurnBoss);
+          
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_CP_DYNAMIC, ReceiveSyncCPDynamic);
         Observer.AddObserver(EventList.Combat.ADD_CP_DYNAMIC, SendSyncCPDynamic);
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_USE_EFFECTSKILL, ReceiSyncEffectSkill);
         Observer.AddObserver(EventList.Combat.RECEIVE_SYNC_REMOVE_EFFECTSKILLNODESTROY,
             ReceiSyncEffectRemoveSkillNoDestroy);
 
-
-        if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
-        if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
         var gameConfig = Pool.Get<GameManager>();
+        if (char1 == null) Debug.LogError("Char1 bi Null tai Runtime!");
+        if(IsBossCombat)
+        {
+            char2 = characters.OfType<BossCombat>().FirstOrDefault();
+        }
+        else
+        {
+            char2 = characters[0];
+        }
+        if (char2 == null) Debug.LogError("Char2 bi Null tai Runtime!");
+        char1.gameObject.SetActive(true);
+        char2.gameObject.SetActive(true);
         char1.Init(gameConfig.user);
         char2.Init(gameConfig.enemyCombat);
         // test 
@@ -356,10 +375,16 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             SuccessResultCombatBase(new(), gameManager.currentECombatResult);
         }
-        else if (gameManager.currentETypeCombat == ETypeCombat.LuanBanRealTime ||
-                 gameManager.currentETypeCombat == ETypeCombat.TongMonChienRealTime)
+        else if (IsRealTimeCombat)
         {
             Observer.Notify(EventList.Network.RESULT_COMBAT_REALTIME, this, gameManager.currentETypeCombat,
+                char1.characterStatsTemp.hp.Value, char1.characterStatsBase.thanThuc.Value,
+                char1.characterStatsBase.thoNguyen.Value, allThanThongIds, char2.characterStatsBase.level.Value,
+                gameManager.currentECombatResult); // thằng 1 luoon la user thằng 2 là thằng enemy
+        }
+        else if(IsBossCombat)
+        {
+            Observer.Notify(EventList.Network.RESULT_COMBAT_BOSS, this, gameManager.currentETypeCombat,
                 char1.characterStatsTemp.hp.Value, char1.characterStatsBase.thanThuc.Value,
                 char1.characterStatsBase.thoNguyen.Value, allThanThongIds, char2.characterStatsBase.level.Value,
                 gameManager.currentECombatResult); // thằng 1 luoon la user thằng 2 là thằng enemy
@@ -474,7 +499,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     private void ResetCounterTime()
     {
-        counterTime = 30f;
+        counterTime = 15f;
         counterTimeText.gameObject.SetActive(false);
         var tf = counterTimeText.transform;
         tf.DOKill();
@@ -591,6 +616,10 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
             target.TakeDameForThanThong(caster,
                 !thanThong.GetEKeywordSkillHave().Contains(BaseSkill.EKeyWord.ChanThucTonThuong));
+            if(thanThong is DaiNguHanhCamTienThu)
+            {
+                target.listDameTaked.Clear();
+            }    
             if (thanThong.timeDelayTakeDame > 0)
             {
                 isDelayEffectSkill = true;
@@ -647,6 +676,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN,
                 new SyncEndTurn { CharId = oldCurrentTurn.characterStatsBase.idChar.Value });
+        }
+        if (IsBossCombat)
+        {
+            Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN_BOSS,
+                new SyncEndTurnBoss { CharId = oldCurrentTurn.characterStatsBase.idChar.Value,IsKietSuc = oldTargetTurn.IsKietSuc() });
         }
 
         SwapTurn();
@@ -927,7 +961,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     public void NewTurn()
     {
         ResetCounterTime();
-        if (IsRealTimeCombat)
+        if (IsRealTimeCombat || IsBossCombat)
         {
             if (currentTurn == char1)
             {
@@ -1120,17 +1154,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         }
     }
 
-    private void AddBuffLuyenHon(CharacterCombat charCb)
-    {
-        if (charCb.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.Hon, out SecureInt hon))
-        {
-            charCb.AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, charCb.characterStatsBase.pointHon.Value);
-        }
-        else
-        {
-            charCb.AddBuffAndDebuffCount(EBuffAndDeBuff.HoTrao, charCb.characterStatsBase.pointHon.Value * 2);
-        }
-    }
+   
 
     private void StartTurn(CharacterCombat charCombat)
     {
@@ -1144,8 +1168,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         StartEquipment(targetTurn);
         NewTurn();
         StartCoroutine(CheckDieCoroutine());
-        AddBuffLuyenHon(currentTurn);
-        AddBuffLuyenHon(targetTurn);
+     
     }
 
     private void StartTurnPVP(params object[] data)
@@ -1158,7 +1181,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     void Start()
     {
-        if (!IsRealTimeCombat)
+        if (IsBossCombat)
+        {
+            Client.Instance.ChangeState(new Network.ClientState.BossState());
+        }
+        if (!IsRealTimeCombat && !IsBossCombat)
         {
             var charCb = char1.GetToDoBay() >= char2.GetToDoBay() ? char1 : char2;
             StartTurn(charCb);
@@ -1623,7 +1650,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         //int healValue = data[2] as int;
 
 
-        if (IsSync)
+        if (IsSync || IsBossCombat)
         {
             Debug.Log("SendSyncDame" + listDameData.Count);
             int idCharSend = -1;
@@ -1709,4 +1736,35 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             isSync = oldSync;
         }
     }
+    public void ReceiveSyncEndTurnBoss(params object[] data)
+    {
+        SyncEndTurnBoss SyncSendEndTurnBoss = data[0] as SyncEndTurnBoss;
+        if (SyncSendEndTurnBoss.IsKietSuc)
+        {
+            Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
+
+        }
+        else if (char2 is BossCombat boss)
+        {
+            boss.BossPlayDame();
+            BossPlayDame();
+
+        }
+
+
+    }
+    public void BossPlayDame()
+    {
+        if(char1.CurrentTurn >= TurnLinhKhiBaoLoan)
+        {
+            char1.TakeDameByStatic(char2, new List<int> { int.MaxValue }, false, null, false);
+
+        }
+        else
+        {
+            char1.TakeDameByStatic(char2, new List<int> { int.MaxValue }, false, null, true);
+        }
+
+    }
+
 }

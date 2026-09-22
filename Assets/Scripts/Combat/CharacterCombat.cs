@@ -28,23 +28,18 @@ using ThanThong = Skill.ThanThong;
 public enum ETypeVisualChar
 {
     Character,
-
     EnemyLuyenKhiSoKi,
     EnemyLuyenKhiTrungKi,
     EnemyLuyenKhiHauKi,
-
     EnemyTrucCoSoKi,
     EnemyTrucCoTrungKi,
     EnemyTrucCoHauKi,
-
     EnemyKetDanSoKi,
     EnemyKetDanTrungKi,
     EnemyKetDanHauKi,
-
     EnemyNguyenAnhSoKi,
     EnemyNguyenAnhTrungKi,
     EnemyNguyenAnhHauKi,
-
     EnemyStory0_1,
     EnemyStory0_2,
     EnemyStory0_3,
@@ -281,10 +276,15 @@ public class CharacterCombat : MonoBehaviour
     {
         playerCombat?.PlaySkill(thanThong);
         DOTween.Kill("HideSkillName");
-
+        string nameSkill = thanThong.nameItem;
+        float delayEffect = thanThong.timeDelayTakeDame <= 1 ? 1 : thanThong.timeDelayTakeDame / 2;
+        VisualPlaySkill(nameSkill,delayEffect);
+    }
+    public void VisualPlaySkill(string nameSkill , float delayEffect = 1)
+    {
         textSkillNameCall.transform.parent.gameObject.SetActive(true);
-        textSkillNameCall.text = thanThong.nameItem;
-        DOVirtual.DelayedCall(thanThong.timeDelayTakeDame <= 1 ? 1 : thanThong.timeDelayTakeDame / 2,
+        textSkillNameCall.text = nameSkill;
+        DOVirtual.DelayedCall(delayEffect,
             () => { textSkillNameCall.transform.parent.gameObject.SetActive(false); }).SetId("HideSkillName");
         StartAnimPunch();
     }
@@ -645,7 +645,10 @@ public class CharacterCombat : MonoBehaviour
         if (count == 0) return;
 
         buffAndDebuffCount.TryGetValue(type, out var current);
-
+        if(type == EBuffAndDeBuff.GiamTonThuong && current >= 90)
+        {
+            return;
+        }
         SecureInt newValue = current + count;
         buffAndDebuffCount[type] = newValue;
 
@@ -792,7 +795,7 @@ public class CharacterCombat : MonoBehaviour
         }
     }
 
-    public void Init(GameManager.CharCombatInit charCombatInit)
+    public virtual void Init(GameManager.CharCombatInit charCombatInit)
     {
         var characterStat = charCombatInit.charStats;
         characterVisualControl.Init(charCombatInit.eTypeVisual, characterStat);
@@ -811,20 +814,22 @@ public class CharacterCombat : MonoBehaviour
 
         if (CurrentIndexDanDoc == 2)
         {
-            totalKhiRandom -= 1;
+            UpdateTotalKhiRandom(-1);
         }
         else if (CurrentIndexDanDoc == 3)
         {
-            totalKhiRandom -= 2;
+            UpdateTotalKhiRandom(-2);
+
         }
         else if (CurrentIndexDanDoc == 4)
         {
-            totalKhiRandom -= 2;
+            UpdateTotalKhiRandom(-2);
+
         }
 
         if (IsDebuffTuoiTac)
         {
-            totalKhiRandom -= 2;
+            UpdateTotalKhiRandom(-2);
         }
 
         congPhapDynamic.Clear();
@@ -869,6 +874,10 @@ public class CharacterCombat : MonoBehaviour
 
     public void HapThuLinhKhi(ELinhKhi elinhKhi, int count)
     {
+        if(IsFullLinhKhi)
+        {
+            return;
+        }    
         switch (elinhKhi)
         {
             case ELinhKhi.None:
@@ -912,9 +921,19 @@ public class CharacterCombat : MonoBehaviour
 
     public int CurrentLinhKhi => khiKim + khiMoc + khiThuy + khiHoa + khiTho + khiMa;
 
+    public bool IsFullLinhKhi => CurrentLinhKhi >= totalKhi * 10;
     public int baseCountHapThuLinhKhi => totalKhiRandom - totalKhi;
     public SecureInt countHapThuLinhKhiNewTurn;
 
+    public void UpdateTotalKhiRandom(int count)
+    {
+        totalKhiRandom += count;
+    }
+    public void UpdateTotalKhi(int count)
+    {
+        UpdateTotalKhiRandom(count);
+        totalKhi += count;
+    }    
     private void InitTotalKhi()
     {
         int level = characterStatsTemp.level;
@@ -983,57 +1002,81 @@ public class CharacterCombat : MonoBehaviour
         TieuTanLinhKhi(ELinhKhi.Tho, khiTho);
         TieuTanLinhKhi(ELinhKhi.Ma, khiMa);
     }
-
-    public List<LinhKhiTieuTan> GetLinhKhiTieuTanForTotalLinhKhi()
+    public void TieuTanLinhKhiRandom(int count)
     {
+        var linhKhiTieuTan = GetLinhKhiTieuTanWithCount(count);
+        foreach (var item in linhKhiTieuTan)
+        {
+            TieuTanLinhKhi(item.eLinhKhi,item.count);
+        }
+    }    
+    public List<LinhKhiTieuTan> GetLinhKhiTieuTanWithCount(int countNeedToReduce)
+    {
+        // Nếu số lượng yêu cầu <= 0 thì không cần tiêu tán
+        if (countNeedToReduce <= 0) return new List<LinhKhiTieuTan>();
+
         System.Random rand = new System.Random();
         Dictionary<ELinhKhi, int> dictLinhKhiTemp = new Dictionary<ELinhKhi, int>
-        {
-            { ELinhKhi.Kim, khiKim },
-            { ELinhKhi.Moc, khiMoc },
-            { ELinhKhi.Thuy, khiThuy },
-            { ELinhKhi.Hoa, khiHoa },
-            { ELinhKhi.Tho, khiTho },
-            { ELinhKhi.Ma, khiMa }
-        };
+    {
+        { ELinhKhi.Kim, khiKim },
+        { ELinhKhi.Moc, khiMoc },
+        { ELinhKhi.Thuy, khiThuy },
+        { ELinhKhi.Hoa, khiHoa },
+        { ELinhKhi.Tho, khiTho },
+        { ELinhKhi.Ma, khiMa }
+    };
 
         List<LinhKhiTieuTan> linhKhiTieuTan = new();
+        int remainingToReduce = countNeedToReduce;
 
-        while (true)
+        while (remainingToReduce > 0)
         {
-            int currentLinhKhi = dictLinhKhiTemp.Sum(x => x.Value);
+            // 1. Lấy danh sách các hệ hiện có linh khí > 0
+            var availableKeys = dictLinhKhiTemp.Where(x => x.Value > 0).Select(x => x.Key).ToList();
 
-            if (currentLinhKhi <= totalKhi)
+            // Nếu kho đã cạn sạch linh khí thì dừng lại
+            if (availableKeys.Count == 0) break;
+
+            // 2. Chọn ngẫu nhiên 1 hệ
+            ELinhKhi randomKey = availableKeys[rand.Next(availableKeys.Count)];
+
+            // 3. Giới hạn số lượng tiêu tán: 
+            // Không vượt quá số hiện có của hệ đó VÀ không vượt quá số lượng còn thiếu (remainingToReduce)
+            int maxDecrement = Math.Min(dictLinhKhiTemp[randomKey], remainingToReduce);
+
+            // 4. Random số lượng trừ ngẫu nhiên trong khoảng [1, maxDecrement]
+            int decrementCount = rand.Next(1, maxDecrement + 1);
+
+            // 5. Cập nhật số lượng còn lại trong kho tạm và số lượng cần giảm
+            dictLinhKhiTemp[randomKey] -= decrementCount;
+            remainingToReduce -= decrementCount;
+
+            // 6. Cộng dồn vào danh sách kết quả
+            var existingItem = linhKhiTieuTan.FirstOrDefault(x => x.eLinhKhi == randomKey);
+            if (existingItem != null)
             {
-                break;
+                existingItem.count += decrementCount;
             }
             else
             {
-                // 1. Lấy danh sách các hệ hiện đang có số lượng > 0
-                var availableKeys = dictLinhKhiTemp.Where(x => x.Value > 0).Select(x => x.Key).ToList();
-
-                if (availableKeys.Count > 0)
-                {
-                    // 2. Chọn ngẫu nhiên 1 hệ trong danh sách có sẵn
-                    ELinhKhi randomKey = availableKeys[rand.Next(availableKeys.Count)];
-
-                    // 3. Trừ 1 đơn vị trong Dictionary
-                    dictLinhKhiTemp[randomKey] -= 1;
-
-                    // 4. Lưu vào danh sách tiêu tán (Bạn có thể gộp các Count giống nhau sau hoặc add mới)
-                    linhKhiTieuTan.Add(new LinhKhiTieuTan { eLinhKhi = randomKey, count = 1 });
-                }
-                else
-                {
-                    // Trường hợp kho đã sạch bách linh khí nhưng vẫn chưa thỏa điều kiện totalKhi
-                    break;
-                }
+                linhKhiTieuTan.Add(new LinhKhiTieuTan { eLinhKhi = randomKey, count = decrementCount });
             }
         }
 
         return linhKhiTieuTan;
     }
+    public List<LinhKhiTieuTan> GetLinhKhiTieuTanForTotalLinhKhi()
+    {
+        int countNeedToReduce = CurrentLinhKhi - totalKhi;
 
+        // Nếu linh khí hiện tại đã nhỏ hơn hoặc bằng totalKhi thì không cần tiêu tán
+        if (countNeedToReduce <= 0)
+        {
+            return new List<LinhKhiTieuTan>();
+        }
+
+        return GetLinhKhiTieuTanWithCount(countNeedToReduce);
+    }
     public int GetLinhKhi(ELinhKhi e)
     {
         switch (e)
@@ -1208,7 +1251,7 @@ public class CharacterCombat : MonoBehaviour
             for (int i = 0; i < 10; i++)
             {
                 var debuffKeys = buffAndDebuffCount.Keys
-                    .Where(key => BaseSkill.eDebuffs.Contains(key))
+                    .Where(key => BaseSkill.debuffWeights.Keys.Contains(key))
                     .ToList();
                 // 2. Kiểm tra xem có debuff nào để xóa không
                 if (debuffKeys.Count > 0)
@@ -1237,8 +1280,21 @@ public class CharacterCombat : MonoBehaviour
         {
             isCooldownWeapon = false;
         }
+        AddBuffLuyenHon();
     }
+    private void AddBuffLuyenHon()
+    {
+        AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguKimHiep, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguMocHiep, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguThuyHiep, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguHoaHiep, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguThoHiep, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguKhiHiep, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguThanThucHiep, characterStatsBase.pointHon.Value);
+        AddBuffAndDebuffCount(EBuffAndDeBuff.NguKiemHiep, characterStatsBase.pointHon.Value);
 
+    }
     public bool IsKietSuc()
     {
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.KietSuc, out SecureInt kietSuc);
@@ -1734,7 +1790,7 @@ public class CharacterCombat : MonoBehaviour
        
     }    
     [Button]
-    private void TakeDame(CharacterCombat sender, bool isDef)
+    protected virtual void TakeDame(CharacterCombat sender, bool isDef)
     {
         if (sender != null)
         {

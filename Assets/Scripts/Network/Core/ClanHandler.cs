@@ -110,16 +110,9 @@ namespace Network.Core
         {
             var config = CurrentConfig;
             if (config == null) return (0, 0);
-            var clanBuffResources = global::Clan.ClanBuffResources.Instance;
-            var baseValue = effectType.HasValue && clanBuffResources != null
-                ? clanBuffResources.GetBaseValueOf(effectType.Value)
-                : config.InheritanceBaseValue;
-            var multiplier = Math.Max(1, CurrentClan?.Level ?? 1);
-            var minValue = (long)(baseValue / 2) * multiplier;
-            var maxValue = (long)baseValue * 2 * multiplier;
-            return (
-                (int)Math.Max(int.MinValue, Math.Min(int.MaxValue, minValue)),
-                (int)Math.Max(int.MinValue, Math.Min(int.MaxValue, maxValue)));
+            var clanBuffResources = Clan.ClanBuffResources.Instance;
+            var level = Math.Max(1, CurrentClan?.Level ?? 1);
+            return clanBuffResources.GetBuffValueRangeOf(effectType, level);
         }
 
         public int GetInheritanceDisplayValue(ClanInheritanceEffect effect)
@@ -346,7 +339,9 @@ namespace Network.Core
         public async Task<SetClanInheritanceResult> SetInheritance(
             ClanInheritanceTrigger trigger,
             int slotIndex,
-            EffectType? effectType)
+            EffectType? effectType,
+            int expectedContribPointsCost,
+            int expectedMoneyVipCost)
         {
             var result = await Request<SetClanInheritanceRequest, SetClanInheritanceResult>(
                 MessageTag.SetClanInheritanceRequest,
@@ -354,12 +349,23 @@ namespace Network.Core
                 {
                     Trigger = trigger,
                     SlotIndex = slotIndex,
-                    EffectType = effectType
+                    EffectType = effectType,
+                    ExpectedContribPointsCost = expectedContribPointsCost,
+                    ExpectedMoneyVipCost = expectedMoneyVipCost
                 });
 
+            if (result.Success || result.RequiresConfirmation)
+            {
+                ApplyMemberPoints(new ClanMemberPointsChanged
+                {
+                    ClanId = CurrentClan != null ? CurrentClan.Id : 0,
+                    CharId = client.CharacterData.Id,
+                    ContribPoints = result.ContribPoints
+                }, true);
+            }
             if (result.Success)
             {
-                if (CurrentClan != null) CurrentClan.Funds = result.ClanFunds;
+                client.CharacterData.MoneyVip = result.NewMoneyVip;
                 ApplyInheritanceChanged(result.Change, false);
             }
 
@@ -402,15 +408,28 @@ namespace Network.Core
             return result;
         }
 
-        public async Task<UpgradeClanMaxHonResult> UpgradeMaxHon(int limitLevel)
+        public async Task<UpgradeClanMaxHonResult> UpgradeMaxHon(int limitLevel,
+            long expectedContribPointsCost, long expectedMoneyVipCost)
         {
             var result = await Request<UpgradeClanMaxHonRequest, UpgradeClanMaxHonResult>(
                 MessageTag.UpgradeClanMaxHonRequest,
-                new UpgradeClanMaxHonRequest { LimitLevel = limitLevel });
+                new UpgradeClanMaxHonRequest
+                {
+                    LimitLevel = limitLevel,
+                    ExpectedContribPointsCost = expectedContribPointsCost,
+                    ExpectedMoneyVipCost = expectedMoneyVipCost
+                });
 
+            if (result.Success || result.RequiresConfirmation)
+                ApplyMemberPoints(new ClanMemberPointsChanged
+                {
+                    ClanId = CurrentClan != null ? CurrentClan.Id : 0,
+                    CharId = client.CharacterData.Id,
+                    ContribPoints = result.ContribPoints
+                }, true);
             if (result.Success && CurrentClan != null)
             {
-                CurrentClan.Funds = result.ClanFunds;
+                client.CharacterData.MoneyVip = result.NewMoneyVip;
                 ApplyHonChanged(new ClanHonChanged
                 {
                     ClanId = CurrentClan.Id,
@@ -633,6 +652,8 @@ namespace Network.Core
             if (member != null)
             {
                 member.ContribPoints = contribution.MemberContribPoints;
+                // Assign the server total: the same contribution can arrive as both reply and broadcast.
+                member.TotalContribPoints = contribution.MemberTotalContribPoints;
                 // FreeTimesRemaining là trạng thái authoritative của response/event.
                 // Fallback UtcNow giúp tương thích với server cũ chưa gửi timestamp mới.
                 member.LastFreeContributionAt = contribution.LastFreeContributionAt == default &&

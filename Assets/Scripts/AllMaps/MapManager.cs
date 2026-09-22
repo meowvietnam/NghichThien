@@ -39,6 +39,8 @@ namespace AllMaps
         [SerializeField] private ClanStrongholdNode clanStrongholdPrefab;
         [SerializeField] private Vector3 clanActionIconOffset = new Vector3(0f, 0.55f, 0f);
         private Map current;
+        private Boss.BossMapMarker bossMarker;
+        private float nextBossStatusRefresh;
         private Dictionary<Map, List<Map>> graph;
         private ClanHandler clanHandler;
         private readonly Dictionary<int, Map> originalClanMaps = new Dictionary<int, Map>();
@@ -194,7 +196,6 @@ namespace AllMaps
             player.Init(characterData.Gender, characterData.CanFly, appearance);
             player.SetName(characterData.Name, new Color32(255, 213, 79, 255));
             player.SetInstance();
-            current.OnPlayerEnter();
             Pool.Set(this);
             InitPoolPlayer();
         }
@@ -205,15 +206,21 @@ namespace AllMaps
             isDelayAfterLoadScene = true;
             StartCoroutine(DelayTime(0.01f));
             LoadClanStrongholds();
+            OnMoveToMapCompleted();
         }
 
         private void Update()
         {
             if (IsSelectingNode && Input.GetKeyDown(KeyCode.Escape)) CancelCurrentNodeSelection();
+            if (Time.unscaledTime < nextBossStatusRefresh ||
+                Client.Instance.State is not Network.ClientState.AllMaps) return;
+            nextBossStatusRefresh = Time.unscaledTime + 5f;
+            Client.Instance.CoreModule.GetHandler<BossHandler>().GetActiveStatus(UpdateBossMarker);
         }
 
         private void OnDestroy()
         {
+            if (bossMarker != null) Destroy(bossMarker.gameObject);
             CancelCurrentNodeSelection();
             RestoreClanMaps();
             if (clanHandler != null)
@@ -428,7 +435,7 @@ namespace AllMaps
         {
             if (CameraFollow.Instance.target != player.transform) return;
             if (isDelayAfterLoadScene) return;
-            if (map == current) return;
+            if (map == current) { OnMoveToMapCompleted(); return; }
             if (player.IsMoving) return;
             Client.Instance.Send(MessageTag.MoveToMap, map.Id);
         }
@@ -481,7 +488,36 @@ namespace AllMaps
 
         private void OnMoveToMapCompleted()
         {
-            current.OnPlayerEnter();
+            var arrived = current;
+            if (arrived is Stronghold || arrived.MapType == MapType.Stronghold)
+            {
+                arrived.OnPlayerEnter();
+                return;
+            }
+            Client.Instance.CoreModule.GetHandler<BossHandler>().GetStatus(arrived.Id, status =>
+            {
+                if (this == null || current != arrived || player.IsMoving ||
+                    Client.Instance.State is not Network.ClientState.AllMaps) return;
+                if (status.Success && status.IsAlive)
+                {
+                    UpdateBossMarker(status);
+                    Boss.BossInfoPopup.Open(status);
+                }
+                else arrived.OnPlayerEnter();
+            });
+        }
+
+        private void UpdateBossMarker(BossStatus status)
+        {
+            if (this == null) return;
+            var node = status.Success && status.IsAlive ? FindMap(status.NodeId) : null;
+            if (bossMarker != null && (node == null || bossMarker.SpawnId != status.SpawnId))
+            {
+                Destroy(bossMarker.gameObject);
+                bossMarker = null;
+            }
+            if (node == null || bossMarker != null) return;
+            bossMarker = Boss.BossMapMarker.Create(node.transform, status);
         }
 
         [Button]

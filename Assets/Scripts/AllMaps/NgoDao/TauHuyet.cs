@@ -21,7 +21,8 @@ public class TauHuyet : NgoDaoCombat, IMemorySerializable<TauHuyet>
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        caster.totalKhi += buff;
+        caster.UpdateTotalKhi(buff);
+
     }
 
     public override int ByteSize()

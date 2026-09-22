@@ -73,6 +73,8 @@ namespace Network
         {
             SetLogout(false);
             var module = CoreModule;
+            module.RemoveHandler<BossHandler>();
+            module.AddHandler(new BossHandler());
             var sceneManager = new SceneManager();
             module.RemoveHandler<SceneManager>();
             module.AddHandler(sceneManager);

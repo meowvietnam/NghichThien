@@ -62,7 +62,7 @@ namespace Clan
                 ? text
                 : target.Level > 0 ? $"Cảnh giới {target.Level}" : "—";
             SetText(levelText, levelName);
-            SetText(contribText, $"Đóng góp: {Utils.FormatCount(target.ContribPoints)}");
+            RefreshContribution();
             SetText(joinAtText, $"Gia nhập: {target.JoinAt:dd/MM/yyyy}");
             SetAvatar(target);
 
@@ -70,6 +70,22 @@ namespace Clan
             RefreshKickButton();
 
             if (selfObject != null) selfObject.SetActive(true);
+        }
+
+        public void RefreshContribution()
+        {
+            if (target == null || contribText == null) return;
+            if (panel?.CurrentMember != null && target.CharId == panel.CurrentMember.CharId &&
+                target.ClanId == panel.CurrentMember.ClanId)
+            {
+                target = panel.CurrentMember;
+                ClanContributionText.Set(contribText, target);
+            }
+            else
+            {
+                contribText.resizeTextForBestFit = false;
+                SetText(contribText, $"Đóng góp: {Utils.FormatCount(target.ContribPoints)}");
+            }
         }
 
         private void SetAvatar(ClanMember member)

@@ -26,7 +26,6 @@ public class DichMach : NgoDaoCombat, IMemorySerializable<DichMach>
     public override void ExecuteNgoDao(CharacterCombat caster, CharacterCombat target, params object[] data)
     {
         caster.RemoveNgoDaoCombatDynamic(this);
-        caster.totalKhiRandom -= buff;
     }
 
     public override string GetDes()
@@ -37,8 +36,7 @@ public class DichMach : NgoDaoCombat, IMemorySerializable<DichMach>
     public override void InitPosCallExecute(CharacterCombat caster)
     {
         Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, ObserverEffect);
-        caster.totalKhiRandom += buff;
-        caster.AddNgoDaoCombatDynamic(this);
+        caster.HapThuLinhKhi(buff);
     }
 
     public override int ByteSize()

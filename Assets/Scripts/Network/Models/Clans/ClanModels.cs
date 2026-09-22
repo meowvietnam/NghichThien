@@ -101,6 +101,7 @@ namespace Network.Models.Clans
         public int Level { get; set; }
         public Gender Gender { get; set; }
         public Appearance Appearance { get; set; }
+        public long TotalContribPoints { get; set; }
     }
 
     [MemoryPackable]

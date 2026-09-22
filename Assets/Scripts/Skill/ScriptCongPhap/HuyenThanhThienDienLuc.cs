@@ -23,7 +23,7 @@ public class HuyenThanhThienDienLuc : CongPhap, IMemorySerializable<HuyenThanhTh
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        caster.totalKhiRandom += buffValues[CurrentLevelCongPhapInCombat(caster) - 1];
+        caster.UpdateTotalKhiRandom(buffValues[CurrentLevelCongPhapInCombat(caster) - 1]);
     }
 
     public override int ByteSize()

@@ -1,6 +1,7 @@
 using System;
 using Auction;
 using Base;
+using Network;
 using Network.Models.Clans;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,12 @@ namespace Clan
         [SerializeField] private GameObject avatarFallback;
 
         private ClanMember member;
+        private bool hasContributionStyle;
+        private Vector2 contributionPosition;
+        private bool contributionBestFit;
+        private int contributionMinSize;
+        private int contributionMaxSize;
+        private HorizontalWrapMode contributionWrapMode;
 
         public ClanMember Member => member;
         public int CharId => member?.CharId ?? 0;
@@ -28,8 +35,21 @@ namespace Clan
 
         private void Awake()
         {
+            CacheContributionStyle();
             if (button == null) button = GetComponent<Button>();
             SetEventButton(button, () => Clicked?.Invoke(this));
+        }
+
+        private void CacheContributionStyle()
+        {
+            // Inactive row prefabs can be initialized before Unity invokes Awake.
+            if (hasContributionStyle || contribText == null) return;
+            contributionPosition = contribText.rectTransform.anchoredPosition;
+            contributionBestFit = contribText.resizeTextForBestFit;
+            contributionMinSize = contribText.resizeTextMinSize;
+            contributionMaxSize = contribText.resizeTextMaxSize;
+            contributionWrapMode = contribText.horizontalOverflow;
+            hasContributionStyle = true;
         }
 
         public void Init(ClanMember member)
@@ -52,7 +72,14 @@ namespace Clan
         public void SetContribution(long contribPoints)
         {
             if (member != null) member.ContribPoints = contribPoints;
-            SetText(contribText, Utils.FormatCount(contribPoints));
+            if (contribText == null) return;
+            CacheContributionStyle();
+            contribText.rectTransform.anchoredPosition = contributionPosition;
+            contribText.resizeTextForBestFit = contributionBestFit;
+            contribText.resizeTextMinSize = contributionMinSize;
+            contribText.resizeTextMaxSize = contributionMaxSize;
+            contribText.horizontalOverflow = contributionWrapMode;
+            ClanContributionText.Set(contribText, member);
         }
 
         public void SetRole(ClanRole role)
@@ -69,7 +96,9 @@ namespace Clan
 
             var levelName = GameManager.levelWithText.TryGetValue(level, out var text)
                 ? text
-                : level > 0 ? $"Cảnh giới {level}" : "—";
+                : level > 0
+                    ? $"Cảnh giới {level}"
+                    : "—";
             SetText(levelText, levelName);
 
             if (levelImage == null) return;
@@ -143,7 +172,8 @@ namespace Clan
             catch (Exception exception)
             {
                 SetAvatarVisible(false);
-                Debug.LogWarning($"Không thể hiển thị avatar của thành viên {clanMember.CharId}: {exception.Message}", this);
+                Debug.LogWarning($"Không thể hiển thị avatar của thành viên {clanMember.CharId}: {exception.Message}",
+                    this);
             }
         }
 

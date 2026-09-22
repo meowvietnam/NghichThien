@@ -405,6 +405,31 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
         this.spriteBGCombat = sprite;
     }
 
+    public void GoToBossCombat(JoinBossResult result)
+    {
+        currentETypeCombat = ETypeCombat.Boss;
+        currentECombatResult = ETypeResultCombat.None;
+        user = new CharCombatInit
+        {
+            eTypeVisual = ETypeVisualChar.Character,
+            charStats = CharacterStatsSecureBuilder.FromCharacterSnapshot(result.Player)
+        };
+        user.charStats.isPlayer = true;
+        enemyCombat = new CharCombatInit
+        {
+            eTypeVisual = result.Status.SkinId,
+            charStats = CharacterStatsSecureBuilder.FromCharacterSnapshot(result.Status.Boss)
+        };
+        Client.Instance.CharacterData.EquipmentManager.DanCombatUseds.Clear();
+        var ui = Pool.Get<UIManager>();
+        ui.panelGroup.SetActive(false);
+        ui.commonMask.gameObject.SetActive(false);
+        ui.SetActiveListIcon(false);
+        ui.loadScene.gameObject.SetActive(true);
+        // JoinBoss already changed the server state. Only load the local combat scene here.
+        ChangeSceneSuccess("Combat");
+    }
+
     public void GoToCombatArena()
     {
         if (enemyCombat == null) return;

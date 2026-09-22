@@ -21,7 +21,7 @@ public class BaoPhac : NgoDaoCombat, IMemorySerializable<BaoPhac>
 
     public override void InitPosCallExecute(CharacterCombat caster)
     {
-        caster.totalKhiRandom += buff;
+        caster.UpdateTotalKhiRandom(buff);
     }
 
     public override int ByteSize()

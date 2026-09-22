@@ -5,7 +5,7 @@ using UnityEngine;
 using System;
 using Network;
 using Network.Extensions;
-
+using System.Linq;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(DuongXuanBachHoaQuyet))]
 public class DuongXuanBachHoaQuyet : CongPhap, IMemorySerializable<DuongXuanBachHoaQuyet>
 {
@@ -17,7 +17,7 @@ public class DuongXuanBachHoaQuyet : CongPhap, IMemorySerializable<DuongXuanBach
         int countDebuff = 0;
         foreach (var item in target.buffAndDebuffCount)
         {
-            if (eDebuffs.Contains(item.Key))
+            if (debuffWeights.Keys.Contains(item.Key))
             {
                 countDebuff++;
             }

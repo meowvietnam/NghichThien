@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using Network;
 using Network.Extensions;
+using System.Linq;
 
 [CreateAssetMenu(fileName = nameof(LacAnh), menuName = "Skill/Thần Thông/" + nameof(LacAnh))]
 public class LacAnh : ThanThong, BaseSkill.LienKich, IMemorySerializable<LacAnh>
@@ -29,7 +30,7 @@ public class LacAnh : ThanThong, BaseSkill.LienKich, IMemorySerializable<LacAnh>
         int countDebuff = 0;
         foreach (var item in target.buffAndDebuffCount)
         {
-            if (BaseSkill.eDebuffs.Contains(item.Key))
+            if (BaseSkill.debuffWeights.Keys.Contains(item.Key))
             {
                 countDebuff++;
             }
