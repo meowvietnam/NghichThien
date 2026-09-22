@@ -1681,7 +1681,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         Debug.Log($"Is null: {SyncDame.Datas == null}");
         foreach (var item in SyncDame.Datas)
         {
-            charCombatTakeDame.TakeDameVisualPvP(item);
+            charCombatTakeDame.TakeDameVisualPvP(charCombatSendDame, item);
         }
     }
 
@@ -1739,31 +1739,33 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     public void ReceiveSyncEndTurnBoss(params object[] data)
     {
         SyncEndTurnBoss SyncSendEndTurnBoss = data[0] as SyncEndTurnBoss;
-        if (SyncSendEndTurnBoss.IsKietSuc)
+        if (SyncSendEndTurnBoss.IsKietSuc && char1.CurrentTurn< TurnLinhKhiBaoLoan)
         {
             Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
-
+          
         }
         else if (char2 is BossCombat boss)
         {
             boss.BossPlayDame();
             BossPlayDame();
+            if (!CheckDie())
+            {
+                Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
 
+            }
         }
 
 
     }
     public void BossPlayDame()
     {
-        if(char1.CurrentTurn >= TurnLinhKhiBaoLoan)
+        List<int> dames = new List<int>();
+        for (int i = 0; i < char1.CurrentTurn * char1.CurrentTurn; i++)
         {
-            char1.TakeDameByStatic(char2, new List<int> { int.MaxValue }, false, null, false);
-
+            dames.Add(int.MaxValue);
         }
-        else
-        {
-            char1.TakeDameByStatic(char2, new List<int> { int.MaxValue }, false, null, true);
-        }
+        char1.CaculateDameByThanThong(char2, dames, new[] { BaseSkill.ETypeSkill.Khi });
+        char1.TakeDameForThanThong(char2, true);
 
     }
 
