@@ -679,8 +679,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         }
         if (IsBossCombat && oldCurrentTurn == char1)
         {
-            Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN_BOSS,
-                new SyncEndTurnBoss { CharId = oldCurrentTurn.characterStatsBase.idChar.Value,IsKietSuc = oldTargetTurn.IsKietSuc() });
+            if(!targetTurn.IsKietSuc())
+            {
+                Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN_BOSS,
+               new SyncEndTurnBoss { CharId = oldCurrentTurn.characterStatsBase.idChar.Value, IsKietSuc = oldTargetTurn.IsKietSuc() });
+            }       
         }
 
         SwapTurn();
