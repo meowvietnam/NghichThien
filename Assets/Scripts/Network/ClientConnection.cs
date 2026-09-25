@@ -1,4 +1,6 @@
 using System;
+using Base;
+using UnityEngine;
 using NativeTcp = System.Net.Sockets.TcpClient;
 
 namespace Network
@@ -20,7 +22,8 @@ namespace Network
 
         public override bool ValidatePacketSize(int size)
         {
-            return size < 1024 * 1024 * 128;
+            Debug.Log(Utils.FormatCount(size) + " bytes");
+            return size >= 0 && size < 1024 * 1024 * 128;
         }
 
         public void AddReconnectedListener(Action onReconnected)

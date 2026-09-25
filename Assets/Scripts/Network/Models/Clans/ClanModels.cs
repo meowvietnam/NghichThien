@@ -10,10 +10,10 @@ namespace Network.Models.Clans
 {
     public enum ClanRole : byte
     {
-        Member,      // Đệ tử
-        Elder,       // Trưởng lão
-        ViceLeader,  // Phó Tộc Chủ
-        Leader       // Tộc Chủ
+        Member, // Đệ tử
+        Elder, // Trưởng lão
+        ViceLeader, // Phó Tộc Chủ
+        Leader // Tộc Chủ
     }
 
     [Flags]
@@ -70,27 +70,30 @@ namespace Network.Models.Clans
         public long Exp { get; set; }
         public int LeaderCharId { get; set; }
         public DateTime CreatedAt { get; set; }
-        public List<ClanMember> Members { get; set; } = new List<ClanMember>();
-        public List<ClanJoinRequest> JoinRequests { get; set; } = new List<ClanJoinRequest>();
-        public List<ClanShopItem> ShopItems { get; set; } = new List<ClanShopItem>();
-        public List<ClanInheritanceEffect> StartTurnEffects { get; set; } = new List<ClanInheritanceEffect>();
-        public List<ClanInheritanceEffect> EndTurnEffects { get; set; } = new List<ClanInheritanceEffect>();
-        public List<Puppet> Puppets { get; set; } = new List<Puppet>();
-        public List<ClanNode> ClanNodes { get; set; } = new List<ClanNode>();
+        public List<ClanMember> Members { get; set; } = new();
+        public List<ClanJoinRequest> JoinRequests { get; set; } = new();
+        public List<ClanShopItem> ShopItems { get; set; } = new();
+        public List<ClanInheritanceEffect> StartTurnEffects { get; set; } = new();
+        public List<ClanInheritanceEffect> EndTurnEffects { get; set; } = new();
+        public List<Puppet> Puppets { get; set; } = new();
+        public List<ClanNode> ClanNodes { get; set; } = new();
     }
+
     [MemoryPackable]
     public partial class Puppet
     {
         public int ClanId { get; set; }
         public int? NodeId { get; set; }
-        
+        public CharacterData CharData { get; set; }
     }
+
     [MemoryPackable]
     public partial class ClanNode
     {
         public int NodeId { get; set; }
         public int? ClanId { get; set; }
     }
+
     [MemoryPackable]
     public partial class ClanInheritanceEffect
     {
