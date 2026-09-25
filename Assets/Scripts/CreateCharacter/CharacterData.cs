@@ -4,9 +4,9 @@ using AllMaps;
 using AllMaps.EventReward;
 using CreateCharacter.CharStats;
 using LongDH.LongDHModules;
+using MemoryPack;
 using Network;
 using Network.Extensions;
-using Network.Extensions.MemoryPack;
 using Network.Models;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -15,7 +15,8 @@ using EMonPhai = Base.EMonPhai;
 namespace CreateCharacter
 {
     [Serializable]
-    public sealed class CharacterData : IMemorySerializable<CharacterData>
+    [MemoryPackable]
+    public sealed partial class CharacterData
     {
         [field: SerializeField, TabGroup("Basic")]
         public int Id { get; set; }
@@ -124,82 +125,7 @@ namespace CreateCharacter
 
         public CharacterData DeepClone()
         {
-            var writer = new Writer(ByteSize());
-            writer.Write(this);
-            var reader = new Reader(writer.Buffer);
-            return reader.Read<CharacterData>();
-        }
-
-        public int ByteSize()
-        {
-            return Id.ByteSize()
-                   + Gender.ByteSize()
-                   + Name.ByteSize()
-                   + Stats.ByteSize()
-                   + Progression.ByteSize()
-                   + Appearance.ByteSize()
-                   + EquipmentManager.ByteSize()
-                   + MonPhai.ByteSize()
-                   + MoneyVip.ByteSize()
-                   + IsInfiniteEnergy.ByteSize()
-                   + IsNoAds.ByteSize()
-                   + CanFly.ByteSize()
-                   + CurrentFreeAdsMoneyVipCount.ByteSize()
-                   + InventoryManager.ByteSize()
-                   + CreatedAt.ByteSize()
-                   + Social.ByteSize()
-                   + QuestManager.ByteSize()
-                   + ArenaManager.ByteSize()
-                   + ShopManager.ByteSize()
-                   + GachaManager.ByteSize();
-        }
-
-        public void Serialize(IWriter writer)
-        {
-            writer.Write(Id);
-            writer.Write(Gender);
-            writer.Write(Name);
-            writer.Write(Stats);
-            writer.Write(Progression);
-            writer.Write(Appearance);
-            writer.Write(EquipmentManager);
-            writer.Write(MonPhai);
-            writer.Write(MoneyVip);
-            writer.Write(IsInfiniteEnergy);
-            writer.Write(IsNoAds);
-            writer.Write(CanFly);
-            writer.Write(CurrentFreeAdsMoneyVipCount);
-            writer.Write(InventoryManager);
-            writer.Write(CreatedAt);
-            writer.Write(Social);
-            writer.Write(QuestManager);
-            writer.Write(ArenaManager);
-            writer.Write(ShopManager);
-            writer.Write(GachaManager);
-        }
-
-        public void Deserialize(IReader reader, ref CharacterData value)
-        {
-            value.Id = reader.Read<int>();
-            value.Gender = reader.Read<Gender>();
-            value.Name = reader.Read();
-            value.Stats = reader.Read<CharacterStats>();
-            value.Progression = reader.Read<Progression>();
-            value.Appearance = reader.Read<Appearance>();
-            value.EquipmentManager = reader.Read<EquipmentManager>();
-            value.MonPhai = reader.Read<EMonPhai>();
-            value.MoneyVip = reader.Read<int>();
-            value.IsInfiniteEnergy = reader.Read<bool>();
-            value.IsNoAds = reader.Read<bool>();
-            value.CanFly = reader.Read<bool>();
-            value.CurrentFreeAdsMoneyVipCount = reader.Read<int>();
-            value.InventoryManager = reader.Read<InventoryManager>();
-            value.CreatedAt = reader.Read<DateTime>();
-            value.Social = reader.Read<Social>();
-            value.QuestManager = reader.Read<QuestManager>();
-            value.ArenaManager = reader.Read<ArenaManager>();
-            value.ShopManager = reader.Read<ShopManager>();
-            value.GachaManager = reader.Read<GachaManager>();
+            return MemoryPackSerializer.Deserialize<CharacterData>(MemoryPackSerializer.Serialize(this));
         }
 
         public void SetInventory(InventoryManager inventory)

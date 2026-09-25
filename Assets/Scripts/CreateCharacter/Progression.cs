@@ -1,4 +1,5 @@
 using System;
+using MemoryPack;
 using Network;
 using Network.Extensions;
 using UnityEngine;
@@ -6,7 +7,8 @@ using UnityEngine;
 namespace CreateCharacter
 {
     [Serializable]
-    public class Progression : IMemorySerializable<Progression>
+    [MemoryPackable]
+    public partial class Progression
     {
         [field: SerializeField] public int Level { get; set; }
         [field: SerializeField] public int CurrentExp { get; set; }

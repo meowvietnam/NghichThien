@@ -3,6 +3,7 @@ using CreateCharacter;
 using MemoryPack;
 using Network;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
 using UnityEngine;
 
 namespace Rank

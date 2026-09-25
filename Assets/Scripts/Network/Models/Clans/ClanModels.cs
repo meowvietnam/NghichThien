@@ -75,8 +75,22 @@ namespace Network.Models.Clans
         public List<ClanShopItem> ShopItems { get; set; } = new List<ClanShopItem>();
         public List<ClanInheritanceEffect> StartTurnEffects { get; set; } = new List<ClanInheritanceEffect>();
         public List<ClanInheritanceEffect> EndTurnEffects { get; set; } = new List<ClanInheritanceEffect>();
+        public List<Puppet> Puppets { get; set; } = new List<Puppet>();
+        public List<ClanNode> ClanNodes { get; set; } = new List<ClanNode>();
     }
-
+    [MemoryPackable]
+    public partial class Puppet
+    {
+        public int ClanId { get; set; }
+        public int? NodeId { get; set; }
+        
+    }
+    [MemoryPackable]
+    public partial class ClanNode
+    {
+        public int NodeId { get; set; }
+        public int? ClanId { get; set; }
+    }
     [MemoryPackable]
     public partial class ClanInheritanceEffect
     {
@@ -102,6 +116,7 @@ namespace Network.Models.Clans
         public Gender Gender { get; set; }
         public Appearance Appearance { get; set; }
         public long TotalContribPoints { get; set; }
+        public int? NodeId { get; set; }
     }
 
     [MemoryPackable]

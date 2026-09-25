@@ -2,6 +2,7 @@ using System.Linq;
 using CreateCharacter;
 using Network.Callback;
 using Network.Extensions;
+using Network.Extensions.MemoryPack;
 using Network.Models;
 
 namespace Network.ClientState

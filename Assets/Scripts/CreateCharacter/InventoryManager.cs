@@ -5,6 +5,7 @@ using System.Threading;
 using Base;
 using LuyenDan;
 using LuyenKhi;
+using MemoryPack;
 using Network;
 using Network.Extensions.MemoryPack;
 using Network.Models;
@@ -13,7 +14,8 @@ using Sirenix.OdinInspector;
 namespace CreateCharacter
 {
     [Serializable]
-    public class InventoryManager : IMemorySerializable<InventoryManager>
+    [MemoryPackable]
+    public partial class InventoryManager
     {
         [ShowInInspector] public HashSet<FurnaceData> Furnaces { get; set; } = new();
         [ShowInInspector] public HashSet<ItemRef> Recipes { get; set; } = new();

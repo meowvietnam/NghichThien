@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Base;
+using MemoryPack;
 using Network;
 using Network.Extensions;
 using Network.Extensions.MemoryPack;
@@ -12,7 +13,8 @@ using UnityEngine;
 namespace CreateCharacter
 {
     [Serializable]
-    public class EquipmentManager : IMemorySerializable<EquipmentManager>
+    [MemoryPackable]
+    public partial class EquipmentManager
     {
         [field: ShowInInspector] public HashSet<ThanThongEquip> ThanThongEquips { get; set; } = new();
         [field: ShowInInspector] public HashSet<DanCombatUsed> DanCombatUseds { get; set; } = new();
