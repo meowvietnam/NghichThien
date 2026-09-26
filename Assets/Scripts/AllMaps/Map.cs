@@ -52,27 +52,25 @@ namespace AllMaps
                 iconVisualAction = null;
             }
 
-            for (int i = 0; i < this.transform.GetChild(0).childCount; i++)
+            for (int i = 0; i < transform.GetChild(0).childCount; i++)
             {
-                this.transform.GetChild(0).GetChild(i).gameObject.SetActive(false);
+                transform.GetChild(0).GetChild(i).gameObject.SetActive(false);
             }
         }
 
         public virtual void SetData(IActionMap dataCurrent, GameObject iconVisualAction)
         {
-            this.actionMap = dataCurrent;
+            actionMap = dataCurrent;
             this.iconVisualAction = iconVisualAction;
         }
 
         public virtual void OnPlayerEnter()
         {
             Observer.Notify(EventList.GamePlay.USER_ENTER_MAP, this);
-
             if (actionMap != null)
             {
                 actionMap.ActiveEventMap(this);
             }
-
             ResetDataAction();
         }
 
@@ -83,7 +81,6 @@ namespace AllMaps
         public void CopyTo(Map target)
         {
             if (target == null) throw new ArgumentNullException(nameof(target));
-
             target.Id = this.Id;
             target.PlayerPosition = this.PlayerPosition;
             target.mapManager = this.mapManager;
