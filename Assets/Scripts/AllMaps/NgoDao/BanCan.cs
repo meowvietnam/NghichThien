@@ -12,7 +12,7 @@ public class BanCan : NgoDaoCombat, IMemorySerializable<BanCan>
     {
         if (target.buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TrienNhieu, out SecureInt trienNhieu))
         {
-            caster.AddBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieu);
+            target.AddBuffAndDebuffCount(EBuffAndDeBuff.TrienNhieu, trienNhieu);
         }
     }
 

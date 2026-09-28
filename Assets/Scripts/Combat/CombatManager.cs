@@ -99,7 +99,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     [SerializeField] private Tooltip buffInfor;
     [SerializeField] public Transform parentUIFight => buffInfor.transform.parent;
 
-    public SecureBool IsDelayGame => CheckDie();
+    public SecureBool IsDelayGame => false;
     public SecureBool isDelayEffectSkill;
 
     public Camera cameraEffectSkillDynamic;
@@ -1753,20 +1753,31 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     public void ReceiveSyncEndTurnBoss(params object[] data)
     {
         SyncEndTurnBoss SyncSendEndTurnBoss = data[0] as SyncEndTurnBoss;
-        if (SyncSendEndTurnBoss.IsKietSuc && char1.CurrentTurn< TurnLinhKhiBaoLoan)
+
+        if(char2 is BossCombat boss)
         {
-            Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
-          
-        }
-        else if (char2 is BossCombat boss)
-        {
-            boss.BossPlayDame();
-            BossPlayDame();
-            if (!CheckDie())
+            int value = SyncSendEndTurnBoss.CurrentHpBoss - boss.characterStatsTemp.hp.Value;
+            if (value>0)
+            {
+                boss.Healing(value);
+            }    
+            if (SyncSendEndTurnBoss.IsKietSuc && char1.CurrentTurn < TurnLinhKhiBaoLoan)
             {
                 Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
 
             }
+            else 
+            {
+                boss.BossPlayDame();
+                BossPlayDame();
+                if (!CheckDie())
+                {
+                    Observer.Notify(EventList.Combat.END_TURN_COMBAT, currentTurn, targetTurn, new List<LinhKhiTieuTan>());
+
+                }
+            }
+
+
         }
 
 

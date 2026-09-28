@@ -25,7 +25,7 @@ public class HoiPhongAn : ThanThong, IMemorySerializable<HoiPhongAn>
             return;
         if (targetTurn.specialThanThongImpactAfterPlaySkill.Any(x => x is HoiPhongAn))
         {
-            targetTurn.AddBuffAndDebuffCount(EBuffAndDeBuff.SucLuc, 1);
+            targetTurn.AddBuffAndDebuffCount(EBuffAndDeBuff.SucLuc, buffValues[GetIndexLevelThanThong(targetTurn)]);
         }
     }
 

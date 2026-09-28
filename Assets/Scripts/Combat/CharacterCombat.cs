@@ -18,6 +18,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.TestTools;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
@@ -1481,8 +1482,20 @@ public class CharacterCombat : MonoBehaviour
         // sau đó tính trung bình và ép ngược lại về int (nếu kết quả nằm trong giới hạn int)
         long sum = dames.Sum(x => (long)x);
         long average = sum / dames.Count;
-
+        average = Math.Clamp(average, 0, int.MaxValue); // Chặn giá trị trong khoảng từ 0 đến int.MaxValue
         return (int)average;
+    }
+    public int GetTotalDame()
+    {
+        if (allDamages == null || allDamages.Count == 0)
+            return 0;
+
+        // Sử dụng Sum(x => (long)x) để tránh tràn số int, 
+        // sau đó tính trung bình và ép ngược lại về int (nếu kết quả nằm trong giới hạn int)
+        long sum = allDamages.Sum(x => (long)x);
+        sum = Math.Clamp(sum, 0, int.MaxValue); // Chặn giá trị trong khoảng từ 0 đến int.MaxValue
+
+        return (int)sum;
     }
     public List<int> allDamages = new List<int>();
 

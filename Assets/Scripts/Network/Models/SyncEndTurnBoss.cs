@@ -7,5 +7,7 @@ namespace Network.Models
     {
         public int CharId { get; set; }
         public bool IsKietSuc { get; set; }
+        public int CurrentHpBoss { get; set; }
+
     }
 }
