@@ -99,7 +99,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     [SerializeField] private Tooltip buffInfor;
     [SerializeField] public Transform parentUIFight => buffInfor.transform.parent;
 
-    public SecureBool IsDelayGame => CheckDie();
+    public SecureBool IsDelayGame => false;
     public SecureBool isDelayEffectSkill;
 
     public Camera cameraEffectSkillDynamic;
