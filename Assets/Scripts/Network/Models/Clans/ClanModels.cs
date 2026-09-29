@@ -75,23 +75,6 @@ namespace Network.Models.Clans
         public List<ClanShopItem> ShopItems { get; set; } = new();
         public List<ClanInheritanceEffect> StartTurnEffects { get; set; } = new();
         public List<ClanInheritanceEffect> EndTurnEffects { get; set; } = new();
-        public List<Puppet> Puppets { get; set; } = new();
-        public List<ClanNode> ClanNodes { get; set; } = new();
-    }
-
-    [MemoryPackable]
-    public partial class Puppet
-    {
-        public int ClanId { get; set; }
-        public int? NodeId { get; set; }
-        public CharacterData CharData { get; set; }
-    }
-
-    [MemoryPackable]
-    public partial class ClanNode
-    {
-        public int NodeId { get; set; }
-        public int? ClanId { get; set; }
     }
 
     [MemoryPackable]

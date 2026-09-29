@@ -14,13 +14,11 @@ namespace Clan
         [SerializeField] private Button enterButton;
         [SerializeField] private SpriteRenderer iconClan;
         private ClanModel clan;
-
         private void Awake()
         {
             MapType = MapType.Stronghold;
             SetEventButton(enterButton, OpenClan);
         }
-
         public async void SetClan(ClanModel value)
         {
             clan = value;
@@ -34,7 +32,6 @@ namespace Clan
                 iconClan.sprite = await ImageLoader.GetSpriteFromUrl(value.ImageUrl);
             }
         }
-
         public override void OnPlayerEnter()
         {
             base.OnPlayerEnter();
@@ -42,12 +39,10 @@ namespace Clan
                 clanNameText.transform.parent.gameObject.SetActive(true);
             if (enter != null) enter.SetActive(true);
         }
-
         public override void OnPlayerExit()
         {
             if (enter != null) enter.SetActive(false);
         }
-
         private void OpenClan()
         {
             if (clan == null) return;

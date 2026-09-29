@@ -1,14 +1,14 @@
 # Yêu cầu tính năng Tông môn chiến
 
-Trạng thái: **đã cập nhật theo 13 câu trả lời và các điểm chốt bổ sung của chủ dự án; còn các quyết định ở mục 7**. Các điểm ghi **[CẦN CHỐT]** không được xem là quy tắc đã duyệt. Không tự suy diễn công thức thời gian, HP hoặc hồi phục.
+Trạng thái: **đã chốt toàn bộ quyết định mở (vòng hỏi đáp 29/09/2026, xem mục 7)**. Các giá trị ghi **[TẠM]** là giá trị chạy thử nằm trong hàm cấu hình riêng; công thức chính thức do chủ dự án bổ sung sau, không cần đổi schema/message.
 
 ## 1. Mục tiêu và thuật ngữ
 
 - Tông môn chiến mở liên tục, mọi tông đều có thể tham gia trên cùng bản đồ; chưa có điều kiện thắng chung, kết thúc chiến hoặc reset lãnh thổ.
 - Một tông có thể đồng thời sở hữu nhiều node thông thường.
-- **Thành chính/tổng đàn**: node `Clan.NodeId`, duy nhất của mỗi tông, không thể bị chiếm. Cần phân biệt hành vi “đi qua” với “đi vào” thành địch ở mục 7.
+- **Thành chính/tổng đàn**: node `Clan.NodeId`, duy nhất của mỗi tông, không thể bị chiếm. Người địch chỉ được đi xuyên qua thành, không dừng/chiếm (mục 3.1.4). Tông có `NodeId ≤ 0` (tông ẩn sau gộp dữ liệu) không có thành trên map nên không được tham chiến.
 - **Node kiểm soát**: node có một tông sở hữu. Node không có chủ là node trung lập.
-- **Đối thủ tại node**: người chơi online hoặc con rối thuộc tông khác. Người/rối đang ở trận khác chưa sẵn sàng nhận trận mới.
+- **Đối thủ tại node**: người chơi **đang online và đang ở scene Tông môn chiến** hoặc con rối thuộc tông khác. Người/rối đang ở trận khác chưa sẵn sàng nhận trận mới. Người chơi offline/rời scene vẫn được lưu vị trí nhưng không chặn và không bị ghép trận.
 - **Giao tranh**: một hay nhiều trận 1v1 tại cùng node. Icon giao tranh hiện khi ít nhất một trận tại node đang diễn ra.
 - **HP chiến**: HP riêng trong tông môn chiến, không đồng nhất với `CharacterData.Stats.Hp` dùng ngoài chiến trường.
 - Tài liệu dùng “tông môn” và “tộc trưởng/Leader” cho các thuật ngữ “tộc”, “tông”, “trưởng tộc” trong yêu cầu gốc.
@@ -33,42 +33,42 @@ Tận dụng graph node, hiển thị map, prefab nhân vật và giao diện co
 
 1. Scene `TongMonChien` dùng cùng graph và ID node với `AllMaps`, nhưng dùng script điều khiển riêng để tách logic chiến khỏi logic bản đồ thường.
 2. Mọi tông được tham gia, chưa đặt giới hạn cấp, số lần, phí hoặc khung giờ. Người chơi chỉ tham chiến khi thuộc tông và có ít nhất 1 HP chiến.
-3. Người chơi có thể chọn node xa. Server tìm đường hợp lệ; khi qua node trung lập thì xử lý và chiếm từng node theo thứ tự. Không cho hủy lệnh di chuyển đang chạy. Thời gian đi mỗi cạnh dùng tốc độ di chuyển hiện có của `AllMaps.Player` theo quãng đường trên map; server cần tính thời điểm đến nhất quán với hiển thị client. Chi phí năng lượng và tăng tuổi do di chuyển chiến tạm bằng 0.
+3. Người chơi có thể chọn node xa. Server tìm đường hợp lệ; khi qua node trung lập thì xử lý và chiếm từng node theo thứ tự. Không cho hủy lệnh di chuyển đang chạy. **Mỗi cạnh tốn cố định 5 giây** (`WarConfig.SecondsPerEdge`, dùng chung cho người và rối, server gửi cho client trong snapshot); client nội suy animation cho vừa thời điểm đến do server cấp. Không có ngoại lệ cưỡi kiếm: mọi đối tượng đi từng node. Chi phí năng lượng và tăng tuổi do di chuyển chiến bằng 0.
 4. Chỉ được đi qua node của tông mình hoặc node trung lập vừa chiếm. Được tiến vào node địch để đánh chiếm, nhưng không đi xuyên qua node địch tới node sau khi node đó còn do địch giữ. Server kiểm tra lại quyền đi qua ở từng bước. Thành chính địch là ngoại lệ: chỉ đi xuyên trên route, không dừng, không chiếm, không bị người/rối tại đó chặn hay ghép trận.
 5. Tại mỗi node đi qua, kiểm tra người chơi online và rối của tông khác. Nếu có đối thủ sẵn sàng thì ghép trận; nếu tất cả đối thủ đang đánh thì xếp chờ. Nếu còn đối thủ khác rảnh thì cho phép trận 1v1 song song tại cùng node.
 6. Người/rối vào node trước được ưu tiên ghép trước. Người thắng giữ HP còn lại. Sau trận, server kiểm tra lại đối thủ còn ở node và ghép tiếp; không tự nhảy tới node đích xa khi chưa giải quyết node hiện tại.
-7. Node thông thường không có đối thủ sau kiểm tra/chiến thắng được chiếm ngay, không cần giữ điểm trong một khoảng thời gian; có thể bị tái chiếm ngay. Thành chính `Clan.NodeId` không thể bị chiếm hoặc đổi chủ.
+7. Node thông thường không có đối thủ sau kiểm tra/chiến thắng được chiếm ngay, không cần giữ điểm trong một khoảng thời gian; có thể bị tái chiếm ngay. Mọi node không phải thành chính, **kể cả node loại `Stronghold` (S1..S29)**, đều chiếm được. Thành chính `Clan.NodeId` không thể bị chiếm hoặc đổi chủ.
 8. Quyền sở hữu node thông thường là duy nhất tại một thời điểm. Không có thưởng khi chiếm hoặc phạt khi mất node trong phiên bản này.
 9. Node có một hay nhiều trận đang diễn ra hiển thị icon giao tranh; khi trận cuối cùng kết thúc thì bỏ icon.
-10. Node thuộc tông nào được tô theo màu đặc trưng trích từ ảnh icon tông đó. Thành chính hiển thị icon của tông sở hữu cố định. Vị trí và HP của cả phe địch đều công khai.
+10. Node thuộc tông nào được tô theo màu đặc trưng trích từ ảnh icon tông đó. **Màu do client tính** từ icon đã tải: trung bình các pixel alpha > 0.5 có trọng số độ bão hoà, chuẩn hoá S ≥ 0.45 và V trong [0.55, 0.9]; không có ảnh, ảnh lỗi hoặc ảnh gần xám (S trung bình < 0.08) → palette 12 màu cố định theo `ClanId % 12`. Cùng ảnh cho cùng màu trên mọi client; server không lưu màu. Thành chính hiển thị icon của tông sở hữu cố định. Vị trí và HP của cả phe địch đều công khai. **Bản đồ chỉ hiển thị rối và người chơi đang online và đang trong Tông môn chiến** (mở scene chiến, đang đánh, hoặc vừa đánh xong đang quay lại scene); người chơi offline/rời scene bị ẩn nhưng server vẫn giữ vị trí và HP chiến của họ.
 
 ### 3.2. Kết quả giao tranh và vị trí
 
 1. Người thua do hết HP được đưa về thành chính `Clan.NodeId` của mình. Chỉ cần hồi tới ít nhất 1 HP chiến là có thể tham chiến lại; chưa có thời gian chờ riêng.
-2. Người bỏ chạy chịu kết quả thua và về node đồng minh gần nhất theo graph. Nếu node dự định về đã đổi chủ, server tìm lại node đồng minh gần nhất ở thời điểm áp kết quả. Nếu không còn node đồng minh hợp lệ, dùng thành chính của mình **[đề xuất, cần xác nhận]**. Người của tông được đứng/xuất phát và về tại thành chính của mình.
-3. Trận người–người dùng PvP thời gian thực hiện có (`TongMonChienRealTime`); trận người–rối dùng PvE. Một đối tượng chỉ tham gia một trận tại một thời điểm. Thứ tự ghép tại mỗi node là FIFO theo thời điểm đến, sau đó dùng thứ tự ổn định để xử lý trường hợp đến cùng thời điểm **[quy tắc phụ cần chốt]**.
-4. Người thắng giữ HP chiến còn lại khi đánh đối thủ kế tiếp. Nếu một bên chết trước, bên đó thua. Nếu hai bên cùng chết mà không xác định được bên thua trước, kết quả trận là hòa; đợi tất cả trận đang diễn ra tại node kết thúc rồi mới quyết định owner. Trận PvP hết giờ cũng tính hòa. Node thông thường trở thành trung lập khi kết quả cuối cùng tại node vẫn là hòa **[CẦN CHỐT cách tổng hợp nhiều kết quả trận]**.
-5. Logout hoặc hủy trận khi đang đánh được tính thua ngay cho bên logout; nếu không còn đối thủ cản, bên thắng có thể chiếm node thông thường. Khi logout giữa hành trình, người chơi trở về node an toàn ngay trước bước di chuyển đang thực hiện, không phải node bắt đầu cả lộ trình.
+2. Người bỏ chạy chịu kết quả thua và về node đồng minh gần nhất theo graph. Nếu node dự định về đã đổi chủ, server tìm lại node đồng minh gần nhất ở thời điểm áp kết quả. Nếu không còn node đồng minh hợp lệ ngoài thành chính thì về thành chính (thành chính luôn là node đồng minh). Người của tông được đứng/xuất phát và về tại thành chính của mình.
+3. Trận người–người dùng PvP thời gian thực hiện có (`TongMonChienRealTime`); trận người–rối dùng PvE. Một đối tượng chỉ tham gia một trận tại một thời điểm. Thứ tự ghép tại mỗi node là FIFO theo thời điểm đến; cùng thời điểm thì người chơi trước rối, sau đó ID tăng dần (CharId cho người, PuppetId cho rối). Rối không bao giờ là bên tấn công: rối chỉ phòng thủ, trận người–rối luôn do người chơi đến node có rối.
+4. Người thắng giữ HP chiến còn lại khi đánh đối thủ kế tiếp. Nếu một bên chết trước, bên đó thua. Nếu hai bên cùng chết mà không xác định được bên thua trước, kết quả trận là hòa; trận PvP hết giờ cũng tính hòa. **Hoà: cả hai bên giữ HP hiện tại và ở lại node** (bên có HP 0 vẫn bị đưa về thành chính như thua do hết HP). Owner chỉ được quyết định khi không còn trận nào tại node, theo luật **“ai còn đứng ở node”**: chỉ còn đúng một phe có người (đang ở scene, HP ≥ 1) hoặc rối tại node → phe đó chiếm/giữ node; còn ≥ 2 phe → tiếp tục ghép trận (FIFO); không còn ai → node thông thường chuyển trung lập.
+5. Logout hoặc hủy trận khi đang đánh được tính thua ngay cho bên logout (người thua vì logout bị xử như bỏ chạy: về node đồng minh gần nhất); nếu không còn đối thủ cản, bên thắng có thể chiếm node thông thường. Khi logout giữa hành trình, người chơi trở về node an toàn ngay trước bước di chuyển đang thực hiện, không phải node bắt đầu cả lộ trình.
 6. Tông bị giải tán được xử thua; server dừng hành trình và trận liên quan, chuyển toàn bộ node thường của tông về trung lập, xóa rối của tông và đưa người chơi về `AllMaps`. Đổi Leader không tự kết thúc tông chiến.
 7. Đổi owner, vị trí người/rối và kết quả trận phải được cập nhật theo thứ tự nhất quán; client không tự tính hoặc tự gán owner.
 
 ### 3.3. HP chiến của người chơi
 
 1. HP chiến tách biệt với HP ngoài chiến trường. Vào/ra chiến, đánh thường, dùng đan ở ngoài không được vô tình ghi đè HP chiến.
-2. HP chiến khởi tạo từ một giá trị riêng, không lấy trực tiếp từ `Stats.Hp` hoặc `Stats.SinhMenh`. Tách các hàm tính HP khởi tạo, HP tối đa và tốc độ hồi; hiện dùng giá trị tạm riêng để chạy thử, công thức chính thức sẽ triển khai sau **[CẦN CHỐT giá trị tạm và công thức]**. HP có thể hồi khi người chơi offline, dựa trên thời gian server.
-3. Chỉ có hai cách hồi HP chiến: hồi theo thời gian thực và dùng đan ngoài trận. Cho phép dùng mọi loại đan ngoài trận theo luật dùng đan hiện có; đan không phải loại hồi HP không được tự tăng HP chiến.
+2. HP chiến khởi tạo từ một giá trị riêng, không lấy trực tiếp từ `Stats.Hp` hoặc `Stats.SinhMenh`. Tách các hàm `GetInitialHp`, `GetMaxHp`, `GetRegenPerMinute` trong `WarConfig`. **[TẠM]** Người và rối: HP khởi tạo = HP tối đa = 1000, hồi 10 HP/phút (1%/phút, đầy từ 0 sau 100 phút), cùng nhịp. HP hồi cả khi offline, tính lười theo thời gian server (`LastHpRecoveryAt`) mỗi lần đọc/ghi.
+3. Chỉ có hai cách hồi HP chiến: hồi theo thời gian thực và dùng đan ngoài trận. Đan `EDanBuffType.Hp` cộng **giá trị đan × số lượng** vào HP chiến (clamp max), `HoiFullHp` hồi đầy HP chiến; hai loại này **chỉ tác động HP chiến, không đổi `Stats.Hp`**. Đan loại khác dùng trong scene chiến chạy đúng luật `UseDan` hiện có và không tăng HP chiến.
 4. Server giữ HP chiến hiện tại, HP tối đa và mốc thời gian hồi; kiểm tra tồn kho và luật dùng đan hiện có, trừ đan và cập nhật HP trong cùng giao dịch.
 5. Trong chiến đấu, HP chiến được đưa vào snapshot trận và cập nhật từ kết quả hợp lệ. Không dùng trực tiếp `CharacterData.Stats.Hp` của chế độ khác.
 
 ### 3.4. Con rối
 
 1. Con rối thuộc một tông; có vị trí/hành trình trên bản đồ chiến, HP chiến riêng và trạng thái sẵn sàng/di chuyển/đang đánh/hồi phục.
-2. Số rối theo cảnh giới Luyện Khí, Trúc Cơ, Kim Đan, Nguyên Anh, Hóa Thần và level/HP rối được tính trong các hàm cấu hình riêng để chủ dự án triển khai sau. Chưa chốt bảng số lượng hoặc công thức; hàm phải có giao diện rõ, có giá trị tạm để tính năng chạy, và không phát sinh số rối bất định qua restart.
+2. Số rối theo cảnh giới Luyện Khí, Trúc Cơ, Kim Đan, Nguyên Anh, Hóa Thần và level/HP rối được tính trong các hàm cấu hình riêng để chủ dự án triển khai sau. **[TẠM]** Mỗi cấp tông được 1 rối Luyện Khí, tối đa 5 rối; nâng cấp tăng level rối 1 bậc, trần theo cấp tông; tạo/nâng cấp miễn phí (`GetCreateCost`/`GetUpgradeCost` trả 0). Rối được sinh là một `CharacterData` ảo từ `character-template.json` theo cảnh giới rối. Số rối chỉ tăng qua lệnh tạo của Leader nên không phát sinh qua restart.
 3. Rối có Thọ nguyên vô tận; tạm chỉ trang bị `Cửu U Thứ`, chưa thêm kỹ năng, công pháp hoặc trang bị khác.
 4. HP nền của rối phụ thuộc level rối và level tông, có thành phần ngẫu nhiên. Kết quả random phải lưu bền sau khi sinh; công thức chính thức do chủ dự án bổ sung sau.
-5. HP rối hồi theo thời gian thực hoặc được cho dùng đan từ túi cá nhân của Leader. Rối chỉ được nhận lệnh điều đi tiếp khi HP đạt 100%; rối dưới 100% vẫn đứng tại node làm phòng thủ.
-6. Chỉ Leader được tạo/nâng cấp/điều rối và dùng đan cho rối. Rối được điều tới node của tông mình, đi từng node theo cùng nguyên tắc thời gian với người chơi; server kiểm quyền và kiểm đường mỗi bước.
-7. Một rối không thể có hai hành trình hoặc hai trận đồng thời. Khi tông đổi chủ node giữa lúc rối đang đi, server phải tính lại tính hợp lệ và xử lý theo quy tắc **[CẦN CHỐT]**.
+5. HP rối hồi theo thời gian thực hoặc được cho dùng đan từ túi cá nhân của Leader (chỉ đan `Hp`/`HoiFullHp`). Rối chỉ được nhận lệnh điều đi tiếp khi HP đạt 100%; rối dưới 100% vẫn đứng tại node làm phòng thủ. Rối thua (HP 0) được đưa về thành chính của tông.
+6. Chỉ Leader được tạo/nâng cấp/điều rối và dùng đan cho rối. **Rối chỉ được đi qua và dừng ở node tông mình đang sở hữu (kể cả thành chính), không chiếm node, không tự tấn công**; route chỉ đi qua node của tông. Rối đi từng node 5 giây/cạnh; server kiểm quyền và kiểm đường mỗi bước.
+7. Một rối không thể có hai hành trình hoặc hai trận đồng thời. Nếu node kế tiếp trên route không còn thuộc tông khi rối chuẩn bị đến, rối dừng tại node hiện tại (node đã đến gần nhất). Nếu chính node rối đang đứng bị mất (chỉ xảy ra khi rối đã thua) thì rối về thành chính.
 
 ## 4. Trách nhiệm client
 
@@ -90,37 +90,41 @@ Tận dụng graph node, hiển thị map, prefab nhân vật và giao diện co
 | Bản đồ chiến | Quản lý graph, quyền sở hữu node, tổng đàn, màu tông, trạng thái giao tranh; có khóa/giao dịch theo node để tránh hai phe cùng chiếm |
 | Di chuyển | Giữ hành trình và thời điểm đến từng cạnh theo quãng đường/tốc độ `AllMaps.Player`; cùng một nguồn cấu hình tốc độ cho server và client, tránh lệch thời điểm; chi phí năng lượng/tuổi bằng 0; kiểm tra owner, đối thủ và rối sau mỗi bước; không nhận lệnh hủy/đổi đường; dừng nếu bước tiếp theo không còn hợp lệ |
 | Ghép trận | Cấp `BattleId`, giữ trạng thái tham chiến cho mỗi đối tượng, hàng đợi FIFO tại node; ghép 1v1, cho phép nhiều trận song song nếu còn đối thủ rảnh; không ghép trùng một người/rối |
-| Kết quả trận | Xác thực trận, phía thắng/thua, HP còn lại và nguyên nhân kết thúc; thay đổi vị trí, HP, hàng đợi và owner theo một luồng nhất quán. PvP hiện tại tin dữ liệu kết quả client nên cần gia cố trước khi kết quả ảnh hưởng đất chiếm |
+| Kết quả trận | Xác thực trận, phía thắng/thua, HP còn lại và nguyên nhân kết thúc; thay đổi vị trí, HP, hàng đợi và owner theo một luồng nhất quán. **PvP: server chờ báo cáo của cả hai client (timeout 30 giây). Khớp → áp dụng; mâu thuẫn → hoà; chỉ một bên báo vì bên kia mất kết nối/logout → bên mất kết nối thua. HP giữ lại = min(HP báo, HP trước trận).** PvE với rối: client người chơi báo, HP người = min(HP báo, HP trước trận), HP rối còn lại do client báo được clamp `[0, HP trước trận]` |
 | HP chiến | Lưu riêng HP/mốc hồi cho người và rối, clamp vào `[0, max]`, ghi nhận tiêu thụ đan có giao dịch, tính hồi theo thời gian server kể cả lúc người chơi offline; hàm khởi tạo/tối đa/hồi dùng giá trị tạm riêng, công thức chính thức bổ sung sau |
 | Rối | Đặt hàm riêng cho số lượng theo cấp tông/cảnh giới và công thức level/HP, sinh/lưu chỉ số random một lần, chỉ Leader ra lệnh và dùng đan cá nhân; xóa rối khi tông giải tán, kiểm lại quyền khi đổi Leader |
 | Phát sự kiện | Snapshot vào scene và delta về di chuyển, owner, trận, HP, rối; công khai vị trí và HP của cả phe địch cho mọi người tham chiến |
 | Vận hành | Khôi phục hành trình/trận/hồi HP sau restart, dọn trạng thái trận treo, log theo `BattleId/NodeId/CharId/PuppetId`, không để restart tạo thêm rối; chiến luôn mở, không có tác vụ kết mùa/reset lãnh thổ |
 
-### Mô hình dữ liệu đề xuất
+### Mô hình dữ liệu (đã triển khai)
 
 Không dùng `Progression.IdCurrentNode` hoặc `CharacterData.Stats.Hp` của thế giới thường làm trạng thái chiến. Bổ sung các bản ghi hoặc cấu trúc tương đương:
 
-- `WarNode`: `NodeId`, `OwnerClanId?`, `IsStronghold`, version; thành chính gắn cố định với `Clan.NodeId`, không cho đổi owner, node thông thường chỉ có tối đa một owner.
+- `ClanNode` (bảng sẵn có, mở rộng): `NodeId`, `ClanId?` (null = trung lập), `Version`, `UpdatedAt`; thành chính không lưu ở đây mà luôn suy ra từ `Clan.NodeId`. `Clan.Puppets`/`Clan.ClanNodes` đã bỏ khỏi model `Clan` (cả client) để không serialize kèm tông.
 - `WarParticipant`: `CharId`, `ClanId`, `NodeId`, `BattleHp`, `BattleHpMax`, `LastHpRecoveryAt`, `State`, `Route`, `NextArrivalAt`, `LastSafeNodeId`.
-- `WarPuppet`: ID riêng, `ClanId`, cảnh giới/level, chỉ số đã sinh, `NodeId`, HP chiến và mốc hồi, `State`, `Route`, `NextArrivalAt`; liên kết nhân vật ảo nếu tiếp tục dùng `Puppet.CharData`.
+- `Puppet` (thay mô hình cũ `Puppet.CharData`): `Id`, `ClanId`, `Level` (cảnh giới suy ra từ level), `RandomSeed` sinh một lần, `NodeId`, HP chiến và mốc hồi, `State`, `Route`, `NextArrivalAt`. Không tạo `CharacterData` cho rối: khi ghép trận, server dựng snapshot từ nhân vật mẫu “Rối” (`TcpServer.Scarecrow`), đặt level/HP rối, thọ nguyên vô tận và chỉ trang bị `Cửu U Thứ`. Ngoại hình rối (`Gender`, skin, màu) do server random một lần khi tạo từ bộ skin tạo nhân vật và lưu bền (`Puppet.Gender`, `Puppet.AppearanceJson`), dùng cho cả marker trên bản đồ lẫn màn combat.
 - `WarBattle`: `BattleId`, `NodeId`, hai bên tham chiến, trạng thái, thời điểm, kết quả, nguyên nhân kết thúc; phục vụ chống báo kết quả lặp.
 - `WarConfig`: các hàm tách riêng cho số rối theo cấp tông/cảnh giới, level/HP rối; cấu hình thời gian đi, chi phí (nếu có), hồi HP và quy tắc trở về node; server phát phần hiển thị cần thiết cho client.
 
 Các tên trên là gợi ý triển khai, không bắt buộc đặt tên y hệt. Có thể mở rộng `ClanNode` hiện có để lưu owner bền vững; không cần `WarSession` theo mùa. Không tạo bản ghi ownership thứ hai độc lập cho cùng node.
 
-### Hợp đồng client–server đề xuất
+### Hợp đồng client–server (đã triển khai)
 
-| Lệnh/sự kiện | Nội dung tối thiểu |
-| --- | --- |
-| `EnterWar` / `ExitWar` | Xác thực quyền, đổi state, trả snapshot và vị trí hợp lệ |
-| `GetWarSnapshot` | Version, node owner/màu/icon, toàn bộ vị trí và HP người/rối phe địch, trận đang diễn ra, HP và hành trình của mình |
-| `MoveWarCharacter` | Node đích; server trả route đã duyệt, sự kiện đến/chiếm từng node, lý do từ chối/dừng; không có lệnh hủy |
-| `DeployWarPuppet` | ID rối, node đích thuộc tông; server kiểm quyền Leader, HP 100%, route và thời gian; không có lệnh hủy |
-| `UseWarHpPill` | Đối tượng nhận, đan và số lượng; trả HP mới, tồn kho mới, mốc hồi |
-| `WarBattleMatched` / `WarBattleChanged` / `WarBattleEnded` | BattleId, node, loại đối thủ, snapshot chiến, kết quả và vị trí sau trận |
-| `WarNodeChanged` / `WarPresenceChanged` | Delta có version; owner, tình trạng giao tranh, người/rối tới/rời node |
+| Tag (giá trị) | Hướng | Nội dung |
+| --- | --- | --- |
+| `ChangeScene("TongMonChien")` | C→S | Server kiểm tra thành viên tông có thành (`NodeId > 0`) rồi chuyển state; về `AllMaps` bằng `ChangeScene("AllMaps")` |
+| `WarGetSnapshot` 3901 / `WarSnapshot` 3902 | C↔S | Version, `SecondsPerEdge`, giờ server, tông (tên/icon/thành), node có chủ hoặc đang giao tranh, toàn bộ người/rối (vị trí, HP, nhịp hồi, hành trình), quyền Leader, giới hạn rối |
+| `WarMove` 3903 / `WarMoveResult` 3904 | C↔S | Node đích → route đã duyệt hoặc lý do từ chối; không có lệnh huỷ |
+| `WarDeployPuppet` 3905 / `WarDeployPuppetResult` 3906 | C↔S | PuppetId + node đích (chỉ node của tông) |
+| `WarUseHpPill` 3907 / `WarUseHpPillResult` 3908 | C↔S | PuppetId (0 = bản thân), DanId, Count → HP mới, tồn kho còn lại |
+| `WarCreatePuppet` 3909 / 3910, `WarUpgradePuppet` 3911 / 3912 | C↔S | Leader tạo/nâng rối → `WarPuppetResult` |
+| `WarDelta` 3913 | S→C | Version tăng đúng 1: tông, node (owner, đang giao tranh), đối tượng đổi, đối tượng bị xoá. Nhảy version → client tải lại snapshot |
+| `WarBattleMatched` 3914 | S→C | BattleId, node, PvP/PvE, snapshot chiến của mình và đối thủ (HP/SinhMenh = HP chiến) |
+| `WarReadyCombat` 3915, `Sync*` | C→S | Vào màn combat; PvP chuyển tiếp Sync* qua server như PvP luận bàn |
+| `WarBattleReport` 3916 / `WarBattleEnded` 3917 | C↔S | Kết quả client báo (+ HP còn lại của rối); server trả kết quả đã xác thực, HP và node sau trận |
+| `WarKicked` 3918 | S→C | Tông giải tán/rời tông: client rời scene chiến |
 
-Tên message chỉ là đề xuất. Các kiểu truyền qua mạng cần thống nhất giữa hai assembly, version schema và kiểm tra kích thước frame; dùng `MemoryPack` hoặc serializer hiện có nhất quán cho cả tính size và ghi payload.
+Kiểu dữ liệu nằm ở `MTS-Server/backend/MTS/Network/Models/TongMonChienMessages.cs` và bản sao y hệt thứ tự field ở `Assets/Scripts/Network/Models/TongMonChien/TongMonChienMessages.cs` (MemoryPack).
 
 ## 6. Luồng trạng thái cần kiểm thử
 
@@ -134,14 +138,28 @@ Tên message chỉ là đề xuất. Các kiểu truyền qua mạng cần thố
 8. Logout giữa trận → bên logout thua ngay, bên còn lại có thể chiếm nếu hết đối thủ; logout giữa đường → trở về node an toàn ngay trước bước đang đi; tông giải tán → bên đó thua, node thường chuyển trung lập, rối bị xóa, người chơi rời chiến về `AllMaps`.
 9. Reconnect, server restart, hai phe đến cùng node, node đổi chủ lúc đang di chuyển, hai trận kết thúc sát nhau: không nhân đôi rối/trận, không có hai owner và không mất HP/đan. Không có kết mùa, reset hoặc thưởng/phạt chiếm node.
 
-## 7. Các quyết định còn cần chốt
+## 7. Các quyết định đã chốt (29/09/2026)
 
-| Ưu tiên | Câu hỏi | Tác động |
-| --- | --- | --- |
-| Bắt buộc | Tốc độ `AllMaps.Player` là tốc độ cơ sở chung cho người và rối trong chiến; có dùng ngoại lệ cưỡi kiếm (hiện bỏ qua node giữa trên client) hay bắt buộc mọi đối tượng đi từng node? | Lịch trình server và hiển thị client |
-| Bắt buộc | Giá trị tạm riêng của HP khởi tạo/tối đa/tốc độ hồi là bao nhiêu cho người và rối? Công thức chính thức sẽ bổ sung sau; rối dùng cùng nhịp hồi hay nhịp khác? | Lưu HP, tính hồi offline và kiểm thử định lượng |
-| Bắt buộc | Khi tất cả trận tại node đã kết thúc, nếu có trận hòa lẫn trận thắng/thua thì tổng hợp kết quả và quyết định owner thế nào? Hết giờ hòa có giữ HP hiện tại hay xử lý như bỏ chạy? | Quy tắc hòa, concurrency và chống race condition |
-| Cần chốt trước UI | Màu trích từ ảnh tông được tính/lưu khi tạo hoặc đổi icon theo thuật toán nào; ảnh quá nhạt/trong suốt xử lý ra sao? | Đồng nhất màu giữa các client và độ tương phản |
-| Có thể để cấu hình | Nếu không còn node đồng minh nào ngoài thành chính sau khi bỏ chạy, có dùng thành chính làm điểm về không? Hai đối tượng đến cùng thời điểm thì tie-break FIFO bằng ID tăng dần được không? | Quy tắc biên và kiểm thử ổn định |
+| Chủ đề | Quyết định |
+| --- | --- |
+| Thời gian di chuyển | Cố định 5 giây/cạnh cho người và rối (`WarConfig.SecondsPerEdge`); không có ngoại lệ cưỡi kiếm; server gửi giá trị cho client |
+| HP chiến tạm | Người và rối: init = max = 1000, hồi 10 HP/phút, cùng nhịp; 3 hàm riêng trong `WarConfig` |
+| Tổng hợp kết quả tại node | “Ai còn đứng ở node” sau khi trận cuối kết thúc; hoà → hai bên giữ HP và ở lại; ≥ 2 phe → ghép tiếp; không còn ai → trung lập |
+| Rối | Chỉ phòng thủ, không tự đánh, chỉ đi qua/dừng ở node của tông, không chiếm node; không có trận rối–rối |
+| Tạo rối tạm | `CharacterData` ảo từ template, trang bị `Cửu U Thứ`; 1 rối/cấp tông, tối đa 5; miễn phí |
+| Xác thực PvP | Hai client phải báo khớp (timeout 30 giây); mâu thuẫn → hoà; bên mất kết nối thua; HP giữ = min(HP báo, HP trước trận) |
+| Màu tông | Client tính từ icon, fallback palette 12 màu theo `ClanId` |
+| Quy tắc biên | Bỏ chạy mà không còn node đồng minh → về thành chính; đến cùng lúc → người trước rối, rồi ID tăng dần |
+| Offline | Giữ vị trí chiến, không chặn; khi vào lại mà node đang đứng không thuộc tông → về node đồng minh gần nhất |
+| Đan HP | `Hp`/`HoiFullHp` chỉ tác động HP chiến; đan khác theo `UseDan` hiện có; rối chỉ nhận đan HP |
+| Node hợp lệ | Mọi node kể cả `Stronghold` đều chiếm được, trừ thành chính các tông; tông có `NodeId ≤ 0` không tham chiến |
+| HP 0 khi vào scene | Vẫn được vào scene để xem và dùng đan; không được di chuyển, không tính là đối thủ cho tới khi ≥ 1 HP |
+| Thời hạn trận | Không vào màn combat sau 30 giây → bên chưa vào thua; PvP chỉ một bên báo sau 30 giây → bên kia thua; trận quá 15 phút → hoà |
+| Sau trận | Người thắng/hoà được tính là còn đứng ở node trong 90 giây chờ quay lại scene; chỉ bị ghép trận mới khi đã quay lại scene |
+| Ghép trận | Chỉ ghép người chơi đã tải xong scene (đã xin snapshot); rối luôn sẵn sàng phòng thủ |
 
-Số rối và công thức level/HP rối là phần chủ dự án chủ động triển khai sau: để sẵn các hàm cấu hình có giá trị tạm xác định, không khóa bảng chính thức trong tài liệu này. Khi các quyết định bắt buộc ở trên được trả lời, thay các dấu **[CẦN CHỐT]** bằng luật cụ thể rồi mới khóa schema/message và tiêu chí nghiệm thu định lượng.
+Các công thức chính thức (HP, số rối, level rối) và chi phí tạo/nâng cấp rối do chủ dự án bổ sung sau trong `WarConfig`, không cần đổi schema/message.
+
+## 8. Ghi chú triển khai
+
+Xem `Docs/TongMonChien-Implementation.md` để biết danh sách file đã thêm/sửa ở client và server, các bước build, tạo migration và dựng scene trong Unity.

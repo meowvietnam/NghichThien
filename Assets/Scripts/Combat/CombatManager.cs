@@ -376,6 +376,14 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             SuccessResultCombatBase(new(), gameManager.currentECombatResult);
         }
+        else if (gameManager.currentETypeCombat == ETypeCombat.TongMonChienPuppet)
+        {
+            // Trận Tông môn chiến với rối: gửi thêm HP còn lại của rối (char2).
+            Observer.Notify(EventList.Network.RESULT_COMBAT_TONG_MON_CHIEN, this, gameManager.currentETypeCombat,
+                char1.characterStatsTemp.hp.Value, char1.characterStatsBase.thanThuc.Value,
+                char1.characterStatsBase.thoNguyen.Value, allThanThongIds, char2.characterStatsBase.level.Value,
+                gameManager.currentECombatResult, char2.characterStatsTemp.hp.Value);
+        }
         else if (IsRealTimeCombat)
         {
             Observer.Notify(EventList.Network.RESULT_COMBAT_REALTIME, this, gameManager.currentETypeCombat,
@@ -713,7 +721,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             // nếu enemy 
             if (gameManager.currentETypeCombat == ETypeCombat.AllMaps ||
                 gameManager.currentETypeCombat == ETypeCombat.LuanBan ||
-                gameManager.currentETypeCombat == ETypeCombat.DauTruong)
+                gameManager.currentETypeCombat == ETypeCombat.DauTruong ||
+                gameManager.currentETypeCombat == ETypeCombat.TongMonChienPuppet)
             {
                 LinhKhiBaoLoan(oldCurrentTurn);
             }
@@ -1488,6 +1497,12 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             Pool.Get<EventRewardPanel>().InitShowCombatReward(new(), "Ngươi thiêu đốt tinh huyết để bỏ chạy!",
                 ETypeResultCombat.LoseByRun);
+        }
+        else if (resultCombaType == ETypeResultCombat.LoseByTime)
+        {
+            // Tông môn chiến: trận hoà.
+            Pool.Get<EventRewardPanel>().InitShowCombatReward(new(), "Bất phân thắng bại!",
+                ETypeResultCombat.LoseByTime);
         }
 
         EventList.Combat.RemoveAllCombatObservers();
