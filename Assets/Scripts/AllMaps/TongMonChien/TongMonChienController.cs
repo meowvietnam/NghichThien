@@ -50,6 +50,7 @@ namespace AllMaps.TongMonChien
         private int deployingPuppetId;
         private PuppetDanTarget puppetDanTarget;
         private int myRewardPercent;
+        private int myRoleMemberCount = 1;
         private DateTime seasonEndAt;
         private int strongholdMoneyVip;
         private int nodeMoneyVip;
@@ -80,6 +81,8 @@ namespace AllMaps.TongMonChien
         public int NodeMoneyVip => nodeMoneyVip;
         /// <summary>% tổng tiên ngọc/ngày của tông mà bản thân nhận theo chức vụ.</summary>
         public int MyRewardPercent => myRewardPercent;
+        /// <summary>Số người cùng nhóm chức vụ; phần % của nhóm chia đều cho số người này.</summary>
+        public int MyRoleMemberCount => myRoleMemberCount;
 
         /// <summary>Kết thúc mùa hiện tại (UTC); đã qua thì lùi sang mùa sau (14 ngày).</summary>
         public DateTime SeasonEndAt
@@ -134,6 +137,7 @@ namespace AllMaps.TongMonChien
 
             hud = Instantiate(hudPrefab);
             hud.Bind(this);
+            CloseClanPopups();
             HideNpcPanel();
             headPanel = Pool.Get<UIHeadPanel>();
             if (headPanel != null) headPanel.SetHpOverride(GetHeadHp);
@@ -241,6 +245,19 @@ namespace AllMaps.TongMonChien
             puppetDanTarget = null;
         }
 
+        /// <summary>
+        /// Vào được scene chiến thì đóng mọi popup tông môn đang mở (bảng tông môn nằm trong UIManager nên
+        /// không tự mất khi đổi scene). Chỉ đóng khi đã vào scene, server từ chối thì popup vẫn giữ nguyên.
+        /// </summary>
+        private static void CloseClanPopups()
+        {
+            var popups = FindObjectsByType<global::Clan.ClanPopup>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+            foreach (var popup in popups)
+            {
+                if (popup != null && popup.gameObject.activeInHierarchy) popup.Hide(0f);
+            }
+        }
+
         /// <summary>Ẩn bảng NPC góc trái (UINPCJiaoHu) trong scene chiến; hiện lại khi rời scene.</summary>
         private void HideNpcPanel()
         {
@@ -295,6 +312,7 @@ namespace AllMaps.TongMonChien
             nodeMoneyVip = snapshot.NodeMoneyVip;
             nextSettlementAt = snapshot.NextSettlementAt;
             myRewardPercent = snapshot.MyRewardPercent;
+            myRoleMemberCount = Math.Max(1, snapshot.MyRoleMemberCount);
             seasonEndAt = snapshot.SeasonEndAt;
 
             serverOffset = snapshot.ServerTime - DateTime.UtcNow;
@@ -505,7 +523,8 @@ namespace AllMaps.TongMonChien
         {
             foreach (var c in clans.Values)
             {
-                if (c.MainNodeId == nodeId) return c.ClanId;
+                // MainNodeId = 0: tông không còn thành chính (đã giải tán).
+                if (c.MainNodeId > 0 && c.MainNodeId == nodeId) return c.ClanId;
             }
 
             return nodes.TryGetValue(nodeId, out var n) ? n.OwnerClanId : null;

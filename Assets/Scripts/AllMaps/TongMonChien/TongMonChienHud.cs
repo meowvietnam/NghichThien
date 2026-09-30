@@ -185,7 +185,7 @@ namespace AllMaps.TongMonChien
 
         /// <summary>
         /// Thưởng hằng ngày của tông: số điểm/thành đã chiếm, tiên ngọc/ngày tương ứng, tổng của tông và số thực nhận
-        /// của bản thân theo % chức vụ (Tộc chủ 50%, Phó tộc chủ/Trưởng lão 20%, Đệ tử 10%).
+        /// của bản thân: phần % của nhóm chức vụ (Tông chủ 50%, Phó tông chủ 20%, Trưởng lão 10%, Thành viên 20%) chia đều cho nhóm.
         /// </summary>
         private void RefreshDaily(DateTime now)
         {
@@ -201,8 +201,11 @@ namespace AllMaps.TongMonChien
             SetText(strongholdText, $"Số thành đã chiếm: {strongholds}");
             SetText(strongholdMoneyText, $"{strongholdMoney:N0} /ngày");
             SetText(totalMoneyText, $"{total:N0} /ngày");
-            SetText(myRewardLabel, $"Thực nhận ({percent}%)");
-            SetText(myMoneyText, $"{total * percent / 100:N0} /ngày");
+            // Phần % của nhóm chức vụ chia đều cho cả nhóm (ước tính theo số người trong nhóm; người không vào
+            // scene trong ngày không được chia nên số thực nhận có thể cao hơn).
+            var groupSize = Math.Max(1, controller.MyRoleMemberCount);
+            SetText(myRewardLabel, groupSize > 1 ? $"Thực nhận ({percent}% ÷ {groupSize})" : $"Thực nhận ({percent}%)");
+            SetText(myMoneyText, $"{total * percent / 100 / groupSize:N0} /ngày");
             var settleAt = controller.NextSettlementAt;
             SetText(settlementText, settleAt == default ? string.Empty : $"Phát thưởng qua thư sau {DurationText(settleAt - now)}");
             var seasonEnd = controller.SeasonEndAt;

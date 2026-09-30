@@ -352,5 +352,8 @@ namespace Network
         WarBattleEnded = 3917,
         WarKicked = 3918,
         WarNotice = 3919,
+        GetDongPhuAchievements = 4001,
+        ClaimDongPhuAchievement = 4002,
+        DongPhuAchievementNotify = 4003,
     }
 }

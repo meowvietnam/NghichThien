@@ -397,6 +397,18 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
                     notify.Show(result.Message);
                 }
 
+                // Đang ở màn Combat mà không quay lại được scene trước (vd. vừa bị kick khỏi tông nên không vào lại
+                // Tông môn chiến được): về AllMaps thay vì kẹt ở màn Combat.
+                if (SceneManager.GetActiveScene().name.Equals("Combat", StringComparison.InvariantCultureIgnoreCase) &&
+                    !string.Equals(result.SceneName, "AllMaps", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    combatReturnScene = null;
+                    listSceneLoaded.Clear();
+                    Client.Instance.CoreModule.GetHandler<Network.Core.SceneManager>()
+                        .ChangeScene("AllMaps", OnChangeSceneResult);
+                    return;
+                }
+
                 Pool.Get<UIManager>().loadScene.gameObject.SetActive(false);
                 Debug.Log(result.Message);
             }

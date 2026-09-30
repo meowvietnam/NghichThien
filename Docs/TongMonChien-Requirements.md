@@ -82,7 +82,7 @@ Tận dụng graph node, hiển thị map, prefab nhân vật và giao diện co
 ### 3.6. Thưởng tiên ngọc hằng ngày và mùa 2 tuần (30/09/2026 — thay thưởng tuần)
 
 1. Tổng tiên ngọc/ngày của tông = số điểm (node thường) đã chiếm × 100 + số thành (Stronghold, không gồm thành chính) đã chiếm × 500.
-2. Mỗi thành viên nhận theo % chức vụ, **tính riêng từng người** (không chia theo nhóm): Tộc chủ 50%, Phó tộc chủ 20%, Trưởng lão 20%, Đệ tử 10%.
+2. Mỗi nhóm chức vụ nhận một phần tổng, **chia đều cho các thành viên đủ điều kiện trong nhóm** (cập nhật 30/09/2026): Tông chủ 50%, Phó tông chủ 20%, Trưởng lão 10%, Thành viên 20% (tổng 100%). Nhóm không có ai đủ điều kiện thì phần đó không phát.
 3. Chốt 00:00 hằng ngày (UTC+7), chụp lãnh thổ lúc chốt, gửi qua thư. Điều kiện: còn trong tông lúc chốt và có mặt trong scene chiến trong ngày được chốt. Mỗi ngày chỉ chốt một lần (`WarSettlement`); lần chạy đầu sau khi triển khai chỉ đặt mốc.
 4. Sự kiện kéo dài 2 tuần, lặp liên tục (mốc gốc 00:00 thứ Hai 28/09/2026 giờ VN, `WarConfig.SeasonAnchor`). Hết mùa: chốt thưởng ngày cuối trước, sau đó mọi trận kết thúc hoà, node thường về trung lập, người và rối về thành chính với HP đầy; rối giữ level và độ bền.
 5. HUD hiển thị: Số điểm đã chiếm (x tiên ngọc/ngày), Số thành đã chiếm (x tiên ngọc/ngày), Tổng tiên ngọc/ngày, Thực nhận theo chức vụ (x tiên ngọc/ngày), thời gian tới lần phát thưởng và tới hết mùa.
@@ -165,7 +165,7 @@ Kiểu dữ liệu nằm ở `MTS-Server/backend/MTS/Network/Models/TongMonChien
 | Chủ đề | Quyết định |
 | --- | --- |
 | Thời gian di chuyển | Cố định 5 giây/cạnh cho người và rối (`WarConfig.SecondsPerEdge`); không có ngoại lệ cưỡi kiếm; server gửi giá trị cho client |
-| HP chiến tạm | Người và rối: init = max = 1000, hồi 10 HP/phút, cùng nhịp; 3 hàm riêng trong `WarConfig` |
+| HP chiến | Người chơi: HP tối đa = `CharacterData.Stats.SinhMenh` (đồng bộ khi vào scene, xin snapshot, vào trận); HP hiện tại lưu riêng (`WarParticipant.Hp`), lần đầu đầy, hồi 1% tối đa/phút. Rối: (level × 10)% HP tối đa của người tạo/nâng |
 | Tổng hợp kết quả tại node | “Ai còn đứng ở node” sau khi trận cuối kết thúc; hoà → hai bên giữ HP và ở lại; ≥ 2 phe → ghép tiếp; không còn ai → trung lập |
 | Rối | Chỉ phòng thủ, không tự đánh, chỉ đi qua/dừng ở node của tông, không chiếm node; không có trận rối–rối |
 | Tạo rối tạm | `CharacterData` ảo từ template, trang bị `Cửu U Thứ`; 1 rối/cấp tông, tối đa 5; miễn phí |
@@ -179,7 +179,7 @@ Kiểu dữ liệu nằm ở `MTS-Server/backend/MTS/Network/Models/TongMonChien
 | Thời hạn trận | Không vào màn combat sau 30 giây → bên chưa vào thua; PvP chỉ một bên báo sau 30 giây → bên kia thua; trận quá 15 phút → hoà |
 | Sau trận | Người thắng/hoà được tính là còn đứng ở node trong 90 giây chờ quay lại scene; chỉ bị ghép trận mới khi đã quay lại scene |
 | Ghép trận | Chỉ ghép người chơi đã tải xong scene (đã xin snapshot); rối luôn sẵn sàng phòng thủ |
-| Thưởng (30/09/2026, thay thưởng tuần) | Hằng ngày 0h: điểm 100/ngày, thành 500/ngày; mỗi người nhận % theo chức vụ (Tộc chủ 50, Phó/Trưởng lão 20, Đệ tử 10) qua thư; phải có mặt trong scene trong ngày |
+| Thưởng (30/09/2026, thay thưởng tuần) | Hằng ngày 0h: điểm 100/ngày, thành 500/ngày; mỗi nhóm chức vụ nhận % (Tông chủ 50, Phó tông chủ 20, Trưởng lão 10, Thành viên 20) chia đều trong nhóm, qua thư; phải có mặt trong scene trong ngày |
 | Mùa (30/09/2026) | 2 tuần lặp liên tục; hết mùa làm mới đất, mọi người/rối về thành, HP đầy, rối giữ level/độ bền |
 | Rối (30/09/2026) | Số rối = level tông; tạo 5.000 tiên ngọc, nâng 500 × level (điểm cống hiến ×2, trừ điểm trước bù tiên ngọc); HP = level×10% HP chiến người tạo/nâng; độ bền 5, nâng cấp hồi đầy |
 | Hiển thị (30/09/2026) | HP chiến lên UIHead (bỏ thanh HP trên HUD); ẩn bảng NPC góc trái trong scene chiến; đếm ngược tới node kế cho mọi đối tượng đang đi; nhân vật quay mặt theo hướng đi; hết trận quay lại scene chiến |
