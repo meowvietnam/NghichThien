@@ -49,6 +49,8 @@ namespace AllMaps.TongMonChien
         private int maxPuppetLevel;
         private int deployingPuppetId;
         private PuppetDanTarget puppetDanTarget;
+        private int myRewardPercent;
+        private DateTime seasonEndAt;
         private int strongholdMoneyVip;
         private int nodeMoneyVip;
         private DateTime nextSettlementAt;
@@ -76,16 +78,30 @@ namespace AllMaps.TongMonChien
         public int DeployingPuppetId => deployingPuppetId;
         public int StrongholdMoneyVip => strongholdMoneyVip;
         public int NodeMoneyVip => nodeMoneyVip;
+        /// <summary>% tổng tiên ngọc/ngày của tông mà bản thân nhận theo chức vụ.</summary>
+        public int MyRewardPercent => myRewardPercent;
+
+        /// <summary>Kết thúc mùa hiện tại (UTC); đã qua thì lùi sang mùa sau (14 ngày).</summary>
+        public DateTime SeasonEndAt
+        {
+            get
+            {
+                if (seasonEndAt == default) return default;
+                var now = ServerNow;
+                while (seasonEndAt <= now) seasonEndAt = seasonEndAt.AddDays(14);
+                return seasonEndAt;
+            }
+        }
         public WarClanView MyClan => GetClan(myClanId);
 
-        /// <summary>Mốc chốt thưởng tuần kế tiếp (UTC, giờ server); đã qua mốc thì tự lùi sang tuần sau.</summary>
+        /// <summary>Mốc chốt phát tiên ngọc hằng ngày kế tiếp (UTC, giờ server); đã qua thì lùi sang ngày sau.</summary>
         public DateTime NextSettlementAt
         {
             get
             {
                 if (nextSettlementAt == default) return default;
                 var now = ServerNow;
-                while (nextSettlementAt <= now) nextSettlementAt = nextSettlementAt.AddDays(7);
+                while (nextSettlementAt <= now) nextSettlementAt = nextSettlementAt.AddDays(1);
                 return nextSettlementAt;
             }
         }
@@ -182,7 +198,10 @@ namespace AllMaps.TongMonChien
             hud.Refresh();
         }
 
+        /// <summary>Hỏi giá tạo rối; server trả chi phí rồi <see cref="OnWarPuppetResult"/> hiện popup xác nhận.</summary>
         public void CreatePuppet() => state?.CreatePuppet();
+
+        /// <summary>Hỏi giá nâng rối; xác nhận xong mới trừ điểm cống hiến/tiên ngọc.</summary>
         public void UpgradePuppet(int puppetId) => state?.UpgradePuppet(puppetId);
 
         /// <summary>
@@ -275,6 +294,8 @@ namespace AllMaps.TongMonChien
             strongholdMoneyVip = snapshot.StrongholdMoneyVip;
             nodeMoneyVip = snapshot.NodeMoneyVip;
             nextSettlementAt = snapshot.NextSettlementAt;
+            myRewardPercent = snapshot.MyRewardPercent;
+            seasonEndAt = snapshot.SeasonEndAt;
 
             serverOffset = snapshot.ServerTime - DateTime.UtcNow;
             secondsPerEdge = snapshot.SecondsPerEdge > 0 ? snapshot.SecondsPerEdge : 5f;
@@ -358,7 +379,71 @@ namespace AllMaps.TongMonChien
 
         public void OnWarPuppetResult(WarPuppetResult result)
         {
-            hud.ShowMessage(result.Success ? "Thành công." : result.Message);
+            if (result.RequiresConfirmation)
+            {
+                ShowPuppetCostConfirmation(result);
+                return;
+            }
+
+            if (!result.Success)
+            {
+                hud.ShowMessage(result.Message);
+                return;
+            }
+
+            // Server đã trừ: đồng bộ tiên ngọc local (điểm cống hiến cập nhật qua ClanMemberPointsChanged).
+            var charData = Client.Instance?.CharacterData;
+            if (charData != null && result.MoneyVipCost > 0) charData.MoneyVip = result.NewMoneyVip;
+            var cost = CostText(result.ContribPointsCost, result.MoneyVipCost);
+            hud.ShowMessage(result.IsUpgrade
+                ? $"Rối #{result.PuppetId} đã lên {TongMonChienHud.LevelText(result.TargetLevel)}, HP và độ bền hồi đầy ({cost})."
+                : $"Đã tạo Rối #{result.PuppetId} ({cost}).");
+            hud.Refresh();
+        }
+
+        private static string CostText(long points, long moneyVip)
+        {
+            if (points > 0 && moneyVip > 0) return $"-{points:n0} cống hiến, -{moneyVip:n0} tiên ngọc";
+            if (points > 0) return $"-{points:n0} cống hiến";
+            return moneyVip > 0 ? $"-{moneyVip:n0} tiên ngọc" : "miễn phí";
+        }
+
+        /// <summary>
+        /// Popup xác nhận chi phí giống mở giới hạn luyện hồn: trừ điểm cống hiến trước, thiếu bù tiên ngọc
+        /// (1 tiên ngọc = 2 điểm). Xác nhận thì gửi lại đúng chi phí; server đổi giá thì hỏi lại.
+        /// </summary>
+        private void ShowPuppetCostConfirmation(WarPuppetResult quote)
+        {
+            var popup = Pool.Get<PopupConfirmAction>();
+            if (popup == null)
+            {
+                hud.ShowMessage("Không mở được bảng xác nhận chi phí.");
+                return;
+            }
+
+            var title = quote.IsUpgrade
+                ? $"Nâng <color=#FFD54F>Rối #{quote.PuppetId}</color> lên <color=#FFD54F>{TongMonChienHud.LevelText(quote.TargetLevel)}</color>.\n" +
+                  "Sau khi nâng: HP tính lại theo HP chiến của bạn, hồi đầy HP và độ bền."
+                : $"Tạo rối mới <color=#FFD54F>{TongMonChienHud.LevelText(quote.TargetLevel)}</color>.";
+            var content = title + "\n" +
+                          $"Cống hiến cá nhân: <b><color=#7CE07C>{quote.ContribPointsCost:n0}</color></b> điểm\n" +
+                          $"Tiên Ngọc cá nhân: <b><color=#6FC3FF>{quote.MoneyVipCost:n0}</color></b>" +
+                          (quote.MoneyVipCost > 0 ? "\n1 Tiên Ngọc bù 2 điểm thiếu, làm tròn lên." : string.Empty);
+            var points = quote.ContribPointsCost;
+            var moneyVip = quote.MoneyVipCost;
+            var isUpgrade = quote.IsUpgrade;
+            var puppetId = quote.PuppetId;
+            popup.ShowPopConfirmAction(content, () =>
+            {
+                if (this == null || state == null) return;
+                if (isUpgrade) state.UpgradePuppet(puppetId, points, moneyVip);
+                else state.CreatePuppet(points, moneyVip);
+            });
+        }
+
+        public void OnWarNotice(WarNotice notice)
+        {
+            if (!string.IsNullOrEmpty(notice?.Message)) hud.ShowMessage(notice.Message);
         }
 
         public void OnWarUseHpPillResult(WarUseHpPillResult result)
@@ -562,6 +647,8 @@ namespace AllMaps.TongMonChien
                 var isMe = unit.Kind == WarUnitKind.Player && unit.Id == myCharId;
                 marker = isMe && mapManager != null ? mapManager.MainPlayer : CreateUnitMarker(unit);
                 if (marker == null) return;
+                // Nhãn có thêm dòng đếm ngược khi di chuyển: không để khung tên cắt mất.
+                marker.AllowMultilineName();
                 unitMarkers[key] = marker;
             }
 
@@ -580,21 +667,35 @@ namespace AllMaps.TongMonChien
             var name = string.IsNullOrEmpty(unit.Name) ? (unit.Kind == WarUnitKind.Puppet ? "Rối" : "?") : unit.Name;
             var more = othersAtNode > 0 ? $"  (+{othersAtNode})" : string.Empty;
             var countdown = MoveCountdownText(unit, now);
-            var label = $"{name}{more}\n{unit.GetHp(now)}/{unit.HpMax}";
-            if (countdown != null) label += "\n" + countdown;
+            // Rich text: thời gian (vàng, trên cùng) → tên (màu tông, chữ lớn) → HP (màu theo % HP).
+            var label = string.Empty;
+            if (countdown != null) label += $"<size={TimeFontSize}><color={TimeColor}>{countdown}</color></size>\n";
+            label += $"{name}{more}\n";
+            var hp = unit.GetHp(now);
+            label += $"<size={HpFontSize}><color={HpColor(hp, unit.HpMax)}>HP {hp}/{unit.HpMax}</color></size>";
             marker.SetName(label, color);
         }
 
-        /// <summary>Đếm ngược tới node kế tiếp (và tới đích nếu còn nhiều chặng) của đối tượng đang đi.</summary>
+        private const int TimeFontSize = 28;
+        private const int HpFontSize = 28;
+        private const string TimeColor = "#FFE08A";
+
+        /// <summary>Xanh khi HP ≥ 60%, cam khi ≥ 30%, đỏ khi thấp hơn.</summary>
+        private static string HpColor(int hp, int hpMax)
+        {
+            var ratio = hpMax > 0 ? (float)hp / hpMax : 0f;
+            if (ratio >= 0.6f) return "#7CE07C";
+            return ratio >= 0.3f ? "#FFA84D" : "#FF5A4D";
+        }
+
+        /// <summary>Đếm ngược tới đích của đối tượng đang đi.</summary>
         private string MoveCountdownText(WarUnitView unit, DateTime now)
         {
             if (unit.State != WarUnitState.Moving || !unit.NextArrivalAt.HasValue || unit.Route == null ||
                 unit.Route.Length == 0) return null;
             var next = Mathf.Max(0f, (float)(unit.NextArrivalAt.Value - now).TotalSeconds);
-            var text = $"Tới node kế: {FormatSeconds(next)}";
-            if (unit.Route.Length > 1)
-                text += $" | Đích: {FormatSeconds(next + (unit.Route.Length - 1) * secondsPerEdge)}";
-            return text;
+            // Chỉ hiện thời gian tới đích (node cuối của lộ trình).
+            return $"Đích: {FormatSeconds(next + (unit.Route.Length - 1) * secondsPerEdge)}";
         }
 
         private static string FormatSeconds(float seconds) =>

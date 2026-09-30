@@ -38,6 +38,19 @@ namespace AllMaps
             nameText.color = color;
         }
 
+        /// <summary>
+        /// Cho nhãn tên hiện nhiều dòng (khung mặc định 300x90 chỉ vừa 2 dòng, dòng thứ 3 bị cắt).
+        /// Căn đáy để dòng thêm mọc lên trên, không đè xuống nhân vật.
+        /// </summary>
+        public void AllowMultilineName()
+        {
+            if (nameText == null) return;
+            nameText.verticalOverflow = VerticalWrapMode.Overflow;
+            nameText.horizontalOverflow = HorizontalWrapMode.Overflow;
+            nameText.alignment = TextAnchor.LowerCenter;
+            nameText.supportRichText = true;
+        }
+
         public void Init(Gender gender, bool isSwordRiding, Appearance appearance)
         {
             this.IsSwordRiding = isSwordRiding;

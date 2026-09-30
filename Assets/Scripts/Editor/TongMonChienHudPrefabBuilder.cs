@@ -113,33 +113,40 @@ public static class TongMonChienHudPrefabBuilder
         var hud = root.AddComponent<TongMonChienHud>();
 
         // Bảng thông tin bản thân (trên trái). HP chiến hiển thị trên UIHead.
-        var info = Panel("Info", root.transform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(20, -20), new Vector2(520, 350));
+        var info = Panel("Info", root.transform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(20, -20), new Vector2(520, 410));
         Draggable(info, "Info");
         Label("Title", info, "TÔNG MÔN CHIẾN", 30, new Vector2(15, -10), new Vector2(490, 40)).color = TitleColor;
         var stateText = Label("State", info, "", 20, new Vector2(15, -54), new Vector2(490, 48));
 
-        // Thưởng tuần: Thành Ấn / Địa Mạch + tiên ngọc ước tính.
-        var weekly = new GameObject("Weekly", typeof(RectTransform));
-        weekly.transform.SetParent(info, false);
-        SetRect((RectTransform)weekly.transform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, -104), new Vector2(520, 150));
-        Label("Header", weekly.transform, "Thưởng tuần (mỗi thành viên)", 22, new Vector2(15, 0), new Vector2(490, 28))
+        // Thưởng hằng ngày: điểm/thành đã chiếm, tổng của tông và số thực nhận theo chức vụ.
+        var daily = new GameObject("Daily", typeof(RectTransform));
+        daily.transform.SetParent(info, false);
+        SetRect((RectTransform)daily.transform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, -104), new Vector2(520, 210));
+        Label("Header", daily.transform, "Thưởng tiên ngọc hằng ngày", 22, new Vector2(15, 0), new Vector2(490, 28))
             .color = TitleColor;
-        var strongholdText = Label("ThanhAn", weekly.transform, "Thành Ấn: 0", 20, new Vector2(15, -32), new Vector2(270, 28));
-        var strongholdIcon = MoneyIcon("ThanhAnIcon", weekly.transform, new Vector2(300, -32));
-        var strongholdMoney = Label("ThanhAnMoney", weekly.transform, "≈ 0", 20, new Vector2(334, -32), new Vector2(170, 28));
-        var nodeText = Label("DiaMach", weekly.transform, "Địa Mạch: 0", 20, new Vector2(15, -62), new Vector2(270, 28));
-        var nodeIcon = MoneyIcon("DiaMachIcon", weekly.transform, new Vector2(300, -62));
-        var nodeMoney = Label("DiaMachMoney", weekly.transform, "≈ 0", 20, new Vector2(334, -62), new Vector2(170, 28));
-        Label("TongLabel", weekly.transform, "Tổng/tuần", 20, new Vector2(15, -92), new Vector2(270, 28)).color = TitleColor;
-        var totalIcon = MoneyIcon("TongIcon", weekly.transform, new Vector2(300, -92));
-        var totalMoney = Label("TongMoney", weekly.transform, "≈ 0", 20, new Vector2(334, -92), new Vector2(170, 28));
-        totalMoney.color = TitleColor;
-        var settlement = Label("ChotTuan", weekly.transform, "", 18, new Vector2(15, -122), new Vector2(490, 26));
-        settlement.color = new Color(TextColor.r, TextColor.g, TextColor.b, 0.75f);
+        var nodeText = Label("Diem", daily.transform, "Số điểm đã chiếm: 0", 20, new Vector2(15, -32), new Vector2(280, 28));
+        var nodeIcon = MoneyIcon("DiemIcon", daily.transform, new Vector2(300, -32));
+        var nodeMoney = Label("DiemMoney", daily.transform, "0 /ngày", 20, new Vector2(334, -32), new Vector2(170, 28));
+        var strongholdText = Label("Thanh", daily.transform, "Số thành đã chiếm: 0", 20, new Vector2(15, -62), new Vector2(280, 28));
+        var strongholdIcon = MoneyIcon("ThanhIcon", daily.transform, new Vector2(300, -62));
+        var strongholdMoney = Label("ThanhMoney", daily.transform, "0 /ngày", 20, new Vector2(334, -62), new Vector2(170, 28));
+        Label("TongLabel", daily.transform, "Tổng tiên ngọc", 20, new Vector2(15, -92), new Vector2(280, 28));
+        var totalIcon = MoneyIcon("TongIcon", daily.transform, new Vector2(300, -92));
+        var totalMoney = Label("TongMoney", daily.transform, "0 /ngày", 20, new Vector2(334, -92), new Vector2(170, 28));
+        var myLabel = Label("ThucNhanLabel", daily.transform, "Thực nhận (0%)", 20, new Vector2(15, -122), new Vector2(280, 28));
+        myLabel.color = TitleColor;
+        var myIcon = MoneyIcon("ThucNhanIcon", daily.transform, new Vector2(300, -122));
+        var myMoney = Label("ThucNhanMoney", daily.transform, "0 /ngày", 20, new Vector2(334, -122), new Vector2(170, 28));
+        myMoney.color = TitleColor;
+        var mutedColor = new Color(TextColor.r, TextColor.g, TextColor.b, 0.75f);
+        var settlement = Label("PhatThuong", daily.transform, "", 18, new Vector2(15, -154), new Vector2(490, 24));
+        settlement.color = mutedColor;
+        var season = Label("Mua", daily.transform, "", 18, new Vector2(15, -180), new Vector2(490, 24));
+        season.color = mutedColor;
 
-        var useDan = MakeButton("Btn_DungDan", info, "Dùng đan", new Vector2(15, -262), new Vector2(155, 48), true);
-        var puppets = MakeButton("Btn_Roi", info, "Rối", new Vector2(182, -262), new Vector2(155, 48));
-        var exit = MakeButton("Btn_Thoat", info, "Thoát", new Vector2(349, -262), new Vector2(155, 48));
+        var useDan = MakeButton("Btn_DungDan", info, "Dùng đan", new Vector2(15, -322), new Vector2(155, 48), true);
+        var puppets = MakeButton("Btn_Roi", info, "Rối", new Vector2(182, -322), new Vector2(155, 48));
+        var exit = MakeButton("Btn_Thoat", info, "Thoát", new Vector2(349, -322), new Vector2(155, 48));
         DragHint(info);
 
         // Dòng thông báo (giữa trên).
@@ -182,17 +189,21 @@ public static class TongMonChienHudPrefabBuilder
         so.FindProperty("messageText").objectReferenceValue = message;
         so.FindProperty("infoPanel").objectReferenceValue = info;
         so.FindProperty("stateText").objectReferenceValue = stateText;
-        so.FindProperty("strongholdText").objectReferenceValue = strongholdText;
-        so.FindProperty("strongholdMoneyText").objectReferenceValue = strongholdMoney;
         so.FindProperty("nodeText").objectReferenceValue = nodeText;
         so.FindProperty("nodeMoneyText").objectReferenceValue = nodeMoney;
+        so.FindProperty("strongholdText").objectReferenceValue = strongholdText;
+        so.FindProperty("strongholdMoneyText").objectReferenceValue = strongholdMoney;
         so.FindProperty("totalMoneyText").objectReferenceValue = totalMoney;
+        so.FindProperty("myRewardLabel").objectReferenceValue = myLabel;
+        so.FindProperty("myMoneyText").objectReferenceValue = myMoney;
         so.FindProperty("settlementText").objectReferenceValue = settlement;
+        so.FindProperty("seasonText").objectReferenceValue = season;
         var icons = so.FindProperty("moneyVipIcons");
-        icons.arraySize = 3;
-        icons.GetArrayElementAtIndex(0).objectReferenceValue = strongholdIcon;
-        icons.GetArrayElementAtIndex(1).objectReferenceValue = nodeIcon;
+        icons.arraySize = 4;
+        icons.GetArrayElementAtIndex(0).objectReferenceValue = nodeIcon;
+        icons.GetArrayElementAtIndex(1).objectReferenceValue = strongholdIcon;
         icons.GetArrayElementAtIndex(2).objectReferenceValue = totalIcon;
+        icons.GetArrayElementAtIndex(3).objectReferenceValue = myIcon;
         so.FindProperty("useDanButton").objectReferenceValue = useDan;
         so.FindProperty("puppetsButton").objectReferenceValue = puppets;
         so.FindProperty("exitButton").objectReferenceValue = exit;
@@ -220,7 +231,7 @@ public static class TongMonChienHudPrefabBuilder
         var row = root.AddComponent<TongMonChienPuppetRow>();
         var name = Label("Name", root.transform, "Rối #1  Luyện Khí Sơ Kì", 22, new Vector2(10, -6), new Vector2(420, 30));
         var bar = Bar("HpBar", root.transform, new Vector2(10, -38), new Vector2(420, 16));
-        var info = Label("Info", root.transform, "HP 1000/1000  |  Node 0  |  Sẵn sàng", 18, new Vector2(10, -58), new Vector2(420, 28));
+        var info = Label("Info", root.transform, "HP 100/100  |  Độ bền 5/5  |  Node 0  |  Sẵn sàng", 16, new Vector2(10, -58), new Vector2(420, 28));
         var actions = new GameObject("LeaderActions", typeof(RectTransform));
         actions.transform.SetParent(root.transform, false);
         SetRect((RectTransform)actions.transform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(440, 0), new Vector2(300, 90));

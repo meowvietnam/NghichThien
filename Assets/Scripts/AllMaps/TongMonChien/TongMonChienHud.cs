@@ -35,16 +35,21 @@ namespace AllMaps.TongMonChien
         [SerializeField] private Button puppetsButton;
         [SerializeField] private Button exitButton;
 
-        [Header("Thưởng tuần")]
-        [Tooltip("Số Thành Ấn (thành Stronghold tông đang giữ).")]
-        [SerializeField] private Text strongholdText;
-        [SerializeField] private Text strongholdMoneyText;
-        [Tooltip("Số Địa Mạch (node thường tông đang giữ).")]
+        [Header("Thưởng hằng ngày")]
+        [Tooltip("Số điểm (node thường) tông đã chiếm.")]
         [SerializeField] private Text nodeText;
         [SerializeField] private Text nodeMoneyText;
+        [Tooltip("Số thành (Stronghold) tông đã chiếm.")]
+        [SerializeField] private Text strongholdText;
+        [SerializeField] private Text strongholdMoneyText;
         [SerializeField] private Text totalMoneyText;
-        [Tooltip("Thời gian còn lại tới lúc chốt thưởng (0h thứ Hai).")]
+        [Tooltip("Nhãn 'Thực nhận (x%)' theo chức vụ.")]
+        [SerializeField] private Text myRewardLabel;
+        [SerializeField] private Text myMoneyText;
+        [Tooltip("Thời gian còn lại tới lúc phát thưởng (0h hằng ngày).")]
         [SerializeField] private Text settlementText;
+        [Tooltip("Thời gian còn lại của mùa (2 tuần); hết mùa làm mới đất đã chiếm.")]
+        [SerializeField] private Text seasonText;
         [Tooltip("Icon tiên ngọc; bỏ trống sprite thì tự lấy MoneyResources.MoneyVipIcon.")]
         [SerializeField] private Image[] moneyVipIcons = new Image[0];
 
@@ -172,30 +177,36 @@ namespace AllMaps.TongMonChien
                 SetText(stateText, state);
             }
 
-            RefreshWeekly(now);
+            RefreshDaily(now);
 
             if (deployBar != null) deployBar.SetActive(controller.DeployingPuppetId > 0);
             if (puppetPanel != null && puppetPanel.gameObject.activeSelf) RefreshPuppets(now);
         }
 
         /// <summary>
-        /// Thưởng tuần của tông: số Thành Ấn/Địa Mạch đang giữ và tiên ngọc ước tính mỗi thành viên nhận
-        /// nếu giữ nguyên tới lúc chốt (0h thứ Hai).
+        /// Thưởng hằng ngày của tông: số điểm/thành đã chiếm, tiên ngọc/ngày tương ứng, tổng của tông và số thực nhận
+        /// của bản thân theo % chức vụ (Tộc chủ 50%, Phó tộc chủ/Trưởng lão 20%, Đệ tử 10%).
         /// </summary>
-        private void RefreshWeekly(DateTime now)
+        private void RefreshDaily(DateTime now)
         {
             var clan = controller.MyClan;
             var strongholds = clan?.StrongholdCount ?? 0;
             var normalNodes = clan?.NodeCount ?? 0;
-            var strongholdMoney = strongholds * controller.StrongholdMoneyVip;
-            var nodeMoney = normalNodes * controller.NodeMoneyVip;
-            SetText(strongholdText, $"Thành Ấn: {strongholds}");
-            SetText(strongholdMoneyText, $"≈ {strongholdMoney:N0}");
-            SetText(nodeText, $"Địa Mạch: {normalNodes}");
-            SetText(nodeMoneyText, $"≈ {nodeMoney:N0}");
-            SetText(totalMoneyText, $"≈ {strongholdMoney + nodeMoney:N0}");
+            long strongholdMoney = (long)strongholds * controller.StrongholdMoneyVip;
+            long nodeMoney = (long)normalNodes * controller.NodeMoneyVip;
+            var total = strongholdMoney + nodeMoney;
+            var percent = controller.MyRewardPercent;
+            SetText(nodeText, $"Số điểm đã chiếm: {normalNodes}");
+            SetText(nodeMoneyText, $"{nodeMoney:N0} /ngày");
+            SetText(strongholdText, $"Số thành đã chiếm: {strongholds}");
+            SetText(strongholdMoneyText, $"{strongholdMoney:N0} /ngày");
+            SetText(totalMoneyText, $"{total:N0} /ngày");
+            SetText(myRewardLabel, $"Thực nhận ({percent}%)");
+            SetText(myMoneyText, $"{total * percent / 100:N0} /ngày");
             var settleAt = controller.NextSettlementAt;
-            SetText(settlementText, settleAt == default ? string.Empty : $"Chốt thưởng sau {DurationText(settleAt - now)}");
+            SetText(settlementText, settleAt == default ? string.Empty : $"Phát thưởng qua thư sau {DurationText(settleAt - now)}");
+            var seasonEnd = controller.SeasonEndAt;
+            SetText(seasonText, seasonEnd == default ? string.Empty : $"Mùa kết thúc sau {DurationText(seasonEnd - now)} (làm mới đất)");
         }
 
         private static string DurationText(TimeSpan span)

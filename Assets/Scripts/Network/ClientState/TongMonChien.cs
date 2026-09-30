@@ -15,6 +15,7 @@ namespace Network.ClientState
         void OnWarUseHpPillResult(WarUseHpPillResult result);
         void OnWarBattleMatched(WarBattleMatched matched);
         void OnWarKicked(WarKicked kicked);
+        void OnWarNotice(WarNotice notice);
     }
 
     public class TongMonChien : IClientState
@@ -49,14 +50,27 @@ namespace Network.ClientState
                 new WarDeployPuppetRequest { PuppetId = puppetId, TargetNodeId = targetNodeId });
         }
 
-        public void CreatePuppet()
+        /// <summary>
+        /// Tạo rối. Gửi chi phí -1 để hỏi giá (server trả RequiresConfirmation), sau khi người chơi xác nhận thì
+        /// gửi lại đúng chi phí đã xác nhận.
+        /// </summary>
+        public void CreatePuppet(long expectedContribPointsCost = -1, long expectedMoneyVipCost = -1)
         {
-            client.MemSend(MessageTag.WarCreatePuppet, new WarCreatePuppetRequest());
+            client.MemSend(MessageTag.WarCreatePuppet, new WarCreatePuppetRequest
+            {
+                ExpectedContribPointsCost = expectedContribPointsCost,
+                ExpectedMoneyVipCost = expectedMoneyVipCost
+            });
         }
 
-        public void UpgradePuppet(int puppetId)
+        public void UpgradePuppet(int puppetId, long expectedContribPointsCost = -1, long expectedMoneyVipCost = -1)
         {
-            client.MemSend(MessageTag.WarUpgradePuppet, new WarUpgradePuppetRequest { PuppetId = puppetId });
+            client.MemSend(MessageTag.WarUpgradePuppet, new WarUpgradePuppetRequest
+            {
+                PuppetId = puppetId,
+                ExpectedContribPointsCost = expectedContribPointsCost,
+                ExpectedMoneyVipCost = expectedMoneyVipCost
+            });
         }
 
         /// <param name="puppetId">0 = dùng cho bản thân.</param>
@@ -119,6 +133,12 @@ namespace Network.ClientState
                 {
                     var model = reader.MemRead<WarKicked>();
                     NetworkManager.Instance.Invoke(() => callback.OnWarKicked(model));
+                    break;
+                }
+                case MessageTag.WarNotice:
+                {
+                    var model = reader.MemRead<WarNotice>();
+                    NetworkManager.Instance.Invoke(() => callback.OnWarNotice(model));
                     break;
                 }
             }

@@ -70,13 +70,22 @@ Tận dụng graph node, hiển thị map, prefab nhân vật và giao diện co
 6. Chỉ Leader được tạo/nâng cấp/điều rối và dùng đan cho rối. **Rối chỉ được đi qua và dừng ở node tông mình đang sở hữu (kể cả thành chính), không chiếm node, không tự tấn công**; route chỉ đi qua node của tông. Rối đi từng node 5 giây/cạnh; server kiểm quyền và kiểm đường mỗi bước.
 7. Một rối không thể có hai hành trình hoặc hai trận đồng thời. Nếu node kế tiếp trên route không còn thuộc tông khi rối chuẩn bị đến, rối dừng tại node hiện tại (node đã đến gần nhất). Nếu chính node rối đang đứng bị mất (chỉ xảy ra khi rối đã thua) thì rối về thành chính.
 
-### 3.5. Thưởng tuần (Thành Ấn / Địa Mạch)
+### 3.5. Rối: chi phí, HP, độ bền (30/09/2026 — thay các giá trị [TẠM] ở 3.4)
 
-1. Hai loại điểm của tông, tính từ lãnh thổ đang giữ: **Thành Ấn** (điểm lớn) = số node `Stronghold` tông đang giữ, **Địa Mạch** (điểm bé) = số node thường tông đang giữ. Thành chính của tông không được tính.
-2. Chốt lúc **00:00 thứ Hai (giờ Việt Nam, UTC+7)**: server chụp số điểm của mỗi tông tại thời điểm đó rồi gửi **thư** tiên ngọc (`MoneyVip`). Mỗi thành viên đủ điều kiện nhận đủ phần của tông (không chia): `Thành Ấn × 500 + Địa Mạch × 50` **[TẠM]**, không giới hạn trần (`WarConfig.StrongholdWeeklyMoneyVip`, `NodeWeeklyMoneyVip`).
-3. Điều kiện nhận: còn trong tông lúc chốt **và** đã vào scene Tông môn chiến ít nhất 1 lần trong tuần được chốt (`WarParticipant.LastEnterAt`, hoặc đang ở trong scene lúc chốt).
-4. Điểm tuần tự về 0 vì được tính lại từ lãnh thổ; lãnh thổ giữ nguyên. Mỗi tuần chỉ chốt một lần (`WarWeeklySettlement` lưu cùng giao dịch với thư); lần chạy đầu tiên sau khi triển khai chỉ đặt mốc, không phát thưởng.
-5. HUD hiển thị số Thành Ấn, Địa Mạch của tông, tiên ngọc ước tính cho từng loại và tổng (icon `MoneyResources.MoneyVipIcon`), cùng thời gian còn lại tới lúc chốt.
+1. Số rối tối đa = level tông (không trần). Level tối đa mỗi rối = level tông × 3 (tông cấp 1 → rối lv3, cấp 2 → lv6…), trần 15 (Hóa Thần hậu kỳ).
+2. Chi phí (trả bằng tài sản cá nhân của Tộc Chủ, giống mở giới hạn luyện hồn): tính theo điểm cống hiến = giá tiên ngọc × 2; trừ điểm cống hiến trước, thiếu bao nhiêu điểm thì bù tiên ngọc (1 tiên ngọc = 2 điểm, làm tròn lên); có popup xác nhận chi phí, giá đổi thì hỏi lại.
+   - Tạo rối: 5.000 tiên ngọc (= 10.000 điểm cống hiến).
+   - Nâng rối lên level L: 500 × L tiên ngọc (= 1.000 × L điểm).
+3. HP rối = (level rối × 10)% HP chiến tối đa của người tạo/nâng tại thời điểm đó (lv1 = 10%, lv10 = 100%, lv15 = 150%). Nâng cấp tính lại HP tối đa và hồi đầy HP.
+4. Độ bền 5/5: mỗi lần HP rối về 0 (thua do chết, kể cả hoà cùng chết) giảm 1; về 0 thì rối bị xoá, phải tạo rối mới. Nâng cấp hồi độ bền về 5/5. Độ bền hiển thị trong bảng Rối.
+
+### 3.6. Thưởng tiên ngọc hằng ngày và mùa 2 tuần (30/09/2026 — thay thưởng tuần)
+
+1. Tổng tiên ngọc/ngày của tông = số điểm (node thường) đã chiếm × 100 + số thành (Stronghold, không gồm thành chính) đã chiếm × 500.
+2. Mỗi thành viên nhận theo % chức vụ, **tính riêng từng người** (không chia theo nhóm): Tộc chủ 50%, Phó tộc chủ 20%, Trưởng lão 20%, Đệ tử 10%.
+3. Chốt 00:00 hằng ngày (UTC+7), chụp lãnh thổ lúc chốt, gửi qua thư. Điều kiện: còn trong tông lúc chốt và có mặt trong scene chiến trong ngày được chốt. Mỗi ngày chỉ chốt một lần (`WarSettlement`); lần chạy đầu sau khi triển khai chỉ đặt mốc.
+4. Sự kiện kéo dài 2 tuần, lặp liên tục (mốc gốc 00:00 thứ Hai 28/09/2026 giờ VN, `WarConfig.SeasonAnchor`). Hết mùa: chốt thưởng ngày cuối trước, sau đó mọi trận kết thúc hoà, node thường về trung lập, người và rối về thành chính với HP đầy; rối giữ level và độ bền.
+5. HUD hiển thị: Số điểm đã chiếm (x tiên ngọc/ngày), Số thành đã chiếm (x tiên ngọc/ngày), Tổng tiên ngọc/ngày, Thực nhận theo chức vụ (x tiên ngọc/ngày), thời gian tới lần phát thưởng và tới hết mùa.
 
 ## 4. Trách nhiệm client
 
@@ -105,7 +114,7 @@ Tận dụng graph node, hiển thị map, prefab nhân vật và giao diện co
 | HP chiến | Lưu riêng HP/mốc hồi cho người và rối, clamp vào `[0, max]`, ghi nhận tiêu thụ đan có giao dịch, tính hồi theo thời gian server kể cả lúc người chơi offline; hàm khởi tạo/tối đa/hồi dùng giá trị tạm riêng, công thức chính thức bổ sung sau |
 | Rối | Đặt hàm riêng cho số lượng theo cấp tông/cảnh giới và công thức level/HP, sinh/lưu chỉ số random một lần, chỉ Leader ra lệnh và dùng đan cá nhân; xóa rối khi tông giải tán, kiểm lại quyền khi đổi Leader |
 | Phát sự kiện | Snapshot vào scene và delta về di chuyển, owner, trận, HP, rối; công khai vị trí và HP của cả phe địch cho mọi người tham chiến |
-| Vận hành | Khôi phục hành trình/trận/hồi HP sau restart, dọn trạng thái trận treo, log theo `BattleId/NodeId/CharId/PuppetId`, không để restart tạo thêm rối; chiến luôn mở, không có tác vụ kết mùa/reset lãnh thổ; chốt thưởng tuần 0h thứ Hai (UTC+7) chạy trong `TongMonChienService`, idempotent theo tuần |
+| Vận hành | Khôi phục hành trình/trận/hồi HP sau restart, dọn trạng thái trận treo, log theo `BattleId/NodeId/CharId/PuppetId`, không để restart tạo thêm rối; chốt thưởng ngày 0h (UTC+7) và làm mới mùa 2 tuần chạy trong `TongMonChienService`, idempotent theo mốc (`WarSettlement`) |
 
 ### Mô hình dữ liệu (đã triển khai)
 
@@ -113,7 +122,7 @@ Không dùng `Progression.IdCurrentNode` hoặc `CharacterData.Stats.Hp` của t
 
 - `ClanNode` (bảng sẵn có, mở rộng): `NodeId`, `ClanId?` (null = trung lập), `Version`, `UpdatedAt`; thành chính không lưu ở đây mà luôn suy ra từ `Clan.NodeId`. `Clan.Puppets`/`Clan.ClanNodes` đã bỏ khỏi model `Clan` (cả client) để không serialize kèm tông.
 - `WarParticipant`: `CharId`, `ClanId`, `NodeId`, `BattleHp`, `BattleHpMax`, `LastHpRecoveryAt`, `State`, `Route`, `NextArrivalAt`, `LastSafeNodeId`, `LastEnterAt` (lần vào scene gần nhất, điều kiện thưởng tuần).
-- `WarWeeklySettlement`: `WeekStart` (khoá, UTC của 0h thứ Hai giờ VN), `SettledAt`, `ClanCount`, `MailCount`, `TotalMoneyVip` — mỗi tuần một bản ghi, chống phát thưởng lặp.
+- `WarSettlement`: khoá (`Kind` = Daily/SeasonReset, `PeriodStart`), `SettledAt`, `ClanCount`, `MailCount`, `TotalMoneyVip` — mỗi ngày/mùa một bản ghi, chống xử lý lặp. `Puppet.Durability` lưu độ bền.
 - `Puppet` (thay mô hình cũ `Puppet.CharData`): `Id`, `ClanId`, `Level` (cảnh giới suy ra từ level), `RandomSeed` sinh một lần, `NodeId`, HP chiến và mốc hồi, `State`, `Route`, `NextArrivalAt`. Không tạo `CharacterData` cho rối: khi ghép trận, server dựng snapshot từ nhân vật mẫu “Rối” (`TcpServer.Scarecrow`), đặt level/HP rối, thọ nguyên vô tận và chỉ trang bị `Cửu U Thứ`. Ngoại hình rối (`Gender`, skin, màu) do server random một lần khi tạo từ bộ skin tạo nhân vật và lưu bền (`Puppet.Gender`, `Puppet.AppearanceJson`), dùng cho cả marker trên bản đồ lẫn màn combat.
 - `WarBattle`: `BattleId`, `NodeId`, hai bên tham chiến, trạng thái, thời điểm, kết quả, nguyên nhân kết thúc; phục vụ chống báo kết quả lặp.
 - `WarConfig`: các hàm tách riêng cho số rối theo cấp tông/cảnh giới, level/HP rối; cấu hình thời gian đi, chi phí (nếu có), hồi HP và quy tắc trở về node; server phát phần hiển thị cần thiết cho client.
@@ -170,7 +179,9 @@ Kiểu dữ liệu nằm ở `MTS-Server/backend/MTS/Network/Models/TongMonChien
 | Thời hạn trận | Không vào màn combat sau 30 giây → bên chưa vào thua; PvP chỉ một bên báo sau 30 giây → bên kia thua; trận quá 15 phút → hoà |
 | Sau trận | Người thắng/hoà được tính là còn đứng ở node trong 90 giây chờ quay lại scene; chỉ bị ghép trận mới khi đã quay lại scene |
 | Ghép trận | Chỉ ghép người chơi đã tải xong scene (đã xin snapshot); rối luôn sẵn sàng phòng thủ |
-| Thưởng tuần (30/09/2026) | Thành Ấn (thành Stronghold, không gồm thành chính) 500 tiên ngọc/thành, Địa Mạch (node thường) 50/node, không trần; chụp lúc chốt 0h thứ Hai (UTC+7); mỗi thành viên còn trong tông và đã vào scene trong tuần nhận đủ phần của tông qua thư |
+| Thưởng (30/09/2026, thay thưởng tuần) | Hằng ngày 0h: điểm 100/ngày, thành 500/ngày; mỗi người nhận % theo chức vụ (Tộc chủ 50, Phó/Trưởng lão 20, Đệ tử 10) qua thư; phải có mặt trong scene trong ngày |
+| Mùa (30/09/2026) | 2 tuần lặp liên tục; hết mùa làm mới đất, mọi người/rối về thành, HP đầy, rối giữ level/độ bền |
+| Rối (30/09/2026) | Số rối = level tông; tạo 5.000 tiên ngọc, nâng 500 × level (điểm cống hiến ×2, trừ điểm trước bù tiên ngọc); HP = level×10% HP chiến người tạo/nâng; độ bền 5, nâng cấp hồi đầy |
 | Hiển thị (30/09/2026) | HP chiến lên UIHead (bỏ thanh HP trên HUD); ẩn bảng NPC góc trái trong scene chiến; đếm ngược tới node kế cho mọi đối tượng đang đi; nhân vật quay mặt theo hướng đi; hết trận quay lại scene chiến |
 
 Các công thức chính thức (HP, số rối, level rối) và chi phí tạo/nâng cấp rối do chủ dự án bổ sung sau trong `WarConfig`, không cần đổi schema/message.

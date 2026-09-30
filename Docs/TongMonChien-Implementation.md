@@ -17,8 +17,9 @@ Tài liệu đi kèm `TongMonChien-Requirements.md`. Mã đã viết nhưng **ch
 | --- | --- |
 | `Models/ClanNode.cs`, `Models/Puppet.cs` | Viết lại: owner node có version; rối không còn `CharData` |
 | `Models/WarParticipant.cs`, `Models/WarBattle.cs` | Mới: trạng thái chiến của nhân vật (kèm `LastEnterAt`), nhật ký trận |
-| `Models/WarWeeklySettlement.cs` | Mới: đánh dấu tuần đã chốt thưởng |
-| `Game/TMC/WarManager.Weekly.cs` | Đếm Thành Ấn/Địa Mạch, chốt thưởng tuần và gửi thư tiên ngọc |
+| `Models/WarSettlement.cs` | Mới: đánh dấu ngày đã phát thưởng / mùa đã làm mới |
+| `Game/TMC/WarManager.Rewards.cs` | Đếm điểm/thành, phát tiên ngọc hằng ngày theo chức vụ, làm mới đất khi hết mùa |
+| `Game/Clan/ClanManager.War.cs` | Trả phí bằng điểm cống hiến + bù tiên ngọc (giống luyện hồn), hoàn phí |
 | `Models/Clan.cs` | Bỏ `Puppets`, `ClanNodes` (không load/serialize kèm tông) |
 | `Data/AppDbContext.cs` | DbSet + cấu hình 4 bảng, FK không navigation |
 | `Game/TMC/WarConfig.cs` | **Toàn bộ số liệu cân bằng** (các hàm `[TẠM]` để thay công thức chính thức) |
@@ -55,7 +56,7 @@ Tài liệu đi kèm `TongMonChien-Requirements.md`. Mã đã viết nhưng **ch
 
 ## 3. Các bước cần làm trên máy có dotnet/Unity
 
-1. **Server**: `dotnet build`, rồi `dotnet ef migrations add AddTongMonChien` và `dotnet ef database update`. Kiểm tra migration chỉ tạo `ClanNodes`, `Puppets`, `WarParticipants`, `WarBattles` (snapshot hiện tại chưa có `Puppet`/`ClanNode` cũ). Thưởng tuần cần thêm migration `AddTongMonChienWeeklyReward` (cột `WarParticipants.LastEnterAt`, bảng `WarWeeklySettlements`).
+1. **Server**: `dotnet build`, rồi `dotnet ef migrations add AddTongMonChien` và `dotnet ef database update`. Kiểm tra migration chỉ tạo `ClanNodes`, `Puppets`, `WarParticipants`, `WarBattles` (snapshot hiện tại chưa có `Puppet`/`ClanNode` cũ). Nhánh chưa phát hành nên tạo lại migration `AddTongMonChien` (gồm `WarParticipants.LastEnterAt`, `Puppets.Durability`, bảng `WarSettlements`).
 2. **Unity**: mở project, chạy *Tools → Tông môn chiến → Thiết lập scene* (bật `isWarMode`, gắn `TongMonChienController`, thêm scene vào Build Settings). Đọc log để tắt các hệ thống bản đồ thường còn trong scene (quest, NPC, sự kiện node) nếu gây nhiễu.
 3. Gắn `TongMonChienEntryButton` vào một nút trong UI tông môn (hoặc gọi `TongMonChienEntryButton.Enter()`).
 4. Tuỳ chọn: gán `puppetPrefab`, `fightingIconPrefab` cho controller; thay HUD bằng UI chính thức.
