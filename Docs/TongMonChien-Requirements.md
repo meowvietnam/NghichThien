@@ -70,6 +70,14 @@ Tận dụng graph node, hiển thị map, prefab nhân vật và giao diện co
 6. Chỉ Leader được tạo/nâng cấp/điều rối và dùng đan cho rối. **Rối chỉ được đi qua và dừng ở node tông mình đang sở hữu (kể cả thành chính), không chiếm node, không tự tấn công**; route chỉ đi qua node của tông. Rối đi từng node 5 giây/cạnh; server kiểm quyền và kiểm đường mỗi bước.
 7. Một rối không thể có hai hành trình hoặc hai trận đồng thời. Nếu node kế tiếp trên route không còn thuộc tông khi rối chuẩn bị đến, rối dừng tại node hiện tại (node đã đến gần nhất). Nếu chính node rối đang đứng bị mất (chỉ xảy ra khi rối đã thua) thì rối về thành chính.
 
+### 3.5. Thưởng tuần (Thành Ấn / Địa Mạch)
+
+1. Hai loại điểm của tông, tính từ lãnh thổ đang giữ: **Thành Ấn** (điểm lớn) = số node `Stronghold` tông đang giữ, **Địa Mạch** (điểm bé) = số node thường tông đang giữ. Thành chính của tông không được tính.
+2. Chốt lúc **00:00 thứ Hai (giờ Việt Nam, UTC+7)**: server chụp số điểm của mỗi tông tại thời điểm đó rồi gửi **thư** tiên ngọc (`MoneyVip`). Mỗi thành viên đủ điều kiện nhận đủ phần của tông (không chia): `Thành Ấn × 500 + Địa Mạch × 50` **[TẠM]**, không giới hạn trần (`WarConfig.StrongholdWeeklyMoneyVip`, `NodeWeeklyMoneyVip`).
+3. Điều kiện nhận: còn trong tông lúc chốt **và** đã vào scene Tông môn chiến ít nhất 1 lần trong tuần được chốt (`WarParticipant.LastEnterAt`, hoặc đang ở trong scene lúc chốt).
+4. Điểm tuần tự về 0 vì được tính lại từ lãnh thổ; lãnh thổ giữ nguyên. Mỗi tuần chỉ chốt một lần (`WarWeeklySettlement` lưu cùng giao dịch với thư); lần chạy đầu tiên sau khi triển khai chỉ đặt mốc, không phát thưởng.
+5. HUD hiển thị số Thành Ấn, Địa Mạch của tông, tiên ngọc ước tính cho từng loại và tổng (icon `MoneyResources.MoneyVipIcon`), cùng thời gian còn lại tới lúc chốt.
+
 ## 4. Trách nhiệm client
 
 | Khu vực | Yêu cầu |
@@ -79,7 +87,10 @@ Tận dụng graph node, hiển thị map, prefab nhân vật và giao diện co
 | Di chuyển | Chỉ gửi node đích; vẽ lộ trình được server chấp thuận và cập nhật vị trí/chiếm từng node từ server; không hiện nút hủy/đổi đường; hiển thị lý do bị chặn |
 | Giao tranh | Hiển thị trận khi server ghép; cập nhật icon node; hiển thị chuỗi trận sau khi thắng; xử lý trở về node/tổng đàn khi thua/bỏ chạy |
 | Rối | Màn hình số lượng theo cảnh giới, HP/hồi phục, vị trí, hành trình; chỉ Leader thấy thao tác tạo/nâng cấp/điều rối/dùng đan; rối dưới 100% HP vẫn hiện là quân phòng thủ nhưng không được điều đi |
-| HP chiến | Hiển thị HP chiến riêng, tốc độ/mốc hồi và kết quả dùng đan; không ghi HP chiến vào HP thường |
+| HP chiến | Hiển thị HP chiến riêng trên UIHead (thay HP thường khi ở scene chiến, kèm tốc độ hồi, vd. `850/1000 (+10/phút)`), kết quả dùng đan; không ghi HP chiến vào HP thường |
+| Hiển thị di chuyển | Người/rối đang đi tự quay mặt trái/phải theo hướng cạnh, chạy animation di chuyển, trên đầu hiện đếm ngược tới node kế tiếp (và tới đích nếu còn nhiều chặng) — áp dụng cho mọi đối tượng |
+| Sau trận | Kết thúc trận quay về scene `TongMonChien` (không lùi về `AllMaps`) |
+| Giao diện scene | Ẩn bảng NPC góc trái (`UINPCJiaoHu`) trong scene chiến, hiện lại khi rời scene |
 | Đồng bộ | Khi mở scene/reconnect, nhận snapshot đầy đủ gồm vị trí và HP phe địch công khai; khi đang ở scene, áp delta có version/sequence, nếu thiếu delta thì tải lại snapshot |
 
 ## 5. Trách nhiệm server và lưu trữ
@@ -94,14 +105,15 @@ Tận dụng graph node, hiển thị map, prefab nhân vật và giao diện co
 | HP chiến | Lưu riêng HP/mốc hồi cho người và rối, clamp vào `[0, max]`, ghi nhận tiêu thụ đan có giao dịch, tính hồi theo thời gian server kể cả lúc người chơi offline; hàm khởi tạo/tối đa/hồi dùng giá trị tạm riêng, công thức chính thức bổ sung sau |
 | Rối | Đặt hàm riêng cho số lượng theo cấp tông/cảnh giới và công thức level/HP, sinh/lưu chỉ số random một lần, chỉ Leader ra lệnh và dùng đan cá nhân; xóa rối khi tông giải tán, kiểm lại quyền khi đổi Leader |
 | Phát sự kiện | Snapshot vào scene và delta về di chuyển, owner, trận, HP, rối; công khai vị trí và HP của cả phe địch cho mọi người tham chiến |
-| Vận hành | Khôi phục hành trình/trận/hồi HP sau restart, dọn trạng thái trận treo, log theo `BattleId/NodeId/CharId/PuppetId`, không để restart tạo thêm rối; chiến luôn mở, không có tác vụ kết mùa/reset lãnh thổ |
+| Vận hành | Khôi phục hành trình/trận/hồi HP sau restart, dọn trạng thái trận treo, log theo `BattleId/NodeId/CharId/PuppetId`, không để restart tạo thêm rối; chiến luôn mở, không có tác vụ kết mùa/reset lãnh thổ; chốt thưởng tuần 0h thứ Hai (UTC+7) chạy trong `TongMonChienService`, idempotent theo tuần |
 
 ### Mô hình dữ liệu (đã triển khai)
 
 Không dùng `Progression.IdCurrentNode` hoặc `CharacterData.Stats.Hp` của thế giới thường làm trạng thái chiến. Bổ sung các bản ghi hoặc cấu trúc tương đương:
 
 - `ClanNode` (bảng sẵn có, mở rộng): `NodeId`, `ClanId?` (null = trung lập), `Version`, `UpdatedAt`; thành chính không lưu ở đây mà luôn suy ra từ `Clan.NodeId`. `Clan.Puppets`/`Clan.ClanNodes` đã bỏ khỏi model `Clan` (cả client) để không serialize kèm tông.
-- `WarParticipant`: `CharId`, `ClanId`, `NodeId`, `BattleHp`, `BattleHpMax`, `LastHpRecoveryAt`, `State`, `Route`, `NextArrivalAt`, `LastSafeNodeId`.
+- `WarParticipant`: `CharId`, `ClanId`, `NodeId`, `BattleHp`, `BattleHpMax`, `LastHpRecoveryAt`, `State`, `Route`, `NextArrivalAt`, `LastSafeNodeId`, `LastEnterAt` (lần vào scene gần nhất, điều kiện thưởng tuần).
+- `WarWeeklySettlement`: `WeekStart` (khoá, UTC của 0h thứ Hai giờ VN), `SettledAt`, `ClanCount`, `MailCount`, `TotalMoneyVip` — mỗi tuần một bản ghi, chống phát thưởng lặp.
 - `Puppet` (thay mô hình cũ `Puppet.CharData`): `Id`, `ClanId`, `Level` (cảnh giới suy ra từ level), `RandomSeed` sinh một lần, `NodeId`, HP chiến và mốc hồi, `State`, `Route`, `NextArrivalAt`. Không tạo `CharacterData` cho rối: khi ghép trận, server dựng snapshot từ nhân vật mẫu “Rối” (`TcpServer.Scarecrow`), đặt level/HP rối, thọ nguyên vô tận và chỉ trang bị `Cửu U Thứ`. Ngoại hình rối (`Gender`, skin, màu) do server random một lần khi tạo từ bộ skin tạo nhân vật và lưu bền (`Puppet.Gender`, `Puppet.AppearanceJson`), dùng cho cả marker trên bản đồ lẫn màn combat.
 - `WarBattle`: `BattleId`, `NodeId`, hai bên tham chiến, trạng thái, thời điểm, kết quả, nguyên nhân kết thúc; phục vụ chống báo kết quả lặp.
 - `WarConfig`: các hàm tách riêng cho số rối theo cấp tông/cảnh giới, level/HP rối; cấu hình thời gian đi, chi phí (nếu có), hồi HP và quy tắc trở về node; server phát phần hiển thị cần thiết cho client.
@@ -113,7 +125,7 @@ Các tên trên là gợi ý triển khai, không bắt buộc đặt tên y h�
 | Tag (giá trị) | Hướng | Nội dung |
 | --- | --- | --- |
 | `ChangeScene("TongMonChien")` | C→S | Server kiểm tra thành viên tông có thành (`NodeId > 0`) rồi chuyển state; về `AllMaps` bằng `ChangeScene("AllMaps")` |
-| `WarGetSnapshot` 3901 / `WarSnapshot` 3902 | C↔S | Version, `SecondsPerEdge`, giờ server, tông (tên/icon/thành), node có chủ hoặc đang giao tranh, toàn bộ người/rối (vị trí, HP, nhịp hồi, hành trình), quyền Leader, giới hạn rối |
+| `WarGetSnapshot` 3901 / `WarSnapshot` 3902 | C↔S | Version, `SecondsPerEdge`, giờ server, tông (tên/icon/thành, `StrongholdCount`, `NodeCount`), node có chủ hoặc đang giao tranh, toàn bộ người/rối (vị trí, HP, nhịp hồi, hành trình), quyền Leader, giới hạn rối, tỉ lệ thưởng tuần (`StrongholdMoneyVip`, `NodeMoneyVip`) và `NextSettlementAt` |
 | `WarMove` 3903 / `WarMoveResult` 3904 | C↔S | Node đích → route đã duyệt hoặc lý do từ chối; không có lệnh huỷ |
 | `WarDeployPuppet` 3905 / `WarDeployPuppetResult` 3906 | C↔S | PuppetId + node đích (chỉ node của tông) |
 | `WarUseHpPill` 3907 / `WarUseHpPillResult` 3908 | C↔S | PuppetId (0 = bản thân), DanId, Count → HP mới, tồn kho còn lại |
@@ -136,7 +148,8 @@ Kiểu dữ liệu nằm ở `MTS-Server/backend/MTS/Network/Models/TongMonChien
 6. Thành chính của mỗi tông luôn giữ owner và icon tông, không thể bị chiếm; người của tông được đứng/xuất phát/về ở thành mình. Người địch chỉ đi xuyên, không dừng, không bị chặn hoặc ghép trận tại thành.
 7. Rối dưới 100% HP tiếp tục phòng thủ tại node nhưng không nhận lệnh di chuyển; đạt 100% mới được Leader điều đi. Chỉ Leader dùng đan trong túi cá nhân cho rối.
 8. Logout giữa trận → bên logout thua ngay, bên còn lại có thể chiếm nếu hết đối thủ; logout giữa đường → trở về node an toàn ngay trước bước đang đi; tông giải tán → bên đó thua, node thường chuyển trung lập, rối bị xóa, người chơi rời chiến về `AllMaps`.
-9. Reconnect, server restart, hai phe đến cùng node, node đổi chủ lúc đang di chuyển, hai trận kết thúc sát nhau: không nhân đôi rối/trận, không có hai owner và không mất HP/đan. Không có kết mùa, reset hoặc thưởng/phạt chiếm node.
+9. Reconnect, server restart, hai phe đến cùng node, node đổi chủ lúc đang di chuyển, hai trận kết thúc sát nhau: không nhân đôi rối/trận, không có hai owner và không mất HP/đan. Không có kết mùa hoặc reset lãnh thổ.
+10. Chốt tuần: tông giữ 2 thành + 5 node → mỗi thành viên đủ điều kiện nhận 1 thư 1.250 tiên ngọc; thành viên chưa vào scene trong tuần hoặc đã rời tông không nhận; restart server quanh 0h thứ Hai không phát trùng.
 
 ## 7. Các quyết định đã chốt (29/09/2026)
 
@@ -157,6 +170,8 @@ Kiểu dữ liệu nằm ở `MTS-Server/backend/MTS/Network/Models/TongMonChien
 | Thời hạn trận | Không vào màn combat sau 30 giây → bên chưa vào thua; PvP chỉ một bên báo sau 30 giây → bên kia thua; trận quá 15 phút → hoà |
 | Sau trận | Người thắng/hoà được tính là còn đứng ở node trong 90 giây chờ quay lại scene; chỉ bị ghép trận mới khi đã quay lại scene |
 | Ghép trận | Chỉ ghép người chơi đã tải xong scene (đã xin snapshot); rối luôn sẵn sàng phòng thủ |
+| Thưởng tuần (30/09/2026) | Thành Ấn (thành Stronghold, không gồm thành chính) 500 tiên ngọc/thành, Địa Mạch (node thường) 50/node, không trần; chụp lúc chốt 0h thứ Hai (UTC+7); mỗi thành viên còn trong tông và đã vào scene trong tuần nhận đủ phần của tông qua thư |
+| Hiển thị (30/09/2026) | HP chiến lên UIHead (bỏ thanh HP trên HUD); ẩn bảng NPC góc trái trong scene chiến; đếm ngược tới node kế cho mọi đối tượng đang đi; nhân vật quay mặt theo hướng đi; hết trận quay lại scene chiến |
 
 Các công thức chính thức (HP, số rối, level rối) và chi phí tạo/nâng cấp rối do chủ dự án bổ sung sau trong `WarConfig`, không cần đổi schema/message.
 

@@ -49,6 +49,13 @@ namespace AllMaps.TongMonChien
         private int maxPuppetLevel;
         private int deployingPuppetId;
         private PuppetDanTarget puppetDanTarget;
+        private int strongholdMoneyVip;
+        private int nodeMoneyVip;
+        private DateTime nextSettlementAt;
+        private int snapshotRetries;
+        private const int MaxSnapshotRetries = 3;
+        private GameObject hiddenNpcPanel;
+        private UIHeadPanel headPanel;
 
         private readonly Dictionary<int, WarClanView> clans = new Dictionary<int, WarClanView>();
         private readonly Dictionary<int, WarNodeView> nodes = new Dictionary<int, WarNodeView>();
@@ -67,6 +74,21 @@ namespace AllMaps.TongMonChien
         public int MaxPuppetCount => maxPuppetCount;
         public int MaxPuppetLevel => maxPuppetLevel;
         public int DeployingPuppetId => deployingPuppetId;
+        public int StrongholdMoneyVip => strongholdMoneyVip;
+        public int NodeMoneyVip => nodeMoneyVip;
+        public WarClanView MyClan => GetClan(myClanId);
+
+        /// <summary>Mốc chốt thưởng tuần kế tiếp (UTC, giờ server); đã qua mốc thì tự lùi sang tuần sau.</summary>
+        public DateTime NextSettlementAt
+        {
+            get
+            {
+                if (nextSettlementAt == default) return default;
+                var now = ServerNow;
+                while (nextSettlementAt <= now) nextSettlementAt = nextSettlementAt.AddDays(7);
+                return nextSettlementAt;
+            }
+        }
 
         public WarUnitView Me => units.TryGetValue((WarUnitKind.Player, myCharId), out var u) ? u : null;
 
@@ -96,6 +118,9 @@ namespace AllMaps.TongMonChien
 
             hud = Instantiate(hudPrefab);
             hud.Bind(this);
+            HideNpcPanel();
+            headPanel = Pool.Get<UIHeadPanel>();
+            if (headPanel != null) headPanel.SetHpOverride(GetHeadHp);
             state = new WarState(this);
             Client.Instance.ChangeState(state);
             waitingSnapshot = true;
@@ -104,6 +129,9 @@ namespace AllMaps.TongMonChien
         private void OnDestroy()
         {
             ClearDanTarget();
+            if (headPanel != null) headPanel.SetHpOverride(null);
+            // Trả lại bảng NPC góc trái cho các scene khác.
+            if (hiddenNpcPanel != null) hiddenNpcPanel.SetActive(true);
             if (mapManager != null) mapManager.WarNodeClicked -= OnNodeClicked;
             if (overlayRoot != null) Destroy(overlayRoot.gameObject);
             foreach (var marker in unitMarkers.Values)
@@ -194,6 +222,24 @@ namespace AllMaps.TongMonChien
             puppetDanTarget = null;
         }
 
+        /// <summary>Ẩn bảng NPC góc trái (UINPCJiaoHu) trong scene chiến; hiện lại khi rời scene.</summary>
+        private void HideNpcPanel()
+        {
+            var npcPanel = Pool.Get<UINPCJiaoHu>();
+            if (npcPanel == null || !npcPanel.gameObject.activeSelf) return;
+            hiddenNpcPanel = npcPanel.gameObject;
+            hiddenNpcPanel.SetActive(false);
+        }
+
+        /// <summary>HP chiến hiển thị trên UIHead thay cho HP thường, kèm tốc độ hồi.</summary>
+        private (int Hp, int HpMax, string Suffix)? GetHeadHp()
+        {
+            var me = Me;
+            if (me == null) return null;
+            var suffix = me.RegenPerMinute > 0 ? $" (+{me.RegenPerMinute:0.#}/phút)" : string.Empty;
+            return (me.GetHp(ServerNow), me.HpMax, suffix);
+        }
+
         public void Exit()
         {
             Observer.Notify(EventList.GamePlay.BACK_SCENE);
@@ -208,10 +254,27 @@ namespace AllMaps.TongMonChien
             waitingSnapshot = false;
             if (snapshot == null || !snapshot.Success)
             {
+                if (snapshotLoaded) return;
+                // Vừa từ trận đấu quay lại, server có thể chưa kịp chuyển state: thử lại vài lần trước khi thoát.
+                if (snapshotRetries < MaxSnapshotRetries)
+                {
+                    snapshotRetries++;
+                    DOVirtual.DelayedCall(1f, () =>
+                    {
+                        if (this != null && !snapshotLoaded) RequestSnapshot();
+                    }).SetLink(gameObject);
+                    return;
+                }
+
                 NotifyGroup.Instance?.Show(snapshot?.Message ?? "Không thể vào Tông môn chiến");
-                if (!snapshotLoaded) Exit();
+                Exit();
                 return;
             }
+
+            snapshotRetries = 0;
+            strongholdMoneyVip = snapshot.StrongholdMoneyVip;
+            nodeMoneyVip = snapshot.NodeMoneyVip;
+            nextSettlementAt = snapshot.NextSettlementAt;
 
             serverOffset = snapshot.ServerTime - DateTime.UtcNow;
             secondsPerEdge = snapshot.SecondsPerEdge > 0 ? snapshot.SecondsPerEdge : 5f;
@@ -332,6 +395,8 @@ namespace AllMaps.TongMonChien
             var gameManager = Pool.Get<GameManager>();
             if (gameManager == null) return;
             gameManager.currentETypeCombat = matched.IsPvp ? ETypeCombat.TongMonChienRealTime : ETypeCombat.TongMonChienPuppet;
+            // Đánh xong quay lại đúng scene chiến (không lùi về AllMaps).
+            gameManager.combatReturnScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             var me = CharacterStatsSecureBuilder.FromCharacterSnapshot(matched.Me);
             me.isPlayer = true;
             var enemy = CharacterStatsSecureBuilder.FromCharacterSnapshot(matched.Enemy);
@@ -506,7 +571,7 @@ namespace AllMaps.TongMonChien
 
         private bool IsMe(WarUnitView unit) => unit.Kind == WarUnitKind.Player && unit.Id == myCharId;
 
-        private void UpdateLabel(WarUnitView unit, Player marker, int othersAtNode)
+        private void UpdateLabel(WarUnitView unit, Player marker, int othersAtNode, DateTime now)
         {
             var isMe = IsMe(unit);
             // Rối có ngoại hình random do server lưu; người chơi khác dựng theo ngoại hình server gửi.
@@ -514,8 +579,26 @@ namespace AllMaps.TongMonChien
             var color = isMe ? new Color32(255, 213, 79, 255) : (Color32)GetClanColor(unit.ClanId);
             var name = string.IsNullOrEmpty(unit.Name) ? (unit.Kind == WarUnitKind.Puppet ? "Rối" : "?") : unit.Name;
             var more = othersAtNode > 0 ? $"  (+{othersAtNode})" : string.Empty;
-            marker.SetName($"{name}{more}\n{unit.GetHp(ServerNow)}/{unit.HpMax}", color);
+            var countdown = MoveCountdownText(unit, now);
+            var label = $"{name}{more}\n{unit.GetHp(now)}/{unit.HpMax}";
+            if (countdown != null) label += "\n" + countdown;
+            marker.SetName(label, color);
         }
+
+        /// <summary>Đếm ngược tới node kế tiếp (và tới đích nếu còn nhiều chặng) của đối tượng đang đi.</summary>
+        private string MoveCountdownText(WarUnitView unit, DateTime now)
+        {
+            if (unit.State != WarUnitState.Moving || !unit.NextArrivalAt.HasValue || unit.Route == null ||
+                unit.Route.Length == 0) return null;
+            var next = Mathf.Max(0f, (float)(unit.NextArrivalAt.Value - now).TotalSeconds);
+            var text = $"Tới node kế: {FormatSeconds(next)}";
+            if (unit.Route.Length > 1)
+                text += $" | Đích: {FormatSeconds(next + (unit.Route.Length - 1) * secondsPerEdge)}";
+            return text;
+        }
+
+        private static string FormatSeconds(float seconds) =>
+            seconds < 10f ? $"{seconds:0.0}s" : $"{Mathf.CeilToInt(seconds)}s";
 
         private Player CreateUnitMarker(WarUnitView unit)
         {
@@ -591,6 +674,9 @@ namespace AllMaps.TongMonChien
             var now = ServerNow;
             var refreshLabels = Time.unscaledTime >= nextLabelRefresh;
             if (refreshLabels) nextLabelRefresh = Time.unscaledTime + 1f;
+            // Nhãn của đối tượng đang đi cập nhật dày hơn để đếm ngược chạy mượt.
+            var refreshMovers = refreshLabels || Time.unscaledTime >= nextMoverLabelRefresh;
+            if (refreshMovers) nextMoverLabelRefresh = Time.unscaledTime + 0.1f;
 
             // Đối tượng đứng yên tại node được gom theo node; mỗi node chỉ hiện một đại diện
             // (nhãn ghi thêm số còn lại). Đối tượng đang đi trên cạnh hiện riêng từng người.
@@ -598,13 +684,17 @@ namespace AllMaps.TongMonChien
             foreach (var unit in units.Values)
             {
                 if (!unitMarkers.TryGetValue((unit.Kind, unit.Id), out var marker) || marker == null) continue;
-                if (TryGetMovingPosition(unit, now, out var position))
+                if (TryGetMovingPosition(unit, now, out var position, out var directionX))
                 {
                     marker.SetPosition(position);
                     marker.SetActive(true);
-                    if (refreshLabels) UpdateLabel(unit, marker, 0);
+                    marker.FaceTowards(directionX);
+                    marker.SetMovingState(true);
+                    if (refreshMovers) UpdateLabel(unit, marker, 0, now);
                     continue;
                 }
+
+                marker.SetMovingState(false);
 
                 if (!standing.TryGetValue(unit.NodeId, out var list))
                 {
@@ -626,12 +716,18 @@ namespace AllMaps.TongMonChien
                     marker.SetActive(show);
                     if (!show) continue;
                     if (map != null) marker.SetPosition(map.PlayerPosition);
-                    if (refreshLabels) UpdateLabel(unit, marker, pair.Value.Count - 1);
+                    if (refreshLabels) UpdateLabel(unit, marker, pair.Value.Count - 1, now);
                 }
             }
 
-            if (refreshLabels) hud.Refresh();
+            if (refreshLabels)
+            {
+                hud.Refresh();
+                if (headPanel != null) headPanel.RefreshHp();
+            }
         }
+
+        private float nextMoverLabelRefresh;
 
         /// <summary>
         /// Đại diện của node: bản thân mình → người chơi phe giữ node → người chơi khác → rối phe giữ node → rối khác;
@@ -648,9 +744,10 @@ namespace AllMaps.TongMonChien
                 .First();
         }
 
-        private bool TryGetMovingPosition(WarUnitView unit, DateTime now, out Vector2 position)
+        private bool TryGetMovingPosition(WarUnitView unit, DateTime now, out Vector2 position, out float directionX)
         {
             position = default;
+            directionX = 0f;
             if (unit.State != WarUnitState.Moving || unit.Route == null || unit.Route.Length == 0 ||
                 !unit.NextArrivalAt.HasValue) return false;
             var from = mapManager.FindMap(unit.NodeId);
@@ -659,6 +756,10 @@ namespace AllMaps.TongMonChien
             var remaining = (float)(unit.NextArrivalAt.Value - now).TotalSeconds;
             var t = Mathf.Clamp01(1f - remaining / secondsPerEdge);
             position = EvaluateEdge(from, to, t);
+            // Hướng mặt theo đoạn đường đang đi (nhìn trước một chút trên cạnh; cuối cạnh thì nhìn lùi).
+            var ahead = EvaluateEdge(from, to, Mathf.Min(1f, t + 0.05f));
+            directionX = ahead.x - position.x;
+            if (Mathf.Abs(directionX) < 0.0001f) directionX = position.x - EvaluateEdge(from, to, Mathf.Max(0f, t - 0.05f)).x;
             return true;
         }
 

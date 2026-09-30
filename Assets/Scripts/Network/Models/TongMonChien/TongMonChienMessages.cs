@@ -37,6 +37,10 @@ namespace Network.Models
         public string Name { get; set; } = string.Empty;
         public string ImageUrl { get; set; }
         public int MainNodeId { get; set; }
+        /// <summary>Số Thành Ấn: node Stronghold tông đang giữ (không gồm thành chính).</summary>
+        public int StrongholdCount { get; set; }
+        /// <summary>Số Địa Mạch: node thường tông đang giữ.</summary>
+        public int NodeCount { get; set; }
     }
 
     [MemoryPackable]
@@ -103,6 +107,12 @@ namespace Network.Models
         public WarClanView[] Clans { get; set; } = new WarClanView[0];
         public WarNodeView[] Nodes { get; set; } = new WarNodeView[0];
         public WarUnitView[] Units { get; set; } = new WarUnitView[0];
+        /// <summary>Tiên ngọc mỗi Thành Ấn khi chốt tuần.</summary>
+        public int StrongholdMoneyVip { get; set; }
+        /// <summary>Tiên ngọc mỗi Địa Mạch khi chốt tuần.</summary>
+        public int NodeMoneyVip { get; set; }
+        /// <summary>Thời điểm chốt thưởng tuần kế tiếp (UTC).</summary>
+        public DateTime NextSettlementAt { get; set; }
     }
 
     [MemoryPackable]

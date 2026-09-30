@@ -65,6 +65,23 @@ namespace AllMaps
             mainTf.position = position;
         }
 
+        /// <summary>
+        /// Quay mặt trái/phải theo hướng di chuyển khi vị trí do bên ngoài điều khiển qua <see cref="SetPosition"/>
+        /// (vd. Tông môn chiến). <paramref name="deltaX"/> &lt; 0 là đi sang trái.
+        /// </summary>
+        public void FaceTowards(float deltaX)
+        {
+            if (Mathf.Abs(deltaX) < 0.0001f) return;
+            tf.eulerAngles = new Vector3(0, deltaX < 0 ? 180 : 0, 0);
+        }
+
+        /// <summary>Bật/tắt animation di chuyển khi vị trí do bên ngoài điều khiển.</summary>
+        public void SetMovingState(bool isMoving)
+        {
+            if (IsMoving == isMoving) return;
+            SetMoving(isMoving);
+        }
+
         private void SetMoving(bool isMoving)
         {
             IsMoving = isMoving;

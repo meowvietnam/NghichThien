@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using CreateCharacter;
 using LongDH.LongDHModules;
 using LongDHModules;
@@ -30,13 +29,24 @@ namespace AllMaps.TongMonChien
 
         [Header("Bảng thông tin bản thân")]
         [SerializeField] private RectTransform infoPanel;
-        [SerializeField] private Text hpText;
+        [Tooltip("Trạng thái bản thân. HP chiến hiển thị trên UIHead.")]
         [SerializeField] private Text stateText;
-        [Tooltip("Tuỳ chọn: thanh HP chiến.")]
-        [SerializeField] private Slider hpBar;
         [SerializeField] private Button useDanButton;
         [SerializeField] private Button puppetsButton;
         [SerializeField] private Button exitButton;
+
+        [Header("Thưởng tuần")]
+        [Tooltip("Số Thành Ấn (thành Stronghold tông đang giữ).")]
+        [SerializeField] private Text strongholdText;
+        [SerializeField] private Text strongholdMoneyText;
+        [Tooltip("Số Địa Mạch (node thường tông đang giữ).")]
+        [SerializeField] private Text nodeText;
+        [SerializeField] private Text nodeMoneyText;
+        [SerializeField] private Text totalMoneyText;
+        [Tooltip("Thời gian còn lại tới lúc chốt thưởng (0h thứ Hai).")]
+        [SerializeField] private Text settlementText;
+        [Tooltip("Icon tiên ngọc; bỏ trống sprite thì tự lấy MoneyResources.MoneyVipIcon.")]
+        [SerializeField] private Image[] moneyVipIcons = new Image[0];
 
         [Header("Bảng Rối")]
         [SerializeField] private RectTransform puppetPanel;
@@ -76,8 +86,19 @@ namespace AllMaps.TongMonChien
             if (puppetPanel != null) puppetPanel.gameObject.SetActive(false);
             if (deployBar != null) deployBar.SetActive(false);
             if (messageText != null) messageText.text = string.Empty;
+            ApplyMoneyVipIcon();
             EnsureEventSystem();
             Refresh();
+        }
+
+        private void ApplyMoneyVipIcon()
+        {
+            var icon = MoneyResources.Instance != null ? MoneyResources.Instance.MoneyVipIcon : null;
+            if (icon == null) return;
+            foreach (var image in moneyVipIcons)
+            {
+                if (image != null && image.sprite == null) image.sprite = icon;
+            }
         }
 
         private static void AddClick(Button button, Action action)
@@ -142,24 +163,47 @@ namespace AllMaps.TongMonChien
             var now = controller.ServerNow;
             if (me == null)
             {
-                SetText(hpText, "Đang tải dữ liệu chiến trường...");
-                SetText(stateText, string.Empty);
-                if (hpBar != null) hpBar.value = 0;
+                SetText(stateText, "Đang tải dữ liệu chiến trường...");
             }
             else
             {
-                var hp = me.GetHp(now);
-                var sb = new StringBuilder($"HP chiến: {hp}/{me.HpMax}");
-                if (hp < me.HpMax && me.RegenPerMinute > 0) sb.Append($"  (+{me.RegenPerMinute:0.#}/phút)");
-                SetText(hpText, sb.ToString());
                 var state = StateText(me.State);
-                if (hp < 1) state += " - cần hồi tối thiểu 1 HP để tham chiến";
+                if (me.GetHp(now) < 1) state += " - cần hồi tối thiểu 1 HP để tham chiến";
                 SetText(stateText, state);
-                if (hpBar != null) hpBar.value = me.HpMax > 0 ? (float)hp / me.HpMax : 0;
             }
+
+            RefreshWeekly(now);
 
             if (deployBar != null) deployBar.SetActive(controller.DeployingPuppetId > 0);
             if (puppetPanel != null && puppetPanel.gameObject.activeSelf) RefreshPuppets(now);
+        }
+
+        /// <summary>
+        /// Thưởng tuần của tông: số Thành Ấn/Địa Mạch đang giữ và tiên ngọc ước tính mỗi thành viên nhận
+        /// nếu giữ nguyên tới lúc chốt (0h thứ Hai).
+        /// </summary>
+        private void RefreshWeekly(DateTime now)
+        {
+            var clan = controller.MyClan;
+            var strongholds = clan?.StrongholdCount ?? 0;
+            var normalNodes = clan?.NodeCount ?? 0;
+            var strongholdMoney = strongholds * controller.StrongholdMoneyVip;
+            var nodeMoney = normalNodes * controller.NodeMoneyVip;
+            SetText(strongholdText, $"Thành Ấn: {strongholds}");
+            SetText(strongholdMoneyText, $"≈ {strongholdMoney:N0}");
+            SetText(nodeText, $"Địa Mạch: {normalNodes}");
+            SetText(nodeMoneyText, $"≈ {nodeMoney:N0}");
+            SetText(totalMoneyText, $"≈ {strongholdMoney + nodeMoney:N0}");
+            var settleAt = controller.NextSettlementAt;
+            SetText(settlementText, settleAt == default ? string.Empty : $"Chốt thưởng sau {DurationText(settleAt - now)}");
+        }
+
+        private static string DurationText(TimeSpan span)
+        {
+            if (span < TimeSpan.Zero) span = TimeSpan.Zero;
+            if (span.TotalDays >= 1) return $"{(int)span.TotalDays} ngày {span.Hours} giờ";
+            if (span.TotalHours >= 1) return $"{(int)span.TotalHours} giờ {span.Minutes} phút";
+            return $"{Math.Max(1, (int)Math.Ceiling(span.TotalMinutes))} phút";
         }
 
         private void RefreshPuppets(DateTime now)

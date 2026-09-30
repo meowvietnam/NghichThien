@@ -16,13 +16,15 @@ Tài liệu đi kèm `TongMonChien-Requirements.md`. Mã đã viết nhưng **ch
 | File | Nội dung |
 | --- | --- |
 | `Models/ClanNode.cs`, `Models/Puppet.cs` | Viết lại: owner node có version; rối không còn `CharData` |
-| `Models/WarParticipant.cs`, `Models/WarBattle.cs` | Mới: trạng thái chiến của nhân vật, nhật ký trận |
+| `Models/WarParticipant.cs`, `Models/WarBattle.cs` | Mới: trạng thái chiến của nhân vật (kèm `LastEnterAt`), nhật ký trận |
+| `Models/WarWeeklySettlement.cs` | Mới: đánh dấu tuần đã chốt thưởng |
+| `Game/TMC/WarManager.Weekly.cs` | Đếm Thành Ấn/Địa Mạch, chốt thưởng tuần và gửi thư tiên ngọc |
 | `Models/Clan.cs` | Bỏ `Puppets`, `ClanNodes` (không load/serialize kèm tông) |
 | `Data/AppDbContext.cs` | DbSet + cấu hình 4 bảng, FK không navigation |
 | `Game/TMC/WarConfig.cs` | **Toàn bộ số liệu cân bằng** (các hàm `[TẠM]` để thay công thức chính thức) |
 | `Game/TMC/WarEnums.cs`, `WarUnit.cs` | Enum, lớp bọc người/rối, trạng thái node/tông/trận |
 | `Game/TMC/WarManager*.cs` | Lõi: khởi tạo/lưu, phiên, di chuyển + luật node, trận, rối + đan |
-| `Services/TongMonChienService.cs`, `Program.cs` | Background service |
+| `Services/TongMonChienService.cs`, `Program.cs` | Background service (tick, flush, kiểm tra chốt tuần mỗi 30 giây) |
 | `Network/Models/TongMonChienMessages.cs`, `Network/MessageTag.cs` | Hợp đồng message (3901–3918) |
 | `Network/ClientState/TongMonChien.cs`, `TongMonChienCombat.cs`, `MessageState.cs` | State scene chiến và state combat chiến |
 | `Network/Core/SceneManager.cs` | `ChangeScene("TongMonChien")` |
@@ -39,7 +41,10 @@ Tài liệu đi kèm `TongMonChien-Requirements.md`. Mã đã viết nhưng **ch
 | `Network/ClientState/TongMonChien.cs` | State scene chiến + lệnh gửi server |
 | `Network/ClientState/TongMonChienCombat.cs` | State combat chiến (PvP relay Sync*, PvE với rối), không ghi `Stats.Hp` |
 | `AllMaps/TongMonChien/TongMonChienController.cs` | Điều khiển scene: snapshot/delta, màu node, icon giao tranh, marker người/rối, click node, vào trận |
-| `AllMaps/TongMonChien/TongMonChienHud.cs`, `TongMonChienPuppetRow.cs`, `Prefabs/*.prefab` | HUD dạng prefab (HP chiến, dùng đan, bảng Rối cho Leader, thoát); tạo bản mặc định bằng menu *Tools → Tông môn chiến → Tạo prefab HUD* rồi chỉnh trực tiếp trên prefab |
+| `AllMaps/TongMonChien/TongMonChienHud.cs`, `TongMonChienPuppetRow.cs`, `Prefabs/*.prefab` | HUD dạng prefab (trạng thái, thưởng tuần Thành Ấn/Địa Mạch + tiên ngọc ước tính, dùng đan, bảng Rối cho Leader, thoát); tạo bản mặc định bằng menu *Tools → Tông môn chiến → Tạo prefab HUD* rồi chỉnh trực tiếp trên prefab |
+| `AllMaps/UIHeadPanel.cs` | `SetHpOverride`/`RefreshHp`: scene chiến hiển thị HP chiến trên UIHead |
+| `AllMaps/Player.cs` | `FaceTowards`, `SetMovingState` cho marker do controller điều khiển vị trí |
+| `GameManager.cs` | `combatReturnScene` (hết trận quay về scene chiến), không thêm trùng scene cuối vào `listSceneLoaded` |
 | `AllMaps/TongMonChien/ClanColorUtil.cs` | Màu tông từ icon + palette dự phòng |
 | `AllMaps/TongMonChien/TongMonChienEntryButton.cs` | Nút vào chiến (gắn vào UI tông môn/AllMaps) |
 | `AllMaps/MapManager.cs` | Cờ `isWarMode`: không chuyển state AllMaps, không kích hoạt sự kiện node/boss, click node → controller |
@@ -50,7 +55,7 @@ Tài liệu đi kèm `TongMonChien-Requirements.md`. Mã đã viết nhưng **ch
 
 ## 3. Các bước cần làm trên máy có dotnet/Unity
 
-1. **Server**: `dotnet build`, rồi `dotnet ef migrations add AddTongMonChien` và `dotnet ef database update`. Kiểm tra migration chỉ tạo `ClanNodes`, `Puppets`, `WarParticipants`, `WarBattles` (snapshot hiện tại chưa có `Puppet`/`ClanNode` cũ).
+1. **Server**: `dotnet build`, rồi `dotnet ef migrations add AddTongMonChien` và `dotnet ef database update`. Kiểm tra migration chỉ tạo `ClanNodes`, `Puppets`, `WarParticipants`, `WarBattles` (snapshot hiện tại chưa có `Puppet`/`ClanNode` cũ). Thưởng tuần cần thêm migration `AddTongMonChienWeeklyReward` (cột `WarParticipants.LastEnterAt`, bảng `WarWeeklySettlements`).
 2. **Unity**: mở project, chạy *Tools → Tông môn chiến → Thiết lập scene* (bật `isWarMode`, gắn `TongMonChienController`, thêm scene vào Build Settings). Đọc log để tắt các hệ thống bản đồ thường còn trong scene (quest, NPC, sự kiện node) nếu gây nhiễu.
 3. Gắn `TongMonChienEntryButton` vào một nút trong UI tông môn (hoặc gọi `TongMonChienEntryButton.Enter()`).
 4. Tuỳ chọn: gán `puppetPrefab`, `fightingIconPrefab` cho controller; thay HUD bằng UI chính thức.
