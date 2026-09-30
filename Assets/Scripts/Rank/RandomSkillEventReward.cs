@@ -35,6 +35,7 @@ namespace Rank
             {
                 ItemType.ThanThong => "Thần thông",
                 ItemType.CongPhap => "Công pháp",
+                _ => "Kỹ năng",
             };
             return $"x{Utils.FormatCount(Count)} {tierText} {typeItemText}";
         }

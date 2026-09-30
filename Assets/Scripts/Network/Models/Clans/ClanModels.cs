@@ -10,10 +10,10 @@ namespace Network.Models.Clans
 {
     public enum ClanRole : byte
     {
-        Member,      // Đệ tử
-        Elder,       // Trưởng lão
-        ViceLeader,  // Phó Tộc Chủ
-        Leader       // Tộc Chủ
+        Member, // Đệ tử
+        Elder, // Trưởng lão
+        ViceLeader, // Phó Tộc Chủ
+        Leader // Tộc Chủ
     }
 
     [Flags]
@@ -70,11 +70,11 @@ namespace Network.Models.Clans
         public long Exp { get; set; }
         public int LeaderCharId { get; set; }
         public DateTime CreatedAt { get; set; }
-        public List<ClanMember> Members { get; set; } = new List<ClanMember>();
-        public List<ClanJoinRequest> JoinRequests { get; set; } = new List<ClanJoinRequest>();
-        public List<ClanShopItem> ShopItems { get; set; } = new List<ClanShopItem>();
-        public List<ClanInheritanceEffect> StartTurnEffects { get; set; } = new List<ClanInheritanceEffect>();
-        public List<ClanInheritanceEffect> EndTurnEffects { get; set; } = new List<ClanInheritanceEffect>();
+        public List<ClanMember> Members { get; set; } = new();
+        public List<ClanJoinRequest> JoinRequests { get; set; } = new();
+        public List<ClanShopItem> ShopItems { get; set; } = new();
+        public List<ClanInheritanceEffect> StartTurnEffects { get; set; } = new();
+        public List<ClanInheritanceEffect> EndTurnEffects { get; set; } = new();
     }
 
     [MemoryPackable]
@@ -102,6 +102,7 @@ namespace Network.Models.Clans
         public Gender Gender { get; set; }
         public Appearance Appearance { get; set; }
         public long TotalContribPoints { get; set; }
+        public int? NodeId { get; set; }
     }
 
     [MemoryPackable]

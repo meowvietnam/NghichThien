@@ -38,6 +38,13 @@ namespace AllMaps
         [SerializeField] private CombatVisual combatVisual;
         [SerializeField] private ClanStrongholdNode clanStrongholdPrefab;
         [SerializeField] private Vector3 clanActionIconOffset = new Vector3(0f, 0.55f, 0f);
+        [Tooltip("Bật trong scene TongMonChien: không chuyển state AllMaps, không kích hoạt sự kiện node/boss; click node chuyển cho TongMonChienController.")]
+        [SerializeField] private bool isWarMode;
+        public bool IsWarMode => isWarMode;
+        public Player MainPlayer => player;
+        public GameObject PlayerPrefab => playerPrefab;
+        /// <summary>Click node trong chế độ Tông môn chiến.</summary>
+        public event Action<Map> WarNodeClicked;
         private Map current;
         private Boss.BossMapMarker bossMarker;
         private float nextBossStatusRefresh;
@@ -182,8 +189,12 @@ namespace AllMaps
 
         private void Awake()
         {
-            var state = new Network.ClientState.AllMaps(this);
-            Client.Instance.ChangeState(state);
+            if (!isWarMode)
+            {
+                var state = new Network.ClientState.AllMaps(this);
+                Client.Instance.ChangeState(state);
+            }
+
             BindClanEvents();
             ApplyClanStronghold(clanHandler?.CurrentClan);
             SetUpGraph();
@@ -206,6 +217,7 @@ namespace AllMaps
             isDelayAfterLoadScene = true;
             StartCoroutine(DelayTime(0.01f));
             LoadClanStrongholds();
+            if (isWarMode) return;
             OnMoveToMapCompleted();
         }
 
@@ -433,6 +445,12 @@ namespace AllMaps
 
         public void PlayerMoveTo(Map map)
         {
+            if (isWarMode)
+            {
+                if (!isDelayAfterLoadScene) WarNodeClicked?.Invoke(map);
+                return;
+            }
+
             if (CameraFollow.Instance.target != player.transform) return;
             if (isDelayAfterLoadScene) return;
             if (map == current) { OnMoveToMapCompleted(); return; }
@@ -577,6 +595,7 @@ namespace AllMaps
 
         public void OnPlayerMoving(PlayerMoving playerMoving)
         {
+            if (isWarMode) return;
             if (playerMoving.Path.Length == 0)
             {
                 return;

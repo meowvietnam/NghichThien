@@ -25,6 +25,44 @@ public class UIHeadPanel : PanelGroup
     [SerializeField] private CharacterGraphic characterGraphic;
     public MailButton mailBtn;
 
+    /// <summary>
+    /// Nguồn HP hiển thị thay cho HP thường (vd. HP chiến trong scene Tông môn chiến).
+    /// Trả null thì hiển thị HP thường của nhân vật.
+    /// </summary>
+    private System.Func<(int Hp, int HpMax, string Suffix)?> hpOverride;
+
+    public void SetHpOverride(System.Func<(int Hp, int HpMax, string Suffix)?> provider)
+    {
+        hpOverride = provider;
+        RefreshHp();
+    }
+
+    /// <summary>Cập nhật riêng thanh HP (gọi định kỳ khi đang dùng HP thay thế).</summary>
+    public void RefreshHp()
+    {
+        if (hpText == null) return;
+        var custom = hpOverride?.Invoke();
+        int hp, max;
+        string suffix = string.Empty;
+        if (custom.HasValue)
+        {
+            hp = custom.Value.Hp;
+            max = custom.Value.HpMax;
+            suffix = custom.Value.Suffix ?? string.Empty;
+        }
+        else
+        {
+            var stats = Client.Instance?.CharacterData?.Stats;
+            if (stats == null) return;
+            hp = stats.Hp;
+            max = stats.SinhMenh;
+        }
+
+        hpText.text = $"{hp}/{max}{suffix}";
+        var hpSlider = hpText.transform.parent.GetComponent<Slider>();
+        if (hpSlider != null) hpSlider.value = max > 0 ? (float)hp / max : 0;
+    }
+
     public override void Init()
     {
         base.Init();
@@ -42,11 +80,8 @@ public class UIHeadPanel : PanelGroup
     {
         var charData = Client.Instance.CharacterData;
         var progression = charData.Progression;
-        var stats = charData.Stats;
         var gameConfig = Pool.Get<GameManager>();
-        hpText.text = $"{stats.Hp}/{stats.SinhMenh}";
-        Slider hpSlider = hpText.transform.parent.GetComponent<Slider>();
-        hpSlider.value = (float)stats.Hp / stats.SinhMenh;
+        RefreshHp();
 
         tuviText.text =
             $"{progression.CurrentExp}/{gameConfig.inforLevels[progression.Level - 1].tuviRequireNextLevel}";

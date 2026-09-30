@@ -38,6 +38,19 @@ namespace AllMaps
             nameText.color = color;
         }
 
+        /// <summary>
+        /// Cho nhãn tên hiện nhiều dòng (khung mặc định 300x90 chỉ vừa 2 dòng, dòng thứ 3 bị cắt).
+        /// Căn đáy để dòng thêm mọc lên trên, không đè xuống nhân vật.
+        /// </summary>
+        public void AllowMultilineName()
+        {
+            if (nameText == null) return;
+            nameText.verticalOverflow = VerticalWrapMode.Overflow;
+            nameText.horizontalOverflow = HorizontalWrapMode.Overflow;
+            nameText.alignment = TextAnchor.LowerCenter;
+            nameText.supportRichText = true;
+        }
+
         public void Init(Gender gender, bool isSwordRiding, Appearance appearance)
         {
             this.IsSwordRiding = isSwordRiding;
@@ -63,6 +76,23 @@ namespace AllMaps
         public void SetPosition(Vector2 position)
         {
             mainTf.position = position;
+        }
+
+        /// <summary>
+        /// Quay mặt trái/phải theo hướng di chuyển khi vị trí do bên ngoài điều khiển qua <see cref="SetPosition"/>
+        /// (vd. Tông môn chiến). <paramref name="deltaX"/> &lt; 0 là đi sang trái.
+        /// </summary>
+        public void FaceTowards(float deltaX)
+        {
+            if (Mathf.Abs(deltaX) < 0.0001f) return;
+            tf.eulerAngles = new Vector3(0, deltaX < 0 ? 180 : 0, 0);
+        }
+
+        /// <summary>Bật/tắt animation di chuyển khi vị trí do bên ngoài điều khiển.</summary>
+        public void SetMovingState(bool isMoving)
+        {
+            if (IsMoving == isMoving) return;
+            SetMoving(isMoving);
         }
 
         private void SetMoving(bool isMoving)

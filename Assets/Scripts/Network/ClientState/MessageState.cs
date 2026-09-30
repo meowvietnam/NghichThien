@@ -14,6 +14,8 @@ namespace Network.ClientState
         TrungSinh,
         DongPhuState,
         CombatPvp,
-        BossState
+        BossState,
+        TongMonChien,
+        TongMonChienCombat
     }
 }
