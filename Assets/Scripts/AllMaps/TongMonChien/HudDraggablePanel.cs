@@ -10,6 +10,9 @@ namespace AllMaps.TongMonChien
     /// </summary>
     public class HudDraggablePanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
     {
+        [Tooltip("Khoá lưu vị trí (PlayerPrefs) — mỗi khối một khoá riêng.")]
+        [SerializeField] private string key = "Panel";
+
         private RectTransform rect;
         private RectTransform parentRect;
         private Canvas canvas;
@@ -21,12 +24,17 @@ namespace AllMaps.TongMonChien
 
         public event Action PositionReset;
 
-        public void Init(string key)
+        private void Awake()
+        {
+            Init(key);
+        }
+
+        private void Init(string panelKey)
         {
             rect = (RectTransform)transform;
             parentRect = (RectTransform)rect.parent;
             canvas = GetComponentInParent<Canvas>();
-            prefsKey = $"TongMonChienHud.{key}";
+            prefsKey = $"TongMonChienHud.{panelKey}";
             try
             {
                 if (PlayerPrefs.HasKey(prefsKey + ".x"))

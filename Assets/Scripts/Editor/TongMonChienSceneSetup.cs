@@ -39,9 +39,10 @@ public static class TongMonChienSceneSetup
 
         var cso = new SerializedObject(controller);
         cso.FindProperty("mapManager").objectReferenceValue = mapManager;
-        var hudFont = AssetDatabase.LoadAssetAtPath<Font>(TongMonChienController.DefaultHudFontPath);
-        if (hudFont == null) Debug.LogWarning($"Không tìm thấy font HUD tại {TongMonChienController.DefaultHudFontPath}");
-        cso.FindProperty("hudFont").objectReferenceValue = hudFont;
+        // Prefab HUD: dùng bản có sẵn (giữ chỉnh sửa), chưa có thì dựng bản mặc định.
+        var hud = AssetDatabase.LoadAssetAtPath<TongMonChienHud>(TongMonChienController.HudPrefabPath)
+                  ?? TongMonChienHudPrefabBuilder.Build();
+        cso.FindProperty("hudPrefab").objectReferenceValue = hud;
         cso.ApplyModifiedPropertiesWithoutUndo();
         EditorSceneManager.MarkSceneDirty(scene);
         EditorSceneManager.SaveScene(scene);

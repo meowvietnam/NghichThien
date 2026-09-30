@@ -31,10 +31,9 @@ namespace AllMaps.TongMonChien
         [SerializeField] private Vector3 fightingIconOffset = new Vector3(0f, 0.7f, 0f);
         [SerializeField] private float ownerMarkerScale = 0.9f;
         [SerializeField] private int markerSortingOrder = 40;
-        [Tooltip("Font của HUD Tông môn chiến. Để trống thì tự lấy Assets/Font/CLOUDLIBIAN-GB-NORMAL.ttf (trong Editor).")]
-        [SerializeField] private Font hudFont;
-        public const string DefaultHudFontPath = "Assets/Font/CLOUDLIBIAN-GB-NORMAL.ttf";
-        public Font HudFont => hudFont;
+        [Tooltip("Prefab HUD (Assets/Scripts/AllMaps/TongMonChien/Prefabs/TongMonChienHud.prefab).")]
+        [SerializeField] private TongMonChienHud hudPrefab;
+        public const string HudPrefabPath = "Assets/Scripts/AllMaps/TongMonChien/Prefabs/TongMonChienHud.prefab";
 
         private WarState state;
         private TongMonChienHud hud;
@@ -77,9 +76,9 @@ namespace AllMaps.TongMonChien
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            // Tự gán font HUD mặc định để khỏi phải kéo tay; lưu scene là font được serialize theo build.
-            if (hudFont == null)
-                hudFont = UnityEditor.AssetDatabase.LoadAssetAtPath<Font>(DefaultHudFontPath);
+            // Tự gán prefab HUD mặc định để khỏi phải kéo tay.
+            if (hudPrefab == null)
+                hudPrefab = UnityEditor.AssetDatabase.LoadAssetAtPath<TongMonChienHud>(HudPrefabPath);
         }
 #endif
 
@@ -88,12 +87,18 @@ namespace AllMaps.TongMonChien
             if (mapManager == null) mapManager = Pool.Get<MapManager>();
             overlayRoot = new GameObject("TongMonChienOverlay").transform;
             if (mapManager != null) mapManager.WarNodeClicked += OnNodeClicked;
-            hud = TongMonChienHud.Create(this);
+            if (hudPrefab == null)
+            {
+                Debug.LogError("TongMonChienController chưa gán HUD prefab. Chạy menu Tools → Tông môn chiến → Tạo prefab HUD.", this);
+                enabled = false;
+                return;
+            }
+
+            hud = Instantiate(hudPrefab);
+            hud.Bind(this);
             state = new WarState(this);
             Client.Instance.ChangeState(state);
             waitingSnapshot = true;
-            var lastEnded = TongMonChienCombat.LastEnded;
-            if (lastEnded != null) hud.ShowMessage(lastEnded.Message);
         }
 
         private void OnDestroy()
@@ -400,7 +405,7 @@ namespace AllMaps.TongMonChien
                 ownerMarkers[nodeId] = marker;
             }
 
-            marker.transform.position = map.transform.position;
+            marker.transform.position = GetNodeAnchor(map);
             marker.transform.localScale = Vector3.one * ownerMarkerScale;
             if (owner is int clanId)
             {
@@ -419,7 +424,7 @@ namespace AllMaps.TongMonChien
             if (fighting && icon == null)
             {
                 icon = fightingIconPrefab != null ? Instantiate(fightingIconPrefab, overlayRoot) : CreateDefaultFightingIcon();
-                icon.transform.position = map.transform.position + fightingIconOffset;
+                icon.transform.position = GetNodeAnchor(map) + fightingIconOffset;
                 fightingIcons[nodeId] = icon;
             }
             else if (!fighting && icon != null)
@@ -427,6 +432,29 @@ namespace AllMaps.TongMonChien
                 Destroy(icon);
                 fightingIcons.Remove(nodeId);
             }
+        }
+
+        private readonly Dictionary<Map, Vector3> nodeAnchors = new Dictionary<Map, Vector3>();
+
+        /// <summary>
+        /// Tâm hình của node trên bản đồ. Không dùng map.transform.position vì một số node (vd. Động Phủ, id 8)
+        /// có gốc transform lệch xa hình node: lấy tâm sprite "Level1Move" (hình node), thiếu thì dùng
+        /// PlayerPosition (chỗ nhân vật đứng), cuối cùng mới dùng transform.
+        /// </summary>
+        private Vector3 GetNodeAnchor(Map map)
+        {
+            if (nodeAnchors.TryGetValue(map, out var anchor)) return anchor;
+            var visual = map.GetComponentsInChildren<SpriteRenderer>(true)
+                .FirstOrDefault(x => x.gameObject.name == "Level1Move");
+            if (visual != null && visual.sprite != null && visual.gameObject.activeInHierarchy)
+                anchor = visual.bounds.center;
+            else if (map.PlayerPosition != Vector2.zero)
+                anchor = map.PlayerPosition;
+            else
+                anchor = map.transform.position;
+            anchor.z = map.transform.position.z;
+            nodeAnchors[map] = anchor;
+            return anchor;
         }
 
         private GameObject CreateDefaultFightingIcon()

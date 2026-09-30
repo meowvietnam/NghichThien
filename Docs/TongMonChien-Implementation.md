@@ -39,7 +39,7 @@ Tài liệu đi kèm `TongMonChien-Requirements.md`. Mã đã viết nhưng **ch
 | `Network/ClientState/TongMonChien.cs` | State scene chiến + lệnh gửi server |
 | `Network/ClientState/TongMonChienCombat.cs` | State combat chiến (PvP relay Sync*, PvE với rối), không ghi `Stats.Hp` |
 | `AllMaps/TongMonChien/TongMonChienController.cs` | Điều khiển scene: snapshot/delta, màu node, icon giao tranh, marker người/rối, click node, vào trận |
-| `AllMaps/TongMonChien/TongMonChienHud.cs` | HUD dựng bằng code (HP chiến, dùng đan, bảng rối cho Leader, thoát) |
+| `AllMaps/TongMonChien/TongMonChienHud.cs`, `TongMonChienPuppetRow.cs`, `Prefabs/*.prefab` | HUD dạng prefab (HP chiến, dùng đan, bảng Rối cho Leader, thoát); tạo bản mặc định bằng menu *Tools → Tông môn chiến → Tạo prefab HUD* rồi chỉnh trực tiếp trên prefab |
 | `AllMaps/TongMonChien/ClanColorUtil.cs` | Màu tông từ icon + palette dự phòng |
 | `AllMaps/TongMonChien/TongMonChienEntryButton.cs` | Nút vào chiến (gắn vào UI tông môn/AllMaps) |
 | `AllMaps/MapManager.cs` | Cờ `isWarMode`: không chuyển state AllMaps, không kích hoạt sự kiện node/boss, click node → controller |
