@@ -34,12 +34,9 @@ namespace AllMaps
         public bool IsPointerOverUIElement()
         {
             var eventData = new PointerEventData(EventSystem.current);
-            eventData.position = Input.mousePosition; // Hoặc dùng Input.GetTouch(0).position nếu là Mobile
-
+            eventData.position = Input.mousePosition; 
             List<RaycastResult> results = new List<RaycastResult>();
             EventSystem.current.RaycastAll(eventData, results);
-
-            // Nếu results.Count > 0 nghĩa là có UI đang nằm tại vị trí chuột/touch
             return results.Count > 0;
         }
 
@@ -89,14 +86,12 @@ namespace AllMaps
             target.actionMap = this.actionMap;
             target.iconVisualAction = this.iconVisualAction;
         }
-
         public void Deserialize(IReader reader, ref Map value)
         {
             value.MapType = reader.Read<MapType>();
             value.Id = reader.Read<int>();
             value.nextIndex = reader.ReadArray<int>();
         }
-
         public int ByteSize()
         {
             return MapType.ByteSize() + Id.ByteSize() + nextIndex.ByteSize();
@@ -108,12 +103,6 @@ namespace AllMaps
             writer.Write(Id);
             writer.WriteArray(nextIndex);
         }
-
-        /// <summary>
-        /// Bắn ra mỗi khi node bản đồ này được người chơi tap/click, TRƯỚC khi xử lý logic
-        /// chọn node / di chuyển. Dùng cho hand-tut (Tutorials) để biết chính xác lúc nào
-        /// người chơi đã chạm đúng vào node đang được khoanh sáng, không ảnh hưởng logic gốc.
-        /// </summary>
         public event Action OnMapClicked;
 
         public void OnPointerClick(PointerEventData eventData)

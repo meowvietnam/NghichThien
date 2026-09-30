@@ -99,6 +99,11 @@ namespace Network.ClientState
                 var result = reader.MemRead<ReloadDpShopResult>();
                 panel.OnReloadShopResult(result);
             }
+            else if (tag == MessageTag.DongPhuAchievementNotify)
+            {
+                var notify = reader.MemRead<DongPhuAchievementNotify>();
+                AchievementButton.SetClaimableCount(notify.ClaimableCount);
+            }
         }
 
         public void OnLeave()

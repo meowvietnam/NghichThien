@@ -8,7 +8,8 @@ public enum ETypeCombat
     DauTruong,
     Boss,
     LuanBanRealTime,
-    TongMonChienRealTime
+    TongMonChienRealTime,
+    TongMonChienPuppet
 }
 
 public enum ETypeResultCombat

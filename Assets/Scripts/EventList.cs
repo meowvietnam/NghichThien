@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -162,6 +162,7 @@ public static partial class EventList
         public const string RESULT_COMBAT = "Network.RESULT_COMBAT";
         public const string RESULT_COMBAT_REALTIME = "Network.RESULT_COMBAT_REALTIME";
         public const string RESULT_COMBAT_BOSS = "Network.RESULT_COMBAT_BOSS";
+        public const string RESULT_COMBAT_TONG_MON_CHIEN = "Network.RESULT_COMBAT_TONG_MON_CHIEN";
 
         public const string LOAD_CHAR_COMBAT = "Network.LOAD_CHAR_COMBAT";
         public const string LOAD_CHAR_COMBAT_ARENA = "Network.LOAD_CHAR_COMBAT_ARENA";

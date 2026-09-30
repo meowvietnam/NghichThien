@@ -303,19 +303,40 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
         return monPhaiText[monPhai];
     }
 
+    /// <summary>
+    /// Scene phải quay về khi kết thúc trận (vd. "TongMonChien"). Đặt trước khi vào Combat; dùng một lần.
+    /// Bỏ trống thì quay về scene đứng trước Combat trong <see cref="listSceneLoaded"/> như cũ.
+    /// </summary>
+    [NonSerialized] public string combatReturnScene;
+
     public void OnBackScene()
     {
         string currentScene = SceneManager.GetActiveScene().name;
         int index = listSceneLoaded.FindIndex(x => x.Equals(currentScene, StringComparison.InvariantCultureIgnoreCase));
-        if (index <= 0)
+        string backScene;
+        var isWarCombat = currentETypeCombat == ETypeCombat.TongMonChienRealTime ||
+                          currentETypeCombat == ETypeCombat.TongMonChienPuppet;
+        if (!isWarCombat) combatReturnScene = null;
+        if (!string.IsNullOrEmpty(combatReturnScene) &&
+            currentScene.Equals("Combat", StringComparison.InvariantCultureIgnoreCase))
         {
-            return;
+            backScene = combatReturnScene;
+            combatReturnScene = null;
+            if (index >= 0) listSceneLoaded.RemoveAt(index);
+        }
+        else
+        {
+            if (index <= 0)
+            {
+                return;
+            }
+
+            backScene = listSceneLoaded[index - 1];
+            listSceneLoaded.Remove(currentScene);
         }
 
         Pool.Get<UIManager>().panelGroup.SetActive(true);
         Pool.Get<UIManager>().SetActiveListIcon(true);
-        string backScene = listSceneLoaded[index - 1];
-        listSceneLoaded.Remove(currentScene);
         Pool.Get<UIManager>().loadScene.gameObject.SetActive(true);
         var sceneManger = Client.Instance.CoreModule.GetHandler<Network.Core.SceneManager>();
         sceneManger.ChangeScene(backScene, OnChangeSceneResult);
@@ -376,6 +397,18 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
                     notify.Show(result.Message);
                 }
 
+                // Đang ở màn Combat mà không quay lại được scene trước (vd. vừa bị kick khỏi tông nên không vào lại
+                // Tông môn chiến được): về AllMaps thay vì kẹt ở màn Combat.
+                if (SceneManager.GetActiveScene().name.Equals("Combat", StringComparison.InvariantCultureIgnoreCase) &&
+                    !string.Equals(result.SceneName, "AllMaps", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    combatReturnScene = null;
+                    listSceneLoaded.Clear();
+                    Client.Instance.CoreModule.GetHandler<Network.Core.SceneManager>()
+                        .ChangeScene("AllMaps", OnChangeSceneResult);
+                    return;
+                }
+
                 Pool.Get<UIManager>().loadScene.gameObject.SetActive(false);
                 Debug.Log(result.Message);
             }
@@ -384,7 +417,13 @@ public class GameManager : BaseBehaviour, INetworkEvent.ILoadCharCombat
 
     private void ChangeSceneSuccess(string nameScene)
     {
-        listSceneLoaded.Add(nameScene);
+        // Quay lại scene đang đứng cuối danh sách (sau BACK_SCENE) thì không thêm trùng.
+        if (listSceneLoaded.Count == 0 ||
+            !listSceneLoaded[listSceneLoaded.Count - 1].Equals(nameScene, StringComparison.InvariantCultureIgnoreCase))
+        {
+            listSceneLoaded.Add(nameScene);
+        }
+
         SceneManager.LoadScene(nameScene);
     }
 

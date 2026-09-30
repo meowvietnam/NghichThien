@@ -61,6 +61,14 @@ public class TabPanel : PanelGroup, INetworkEvent.IEquipCongPhap, INetworkEvent.
         return found?.btn;
     }
 
+    /// <summary>Mở bảng nhân vật ở tab chỉ định (vd. VatPham để chọn đan).</summary>
+    public void Open(ETypePanel type)
+    {
+        gameObject.SetActive(true);
+        transform.SetAsLastSibling();
+        GetTabButton(type)?.onClick.Invoke();
+    }
+
     /// <summary>Ô công pháp Chủ Tu (ChuTu1).</summary>
     public ItemInventory ChuTuSlot => chuTu;
 

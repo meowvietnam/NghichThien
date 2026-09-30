@@ -60,6 +60,7 @@ namespace Rank
             {
                 ItemType.ThanThong => "Thần thông",
                 ItemType.CongPhap => "Công pháp",
+                _ => "Kỹ năng",
             };
             return $"x{Utils.FormatCount(count)} {tierText} {typeItemText}" +
                    (TypeSkill == BaseSkill.ETypeSkill.None

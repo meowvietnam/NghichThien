@@ -66,6 +66,14 @@ namespace AllMaps.ItemProvider
         {
             if (itemInventory.iItemData is LinhDan danDuoc)
             {
+                // Đang dùng đan cho một đích khác (vd. Rối trong Tông môn chiến).
+                var target = DanUseRouter.Current;
+                if (target != null && !target.CanUse(danDuoc, out var reason))
+                {
+                    NotifyGroup.Instance.Show(reason);
+                    return;
+                }
+
                 if (danDuoc.ETypeDan == ETypeDan.DanBuff || danDuoc.ETypeDan == ETypeDan.DanCombat)
                 {
                     if (danDuoc.ETypeDan == ETypeDan.DanBuff)
@@ -91,7 +99,7 @@ namespace AllMaps.ItemProvider
                     var selectNum = Pool.Get<TabPanel>().selectNum;
                     selectNum.SetMin(0);
                     int maxValue = 0;
-                    if (danDuoc.ETypeDan == ETypeDan.DanBuff)
+                    if (danDuoc.ETypeDan == ETypeDan.DanBuff || target != null)
                     {
                         maxValue = itemInventory.itemRef.Count;
                     }
@@ -111,9 +119,10 @@ namespace AllMaps.ItemProvider
                     selectNum.SetMax(maxValue);
 
 
+                    var prefix = target != null ? $"{target.Title}: " : string.Empty;
                     selectNum.ValueChanged += (value) =>
                     {
-                        selectNum.SetText($"{itemInventory.iItemData.Name} x{value}");
+                        selectNum.SetText($"{prefix}{itemInventory.iItemData.Name} x{value}");
                     };
 
                     selectNum.confirmAction.RemoveAllListeners();
@@ -122,12 +131,15 @@ namespace AllMaps.ItemProvider
                         var value = selectNum.GetValue();
                         if (value >= 1)
                         {
-                            Observer.Notify(EventList.Network.USE_DAN, Pool.Get<TabPanel>(), itemInventory.itemRef.Id,
-                                (ushort)value);
+                            if (target != null)
+                                target.Use(danDuoc, (ushort)value);
+                            else
+                                Observer.Notify(EventList.Network.USE_DAN, Pool.Get<TabPanel>(),
+                                    itemInventory.itemRef.Id, (ushort)value);
                             itemInventory.AddCount(-value);
                         }
                     });
-                    selectNum.SetText($"{itemInventory.iItemData.Name} x{0}");
+                    selectNum.SetText($"{prefix}{itemInventory.iItemData.Name} x{0}");
 
                     selectNum.Show(0.15f);
                 }
