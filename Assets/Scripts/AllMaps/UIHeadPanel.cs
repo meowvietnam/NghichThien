@@ -58,7 +58,10 @@ public class UIHeadPanel : PanelGroup
             max = stats.SinhMenh;
         }
 
-        hpText.text = $"{hp}/{max}{suffix}";
+        // Ở Tông môn chiến (có override) rút gọn số: 827K, 1.23M.
+        hpText.text = custom.HasValue
+            ? $"{Base.Utils.FormatShort(hp)}/{Base.Utils.FormatShort(max)}{suffix}"
+            : $"{hp}/{max}{suffix}";
         var hpSlider = hpText.transform.parent.GetComponent<Slider>();
         if (hpSlider != null) hpSlider.value = max > 0 ? (float)hp / max : 0;
     }

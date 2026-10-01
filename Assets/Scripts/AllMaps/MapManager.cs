@@ -53,6 +53,8 @@ namespace AllMaps
         private readonly Dictionary<int, Map> originalClanMaps = new Dictionary<int, Map>();
         private readonly Dictionary<int, MapType> originalClanMapTypes = new Dictionary<int, MapType>();
         private readonly Dictionary<int, ClanStrongholdNode> activeClanStrongholds = new Dictionary<int, ClanStrongholdNode>();
+        // ClanId → node thành chính đang hiển thị, để gỡ node cũ khi tông đổi vị trí thành chính.
+        private readonly Dictionary<int, int> clanStrongholdNodeByClan = new Dictionary<int, int>();
         private object nodeSelectionOwner;
         private Action<Map> nodeSelected;
         private Action<Map> nodeRejected;
@@ -283,6 +285,8 @@ namespace AllMaps
         private void OnClanMapNodeChanged(ClanMapNode node)
         {
             if (node == null || node.NodeId <= 0) return;
+            if (clanStrongholdNodeByClan.TryGetValue(node.ClanId, out var oldNodeId) && oldNodeId != node.NodeId)
+                RestoreClanMap(oldNodeId);
             ApplyClanStronghold(new ClanModel
             {
                 Id = node.ClanId,
@@ -318,6 +322,7 @@ namespace AllMaps
         private void ApplyClanStronghold(ClanModel clan)
         {
             if (clan == null || clan.NodeId <= 0) return;
+            clanStrongholdNodeByClan[clan.Id] = clan.NodeId;
             if (activeClanStrongholds.TryGetValue(clan.NodeId, out var existing))
             {
                 existing.SetClan(clan);

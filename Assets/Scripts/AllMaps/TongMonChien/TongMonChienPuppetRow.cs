@@ -30,7 +30,8 @@ namespace AllMaps.TongMonChien
             var hp = puppet.GetHp(now);
             if (nameText != null) nameText.text = $"{puppet.Name}  {TongMonChienHud.LevelText(puppet.Level)}";
             if (infoText != null)
-                infoText.text = $"HP {hp}/{puppet.HpMax}  |  Độ bền {puppet.Durability}/{puppet.MaxDurability}  |  " +
+                infoText.text = $"HP {Base.Utils.FormatShort(hp)}/{Base.Utils.FormatShort(puppet.HpMax)}  |  Độ bền {puppet.Durability}/{puppet.MaxDurability}  |  " +
+                                (puppet.DonToc > 0 ? $"Độn tốc {puppet.DonToc}  |  " : string.Empty) +
                                 $"Node {puppet.NodeId}  |  {TongMonChienHud.StateText(puppet.State)}";
             if (hpBar != null) hpBar.value = puppet.HpMax > 0 ? (float)hp / puppet.HpMax : 0;
             if (leaderActions != null) leaderActions.SetActive(isLeader);

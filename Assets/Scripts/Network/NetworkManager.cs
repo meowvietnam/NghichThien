@@ -135,7 +135,8 @@ namespace Network
 
         public void ReconnectSuccess()
         {
-            client.TcpClient.Reconnect(unauthenticatedClient.TcpClient);
+            // Không dùng TcpClient.Reconnect: nó tạo vòng đọc thứ hai trên cùng socket (xem AdoptReconnected).
+            client.AdoptReconnected(unauthenticatedClient);
         }
 
         public void Invoke(Action action)
