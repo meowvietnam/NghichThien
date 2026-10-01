@@ -14,6 +14,32 @@ namespace Base
             return money.ToString("N0", CultureInfo.GetCultureInfo("vi-VN"));
         }
 
+        private static readonly string[] ShortUnits = { "", "K", "M", "B", "T" };
+
+        /// <summary>
+        /// Rút gọn số lớn, giữ 3 chữ số có nghĩa và làm tròn xuống: 999 → 999, 827_400 → 827K,
+        /// 1_234_567 → 1.23M, 12_500_000 → 12.5M, 2_000_000_000 → 2B.
+        /// </summary>
+        public static string FormatShort(long value)
+        {
+            if (value < 0) return "-" + FormatShort(value == long.MinValue ? long.MaxValue : -value);
+            if (value < 1000) return value.ToString(CultureInfo.InvariantCulture);
+            var unit = 0;
+            double v = value;
+            while (v >= 1000 && unit < ShortUnits.Length - 1)
+            {
+                v /= 1000;
+                unit++;
+            }
+
+            var decimals = v >= 100 ? 0 : v >= 10 ? 1 : 2;
+            var factor = Math.Pow(10, decimals);
+            v = Math.Floor(v * factor + 1e-9) / factor;
+            var text = v.ToString("F" + decimals, CultureInfo.InvariantCulture);
+            if (text.Contains(".")) text = text.TrimEnd('0').TrimEnd('.');
+            return text + ShortUnits[unit];
+        }
+
         public static string GetTime(TimeSpan timeSpan)
         {
             if (timeSpan <= TimeSpan.Zero)

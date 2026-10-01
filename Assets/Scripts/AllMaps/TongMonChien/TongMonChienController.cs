@@ -483,7 +483,7 @@ namespace AllMaps.TongMonChien
             {
                 inventory.Decrease(new ItemRef { Id = result.DanId, Type = ItemType.LinhDan, Count = used });
             }
-            hud.ShowMessage($"HP chiến: {result.Hp}/{result.HpMax}");
+            hud.ShowMessage($"HP chiến: {Base.Utils.FormatShort(result.Hp)}/{Base.Utils.FormatShort(result.HpMax)}");
             hud.Refresh();
         }
 
@@ -691,7 +691,7 @@ namespace AllMaps.TongMonChien
             if (countdown != null) label += $"<size={TimeFontSize}><color={TimeColor}>{countdown}</color></size>\n";
             label += $"{name}{more}\n";
             var hp = unit.GetHp(now);
-            label += $"<size={HpFontSize}><color={HpColor(hp, unit.HpMax)}>HP {hp}/{unit.HpMax}</color></size>";
+            label += $"<size={HpFontSize}><color={HpColor(hp, unit.HpMax)}>HP {Base.Utils.FormatShort(hp)}/{Base.Utils.FormatShort(unit.HpMax)}</color></size>";
             marker.SetName(label, color);
         }
 
