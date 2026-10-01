@@ -180,6 +180,7 @@ Kiểu dữ liệu nằm ở `MTS-Server/backend/MTS/Network/Models/TongMonChien
 | Sau trận | Người thắng/hoà được tính là còn đứng ở node trong 90 giây chờ quay lại scene; chỉ bị ghép trận mới khi đã quay lại scene |
 | Ghép trận | Chỉ ghép người chơi đã tải xong scene (đã xin snapshot); rối luôn sẵn sàng phòng thủ |
 | Thưởng (30/09/2026, thay thưởng tuần) | Hằng ngày 0h: điểm 100/ngày, thành 500/ngày; mỗi nhóm chức vụ nhận % (Tông chủ 50, Phó tông chủ 20, Trưởng lão 10, Thành viên 20) chia đều trong nhóm, qua thư; phải có mặt trong scene trong ngày |
+| Giờ mở cửa (30/09/2026) | Mở 19:00–23:00 hằng ngày (UTC+7, `WarConfig.OpenTime/CloseTime`, tắt bằng `ScheduleEnabled`). Ngoài giờ không vào được scene (server từ chối kèm thông báo). Tới 23:00: mọi trận kết thúc hoà, người đang đi dừng ở node an toàn, tất cả bị đưa về AllMaps; lãnh thổ/HP/rối giữ nguyên, rối vẫn phòng thủ |
 | Mùa (30/09/2026) | 2 tuần lặp liên tục; hết mùa làm mới đất, mọi người/rối về thành, HP đầy, rối giữ level/độ bền |
 | Rối (30/09/2026) | Số rối = level tông; tạo 5.000 tiên ngọc, nâng 500 × level (điểm cống hiến ×2, trừ điểm trước bù tiên ngọc); HP = level×10% HP chiến người tạo/nâng; độ bền 5, nâng cấp hồi đầy |
 | Hiển thị (30/09/2026) | HP chiến lên UIHead (bỏ thanh HP trên HUD); ẩn bảng NPC góc trái trong scene chiến; đếm ngược tới node kế cho mọi đối tượng đang đi; nhân vật quay mặt theo hướng đi; hết trận quay lại scene chiến |
