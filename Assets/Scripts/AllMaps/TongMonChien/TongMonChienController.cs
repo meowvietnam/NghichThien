@@ -26,13 +26,14 @@ namespace AllMaps.TongMonChien
         [SerializeField] private MapManager mapManager;
         [Tooltip("Prefab hiển thị rối (tuỳ chọn). Bỏ trống thì dùng prefab người chơi của MapManager.")]
         [SerializeField] private GameObject puppetPrefab;
-        [Tooltip("Prefab icon giao tranh (tuỳ chọn). Bỏ trống thì dùng vòng đỏ nhấp nháy.")]
+        [Tooltip("Prefab icon giao tranh (tuỳ chọn). Bỏ trống thì dùng icon song kiếm trong Resources/TongMonChien.")]
         [SerializeField] private GameObject fightingIconPrefab;
-        [SerializeField] private Vector3 fightingIconOffset = new Vector3(0f, 0.7f, 0f);
+        [SerializeField] private Vector3 fightingIconOffset = new Vector3(0f, 1.6f, 0f);
         [SerializeField] private float ownerMarkerScale = 0.9f;
         [SerializeField] private int markerSortingOrder = 40;
         [Tooltip("Prefab HUD (Assets/Scripts/AllMaps/TongMonChien/Prefabs/TongMonChienHud.prefab).")]
         [SerializeField] private TongMonChienHud hudPrefab;
+        public const string FightingIconResource = "TongMonChien/war_fighting";
         public const string HudPrefabPath = "Assets/Scripts/AllMaps/TongMonChien/Prefabs/TongMonChienHud.prefab";
 
         private WarState state;
@@ -464,6 +465,17 @@ namespace AllMaps.TongMonChien
             if (!string.IsNullOrEmpty(notice?.Message)) hud.ShowMessage(notice.Message);
         }
 
+        public void OnWarAchievementNotify(int claimableCount)
+        {
+            if (hud != null) hud.SetAchievementClaimable(claimableCount);
+        }
+
+        /// <summary>Thời gian đi một cạnh của đối tượng (server gửi theo độn tốc); thiếu thì dùng mức chung.</summary>
+        private float EdgeSeconds(WarUnitView unit) => unit.SecondsPerEdge > 0 ? unit.SecondsPerEdge : secondsPerEdge;
+
+        /// <summary>Màu rối trung lập (không thuộc tông nào).</summary>
+        private static readonly Color NeutralColor = new Color32(189, 189, 189, 255);
+
         public void OnWarUseHpPillResult(WarUseHpPillResult result)
         {
             if (!result.Success)
@@ -531,7 +543,8 @@ namespace AllMaps.TongMonChien
         }
 
         public Color GetClanColor(int clanId) =>
-            clanColors.TryGetValue(clanId, out var c) ? c : ClanColorUtil.FallbackColor(clanId);
+            clanId == 0 ? NeutralColor
+            : clanColors.TryGetValue(clanId, out var c) ? c : ClanColorUtil.FallbackColor(clanId);
 
         private async void LoadClanColor(WarClanView clan)
         {
@@ -631,9 +644,19 @@ namespace AllMaps.TongMonChien
             var go = new GameObject("Fighting");
             go.transform.SetParent(overlayRoot, false);
             var sr = go.AddComponent<SpriteRenderer>();
+            sr.sortingOrder = markerSortingOrder + 2;
+            // Icon song kiếm (Assets/Resources/TongMonChien/war_fighting.png); thiếu thì dùng vòng đỏ như cũ.
+            var icon = Resources.Load<Sprite>(FightingIconResource);
+            if (icon != null)
+            {
+                sr.sprite = icon;
+                go.transform.localScale = Vector3.one * 0.26f;
+                go.transform.DOScale(0.32f, 0.4f).SetLoops(-1, LoopType.Yoyo).SetLink(go);
+                return go;
+            }
+
             sr.sprite = GetCircleSprite();
             sr.color = new Color(1f, 0.15f, 0.1f, 0.9f);
-            sr.sortingOrder = markerSortingOrder + 2;
             go.transform.localScale = Vector3.one * 0.35f;
             go.transform.DOScale(0.5f, 0.4f).SetLoops(-1, LoopType.Yoyo).SetLink(go);
             return go;
@@ -714,7 +737,7 @@ namespace AllMaps.TongMonChien
                 unit.Route.Length == 0) return null;
             var next = Mathf.Max(0f, (float)(unit.NextArrivalAt.Value - now).TotalSeconds);
             // Chỉ hiện thời gian tới đích (node cuối của lộ trình).
-            return $"Đích: {FormatSeconds(next + (unit.Route.Length - 1) * secondsPerEdge)}";
+            return $"Đích: {FormatSeconds(next + (unit.Route.Length - 1) * EdgeSeconds(unit))}";
         }
 
         private static string FormatSeconds(float seconds) =>
@@ -816,6 +839,16 @@ namespace AllMaps.TongMonChien
 
                 marker.SetMovingState(false);
 
+                // Đang đánh giữa đường: đứng yên tại chỗ gặp nhau trên cạnh, kèm icon giao tranh.
+                if (TryGetEdgeFightPosition(unit, out var fightPosition))
+                {
+                    marker.SetPosition(fightPosition);
+                    marker.SetActive(true);
+                    if (refreshLabels) UpdateLabel(unit, marker, 0, now);
+                    ShowEdgeFightIcon((unit.Kind, unit.Id), fightPosition);
+                    continue;
+                }
+
                 if (!standing.TryGetValue(unit.NodeId, out var list))
                 {
                     list = new List<WarUnitView>();
@@ -840,11 +873,60 @@ namespace AllMaps.TongMonChien
                 }
             }
 
+            ClearStaleEdgeFightIcons();
+
             if (refreshLabels)
             {
                 hud.Refresh();
                 if (headPanel != null) headPanel.RefreshHp();
             }
+        }
+
+        // ---- Giao tranh giữa đường ----
+
+        private readonly Dictionary<(WarUnitKind, int), GameObject> edgeFightIcons = new Dictionary<(WarUnitKind, int), GameObject>();
+        private readonly HashSet<(WarUnitKind, int)> edgeFightSeen = new HashSet<(WarUnitKind, int)>();
+        private readonly List<(WarUnitKind, int)> edgeFightStale = new List<(WarUnitKind, int)>();
+
+        private bool TryGetEdgeFightPosition(WarUnitView unit, out Vector2 position)
+        {
+            position = default;
+            if (!unit.IsFightingOnEdge) return false;
+            var from = mapManager.FindMap(unit.NodeId);
+            var to = mapManager.FindMap(unit.Route[0]);
+            if (from == null || to == null) return false;
+            position = EvaluateEdge(from, to, Mathf.Clamp01(unit.EdgeProgress));
+            return true;
+        }
+
+        private void ShowEdgeFightIcon((WarUnitKind, int) key, Vector2 position)
+        {
+            edgeFightSeen.Add(key);
+            if (!edgeFightIcons.TryGetValue(key, out var icon) || icon == null)
+            {
+                icon = fightingIconPrefab != null ? Instantiate(fightingIconPrefab, overlayRoot) : CreateDefaultFightingIcon();
+                edgeFightIcons[key] = icon;
+            }
+
+            icon.transform.position = (Vector3)position + fightingIconOffset;
+        }
+
+        /// <summary>Gỡ icon của các đối tượng không còn đánh giữa đường (trận xong, bị xoá khỏi bản đồ...).</summary>
+        private void ClearStaleEdgeFightIcons()
+        {
+            if (edgeFightIcons.Count > 0)
+            {
+                edgeFightStale.Clear();
+                foreach (var key in edgeFightIcons.Keys)
+                    if (!edgeFightSeen.Contains(key)) edgeFightStale.Add(key);
+                foreach (var key in edgeFightStale)
+                {
+                    if (edgeFightIcons[key] != null) Destroy(edgeFightIcons[key]);
+                    edgeFightIcons.Remove(key);
+                }
+            }
+
+            edgeFightSeen.Clear();
         }
 
         private float nextMoverLabelRefresh;
@@ -874,7 +956,7 @@ namespace AllMaps.TongMonChien
             var to = mapManager.FindMap(unit.Route[0]);
             if (from == null || to == null) return false;
             var remaining = (float)(unit.NextArrivalAt.Value - now).TotalSeconds;
-            var t = Mathf.Clamp01(1f - remaining / secondsPerEdge);
+            var t = Mathf.Clamp01(1f - remaining / EdgeSeconds(unit));
             position = EvaluateEdge(from, to, t);
             // Hướng mặt theo đoạn đường đang đi (nhìn trước một chút trên cạnh; cuối cạnh thì nhìn lùi).
             var ahead = EvaluateEdge(from, to, Mathf.Min(1f, t + 0.05f));

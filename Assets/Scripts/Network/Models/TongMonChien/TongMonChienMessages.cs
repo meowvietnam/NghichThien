@@ -82,6 +82,24 @@ namespace Network.Models
         public int MaxDurability { get; set; }
         /// <summary>Độn tốc của rối ((level × 10)% độn tốc người tạo). 0 với người chơi.</summary>
         public int DonToc { get; set; }
+        /// <summary>Thời gian đi một cạnh của đối tượng này (giây), theo độn tốc: 10 giây, mỗi 2000 độn tốc giảm 1, tối thiểu 1.</summary>
+        public float SecondsPerEdge { get; set; }
+        /// <summary>
+        /// Lớn hơn 0 khi đang đánh giữa đường: vị trí đứng trên cạnh NodeId → Route[0] (0 = node xuất phát, 1 = node kế).
+        /// </summary>
+        public float EdgeProgress { get; set; }
+
+        /// <summary>Đang giao tranh giữa đường (gặp đối thủ khi cả hai đang đi trên cùng một cạnh).</summary>
+        [MemoryPackIgnore]
+        public bool IsFightingOnEdge =>
+            State == WarUnitState.Fighting && EdgeProgress > 0 && Route != null && Route.Length > 0;
+
+        /// <summary>Đủ điều kiện di chuyển: HP chiến từ 99% trở lên.</summary>
+        public bool CanMove(DateTime serverNow)
+        {
+            var hp = GetHp(serverNow);
+            return hp >= 1 && (long)hp * 100 >= (long)HpMax * 99;
+        }
 
         /// <summary>HP hiện tại ngoại suy theo nhịp hồi (serverNow = giờ server ước lượng).</summary>
         public int GetHp(DateTime serverNow)
