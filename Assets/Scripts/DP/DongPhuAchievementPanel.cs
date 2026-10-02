@@ -31,6 +31,24 @@ namespace DP
         private bool loading;
         private bool claiming;
 
+        // Mặc định là thành tựu Động phủ; nơi khác (vd. Tông môn chiến) gọi Configure để dùng lại bảng này.
+        private MessageTag getTag = MessageTag.GetDongPhuAchievements;
+        private MessageTag claimTag = MessageTag.ClaimDongPhuAchievement;
+        private string title = "Thành Tựu Động Phủ";
+        private Action<int> claimableChanged = AchievementButton.SetClaimableCount;
+
+        /// <summary>
+        /// Dùng lại bảng cho bộ thành tựu khác: tag lấy danh sách, tag nhận thưởng (cùng kiểu message với Động phủ),
+        /// tiêu đề và hàm nhận số mốc đang nhận được (chấm đỏ).
+        /// </summary>
+        public void Configure(MessageTag get, MessageTag claim, string panelTitle, Action<int> onClaimableChanged)
+        {
+            getTag = get;
+            claimTag = claim;
+            title = panelTitle;
+            claimableChanged = onClaimableChanged;
+        }
+
         private void Start()
         {
             SetEventButton(closeButton, Hide);
@@ -63,7 +81,7 @@ namespace DP
             loading = true;
             try
             {
-                var reader = await Client.Instance.RequestWait(MessageTag.GetDongPhuAchievements);
+                var reader = await Client.Instance.RequestWait(getTag);
                 var result = reader.MemRead<GetDongPhuAchievementsResult>();
                 if (this == null) return;
                 if (!result.Success)
@@ -90,7 +108,7 @@ namespace DP
         {
             foreach (var e in elements) Destroy(e.gameObject);
             elements.Clear();
-            if (titleText != null) titleText.text = "Thành Tựu Động Phủ";
+            if (titleText != null) titleText.text = title;
             var claimable = achievements.Count(DongPhuAchievementElement.CanClaim);
             var completed = achievements.Count(a => a.Tiers.Count > 0 && a.Tiers.All(t => t.IsClaimed));
             if (detailText != null)
@@ -108,7 +126,7 @@ namespace DP
                 elements.Add(element);
             }
 
-            AchievementButton.SetClaimableCount(claimable);
+            claimableChanged?.Invoke(claimable);
         }
 
         public async void OnClaim(DongPhuAchievementElement element)
@@ -122,7 +140,7 @@ namespace DP
                     AchievementId = element.Achievement.Id,
                     TierId = element.Tier.Id
                 };
-                var reader = await Client.Instance.MemRequestWait(MessageTag.ClaimDongPhuAchievement, request);
+                var reader = await Client.Instance.MemRequestWait(claimTag, request);
                 var result = reader.MemRead<ClaimDongPhuAchievementResult>();
                 if (this == null) return;
                 if (!result.Success)
@@ -137,7 +155,7 @@ namespace DP
                 Notify($"Bạn nhận được: {string.Join(", ", result.Rewards.Select(x => x.GetRichText()))}");
                 element.Tier.IsClaimed = true;
                 Render();
-                AchievementButton.SetClaimableCount(result.ClaimableCount);
+                claimableChanged?.Invoke(result.ClaimableCount);
             }
             catch (Exception e)
             {

@@ -16,8 +16,12 @@ namespace DP
         [SerializeField] private RectTransform content;
         [SerializeField] private RectTransform panel;
         private Tween tween;
-        private string key = "visit_history";
+        private const string LegacyKey = "visit_history";
+        private const int MaxHistories = 15;
         private bool isInit;
+
+        /// <summary>Lịch sử lưu riêng theo nhân vật (trước đây dùng chung một khoá cho mọi tài khoản trên máy).</summary>
+        private static string Key => $"visit_history_{Network.Client.Instance?.CharacterData?.Id ?? 0}";
 
         private void Start()
         {
@@ -33,7 +37,7 @@ namespace DP
 
         private void Visit()
         {
-            var name = nameField.text;
+            var name = nameField.text?.Trim();
             if (string.IsNullOrWhiteSpace(name))
             {
                 return;
@@ -62,37 +66,53 @@ namespace DP
             tween = panel.DOScale(Vector3.one, 0.25f);
         }
 
-        private HashSet<string> GetHistories()
+        /// <summary>Danh sách tên đã thăm, mới nhất đứng đầu, không trùng (không phân biệt hoa thường).</summary>
+        private List<string> GetHistories()
         {
-            if (PlayerPrefs.HasKey(key))
+            var key = Key;
+            // Chuyển lịch sử cũ (khoá dùng chung) sang nhân vật đầu tiên mở bảng, rồi bỏ khoá cũ.
+            if (!PlayerPrefs.HasKey(key) && PlayerPrefs.HasKey(LegacyKey))
             {
-                var json = PlayerPrefs.GetString(key);
-                try
-                {
-                    return JsonConvert.DeserializeObject<HashSet<string>>(json);
-                }
-                catch
-                {
-                    return new HashSet<string>();
-                }
+                var legacy = Parse(PlayerPrefs.GetString(LegacyKey));
+                legacy.Reverse();
+                PlayerPrefs.DeleteKey(LegacyKey);
+                Save(legacy);
+                return legacy;
             }
 
-            return new HashSet<string>();
+            return PlayerPrefs.HasKey(key) ? Parse(PlayerPrefs.GetString(key)) : new List<string>();
         }
 
+        private static List<string> Parse(string json)
+        {
+            try
+            {
+                var list = JsonConvert.DeserializeObject<List<string>>(json) ?? new List<string>();
+                var seen = new HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+                return list.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).Where(seen.Add).ToList();
+            }
+            catch
+            {
+                return new List<string>();
+            }
+        }
+
+        private static void Save(List<string> histories)
+        {
+            PlayerPrefs.SetString(Key, JsonConvert.SerializeObject(histories));
+            PlayerPrefs.Save();
+        }
+
+        /// <summary>Ghi nhận vừa thăm: đưa tên lên đầu (thăm lại cũng lên đầu), giữ tối đa 15 tên gần nhất.</summary>
         public void AddHistory(string name)
         {
+            name = name?.Trim();
+            if (string.IsNullOrEmpty(name)) return;
             var histories = GetHistories();
-            histories.Add(name);
-            if (histories.Count > 15)
-            {
-                var first = histories.First();
-                histories.Remove(first);
-            }
-
-            var json = JsonConvert.SerializeObject(histories);
-            PlayerPrefs.SetString(key, json);
-            PlayerPrefs.Save();
+            histories.RemoveAll(x => string.Equals(x, name, System.StringComparison.OrdinalIgnoreCase));
+            histories.Insert(0, name);
+            if (histories.Count > MaxHistories) histories.RemoveRange(MaxHistories, histories.Count - MaxHistories);
+            Save(histories);
         }
     }
 }

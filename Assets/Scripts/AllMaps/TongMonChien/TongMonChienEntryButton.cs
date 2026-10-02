@@ -15,8 +15,8 @@ namespace AllMaps.TongMonChien
 
         // Khớp WarConfig phía server (server vẫn là nơi quyết định, đây chỉ là chặn sớm để báo lỗi ngay).
         public const int MinMaxLevel = 4;
-        public static readonly TimeSpan OpenTime = new TimeSpan(19, 0, 0);
-        public static readonly TimeSpan CloseTime = new TimeSpan(23, 0, 0);
+        public static readonly TimeSpan OpenTime = new TimeSpan(21, 0, 0);
+        public static readonly TimeSpan CloseTime = new TimeSpan(22, 0, 0);
         private static readonly TimeSpan Utc7 = TimeSpan.FromHours(7);
 
         public static bool IsOpen(DateTime utcNow)

@@ -144,9 +144,10 @@ public static class TongMonChienHudPrefabBuilder
         var season = Label("Mua", daily.transform, "", 18, new Vector2(15, -180), new Vector2(490, 24));
         season.color = mutedColor;
 
-        var useDan = MakeButton("Btn_DungDan", info, "Dùng đan", new Vector2(15, -322), new Vector2(155, 48), true);
-        var puppets = MakeButton("Btn_Roi", info, "Rối", new Vector2(182, -322), new Vector2(155, 48));
-        var exit = MakeButton("Btn_Thoat", info, "Thoát", new Vector2(349, -322), new Vector2(155, 48));
+        var useDan = MakeButton("Btn_DungDan", info, "Dùng đan", new Vector2(15, -322), new Vector2(116, 48), true);
+        var puppets = MakeButton("Btn_Roi", info, "Rối", new Vector2(139, -322), new Vector2(116, 48));
+        var achievement = MakeButton("Btn_ThanhTuu", info, "Thành tựu", new Vector2(263, -322), new Vector2(116, 48));
+        var exit = MakeButton("Btn_Thoat", info, "Thoát", new Vector2(387, -322), new Vector2(116, 48));
         DragHint(info);
 
         // Dòng thông báo (giữa trên).
@@ -207,6 +208,9 @@ public static class TongMonChienHudPrefabBuilder
         so.FindProperty("useDanButton").objectReferenceValue = useDan;
         so.FindProperty("puppetsButton").objectReferenceValue = puppets;
         so.FindProperty("exitButton").objectReferenceValue = exit;
+        so.FindProperty("achievementButton").objectReferenceValue = achievement;
+        so.FindProperty("achievementPanelPrefab").objectReferenceValue =
+            AssetDatabase.LoadAssetAtPath<DP.DongPhuAchievementPanel>(DP.AchievementButton.PanelPrefabPath);
         so.FindProperty("puppetPanel").objectReferenceValue = puppetPanel;
         so.FindProperty("puppetHeader").objectReferenceValue = header;
         so.FindProperty("createPuppetButton").objectReferenceValue = create;

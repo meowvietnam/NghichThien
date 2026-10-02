@@ -81,6 +81,9 @@ namespace DP
         /// <summary>Chấm đỏ mặc định ở góc trên phải nút.</summary>
         private GameObject CreateBadge()
         {
+            // Dùng đúng chấm đỏ của nút Thư; không có nút Thư thì mới vẽ chấm tạm.
+            var redPoint = AllMaps.MailButton.CreateRedPoint(transform);
+            if (redPoint != null) return redPoint;
             var go = new GameObject("Badge", typeof(RectTransform), typeof(Image));
             var rect = (RectTransform)go.transform;
             rect.SetParent(transform, false);

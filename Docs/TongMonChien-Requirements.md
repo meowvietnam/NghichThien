@@ -87,6 +87,16 @@ Tận dụng graph node, hiển thị map, prefab nhân vật và giao diện co
 4. Sự kiện kéo dài 2 tuần, lặp liên tục (mốc gốc 00:00 thứ Hai 28/09/2026 giờ VN, `WarConfig.SeasonAnchor`). Hết mùa: chốt thưởng ngày cuối trước, sau đó mọi trận kết thúc hoà, node thường về trung lập, người và rối về thành chính với HP đầy; rối giữ level và độ bền.
 5. HUD hiển thị: Số điểm đã chiếm (x tiên ngọc/ngày), Số thành đã chiếm (x tiên ngọc/ngày), Tổng tiên ngọc/ngày, Thực nhận theo chức vụ (x tiên ngọc/ngày), thời gian tới lần phát thưởng và tới hết mùa.
 
+### 3.7. Cập nhật 02/10/2026 (thay các giá trị cũ ở trên khi mâu thuẫn)
+
+1. Thời gian đi một cạnh theo độn tốc (TocDoBay) của từng đối tượng: khởi đầu 10 giây, mỗi 2000 độn tốc giảm 1 giây, tối thiểu 1 giây (`WarConfig.GetSecondsPerEdge`). Người chơi lấy độn tốc nhân vật đang online, rối lấy `Puppets.DonToc`. Server gửi `WarUnitView.SecondsPerEdge` cho client.
+2. Người chơi/rối phải đạt từ 99% HP chiến mới được di chuyển (kể cả đi tiếp lộ trình sau khi thắng ở một node).
+3. Giờ mở cửa 21:00–22:00 giờ Việt Nam. HP chiến hồi 10% tối đa mỗi phút (người, rối tông, rối trung lập).
+4. Thua trận nào cũng về thẳng thành chính của tông (hết HP, bỏ chạy, mất kết nối đều vậy).
+5. Rối trung lập: MỌI node đang trung lập (điểm thường lẫn thành, trừ thành chính) có một rối 100.000 HP, độn tốc 10, chỉ cầm Cửu U Thứ. Phải hạ rối mới chiếm được node (không còn chiếm bằng cách đi qua). Node trở lại trung lập (reset mùa, tông giải tán, không còn ai giữ) thì có rối mới đầy máu. Rối trung lập chỉ nằm trong bộ nhớ (Id = −NodeId, ClanId = 0), không lưu DB; sau khi restart server rối ở các thành trung lập đầy máu lại.
+6. Thành tựu Tông môn chiến (theo nhân vật, tính theo mùa 2 tuần: sang mùa mới tiến độ và mốc đã nhận đều về 0, mốc đạt mà chưa nhận sẽ mất; bảng `WarAchievementProgresses`, cấu hình `Data/war-achievements.json`, tự nạp lại): chiếm điểm (độ khó 1), chiếm thành (2), ghép trận (1), thắng trận (4, thắng rối cũng tính). Thưởng mặc định = mục tiêu × độ khó × 100 tiên ngọc. "Chiếm" tính cho người chơi trực tiếp có mặt ở node lúc node về tay tông mình. Client dùng lại bảng thành tựu Động phủ, mở từ nút Thành tựu trên HUD chiến (tag 3920–3922).
+7. Ghép trận giữa đường (02/10/2026, đã làm): hai đơn vị khác tông đang đi trên cùng một cạnh mà gặp nhau — đi ngược chiều, hoặc cùng chiều và bị đuổi kịp — thì dừng tại chỗ và ghép trận ngay (`WarManager.MatchOnEdges`, xét mỗi nhịp 200ms). Người chơi gặp rối tông khác đang được điều đi thì đánh rối; rối không đánh rối. Mỗi cặp chỉ ghép một lần trên một cạnh. Thắng hoặc hoà: đi nốt cạnh đang đi; HP dưới 99% thì tới node kế là dừng. Thua: về thành chính. Đơn vị đang đánh giữa đường không chặn đơn vị khác đi ngang. Trạng thái trên cạnh chỉ nằm trong bộ nhớ; client nhận `WarUnitView.EdgeProgress` để vẽ chỗ đứng và icon giao tranh trên cạnh.
+
 ## 4. Trách nhiệm client
 
 | Khu vực | Yêu cầu |

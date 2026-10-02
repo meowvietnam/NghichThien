@@ -446,8 +446,14 @@ namespace DP
             UpdateLevel();
         }
 
+        private bool isVisiting;
+
         public async void Visit(string dongPhuName)
         {
+            dongPhuName = dongPhuName?.Trim();
+            // Đang chờ phản hồi lần thăm trước thì bỏ qua (tránh bấm liên tiếp gửi nhiều yêu cầu).
+            if (isVisiting || string.IsNullOrEmpty(dongPhuName)) return;
+            isVisiting = true;
             var request = new VisitDongPhu()
             {
                 Name = dongPhuName
@@ -455,17 +461,30 @@ namespace DP
             var client = Client.Instance;
             progressBar.SetText("Đang tìm Động phủ...");
             progressBar.DoShow(0.25f, 0.15f, null);
-            var reader = await client.MemRequestWait(MessageTag.VisitDongPhuRequest, request);
+            VisitDongPhuResult result = null;
+            try
+            {
+                var reader = await client.MemRequestWait(MessageTag.VisitDongPhuRequest, request);
+                result = reader.MemRead<VisitDongPhuResult>();
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e, this);
+            }
+
+            if (this == null) return;
+            isVisiting = false;
             progressBar.DoKill(() => { });
-            var result = reader.MemRead<VisitDongPhuResult>();
-            if (result.Success)
+            if (result != null && result.Success)
             {
                 visitDongPhuPanel.AddHistory(dongPhuName);
                 SceneManager.LoadScene("DongPhu");
             }
             else
             {
-                NotifyGroup.Show(result.Message);
+                NotifyGroup.Show(string.IsNullOrEmpty(result?.Message)
+                    ? "Không thăm được Động phủ, vui lòng thử lại"
+                    : result.Message);
             }
         }
 

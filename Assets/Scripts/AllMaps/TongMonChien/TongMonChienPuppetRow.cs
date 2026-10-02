@@ -35,7 +35,7 @@ namespace AllMaps.TongMonChien
                                 $"Node {puppet.NodeId}  |  {TongMonChienHud.StateText(puppet.State)}";
             if (hpBar != null) hpBar.value = puppet.HpMax > 0 ? (float)hp / puppet.HpMax : 0;
             if (leaderActions != null) leaderActions.SetActive(isLeader);
-            if (deployButton != null) deployButton.interactable = hp >= puppet.HpMax && puppet.State == WarUnitState.Idle;
+            if (deployButton != null) deployButton.interactable = puppet.CanMove(now) && puppet.State == WarUnitState.Idle;
             if (pillButton != null) pillButton.interactable = hp < puppet.HpMax && puppet.State != WarUnitState.Fighting;
             if (upgradeButton != null)
                 upgradeButton.interactable = puppet.State != WarUnitState.Fighting && puppet.Level < owner.MaxPuppetLevel;

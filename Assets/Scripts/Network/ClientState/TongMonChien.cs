@@ -16,6 +16,8 @@ namespace Network.ClientState
         void OnWarBattleMatched(WarBattleMatched matched);
         void OnWarKicked(WarKicked kicked);
         void OnWarNotice(WarNotice notice);
+        /// <summary>Số mốc thành tựu Tông môn chiến đang nhận được (chấm đỏ nút Thành tựu).</summary>
+        void OnWarAchievementNotify(int claimableCount);
     }
 
     public class TongMonChien : IClientState
@@ -139,6 +141,12 @@ namespace Network.ClientState
                 {
                     var model = reader.MemRead<WarNotice>();
                     NetworkManager.Instance.Invoke(() => callback.OnWarNotice(model));
+                    break;
+                }
+                case MessageTag.WarAchievementNotify:
+                {
+                    var model = reader.MemRead<DongPhuAchievementNotify>();
+                    NetworkManager.Instance.Invoke(() => callback.OnWarAchievementNotify(model.ClaimableCount));
                     break;
                 }
             }

@@ -25,7 +25,6 @@ namespace Network
 
         public override bool ValidatePacketSize(int size)
         {
-            Debug.Log(Utils.FormatCount(size) + " bytes");
             return size >= 0 && size < 1024 * 1024 * 128;
         }
 

@@ -35,6 +35,14 @@ namespace AllMaps.TongMonChien
         [SerializeField] private Button puppetsButton;
         [SerializeField] private Button exitButton;
 
+        [Header("Thành tựu")]
+        [Tooltip("Nút mở bảng thành tựu Tông môn chiến. Bỏ trống thì tự tạo cạnh nút Rối khi chạy.")]
+        [SerializeField] private Button achievementButton;
+        [Tooltip("Chấm đỏ báo có mốc nhận được. Bỏ trống thì tự tạo trên nút.")]
+        [SerializeField] private GameObject achievementBadge;
+        [Tooltip("Dùng lại prefab bảng thành tựu Động phủ (DP/Prefabs/DongPhuAchievementPanel.prefab).")]
+        [SerializeField] private DP.DongPhuAchievementPanel achievementPanelPrefab;
+
         [Header("Thưởng hằng ngày")]
         [Tooltip("Số điểm (node thường) tông đã chiếm.")]
         [SerializeField] private Text nodeText;
@@ -67,6 +75,8 @@ namespace AllMaps.TongMonChien
         [SerializeField] private Button cancelDeployButton;
 
         private TongMonChienController controller;
+        private DP.DongPhuAchievementPanel achievementPanel;
+        private int achievementClaimable;
         private float messageHideAt;
         private float nextLayoutAt;
         private HudDraggablePanel infoDrag;
@@ -81,6 +91,9 @@ namespace AllMaps.TongMonChien
             AddClick(useDanButton, controller.OpenInventoryForSelf);
             AddClick(puppetsButton, TogglePuppets);
             AddClick(exitButton, controller.Exit);
+            EnsureAchievementButton();
+            AddClick(achievementButton, OpenAchievements);
+            SetAchievementClaimable(achievementClaimable);
             AddClick(createPuppetButton, controller.CreatePuppet);
             AddClick(closePuppetsButton, TogglePuppets);
             AddClick(cancelDeployButton, controller.CancelDeploy);
@@ -120,6 +133,100 @@ namespace AllMaps.TongMonChien
         }
 
         private void RequestLayout() => nextLayoutAt = 0;
+
+        // =====================================================================
+        // Thành tựu Tông môn chiến (dùng lại bảng thành tựu Động phủ)
+        // =====================================================================
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (achievementPanelPrefab == null)
+                achievementPanelPrefab =
+                    UnityEditor.AssetDatabase.LoadAssetAtPath<DP.DongPhuAchievementPanel>(DP.AchievementButton.PanelPrefabPath);
+        }
+#endif
+
+        /// <summary>Prefab HUD cũ chưa có nút Thành tựu: nhân bản nút Rối để cùng kiểu dáng, đặt ngay sau nó.</summary>
+        private void EnsureAchievementButton()
+        {
+            if (achievementButton != null || puppetsButton == null) return;
+            achievementButton = Instantiate(puppetsButton, puppetsButton.transform.parent);
+            achievementButton.name = "AchievementButton";
+            achievementButton.onClick.RemoveAllListeners();
+            achievementButton.transform.SetSiblingIndex(puppetsButton.transform.GetSiblingIndex() + 1);
+            var label = achievementButton.GetComponentInChildren<Text>(true);
+            if (label != null) label.text = "Thành tựu";
+
+            // Hàng nút vốn có 3 nút đặt cố định: chia lại đều cho 4 nút trên cùng bề rộng đó.
+            var row = new[] { useDanButton, puppetsButton, achievementButton, exitButton }
+                .Where(x => x != null).Select(x => (RectTransform)x.transform).ToArray();
+            if (row.Length < 2 || useDanButton == null || exitButton == null) return;
+            var first = (RectTransform)useDanButton.transform;
+            var last = (RectTransform)exitButton.transform;
+            var left = first.anchoredPosition.x;
+            var total = last.anchoredPosition.x + last.sizeDelta.x - left;
+            const float gap = 8f;
+            var width = (total - gap * (row.Length - 1)) / row.Length;
+            if (width < 40f) return;
+            for (var i = 0; i < row.Length; i++)
+            {
+                row[i].anchorMin = first.anchorMin;
+                row[i].anchorMax = first.anchorMax;
+                row[i].pivot = first.pivot;
+                row[i].anchoredPosition = new Vector2(left + i * (width + gap), first.anchoredPosition.y);
+                row[i].sizeDelta = new Vector2(width, first.sizeDelta.y);
+            }
+        }
+
+        private void OpenAchievements()
+        {
+            if (achievementPanelPrefab == null)
+            {
+                ShowMessage("Chưa gán prefab bảng thành tựu cho HUD Tông môn chiến");
+                return;
+            }
+
+            if (achievementPanel == null)
+            {
+                var parent = canvas != null ? canvas.transform : transform;
+                achievementPanel = Instantiate(achievementPanelPrefab, parent);
+                achievementPanel.transform.localScale = Vector3.zero;
+                achievementPanel.Configure(Network.MessageTag.WarGetAchievements, Network.MessageTag.WarClaimAchievement,
+                    "Thành Tựu Tông Môn Chiến (làm mới mỗi mùa)", SetAchievementClaimable);
+            }
+
+            achievementPanel.Show();
+        }
+
+        /// <summary>Số mốc thành tựu đang nhận được: bật/tắt chấm đỏ trên nút Thành tựu.</summary>
+        public void SetAchievementClaimable(int count)
+        {
+            achievementClaimable = Mathf.Max(0, count);
+            if (achievementBadge == null && achievementButton != null && achievementClaimable > 0)
+                achievementBadge = CreateBadge(achievementButton.transform);
+            if (achievementBadge != null) achievementBadge.SetActive(achievementClaimable > 0);
+        }
+
+        private static GameObject CreateBadge(Transform parent)
+        {
+            // Dùng đúng chấm đỏ của nút Thư; không có nút Thư thì mới vẽ chấm tạm.
+            var redPoint = AllMaps.MailButton.CreateRedPoint(parent);
+            if (redPoint != null) return redPoint;
+            var go = new GameObject("Badge", typeof(RectTransform), typeof(Image));
+            var rect = (RectTransform)go.transform;
+            rect.SetParent(parent, false);
+            rect.anchorMin = rect.anchorMax = new Vector2(1, 1);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = new Vector2(-6, -6);
+            rect.sizeDelta = new Vector2(20, 20);
+            var image = go.GetComponent<Image>();
+            image.color = new Color(0.95f, 0.18f, 0.15f);
+            image.raycastTarget = false;
+            // Không tham gia LayoutGroup của nút (nếu có).
+            go.AddComponent<LayoutElement>().ignoreLayout = true;
+            return go;
+        }
 
         private void TogglePuppets()
         {
@@ -174,6 +281,7 @@ namespace AllMaps.TongMonChien
             {
                 var state = StateText(me.State);
                 if (me.GetHp(now) < 1) state += " - cần hồi tối thiểu 1 HP để tham chiến";
+                else if (!me.CanMove(now) && me.State == WarUnitState.Idle) state += " - cần 99% HP mới di chuyển được";
                 SetText(stateText, state);
             }
 
