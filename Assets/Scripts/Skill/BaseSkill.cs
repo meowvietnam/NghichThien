@@ -313,12 +313,11 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
     };
 
     // Tính sẵn tổng trọng số ngay khi load script (đạt 220)
-    private static readonly int totalWeight = debuffWeights.Values.Sum();
-
+    private static readonly int TotalWeight = debuffWeights.Values.Sum();
+    private static readonly System.Random _rnd = new System.Random();
     public static EBuffAndDeBuff GetDebuffWithPercent()
     {
-        int randomValue = UnityEngine.Random.Range(0, totalWeight);
-
+        int randomValue = _rnd.Next(0, TotalWeight);
         foreach (var pair in debuffWeights)
         {
             if (randomValue < pair.Value)
