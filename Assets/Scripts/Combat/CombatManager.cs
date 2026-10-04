@@ -996,6 +996,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         currentTurn.listDameTaked.Add(0);
         targetTurn.listDameTaked.Add(0);
         Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();
+        currentTurn.NewTurn();
+
         if (!currentTurn.IsKietSuc())
         {
             // isSync = false;
@@ -1004,7 +1006,6 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             CombatStatic.ThieuDot(targetTurn, currentTurn);
 
 
-            currentTurn.NewTurn();
             foreach (var item in currentTurn.characterStatsBase.clanInheritanceEffectSecure)
             {
                 if (item.Trigger == Network.Models.Clans.ClanInheritanceTrigger.StartTurn)
