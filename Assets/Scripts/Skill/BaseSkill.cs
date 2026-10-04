@@ -313,12 +313,11 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
     };
 
     // Tính sẵn tổng trọng số ngay khi load script (đạt 220)
-    private static readonly int totalWeight = debuffWeights.Values.Sum();
-
+    private static readonly int TotalWeight = debuffWeights.Values.Sum();
+    private static readonly System.Random _rnd = new System.Random();
     public static EBuffAndDeBuff GetDebuffWithPercent()
     {
-        int randomValue = UnityEngine.Random.Range(0, totalWeight);
-
+        int randomValue = _rnd.Next(0, TotalWeight);
         foreach (var pair in debuffWeights)
         {
             if (randomValue < pair.Value)
@@ -723,7 +722,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                 text = $"Kết thúc hiệp, mỗi tầng gây 1 điểm sát thương kiếm hệ cho đối phương";
                 break;
             case EBuffAndDeBuff.KietSuc:
-                text = "Bản thân hiệp sau không được thi pháp";
+                text = "Bản thân hiệp sau không được thi pháp. (Tối đa 3 tầng)";
                 break;
             case EBuffAndDeBuff.TreKhi:
                 text = "Giai đoạn hấp thụ linh khí, mỗi tầng -1 linh khí có thể hấp thụ sau đó giải trừ toàn bộ";
@@ -783,7 +782,7 @@ public class BaseSkill : BaseItemData, IMemorySerializable<BaseSkill>
                     $"Mỗi khi sử dụng thần thông gây tổn thương, mỗi tầng giảm -1 điểm sát thương có thể gây ra. Sau đó giải trừ 1 tầng";
                 break;
             case EBuffAndDeBuff.DongKet:
-                text = "Bản thân hiệp sau không được thi pháp";
+                text = "Bản thân hiệp sau không được thi pháp.  (Tối đa 3 tầng)";
                 break;
             case EBuffAndDeBuff.ChanKiem:
                 text = $"Kiếm hệ thần thông mỗi tầng sát thương tăng thêm 1 sau đó giải trừ toàn bộ";

@@ -650,6 +650,14 @@ public class CharacterCombat : MonoBehaviour
         {
             return;
         }
+        if (type == EBuffAndDeBuff.KietSuc && current >= 3)
+        {
+            return;
+        }
+        if (type == EBuffAndDeBuff.DongKet && current >= 3)
+        {
+            return;
+        }
         SecureInt newValue = current + count;
         buffAndDebuffCount[type] = newValue;
 
