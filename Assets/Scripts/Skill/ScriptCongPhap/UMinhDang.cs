@@ -11,7 +11,7 @@ using LongDHModules;
 [CreateAssetMenu(menuName = "Skill/Công Pháp /" + nameof(UMinhDang))]
 public class UMinhDang : CongPhap, IMemorySerializable<UMinhDang>
 {
-    private int[] debuffValues = new int[] { 3, 6, 9, 13, 15 };
+    private int[] debuffValues = new int[] { 5, 10, 15, 20, 30 };
     private int[] debuffValues2 = new int[] { 1, 2, 3, 4, 5 };
 
     public override void Execute(CharacterCombat caster, CharacterCombat target, params object[] data)
