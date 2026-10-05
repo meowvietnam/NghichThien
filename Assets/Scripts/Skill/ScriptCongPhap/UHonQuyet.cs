@@ -17,6 +17,7 @@ public class UHonQuyet : CPActiveAfterUseSkill, IMemorySerializable<UHonQuyet>
         var congPhapMono = GetCongPhapMono(caster.congPhapEquip);
        
         caster.AddCPDynamic(congPhapMono,2);
+        target.AddBuffAndDebuffCount(BaseSkill.GetDebuffWithPercent(),1);
         PlayVisualSkill(caster,target);
     }
     public override void PlayVisualSkill(CharacterCombat caster, CharacterCombat target)
@@ -71,7 +72,7 @@ public class UHonQuyet : CPActiveAfterUseSkill, IMemorySerializable<UHonQuyet>
     
     public override string GetDesc(int level)
     {
-        return base.GetDesc(level) + $"Tăng lên 2 tầng hồn thể. Mỗi tầng có thể 100% né tránh 1 lần tổn thương, sau đó giải trừ 1 tầng (Bị khắc chế bởi các đòn gây nhiều lần tổn thương)";
+        return base.GetDesc(level) + $"Tăng lên 2 tầng hồn thể và gây cho đối phương ngẫu nhiên 1 tầng tiêu cực. Mỗi tầng hồn thể có thể 100% né tránh 1 lần tổn thương, sau đó giải trừ 1 tầng (Bị khắc chế bởi các đòn gây nhiều lần tổn thương)";
     }
     public override int ByteSize()
     {
