@@ -321,7 +321,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         }
 
         // new turn sẽ gọi sau toàn bộ event skill call ở endturn là chuẩn
-        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, NewTurn);
+        Observer.AddObserver(EventList.Combat.END_TURN_COMBAT, FinishEndTurn, int.MinValue);
         SetUIHpBar();
         buffInfor.DoHide();
         transform.GetComponentInChildren<PlayerUICombat>().Init();
@@ -680,6 +680,10 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             counterTimeCoroutine = null;
         }
 
+        // The receiving client already has the authoritative end-turn state.
+        if (IsRealTimeCombat && !IsSync)
+            return;
+
         if (data[2] is List<LinhKhiTieuTan> linhKhiTieuTan)
         {
             TieuTanLinhKhi(linhKhiTieuTan);
@@ -687,11 +691,6 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
         var oldCurrentTurn = currentTurn;
         var oldTargetTurn = targetTurn;
-        if (IsSync)
-        {
-            Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN,
-                new SyncEndTurn { CharId = oldCurrentTurn.characterStatsBase.idChar.Value });
-        }
         if (IsBossCombat && oldCurrentTurn == char1)
         {
             if(!targetTurn.IsKietSuc())
@@ -701,7 +700,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             }       
         }
 
-        SwapTurn();
+        if (!IsRealTimeCombat)
+            SwapTurn();
         // isSync = false;
         CombatStatic.AnhDich(oldCurrentTurn, oldTargetTurn);
         CombatStatic.KiemKhi(oldCurrentTurn, oldTargetTurn);
@@ -742,6 +742,25 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         }
 
         ExcuteEquipment(oldCurrentTurn, oldTargetTurn, EquipmentType.Jewelry);
+    }
+
+    // Void observers run after all parameter observers, including skill effects.
+    private void FinishEndTurn()
+    {
+        if (IsRealTimeCombat)
+        {
+            if (IsSync)
+            {
+                SendSyncBuff(char1);
+                SendSyncBuff(char2);
+                Observer.Notify(EventList.Combat.SEND_SYNC_ENDTURN,
+                    new SyncEndTurn { CharId = currentTurn.characterStatsBase.idChar.Value });
+            }
+
+            SwapTurn();
+        }
+
+        NewTurn();
     }
 
     void LinhKhiBaoLoan(CharacterCombat character) // kết thúc lượt giảm 10% hp nếu turn hiện tại >= 15 tăng tốc độ game
@@ -996,7 +1015,15 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         currentTurn.listDameTaked.Add(0);
         targetTurn.listDameTaked.Add(0);
         Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();
-        currentTurn.NewTurn();
+        bool calculateEffects = !IsRealTimeCombat || IsSync;
+        currentTurn.NewTurn(calculateEffects);
+
+        if (!calculateEffects)
+        {
+            Observer.Notify(EventList.Combat.NEW_TURN_COMBAT, currentTurn, targetTurn,
+                currentTurn == char1, dictHapThuKhi);
+            return;
+        }
 
         if (!currentTurn.IsKietSuc())
         {
@@ -1049,6 +1076,11 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         // param 0 là bool isPlayer == char1 
         Observer.Notify(EventList.Combat.NEW_TURN_COMBAT, currentTurn, targetTurn, currentTurn == char1 ? true : false,
             dictHapThuKhi);
+        if (IsSync)
+        {
+            SendSyncBuff(char1);
+            SendSyncBuff(char2);
+        }
         AutoPlaySkill();
     }
 
@@ -1627,6 +1659,9 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     public void SendSyncBuff(params object[] data)
     {
+        if (!IsSync)
+            return;
+
         CharacterCombat charCombat = data[0] as CharacterCombat;
         var dictBuff = charCombat.buffAndDebuffCount;
         Dictionary<int,int> buffs = new Dictionary<int,int>();
@@ -1648,14 +1683,24 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     public void ReceiSyncBuff(params object[] data)
     {
-        SyncBuff SyncBuff = data[0] as SyncBuff;
-        var charCombat = SyncBuff.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
-        foreach (var item in SyncBuff.Buffs)
-        {
-            Debug.Log($"ReceiSyncBuff {item.Key}, {item.Value}");
+        var syncBuff = data[0] as SyncBuff;
+        if (syncBuff == null || syncBuff.Buffs == null)
+            return;
 
-            charCombat.SetBuffLogic((EBuffAndDeBuff)item.Key, item.Value);
+        var charCombat = syncBuff.CharId == char1.characterStatsBase.idChar.Value ? char1 :
+            syncBuff.CharId == char2.characterStatsBase.idChar.Value ? char2 : null;
+        if (charCombat == null)
+            return;
+
+        // A missing key means the buff was removed, even for an empty snapshot.
+        foreach (var type in charCombat.buffAndDebuffCount.Keys.ToList())
+        {
+            if (!syncBuff.Buffs.ContainsKey((int)type))
+                charCombat.SetBuffLogic(type, 0);
         }
+
+        foreach (var item in syncBuff.Buffs)
+            charCombat.SetBuffLogic((EBuffAndDeBuff)item.Key, item.Value);
     }
 
     public void SendSyncHealing(params object[] data)

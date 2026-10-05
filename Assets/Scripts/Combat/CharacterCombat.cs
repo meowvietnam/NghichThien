@@ -628,21 +628,23 @@ public class CharacterCombat : MonoBehaviour
 
     public void SetBuffLogic(EBuffAndDeBuff type, int newValue)
     {
-        if (buffAndDebuffCount.TryGetValue(type, out var current))
-        {
-            buffAndDebuffCount[type] = newValue;
-        }
+        buffAndDebuffCount.TryGetValue(type, out var current);
+        if (newValue <= 0)
+            buffAndDebuffCount.Remove(type);
         else
-        {
-            buffAndDebuffCount.Add(type, newValue);
-        }
+            buffAndDebuffCount[type] = newValue;
 
-        Observer.Notify(EventList.Combat.ADD_BUFF_UI, this, type, (int)newValue, (int)current);
+        Observer.Notify(EventList.Combat.ADD_BUFF_UI, this, type, Mathf.Max(0, newValue), (int)current);
     }
 
     [Button]
     public void AddBuffAndDebuffCount(EBuffAndDeBuff type, int count)
     {
+        var combatManager = Pool.Get<CombatManager>();
+        if (combatManager != null && combatManager.IsRealTimeCombat &&
+            combatManager.currentTurn != null && !combatManager.IsSync)
+            return;
+
         if (count == 0) return;
 
         buffAndDebuffCount.TryGetValue(type, out var current);
@@ -675,6 +677,11 @@ public class CharacterCombat : MonoBehaviour
 
     public void RemoveBuffAndDebuffCount(EBuffAndDeBuff type, int count, Action actionRemoveDone = null)
     {
+        var combatManager = Pool.Get<CombatManager>();
+        if (combatManager != null && combatManager.IsRealTimeCombat &&
+            combatManager.currentTurn != null && !combatManager.IsSync)
+            return;
+
         if (!buffAndDebuffCount.TryGetValue(type, out SecureInt current))
             return; // không có buff thì khỏi remove
         if (count == 0) return;
@@ -1226,7 +1233,7 @@ public class CharacterCombat : MonoBehaviour
         return result;
     }
 
-    public void NewTurn()
+    public void NewTurn(bool calculateBuffs = true)
     {
         var keys = new List<ThanThong>(thanThongCoolDown.Keys);
         foreach (var key in keys)
@@ -1234,6 +1241,20 @@ public class CharacterCombat : MonoBehaviour
             AddThanThongCoolDown(key, -1);
         }
 
+        if (calculateBuffs)
+            ApplyNewTurnBuffs();
+
+        thanThongUseThisComBat.Add(new List<PlaySkillData>());
+        if (isCooldownWeapon)
+        {
+            isCooldownWeapon = false;
+        }
+        if (calculateBuffs)
+            AddBuffLuyenHon();
+    }
+
+    private void ApplyNewTurnBuffs()
+    {
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TichDoc, out SecureInt TichDoc))
         {
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, TichDoc);
@@ -1284,13 +1305,8 @@ public class CharacterCombat : MonoBehaviour
             RemoveBuffAndDebuffCount(EBuffAndDeBuff.GiamTonThuong, giamTonThuong);
         }
 
-        thanThongUseThisComBat.Add(new List<PlaySkillData>());
-        if (isCooldownWeapon)
-        {
-            isCooldownWeapon = false;
-        }
-        AddBuffLuyenHon();
     }
+
     private void AddBuffLuyenHon()
     {
         AddBuffAndDebuffCount(EBuffAndDeBuff.Hon, characterStatsBase.pointHon.Value);
