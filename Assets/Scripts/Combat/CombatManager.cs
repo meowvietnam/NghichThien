@@ -1182,11 +1182,12 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     private void StartTurn(CharacterCombat charCombat)
     {
+        currentTurn = charCombat;
+
         char1.InitStaticCombatEffect();
         char2.InitStaticCombatEffect();
 
 
-        currentTurn = charCombat;
 
         StartEquipment(currentTurn);
         StartEquipment(targetTurn);
