@@ -1629,16 +1629,19 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     {
         CharacterCombat charCombat = data[0] as CharacterCombat;
         var dictBuff = charCombat.buffAndDebuffCount;
+        Dictionary<int,int> buffs = new Dictionary<int,int>();
+        foreach (var item in dictBuff)
+        {
+            buffs.Add((int)item.Key, item.Value.Value);
+            Debug.Log($"SendSyncBuff {item.Key}, {item.Value.Value}");
+        }
 
         if (IsSync)
         {
             Observer.Notify(EventList.Combat.SEND_SYNC_BUFF, new SyncBuff
             {
                 CharId = charCombat.characterStatsBase.idChar.Value,
-                Buffs = dictBuff.ToDictionary(
-                    entry => (int)entry.Key,
-                    entry => (int)entry.Value.Value
-                )
+                Buffs = buffs,
             });
         }
     }
@@ -1649,6 +1652,8 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         var charCombat = SyncBuff.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
         foreach (var item in SyncBuff.Buffs)
         {
+            Debug.Log($"ReceiSyncBuff {item.Key}, {item.Value}");
+
             charCombat.SetBuffLogic((EBuffAndDeBuff)item.Key, item.Value);
         }
     }
