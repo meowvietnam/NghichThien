@@ -10,13 +10,13 @@ using LongDHModules;
 using LuyenDan;
 using LuyenDan.Inventory;
 using LuyenKhi;
+using System.Linq;
 using Network.Models;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Combat;
 using CreateCharacter;
 using ExcelDataReader.Log;
@@ -1628,16 +1628,17 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     public void SendSyncBuff(params object[] data)
     {
         CharacterCombat charCombat = data[0] as CharacterCombat;
-        EBuffAndDeBuff buffType = (EBuffAndDeBuff)data[1];
-        int newValue = (int)data[2];
+        var dictBuff = charCombat.buffAndDebuffCount;
 
         if (IsSync)
         {
             Observer.Notify(EventList.Combat.SEND_SYNC_BUFF, new SyncBuff
             {
                 CharId = charCombat.characterStatsBase.idChar.Value,
-                IdBuff = (int)buffType,
-                NewBuff = newValue,
+                Buffs = dictBuff.ToDictionary(
+                    entry => (int)entry.Key,
+                    entry => (int)entry.Value
+                )
             });
         }
     }
@@ -1646,7 +1647,10 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     {
         SyncBuff SyncBuff = data[0] as SyncBuff;
         var charCombat = SyncBuff.CharId == char1.characterStatsBase.idChar.Value ? char1 : char2;
-        charCombat.SetBuffLogic((EBuffAndDeBuff)SyncBuff.IdBuff, SyncBuff.NewBuff);
+        foreach (var item in SyncBuff.Buffs)
+        {
+            charCombat.SetBuffLogic((EBuffAndDeBuff)item.Key, item.Value);
+        }
     }
 
     public void SendSyncHealing(params object[] data)
