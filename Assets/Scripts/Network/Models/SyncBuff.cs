@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MemoryPack;
 
 namespace Network.Models
@@ -8,5 +9,6 @@ namespace Network.Models
         public int CharId { get; set; }
         public int IdBuff { get; set; }
         public int NewBuff { get; set; }
+        public Dictionary<int,int> Buffs { get; set; }
     }
 }
