@@ -34,7 +34,6 @@ namespace AllMaps.TongMonChien
 
         public static void Enter()
         {
-            // GameManager.OnLoadScene gửi ChangeScene("TongMonChien"); server kiểm tra tông/thành rồi mới cho vào.
             Observer.Notify(EventList.GamePlay.LOAD_SCENE, SceneName);
         }
     }
