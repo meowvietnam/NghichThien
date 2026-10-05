@@ -1637,7 +1637,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
                 CharId = charCombat.characterStatsBase.idChar.Value,
                 Buffs = dictBuff.ToDictionary(
                     entry => (int)entry.Key,
-                    entry => (int)entry.Value
+                    entry => (int)entry.Value.Value
                 )
             });
         }
