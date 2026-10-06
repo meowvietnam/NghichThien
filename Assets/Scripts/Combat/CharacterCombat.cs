@@ -1233,7 +1233,7 @@ public class CharacterCombat : MonoBehaviour
         return result;
     }
 
-    public void NewTurn(bool calculateBuffs = true)
+    public void NewTurn()
     {
         var keys = new List<ThanThong>(thanThongCoolDown.Keys);
         foreach (var key in keys)
@@ -1241,40 +1241,17 @@ public class CharacterCombat : MonoBehaviour
             AddThanThongCoolDown(key, -1);
         }
 
-        if (calculateBuffs)
-            ApplyNewTurnBuffs();
+        ApplyNewTurnBuffs();
 
         thanThongUseThisComBat.Add(new List<PlaySkillData>());
         if (isCooldownWeapon)
         {
             isCooldownWeapon = false;
         }
-        if (calculateBuffs)
-            AddBuffLuyenHon();
+        AddBuffLuyenHon();
     }
-
-    private void ApplyNewTurnBuffs()
+    public void CheckChanLongChiHuyet()
     {
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TichDoc, out SecureInt TichDoc))
-        {
-            RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, TichDoc);
-        }
-
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out SecureInt sucThe))
-        {
-            RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, sucThe);
-        }
-
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhNac, out SecureInt anhNac))
-        {
-            RemoveBuffAndDebuffCount(EBuffAndDeBuff.AnhNac, anhNac);
-        }
-
-        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DeTonThuong, out SecureInt deTonThuong))
-        {
-            RemoveBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, deTonThuong);
-        }
-
         buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.ChanLongChiHuyet, out SecureInt chanLongChiHuyet);
         if (chanLongChiHuyet > 0)
         {
@@ -1298,6 +1275,30 @@ public class CharacterCombat : MonoBehaviour
                 }
             }
         }
+    }    
+    private void ApplyNewTurnBuffs()
+    {
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.TichDoc, out SecureInt TichDoc))
+        {
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.TrungDoc, TichDoc);
+        }
+
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.SucThe, out SecureInt sucThe))
+        {
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.SucThe, sucThe);
+        }
+
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.AnhNac, out SecureInt anhNac))
+        {
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.AnhNac, anhNac);
+        }
+
+        if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.DeTonThuong, out SecureInt deTonThuong))
+        {
+            RemoveBuffAndDebuffCount(EBuffAndDeBuff.DeTonThuong, deTonThuong);
+        }
+
+      
 
         RemoveBuffAndDebuffCount(EBuffAndDeBuff.ThieuDot, 1);
         if (buffAndDebuffCount.TryGetValue(EBuffAndDeBuff.GiamTonThuong, out SecureInt giamTonThuong))

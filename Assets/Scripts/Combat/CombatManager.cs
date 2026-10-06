@@ -1015,15 +1015,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         currentTurn.listDameTaked.Add(0);
         targetTurn.listDameTaked.Add(0);
         Dictionary<ELinhKhi, int> dictHapThuKhi = new Dictionary<ELinhKhi, int>();
-        bool calculateEffects = !IsRealTimeCombat || IsSync;
-        currentTurn.NewTurn(calculateEffects);
-
-        if (!calculateEffects)
-        {
-            Observer.Notify(EventList.Combat.NEW_TURN_COMBAT, currentTurn, targetTurn,
-                currentTurn == char1, dictHapThuKhi);
-            return;
-        }
+        currentTurn.CheckChanLongChiHuyet();
 
         if (!currentTurn.IsKietSuc())
         {
@@ -1032,6 +1024,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
             CombatStatic.SucThe(currentTurn, targetTurn);
             CombatStatic.ThieuDot(targetTurn, currentTurn);
 
+            currentTurn.NewTurn();
 
             foreach (var item in currentTurn.characterStatsBase.clanInheritanceEffectSecure)
             {
