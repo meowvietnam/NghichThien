@@ -12,6 +12,7 @@ namespace Network.ClientState
     {
         private Client client;
         private INetworkEvent.IResultCombat resultCombatCallback;
+        private bool readySent;
 
         public CombatPvp()
         {
@@ -31,6 +32,12 @@ namespace Network.ClientState
             Observer.AddObserver(EventList.Combat.SEND_SYNC_CP_DYNAMIC, SyncCPDynamic);
             Observer.AddObserver(EventList.Combat.SEND_SYNC_REMOVE_EFFECTSKILLNODESTROY, SyncRemoveEffectSkillNoDestroy);
             Observer.AddObserver(EventList.Network.RESULT_COMBAT_REALTIME, ResultCombat);
+        }
+
+        public void SendReady()
+        {
+            if (readySent) return;
+            readySent = true;
             client.Send(MessageTag.ReadyCombatPvp);
         }
 

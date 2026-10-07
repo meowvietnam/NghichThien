@@ -20,6 +20,7 @@ namespace Network.ClientState
         private readonly Client client;
         private readonly WarBattleMatched matched;
         private INetworkEvent.IResultCombat resultCombatCallback;
+        private bool readySent;
         private bool reported;
         private WarBattleEnded ended;
         private bool shown;
@@ -49,7 +50,12 @@ namespace Network.ClientState
             Observer.AddObserver(EventList.Combat.SEND_SYNC_REMOVE_EFFECTSKILLNODESTROY, SyncRemoveEffectSkillNoDestroy);
             Observer.AddObserver(EventList.Network.RESULT_COMBAT_REALTIME, ResultCombatRealtime);
             Observer.AddObserver(EventList.Network.RESULT_COMBAT_TONG_MON_CHIEN, ResultCombatPuppet);
-            // Giống PvP luận bàn: báo sẵn sàng ngay khi vào state; server chờ đủ hai bên rồi trễ 2 giây mới bắt đầu lượt.
+        }
+
+        public void SendReady()
+        {
+            if (readySent) return;
+            readySent = true;
             client.Send(MessageTag.WarReadyCombat);
         }
 
