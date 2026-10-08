@@ -65,6 +65,7 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
     public CharacterCombat targetTurn => currentTurn == char1 ? char2 : char1;
     private float counterTime = 30f;
     private Coroutine counterTimeCoroutine;
+    private bool hasStartedCombat;
 
     [SerializeField] private Text counterTimeText;
 
@@ -1223,9 +1224,22 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
 
     private void StartTurnPVP(params object[] data)
     {
-        int charId = (int)data[0];
+        if (hasStartedCombat) return;
+        if (!IsRealTimeCombat && !IsBossCombat) return;
+        if (data == null || data.Length == 0 || !(data[0] is int charId)) return;
 
-        var charCombat = charId == char1.characterStatsBase.idChar.Value ? char1 : char2;
+        CharacterCombat charCombat;
+        if (charId == char1.characterStatsBase.idChar.Value)
+            charCombat = char1;
+        else if (charId == char2.characterStatsBase.idChar.Value)
+            charCombat = char2;
+        else
+        {
+            Debug.LogWarning($"Ignoring combat start for unknown character ID: {charId}");
+            return;
+        }
+
+        hasStartedCombat = true;
         StartTurn(charCombat);
     }
 
@@ -1235,10 +1249,34 @@ public class CombatManager : BaseBehaviour, INetworkEvent.IResultCombat
         {
             Client.Instance.ChangeState(new Network.ClientState.BossState());
         }
+        if (IsRealTimeCombat || Pool.Get<GameManager>().currentETypeCombat == ETypeCombat.TongMonChienPuppet)
+        {
+            StartCoroutine(SendReadyWhenNetworkStateEntered());
+        }
         if (!IsRealTimeCombat && !IsBossCombat)
         {
             var charCb = char1.GetToDoBay() >= char2.GetToDoBay() ? char1 : char2;
             StartTurn(charCb);
+        }
+    }
+
+    private IEnumerator SendReadyWhenNetworkStateEntered()
+    {
+        // Start runs after scene objects have finished Awake/OnEnable.
+        // Scene loading and the network state transition can finish in either order.
+        while (true)
+        {
+            if (Client.Instance.State is Network.ClientState.CombatPvp pvp)
+            {
+                pvp.SendReady();
+                yield break;
+            }
+            if (Client.Instance.State is Network.ClientState.TongMonChienCombat war)
+            {
+                war.SendReady();
+                yield break;
+            }
+            yield return null;
         }
     }
 
